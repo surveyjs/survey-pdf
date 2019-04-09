@@ -11,9 +11,6 @@
     "build_dev": "npm run build_pdf_dev",
     "build_pdf_prod": "webpack --env.buildType prod --env.platform pdf",
     "build_prod": "npm run build_dev && npm run build_pdf_dev",
-    "doc_gen":
-      "node doc_generator/lib_docgenerator.js src/entries/chunks/model.ts",
-    "doc_update": "chmod +x ./docupdate_npm.sh && ./docupdate_npm.sh",
     "lint": "tslint ./src/**/*.ts -t verbose"
   },
   "version": "1.0.78",
