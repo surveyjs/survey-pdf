@@ -47,7 +47,7 @@ var platformOptions = {
   }
 };
 
-module.exports = function(options) {
+module.exports = function (options) {
   //TODO
   options.platformPrefix = options.platform;
   var packagePath = "./packages/survey-" + options.platform + "/";
@@ -81,7 +81,7 @@ module.exports = function(options) {
       platformOptions[options.platform].keywords
     ),
     homepage: "https://surveyjs.io/",
-    license: "MIT",
+    license: "Commercial",
     files: [
       "survey." + options.platformPrefix + ".d.ts",
       "survey." + options.platformPrefix + ".js",
@@ -109,7 +109,7 @@ module.exports = function(options) {
     resolve: {
       extensions: [".ts", ".js", ".tsx"],
       alias: {
-        tslib: path.join(__dirname, "./src/entries/chunks/helpers.ts")
+        tslib: path.join(__dirname, "./src/entries/helpers.ts")
       }
     },
     module: {

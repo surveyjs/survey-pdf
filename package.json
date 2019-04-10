@@ -8,9 +8,14 @@
     "build_dev": "webpack --env.buildType dev --env.platform pdf",
     "build_prod": "npm run build_dev && webpack --env.buildType prod --env.platform pdf"
   },
-  "version": "1.0.78",
+  "version": "1.0.79",
   "name": "survey-pdf",
   "private": true,
+  "license": "Commercial",
+  "dependencies": {
+    "jspdf": "1.5.3",
+    "survey-core": "^1.0.78"
+  },
   "devDependencies": {
     "@types/jest": "^23.3.3",
     "@types/jspdf": "^1.2.2",
@@ -27,15 +32,12 @@
     "html-loader": "0.4.4",
     "http-server": "0.9.0",
     "jest": "^23.6.0",
-    "jest-canvas-mock": "^2.0.0-beta.1",
-    "jspdf": "git+https://github.com/MrRio/jsPDF.git",
     "live-server": "1.2.0",
     "node-uuid": "1.4.7",
     "replace-in-file": "^3.1.1",
     "rimraf": "2.5.4",
     "standard-version": "4.0.0",
     "style-loader": "0.13.1",
-    "survey-core": "^1.0.78",
     "ts-jest": "^23.10.3",
     "ts-loader": "2.3.4",
     "typescript": "3.4.3",

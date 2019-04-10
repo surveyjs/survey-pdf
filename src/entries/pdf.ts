@@ -1,4 +1,4 @@
-export * from "./chunks/helpers";
+export * from "./helpers";
 
 export { JsPdfSurveyModel as Survey } from "../survey";
 export {
