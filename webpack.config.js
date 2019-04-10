@@ -47,7 +47,7 @@ var platformOptions = {
   }
 };
 
-module.exports = function(options) {
+module.exports = function (options) {
   //TODO
   options.platformPrefix = options.platform;
   var packagePath = "./packages/survey-" + options.platform + "/";
@@ -65,7 +65,7 @@ module.exports = function(options) {
         });
         rimraf.sync(packagePath + "typings");
         fs
-          .createReadStream("./npmREADME.md")
+          .createReadStream("./README.md")
           .pipe(fs.createWriteStream(packagePath + "README.md"));
       }
     }

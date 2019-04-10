@@ -32,7 +32,7 @@ export interface IPdfQuestion {
   renderContent(point: IPoint): void;
   render(point: IPoint): void;
 }
-declare type RendererConstructor = new (
+export type RendererConstructor = new (
   question: IQuestion,
   docOptions: DocOptions
 ) => IPdfQuestion;
@@ -116,7 +116,7 @@ export class PdfQuestionRendererBase implements IPdfQuestion {
   constructor(
     protected question: IQuestion,
     protected docOptions: DocOptions
-  ) {}
+  ) { }
   private getBoundariesTitle(point: IPoint): IRect {
     return this.getBoundariesText(point, this.getQuestion<Question>().title);
   }
@@ -126,8 +126,8 @@ export class PdfQuestionRendererBase implements IPdfQuestion {
       xRight:
         point.xLeft +
         text.length *
-          this.docOptions.getFontSize() *
-          this.docOptions.getXScale(),
+        this.docOptions.getFontSize() *
+        this.docOptions.getXScale(),
       yTop: point.yTop,
       yBot:
         point.yTop + this.docOptions.getFontSize() * this.docOptions.getYScale()
@@ -204,7 +204,7 @@ export class PdfQuestionRendererBase implements IPdfQuestion {
       baseline: "middle"
     });
   }
-  renderContent(point: IPoint) {}
+  renderContent(point: IPoint) { }
   render(point: IPoint) {
     switch (this.getQuestion<Question>().titleLocation) {
       case "top":
