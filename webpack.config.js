@@ -77,7 +77,7 @@ module.exports = function (options) {
     version: packageJson.version,
     description:
       "survey.js is a JavaScript Survey Library. It is a modern way to add a survey to your website. It uses JSON for survey metadata and results.",
-    keywords: ["Survey", "JavaScript", "Bootstrap", "Library"].concat(
+    keywords: ["Survey", "JavaScript", "PDF", "Library"].concat(
       platformOptions[options.platform].keywords
     ),
     homepage: "https://surveyjs.io/",
@@ -90,7 +90,7 @@ module.exports = function (options) {
     main: mainFile,
     repository: {
       type: "git",
-      url: "https://github.com/surveyjs/surveyjs.git"
+      url: "https://github.com/surveyjs/survey-pdf.git"
     },
     typings: "survey." + options.platformPrefix + ".d.ts"
   };
