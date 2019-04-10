@@ -1,13 +1,13 @@
 export * from "./chunks/helpers";
 
-export { JsPdfSurveyModel as Survey } from "../jspdf/survey";
+export { JsPdfSurveyModel as Survey } from "../survey";
 export {
   QuestionRepository,
   IPdfQuestion,
   PdfQuestionRendererBase
-} from "../jspdf/survey";
-export { TextQuestion } from "../jspdf/text";
-export { SelectBaseQuestion } from "../jspdf/selectbase";
-export { CheckBoxQuestion } from "../jspdf/checkbox";
-// export { RadioGroupQuestion } from "../jspdf/radiogroup";
-// export { MatrixDynamicQuestion } from "../jspdf/matrixdynamic";
+} from "../survey";
+export { TextQuestion } from "../text";
+export { SelectBaseQuestion } from "../selectbase";
+export { CheckBoxQuestion } from "../checkbox";
+// export { RadioGroupQuestion } from "../radiogroup";
+// export { MatrixDynamicQuestion } from "../matrixdynamic";

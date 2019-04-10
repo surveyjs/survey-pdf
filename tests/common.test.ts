@@ -1,4 +1,4 @@
-import { JsPdfSurveyModel } from "../src/jspdf/survey";
+import { JsPdfSurveyModel } from "../src/survey";
 
 test("first", () => {
     let survey = new JsPdfSurveyModel({});
