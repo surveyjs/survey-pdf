@@ -5,8 +5,6 @@ var json = {
       name: "car",
       title: "What car are you driving?",
       isRequired: true,
-      hasNone: true,
-      hasComment: true,
       choices: [
         "Ford",
         "Vauxhall",
@@ -19,7 +17,7 @@ var json = {
       titleLocation: "top"
     },
     {
-      type: "radiogroup",
+      type: "checkbox",
       name: "radio",
       title: "What radio you are like?",
       isRequired: true,
@@ -64,10 +62,9 @@ var json = {
       titleLocation: "top"
     },
     {
-      type: "radiogroup",
+      type: "checkbox",
       name: "car4",
       title: "What LONG car are you driving?",
-      hasNone: "true",
       isRequired: true,
       choices: [
         "Ford",
@@ -178,4 +175,4 @@ survey.data = {
   radio: "Red FM"
 };
 // var pdfDocument = survey.render(16, 0.165, 0.36);
-var pdfDocument = survey.render(14, 0.22, 0.36, 2);
+var pdfDocument = survey.render(30, 0.22, 0.36);
