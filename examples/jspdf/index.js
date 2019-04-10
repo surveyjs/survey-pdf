@@ -166,7 +166,7 @@ var json = {
   ]
 };
 
-var survey = new Survey.Survey(json);
+var survey = new SurveyPDF.Survey(json);
 survey.data = {
   car: ["Ford"],
   name: "SUPER",

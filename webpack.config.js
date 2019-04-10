@@ -32,11 +32,11 @@ var platformOptions = {
         commonjs: "jsPDF",
         amd: "jsPDF"
       },
-      survey: {
-        root: "survey-core",
-        commonjs2: "survey-core",
-        commonjs: "survey-core",
-        amd: "survey-core"
+      "survey-core": {
+        root: "Survey",
+        commonjs2: "Survey",
+        commonjs: "Survey",
+        amd: "Survey"
       }
     },
     keywords: ["pdf"],
@@ -47,7 +47,7 @@ var platformOptions = {
   }
 };
 
-module.exports = function (options) {
+module.exports = function(options) {
   //TODO
   options.platformPrefix = options.platform;
   var packagePath = "./packages/survey-" + options.platform + "/";
@@ -142,7 +142,7 @@ module.exports = function (options) {
         "[name]" +
         (options.buildType === "prod" ? ".min" : "") +
         ".js",
-      library: "Survey",
+      library: "SurveyPDF",
       libraryTarget: "umd",
       umdNamedDefine: true
     },
