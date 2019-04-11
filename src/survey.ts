@@ -26,7 +26,12 @@ export interface IRect {
   yTop: number;
   yBot: number;
 }
-
+export interface IMargin {
+  marginLeft: number;
+  marginRight: number;
+  marginTop: number;
+  marginBot: number;
+}
 export interface IPdfQuestion {
   renderContent(point: IPoint, isRender: boolean): IRect[];
   render(point: IPoint, isRender: boolean): IRect[];
@@ -35,25 +40,21 @@ export type RendererConstructor = new (
   question: IQuestion,
   docOptions: DocOptions
 ) => IPdfQuestion;
-export interface Margins {
-  marginTop: number;
-  marginBot: number;
-  marginLeft: number;
-  marginRight: number;
-}
 export class DocOptions {
-  private static PAPER_TO_LOGIC_SCALE_MAGIC: number = 210.0 / 595.28;
-  private paperCheckHeight: number;
+  private static PAPER_TO_LOGIC_SCALE_MAGIC: number = 595.28 / 210.0;
+  private doc: any;
   constructor(
-    protected doc: any,
     protected fontSize: number,
     protected xScale: number,
     protected yScale: number,
     protected paperWidth: number,
-    protected paperHeight: number
+    protected paperHeight: number,
+    protected margins: IMargin
   ) {
-    this.paperCheckHeight = paperHeight * DocOptions.PAPER_TO_LOGIC_SCALE_MAGIC;
-    doc.setFontSize(fontSize);
+    let logicWidth: number = paperWidth * DocOptions.PAPER_TO_LOGIC_SCALE_MAGIC;
+    let logicHeight: number = paperHeight * DocOptions.PAPER_TO_LOGIC_SCALE_MAGIC;
+    this.doc = new jsPDF({ format: [logicWidth, logicHeight] });
+    this.doc.setFontSize(fontSize);
   }
   getDoc(): any {
     return this.doc;
@@ -66,6 +67,9 @@ export class DocOptions {
   }
   getYScale(): number {
     return this.yScale;
+  }
+  getMargins(): IMargin {
+    return this.margins;
   }
   setXScale(xScale: number) {
     this.xScale = xScale;
@@ -82,15 +86,24 @@ export class DocOptions {
     boundaries.forEach((rect: IRect) => {
       height += rect.yBot - rect.yTop;
     });
-    if (height <= this.paperCheckHeight && boundaries.length > 1) {
-      if (isRender) this.doc.addPage([this.paperWidth, this.paperHeight]);
+    if (height <= (this.paperHeight - this.margins.marginTop -
+        this.margins.marginBot ) && boundaries.length > 1) {
+      if (isRender) {
+        this.doc.addPage([
+          this.paperWidth * DocOptions.PAPER_TO_LOGIC_SCALE_MAGIC,
+          this.paperHeight * DocOptions.PAPER_TO_LOGIC_SCALE_MAGIC]);
+      }
       return true;
     }
     return false;
   }
   tryNewPageElement(yBot: number, isRender: boolean = true): boolean {
-    if (yBot > this.paperCheckHeight) {
-      if (isRender) this.doc.addPage([this.paperWidth, this.paperHeight]);
+    if (yBot > (this.paperHeight - this.margins.marginBot)) {
+      if (isRender) {
+        this.doc.addPage([
+          this.paperWidth * DocOptions.PAPER_TO_LOGIC_SCALE_MAGIC,
+          this.paperHeight * DocOptions.PAPER_TO_LOGIC_SCALE_MAGIC]);
+      }
       return true;
     }
     return false;
@@ -220,24 +233,12 @@ export class JsPdfSurveyModel extends SurveyModel {
    * Look https://rawgit.com/MrRio/jsPDF/master/docs/jspdf.js.html#line147
    * for standar paper sizes.
    */
-  render(
-    fontSize: number,
-    xScale: number,
-    yScale: number,
-    paperWidth: number = 595.28,
-    paperHeight: number = 841.89
-  ) {
-    let docOptions = new DocOptions(
-      new jsPDF({
-        format: [paperWidth, paperHeight]
-      }),
-      fontSize,
-      xScale,
-      yScale,
-      paperWidth,
-      paperHeight
-    );
-    let point: IPoint = { xLeft: 0, yTop: 0 };
+  render(fontSize: number, xScale: number, yScale: number, margins: IMargin,
+         paperWidth: number = 210, paperHeight: number = 297) {
+    let docOptions = new DocOptions(fontSize, xScale, yScale,
+      paperWidth, paperHeight, margins);
+    let point: IPoint = { xLeft: docOptions.getMargins().marginLeft,
+      yTop: docOptions.getMargins().marginTop };
     this.pages.forEach((page: any) => {
       page.questions.forEach((question: IQuestion) => {
         let renderer: IPdfQuestion = QuestionRepository.getInstance().create(
@@ -246,8 +247,8 @@ export class JsPdfSurveyModel extends SurveyModel {
         );
         let renderBoundaries: IRect[] = renderer.render(point, false);
         if (docOptions.tryNewPageQuestion(renderBoundaries)) {
-          point.xLeft = 0;
-          point.yTop = 0;
+          point.xLeft = docOptions.getMargins().marginLeft;
+          point.yTop = docOptions.getMargins().marginTop;
         }
         renderBoundaries = renderer.render(point, true);
         point.yTop = renderBoundaries[renderBoundaries.length - 1].yBot;

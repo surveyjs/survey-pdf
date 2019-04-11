@@ -69,25 +69,13 @@ export class CheckBoxQuestion extends SelectBaseQuestion {
     let currPoint: IPoint = { xLeft: point.xLeft, yTop: point.yTop };
     question.choices.forEach((itemValue: ItemValue, index: number) => {
       let checkButtonBoundaries: IRect = this.renderItem(
-        currPoint,
-        question,
-        itemValue,
-        index,
-        false
-      );
-      if (
-        this.docOptions.tryNewPageElement(checkButtonBoundaries.yBot, isRender)
-      ) {
-        currPoint.xLeft = 0;
-        currPoint.yTop = 0;
+        currPoint, question, itemValue, index, false);
+      if (this.docOptions.tryNewPageElement(checkButtonBoundaries.yBot, isRender)) {
+        currPoint.xLeft = this.docOptions.getMargins().marginLeft;
+        currPoint.yTop = this.docOptions.getMargins().marginTop;
       }
-      checkButtonBoundaries = this.renderItem(
-        currPoint,
-        question,
-        itemValue,
-        index,
-        isRender
-      );
+      checkButtonBoundaries = this.renderItem(currPoint, question,
+        itemValue, index, isRender);
       bottom = checkButtonBoundaries.yBot;
       currPoint.yTop = checkButtonBoundaries.yBot;
       right = Math.max(right, checkButtonBoundaries.xRight);

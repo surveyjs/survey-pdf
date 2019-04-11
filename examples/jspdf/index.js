@@ -175,4 +175,5 @@ survey.data = {
   radio: "Red FM"
 };
 // var pdfDocument = survey.render(16, 0.165, 0.36);
-var pdfDocument = survey.render(30, 0.22, 0.36);
+var pdfDocument = survey.render(30, 0.22, 0.36,
+  { marginLeft: 10, marginRigth: 10, marginTop: 10, marginBot: 10 });
