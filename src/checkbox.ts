@@ -7,11 +7,6 @@ import { QuestionCheckboxModel } from "survey-core";
 export class CheckBoxQuestion extends SelectBaseQuestion {
   constructor(protected question: IQuestion, protected docOptions: DocOptions) {
     super(question, docOptions);
-    if (this.getQuestion<QuestionCheckboxModel>().hasNone) {
-      this.getQuestion<QuestionCheckboxModel>().choices.push(
-        new ItemValue("None")
-      );
-    }
   }
   renderItem(
     point: IPoint,
@@ -75,7 +70,11 @@ export class CheckBoxQuestion extends SelectBaseQuestion {
     let lastPoint: IPoint = { xLeft: point.xLeft, yTop: point.yTop };
     let currPoint: IPoint = { xLeft: point.xLeft, yTop: point.yTop };
     let boundaries: Array<IRect> = new Array();
-    question.choices.forEach((itemValue: ItemValue, index: number) => {
+    let sortedChoices = this.getSortedChoices();
+    if (this.getQuestion<QuestionCheckboxModel>().hasNone) {
+      sortedChoices.push(new ItemValue("None"));
+    }
+    sortedChoices.forEach((itemValue: ItemValue, index: number) => {
       let checkButtonBoundaries: IRect = this.renderItem(
         currPoint,
         question,
