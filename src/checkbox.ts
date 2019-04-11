@@ -63,16 +63,19 @@ export class CheckBoxQuestion extends SelectBaseQuestion {
   renderContentSelectbase(point: IPoint, isRender: boolean): IRect[] {
     let bottom: number = point.yTop;
     let right: number = point.xLeft;
-    let question: QuestionCheckboxModel = this.getQuestion<
-      QuestionCheckboxModel
-    >();
+    let question: QuestionCheckboxModel = this.getQuestion<QuestionCheckboxModel>();
     let currPoint: IPoint = { xLeft: point.xLeft, yTop: point.yTop };
+    let boundaries: Array<IRect> = new Array();
     question.choices.forEach((itemValue: ItemValue, index: number) => {
       let checkButtonBoundaries: IRect = this.renderItem(
         currPoint, question, itemValue, index, false);
       if (this.docOptions.tryNewPageElement(checkButtonBoundaries.yBot, isRender)) {
+        boundaries.push({ xLeft: point.xLeft, xRight: right,
+          yTop: point.yTop, yBot: bottom });
         currPoint.xLeft = this.docOptions.getMargins().marginLeft;
         currPoint.yTop = this.docOptions.getMargins().marginTop;
+        right = this.docOptions.getMargins().marginLeft;
+        bottom = currPoint.yTop;
       }
       checkButtonBoundaries = this.renderItem(currPoint, question,
         itemValue, index, isRender);
@@ -83,14 +86,9 @@ export class CheckBoxQuestion extends SelectBaseQuestion {
     // if (question.hasComment) {
     //   this.renderComment(currPoint);
     // }
-    return [
-      {
-        xLeft: point.xLeft,
-        xRight: right,
-        yTop: point.yTop,
-        yBot: bottom
-      }
-    ];
+    boundaries.push({ xLeft: point.xLeft, xRight: right,
+      yTop: point.yTop, yBot: bottom });
+    return boundaries;
   }
 }
 QuestionRepository.getInstance().register("checkbox", CheckBoxQuestion);
