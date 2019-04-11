@@ -2,17 +2,6 @@
 
 **SurveyJS** is a modern way to add surveys and forms to your website. It has versions for angular2+, jQuery, knockout, react and vue.
 
-[![Build Status](https://travis-ci.org/surveyjs/surveyjs.svg?branch=master)](https://travis-ci.org/surveyjs/surveyjs) [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](LICENSE)
-<a href="https://github.com/DevExpress/testcafe">
-<img alt="Tested with TestCafe" src="https://img.shields.io/badge/tested%20with-TestCafe-2fa4cf.svg">
-</a>
-<a href="https://github.com/surveyjs/surveyjs/issues">
-<img alt="Issues" src="https://img.shields.io/github/issues/surveyjs/surveyjs.svg">
-</a>
-<a href="https://github.com/surveyjs/surveyjs/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aclosed+">
-<img alt="Closed issues" src="https://img.shields.io/github/issues-closed/surveyjs/surveyjs.svg">
-</a>
-
 [![Join the chat at https://gitter.im/andrewtelnov/surveyjs](https://badges.gitter.im/andrewtelnov/surveyjs.svg)](https://gitter.im/andrewtelnov/surveyjs?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ## Documentation
@@ -111,43 +100,13 @@ You may create a very complex forms with a lot of pages, like [this one](https:/
 
 Install the library using npm.
 
-Angular2 version:
-
 ```
-npm install survey-angular
-```
-
-jQuery version:
-
-```
-npm install survey-jquery
-```
-
-Knockout version:
-
-```
-npm install survey-knockout
-```
-
-React version:
-
-```
-npm install survey-react
-```
-
-Vue version:
-
-```
-npm install survey-vue
+npm install survey-pdf
 ```
 
 Or use Azure CDN:
 
-* https://surveyjs.azureedge.net/{version-number}/survey.angular.min.js
-* https://surveyjs.azureedge.net/{version-number}/survey.ko.min.js
-* https://surveyjs.azureedge.net/{version-number}/survey.react.min.js
-* https://surveyjs.azureedge.net/{version-number}/survey.jquery.min.js
-* https://surveyjs.azureedge.net/{version-number}/survey.vue.min.js
+* https://surveyjs.azureedge.net/{version-number}/survey.pdf.min.js
 
 You find all versions/builds in the [surveyjs/build repo](https://github.com/surveyjs/builds).
 
@@ -156,7 +115,7 @@ Or dowload a version as zip file from [Releases](https://github.com/surveyjs/sur
 If you want to import it in another script:
 
 ```javascript
-import * as Survey from "survey-jquery";
+import * as Survey from "survey-pdf";
 ```
 
 ## Building survey.js from sources
@@ -170,14 +129,7 @@ To build library yourself:
     cd surveyjs
     ```
 
-2.  **Acquire build dependencies.** Make sure you have [Node.js](http://nodejs.org/) installed on your workstation. You need a version of Node.js greater than 6.0.0 and npm greater than 2.7.0. This is only needed to _build_ surveyjs from sources.
-
-    ```
-    npm install -g karma-cli
-    npm install
-    ```
-
-3.  **Build the library**
+2.  **Build the library**
 
     ```
     npm run build_prod
@@ -185,7 +137,7 @@ To build library yourself:
 
     After that you should have the libraries (angular, jquery, knockout, react and vue) at 'packages' directory.
 
-4.  **Run samples**
+3.  **Run samples**
 
     ```
     npm start
@@ -196,7 +148,7 @@ To build library yourself:
 
 5.  **Run unit tests**
     ```
-    karma start
+    npm test
     ```
     This command will run unit tests using [Karma](https://karma-runner.github.io/0.13/index.html)
 
@@ -206,4 +158,4 @@ To build library yourself:
 
 ## License
 
-[MIT license](https://github.com/surveyjs/surveyjs/blob/master/LICENSE)
+Commercial
