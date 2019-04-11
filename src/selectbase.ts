@@ -64,6 +64,25 @@ export class SelectBaseQuestion extends PdfQuestionRendererBase {
   //     yBot: bottom
   //   };
   // }
+  getSortedChoices() {
+    let question = this.getQuestion<QuestionSelectBase>();
+    switch (question.choicesOrder) {
+      case "none":
+        return question.choices.slice();
+      case "asc":
+        return question.choices.slice().sort((a, b) => {
+          return a.value > b.value ? 1 : -1;
+        });
+      case "desc":
+        return question.choices.slice().sort((a, b) => {
+          return a.value < b.value ? 1 : -1;
+        });
+      case "random":
+        return question.choices.slice().sort((a, b) => {
+          return Math.random() < 0.5 ? 1 : -1;
+        });
+    }
+  }
   renderComment(point: IPoint, isRender: boolean) {
     let question = this.getQuestion<QuestionSelectBase>();
     let textBoundaries = this.renderText(point, question.commentText, false);

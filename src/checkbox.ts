@@ -58,6 +58,7 @@ export class CheckBoxQuestion extends SelectBaseQuestion {
         buttonBoudndaries.xRight - buttonBoudndaries.xLeft,
         buttonBoudndaries.yBot - buttonBoudndaries.yTop
       ];
+      if (question.readOnly) checkBox.readOnly = true;
       if (question.value.includes(itemValue.value)) checkBox.AS = "/On";
       else checkBox.AS = "/Off";
       this.docOptions.doc.addField(checkBox);
@@ -74,7 +75,11 @@ export class CheckBoxQuestion extends SelectBaseQuestion {
     let lastPoint: IPoint = { xLeft: point.xLeft, yTop: point.yTop };
     let currPoint: IPoint = { xLeft: point.xLeft, yTop: point.yTop };
     let boundaries: Array<IRect> = new Array();
-    question.choices.forEach((itemValue: ItemValue, index: number) => {
+    let sortedChoices = this.getSortedChoices();
+    if (this.getQuestion<QuestionCheckboxModel>().hasNone) {
+      sortedChoices.push(new ItemValue("None"));
+    }
+    sortedChoices.forEach((itemValue: ItemValue, index: number) => {
       let checkButtonBoundaries: IRect = this.renderItem(
         currPoint,
         question,
