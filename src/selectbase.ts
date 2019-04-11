@@ -1,14 +1,8 @@
 import { IPoint, IRect, DocOptions, PdfQuestionRendererBase } from "./survey";
-import { IQuestion } from "survey-core";
-
+import { IQuestion, QuestionSelectBase, ItemValue } from "survey-core";
 export class SelectBaseQuestion extends PdfQuestionRendererBase {
   constructor(protected question: IQuestion, protected docOptions: DocOptions) {
     super(question, docOptions);
-    // if (this.getQuestion<QuestionSelectBase>().hasNone) {
-    //   this.getQuestion<QuestionSelectBase>().choices.push(
-    //     new ItemValue("None")
-    //   );
-    // }
   }
   // getBoundariesComment(point: IPoint): IRect {
   //   let question = this.getQuestion<QuestionSelectBase>();
@@ -70,21 +64,34 @@ export class SelectBaseQuestion extends PdfQuestionRendererBase {
   //     yBot: bottom
   //   };
   // }
-  // renderComment(point: IPoint) {
-  //   let question = this.getQuestion<QuestionSelectBase>();
-  //   this.renderText(point, question.commentText);
-  //   let textBoundaries = this.renderText(point, question.commentText, false);
-  //   let textField = new (<any>this.docOptions.getDoc().AcroFormTextField)();
-  //   let width =
-  //     question.commentText.length *
-  //     this.docOptions.getFontSize() *
-  //     this.docOptions.getXScale();
-  //   let height = this.docOptions.getFontSize() * this.docOptions.getYScale();
-  //   textField.Rect = [textBoundaries.xLeft, textBoundaries.yBot, width, height];
-  //   textField.multiline = false;
-  //   textField.value = "";
-  //   this.docOptions.getDoc().addField(textField);
-  // }
+  renderComment(point: IPoint, isRender: boolean) {
+    let question = this.getQuestion<QuestionSelectBase>();
+    let textBoundaries = this.renderText(point, question.commentText, false);
+    let textField = new (<any>this.docOptions.getDoc().AcroFormTextField)();
+    let width =
+      question.commentText.length *
+      this.docOptions.getFontSize() *
+      this.docOptions.getXScale();
+    let height = this.docOptions.getFontSize() * this.docOptions.getYScale();
+    if (isRender) {
+      this.renderText(point, question.commentText, true);
+      textField.Rect = [
+        textBoundaries.xLeft,
+        textBoundaries.yBot,
+        width,
+        height
+      ];
+      textField.multiline = false;
+      textField.value = "";
+      this.docOptions.getDoc().addField(textField);
+    }
+    return {
+      xLeft: textBoundaries.xLeft,
+      xRight: textBoundaries.xLeft + width,
+      yTop: textBoundaries.yTop,
+      yBot: textBoundaries.yBot + height
+    };
+  }
 
   renderContentSelectbase(point: IPoint, isRender: boolean): IRect[] {
     return super.renderContent(point, isRender);
