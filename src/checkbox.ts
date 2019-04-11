@@ -7,6 +7,11 @@ import { QuestionCheckboxModel } from "survey-core";
 export class CheckBoxQuestion extends SelectBaseQuestion {
   constructor(protected question: IQuestion, protected docOptions: DocOptions) {
     super(question, docOptions);
+    if (this.getQuestion<QuestionCheckboxModel>().hasNone) {
+      this.getQuestion<QuestionCheckboxModel>().choices.push(
+        new ItemValue("None")
+      );
+    }
   }
   renderItem(
     point: IPoint,
@@ -92,9 +97,17 @@ export class CheckBoxQuestion extends SelectBaseQuestion {
       currPoint.yTop = checkButtonBoundaries.yBot;
       right = Math.max(right, checkButtonBoundaries.xRight);
     });
-    // if (question.hasComment) {
-    //   this.renderComment(currPoint);
-    // }
+    if (question.hasComment) {
+      let commentBoundarues = this.renderComment(currPoint, false);
+      if (this.docOptions.tryNewPageElement(commentBoundarues.yBot, isRender)) {
+        currPoint.xLeft = 0;
+        currPoint.yTop = 0;
+      }
+      commentBoundarues = this.renderComment(currPoint, isRender);
+      bottom = commentBoundarues.yBot;
+      currPoint.yTop = commentBoundarues.yBot;
+      right = Math.max(right, commentBoundarues.xRight);
+    }
     return [
       {
         xLeft: point.xLeft,
