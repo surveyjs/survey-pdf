@@ -7,11 +7,11 @@ import { QuestionCheckboxModel } from "survey-core";
 export class CheckBoxQuestion extends SelectBaseQuestion {
   constructor(protected question: IQuestion, protected docOptions: DocOptions) {
     super(question, docOptions);
-    if (this.getQuestion<QuestionCheckboxModel>().hasNone) {
-      this.getQuestion<QuestionCheckboxModel>().choices.push(
-        new ItemValue("None")
-      );
-    }
+    // if (this.getQuestion<QuestionCheckboxModel>().hasNone) {
+    //   this.getQuestion<QuestionCheckboxModel>().choices.push(
+    //     new ItemValue("None")
+    //   );
+    // }
   }
   renderItem(
     point: IPoint,
@@ -24,10 +24,10 @@ export class CheckBoxQuestion extends SelectBaseQuestion {
       xLeft: point.xLeft,
       xRight:
         point.xLeft +
-        this.docOptions.getFontSize() * this.docOptions.getYScale(),
+        this.docOptions.fontSize * this.docOptions.yScale,
       yTop: point.yTop,
       yBot:
-        point.yTop + this.docOptions.getFontSize() * this.docOptions.getYScale()
+        point.yTop + this.docOptions.fontSize * this.docOptions.yScale
     };
     let textPoint: IPoint = {
       xLeft: buttonBoudndaries.xRight,
@@ -50,7 +50,7 @@ export class CheckBoxQuestion extends SelectBaseQuestion {
       //   point.xLeft = 0;
       //   point.yTop = 0;
       // }
-      let checkBox = new (<any>this.docOptions.getDoc().AcroFormCheckBox)();
+      let checkBox = new (<any>this.docOptions.doc.AcroFormCheckBox)();
       checkBox.fieldName = question.id + index;
       checkBox.Rect = [
         buttonBoudndaries.xLeft,
@@ -60,7 +60,7 @@ export class CheckBoxQuestion extends SelectBaseQuestion {
       ];
       if (question.value.includes(itemValue.value)) checkBox.AS = "/On";
       else checkBox.AS = "/Off";
-      this.docOptions.getDoc().addField(checkBox);
+      this.docOptions.doc.addField(checkBox);
       this.renderText(textPoint, itemValue.text);
     }
     return boundaries;
@@ -91,10 +91,10 @@ export class CheckBoxQuestion extends SelectBaseQuestion {
           yTop: lastPoint.yTop,
           yBot: bottom
         });
-        currPoint.xLeft = this.docOptions.getMargins().marginLeft;
-        currPoint.yTop = this.docOptions.getMargins().marginTop;
+        currPoint.xLeft = this.docOptions.margins.marginLeft;
+        currPoint.yTop = this.docOptions.margins.marginTop;
         lastPoint = { xLeft: currPoint.xLeft, yTop: currPoint.yTop };
-        right = this.docOptions.getMargins().marginLeft;
+        right = this.docOptions.margins.marginLeft;
         bottom = currPoint.yTop;
       }
       checkButtonBoundaries = this.renderItem(
@@ -117,10 +117,10 @@ export class CheckBoxQuestion extends SelectBaseQuestion {
           yTop: lastPoint.yTop,
           yBot: bottom
         });
-        currPoint.xLeft = this.docOptions.getMargins().marginLeft;
-        currPoint.yTop = this.docOptions.getMargins().marginTop;
+        currPoint.xLeft = this.docOptions.margins.marginLeft;
+        currPoint.yTop = this.docOptions.margins.marginTop;
         lastPoint = { xLeft: currPoint.xLeft, yTop: currPoint.yTop };
-        right = this.docOptions.getMargins().marginLeft;
+        right = this.docOptions.margins.marginLeft;
         bottom = currPoint.yTop;
       }
       commentBoundarues = this.renderComment(currPoint, isRender);

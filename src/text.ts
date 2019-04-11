@@ -16,9 +16,9 @@ export class TextQuestion extends PdfQuestionRendererBase {
     let question: QuestionTextModel = this.getQuestion<QuestionTextModel>();
     let width =
       question.title.length *
-      this.docOptions.getFontSize() *
-      this.docOptions.getXScale();
-    let height = this.docOptions.getFontSize() * this.docOptions.getYScale();
+      this.docOptions.fontSize *
+      this.docOptions.xScale;
+    let height = this.docOptions.fontSize * this.docOptions.yScale;
     let boundaries: IRect = {
       xLeft: point.xLeft,
       xRight: point.xLeft + width,
@@ -26,7 +26,7 @@ export class TextQuestion extends PdfQuestionRendererBase {
       yBot: point.yTop + height
     };
     if (isRender) {
-      let textField = new (<any>this.docOptions.getDoc().AcroFormTextField)();
+      let textField = new (<any>this.docOptions.doc.AcroFormTextField)();
       textField.Rect = [
         boundaries.xLeft,
         boundaries.yTop,
@@ -36,7 +36,7 @@ export class TextQuestion extends PdfQuestionRendererBase {
       textField.multiline = false;
       textField.value = question.value || "";
       textField.fieldName = question.id;
-      this.docOptions.getDoc().addField(textField);
+      this.docOptions.doc.addField(textField);
     }
     return [boundaries];
   }

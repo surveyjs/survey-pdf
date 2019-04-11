@@ -9,9 +9,9 @@ export class SelectBaseQuestion extends PdfQuestionRendererBase {
   //   let textBoundaries = this.renderText(point, question.commentText, false);
   //   let width =
   //     question.commentText.length *
-  //     this.docOptions.getFontSize() *
-  //     this.docOptions.getXScale();
-  //   let height = this.docOptions.getFontSize() * this.docOptions.getYScale();
+  //     this.docOptions.fontSize *
+  //     this.docOptions.xScale;
+  //   let height = this.docOptions.fontSize * this.docOptions.yScale;
   //   return {
   //     xLeft: textBoundaries.xLeft,
   //     xRight: textBoundaries.xLeft + width,
@@ -24,10 +24,10 @@ export class SelectBaseQuestion extends PdfQuestionRendererBase {
   //     xLeft: point.xLeft,
   //     xRight:
   //       point.xLeft +
-  //       this.docOptions.getFontSize() * this.docOptions.getYScale(),
+  //       this.docOptions.fontSize * this.docOptions.yScale,
   //     yTop: point.yTop,
   //     yBot:
-  //       point.yTop + this.docOptions.getFontSize() * this.docOptions.getYScale()
+  //       point.yTop + this.docOptions.fontSize * this.docOptions.yScale
   //   };
   //   let textPoint: IPoint = {
   //     xLeft: buttonBoudndaries.xRight,
@@ -67,12 +67,12 @@ export class SelectBaseQuestion extends PdfQuestionRendererBase {
   renderComment(point: IPoint, isRender: boolean) {
     let question = this.getQuestion<QuestionSelectBase>();
     let textBoundaries = this.renderText(point, question.commentText, false);
-    let textField = new (<any>this.docOptions.getDoc().AcroFormTextField)();
+    let textField = new (<any>this.docOptions.doc.AcroFormTextField)();
     let width =
       question.commentText.length *
-      this.docOptions.getFontSize() *
-      this.docOptions.getXScale();
-    let height = this.docOptions.getFontSize() * this.docOptions.getYScale();
+      this.docOptions.fontSize *
+      this.docOptions.xScale;
+    let height = this.docOptions.fontSize * this.docOptions.yScale;
     if (isRender) {
       this.renderText(point, question.commentText, true);
       textField.Rect = [
@@ -83,7 +83,7 @@ export class SelectBaseQuestion extends PdfQuestionRendererBase {
       ];
       textField.multiline = false;
       textField.value = "";
-      this.docOptions.getDoc().addField(textField);
+      this.docOptions.doc.addField(textField);
     }
     return {
       xLeft: textBoundaries.xLeft,

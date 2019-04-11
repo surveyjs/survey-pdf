@@ -2,12 +2,12 @@
     return {};
 };
 
-import { JsPdfSurveyModel, IDocOptions, QuestionRepository, DocOptions } from "../src/survey";
+import { JsPdfSurveyModel, IDocOptions, QuestionRepository, DocOptions, IRect } from "../src/survey";
 import { QuestionCheckboxModel } from "survey-core";
 import { TextQuestion } from "../src/text";
 import { CheckBoxQuestion } from "../src/checkbox";
 
-test("Calc textbox boundaries", () => {
+test("Calc textbox boundaries title top", () => {
     let __dummy_tx = new TextQuestion(null, null);
     let json = { questions: [ {
         name: "textbox",
@@ -26,17 +26,128 @@ test("Calc textbox boundaries", () => {
           marginBot: 10 }
       };
     let tq = QuestionRepository.getInstance().create(cbq, new DocOptions(docOptions));
-    expect(tq
-        .render({
-            xLeft: docOptions.margins.marginLeft,
-            yTop: docOptions.margins.marginTop}, false))
-        .toBe([{
-            xLeft: docOptions.margins.marginLeft,
-            xRight: docOptions.margins.marginLeft + json.questions[0].title.length *
-                    docOptions.fontSize * docOptions.xScale,
-            yTop: docOptions.margins.marginTop,
-            yBot: 2 * docOptions.fontSize * docOptions.yScale
-        }]);
+    let resultBoundaries: IRect = tq.render({
+        xLeft: docOptions.margins.marginLeft,
+        yTop: docOptions.margins.marginTop}, false)[0];
+    let assumeBoundaries: IRect = {
+        xLeft: docOptions.margins.marginLeft,
+        xRight: docOptions.margins.marginLeft + json.questions[0].title.length *
+                docOptions.fontSize * docOptions.xScale,
+        yTop: docOptions.margins.marginTop,
+        yBot: docOptions.margins.marginTop + 2 * docOptions.fontSize * docOptions.yScale
+    };
+    expect(resultBoundaries.xLeft).toBeCloseTo(assumeBoundaries.xLeft);
+    expect(resultBoundaries.xRight).toBeCloseTo(assumeBoundaries.xRight);
+    expect(resultBoundaries.yTop).toBeCloseTo(assumeBoundaries.yTop);
+    expect(resultBoundaries.yBot).toBeCloseTo(assumeBoundaries.yBot);
+});
+
+test("Calc textbox boundaries title bottom", () => {
+    let __dummy_tx = new TextQuestion(null, null);
+    let json = { questions: [ {
+        name: "textbox",
+        type: "text",
+        title: "Please enter your name:",
+        titleLocation: "bottom"
+      }]
+    };
+    let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
+    let cbq: QuestionCheckboxModel = <QuestionCheckboxModel>survey.getAllQuestions()[0];
+    let docOptions: IDocOptions = {
+        fontSize: 30, xScale: 0.22, yScale: 0.36,
+        margins: {
+          marginLeft: 10,
+          marginRight: 10,
+          marginTop: 10,
+          marginBot: 10 }
+      };
+    let tq = QuestionRepository.getInstance().create(cbq, new DocOptions(docOptions));
+    let resultBoundaries: IRect = tq.render({
+        xLeft: docOptions.margins.marginLeft,
+        yTop: docOptions.margins.marginTop}, false)[0];
+    let assumeBoundaries: IRect = {
+        xLeft: docOptions.margins.marginLeft,
+        xRight: docOptions.margins.marginLeft + json.questions[0].title.length *
+                docOptions.fontSize * docOptions.xScale,
+        yTop: docOptions.margins.marginTop,
+        yBot: docOptions.margins.marginTop + 2 * docOptions.fontSize * docOptions.yScale
+    };
+    expect(resultBoundaries.xLeft).toBeCloseTo(assumeBoundaries.xLeft);
+    expect(resultBoundaries.xRight).toBeCloseTo(assumeBoundaries.xRight);
+    expect(resultBoundaries.yTop).toBeCloseTo(assumeBoundaries.yTop);
+    expect(resultBoundaries.yBot).toBeCloseTo(assumeBoundaries.yBot);
+});
+
+test("Calc textbox boundaries title left", () => {
+    let __dummy_tx = new TextQuestion(null, null);
+    let json = { questions: [ {
+        name: "textbox",
+        type: "text",
+        title: "Please enter your name:",
+        titleLocation: "left"
+      }]
+    };
+    let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
+    let cbq: QuestionCheckboxModel = <QuestionCheckboxModel>survey.getAllQuestions()[0];
+    let docOptions: IDocOptions = {
+        fontSize: 30, xScale: 0.22, yScale: 0.36,
+        margins: {
+          marginLeft: 10,
+          marginRight: 10,
+          marginTop: 10,
+          marginBot: 10 }
+      };
+    let tq = QuestionRepository.getInstance().create(cbq, new DocOptions(docOptions));
+    let resultBoundaries: IRect = tq.render({
+        xLeft: docOptions.margins.marginLeft,
+        yTop: docOptions.margins.marginTop}, false)[0];
+    let assumeBoundaries: IRect = {
+        xLeft: docOptions.margins.marginLeft,
+        xRight: docOptions.margins.marginLeft + 2 * (json.questions[0].title.length *
+                docOptions.fontSize * docOptions.xScale),
+        yTop: docOptions.margins.marginTop,
+        yBot: docOptions.margins.marginTop + docOptions.fontSize * docOptions.yScale
+    };
+    expect(resultBoundaries.xLeft).toBeCloseTo(assumeBoundaries.xLeft);
+    expect(resultBoundaries.xRight).toBeCloseTo(assumeBoundaries.xRight);
+    expect(resultBoundaries.yTop).toBeCloseTo(assumeBoundaries.yTop);
+    expect(resultBoundaries.yBot).toBeCloseTo(assumeBoundaries.yBot);
+});
+
+test("Calc textbox boundaries title hidden", () => {
+    let __dummy_tx = new TextQuestion(null, null);
+    let json = { questions: [ {
+        name: "textbox",
+        type: "text",
+        title: "Please enter your name:",
+        titleLocation: "hidden"
+      }]
+    };
+    let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
+    let cbq: QuestionCheckboxModel = <QuestionCheckboxModel>survey.getAllQuestions()[0];
+    let docOptions: IDocOptions = {
+        fontSize: 30, xScale: 0.22, yScale: 0.36,
+        margins: {
+          marginLeft: 10,
+          marginRight: 10,
+          marginTop: 10,
+          marginBot: 10 }
+      };
+    let tq = QuestionRepository.getInstance().create(cbq, new DocOptions(docOptions));
+    let resultBoundaries: IRect = tq.render({
+        xLeft: docOptions.margins.marginLeft,
+        yTop: docOptions.margins.marginTop}, false)[0];
+    let assumeBoundaries: IRect = {
+        xLeft: docOptions.margins.marginLeft,
+        xRight: docOptions.margins.marginLeft + json.questions[0].title.length *
+                docOptions.fontSize * docOptions.xScale,
+        yTop: docOptions.margins.marginTop,
+        yBot: docOptions.margins.marginTop + docOptions.fontSize * docOptions.yScale
+    };
+    expect(resultBoundaries.xLeft).toBeCloseTo(assumeBoundaries.xLeft);
+    expect(resultBoundaries.xRight).toBeCloseTo(assumeBoundaries.xRight);
+    expect(resultBoundaries.yTop).toBeCloseTo(assumeBoundaries.yTop);
+    expect(resultBoundaries.yBot).toBeCloseTo(assumeBoundaries.yBot);
 });
 
 test("Split large quesion on two pages", () => {
@@ -95,5 +206,5 @@ test("Split large quesion on two pages", () => {
           marginTop: 10,
           marginBot: 10 }
       });
-    expect(survey.docOptions.getDoc().internal.getNumberOfPages()).toBe(2);
+    expect(survey.docOptions.doc.internal.getNumberOfPages()).toBe(2);
 });

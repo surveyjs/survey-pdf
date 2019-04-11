@@ -14,7 +14,7 @@
 import { SurveyModel } from "survey-core";
 import { Question } from "survey-core";
 import { IQuestion } from "survey-core";
-import jsPDF from "jspdf";
+import * as jsPDF from "jspdf";
 import addCustomFonts from "./customFonts";
 
 export interface IPoint {
@@ -51,59 +51,49 @@ export type RendererConstructor = new (
 ) => IPdfQuestion;
 export class DocOptions {
   private static PAPER_TO_LOGIC_SCALE_MAGIC: number = 595.28 / 210.0;
-  private doc: any;
-  private fontSize: number;
-  private xScale: number;
-  private yScale: number;
-  private paperWidth: number;
-  private paperHeight: number;
-  private margins: IMargin;
+  private _doc: any;
+  private _fontSize: number;
+  private _xScale: number;
+  private _yScale: number;
+  private _paperWidth: number;
+  private _paperHeight: number;
+  private _margins: IMargin;
   constructor(options: IDocOptions) {
-    this.fontSize = options.fontSize;
-    this.xScale = options.xScale;
-    this.yScale = options.yScale;
-    this.paperWidth =
+    this._fontSize = options.fontSize;
+    this._xScale = options.xScale;
+    this._yScale = options.yScale;
+    this._paperWidth =
       typeof options.paperWidth === "undefined" ? 210 : options.paperWidth;
-    this.paperHeight =
+    this._paperHeight =
       typeof options.paperHeight === "undefined" ? 297 : options.paperHeight;
-    this.margins = options.margins;
+    this._margins = options.margins;
     let logicWidth: number =
-      this.paperWidth * DocOptions.PAPER_TO_LOGIC_SCALE_MAGIC;
+      this._paperWidth * DocOptions.PAPER_TO_LOGIC_SCALE_MAGIC;
     let logicHeight: number =
-      this.paperHeight * DocOptions.PAPER_TO_LOGIC_SCALE_MAGIC;
-    addCustomFonts(jsPDF);
-    this.doc = new jsPDF({ format: [logicWidth, logicHeight] });
-    this.doc.setFontSize(this.fontSize);
+      this._paperHeight * DocOptions.PAPER_TO_LOGIC_SCALE_MAGIC;
+    // addCustomFonts(jsPDF);
+    this._doc = new jsPDF({ format: [logicWidth, logicHeight] });
+    this._doc.setFontSize(this._fontSize);
   }
-  getDoc(): any {
-    return this.doc;
+  get doc(): any {
+    return this._doc;
   }
-  getFontSize(): number {
-    return this.fontSize;
+  get fontSize(): number {
+    return this._fontSize;
   }
-  getXScale(): number {
-    return this.xScale;
+  get xScale(): number {
+    return this._xScale;
   }
-  getYScale(): number {
-    return this.yScale;
+  get yScale(): number {
+    return this._yScale;
   }
-  getMargins(): IMargin {
-    return this.margins;
-  }
-  setXScale(xScale: number) {
-    this.xScale = xScale;
-  }
-  setYScale(yScale: number) {
-    this.yScale = yScale;
-  }
-  setFontSize(fontSize: number) {
-    this.fontSize = fontSize;
-    this.doc.setFontSize(fontSize);
+  get margins(): IMargin {
+    return this._margins;
   }
   private addPage() {
     this.doc.addPage([
-      this.paperWidth * DocOptions.PAPER_TO_LOGIC_SCALE_MAGIC,
-      this.paperHeight * DocOptions.PAPER_TO_LOGIC_SCALE_MAGIC
+      this._paperWidth * DocOptions.PAPER_TO_LOGIC_SCALE_MAGIC,
+      this._paperHeight * DocOptions.PAPER_TO_LOGIC_SCALE_MAGIC
     ]);
   }
   tryNewPageQuestion(boundaries: IRect[], isRender: boolean = true): boolean {
@@ -111,10 +101,8 @@ export class DocOptions {
     boundaries.forEach((rect: IRect) => {
       height += rect.yBot - rect.yTop;
     });
-    if (
-      height <=
-        this.paperHeight - this.margins.marginTop - this.margins.marginBot &&
-      boundaries.length > 1
+    if (height <= this._paperHeight - this.margins.marginTop - this.margins.marginBot &&
+      (boundaries.length > 1 || this.tryNewPageElement(boundaries[0].yBot, false))
     ) {
       if (isRender) {
         this.addPage();
@@ -124,7 +112,7 @@ export class DocOptions {
     return false;
   }
   tryNewPageElement(yBot: number, isRender: boolean = true): boolean {
-    if (yBot > this.paperHeight - this.margins.marginBot) {
+    if (yBot > this._paperHeight - this.margins.marginBot) {
       if (isRender) {
         this.addPage();
       }
@@ -156,30 +144,23 @@ export class PdfQuestionRendererBase implements IPdfQuestion {
     protected docOptions: DocOptions
   ) {}
   private renderTitle(point: IPoint, isRender: boolean = true): IRect {
-    this.docOptions.getDoc().setFontStyle("bold");
-    let textBoundaries = this.renderText(
-      point,
-      this.getQuestion<Question>().title,
-      isRender
-    );
-    this.docOptions.getDoc().setFontStyle("normal");
+    this.docOptions.doc.setFontStyle("bold");
+    let textBoundaries = this.renderText(point,
+      this.getQuestion<Question>().title, isRender);
+    this.docOptions.doc.setFontStyle("normal");
     return textBoundaries;
   }
   renderText(point: IPoint, text: string, isRender: boolean = true): IRect {
     let boundaruies: IRect = {
       xLeft: point.xLeft,
-      xRight:
-        point.xLeft +
-        text.length *
-          this.docOptions.getFontSize() *
-          this.docOptions.getXScale(),
+      xRight: point.xLeft + text.length *
+        this.docOptions.fontSize * this.docOptions.xScale,
       yTop: point.yTop,
-      yBot:
-        point.yTop + this.docOptions.getFontSize() * this.docOptions.getYScale()
+      yBot: point.yTop + this.docOptions.fontSize * this.docOptions.yScale
     };
     if (isRender) {
       let alignPoint = this.alignPoint(point, boundaruies);
-      this.docOptions.getDoc().text(text, alignPoint.xLeft, alignPoint.yTop, {
+      this.docOptions.doc.text(text, alignPoint.xLeft, alignPoint.yTop, {
         align: "left",
         baseline: "middle"
       });
@@ -205,19 +186,15 @@ export class PdfQuestionRendererBase implements IPdfQuestion {
           xLeft: titleRect.xLeft,
           yTop: titleRect.yBot
         };
-        let beforeCountPages = this.docOptions
-          .getDoc()
-          .internal.getNumberOfPages();
         let contentRects: IRect[] = this.renderContent(contentPoint, isRender);
-        let afterCountPages = this.docOptions
-          .getDoc()
-          .internal.getNumberOfPages();
-        contentRects[0].xLeft = titleRect.xLeft;
-        contentRects[0].xRight = Math.max(
-          contentRects[0].xRight,
-          titleRect.xRight
-        );
-        // if (beforeCountPages == afterCountPages)
+        if (contentRects[0].yTop !== this.docOptions.margins.marginTop) { 
+          contentRects[0].xLeft = titleRect.xLeft;
+          contentRects[0].xRight = Math.max(contentRects[0].xRight, titleRect.xRight);
+          contentRects[0].yTop = titleRect.yTop;
+        }
+        else {
+          contentRects.unshift(titleRect);
+        }
         return contentRects;
       }
       case "bottom": {
@@ -226,12 +203,23 @@ export class PdfQuestionRendererBase implements IPdfQuestion {
           xLeft: contentRects[contentRects.length - 1].xLeft,
           yTop: contentRects[contentRects.length - 1].yBot
         };
-        let titleRect: IRect = this.renderTitle(titlePoint, isRender);
-        contentRects[contentRects.length - 1].xRight = Math.max(
-          contentRects[contentRects.length - 1].xRight,
-          titleRect.xRight
-        );
-        contentRects[contentRects.length - 1].yBot = titleRect.yBot;
+        let titleRect: IRect = this.renderTitle(titlePoint, false);
+        let isNewPage: boolean = this.docOptions.tryNewPageElement(titleRect.yBot, isRender);
+        if (isNewPage) {
+          titlePoint.xLeft = this.docOptions.margins.marginLeft;
+          titlePoint.yTop = this.docOptions.margins.marginTop;
+        }
+        titleRect = this.renderTitle(titlePoint, isRender);
+        if (isNewPage) {
+          contentRects.push(titleRect);
+        }
+        else {
+          contentRects[contentRects.length - 1].xRight = Math.max(
+            contentRects[contentRects.length - 1].xRight,
+            titleRect.xRight
+          );
+          contentRects[contentRects.length - 1].yBot = titleRect.yBot;
+        }
         return contentRects;
       }
       case "left": {
@@ -275,8 +263,8 @@ export class JsPdfSurveyModel extends SurveyModel {
   render(options: IDocOptions) {
     this.docOptions = new DocOptions(options);
     let point: IPoint = {
-      xLeft: this.docOptions.getMargins().marginLeft,
-      yTop: this.docOptions.getMargins().marginTop
+      xLeft: this.docOptions.margins.marginLeft,
+      yTop: this.docOptions.margins.marginTop
     };
     this.pages.forEach((page: any) => {
       page.questions.forEach((question: IQuestion) => {
@@ -286,8 +274,8 @@ export class JsPdfSurveyModel extends SurveyModel {
         );
         let renderBoundaries: IRect[] = renderer.render(point, false);
         if (this.docOptions.tryNewPageQuestion(renderBoundaries)) {
-          point.xLeft = this.docOptions.getMargins().marginLeft;
-          point.yTop = this.docOptions.getMargins().marginTop;
+          point.xLeft = this.docOptions.margins.marginLeft;
+          point.yTop = this.docOptions.margins.marginTop;
         }
         renderBoundaries = renderer.render(point, true);
         point.yTop = renderBoundaries[renderBoundaries.length - 1].yBot;
@@ -295,6 +283,6 @@ export class JsPdfSurveyModel extends SurveyModel {
     });
   }
   save(fileName: string = "survey_result.pdf") {
-    this.docOptions.getDoc().save(fileName);
+    this.docOptions.doc.save(fileName);
   }
 }
