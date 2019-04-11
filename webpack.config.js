@@ -47,7 +47,7 @@ var platformOptions = {
   }
 };
 
-module.exports = function(options) {
+module.exports = function (options) {
   //TODO
   options.platformPrefix = options.platform;
   var packagePath = "./packages/survey-" + options.platform + "/";
@@ -77,11 +77,11 @@ module.exports = function(options) {
     version: packageJson.version,
     description:
       "survey.js is a JavaScript Survey Library. It is a modern way to add a survey to your website. It uses JSON for survey metadata and results.",
-    keywords: ["Survey", "JavaScript", "Bootstrap", "Library"].concat(
+    keywords: ["Survey", "JavaScript", "PDF", "Library"].concat(
       platformOptions[options.platform].keywords
     ),
     homepage: "https://surveyjs.io/",
-    license: "MIT",
+    license: "Commercial",
     files: [
       "survey." + options.platformPrefix + ".d.ts",
       "survey." + options.platformPrefix + ".js",
@@ -90,7 +90,7 @@ module.exports = function(options) {
     main: mainFile,
     repository: {
       type: "git",
-      url: "https://github.com/surveyjs/surveyjs.git"
+      url: "https://github.com/surveyjs/survey-pdf.git"
     },
     typings: "survey." + options.platformPrefix + ".d.ts"
   };
@@ -109,7 +109,7 @@ module.exports = function(options) {
     resolve: {
       extensions: [".ts", ".js", ".tsx"],
       alias: {
-        tslib: path.join(__dirname, "./src/entries/chunks/helpers.ts")
+        tslib: path.join(__dirname, "./src/entries/helpers.ts")
       }
     },
     module: {
