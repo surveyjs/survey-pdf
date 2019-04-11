@@ -15,6 +15,7 @@ import { SurveyModel } from "survey-core";
 import { Question } from "survey-core";
 import { IQuestion } from "survey-core";
 import jsPDF from "jspdf";
+import addCustomFonts from "./customFonts";
 
 export interface IPoint {
   xLeft: number;
@@ -227,6 +228,7 @@ export class JsPdfSurveyModel extends SurveyModel {
     paperWidth: number = 595.28,
     paperHeight: number = 841.89
   ) {
+    addCustomFonts(jsPDF);
     let docOptions = new DocOptions(
       new jsPDF({
         format: [paperWidth, paperHeight]
@@ -237,6 +239,9 @@ export class JsPdfSurveyModel extends SurveyModel {
       paperWidth,
       paperHeight
     );
+    docOptions.getDoc().setFontSize(fontSize);
+    docOptions.getDoc().setFont("segoe");
+    console.log(docOptions.getDoc().getFontList());
     let point: IPoint = { xLeft: 0, yTop: 0 };
     this.pages.forEach((page: any) => {
       page.questions.forEach((question: IQuestion) => {
