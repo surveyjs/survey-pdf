@@ -96,17 +96,20 @@ export class DocOptions {
     this.fontSize = fontSize;
     this.doc.setFontSize(fontSize);
   }
+  private addPage() {
+    this.doc.addPage([
+      this.paperWidth * DocOptions.PAPER_TO_LOGIC_SCALE_MAGIC,
+      this.paperHeight * DocOptions.PAPER_TO_LOGIC_SCALE_MAGIC]);
+  }
   tryNewPageQuestion(boundaries: IRect[], isRender: boolean = true): boolean {
     let height = 0;
     boundaries.forEach((rect: IRect) => {
       height += rect.yBot - rect.yTop;
     });
     if (height <= (this.paperHeight - this.margins.marginTop -
-        this.margins.marginBot ) && boundaries.length > 1) {
+        this.margins.marginBot) && boundaries.length > 1) {
       if (isRender) {
-        this.doc.addPage([
-          this.paperWidth * DocOptions.PAPER_TO_LOGIC_SCALE_MAGIC,
-          this.paperHeight * DocOptions.PAPER_TO_LOGIC_SCALE_MAGIC]);
+        this.addPage();
       }
       return true;
     }
@@ -115,9 +118,7 @@ export class DocOptions {
   tryNewPageElement(yBot: number, isRender: boolean = true): boolean {
     if (yBot > (this.paperHeight - this.margins.marginBot)) {
       if (isRender) {
-        this.doc.addPage([
-          this.paperWidth * DocOptions.PAPER_TO_LOGIC_SCALE_MAGIC,
-          this.paperHeight * DocOptions.PAPER_TO_LOGIC_SCALE_MAGIC]);
+        this.addPage();
       }
       return true;
     }
@@ -189,12 +190,15 @@ export class PdfQuestionRendererBase implements IPdfQuestion {
           xLeft: titleRect.xLeft,
           yTop: titleRect.yBot
         };
+        let beforeCountPages = this.docOptions.getDoc().internal.getNumberOfPages();
         let contentRects: IRect[] = this.renderContent(contentPoint, isRender);
+        let afterCountPages = this.docOptions.getDoc().internal.getNumberOfPages();
         contentRects[0].xLeft = titleRect.xLeft;
         contentRects[0].xRight = Math.max(
           contentRects[0].xRight,
-          titleRect.xLeft
+          titleRect.xRight
         );
+        // if (beforeCountPages == afterCountPages)
         return contentRects;
       }
       case "bottom": {
@@ -248,7 +252,7 @@ export class JsPdfSurveyModel extends SurveyModel {
    * Inner jsPDF paperSizes:
    * https://rawgit.com/MrRio/jsPDF/master/docs/jspdf.js.html#line147
    */
-  render(options: IDocOptions, isSave: boolean = true) {
+  render(options: IDocOptions) {
     this.docOptions = new DocOptions(options);
     let point: IPoint = { xLeft: this.docOptions.getMargins().marginLeft,
       yTop: this.docOptions.getMargins().marginTop };
@@ -266,6 +270,8 @@ export class JsPdfSurveyModel extends SurveyModel {
         point.yTop = renderBoundaries[renderBoundaries.length - 1].yBot;
       });
     });
-    if (isSave) this.docOptions.getDoc().save("survey_result.pdf");
+  }
+  save(fileName: string = "survey_result.pdf") {
+    this.docOptions.getDoc().save(fileName);
   }
 }

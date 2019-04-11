@@ -3,8 +3,10 @@
 };
 
 import { JsPdfSurveyModel } from "../src/survey";
+import { CheckBoxQuestion } from "../src/checkbox";
 
-test("count_pages_margin", () => {
+test("Split large quesion on two pages", () => {
+    let cb = new CheckBoxQuestion(null, null);
     let json = { questions: [ {
         type: "checkbox",
         name: "longcar_margin",
@@ -49,7 +51,7 @@ test("count_pages_margin", () => {
             "car28",
             "car29"
         ]}]
-    }
+    };
     let survey = new JsPdfSurveyModel(json);
     survey.render({
         fontSize: 30, xScale: 0.22, yScale: 0.36,
@@ -58,6 +60,6 @@ test("count_pages_margin", () => {
           marginRight: 10,
           marginTop: 10,
           marginBot: 10 }
-      }, true);
+      });
     expect(survey.docOptions.getDoc().internal.getNumberOfPages()).toBe(2);
 });
