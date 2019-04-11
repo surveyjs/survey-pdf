@@ -274,8 +274,6 @@ export class JsPdfSurveyModel extends SurveyModel {
   render(options: IDocOptions) {
     this.docOptions = new DocOptions(options);
     this.docOptions.doc.setFont("segoe");
-    debugger;
-    console.log(this.docOptions.doc.font);
     let point: IPoint = {
       xLeft: this.docOptions.margins.marginLeft,
       yTop: this.docOptions.margins.marginTop
