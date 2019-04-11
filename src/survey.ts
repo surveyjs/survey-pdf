@@ -14,7 +14,7 @@
 import { SurveyModel } from "survey-core";
 import { Question } from "survey-core";
 import { IQuestion } from "survey-core";
-import jsPDF from "jspdf";
+import * as jsPDF from "jspdf";
 
 export interface IPoint {
   xLeft: number;
@@ -32,6 +32,14 @@ export interface IMargin {
   marginTop: number;
   marginBot: number;
 }
+export interface IDocOptions {
+  fontSize: number;
+  xScale: number;
+  yScale: number;
+  paperWidth?: number;
+  paperHeight?: number;
+  margins: IMargin;
+}
 export interface IPdfQuestion {
   renderContent(point: IPoint, isRender: boolean): IRect[];
   render(point: IPoint, isRender: boolean): IRect[];
@@ -43,18 +51,25 @@ export type RendererConstructor = new (
 export class DocOptions {
   private static PAPER_TO_LOGIC_SCALE_MAGIC: number = 595.28 / 210.0;
   private doc: any;
-  constructor(
-    protected fontSize: number,
-    protected xScale: number,
-    protected yScale: number,
-    protected paperWidth: number,
-    protected paperHeight: number,
-    protected margins: IMargin
-  ) {
-    let logicWidth: number = paperWidth * DocOptions.PAPER_TO_LOGIC_SCALE_MAGIC;
-    let logicHeight: number = paperHeight * DocOptions.PAPER_TO_LOGIC_SCALE_MAGIC;
+  private fontSize: number;
+  private xScale: number;
+  private yScale: number;
+  private paperWidth: number;
+  private paperHeight: number;
+  private margins: IMargin;
+  constructor(options: IDocOptions) {
+    this.fontSize = options.fontSize;
+    this.xScale = options.xScale;
+    this.yScale = options.yScale;
+    this.paperWidth = typeof options.paperWidth === 'undefined' ?
+      210 : options.paperWidth;
+    this.paperHeight = typeof options.paperHeight === 'undefined' ?
+      297 : options.paperHeight;
+    this.margins = options.margins;
+    let logicWidth: number = this.paperWidth * DocOptions.PAPER_TO_LOGIC_SCALE_MAGIC;
+    let logicHeight: number = this.paperHeight * DocOptions.PAPER_TO_LOGIC_SCALE_MAGIC;
     this.doc = new jsPDF({ format: [logicWidth, logicHeight] });
-    this.doc.setFontSize(fontSize);
+    this.doc.setFontSize(this.fontSize);
   }
   getDoc(): any {
     return this.doc;
@@ -224,36 +239,33 @@ export class PdfQuestionRendererBase implements IPdfQuestion {
 }
 
 export class JsPdfSurveyModel extends SurveyModel {
+  docOptions: DocOptions;
   constructor(jsonObject: any) {
     super(jsonObject);
   }
 
   /**
-   * Use it to render survey to PDF.
-   * Look https://rawgit.com/MrRio/jsPDF/master/docs/jspdf.js.html#line147
-   * for standar paper sizes.
+   * Inner jsPDF paperSizes:
+   * https://rawgit.com/MrRio/jsPDF/master/docs/jspdf.js.html#line147
    */
-  render(fontSize: number, xScale: number, yScale: number, margins: IMargin,
-         paperWidth: number = 210, paperHeight: number = 297) {
-    let docOptions = new DocOptions(fontSize, xScale, yScale,
-      paperWidth, paperHeight, margins);
-    let point: IPoint = { xLeft: docOptions.getMargins().marginLeft,
-      yTop: docOptions.getMargins().marginTop };
+  render(options: IDocOptions, isSave: boolean = true) {
+    this.docOptions = new DocOptions(options);
+    let point: IPoint = { xLeft: this.docOptions.getMargins().marginLeft,
+      yTop: this.docOptions.getMargins().marginTop };
     this.pages.forEach((page: any) => {
       page.questions.forEach((question: IQuestion) => {
         let renderer: IPdfQuestion = QuestionRepository.getInstance().create(
-          question,
-          docOptions
+          question, this.docOptions
         );
         let renderBoundaries: IRect[] = renderer.render(point, false);
-        if (docOptions.tryNewPageQuestion(renderBoundaries)) {
-          point.xLeft = docOptions.getMargins().marginLeft;
-          point.yTop = docOptions.getMargins().marginTop;
+        if (this.docOptions.tryNewPageQuestion(renderBoundaries)) {
+          point.xLeft = this.docOptions.getMargins().marginLeft;
+          point.yTop = this.docOptions.getMargins().marginTop;
         }
         renderBoundaries = renderer.render(point, true);
         point.yTop = renderBoundaries[renderBoundaries.length - 1].yBot;
       });
     });
-    docOptions.getDoc().save("survey_result.pdf");
+    if (isSave) this.docOptions.getDoc().save("survey_result.pdf");
   }
 }
