@@ -120,7 +120,14 @@ export class PdfQuestionRendererBase implements IPdfQuestion {
     protected docOptions: DocOptions
   ) {}
   private renderTitle(point: IPoint, isRender: boolean = true): IRect {
-    return this.renderText(point, this.getQuestion<Question>().title, isRender);
+    this.docOptions.getDoc().setFontStyle("bold");
+    let textBoundaries = this.renderText(
+      point,
+      this.getQuestion<Question>().title,
+      isRender
+    );
+    this.docOptions.getDoc().setFontStyle("normal");
+    return textBoundaries;
   }
   renderText(point: IPoint, text: string, isRender: boolean = true): IRect {
     let boundaruies: IRect = {
