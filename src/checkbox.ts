@@ -58,6 +58,7 @@ export class CheckBoxQuestion extends SelectBaseQuestion {
         buttonBoudndaries.xRight - buttonBoudndaries.xLeft,
         buttonBoudndaries.yBot - buttonBoudndaries.yTop
       ];
+      if (question.readOnly) checkBox.readOnly = true;
       if (question.value.includes(itemValue.value)) checkBox.AS = "/On";
       else checkBox.AS = "/Off";
       this.docOptions.getDoc().addField(checkBox);
