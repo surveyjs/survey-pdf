@@ -174,5 +174,13 @@ survey.data = {
   car2: ["A", "EEE"],
   radio: "Red FM"
 };
-// var pdfDocument = survey.render(16, 0.165, 0.36);
-var pdfDocument = survey.render(30, 0.22, 0.36);
+survey.render(
+  {
+    fontSize: 30, xScale: 0.22, yScale: 0.36,
+    margins: {
+      marginLeft: 10,
+      marginRight: 10,
+      marginTop: 10,
+      marginBot: 10 }
+  });
+survey.save();

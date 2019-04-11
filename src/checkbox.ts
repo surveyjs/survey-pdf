@@ -71,7 +71,9 @@ export class CheckBoxQuestion extends SelectBaseQuestion {
     let question: QuestionCheckboxModel = this.getQuestion<
       QuestionCheckboxModel
     >();
+    let lastPoint: IPoint = { xLeft: point.xLeft, yTop: point.yTop };
     let currPoint: IPoint = { xLeft: point.xLeft, yTop: point.yTop };
+    let boundaries: Array<IRect> = new Array();
     question.choices.forEach((itemValue: ItemValue, index: number) => {
       let checkButtonBoundaries: IRect = this.renderItem(
         currPoint,
@@ -83,8 +85,17 @@ export class CheckBoxQuestion extends SelectBaseQuestion {
       if (
         this.docOptions.tryNewPageElement(checkButtonBoundaries.yBot, isRender)
       ) {
-        currPoint.xLeft = 0;
-        currPoint.yTop = 0;
+        boundaries.push({
+          xLeft: lastPoint.xLeft,
+          xRight: right,
+          yTop: lastPoint.yTop,
+          yBot: bottom
+        });
+        currPoint.xLeft = this.docOptions.getMargins().marginLeft;
+        currPoint.yTop = this.docOptions.getMargins().marginTop;
+        lastPoint = { xLeft: currPoint.xLeft, yTop: currPoint.yTop };
+        right = this.docOptions.getMargins().marginLeft;
+        bottom = currPoint.yTop;
       }
       checkButtonBoundaries = this.renderItem(
         currPoint,
@@ -100,22 +111,30 @@ export class CheckBoxQuestion extends SelectBaseQuestion {
     if (question.hasComment) {
       let commentBoundarues = this.renderComment(currPoint, false);
       if (this.docOptions.tryNewPageElement(commentBoundarues.yBot, isRender)) {
-        currPoint.xLeft = 0;
-        currPoint.yTop = 0;
+        boundaries.push({
+          xLeft: lastPoint.xLeft,
+          xRight: right,
+          yTop: lastPoint.yTop,
+          yBot: bottom
+        });
+        currPoint.xLeft = this.docOptions.getMargins().marginLeft;
+        currPoint.yTop = this.docOptions.getMargins().marginTop;
+        lastPoint = { xLeft: currPoint.xLeft, yTop: currPoint.yTop };
+        right = this.docOptions.getMargins().marginLeft;
+        bottom = currPoint.yTop;
       }
       commentBoundarues = this.renderComment(currPoint, isRender);
       bottom = commentBoundarues.yBot;
       currPoint.yTop = commentBoundarues.yBot;
       right = Math.max(right, commentBoundarues.xRight);
     }
-    return [
-      {
-        xLeft: point.xLeft,
-        xRight: right,
-        yTop: point.yTop,
-        yBot: bottom
-      }
-    ];
+    boundaries.push({
+      xLeft: lastPoint.xLeft,
+      xRight: right,
+      yTop: lastPoint.yTop,
+      yBot: bottom
+    });
+    return boundaries;
   }
 }
 QuestionRepository.getInstance().register("checkbox", CheckBoxQuestion);
