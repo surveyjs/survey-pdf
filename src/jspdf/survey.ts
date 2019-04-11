@@ -35,7 +35,12 @@ export type RendererConstructor = new (
   question: IQuestion,
   docOptions: DocOptions
 ) => IPdfQuestion;
-
+export interface Margins {
+  marginTop: number;
+  marginBot: number;
+  marginLeft: number;
+  marginRight: number;
+}
 export class DocOptions {
   private static PAPER_TO_LOGIC_SCALE_MAGIC: number = 210.0 / 595.28;
   private paperCheckHeight: number;
@@ -112,7 +117,7 @@ export class PdfQuestionRendererBase implements IPdfQuestion {
   constructor(
     protected question: IQuestion,
     protected docOptions: DocOptions
-  ) { }
+  ) {}
   private renderTitle(point: IPoint, isRender: boolean = true): IRect {
     return this.renderText(point, this.getQuestion<Question>().title, isRender);
   }
@@ -122,8 +127,8 @@ export class PdfQuestionRendererBase implements IPdfQuestion {
       xRight:
         point.xLeft +
         text.length *
-        this.docOptions.getFontSize() *
-        this.docOptions.getXScale(),
+          this.docOptions.getFontSize() *
+          this.docOptions.getXScale(),
       yTop: point.yTop,
       yBot:
         point.yTop + this.docOptions.getFontSize() * this.docOptions.getYScale()
