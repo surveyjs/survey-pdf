@@ -46,10 +46,6 @@ export class CheckBoxQuestion extends SelectBaseQuestion {
     };
 
     if (isRender) {
-      // if (this.docOptions.tryNewPageElement(boundaries.yBot)) {
-      //   point.xLeft = 0;
-      //   point.yTop = 0;
-      // }
       let checkBox = new (<any>this.docOptions.doc.AcroFormCheckBox)();
       checkBox.fieldName = question.id + index;
       checkBox.Rect = [

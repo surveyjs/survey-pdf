@@ -3,7 +3,7 @@
 };
 
 import { JsPdfSurveyModel, IDocOptions, QuestionRepository, DocOptions, IRect } from "../src/survey";
-import { QuestionCheckboxModel } from "survey-core";
+import { QuestionTextModel } from "survey-core";
 import { TextQuestion } from "../src/text";
 import { CheckBoxQuestion } from "../src/checkbox";
 
@@ -16,7 +16,7 @@ test("Calc textbox boundaries title top", () => {
       }]
     };
     let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
-    let cbq: QuestionCheckboxModel = <QuestionCheckboxModel>survey.getAllQuestions()[0];
+    let cbq: QuestionTextModel = <QuestionTextModel>survey.getAllQuestions()[0];
     let docOptions: IDocOptions = {
         fontSize: 30, xScale: 0.22, yScale: 0.36,
         margins: {
@@ -52,7 +52,7 @@ test("Calc textbox boundaries title bottom", () => {
       }]
     };
     let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
-    let cbq: QuestionCheckboxModel = <QuestionCheckboxModel>survey.getAllQuestions()[0];
+    let cbq: QuestionTextModel = <QuestionTextModel>survey.getAllQuestions()[0];
     let docOptions: IDocOptions = {
         fontSize: 30, xScale: 0.22, yScale: 0.36,
         margins: {
@@ -88,7 +88,7 @@ test("Calc textbox boundaries title left", () => {
       }]
     };
     let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
-    let cbq: QuestionCheckboxModel = <QuestionCheckboxModel>survey.getAllQuestions()[0];
+    let cbq: QuestionTextModel = <QuestionTextModel>survey.getAllQuestions()[0];
     let docOptions: IDocOptions = {
         fontSize: 30, xScale: 0.22, yScale: 0.36,
         margins: {
@@ -124,7 +124,7 @@ test("Calc textbox boundaries title hidden", () => {
       }]
     };
     let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
-    let cbq: QuestionCheckboxModel = <QuestionCheckboxModel>survey.getAllQuestions()[0];
+    let cbq: QuestionTextModel = <QuestionTextModel>survey.getAllQuestions()[0];
     let docOptions: IDocOptions = {
         fontSize: 30, xScale: 0.22, yScale: 0.36,
         margins: {

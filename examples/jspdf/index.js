@@ -112,14 +112,16 @@ var json = {
       type: "text",
       title: "Rarrararar:",
       isRequired: true,
-      titleLocation: "top"
+      titleLocation: "top",
+      defaultValue: "def"
     },
     {
       name: "name4",
       type: "text",
       title: "Rarrararar:",
       isRequired: true,
-      titleLocation: "top"
+      titleLocation: "top",
+      defaultValue: "def2"
     },
     {
       name: "name5",
@@ -172,8 +174,10 @@ survey.data = {
   name: "SUPER",
   name2: "DATA",
   car2: ["A", "EEE"],
-  radio: "Red FM"
+  radio: "Red FM",
+  name4: "notdef"
 };
+debugger
 survey.render(
   {
     fontSize: 30, xScale: 0.22, yScale: 0.36,
