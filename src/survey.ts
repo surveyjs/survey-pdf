@@ -14,7 +14,8 @@
 import { SurveyModel } from "survey-core";
 import { Question } from "survey-core";
 import { IQuestion } from "survey-core";
-import * as jsPDF from "jspdf";
+import jsPDF from "jspdf";
+import addCustomFonts from "./customFonts";
 
 export interface IPoint {
   xLeft: number;
@@ -61,13 +62,16 @@ export class DocOptions {
     this.fontSize = options.fontSize;
     this.xScale = options.xScale;
     this.yScale = options.yScale;
-    this.paperWidth = typeof options.paperWidth === 'undefined' ?
-      210 : options.paperWidth;
-    this.paperHeight = typeof options.paperHeight === 'undefined' ?
-      297 : options.paperHeight;
+    this.paperWidth =
+      typeof options.paperWidth === "undefined" ? 210 : options.paperWidth;
+    this.paperHeight =
+      typeof options.paperHeight === "undefined" ? 297 : options.paperHeight;
     this.margins = options.margins;
-    let logicWidth: number = this.paperWidth * DocOptions.PAPER_TO_LOGIC_SCALE_MAGIC;
-    let logicHeight: number = this.paperHeight * DocOptions.PAPER_TO_LOGIC_SCALE_MAGIC;
+    let logicWidth: number =
+      this.paperWidth * DocOptions.PAPER_TO_LOGIC_SCALE_MAGIC;
+    let logicHeight: number =
+      this.paperHeight * DocOptions.PAPER_TO_LOGIC_SCALE_MAGIC;
+    addCustomFonts(jsPDF);
     this.doc = new jsPDF({ format: [logicWidth, logicHeight] });
     this.doc.setFontSize(this.fontSize);
   }
@@ -99,15 +103,19 @@ export class DocOptions {
   private addPage() {
     this.doc.addPage([
       this.paperWidth * DocOptions.PAPER_TO_LOGIC_SCALE_MAGIC,
-      this.paperHeight * DocOptions.PAPER_TO_LOGIC_SCALE_MAGIC]);
+      this.paperHeight * DocOptions.PAPER_TO_LOGIC_SCALE_MAGIC
+    ]);
   }
   tryNewPageQuestion(boundaries: IRect[], isRender: boolean = true): boolean {
     let height = 0;
     boundaries.forEach((rect: IRect) => {
       height += rect.yBot - rect.yTop;
     });
-    if (height <= (this.paperHeight - this.margins.marginTop -
-        this.margins.marginBot) && boundaries.length > 1) {
+    if (
+      height <=
+        this.paperHeight - this.margins.marginTop - this.margins.marginBot &&
+      boundaries.length > 1
+    ) {
       if (isRender) {
         this.addPage();
       }
@@ -116,7 +124,7 @@ export class DocOptions {
     return false;
   }
   tryNewPageElement(yBot: number, isRender: boolean = true): boolean {
-    if (yBot > (this.paperHeight - this.margins.marginBot)) {
+    if (yBot > this.paperHeight - this.margins.marginBot) {
       if (isRender) {
         this.addPage();
       }
@@ -148,7 +156,14 @@ export class PdfQuestionRendererBase implements IPdfQuestion {
     protected docOptions: DocOptions
   ) {}
   private renderTitle(point: IPoint, isRender: boolean = true): IRect {
-    return this.renderText(point, this.getQuestion<Question>().title, isRender);
+    this.docOptions.getDoc().setFontStyle("bold");
+    let textBoundaries = this.renderText(
+      point,
+      this.getQuestion<Question>().title,
+      isRender
+    );
+    this.docOptions.getDoc().setFontStyle("normal");
+    return textBoundaries;
   }
   renderText(point: IPoint, text: string, isRender: boolean = true): IRect {
     let boundaruies: IRect = {
@@ -190,9 +205,13 @@ export class PdfQuestionRendererBase implements IPdfQuestion {
           xLeft: titleRect.xLeft,
           yTop: titleRect.yBot
         };
-        let beforeCountPages = this.docOptions.getDoc().internal.getNumberOfPages();
+        let beforeCountPages = this.docOptions
+          .getDoc()
+          .internal.getNumberOfPages();
         let contentRects: IRect[] = this.renderContent(contentPoint, isRender);
-        let afterCountPages = this.docOptions.getDoc().internal.getNumberOfPages();
+        let afterCountPages = this.docOptions
+          .getDoc()
+          .internal.getNumberOfPages();
         contentRects[0].xLeft = titleRect.xLeft;
         contentRects[0].xRight = Math.max(
           contentRects[0].xRight,
@@ -252,14 +271,18 @@ export class JsPdfSurveyModel extends SurveyModel {
    * Inner jsPDF paperSizes:
    * https://rawgit.com/MrRio/jsPDF/master/docs/jspdf.js.html#line147
    */
+
   render(options: IDocOptions) {
     this.docOptions = new DocOptions(options);
-    let point: IPoint = { xLeft: this.docOptions.getMargins().marginLeft,
-      yTop: this.docOptions.getMargins().marginTop };
+    let point: IPoint = {
+      xLeft: this.docOptions.getMargins().marginLeft,
+      yTop: this.docOptions.getMargins().marginTop
+    };
     this.pages.forEach((page: any) => {
       page.questions.forEach((question: IQuestion) => {
         let renderer: IPdfQuestion = QuestionRepository.getInstance().create(
-          question, this.docOptions
+          question,
+          this.docOptions
         );
         let renderBoundaries: IRect[] = renderer.render(point, false);
         if (this.docOptions.tryNewPageQuestion(renderBoundaries)) {

@@ -7,6 +7,11 @@ import { QuestionCheckboxModel } from "survey-core";
 export class CheckBoxQuestion extends SelectBaseQuestion {
   constructor(protected question: IQuestion, protected docOptions: DocOptions) {
     super(question, docOptions);
+    if (this.getQuestion<QuestionCheckboxModel>().hasNone) {
+      this.getQuestion<QuestionCheckboxModel>().choices.push(
+        new ItemValue("None")
+      );
+    }
   }
   renderItem(
     point: IPoint,
@@ -63,33 +68,72 @@ export class CheckBoxQuestion extends SelectBaseQuestion {
   renderContentSelectbase(point: IPoint, isRender: boolean): IRect[] {
     let bottom: number = point.yTop;
     let right: number = point.xLeft;
-    let question: QuestionCheckboxModel = this.getQuestion<QuestionCheckboxModel>();
+    let question: QuestionCheckboxModel = this.getQuestion<
+      QuestionCheckboxModel
+    >();
     let lastPoint: IPoint = { xLeft: point.xLeft, yTop: point.yTop };
     let currPoint: IPoint = { xLeft: point.xLeft, yTop: point.yTop };
     let boundaries: Array<IRect> = new Array();
     question.choices.forEach((itemValue: ItemValue, index: number) => {
       let checkButtonBoundaries: IRect = this.renderItem(
-        currPoint, question, itemValue, index, false);
-      if (this.docOptions.tryNewPageElement(checkButtonBoundaries.yBot, isRender)) {
-        boundaries.push({ xLeft: lastPoint.xLeft, xRight: right,
-          yTop: lastPoint.yTop, yBot: bottom });
+        currPoint,
+        question,
+        itemValue,
+        index,
+        false
+      );
+      if (
+        this.docOptions.tryNewPageElement(checkButtonBoundaries.yBot, isRender)
+      ) {
+        boundaries.push({
+          xLeft: lastPoint.xLeft,
+          xRight: right,
+          yTop: lastPoint.yTop,
+          yBot: bottom
+        });
         currPoint.xLeft = this.docOptions.getMargins().marginLeft;
         currPoint.yTop = this.docOptions.getMargins().marginTop;
         lastPoint = { xLeft: currPoint.xLeft, yTop: currPoint.yTop };
         right = this.docOptions.getMargins().marginLeft;
         bottom = currPoint.yTop;
       }
-      checkButtonBoundaries = this.renderItem(currPoint, question,
-        itemValue, index, isRender);
+      checkButtonBoundaries = this.renderItem(
+        currPoint,
+        question,
+        itemValue,
+        index,
+        isRender
+      );
       bottom = checkButtonBoundaries.yBot;
       currPoint.yTop = checkButtonBoundaries.yBot;
       right = Math.max(right, checkButtonBoundaries.xRight);
     });
-    // if (question.hasComment) {
-    //   this.renderComment(currPoint);
-    // }
-    boundaries.push({ xLeft: lastPoint.xLeft, xRight: right,
-      yTop: lastPoint.yTop, yBot: bottom });
+    if (question.hasComment) {
+      let commentBoundarues = this.renderComment(currPoint, false);
+      if (this.docOptions.tryNewPageElement(commentBoundarues.yBot, isRender)) {
+        boundaries.push({
+          xLeft: lastPoint.xLeft,
+          xRight: right,
+          yTop: lastPoint.yTop,
+          yBot: bottom
+        });
+        currPoint.xLeft = this.docOptions.getMargins().marginLeft;
+        currPoint.yTop = this.docOptions.getMargins().marginTop;
+        lastPoint = { xLeft: currPoint.xLeft, yTop: currPoint.yTop };
+        right = this.docOptions.getMargins().marginLeft;
+        bottom = currPoint.yTop;
+      }
+      commentBoundarues = this.renderComment(currPoint, isRender);
+      bottom = commentBoundarues.yBot;
+      currPoint.yTop = commentBoundarues.yBot;
+      right = Math.max(right, commentBoundarues.xRight);
+    }
+    boundaries.push({
+      xLeft: lastPoint.xLeft,
+      xRight: right,
+      yTop: lastPoint.yTop,
+      yBot: bottom
+    });
     return boundaries;
   }
 }
