@@ -71,7 +71,7 @@ export class DocOptions {
       this._paperWidth * DocOptions.PAPER_TO_LOGIC_SCALE_MAGIC;
     let logicHeight: number =
       this._paperHeight * DocOptions.PAPER_TO_LOGIC_SCALE_MAGIC;
-    // addCustomFonts(jsPDF);
+    addCustomFonts(jsPDF);
     this._doc = new jsPDF({ format: [logicWidth, logicHeight] });
     this._doc.setFontSize(this._fontSize);
   }
@@ -101,8 +101,11 @@ export class DocOptions {
     boundaries.forEach((rect: IRect) => {
       height += rect.yBot - rect.yTop;
     });
-    if (height <= this._paperHeight - this.margins.marginTop - this.margins.marginBot &&
-      (boundaries.length > 1 || this.tryNewPageElement(boundaries[0].yBot, false))
+    if (
+      height <=
+        this._paperHeight - this.margins.marginTop - this.margins.marginBot &&
+      (boundaries.length > 1 ||
+        this.tryNewPageElement(boundaries[0].yBot, false))
     ) {
       if (isRender) {
         this.addPage();
@@ -145,16 +148,20 @@ export class PdfQuestionRendererBase implements IPdfQuestion {
   ) {}
   private renderTitle(point: IPoint, isRender: boolean = true): IRect {
     this.docOptions.doc.setFontStyle("bold");
-    let textBoundaries = this.renderText(point,
-      this.getQuestion<Question>().title, isRender);
+    let textBoundaries = this.renderText(
+      point,
+      this.getQuestion<Question>().title,
+      isRender
+    );
     this.docOptions.doc.setFontStyle("normal");
     return textBoundaries;
   }
   renderText(point: IPoint, text: string, isRender: boolean = true): IRect {
     let boundaruies: IRect = {
       xLeft: point.xLeft,
-      xRight: point.xLeft + text.length *
-        this.docOptions.fontSize * this.docOptions.xScale,
+      xRight:
+        point.xLeft +
+        text.length * this.docOptions.fontSize * this.docOptions.xScale,
       yTop: point.yTop,
       yBot: point.yTop + this.docOptions.fontSize * this.docOptions.yScale
     };
@@ -187,12 +194,14 @@ export class PdfQuestionRendererBase implements IPdfQuestion {
           yTop: titleRect.yBot
         };
         let contentRects: IRect[] = this.renderContent(contentPoint, isRender);
-        if (contentRects[0].yTop !== this.docOptions.margins.marginTop) { 
+        if (contentRects[0].yTop !== this.docOptions.margins.marginTop) {
           contentRects[0].xLeft = titleRect.xLeft;
-          contentRects[0].xRight = Math.max(contentRects[0].xRight, titleRect.xRight);
+          contentRects[0].xRight = Math.max(
+            contentRects[0].xRight,
+            titleRect.xRight
+          );
           contentRects[0].yTop = titleRect.yTop;
-        }
-        else {
+        } else {
           contentRects.unshift(titleRect);
         }
         return contentRects;
@@ -204,7 +213,10 @@ export class PdfQuestionRendererBase implements IPdfQuestion {
           yTop: contentRects[contentRects.length - 1].yBot
         };
         let titleRect: IRect = this.renderTitle(titlePoint, false);
-        let isNewPage: boolean = this.docOptions.tryNewPageElement(titleRect.yBot, isRender);
+        let isNewPage: boolean = this.docOptions.tryNewPageElement(
+          titleRect.yBot,
+          isRender
+        );
         if (isNewPage) {
           titlePoint.xLeft = this.docOptions.margins.marginLeft;
           titlePoint.yTop = this.docOptions.margins.marginTop;
@@ -212,8 +224,7 @@ export class PdfQuestionRendererBase implements IPdfQuestion {
         titleRect = this.renderTitle(titlePoint, isRender);
         if (isNewPage) {
           contentRects.push(titleRect);
-        }
-        else {
+        } else {
           contentRects[contentRects.length - 1].xRight = Math.max(
             contentRects[contentRects.length - 1].xRight,
             titleRect.xRight
@@ -262,6 +273,9 @@ export class JsPdfSurveyModel extends SurveyModel {
 
   render(options: IDocOptions) {
     this.docOptions = new DocOptions(options);
+    this.docOptions.doc.setFont("segoe");
+    debugger;
+    console.log(this.docOptions.doc.font);
     let point: IPoint = {
       xLeft: this.docOptions.margins.marginLeft,
       yTop: this.docOptions.margins.marginTop
