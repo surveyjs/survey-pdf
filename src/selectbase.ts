@@ -1,5 +1,7 @@
-import { IPoint, IRect, DocOptions, PdfQuestionRendererBase } from "./survey";
 import { IQuestion, QuestionSelectBase, ItemValue } from "survey-core";
+import { PdfQuestionRendererBase } from "./question";
+import { IPoint, IRect, DocOptions } from "./docOptions";
+
 export class SelectBaseQuestion extends PdfQuestionRendererBase {
   constructor(protected question: IQuestion, protected docOptions: DocOptions) {
     super(question, docOptions);

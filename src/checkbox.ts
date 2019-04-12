@@ -1,8 +1,7 @@
-import { IPoint, IRect, QuestionRepository, DocOptions } from "./survey";
-import { IQuestion } from "survey-core";
+import { IQuestion, ItemValue, QuestionCheckboxModel } from "survey-core";
 import { SelectBaseQuestion } from "./selectbase";
-import { ItemValue } from "survey-core";
-import { QuestionCheckboxModel } from "survey-core";
+import { IPoint, IRect, DocOptions } from "./docOptions";
+import { QuestionRepository } from "./questionRepository";
 
 export class CheckBoxQuestion extends SelectBaseQuestion {
   constructor(protected question: IQuestion, protected docOptions: DocOptions) {
