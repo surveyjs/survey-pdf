@@ -23,13 +23,12 @@ export class PdfQuestion implements IPdfQuestion {
         return textBoundaries;
     }
     renderText(point: IPoint, text: string, isRender: boolean = true): IRect {
+        let { width, height } = this.docOptions.measureText(text);
         let boundaruies: IRect = {
             xLeft: point.xLeft,
-            xRight:
-                point.xLeft +
-                text.length * this.docOptions.fontSize * this.docOptions.xScale,
+            xRight: point.xLeft + width,
             yTop: point.yTop,
-            yBot: point.yTop + this.docOptions.fontSize * this.docOptions.yScale
+            yBot: point.yTop + height
         };
         if (isRender) {
             let alignPoint = this.alignPoint(point, boundaruies);

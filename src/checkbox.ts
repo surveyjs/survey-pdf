@@ -19,14 +19,12 @@ export class CheckBoxQuestion extends SelectBaseQuestion {
     index: number,
     isRender: boolean
   ): IRect {
+    let { width, height } = this.docOptions.measureText();
     let buttonBoudndaries: IRect = {
       xLeft: point.xLeft,
-      xRight:
-        point.xLeft +
-        this.docOptions.fontSize * this.docOptions.yScale,
+      xRight: point.xLeft + width,
       yTop: point.yTop,
-      yBot:
-        point.yTop + this.docOptions.fontSize * this.docOptions.yScale
+      yBot: point.yTop + height
     };
     let textPoint: IPoint = {
       xLeft: buttonBoudndaries.xRight,

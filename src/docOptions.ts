@@ -99,7 +99,7 @@ export class DocOptions implements IDocOptions {
         }
         return false;
     }
-    measureText(text: string) {
+    measureText(text: string = " ") {
         return {
             width: text.length *
                 this.fontSize *
