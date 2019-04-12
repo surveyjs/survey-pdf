@@ -25,7 +25,7 @@ export interface IDocOptions {
     margins: IMargin;
 }
 
-export class DocOptions {
+export class DocOptions implements IDocOptions {
     private static PAPER_TO_LOGIC_SCALE_MAGIC: number = 595.28 / 210.0;
     private _doc: any;
     private _fontSize: number;
