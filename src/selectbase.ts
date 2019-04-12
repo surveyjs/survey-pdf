@@ -89,11 +89,7 @@ export class SelectBaseQuestion extends PdfQuestion {
     let question = this.getQuestion<QuestionSelectBase>();
     let textBoundaries = this.renderText(point, question.commentText, false);
     let textField = new (<any>this.docController.doc.AcroFormTextField)();
-    let width =
-      question.commentText.length *
-      this.docController.fontSize *
-      this.docController.xScale;
-    let height = this.docController.fontSize * this.docController.yScale;
+    let { width, height } = this.docController.measureText(question.commentText);
     if (isRender) {
       this.renderText(point, question.commentText, true);
       textField.Rect = [

@@ -67,6 +67,14 @@ export class DocOptions implements IDocOptions {
     isNewPageElement(yBot: number): boolean {
         return yBot > this._paperHeight - this.margins.marginBot;
     }
+    measureText(text: string = " ") {
+        return {
+            width: text.length *
+                this.fontSize *
+                this.xScale,
+            height: this.fontSize * this.yScale
+        }
+    }
 }
 
 export class DocController extends DocOptions {

@@ -49,7 +49,7 @@ export class JsPdfSurveyModel extends SurveyModel {
         }
         renderBoundaries = renderer.render(point, true);
         point.yTop = renderBoundaries[renderBoundaries.length - 1].yBot;
-        point.yTop += this.docController.fontSize * this.docController.yScale;
+        point.yTop += this.docController.measureText().height;
         if (this.docController.isNewPageElement(point.yTop)) {
           this.docController.addPage();
           point.xLeft = this.docController.margins.marginLeft;

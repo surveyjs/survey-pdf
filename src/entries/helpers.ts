@@ -1,6 +1,6 @@
 export var __assign =
   (<any>Object)["assign"] ||
-  function(target: any) {
+  function (target: any) {
     for (var s, i = 1, n = arguments.length; i < n; i++) {
       s = arguments[i];
       for (var p in s)
@@ -21,9 +21,19 @@ export function __extends(thisClass: any, baseClass: any) {
       : ((__.prototype = baseClass.prototype), new (<any>__)());
 }
 
-declare var Reflect:any;
+export var __rest = function (source: any, e: any) {
+  var result: any = {};
+  for (var propertyName in source) if (Object.prototype.hasOwnProperty.call(source, propertyName) && e.indexOf(propertyName) < 0)
+    result[propertyName] = source[propertyName];
+  if (source != null && typeof (<any>Object)["getOwnPropertySymbols"] === "function")
+    for (var i = 0, propertySymbols = (<any>Object)["getOwnPropertySymbols"](source); i < propertySymbols.length; i++) if (e.indexOf(propertySymbols[i]) < 0)
+      result[propertySymbols[i]] = source[propertySymbols[i]];
+  return result;
+};
 
-export var __decorate = function(
+declare var Reflect: any;
+
+export var __decorate = function (
   decorators: any,
   target: any,
   key: any,

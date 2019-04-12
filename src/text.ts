@@ -18,11 +18,7 @@ export class TextQuestion extends PdfQuestion {
   }
   renderContent(point: IPoint, isRender: boolean): IRect[] {
     let question: QuestionTextModel = this.getQuestion<QuestionTextModel>();
-    let width =
-      question.title.length *
-      this.docController.fontSize *
-      this.docController.xScale;
-    let height = this.docController.fontSize * this.docController.yScale;
+    let { width, height } = this.docController.measureText(question.title);
     let boundaries: IRect = {
       xLeft: point.xLeft,
       xRight: point.xLeft + width,
