@@ -71,7 +71,7 @@ export class DocOptions {
       this._paperWidth * DocOptions.PAPER_TO_LOGIC_SCALE_MAGIC;
     let logicHeight: number =
       this._paperHeight * DocOptions.PAPER_TO_LOGIC_SCALE_MAGIC;
-    addCustomFonts(jsPDF);
+    // addCustomustomFonts(jsPDF);
     this._doc = new jsPDF({ format: [logicWidth, logicHeight] });
     this._doc.setFontSize(this._fontSize);
   }
@@ -273,7 +273,7 @@ export class JsPdfSurveyModel extends SurveyModel {
 
   render(options: IDocOptions) {
     this.docOptions = new DocOptions(options);
-    this.docOptions.doc.setFont("segoe");
+    // this.docOptions.doc.setFont("segoe");
     let point: IPoint = {
       xLeft: this.docOptions.margins.marginLeft,
       yTop: this.docOptions.margins.marginTop
