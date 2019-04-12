@@ -36,7 +36,7 @@ test("Calc textbox boundaries title top", () => {
     }, false)[0];
     let assumeBoundaries: IRect = {
         xLeft: docOptions.margins.marginLeft,
-        xRight: docOptions.margins.marginLeft + json.questions[0].title.length *
+        xRight: docOptions.margins.marginLeft + (json.questions[0].title.length + 4) *
             docOptions.fontSize * docOptions.xScale,
         yTop: docOptions.margins.marginTop,
         yBot: docOptions.margins.marginTop + 2 * docOptions.fontSize * docOptions.yScale
@@ -75,7 +75,7 @@ test("Calc textbox boundaries title bottom", () => {
     }, false)[0];
     let assumeBoundaries: IRect = {
         xLeft: docOptions.margins.marginLeft,
-        xRight: docOptions.margins.marginLeft + json.questions[0].title.length *
+        xRight: docOptions.margins.marginLeft + (json.questions[0].title.length + 4) *
             docOptions.fontSize * docOptions.xScale,
         yTop: docOptions.margins.marginTop,
         yBot: docOptions.margins.marginTop + 2 * docOptions.fontSize * docOptions.yScale
@@ -114,8 +114,9 @@ test("Calc textbox boundaries title left", () => {
     }, false)[0];
     let assumeBoundaries: IRect = {
         xLeft: docOptions.margins.marginLeft,
-        xRight: docOptions.margins.marginLeft + 2 * (json.questions[0].title.length *
-            docOptions.fontSize * docOptions.xScale),
+        xRight: docOptions.margins.marginLeft + (json.questions[0].title.length + 4) *
+            docOptions.fontSize * docOptions.xScale + json.questions[0].title.length *
+            docOptions.fontSize * docOptions.xScale,
         yTop: docOptions.margins.marginTop,
         yBot: docOptions.margins.marginTop + docOptions.fontSize * docOptions.yScale
     };
@@ -207,10 +208,49 @@ test("Calc boundaries with space between questions", () => {
     }
     let assumeBoundaries: IRect = {
         xLeft: docOptions.margins.marginLeft,
-        xRight: docOptions.margins.marginLeft + json.questions[1].title.length *
+        xRight: docOptions.margins.marginLeft + (json.questions[1].title.length + 4) *
                 docOptions.fontSize * docOptions.xScale,
         yTop: docOptions.margins.marginTop,
         yBot: docOptions.margins.marginTop + 5 * docOptions.fontSize * docOptions.yScale
+    };
+    expect(resultBoundaries.xLeft).toBeCloseTo(assumeBoundaries.xLeft);
+    expect(resultBoundaries.xRight).toBeCloseTo(assumeBoundaries.xRight);
+    expect(resultBoundaries.yTop).toBeCloseTo(assumeBoundaries.yTop);
+    expect(resultBoundaries.yBot).toBeCloseTo(assumeBoundaries.yBot);
+});
+
+test("Calc textbox boundaries title without number", () => {
+    let __dummy_tx = new TextQuestion(null, null);
+    let json = {
+        questions: [{
+            name: "textbox",
+            type: "text",
+            title: "I do not need a number"
+        }]
+    };
+    let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
+    survey.showQuestionNumbers  = "off";
+    let qtm: QuestionTextModel = <QuestionTextModel>survey.getAllQuestions()[0];
+    let docOptions: IDocOptions = {
+        fontSize: 30, xScale: 0.22, yScale: 0.36,
+        margins: {
+            marginLeft: 10,
+            marginRight: 10,
+            marginTop: 10,
+            marginBot: 10
+        }
+    };
+    let tq = QuestionRepository.getInstance().create(qtm, new DocOptions(docOptions));
+    let resultBoundaries: IRect = tq.render({
+        xLeft: docOptions.margins.marginLeft,
+        yTop: docOptions.margins.marginTop
+    }, false)[0];
+    let assumeBoundaries: IRect = {
+        xLeft: docOptions.margins.marginLeft,
+        xRight: docOptions.margins.marginLeft + json.questions[0].title.length *
+            docOptions.fontSize * docOptions.xScale,
+        yTop: docOptions.margins.marginTop,
+        yBot: docOptions.margins.marginTop + 2 * docOptions.fontSize * docOptions.yScale
     };
     expect(resultBoundaries.xLeft).toBeCloseTo(assumeBoundaries.xLeft);
     expect(resultBoundaries.xRight).toBeCloseTo(assumeBoundaries.xRight);

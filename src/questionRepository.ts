@@ -1,6 +1,6 @@
 import { IQuestion } from "survey-core";
 import { DocOptions } from "./docOptions";
-import { IPdfQuestion, PdfQuestionRendererBase } from "./question";
+import { IPdfQuestion, PdfQuestion } from "./question";
 
 export type RendererConstructor = new (
     question: IQuestion,
@@ -18,7 +18,7 @@ export class QuestionRepository {
     }
     create(question: IQuestion, docOptions: DocOptions): IPdfQuestion {
         let rendererConstructor =
-            this.questions[question.getType()] || PdfQuestionRendererBase;
+            this.questions[question.getType()] || PdfQuestion;
         return new rendererConstructor(question, docOptions);
     }
 }

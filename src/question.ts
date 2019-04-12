@@ -5,16 +5,18 @@ export interface IPdfQuestion {
     renderContent(point: IPoint, isRender: boolean): IRect[];
     render(point: IPoint, isRender: boolean): IRect[];
 }
-export class PdfQuestionRendererBase implements IPdfQuestion {
+export class PdfQuestion implements IPdfQuestion {
     constructor(
         protected question: IQuestion,
         protected docOptions: DocOptions
     ) { }
     private renderTitle(point: IPoint, isRender: boolean = true): IRect {
         this.docOptions.doc.setFontStyle("bold");
+        let question = this.getQuestion<Question>();
+        let number = question["no"] != "" ? question["no"] + " . " : "";
         let textBoundaries = this.renderText(
             point,
-            this.getQuestion<Question>().title,
+            number + question.title,
             isRender
         );
         this.docOptions.doc.setFontStyle("normal");

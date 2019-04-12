@@ -4,7 +4,7 @@ import {
   DocOptions
 } from "./docOptions";
 import {
-  PdfQuestionRendererBase
+  PdfQuestion
 } from "./question";
 import {
   QuestionRepository
@@ -12,7 +12,7 @@ import {
 import { IQuestion } from "survey-core";
 import { QuestionTextModel } from "survey-core";
 
-export class TextQuestion extends PdfQuestionRendererBase {
+export class TextQuestion extends PdfQuestion {
   constructor(protected question: IQuestion, protected docOptions: DocOptions) {
     super(question, docOptions);
   }
