@@ -291,6 +291,11 @@ export class JsPdfSurveyModel extends SurveyModel {
         }
         renderBoundaries = renderer.render(point, true);
         point.yTop = renderBoundaries[renderBoundaries.length - 1].yBot;
+        point.yTop += this.docOptions.fontSize * this.docOptions.yScale;
+        if (this.docOptions.tryNewPageElement(point.yTop)) {
+          point.xLeft = this.docOptions.margins.marginLeft;
+          point.yTop = this.docOptions.margins.marginTop;
+        }
       });
     });
   }
