@@ -1,5 +1,4 @@
 import * as jsPDF from "jspdf";
-import { OtherEmptyError } from 'survey-core';
 
 export interface IPoint {
     xLeft: number;
