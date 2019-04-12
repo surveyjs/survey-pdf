@@ -5,9 +5,48 @@
 import { QuestionRepository } from "../src/questionRepository";
 import { IPoint, IRect, IDocOptions,  DocController } from "../src/docController";
 import { JsPdfSurveyModel } from "../src/survey";
-import { QuestionTextModel } from "survey-core";
+import { QuestionTextModel, Question, IQuestion } from "survey-core";
+import { PdfQuestion, IPdfQuestion } from "../src/question";
 import { TextQuestion } from "../src/text";
 import { CheckBoxQuestion } from "../src/checkbox";
+
+test("Calc title boundaries", () => {
+    let json = {
+        questions: [{
+            name: "textbox",
+            type: "text",
+            title: "Please enter your name:"
+        }]
+    };
+    let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
+    let qm: Question = <Question>survey.getAllQuestions()[0];
+    let docOptions: IDocOptions = {
+        fontSize: 30, xScale: 0.22, yScale: 0.36,
+        margins: {
+            marginLeft: 10,
+            marginRight: 10,
+            marginTop: 10,
+            marginBot: 10
+        }
+    };
+    let docController: DocController = new DocController(docOptions);
+    let pq: IPdfQuestion = new PdfQuestion(qm, docController);
+    let resultBoundaries: IRect = pq.render({
+        xLeft: docOptions.margins.marginLeft,
+        yTop: docOptions.margins.marginTop
+    }, false)[0];
+    let assumeBoundaries: IRect = {
+        xLeft: docOptions.margins.marginLeft,
+        xRight: docOptions.margins.marginLeft + (json.questions[0].title.length + 4) *
+            docOptions.fontSize * docOptions.xScale,
+        yTop: docOptions.margins.marginTop,
+        yBot: docOptions.margins.marginTop + docOptions.fontSize * docOptions.yScale
+    };
+    expect(resultBoundaries.xLeft).toBeCloseTo(assumeBoundaries.xLeft);
+    expect(resultBoundaries.xRight).toBeCloseTo(assumeBoundaries.xRight);
+    expect(resultBoundaries.yTop).toBeCloseTo(assumeBoundaries.yTop);
+    expect(resultBoundaries.yBot).toBeCloseTo(assumeBoundaries.yBot);
+});
 
 test("Calc textbox boundaries title top", () => {
     let __dummy_tx = new TextQuestion(null, null);
@@ -20,7 +59,7 @@ test("Calc textbox boundaries title top", () => {
     };
     let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
     let qtm: QuestionTextModel = <QuestionTextModel>survey.getAllQuestions()[0];
-    let docController: IDocOptions = {
+    let docOptions: IDocOptions = {
         fontSize: 30, xScale: 0.22, yScale: 0.36,
         margins: {
             marginLeft: 10,
@@ -29,15 +68,15 @@ test("Calc textbox boundaries title top", () => {
             marginBot: 10
         }
     };
-    let tq = QuestionRepository.getInstance().create(qtm, new DocController(docController));
+    let docController: DocController = new DocController(docOptions);
+    let tq: IPdfQuestion = QuestionRepository.getInstance().create(qtm, docController);
     let resultBoundaries: IRect = tq.render({
         xLeft: docController.margins.marginLeft,
         yTop: docController.margins.marginTop
     }, false)[0];
     let assumeBoundaries: IRect = {
         xLeft: docController.margins.marginLeft,
-        xRight: docController.margins.marginLeft + (json.questions[0].title.length + 4) *
-            docController.fontSize * docController.xScale,
+        xRight: docController.paperWidth - docController.margins.marginRight,
         yTop: docController.margins.marginTop,
         yBot: docController.margins.marginTop + 2 * docController.fontSize * docController.yScale
     };
@@ -59,7 +98,7 @@ test("Calc textbox boundaries title bottom", () => {
     };
     let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
     let qtm: QuestionTextModel = <QuestionTextModel>survey.getAllQuestions()[0];
-    let docController: IDocOptions = {
+    let docOptions: IDocOptions = {
         fontSize: 30, xScale: 0.22, yScale: 0.36,
         margins: {
             marginLeft: 10,
@@ -68,17 +107,17 @@ test("Calc textbox boundaries title bottom", () => {
             marginBot: 10
         }
     };
-    let tq = QuestionRepository.getInstance().create(qtm, new DocController(docController));
+    let docController: DocController = new DocController(docOptions);
+    let tq: IPdfQuestion = QuestionRepository.getInstance().create(qtm, docController);
     let resultBoundaries: IRect = tq.render({
-        xLeft: docController.margins.marginLeft,
-        yTop: docController.margins.marginTop
+        xLeft: docOptions.margins.marginLeft,
+        yTop: docOptions.margins.marginTop
     }, false)[0];
     let assumeBoundaries: IRect = {
-        xLeft: docController.margins.marginLeft,
-        xRight: docController.margins.marginLeft + (json.questions[0].title.length + 4) *
-            docController.fontSize * docController.xScale,
-        yTop: docController.margins.marginTop,
-        yBot: docController.margins.marginTop + 2 * docController.fontSize * docController.yScale
+        xLeft: docOptions.margins.marginLeft,
+        xRight: docController.paperWidth - docController.margins.marginRight,
+        yTop: docOptions.margins.marginTop,
+        yBot: docOptions.margins.marginTop + 2 * docOptions.fontSize * docOptions.yScale
     };
     expect(resultBoundaries.xLeft).toBeCloseTo(assumeBoundaries.xLeft);
     expect(resultBoundaries.xRight).toBeCloseTo(assumeBoundaries.xRight);
@@ -98,7 +137,7 @@ test("Calc textbox boundaries title left", () => {
     };
     let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
     let qtm: QuestionTextModel = <QuestionTextModel>survey.getAllQuestions()[0];
-    let docController: IDocOptions = {
+    let docOptions: IDocOptions = {
         fontSize: 30, xScale: 0.22, yScale: 0.36,
         margins: {
             marginLeft: 10,
@@ -107,18 +146,17 @@ test("Calc textbox boundaries title left", () => {
             marginBot: 10
         }
     };
-    let tq = QuestionRepository.getInstance().create(qtm, new DocController(docController));
+    let docController: DocController = new DocController(docOptions);
+    let tq: IPdfQuestion = QuestionRepository.getInstance().create(qtm, docController);
     let resultBoundaries: IRect = tq.render({
-        xLeft: docController.margins.marginLeft,
-        yTop: docController.margins.marginTop
+        xLeft: docOptions.margins.marginLeft,
+        yTop: docOptions.margins.marginTop
     }, false)[0];
     let assumeBoundaries: IRect = {
-        xLeft: docController.margins.marginLeft,
-        xRight: docController.margins.marginLeft + (json.questions[0].title.length + 4) *
-            docController.fontSize * docController.xScale + json.questions[0].title.length *
-            docController.fontSize * docController.xScale,
-        yTop: docController.margins.marginTop,
-        yBot: docController.margins.marginTop + docController.fontSize * docController.yScale
+        xLeft: docOptions.margins.marginLeft,
+        xRight: docController.paperWidth - docController.margins.marginRight,
+        yTop: docOptions.margins.marginTop,
+        yBot: docOptions.margins.marginTop + docOptions.fontSize * docOptions.yScale
     };
     expect(resultBoundaries.xLeft).toBeCloseTo(assumeBoundaries.xLeft);
     expect(resultBoundaries.xRight).toBeCloseTo(assumeBoundaries.xRight);
@@ -138,7 +176,7 @@ test("Calc textbox boundaries title hidden", () => {
     };
     let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
     let qtm: QuestionTextModel = <QuestionTextModel>survey.getAllQuestions()[0];
-    let docController: IDocOptions = {
+    let docOptions: IDocOptions = {
         fontSize: 30, xScale: 0.22, yScale: 0.36,
         margins: {
             marginLeft: 10,
@@ -147,17 +185,17 @@ test("Calc textbox boundaries title hidden", () => {
             marginBot: 10
         }
     };
-    let tq = QuestionRepository.getInstance().create(qtm, new DocController(docController));
+    let docController: DocController = new DocController(docOptions);
+    let tq: IPdfQuestion = QuestionRepository.getInstance().create(qtm, new DocController(docOptions));
     let resultBoundaries: IRect = tq.render({
-        xLeft: docController.margins.marginLeft,
-        yTop: docController.margins.marginTop
+        xLeft: docOptions.margins.marginLeft,
+        yTop: docOptions.margins.marginTop
     }, false)[0];
     let assumeBoundaries: IRect = {
-        xLeft: docController.margins.marginLeft,
-        xRight: docController.margins.marginLeft + json.questions[0].title.length *
-            docController.fontSize * docController.xScale,
-        yTop: docController.margins.marginTop,
-        yBot: docController.margins.marginTop + docController.fontSize * docController.yScale
+        xLeft: docOptions.margins.marginLeft,
+        xRight: docController.paperWidth - docController.margins.marginRight,
+        yTop: docOptions.margins.marginTop,
+        yBot: docOptions.margins.marginTop + docOptions.fontSize * docOptions.yScale
     };
     expect(resultBoundaries.xLeft).toBeCloseTo(assumeBoundaries.xLeft);
     expect(resultBoundaries.xRight).toBeCloseTo(assumeBoundaries.xRight);
@@ -182,7 +220,7 @@ test("Calc boundaries with space between questions", () => {
     let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
     let qtm1: QuestionTextModel = <QuestionTextModel>survey.getAllQuestions()[0];
     let qtm2: QuestionTextModel = <QuestionTextModel>survey.getAllQuestions()[1];
-    let docController: IDocOptions = {
+    let docOptions: IDocOptions = {
         fontSize: 30, xScale: 0.22, yScale: 0.36,
         margins: {
           marginLeft: 10,
@@ -191,14 +229,15 @@ test("Calc boundaries with space between questions", () => {
           marginBot: 10 }
       };
     let point: IPoint = {
-        xLeft: docController.margins.marginLeft,
-        yTop: docController.margins.marginTop
+        xLeft: docOptions.margins.marginLeft,
+        yTop: docOptions.margins.marginTop
     };
-    let tq1 = QuestionRepository.getInstance().create(qtm1, new DocController(docController));
+    let docController: DocController = new DocController(docOptions);
+    let tq1: IPdfQuestion = QuestionRepository.getInstance().create(qtm1, docController);
     let tq1_Boundaries: IRect = tq1.render(point, false)[0];
     point.yTop = tq1_Boundaries.yBot;
-    point.yTop += docController.fontSize * docController.yScale;
-    let tq2 = QuestionRepository.getInstance().create(qtm2, new DocController(docController));
+    point.yTop += docOptions.fontSize * docOptions.yScale;
+    let tq2: IPdfQuestion = QuestionRepository.getInstance().create(qtm2, docController);
     let tq2_Boundaries: IRect = tq2.render(point, false)[0];
     let resultBoundaries: IRect = {
         xLeft: tq1_Boundaries.xLeft,
@@ -207,11 +246,10 @@ test("Calc boundaries with space between questions", () => {
         yBot: tq2_Boundaries.yBot
     }
     let assumeBoundaries: IRect = {
-        xLeft: docController.margins.marginLeft,
-        xRight: docController.margins.marginLeft + (json.questions[1].title.length + 4) *
-                docController.fontSize * docController.xScale,
-        yTop: docController.margins.marginTop,
-        yBot: docController.margins.marginTop + 5 * docController.fontSize * docController.yScale
+        xLeft: docOptions.margins.marginLeft,
+        xRight: docController.paperWidth - docController.margins.marginRight,
+        yTop: docOptions.margins.marginTop,
+        yBot: docOptions.margins.marginTop + 5 * docOptions.fontSize * docOptions.yScale
     };
     expect(resultBoundaries.xLeft).toBeCloseTo(assumeBoundaries.xLeft);
     expect(resultBoundaries.xRight).toBeCloseTo(assumeBoundaries.xRight);
@@ -220,7 +258,6 @@ test("Calc boundaries with space between questions", () => {
 });
 
 test("Calc textbox boundaries title without number", () => {
-    let __dummy_tx = new TextQuestion(null, null);
     let json = {
         questions: [{
             name: "textbox",
@@ -230,8 +267,8 @@ test("Calc textbox boundaries title without number", () => {
     };
     let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
     survey.showQuestionNumbers  = "off";
-    let qtm: QuestionTextModel = <QuestionTextModel>survey.getAllQuestions()[0];
-    let docController: IDocOptions = {
+    let qm: Question = <Question>survey.getAllQuestions()[0];
+    let docOptions: IDocOptions = {
         fontSize: 30, xScale: 0.22, yScale: 0.36,
         margins: {
             marginLeft: 10,
@@ -240,17 +277,18 @@ test("Calc textbox boundaries title without number", () => {
             marginBot: 10
         }
     };
-    let tq = QuestionRepository.getInstance().create(qtm, new DocController(docController));
-    let resultBoundaries: IRect = tq.render({
-        xLeft: docController.margins.marginLeft,
-        yTop: docController.margins.marginTop
+    let docController: DocController = new DocController(docOptions);
+    let pq: IPdfQuestion = new PdfQuestion(qm, docController);
+    let resultBoundaries: IRect = pq.render({
+        xLeft: docOptions.margins.marginLeft,
+        yTop: docOptions.margins.marginTop
     }, false)[0];
     let assumeBoundaries: IRect = {
-        xLeft: docController.margins.marginLeft,
-        xRight: docController.margins.marginLeft + json.questions[0].title.length *
-            docController.fontSize * docController.xScale,
-        yTop: docController.margins.marginTop,
-        yBot: docController.margins.marginTop + 2 * docController.fontSize * docController.yScale
+        xLeft: docOptions.margins.marginLeft,
+        xRight: docOptions.margins.marginLeft + json.questions[0].title.length *
+            docOptions.fontSize * docOptions.xScale,
+        yTop: docOptions.margins.marginTop,
+        yBot: docOptions.margins.marginTop + docOptions.fontSize * docOptions.yScale
     };
     expect(resultBoundaries.xLeft).toBeCloseTo(assumeBoundaries.xLeft);
     expect(resultBoundaries.xRight).toBeCloseTo(assumeBoundaries.xRight);
@@ -279,7 +317,7 @@ test("Calc textbox boundaries required", () => {
             marginBot: 10
         }
     };
-    let tq = QuestionRepository.getInstance().create(qtm, new DocController(docController));
+    let tq: IPdfQuestion = QuestionRepository.getInstance().create(qtm, new DocController(docController));
     let resultBoundaries: IRect = tq.render({
         xLeft: docController.margins.marginLeft,
         yTop: docController.margins.marginTop

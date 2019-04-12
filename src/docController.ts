@@ -52,6 +52,12 @@ export class DocOptions implements IDocOptions {
     get yScale(): number {
         return this._yScale;
     }
+    get paperWidth(): number {
+        return this._paperWidth;
+    }
+    get paperHeight(): number {
+        return this._paperHeight;
+    }
     get margins(): IMargin {
         return this._margins;
     }
