@@ -3,7 +3,7 @@ export * from "./helpers";
 export { JsPdfSurveyModel as Survey } from "../survey";
 export {
   IPdfQuestion,
-  PdfQuestionRendererBase
+  PdfQuestion
 } from "../question";
 export {
   QuestionRepository
