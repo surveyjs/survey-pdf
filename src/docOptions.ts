@@ -99,5 +99,13 @@ export class DocOptions implements IDocOptions {
         }
         return false;
     }
+    measureText(text: string) {
+        return {
+            width: text.length *
+                this.fontSize *
+                this.xScale,
+            height: this.fontSize * this.yScale
+        }
+    }
 }
 
