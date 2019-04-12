@@ -1,10 +1,10 @@
 import { IQuestion } from "survey-core";
-import { DocOptions } from "./docOptions";
+import { DocController } from "./docController";
 import { IPdfQuestion, PdfQuestion } from "./question";
 
 export type RendererConstructor = new (
     question: IQuestion,
-    docOptions: DocOptions
+    docController: DocController
 ) => IPdfQuestion;
 
 export class QuestionRepository {
@@ -16,10 +16,10 @@ export class QuestionRepository {
     register(modelType: string, rendererConstructor: RendererConstructor) {
         this.questions[modelType] = rendererConstructor;
     }
-    create(question: IQuestion, docOptions: DocOptions): IPdfQuestion {
+    create(question: IQuestion, docController: DocController): IPdfQuestion {
         let rendererConstructor =
             this.questions[question.getType()] || PdfQuestion;
-        return new rendererConstructor(question, docOptions);
+        return new rendererConstructor(question, docController);
     }
 }
 

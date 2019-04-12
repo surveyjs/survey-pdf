@@ -22,7 +22,7 @@ test("Set textbox no value", () => {
           marginTop: 10,
           marginBot: 10 }
       });
-    expect(survey.docOptions.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields[0].value)
+    expect(survey.docController.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields[0].value)
         .toBe("");
 });
 
@@ -44,7 +44,7 @@ test("Set textbox default value", () => {
           marginTop: 10,
           marginBot: 10 }
       });
-    expect(survey.docOptions.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields[0].value)
+    expect(survey.docController.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields[0].value)
         .toBe(json.questions[0].defaultValue);
 });
 
@@ -68,7 +68,7 @@ test("Set textbox data value", () => {
           marginTop: 10,
           marginBot: 10 }
       });
-    expect(survey.docOptions.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields[0].value)
+    expect(survey.docController.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields[0].value)
         .toBe(survey.data.textbox);
 });
 
@@ -93,8 +93,8 @@ test("Set textbox data value with default value", () => {
           marginTop: 10,
           marginBot: 10 }
       });
-    expect(survey.docOptions.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields[0].value)
+    expect(survey.docController.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields[0].value)
         .toBe(survey.data.textbox);
-    expect(survey.docOptions.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields[0].value)
+    expect(survey.docController.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields[0].value)
         .not.toBe(json.questions[0].defaultValue);
 });

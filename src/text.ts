@@ -1,8 +1,8 @@
 import {
   IPoint,
   IRect,
-  DocOptions
-} from "./docOptions";
+  DocController
+} from "./docController";
 import {
   PdfQuestion
 } from "./question";
@@ -13,16 +13,16 @@ import { IQuestion } from "survey-core";
 import { QuestionTextModel } from "survey-core";
 
 export class TextQuestion extends PdfQuestion {
-  constructor(protected question: IQuestion, protected docOptions: DocOptions) {
-    super(question, docOptions);
+  constructor(protected question: IQuestion, protected docController: DocController) {
+    super(question, docController);
   }
   renderContent(point: IPoint, isRender: boolean): IRect[] {
     let question: QuestionTextModel = this.getQuestion<QuestionTextModel>();
     let width =
       question.title.length *
-      this.docOptions.fontSize *
-      this.docOptions.xScale;
-    let height = this.docOptions.fontSize * this.docOptions.yScale;
+      this.docController.fontSize *
+      this.docController.xScale;
+    let height = this.docController.fontSize * this.docController.yScale;
     let boundaries: IRect = {
       xLeft: point.xLeft,
       xRight: point.xLeft + width,
@@ -30,7 +30,7 @@ export class TextQuestion extends PdfQuestion {
       yBot: point.yTop + height
     };
     if (isRender) {
-      let textField = new (<any>this.docOptions.doc.AcroFormTextField)();
+      let textField = new (<any>this.docController.doc.AcroFormTextField)();
       textField.Rect = [
         boundaries.xLeft,
         boundaries.yTop,
@@ -40,7 +40,7 @@ export class TextQuestion extends PdfQuestion {
       textField.multiline = false;
       textField.value = question.value || question.defaultValue || "";
       textField.fieldName = question.id;
-      this.docOptions.doc.addField(textField);
+      this.docController.doc.addField(textField);
     }
     return [boundaries];
   }

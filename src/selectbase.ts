@@ -1,19 +1,19 @@
 import { IQuestion, QuestionSelectBase, ItemValue } from "survey-core";
 import { PdfQuestion } from "./question";
-import { IPoint, IRect, DocOptions } from "./docOptions";
+import { IPoint, IRect, DocController } from "./docController";
 
 export class SelectBaseQuestion extends PdfQuestion {
-  constructor(protected question: IQuestion, protected docOptions: DocOptions) {
-    super(question, docOptions);
+  constructor(protected question: IQuestion, protected docController: DocController) {
+    super(question, docController);
   }
   // getBoundariesComment(point: IPoint): IRect {
   //   let question = this.getQuestion<QuestionSelectBase>();
   //   let textBoundaries = this.renderText(point, question.commentText, false);
   //   let width =
   //     question.commentText.length *
-  //     this.docOptions.fontSize *
-  //     this.docOptions.xScale;
-  //   let height = this.docOptions.fontSize * this.docOptions.yScale;
+  //     this.docController.fontSize *
+  //     this.docController.xScale;
+  //   let height = this.docController.fontSize * this.docController.yScale;
   //   return {
   //     xLeft: textBoundaries.xLeft,
   //     xRight: textBoundaries.xLeft + width,
@@ -26,10 +26,10 @@ export class SelectBaseQuestion extends PdfQuestion {
   //     xLeft: point.xLeft,
   //     xRight:
   //       point.xLeft +
-  //       this.docOptions.fontSize * this.docOptions.yScale,
+  //       this.docController.fontSize * this.docController.yScale,
   //     yTop: point.yTop,
   //     yBot:
-  //       point.yTop + this.docOptions.fontSize * this.docOptions.yScale
+  //       point.yTop + this.docController.fontSize * this.docController.yScale
   //   };
   //   let textPoint: IPoint = {
   //     xLeft: buttonBoudndaries.xRight,
@@ -88,12 +88,12 @@ export class SelectBaseQuestion extends PdfQuestion {
   renderComment(point: IPoint, isRender: boolean) {
     let question = this.getQuestion<QuestionSelectBase>();
     let textBoundaries = this.renderText(point, question.commentText, false);
-    let textField = new (<any>this.docOptions.doc.AcroFormTextField)();
+    let textField = new (<any>this.docController.doc.AcroFormTextField)();
     let width =
       question.commentText.length *
-      this.docOptions.fontSize *
-      this.docOptions.xScale;
-    let height = this.docOptions.fontSize * this.docOptions.yScale;
+      this.docController.fontSize *
+      this.docController.xScale;
+    let height = this.docController.fontSize * this.docController.yScale;
     if (isRender) {
       this.renderText(point, question.commentText, true);
       textField.Rect = [
@@ -104,7 +104,7 @@ export class SelectBaseQuestion extends PdfQuestion {
       ];
       textField.multiline = false;
       textField.value = "";
-      this.docOptions.doc.addField(textField);
+      this.docController.doc.addField(textField);
     }
     return {
       xLeft: textBoundaries.xLeft,

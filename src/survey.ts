@@ -12,13 +12,13 @@
 //sift up interface to testing
 
 import { SurveyModel, IQuestion } from "survey-core";
-import { IDocOptions, DocOptions, IPoint, IRect } from "./docOptions";
+import { IPoint, IRect, IDocOptions, DocController } from "./docController";
 import { IPdfQuestion } from "./question";
 import { QuestionRepository } from "./questionRepository";
 import addCustomFonts from "./customFonts";
 
 export class JsPdfSurveyModel extends SurveyModel {
-  docOptions: DocOptions;
+  docController: DocController;
   constructor(jsonObject: any) {
     super(jsonObject);
   }
@@ -29,34 +29,36 @@ export class JsPdfSurveyModel extends SurveyModel {
    */
 
   render(options: IDocOptions) {
-    this.docOptions = new DocOptions(options);
-    // this.docOptions.doc.setFont("segoe");
+    this.docController = new DocController(options);
+    // this.docController.doc.setFont("segoe");
     let point: IPoint = {
-      xLeft: this.docOptions.margins.marginLeft,
-      yTop: this.docOptions.margins.marginTop
+      xLeft: this.docController.margins.marginLeft,
+      yTop: this.docController.margins.marginTop
     };
     this.pages.forEach((page: any) => {
       page.questions.forEach((question: IQuestion) => {
         let renderer: IPdfQuestion = QuestionRepository.getInstance().create(
           question,
-          this.docOptions
+          this.docController
         );
         let renderBoundaries: IRect[] = renderer.render(point, false);
-        if (this.docOptions.tryNewPageQuestion(renderBoundaries)) {
-          point.xLeft = this.docOptions.margins.marginLeft;
-          point.yTop = this.docOptions.margins.marginTop;
+        if (this.docController.isNewPageQuestion(renderBoundaries)) {
+          this.docController.addPage();
+          point.xLeft = this.docController.margins.marginLeft;
+          point.yTop = this.docController.margins.marginTop;
         }
         renderBoundaries = renderer.render(point, true);
         point.yTop = renderBoundaries[renderBoundaries.length - 1].yBot;
-        point.yTop += this.docOptions.fontSize * this.docOptions.yScale;
-        if (this.docOptions.tryNewPageElement(point.yTop)) {
-          point.xLeft = this.docOptions.margins.marginLeft;
-          point.yTop = this.docOptions.margins.marginTop;
+        point.yTop += this.docController.fontSize * this.docController.yScale;
+        if (this.docController.isNewPageElement(point.yTop)) {
+          this.docController.addPage();
+          point.xLeft = this.docController.margins.marginLeft;
+          point.yTop = this.docController.margins.marginTop;
         }
       });
     });
   }
   save(fileName: string = "survey_result.pdf") {
-    this.docOptions.doc.save(fileName);
+    this.docController.doc.save(fileName);
   }
 }

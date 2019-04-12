@@ -179,8 +179,6 @@ survey.data = {
 };
 // debugger
 
-// survey.showQuestionNumbers  = "off";
-survey.questionStartIndex = "A";
 survey.render(
   {
     fontSize: 30, xScale: 0.22, yScale: 0.36,

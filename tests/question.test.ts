@@ -22,7 +22,7 @@ test("Check title number", () => {
           marginTop: 10,
           marginBot: 10 }
       });
-    let internalContent = survey.docOptions.doc.internal.pages[1][2];
+    let internalContent = survey.docController.doc.internal.pages[1][2];
     let regex = /\((.*)\)/;
     let content = internalContent.match(regex)[1];
     expect(content).toBe("1 . " + json.questions[0].title);
@@ -46,7 +46,7 @@ test("Check title number with custom questionStartIndex", () => {
           marginTop: 10,
           marginBot: 10 }
       });
-    let internalContent = survey.docOptions.doc.internal.pages[1][2];
+    let internalContent = survey.docController.doc.internal.pages[1][2];
     let regex = /\((.*)\)/;
     let content = internalContent.match(regex)[1];
     expect(content).toBe("7 . " + json.questions[0].title);
@@ -70,7 +70,7 @@ test("Check title number with alphabetical questionStartIndex", () => {
           marginTop: 10,
           marginBot: 10 }
       });
-    let internalContent = survey.docOptions.doc.internal.pages[1][2];
+    let internalContent = survey.docController.doc.internal.pages[1][2];
     let regex = /\((.*)\)/;
     let content = internalContent.match(regex)[1];
     expect(content).toBe("A . " + json.questions[0].title);

@@ -1,5 +1,5 @@
 import { IQuestion, Question } from "survey-core";
-import { IPoint, IRect, DocOptions } from "./docOptions"
+import { IPoint, IRect, DocController } from "./docController"
 
 export interface IPdfQuestion {
     renderContent(point: IPoint, isRender: boolean): IRect[];
@@ -8,10 +8,10 @@ export interface IPdfQuestion {
 export class PdfQuestion implements IPdfQuestion {
     constructor(
         protected question: IQuestion,
-        protected docOptions: DocOptions
+        protected docController: DocController
     ) { }
     private renderTitle(point: IPoint, isRender: boolean = true): IRect {
-        this.docOptions.doc.setFontStyle("bold");
+        this.docController.doc.setFontStyle("bold");
         let question = this.getQuestion<Question>();
         let number = question["no"] != "" ? question["no"] + " . " : "";
         let textBoundaries = this.renderText(
@@ -19,7 +19,7 @@ export class PdfQuestion implements IPdfQuestion {
             number + question.title,
             isRender
         );
-        this.docOptions.doc.setFontStyle("normal");
+        this.docController.doc.setFontStyle("normal");
         return textBoundaries;
     }
     renderText(point: IPoint, text: string, isRender: boolean = true): IRect {
@@ -27,13 +27,13 @@ export class PdfQuestion implements IPdfQuestion {
             xLeft: point.xLeft,
             xRight:
                 point.xLeft +
-                text.length * this.docOptions.fontSize * this.docOptions.xScale,
+                text.length * this.docController.fontSize * this.docController.xScale,
             yTop: point.yTop,
-            yBot: point.yTop + this.docOptions.fontSize * this.docOptions.yScale
+            yBot: point.yTop + this.docController.fontSize * this.docController.yScale
         };
         if (isRender) {
             let alignPoint = this.alignPoint(point, boundaruies);
-            this.docOptions.doc.text(text, alignPoint.xLeft, alignPoint.yTop, {
+            this.docController.doc.text(text, alignPoint.xLeft, alignPoint.yTop, {
                 align: "left",
                 baseline: "middle"
             });
@@ -60,7 +60,7 @@ export class PdfQuestion implements IPdfQuestion {
                     yTop: titleRect.yBot
                 };
                 let contentRects: IRect[] = this.renderContent(contentPoint, isRender);
-                if (contentRects[0].yTop !== this.docOptions.margins.marginTop) {
+                if (contentRects[0].yTop !== this.docController.margins.marginTop) {
                     contentRects[0].xLeft = titleRect.xLeft;
                     contentRects[0].xRight = Math.max(
                         contentRects[0].xRight,
@@ -79,13 +79,11 @@ export class PdfQuestion implements IPdfQuestion {
                     yTop: contentRects[contentRects.length - 1].yBot
                 };
                 let titleRect: IRect = this.renderTitle(titlePoint, false);
-                let isNewPage: boolean = this.docOptions.tryNewPageElement(
-                    titleRect.yBot,
-                    isRender
-                );
+                let isNewPage: boolean = this.docController.isNewPageElement(titleRect.yBot);
                 if (isNewPage) {
-                    titlePoint.xLeft = this.docOptions.margins.marginLeft;
-                    titlePoint.yTop = this.docOptions.margins.marginTop;
+                    if (isRender) this.docController.addPage();
+                    titlePoint.xLeft = this.docController.margins.marginLeft;
+                    titlePoint.yTop = this.docController.margins.marginTop;
                 }
                 titleRect = this.renderTitle(titlePoint, isRender);
                 if (isNewPage) {
