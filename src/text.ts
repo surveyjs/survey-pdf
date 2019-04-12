@@ -1,10 +1,14 @@
 import {
   IPoint,
   IRect,
-  QuestionRepository,
-  DocOptions,
+  DocOptions
+} from "./docOptions";
+import {
   PdfQuestionRendererBase
-} from "./survey";
+} from "./question";
+import {
+  QuestionRepository
+} from "./questionRepository";
 import { IQuestion } from "survey-core";
 import { QuestionTextModel } from "survey-core";
 

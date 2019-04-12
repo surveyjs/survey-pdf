@@ -2,10 +2,12 @@ export * from "./helpers";
 
 export { JsPdfSurveyModel as Survey } from "../survey";
 export {
-  QuestionRepository,
   IPdfQuestion,
   PdfQuestionRendererBase
-} from "../survey";
+} from "../question";
+export {
+  QuestionRepository
+} from "../questionRepository";
 export { TextQuestion } from "../text";
 export { SelectBaseQuestion } from "../selectbase";
 export { CheckBoxQuestion } from "../checkbox";
