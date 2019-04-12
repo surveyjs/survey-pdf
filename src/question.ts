@@ -14,9 +14,10 @@ export class PdfQuestion implements IPdfQuestion {
         this.docController.doc.setFontStyle("bold");
         let question = this.getQuestion<Question>();
         let number = question["no"] != "" ? question["no"] + " . " : "";
+        let required = question.isRequired ? " " + question.requiredText : "";
         let textBoundaries = this.renderText(
             point,
-            number + question.title,
+            number + question.title + required,
             isRender
         );
         this.docController.doc.setFontStyle("normal");

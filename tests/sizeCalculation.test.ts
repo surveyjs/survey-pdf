@@ -258,6 +258,45 @@ test("Calc textbox boundaries title without number", () => {
     expect(resultBoundaries.yBot).toBeCloseTo(assumeBoundaries.yBot);
 });
 
+test("Calc textbox boundaries required", () => {
+    let __dummy_tx = new TextQuestion(null, null);
+    let json = {
+        questions: [{
+            name: "textbox",
+            type: "text",
+            title: "Please enter your name:",
+            isRequired: true
+        }]
+    };
+    let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
+    let qtm: QuestionTextModel = <QuestionTextModel>survey.getAllQuestions()[0];
+    let docController: IDocOptions = {
+        fontSize: 30, xScale: 0.22, yScale: 0.36,
+        margins: {
+            marginLeft: 10,
+            marginRight: 10,
+            marginTop: 10,
+            marginBot: 10
+        }
+    };
+    let tq = QuestionRepository.getInstance().create(qtm, new DocController(docController));
+    let resultBoundaries: IRect = tq.render({
+        xLeft: docController.margins.marginLeft,
+        yTop: docController.margins.marginTop
+    }, false)[0];
+    let assumeBoundaries: IRect = {
+        xLeft: docController.margins.marginLeft,
+        xRight: docController.margins.marginLeft + (json.questions[0].title.length + 5
+            + qtm.requiredText.length) * docController.fontSize * docController.xScale,
+        yTop: docController.margins.marginTop,
+        yBot: docController.margins.marginTop + 2 * docController.fontSize * docController.yScale
+    };
+    expect(resultBoundaries.xLeft).toBeCloseTo(assumeBoundaries.xLeft);
+    expect(resultBoundaries.xRight).toBeCloseTo(assumeBoundaries.xRight);
+    expect(resultBoundaries.yTop).toBeCloseTo(assumeBoundaries.yTop);
+    expect(resultBoundaries.yBot).toBeCloseTo(assumeBoundaries.yBot);
+});
+
 test("Split large quesion on two pages", () => {
     let __dummy_cb = new CheckBoxQuestion(null, null);
     let json = {

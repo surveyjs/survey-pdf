@@ -2,6 +2,7 @@
     return {};
 };
 
+import { QuestionTextModel } from "survey-core";
 import { JsPdfSurveyModel } from "../src/survey";
 import { TextQuestion } from "../src/text";
 
@@ -74,4 +75,29 @@ test("Check title number with alphabetical questionStartIndex", () => {
     let regex = /\((.*)\)/;
     let content = internalContent.match(regex)[1];
     expect(content).toBe("A . " + json.questions[0].title);
+});
+
+test("Check title required text", () => {
+  let __dummy_tx = new TextQuestion(null, null);
+  let json = { questions: [ {
+      name: "textbox",
+      type: "text",
+      title: "Filling Required",
+      isRequired: true
+    }]
+  };
+  let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
+  survey.render({
+      fontSize: 30, xScale: 0.22, yScale: 0.36,
+      margins: {
+        marginLeft: 10,
+        marginRight: 10,
+        marginTop: 10,
+        marginBot: 10 }
+    });
+  let internalContent = survey.docController.doc.internal.pages[1][2];
+  let regex = /\((.*)\)/;
+  let content = internalContent.match(regex)[1];
+  expect(content).toBe("1 . " + json.questions[0].title + " " +
+    (<QuestionTextModel>survey.getAllQuestions()[0]).requiredText);
 });

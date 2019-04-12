@@ -20,7 +20,6 @@ var json = {
       type: "checkbox",
       name: "radio",
       title: "What radio you are like?",
-      isRequired: true,
       choices: ["Radio City", "Big FM", "Red FM", "Radio Mirchi"],
       titleLocation: "top"
     },
@@ -28,7 +27,6 @@ var json = {
       name: "name",
       type: "text",
       title: "Please enter your name:",
-      isRequired: true
     },
     {
       name: "name2",
@@ -111,7 +109,6 @@ var json = {
       name: "name3",
       type: "text",
       title: "Rarrararar:",
-      isRequired: true,
       titleLocation: "top",
       defaultValue: "def"
     },
@@ -127,7 +124,6 @@ var json = {
       name: "name5",
       type: "text",
       title: "Rarrararar:",
-      isRequired: true,
       titleLocation: "top"
     },
     {
