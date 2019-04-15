@@ -24,6 +24,22 @@ export class PdfQuestion implements IPdfQuestion {
         this.docController.doc.setFontStyle("normal");
         return boundaries;
     }
+    private renderDescription(point: IPoint, isRender: boolean = true): IRect {
+        let oldFontSize: number = this.docController.fontSize;
+        this.docController.fontSize = oldFontSize * PdfQuestion.DESCRIPTION_FONT_SIZE_SCALE_MAGIC;
+        let boundaries: IRect = {
+            xLeft: point.xLeft,
+            xRight: point.xLeft,
+            yTop: point.yTop,
+            yBot: point.yTop
+        }
+        let question: Question = this.getQuestion<Question>();
+        if (question.description != "") {
+            boundaries = this.renderText(point, question.description, isRender);
+        }
+        this.docController.fontSize = oldFontSize;
+        return boundaries;
+    }
     renderText(point: IPoint, text: string, isRender: boolean = true): IRect {
         let { width, height } = this.docController.measureText(text);
         let boundaruies: IRect = {
@@ -56,16 +72,22 @@ export class PdfQuestion implements IPdfQuestion {
             case "top":
             case "default": {
                 let titleRect: IRect = this.renderTitle(point, isRender);
-                let contentPoint: IPoint = {
+                let descPoint: IPoint = {
                     xLeft: titleRect.xLeft,
                     yTop: titleRect.yBot
+                };
+                let descRect: IRect = this.renderDescription(descPoint, isRender);
+                let contentPoint: IPoint = {
+                    xLeft: descRect.xLeft,
+                    yTop: descRect.yBot
                 };
                 let contentRects: IRect[] = this.renderContent(contentPoint, isRender);
                 if (contentRects[0].yTop !== this.docController.margins.marginTop) {
                     contentRects[0].xLeft = titleRect.xLeft;
                     contentRects[0].xRight = Math.max(
+                        titleRect.xRight,
+                        descRect.xRight,
                         contentRects[0].xRight,
-                        titleRect.xRight
                     );
                     contentRects[0].yTop = titleRect.yTop;
                 } else {
@@ -80,33 +102,55 @@ export class PdfQuestion implements IPdfQuestion {
                     yTop: contentRects[contentRects.length - 1].yBot
                 };
                 let titleRect: IRect = this.renderTitle(titlePoint, false);
-                let isNewPage: boolean = this.docController.isNewPageElement(titleRect.yBot);
+                let descPoint: IPoint = {
+                    xLeft: titleRect.xLeft,
+                    yTop: titleRect.yBot
+                };
+                let descRect: IRect = this.renderDescription(descPoint, false);
+                let isNewPage: boolean = this.docController.isNewPageElement(descRect.yBot);
                 if (isNewPage) {
                     if (isRender) this.docController.addPage();
                     titlePoint.xLeft = this.docController.margins.marginLeft;
                     titlePoint.yTop = this.docController.margins.marginTop;
                 }
                 titleRect = this.renderTitle(titlePoint, isRender);
+                descPoint = {
+                    xLeft: titleRect.xLeft,
+                    yTop: titleRect.yBot
+                };
+                descRect = this.renderDescription(descPoint, isRender);
                 if (isNewPage) {
-                    contentRects.push(titleRect);
+                    contentRects.push({
+                        xLeft: titleRect.xLeft,
+                        xRight: Math.max(titleRect.xRight, descRect.xRight),
+                        yTop: titleRect.yTop,
+                        yBot: descRect.yBot
+                    });
                 } else {
                     contentRects[contentRects.length - 1].xRight = Math.max(
+                        titleRect.xRight,
+                        descRect.xRight,
                         contentRects[contentRects.length - 1].xRight,
-                        titleRect.xRight
                     );
-                    contentRects[contentRects.length - 1].yBot = titleRect.yBot;
+                    contentRects[contentRects.length - 1].yBot = descRect.yBot;
                 }
                 return contentRects;
             }
             case "left": {
                 let titleRect: IRect = this.renderTitle(point, isRender);
+                let descPoint: IPoint = {
+                    xLeft: titleRect.xLeft,
+                    yTop: titleRect.yBot
+                };
+                let descRect: IRect = this.renderDescription(descPoint, isRender);
                 let contentPoint: IPoint = {
-                    xLeft: titleRect.xRight,
+                    xLeft: Math.max(titleRect.xRight, descRect.xRight),
                     yTop: titleRect.yTop
                 };
                 let contentRects: IRect[] = this.renderContent(contentPoint, isRender);
                 contentRects[0].xLeft = titleRect.xLeft;
-                contentRects[0].yBot = Math.max(contentRects[0].yBot, titleRect.yBot);
+                contentRects[0].yTop = titleRect.yTop;
+                contentRects[0].yBot = Math.max(contentRects[0].yBot, descRect.yBot);
                 return contentRects;
             }
             case "hidden": {

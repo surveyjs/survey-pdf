@@ -4,6 +4,7 @@ var json = {
       type: "checkbox",
       name: "car",
       title: "What car are you driving?",
+      description: "Description",
       isRequired: true,
       choices: [
         "Ford",
@@ -20,20 +21,24 @@ var json = {
       type: "checkbox",
       name: "radio",
       title: "What radio you are like?",
-      choices: ["Radio City", "Big FM", "Red FM", "Radio Mirchi"],
-      titleLocation: "top"
+      titleLocation: "bottom",
+      description: "Another description",
+      choices: ["Radio City", "Big FM", "Red FM", "Radio Mirchi"]
     },
     {
       name: "name",
       type: "text",
       title: "Please enter your name:",
+      titleLocation: "hidden",
+      description: "Hidden description",
     },
     {
       name: "name2",
       type: "text",
       title: "Rarrararar:",
       isRequired: true,
-      titleLocation: "left"
+      titleLocation: "left",
+      description: "Left description",
     },
     {
       type: "checkbox",

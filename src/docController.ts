@@ -96,6 +96,13 @@ export class DocController extends DocOptions {
     get doc(): any {
         return this._doc;
     }
+    get fontSize(): number {
+        return this._fontSize;
+    }
+    set fontSize(fontSize: number) {
+        this._fontSize = fontSize;
+        this._doc.setFontSize(this._fontSize);
+    }
     public addPage() {
         this.doc.addPage([
             this._paperWidth * DocOptions.PAPER_TO_LOGIC_SCALE_MAGIC,

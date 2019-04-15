@@ -160,7 +160,7 @@ test("Calc textbox boundaries title left", () => {
         xLeft: docOptions.margins.marginLeft,
         xRight: docController.paperWidth - docController.margins.marginRight,
         yTop: docOptions.margins.marginTop,
-        yBot: docOptions.margins.marginTop + docOptions.fontSize * docOptions.yScale
+        yBot: docOptions.margins.marginTop + docController.measureText().height
     };
     expect(resultBoundaries.xLeft).toBeCloseTo(assumeBoundaries.xLeft);
     expect(resultBoundaries.xRight).toBeCloseTo(assumeBoundaries.xRight);
