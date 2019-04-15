@@ -9,11 +9,6 @@ export class CheckBoxQuestion extends SelectBaseQuestion {
     protected docController: DocController
   ) {
     super(question, docController);
-    // if (this.getQuestion<QuestionCheckboxModel>().hasNone) {
-    //   this.getQuestion<QuestionCheckboxModel>().choices.push(
-    //     new ItemValue("None")
-    //   );
-    // }
   }
   renderItem(
     point: IPoint,
