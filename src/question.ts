@@ -6,22 +6,23 @@ export interface IPdfQuestion {
   render(point: IPoint, isRender: boolean): IRect[];
 }
 export class PdfQuestion implements IPdfQuestion {
+  static DESCRIPTION_FONT_SIZE_SCALE_MAGIC: number = 2.0 / 3.0;
   constructor(
     protected question: IQuestion,
     protected docController: DocController
-  ) {}
+  ) { }
   private renderTitle(point: IPoint, isRender: boolean = true): IRect {
     this.docController.doc.setFontStyle("bold");
-    let question = this.getQuestion<Question>();
-    let number = question["no"] != "" ? question["no"] + " . " : "";
-    let required = question.isRequired ? " " + question.requiredText : "";
-    let textBoundaries = this.renderText(
+    let question: Question = this.getQuestion<Question>();
+    let number: string = question["no"] != "" ? question["no"] + " . " : "";
+    let required: string = question.isRequired ? " " + question.requiredText : "";
+    let boundaries: IRect = this.renderText(
       point,
       number + question.title + required,
       isRender
     );
     this.docController.doc.setFontStyle("normal");
-    return textBoundaries;
+    return boundaries;
   }
   renderText(point: IPoint, text: string, isRender: boolean = true): IRect {
     let { width, height } = this.docController.measureText(text);
@@ -37,6 +38,7 @@ export class PdfQuestion implements IPdfQuestion {
         align: "left",
         baseline: "middle"
       });
+
     }
     return boundaruies;
   }

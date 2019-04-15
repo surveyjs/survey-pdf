@@ -22,10 +22,10 @@ export class CheckBoxQuestion extends SelectBaseQuestion {
     index: number,
     isRender: boolean
   ): IRect {
-    let { width, height } = this.docController.measureText();
+    let height: number = this.docController.measureText().height;
     let buttonBoudndaries: IRect = {
       xLeft: point.xLeft,
-      xRight: point.xLeft + width,
+      xRight: point.xLeft + height,
       yTop: point.yTop,
       yBot: point.yTop + height
     };
