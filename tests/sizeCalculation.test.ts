@@ -406,7 +406,6 @@ test("Calc boundaries title on the end of page", () => {
                 type: "checkbox",
                 name: "toendpagebox",
                 title: "I am on one page?",
-                isRequired: true,
                 choices: [
                     "One",
                     "Two",
@@ -416,8 +415,7 @@ test("Calc boundaries title on the end of page", () => {
             {
                 name: "textbox",
                 type: "text",
-                title: "New page title",
-                isRequired: true
+                title: "New page title"
             }
         ]
     };
@@ -434,7 +432,7 @@ test("Calc boundaries title on the end of page", () => {
     docOptions.paperHeight = 5 * (docOptions.fontSize * docOptions.yScale);
     let docController: DocController = new DocController(docOptions);
     let cbm: QuestionCheckboxModel = <QuestionCheckboxModel>survey.getAllQuestions()[0];
-    let cbq: IPdfQuestion = QuestionRepository.getInstance().create(cbm, new DocController(docOptions));
+    let cbq: IPdfQuestion = QuestionRepository.getInstance().create(cbm, docController);
     let point: IPoint = {
         xLeft: docOptions.margins.marginLeft,
         yTop: docOptions.margins.marginTop
@@ -448,7 +446,7 @@ test("Calc boundaries title on the end of page", () => {
     expect(point.xLeft).toBeCloseTo(docOptions.margins.marginLeft);
     expect(point.yTop).toBeCloseTo(docOptions.margins.marginTop);
     let qtm: QuestionTextModel = <QuestionTextModel>survey.getAllQuestions()[1];
-    let tq: IPdfQuestion = QuestionRepository.getInstance().create(qtm, new DocController(docOptions));
+    let tq: IPdfQuestion = QuestionRepository.getInstance().create(qtm, docController);
     let textboxBoundaries: IRect = tq.render(point, false)[0];
     let assumeBoundaries: IRect = {
         xLeft: docOptions.margins.marginLeft,
@@ -461,3 +459,50 @@ test("Calc boundaries title on the end of page", () => {
     expect(textboxBoundaries.yTop).toBeCloseTo(assumeBoundaries.yTop);
     expect(textboxBoundaries.yBot).toBeCloseTo(assumeBoundaries.yBot);
 });
+
+test("Check that checkbox has square boundaries", () => {
+    let __dummy_cb = new CheckBoxQuestion(null, null);
+    let json = {
+        questions: [
+            {
+                type: "checkbox",
+                name: "box",
+                title: "Square Pants",
+                choices: [
+                    "S"
+                ]
+            }
+        ]
+    };
+    let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
+    let docOptions: IDocOptions = {
+        fontSize: 30, xScale: 0.22, yScale: 0.36,
+        margins: {
+            marginLeft: 10,
+            marginRight: 10,
+            marginTop: 10,
+            marginBot: 10
+        } 
+    };
+    let docController: DocController = new DocController(docOptions);
+    let cbm: QuestionCheckboxModel = <QuestionCheckboxModel>survey.getAllQuestions()[0];
+    let cbq: CheckBoxQuestion =
+        <CheckBoxQuestion>QuestionRepository.getInstance().create(cbm, docController);
+    let point: IPoint = {
+        xLeft: docOptions.margins.marginLeft,
+        yTop: docOptions.margins.marginTop
+    }
+    let itemBoundaries: IRect = cbq.renderItem(point, cbm, cbm.choices[0], 0, false);
+    let assumeBoundaries: IRect = {
+        xLeft: docOptions.margins.marginLeft,
+        xRight: docOptions.margins.marginLeft + docController.measureText().height +
+            docController.measureText(json.questions[0].choices[0]).width,
+        yTop: docOptions.margins.marginTop,
+        yBot: docOptions.margins.marginTop + docController.measureText().height
+    };
+    expect(itemBoundaries.xLeft).toBeCloseTo(assumeBoundaries.xLeft);
+    expect(itemBoundaries.xRight).toBeCloseTo(assumeBoundaries.xRight);
+    expect(itemBoundaries.yTop).toBeCloseTo(assumeBoundaries.yTop);
+    expect(itemBoundaries.yBot).toBeCloseTo(assumeBoundaries.yBot);
+});
+
