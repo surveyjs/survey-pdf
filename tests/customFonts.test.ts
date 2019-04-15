@@ -1,3 +1,6 @@
+(<any>window)["HTMLCanvasElement"].prototype.getContext = () => {
+  return {};
+};
 import * as jsPDF from "jspdf";
 import addCustomFonts from "../src/customFonts";
 addCustomFonts(jsPDF);

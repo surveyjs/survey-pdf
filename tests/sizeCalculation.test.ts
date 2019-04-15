@@ -461,3 +461,59 @@ test("Calc boundaries title on the end of page", () => {
     expect(textboxBoundaries.yTop).toBeCloseTo(assumeBoundaries.yTop);
     expect(textboxBoundaries.yBot).toBeCloseTo(assumeBoundaries.yBot);
 });
+
+test("Calc boundaries comment on the end of page", () => {
+  let __dummy_cb = new CheckBoxQuestion(null, null);
+  let json = {
+    questions: [
+      {
+        type: "checkbox",
+        name: "toendpagebox",
+        hasComment: "true",
+        choices: ["One"]
+      }
+    ]
+  };
+  let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
+  let docOptions: IDocOptions = {
+    fontSize: 30,
+    xScale: 0.22,
+    yScale: 0.36,
+    margins: {
+      marginLeft: 10,
+      marginRight: 10,
+      marginTop: 10,
+      marginBot: 10
+    }
+  };
+  docOptions.paperHeight =
+    4 * (docOptions.fontSize * docOptions.yScale) +
+    docOptions.margins.marginBot +
+    docOptions.margins.marginTop;
+  let docController = new DocController(docOptions);
+  let cbm: QuestionCheckboxModel = <QuestionCheckboxModel>(
+    survey.getAllQuestions()[0]
+  );
+  let cbq: IPdfQuestion = QuestionRepository.getInstance().create(
+    cbm,
+    docController
+  );
+  let point: IPoint = {
+    xLeft: docController.margins.marginLeft,
+    yTop: docController.margins.marginTop
+  };
+  let checkboxBoundaries: IRect[] = cbq.render(point, false);
+  let assumeBoundaries: IRect = {
+    xLeft: docController.margins.marginLeft,
+    xRight: docController.paperWidth - docController.margins.marginRight,
+    yTop: docController.margins.marginTop,
+    yBot:
+      docController.margins.marginTop +
+      4 * (docController.fontSize * docController.yScale)
+  };
+  expect(checkboxBoundaries.length).toBe(2);
+  expect(checkboxBoundaries[1].xLeft).toBeCloseTo(assumeBoundaries.xLeft);
+  expect(checkboxBoundaries[1].xRight).toBeCloseTo(assumeBoundaries.xRight);
+  expect(checkboxBoundaries[1].yTop).toBeCloseTo(assumeBoundaries.yTop);
+  expect(checkboxBoundaries[1].yBot).toBeCloseTo(assumeBoundaries.yBot);
+});
