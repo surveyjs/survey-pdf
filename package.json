@@ -30,7 +30,6 @@
     "github-api": "^3.0.0",
     "html-loader": "0.4.4",
     "jest": "^23.6.0",
-    "jest-canvas-mock": "^2.0.0-beta.1",
     "live-server": "1.2.0",
     "node-uuid": "1.4.7",
     "replace-in-file": "^3.1.1",

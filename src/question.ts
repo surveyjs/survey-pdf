@@ -1,5 +1,5 @@
 import { IQuestion, Question } from "survey-core";
-import { IPoint, IRect, DocController } from "./docController"
+import { IPoint, IRect, DocController } from "./docController";
 
 export interface IPdfQuestion {
     renderContent(point: IPoint, isRender: boolean): IRect[];
@@ -16,7 +16,7 @@ export class PdfQuestion implements IPdfQuestion {
         let question: Question = this.getQuestion<Question>();
         let number: string = question["no"] != "" ? question["no"] + " . " : "";
         let required: string = question.isRequired ? " " + question.requiredText : "";
-        let boundaries:IRect = this.renderText(
+        let boundaries: IRect = this.renderText(
             point,
             number + question.title + required,
             isRender
@@ -51,10 +51,10 @@ export class PdfQuestion implements IPdfQuestion {
         if (isRender) {
             let alignPoint = this.alignPoint(point, boundaruies);
             this.docController.doc.text(text, alignPoint.xLeft, alignPoint.yTop, {
-                align: "left",
-                baseline: "middle"
+              align: "left",
+              baseline: "middle"
             });
-        }
+          }
         return boundaruies;
     }
     renderContent(point: IPoint, isRender: boolean = true): IRect[] {
@@ -157,6 +157,25 @@ export class PdfQuestion implements IPdfQuestion {
                 return this.renderContent(point, isRender);
             }
         }
+        // if (this.getQuestion<Question>().hasComment) {
+        // let commentRect: IRect = this.renderComment(
+        //     {
+        //     xLeft: contentRects[contentRects.length - 1].xLeft,
+        //     yTop: contentRects[contentRects.length - 1].yBot
+        //     },
+        //     isRender
+        // );
+        // if (commentRect.yTop == this.docController.margins.marginTop) {
+        //     contentRects.push(commentRect);
+        // } else {
+        //     contentRects[contentRects.length - 1].yBot = commentRect.yBot;
+        //     contentRects[contentRects.length - 1].xRight = Math.max(
+        //     contentRects[contentRects.length - 1].xRight,
+        //     commentRect.xRight
+        //     );
+        // }
+        // }
+        // return contentRects;
     }
     alignPoint(point: IPoint, boundaries: IRect): IPoint {
         return {
@@ -167,5 +186,46 @@ export class PdfQuestion implements IPdfQuestion {
     getQuestion<T extends Question>(): T {
         return <T>this.question;
     }
-}
+    renderComment(point: IPoint, isRender: boolean) {
+        let question = this.getQuestion<Question>();
+        let textBoundaries = this.renderText(point, question.commentText, false);
+        let textFieldWidth = this.docController.paperWidth -
+        this.docController.margins.marginRight - point.xLeft;
+        let textFieldHeight = this.docController.fontSize * this.docController.yScale * 3;
+        let textField = new (<any>this.docController.doc.AcroFormTextField)();
+        textField.fontSize = this.docController.fontSize;
+        textField.maxFontSize = this.docController.fontSize;
 
+        if (this.docController.isNewPageElement(textBoundaries.yBot + textFieldHeight)) {
+            this.docController.addPage();
+            textBoundaries.xRight =
+                this.docController.margins.marginLeft +
+                textBoundaries.xLeft -
+                textBoundaries.xRight;
+            textBoundaries.yBot =
+                this.docController.margins.marginTop +
+                textBoundaries.yBot -
+                textBoundaries.yTop;
+            textBoundaries.xLeft = this.docController.margins.marginLeft;
+            textBoundaries.yTop = this.docController.margins.marginTop;
+        }
+        if (isRender) {
+            this.renderText(point, question.commentText, true);
+            textField.Rect = [
+                textBoundaries.xLeft,
+                textBoundaries.yBot,
+                textFieldWidth,
+                textFieldHeight
+            ];
+            textField.multiline = true;
+            textField.value = "";
+            this.docController.doc.addField(textField);
+        }
+        return {
+            xLeft: textBoundaries.xLeft,
+            xRight: textBoundaries.xLeft + textFieldWidth,
+            yTop: textBoundaries.yTop,
+            yBot: textBoundaries.yBot + textFieldHeight
+        };
+    }
+}

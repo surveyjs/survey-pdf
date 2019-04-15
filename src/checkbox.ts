@@ -4,7 +4,10 @@ import { IPoint, IRect, DocController } from "./docController";
 import { QuestionRepository } from "./questionRepository";
 
 export class CheckBoxQuestion extends SelectBaseQuestion {
-  constructor(protected question: IQuestion, protected docController: DocController) {
+  constructor(
+    protected question: IQuestion,
+    protected docController: DocController
+  ) {
     super(question, docController);
     // if (this.getQuestion<QuestionCheckboxModel>().hasNone) {
     //   this.getQuestion<QuestionCheckboxModel>().choices.push(
@@ -68,11 +71,7 @@ export class CheckBoxQuestion extends SelectBaseQuestion {
     let lastPoint: IPoint = { xLeft: point.xLeft, yTop: point.yTop };
     let currPoint: IPoint = { xLeft: point.xLeft, yTop: point.yTop };
     let boundaries: Array<IRect> = new Array();
-    let sortedChoices = this.getSortedChoices();
-    if (this.getQuestion<QuestionCheckboxModel>().hasNone) {
-      sortedChoices.push(new ItemValue("None"));
-    }
-    sortedChoices.forEach((itemValue: ItemValue, index: number) => {
+    question.visibleChoices.forEach((itemValue: ItemValue, index: number) => {
       let checkButtonBoundaries: IRect = this.renderItem(
         currPoint,
         question,
@@ -105,27 +104,6 @@ export class CheckBoxQuestion extends SelectBaseQuestion {
       currPoint.yTop = checkButtonBoundaries.yBot;
       right = Math.max(right, checkButtonBoundaries.xRight);
     });
-    if (question.hasComment) {
-      let commentBoundarues = this.renderComment(currPoint, false);
-      if (this.docController.isNewPageElement(commentBoundarues.yBot)) {
-        if (isRender) this.docController.addPage();
-        boundaries.push({
-          xLeft: lastPoint.xLeft,
-          xRight: right,
-          yTop: lastPoint.yTop,
-          yBot: bottom
-        });
-        currPoint.xLeft = this.docController.margins.marginLeft;
-        currPoint.yTop = this.docController.margins.marginTop;
-        lastPoint = { xLeft: currPoint.xLeft, yTop: currPoint.yTop };
-        right = this.docController.margins.marginLeft;
-        bottom = currPoint.yTop;
-      }
-      commentBoundarues = this.renderComment(currPoint, isRender);
-      bottom = commentBoundarues.yBot;
-      currPoint.yTop = commentBoundarues.yBot;
-      right = Math.max(right, commentBoundarues.xRight);
-    }
     boundaries.push({
       xLeft: lastPoint.xLeft,
       xRight: right,

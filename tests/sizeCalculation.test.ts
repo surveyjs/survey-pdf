@@ -3,7 +3,7 @@
 };
 
 import { QuestionRepository } from "../src/questionRepository";
-import { IPoint, IRect, IDocOptions,  DocController } from "../src/docController";
+import { IPoint, IRect, IDocOptions, DocController } from "../src/docController";
 import { JsPdfSurveyModel } from "../src/survey";
 import { Question, QuestionTextModel, QuestionCheckboxModel } from "survey-core";
 import { PdfQuestion, IPdfQuestion } from "../src/question";
@@ -219,7 +219,7 @@ test("Calc boundaries with space between questions", () => {
             name: "textbox2",
             type: "text",
             title: "Space between questions!"
-      }]
+        }]
     };
     let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
     let qtm1: QuestionTextModel = <QuestionTextModel>survey.getAllQuestions()[0];
@@ -227,11 +227,12 @@ test("Calc boundaries with space between questions", () => {
     let docOptions: IDocOptions = {
         fontSize: 30, xScale: 0.22, yScale: 0.36,
         margins: {
-          marginLeft: 10,
-          marginRight: 10,
-          marginTop: 10,
-          marginBot: 10 }
-      };
+            marginLeft: 10,
+            marginRight: 10,
+            marginTop: 10,
+            marginBot: 10
+        }
+    };
     let point: IPoint = {
         xLeft: docOptions.margins.marginLeft,
         yTop: docOptions.margins.marginTop
@@ -270,7 +271,7 @@ test("Calc textbox boundaries title without number", () => {
         }]
     };
     let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
-    survey.showQuestionNumbers  = "off";
+    survey.showQuestionNumbers = "off";
     let qm: Question = <Question>survey.getAllQuestions()[0];
     let docOptions: IDocOptions = {
         fontSize: 30, xScale: 0.22, yScale: 0.36,
@@ -431,7 +432,7 @@ test("Calc boundaries title on the end of page", () => {
             marginRight: 10,
             marginTop: 10,
             marginBot: 10
-        } 
+        }
     };
     docOptions.paperHeight = 5 * (docOptions.fontSize * docOptions.yScale);
     let docController: DocController = new DocController(docOptions);
@@ -464,6 +465,62 @@ test("Calc boundaries title on the end of page", () => {
     expect(textboxBoundaries.yBot).toBeCloseTo(assumeBoundaries.yBot);
 });
 
+test("Calc boundaries comment on the end of page", () => {
+    let __dummy_cb = new CheckBoxQuestion(null, null);
+    let json = {
+        questions: [
+            {
+                type: "checkbox",
+                name: "toendpagebox",
+                hasComment: "true",
+                choices: ["One"]
+            }
+        ]
+    };
+    let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
+    let docOptions: IDocOptions = {
+        fontSize: 30,
+        xScale: 0.22,
+        yScale: 0.36,
+        margins: {
+            marginLeft: 10,
+            marginRight: 10,
+            marginTop: 10,
+            marginBot: 10
+        }
+    };
+    docOptions.paperHeight =
+        4 * (docOptions.fontSize * docOptions.yScale) +
+        docOptions.margins.marginBot +
+        docOptions.margins.marginTop;
+    let docController = new DocController(docOptions);
+    let cbm: QuestionCheckboxModel = <QuestionCheckboxModel>(
+        survey.getAllQuestions()[0]
+    );
+    let cbq: IPdfQuestion = QuestionRepository.getInstance().create(
+        cbm,
+        docController
+    );
+    let point: IPoint = {
+        xLeft: docController.margins.marginLeft,
+        yTop: docController.margins.marginTop
+    };
+    let checkboxBoundaries: IRect[] = cbq.render(point, false);
+    let assumeBoundaries: IRect = {
+        xLeft: docController.margins.marginLeft,
+        xRight: docController.paperWidth - docController.margins.marginRight,
+        yTop: docController.margins.marginTop,
+        yBot:
+            docController.margins.marginTop +
+            4 * (docController.fontSize * docController.yScale)
+    };
+    expect(checkboxBoundaries.length).toBe(2);
+    expect(checkboxBoundaries[1].xLeft).toBeCloseTo(assumeBoundaries.xLeft);
+    expect(checkboxBoundaries[1].xRight).toBeCloseTo(assumeBoundaries.xRight);
+    expect(checkboxBoundaries[1].yTop).toBeCloseTo(assumeBoundaries.yTop);
+    expect(checkboxBoundaries[1].yBot).toBeCloseTo(assumeBoundaries.yBot);
+});
+
 test("Check that checkbox has square boundaries", () => {
     let __dummy_cb = new CheckBoxQuestion(null, null);
     let json = {
@@ -486,7 +543,7 @@ test("Check that checkbox has square boundaries", () => {
             marginRight: 10,
             marginTop: 10,
             marginBot: 10
-        } 
+        }
     };
     let docController: DocController = new DocController(docOptions);
     let cbm: QuestionCheckboxModel = <QuestionCheckboxModel>survey.getAllQuestions()[0];
@@ -533,7 +590,7 @@ test("Calc boundaries title top longer than description", () => {
             marginRight: 10,
             marginTop: 10,
             marginBot: 10
-        } 
+        }
     };
     let docController: DocController = new DocController(docOptions);
     let cbm: QuestionCheckboxModel = <QuestionCheckboxModel>survey.getAllQuestions()[0];
@@ -580,7 +637,7 @@ test("Calc boundaries title top shorter than description", () => {
             marginRight: 10,
             marginTop: 10,
             marginBot: 10
-        } 
+        }
     };
     let docController: DocController = new DocController(docOptions);
     let cbm: QuestionCheckboxModel = <QuestionCheckboxModel>survey.getAllQuestions()[0];
@@ -629,7 +686,7 @@ test("Calc boundaries title bottom longer than description", () => {
             marginRight: 10,
             marginTop: 10,
             marginBot: 10
-        } 
+        }
     };
     let docController: DocController = new DocController(docOptions);
     let cbm: QuestionCheckboxModel = <QuestionCheckboxModel>survey.getAllQuestions()[0];
@@ -677,7 +734,7 @@ test("Calc boundaries title bottom shorter than description", () => {
             marginRight: 10,
             marginTop: 10,
             marginBot: 10
-        } 
+        }
     };
     let docController: DocController = new DocController(docOptions);
     let cbm: QuestionCheckboxModel = <QuestionCheckboxModel>survey.getAllQuestions()[0];
@@ -726,7 +783,7 @@ test("Calc boundaries title left longer than description", () => {
             marginRight: 10,
             marginTop: 10,
             marginBot: 10
-        } 
+        }
     };
     let docController: DocController = new DocController(docOptions);
     let cbm: QuestionCheckboxModel = <QuestionCheckboxModel>survey.getAllQuestions()[0];
@@ -738,7 +795,7 @@ test("Calc boundaries title left longer than description", () => {
     let checkboxBoundaries: IRect = cbq.render(point, false)[0];
     let assumeBoundaries: IRect = {
         xLeft: docOptions.margins.marginLeft,
-        xRight: docOptions.margins.marginLeft + 
+        xRight: docOptions.margins.marginLeft +
             docController.measureText(json.questions[0].title.length + 4 +
                 json.questions[0].choices[0].length).width +
             docController.measureText().height,
@@ -776,7 +833,7 @@ test("Calc boundaries title left shorter than description", () => {
             marginRight: 10,
             marginTop: 10,
             marginBot: 10
-        } 
+        }
     };
     let docController: DocController = new DocController(docOptions);
     let cbm: QuestionCheckboxModel = <QuestionCheckboxModel>survey.getAllQuestions()[0];
@@ -788,9 +845,9 @@ test("Calc boundaries title left shorter than description", () => {
     let checkboxBoundaries: IRect = cbq.render(point, false)[0];
     let assumeBoundaries: IRect = {
         xLeft: docOptions.margins.marginLeft,
-        xRight: docOptions.margins.marginLeft + 
+        xRight: docOptions.margins.marginLeft +
             docController.measureText(json.questions[0].description).width *
-                PdfQuestion.DESCRIPTION_FONT_SIZE_SCALE_MAGIC +
+            PdfQuestion.DESCRIPTION_FONT_SIZE_SCALE_MAGIC +
             docController.measureText().height +
             docController.measureText(json.questions[0].choices[0]).width,
         yTop: docOptions.margins.marginTop,
@@ -827,7 +884,7 @@ test("Calc boundaries title hidden with description", () => {
             marginRight: 10,
             marginTop: 10,
             marginBot: 10
-        } 
+        }
     };
     let docController: DocController = new DocController(docOptions);
     let cbm: QuestionCheckboxModel = <QuestionCheckboxModel>survey.getAllQuestions()[0];

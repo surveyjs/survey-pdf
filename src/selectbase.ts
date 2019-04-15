@@ -3,7 +3,10 @@ import { PdfQuestion } from "./question";
 import { IPoint, IRect, DocController } from "./docController";
 
 export class SelectBaseQuestion extends PdfQuestion {
-  constructor(protected question: IQuestion, protected docController: DocController) {
+  constructor(
+    protected question: IQuestion,
+    protected docController: DocController
+  ) {
     super(question, docController);
   }
   // getBoundariesComment(point: IPoint): IRect {
@@ -66,49 +69,26 @@ export class SelectBaseQuestion extends PdfQuestion {
   //     yBot: bottom
   //   };
   // }
-  getSortedChoices() {
-    let question = this.getQuestion<QuestionSelectBase>();
-    switch (question.choicesOrder) {
-      case "none":
-        return question.choices.slice();
-      case "asc":
-        return question.choices.slice().sort((a, b) => {
-          return a.value > b.value ? 1 : -1;
-        });
-      case "desc":
-        return question.choices.slice().sort((a, b) => {
-          return a.value < b.value ? 1 : -1;
-        });
-      case "random":
-        return question.choices.slice().sort((a, b) => {
-          return Math.random() < 0.5 ? 1 : -1;
-        });
-    }
-  }
-  renderComment(point: IPoint, isRender: boolean) {
-    let question = this.getQuestion<QuestionSelectBase>();
-    let textBoundaries = this.renderText(point, question.commentText, false);
-    let textField = new (<any>this.docController.doc.AcroFormTextField)();
-    let { width, height } = this.docController.measureText(question.commentText);
-    if (isRender) {
-      this.renderText(point, question.commentText, true);
-      textField.Rect = [
-        textBoundaries.xLeft,
-        textBoundaries.yBot,
-        width,
-        height
-      ];
-      textField.multiline = false;
-      textField.value = "";
-      this.docController.doc.addField(textField);
-    }
-    return {
-      xLeft: textBoundaries.xLeft,
-      xRight: textBoundaries.xLeft + width,
-      yTop: textBoundaries.yTop,
-      yBot: textBoundaries.yBot + height
-    };
-  }
+
+  // getSortedChoices() {
+  //   let question = this.getQuestion<QuestionSelectBase>();
+  //   switch (question.choicesOrder) {
+  //     case "none":
+  //       return question.choices.slice();
+  //     case "asc":
+  //       return question.choices.slice().sort((a, b) => {
+  //         return a.value > b.value ? 1 : -1;
+  //       });
+  //     case "desc":
+  //       return question.choices.slice().sort((a, b) => {
+  //         return a.value < b.value ? 1 : -1;
+  //       });
+  //     case "random":
+  //       return question.choices.slice().sort((a, b) => {
+  //         return Math.random() < 0.5 ? 1 : -1;
+  //       });
+  //   }
+  // }
 
   renderContentSelectbase(point: IPoint, isRender: boolean): IRect[] {
     return super.renderContent(point, isRender);
