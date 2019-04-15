@@ -5,7 +5,7 @@
 import { QuestionRepository } from "../src/questionRepository";
 import { IPoint, IRect, IDocOptions,  DocController } from "../src/docController";
 import { JsPdfSurveyModel } from "../src/survey";
-import { QuestionTextModel, Question, IQuestion } from "survey-core";
+import { Question, QuestionTextModel, QuestionCheckboxModel } from "survey-core";
 import { PdfQuestion, IPdfQuestion } from "../src/question";
 import { TextQuestion } from "../src/text";
 import { CheckBoxQuestion } from "../src/checkbox";
@@ -308,7 +308,7 @@ test("Calc textbox boundaries required", () => {
     };
     let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
     let qtm: QuestionTextModel = <QuestionTextModel>survey.getAllQuestions()[0];
-    let docController: IDocOptions = {
+    let docOptions: IDocOptions = {
         fontSize: 30, xScale: 0.22, yScale: 0.36,
         margins: {
             marginLeft: 10,
@@ -317,17 +317,17 @@ test("Calc textbox boundaries required", () => {
             marginBot: 10
         }
     };
-    let tq: IPdfQuestion = QuestionRepository.getInstance().create(qtm, new DocController(docController));
+    let tq: IPdfQuestion = QuestionRepository.getInstance().create(qtm, new DocController(docOptions));
     let resultBoundaries: IRect = tq.render({
-        xLeft: docController.margins.marginLeft,
-        yTop: docController.margins.marginTop
+        xLeft: docOptions.margins.marginLeft,
+        yTop: docOptions.margins.marginTop
     }, false)[0];
     let assumeBoundaries: IRect = {
-        xLeft: docController.margins.marginLeft,
-        xRight: docController.margins.marginLeft + (json.questions[0].title.length + 5
-            + qtm.requiredText.length) * docController.fontSize * docController.xScale,
-        yTop: docController.margins.marginTop,
-        yBot: docController.margins.marginTop + 2 * docController.fontSize * docController.yScale
+        xLeft: docOptions.margins.marginLeft,
+        xRight: docOptions.margins.marginLeft + (json.questions[0].title.length + 5
+            + qtm.requiredText.length) * docOptions.fontSize * docOptions.xScale,
+        yTop: docOptions.margins.marginTop,
+        yBot: docOptions.margins.marginTop + 2 * docOptions.fontSize * docOptions.yScale
     };
     expect(resultBoundaries.xLeft).toBeCloseTo(assumeBoundaries.xLeft);
     expect(resultBoundaries.xRight).toBeCloseTo(assumeBoundaries.xRight);
@@ -395,4 +395,69 @@ test("Split large quesion on two pages", () => {
         }
     });
     expect(survey.docController.doc.internal.getNumberOfPages()).toBe(2);
+});
+
+test("Calc boundaries title on the end of page", () => {
+    let __dummy_tx = new TextQuestion(null, null);
+    let __dummy_cb = new CheckBoxQuestion(null, null);
+    let json = {
+        questions: [
+            {
+                type: "checkbox",
+                name: "toendpagebox",
+                title: "I am on one page?",
+                isRequired: true,
+                choices: [
+                    "One",
+                    "Two",
+                    "Three"
+                ]
+            },
+            {
+                name: "textbox",
+                type: "text",
+                title: "New page title",
+                isRequired: true
+            }
+        ]
+    };
+    let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
+    let docOptions: IDocOptions = {
+        fontSize: 30, xScale: 0.22, yScale: 0.36,
+        margins: {
+            marginLeft: 10,
+            marginRight: 10,
+            marginTop: 10,
+            marginBot: 10
+        } 
+    };
+    docOptions.paperHeight = 5 * (docOptions.fontSize * docOptions.yScale);
+    let docController: DocController = new DocController(docOptions);
+    let cbm: QuestionCheckboxModel = <QuestionCheckboxModel>survey.getAllQuestions()[0];
+    let cbq: IPdfQuestion = QuestionRepository.getInstance().create(cbm, new DocController(docOptions));
+    let point: IPoint = {
+        xLeft: docOptions.margins.marginLeft,
+        yTop: docOptions.margins.marginTop
+    }
+    let checkboxBoundaries: IRect[] = cbq.render(point, false);
+    if (docController.isNewPageQuestion(checkboxBoundaries)) {
+        docController.addPage();
+        point.xLeft = docOptions.margins.marginLeft;
+        point.yTop = docOptions.margins.marginTop;
+    }
+    expect(point.xLeft).toBeCloseTo(docOptions.margins.marginLeft);
+    expect(point.yTop).toBeCloseTo(docOptions.margins.marginTop);
+    let qtm: QuestionTextModel = <QuestionTextModel>survey.getAllQuestions()[1];
+    let tq: IPdfQuestion = QuestionRepository.getInstance().create(qtm, new DocController(docOptions));
+    let textboxBoundaries: IRect = tq.render(point, false)[0];
+    let assumeBoundaries: IRect = {
+        xLeft: docOptions.margins.marginLeft,
+        xRight: docController.paperWidth - docController.margins.marginRight,
+        yTop: docOptions.margins.marginTop,
+        yBot: docOptions.margins.marginTop + 2 * docOptions.fontSize * docOptions.yScale
+    };
+    expect(textboxBoundaries.xLeft).toBeCloseTo(assumeBoundaries.xLeft);
+    expect(textboxBoundaries.xRight).toBeCloseTo(assumeBoundaries.xRight);
+    expect(textboxBoundaries.yTop).toBeCloseTo(assumeBoundaries.yTop);
+    expect(textboxBoundaries.yBot).toBeCloseTo(assumeBoundaries.yBot);
 });
