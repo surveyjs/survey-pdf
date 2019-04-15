@@ -7,6 +7,7 @@ module.exports = {
     "roots": [
         "tests"
     ],
+    "setupFiles": ["jest-canvas-mock"], // Get rid off HTMLCanvasElement.prototype.getContext, and canvas errors. Now no need to mock in the test file explicitly.
     "transform": {
         "^.+\\.(ts|tsx)?$": "ts-jest"
     },
