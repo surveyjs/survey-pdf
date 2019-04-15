@@ -72,11 +72,10 @@ export class DocOptions implements IDocOptions {
     isNewPageElement(yBot: number): boolean {
         return yBot > this._paperHeight - this.margins.marginBot;
     }
-    measureText(text: string = " ") {
+    measureText(text: number | string = 1) {
+        let length = typeof text === "string" ? text.length : text; 
         return {
-            width: text.length *
-                this.fontSize *
-                this.xScale,
+            width: length * this.fontSize * this.xScale,
             height: this.fontSize * this.yScale
         }
     }

@@ -10,6 +10,10 @@ import { PdfQuestion, IPdfQuestion } from "../src/question";
 import { TextQuestion } from "../src/text";
 import { CheckBoxQuestion } from "../src/checkbox";
 
+//TODO
+//refactor to helper code
+//(compare equal rects, title width)
+
 test("Calc title boundaries", () => {
     let json = {
         questions: [{
@@ -506,3 +510,342 @@ test("Check that checkbox has square boundaries", () => {
     expect(itemBoundaries.yBot).toBeCloseTo(assumeBoundaries.yBot);
 });
 
+test("Calc boundaries title top longer than description", () => {
+    let __dummy_cb = new CheckBoxQuestion(null, null);
+    let json = {
+        questions: [
+            {
+                type: "checkbox",
+                name: "box",
+                title: "My title is so interesting",
+                description: "But the description is not enough",
+                choices: [
+                    "I feel lonely"
+                ]
+            }
+        ]
+    };
+    let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
+    let docOptions: IDocOptions = {
+        fontSize: 30, xScale: 0.22, yScale: 0.36,
+        margins: {
+            marginLeft: 10,
+            marginRight: 10,
+            marginTop: 10,
+            marginBot: 10
+        } 
+    };
+    let docController: DocController = new DocController(docOptions);
+    let cbm: QuestionCheckboxModel = <QuestionCheckboxModel>survey.getAllQuestions()[0];
+    let cbq: IPdfQuestion = QuestionRepository.getInstance().create(cbm, docController);
+    let point: IPoint = {
+        xLeft: docOptions.margins.marginLeft,
+        yTop: docOptions.margins.marginTop
+    }
+    let checkboxBoundaries: IRect = cbq.render(point, false)[0];
+    let assumeBoundaries: IRect = {
+        xLeft: docOptions.margins.marginLeft,
+        xRight: docOptions.margins.marginLeft +
+            (json.questions[0].title.length + 4) * docController.measureText().width,
+        yTop: docOptions.margins.marginTop,
+        yBot: docOptions.margins.marginTop + 2 * docController.measureText().height +
+            docController.measureText().height * PdfQuestion.DESCRIPTION_FONT_SIZE_SCALE_MAGIC
+    };
+    expect(checkboxBoundaries.xLeft).toBeCloseTo(assumeBoundaries.xLeft);
+    expect(checkboxBoundaries.xRight).toBeCloseTo(assumeBoundaries.xRight);
+    expect(checkboxBoundaries.yTop).toBeCloseTo(assumeBoundaries.yTop);
+    expect(checkboxBoundaries.yBot).toBeCloseTo(assumeBoundaries.yBot);
+});
+
+test("Calc boundaries title top shorter than description", () => {
+    let __dummy_cb = new CheckBoxQuestion(null, null);
+    let json = {
+        questions: [
+            {
+                type: "checkbox",
+                name: "box",
+                title: "Tiny title",
+                description: "The description is so long, very long, very",
+                choices: [
+                    "Save me!"
+                ]
+            }
+        ]
+    };
+    let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
+    let docOptions: IDocOptions = {
+        fontSize: 30, xScale: 0.22, yScale: 0.36,
+        margins: {
+            marginLeft: 10,
+            marginRight: 10,
+            marginTop: 10,
+            marginBot: 10
+        } 
+    };
+    let docController: DocController = new DocController(docOptions);
+    let cbm: QuestionCheckboxModel = <QuestionCheckboxModel>survey.getAllQuestions()[0];
+    let cbq: IPdfQuestion = QuestionRepository.getInstance().create(cbm, docController);
+    let point: IPoint = {
+        xLeft: docOptions.margins.marginLeft,
+        yTop: docOptions.margins.marginTop
+    }
+    let checkboxBoundaries: IRect = cbq.render(point, false)[0];
+    let assumeBoundaries: IRect = {
+        xLeft: docOptions.margins.marginLeft,
+        xRight: docOptions.margins.marginLeft +
+            docController.measureText(json.questions[0].description).width *
+            PdfQuestion.DESCRIPTION_FONT_SIZE_SCALE_MAGIC,
+        yTop: docOptions.margins.marginTop,
+        yBot: docOptions.margins.marginTop + 2 * docController.measureText().height +
+            docController.measureText().height * PdfQuestion.DESCRIPTION_FONT_SIZE_SCALE_MAGIC
+    };
+    expect(checkboxBoundaries.xLeft).toBeCloseTo(assumeBoundaries.xLeft);
+    expect(checkboxBoundaries.xRight).toBeCloseTo(assumeBoundaries.xRight);
+    expect(checkboxBoundaries.yTop).toBeCloseTo(assumeBoundaries.yTop);
+    expect(checkboxBoundaries.yBot).toBeCloseTo(assumeBoundaries.yBot);
+});
+
+test("Calc boundaries title bottom longer than description", () => {
+    let __dummy_cb = new CheckBoxQuestion(null, null);
+    let json = {
+        questions: [
+            {
+                type: "checkbox",
+                name: "box",
+                title: "What a gorgeous title",
+                titleLocation: "bottom",
+                description: "Who reads the descriptions?",
+                choices: [
+                    "Tut-tu-ru"
+                ]
+            }
+        ]
+    };
+    let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
+    let docOptions: IDocOptions = {
+        fontSize: 30, xScale: 0.22, yScale: 0.36,
+        margins: {
+            marginLeft: 10,
+            marginRight: 10,
+            marginTop: 10,
+            marginBot: 10
+        } 
+    };
+    let docController: DocController = new DocController(docOptions);
+    let cbm: QuestionCheckboxModel = <QuestionCheckboxModel>survey.getAllQuestions()[0];
+    let cbq: IPdfQuestion = QuestionRepository.getInstance().create(cbm, docController);
+    let point: IPoint = {
+        xLeft: docOptions.margins.marginLeft,
+        yTop: docOptions.margins.marginTop
+    }
+    let checkboxBoundaries: IRect = cbq.render(point, false)[0];
+    let assumeBoundaries: IRect = {
+        xLeft: docOptions.margins.marginLeft,
+        xRight: docOptions.margins.marginLeft +
+            (json.questions[0].title.length + 4) * docController.measureText().width,
+        yTop: docOptions.margins.marginTop,
+        yBot: docOptions.margins.marginTop + 2 * docController.measureText().height +
+            docController.measureText().height * PdfQuestion.DESCRIPTION_FONT_SIZE_SCALE_MAGIC
+    };
+    expect(checkboxBoundaries.xLeft).toBeCloseTo(assumeBoundaries.xLeft);
+    expect(checkboxBoundaries.xRight).toBeCloseTo(assumeBoundaries.xRight);
+    expect(checkboxBoundaries.yTop).toBeCloseTo(assumeBoundaries.yTop);
+    expect(checkboxBoundaries.yBot).toBeCloseTo(assumeBoundaries.yBot);
+});
+
+test("Calc boundaries title bottom shorter than description", () => {
+    let __dummy_cb = new CheckBoxQuestion(null, null);
+    let json = {
+        questions: [
+            {
+                type: "checkbox",
+                name: "box",
+                title: "Piece of title",
+                titleLocation: "bottom",
+                description: "Very important information: required to read",
+                choices: [
+                    "Dattebayo"
+                ]
+            }
+        ]
+    };
+    let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
+    let docOptions: IDocOptions = {
+        fontSize: 30, xScale: 0.22, yScale: 0.36,
+        margins: {
+            marginLeft: 10,
+            marginRight: 10,
+            marginTop: 10,
+            marginBot: 10
+        } 
+    };
+    let docController: DocController = new DocController(docOptions);
+    let cbm: QuestionCheckboxModel = <QuestionCheckboxModel>survey.getAllQuestions()[0];
+    let cbq: IPdfQuestion = QuestionRepository.getInstance().create(cbm, docController);
+    let point: IPoint = {
+        xLeft: docOptions.margins.marginLeft,
+        yTop: docOptions.margins.marginTop
+    }
+    let checkboxBoundaries: IRect = cbq.render(point, false)[0];
+    let assumeBoundaries: IRect = {
+        xLeft: docOptions.margins.marginLeft,
+        xRight: docOptions.margins.marginLeft +
+            docController.measureText(json.questions[0].description).width *
+            PdfQuestion.DESCRIPTION_FONT_SIZE_SCALE_MAGIC,
+        yTop: docOptions.margins.marginTop,
+        yBot: docOptions.margins.marginTop + 2 * docController.measureText().height +
+            docController.measureText().height * PdfQuestion.DESCRIPTION_FONT_SIZE_SCALE_MAGIC
+    };
+    expect(checkboxBoundaries.xLeft).toBeCloseTo(assumeBoundaries.xLeft);
+    expect(checkboxBoundaries.xRight).toBeCloseTo(assumeBoundaries.xRight);
+    expect(checkboxBoundaries.yTop).toBeCloseTo(assumeBoundaries.yTop);
+    expect(checkboxBoundaries.yBot).toBeCloseTo(assumeBoundaries.yBot);
+});
+
+test("Calc boundaries title left longer than description", () => {
+    let __dummy_cb = new CheckBoxQuestion(null, null);
+    let json = {
+        questions: [
+            {
+                type: "checkbox",
+                name: "box",
+                title: "I only wish that wisdom",
+                titleLocation: "left",
+                description: "Oh dear Pan",
+                choices: [
+                    "Amicus Plato"
+                ]
+            }
+        ]
+    };
+    let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
+    let docOptions: IDocOptions = {
+        fontSize: 10, xScale: 0.22, yScale: 0.36,
+        margins: {
+            marginLeft: 10,
+            marginRight: 10,
+            marginTop: 10,
+            marginBot: 10
+        } 
+    };
+    let docController: DocController = new DocController(docOptions);
+    let cbm: QuestionCheckboxModel = <QuestionCheckboxModel>survey.getAllQuestions()[0];
+    let cbq: IPdfQuestion = QuestionRepository.getInstance().create(cbm, docController);
+    let point: IPoint = {
+        xLeft: docOptions.margins.marginLeft,
+        yTop: docOptions.margins.marginTop
+    }
+    let checkboxBoundaries: IRect = cbq.render(point, false)[0];
+    let assumeBoundaries: IRect = {
+        xLeft: docOptions.margins.marginLeft,
+        xRight: docOptions.margins.marginLeft + 
+            docController.measureText(json.questions[0].title.length + 4 +
+                json.questions[0].choices[0].length).width +
+            docController.measureText().height,
+        yTop: docOptions.margins.marginTop,
+        yBot: docOptions.margins.marginTop + docController.measureText().height +
+            docController.measureText().height * PdfQuestion.DESCRIPTION_FONT_SIZE_SCALE_MAGIC
+    };
+    expect(checkboxBoundaries.xLeft).toBeCloseTo(assumeBoundaries.xLeft);
+    expect(checkboxBoundaries.xRight).toBeCloseTo(assumeBoundaries.xRight);
+    expect(checkboxBoundaries.yTop).toBeCloseTo(assumeBoundaries.yTop);
+    expect(checkboxBoundaries.yBot).toBeCloseTo(assumeBoundaries.yBot);
+});
+
+test("Calc boundaries title left shorter than description", () => {
+    let __dummy_cb = new CheckBoxQuestion(null, null);
+    let json = {
+        questions: [
+            {
+                type: "checkbox",
+                name: "box",
+                title: "Diamonds",
+                titleLocation: "left",
+                description: "Takes One To Know One",
+                choices: [
+                    "Pearl"
+                ]
+            }
+        ]
+    };
+    let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
+    let docOptions: IDocOptions = {
+        fontSize: 10, xScale: 0.22, yScale: 0.36,
+        margins: {
+            marginLeft: 10,
+            marginRight: 10,
+            marginTop: 10,
+            marginBot: 10
+        } 
+    };
+    let docController: DocController = new DocController(docOptions);
+    let cbm: QuestionCheckboxModel = <QuestionCheckboxModel>survey.getAllQuestions()[0];
+    let cbq: IPdfQuestion = QuestionRepository.getInstance().create(cbm, docController);
+    let point: IPoint = {
+        xLeft: docOptions.margins.marginLeft,
+        yTop: docOptions.margins.marginTop
+    }
+    let checkboxBoundaries: IRect = cbq.render(point, false)[0];
+    let assumeBoundaries: IRect = {
+        xLeft: docOptions.margins.marginLeft,
+        xRight: docOptions.margins.marginLeft + 
+            docController.measureText(json.questions[0].description).width *
+                PdfQuestion.DESCRIPTION_FONT_SIZE_SCALE_MAGIC +
+            docController.measureText().height +
+            docController.measureText(json.questions[0].choices[0]).width,
+        yTop: docOptions.margins.marginTop,
+        yBot: docOptions.margins.marginTop + docController.measureText().height +
+            docController.measureText().height * PdfQuestion.DESCRIPTION_FONT_SIZE_SCALE_MAGIC
+    };
+    expect(checkboxBoundaries.xLeft).toBeCloseTo(assumeBoundaries.xLeft);
+    expect(checkboxBoundaries.xRight).toBeCloseTo(assumeBoundaries.xRight);
+    expect(checkboxBoundaries.yTop).toBeCloseTo(assumeBoundaries.yTop);
+    expect(checkboxBoundaries.yBot).toBeCloseTo(assumeBoundaries.yBot);
+});
+
+test("Calc boundaries title hidden with description", () => {
+    let __dummy_cb = new CheckBoxQuestion(null, null);
+    let json = {
+        questions: [
+            {
+                type: "checkbox",
+                name: "box",
+                title: "Diamonds",
+                titleLocation: "hidden",
+                description: "Takes One To Know One",
+                choices: [
+                    "Pearl"
+                ]
+            }
+        ]
+    };
+    let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
+    let docOptions: IDocOptions = {
+        fontSize: 10, xScale: 0.22, yScale: 0.36,
+        margins: {
+            marginLeft: 10,
+            marginRight: 10,
+            marginTop: 10,
+            marginBot: 10
+        } 
+    };
+    let docController: DocController = new DocController(docOptions);
+    let cbm: QuestionCheckboxModel = <QuestionCheckboxModel>survey.getAllQuestions()[0];
+    let cbq: IPdfQuestion = QuestionRepository.getInstance().create(cbm, docController);
+    let point: IPoint = {
+        xLeft: docOptions.margins.marginLeft,
+        yTop: docOptions.margins.marginTop
+    }
+    let checkboxBoundaries: IRect = cbq.render(point, false)[0];
+    let assumeBoundaries: IRect = {
+        xLeft: docOptions.margins.marginLeft,
+        xRight: docOptions.margins.marginLeft + docController.measureText().height +
+            docController.measureText(json.questions[0].choices[0]).width,
+        yTop: docOptions.margins.marginTop,
+        yBot: docOptions.margins.marginTop + docController.measureText().height
+    };
+    expect(checkboxBoundaries.xLeft).toBeCloseTo(assumeBoundaries.xLeft);
+    expect(checkboxBoundaries.xRight).toBeCloseTo(assumeBoundaries.xRight);
+    expect(checkboxBoundaries.yTop).toBeCloseTo(assumeBoundaries.yTop);
+    expect(checkboxBoundaries.yBot).toBeCloseTo(assumeBoundaries.yBot);
+});
