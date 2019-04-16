@@ -49,9 +49,8 @@ export class CheckBoxQuestion extends SelectBaseQuestion {
         buttonBoudndaries.xRight - buttonBoudndaries.xLeft,
         buttonBoudndaries.yBot - buttonBoudndaries.yTop
       ];
-      if (question.readOnly) checkBox.readOnly = true;
-      if (question.value.includes(itemValue.value)) checkBox.AS = "/On";
-      else checkBox.AS = "/Off";
+      checkBox.readOnly = question.isReadOnly || !itemValue.isEnabled;
+      checkBox.AS = question.isItemSelected(itemValue) ? "/On" : "/Off";
       this.docController.doc.addField(checkBox);
       this.renderText(textPoint, itemValue.text);
     }
