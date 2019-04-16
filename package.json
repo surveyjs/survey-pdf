@@ -14,7 +14,7 @@
   "license": "Commercial",
   "dependencies": {
     "jspdf": "1.5.3",
-    "survey-core": "^1.0.78"
+    "survey-core": "^1.0.80"
   },
   "devDependencies": {
     "@types/jest": "^23.3.3",
