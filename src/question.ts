@@ -69,11 +69,17 @@ export class PdfQuestion implements IPdfQuestion {
     }
     render(point: IPoint, isRender: boolean = true): IRect[] {
         let question: Question = this.getQuestion<Question>();
+        let oldMarginLeft: number = this.docController.margins.marginLeft;
+        this.docController.margins.marginLeft += this.docController.measureText(question.indent).width;
+        let indentPoint: IPoint = {
+            xLeft: point.xLeft + this.docController.measureText(question.indent).width,
+            yTop: point.yTop
+        };
         let contentRects: IRect[];
         switch (question.titleLocation) {
             case "top":
             case "default": {
-                let titleRect: IRect = this.renderTitle(point, isRender);
+                let titleRect: IRect = this.renderTitle(indentPoint, isRender);
                 let descPoint: IPoint = {
                     xLeft: titleRect.xLeft,
                     yTop: titleRect.yBot
@@ -98,7 +104,7 @@ export class PdfQuestion implements IPdfQuestion {
                 break;
             }
             case "bottom": {
-                contentRects = this.renderContent(point, isRender);
+                contentRects = this.renderContent(indentPoint, isRender);
                 let titlePoint: IPoint = {
                     xLeft: contentRects[contentRects.length - 1].xLeft,
                     yTop: contentRects[contentRects.length - 1].yBot
@@ -139,7 +145,7 @@ export class PdfQuestion implements IPdfQuestion {
                 break;
             }
             case "left": {
-                let titleRect: IRect = this.renderTitle(point, isRender);
+                let titleRect: IRect = this.renderTitle(indentPoint, isRender);
                 let descPoint: IPoint = {
                     xLeft: titleRect.xLeft,
                     yTop: titleRect.yBot
@@ -156,7 +162,7 @@ export class PdfQuestion implements IPdfQuestion {
                 break;
             }
             case "hidden": {
-                contentRects = this.renderContent(point, isRender);
+                contentRects = this.renderContent(indentPoint, isRender);
                 break;
             }
         }
@@ -177,6 +183,10 @@ export class PdfQuestion implements IPdfQuestion {
                 );
             }
         }
+        this.docController.margins.marginLeft = oldMarginLeft;
+        contentRects.forEach((value) => {
+            value.xLeft = point.xLeft;
+        });
         return contentRects;
     }
     alignPoint(point: IPoint, boundaries: IRect): IPoint {
