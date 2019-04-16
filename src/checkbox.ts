@@ -104,7 +104,6 @@ export class CheckBoxQuestion extends SelectBaseQuestion {
     let currPoint: IPoint = { xLeft: point.xLeft, yTop: point.yTop };
     let boundaries: Array<IRect> = new Array();
     question.visibleChoices.forEach((itemValue: ItemValue, index: number) => {
-      debugger;
       let render =
         itemValue.value === question.otherItem.value
           ? this.renderOther.bind(this)
