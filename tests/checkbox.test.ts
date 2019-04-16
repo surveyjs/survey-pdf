@@ -1,10 +1,10 @@
 (<any>window)["HTMLCanvasElement"].prototype.getContext = () => {
   return {};
 };
-import { QuestionCheckboxModel } from "survey-core";
+import { QuestionCheckboxModel, surveyLocalization } from "survey-core";
 import { JsPdfSurveyModel } from "../src/survey";
 import { CheckBoxQuestion } from "../src/checkbox";
-
+import { DocOptions, IDocOptions } from "../src/docController";
 let __dummy_cx = new CheckBoxQuestion(null, null);
 //TODO
 test("Test has other  checkbox", () => {
@@ -45,9 +45,6 @@ test("Test has other  checkbox", () => {
 });
 //TODO
 test("Test has other split", () => {});
-//TODO
-test("Test absence of comment with hasOther option", () => {});
-//TODO
 test("Test duplicate value other", () => {
   let json = {
     questions: [
@@ -84,4 +81,95 @@ test("Test duplicate value other", () => {
   expect(internalOtherTextFieldChoice.FT).toBe("/Tx");
   expect(internalOtherCheckBox.FT).toBe("/Btn");
   expect(internalOtherTextField.FT).toBe("/Tx");
+});
+test("Test all items disabled", () => {
+  let json = {
+    questions: [
+      {
+        name: "checkbox",
+        type: "checkbox",
+        choices: ["item1", "item2", "item3"],
+        readOnly: true
+      }
+    ]
+  };
+  let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
+  survey.render({
+    fontSize: 30,
+    xScale: 0.22,
+    yScale: 0.36,
+    margins: {
+      marginLeft: 10,
+      marginRight: 10,
+      marginTop: 10,
+      marginBot: 10
+    }
+  });
+  survey.docController.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields.forEach(
+    (acroCheckBox: any) => {
+      expect(acroCheckBox.readOnly).toBe(true);
+    }
+  );
+});
+test("Test all items enabled", () => {
+  let json = {
+    questions: [
+      {
+        name: "checkbox",
+        type: "checkbox",
+        choices: ["item1", "item2", "item3"],
+        readOnly: false
+      }
+    ]
+  };
+  let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
+  survey.render({
+    fontSize: 30,
+    xScale: 0.22,
+    yScale: 0.36,
+    margins: {
+      marginLeft: 10,
+      marginRight: 10,
+      marginTop: 10,
+      marginBot: 10
+    }
+  });
+  survey.docController.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields.forEach(
+    (acroCheckBox: any) => {
+      expect(acroCheckBox.readOnly).toBe(false);
+    }
+  );
+});
+
+test("Test enable one item", () => {
+  let json = {
+    questions: [
+      {
+        name: "checkbox",
+        type: "checkbox",
+        choices: ["item1", "item2", "item3"],
+        choicesEnableIf: "{item} == item2"
+      }
+    ]
+  };
+  const INDEX_OF_ENABLED_ITEM = 1;
+  let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
+  survey.render({
+    fontSize: 30,
+    xScale: 0.22,
+    yScale: 0.36,
+    margins: {
+      marginLeft: 10,
+      marginRight: 10,
+      marginTop: 10,
+      marginBot: 10
+    }
+  });
+  survey.docController.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields.forEach(
+    (acroCheckBox: any, index: number) => {
+      if (index === INDEX_OF_ENABLED_ITEM)
+        expect(acroCheckBox.readOnly).toBe(false);
+      else expect(acroCheckBox.readOnly).toBe(true);
+    }
+  );
 });
