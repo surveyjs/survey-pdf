@@ -34,7 +34,8 @@ export class PdfQuestion implements IPdfQuestion {
         }
         let question: Question = this.getQuestion<Question>();
         if (question.description != "") {
-            boundaries = this.renderText(point, question.description, isRender);
+            boundaries = this.renderText(point,
+                this.getLocString(question.locDescription), isRender);
         }
         this.docController.fontSize = oldFontSize;
         return boundaries;

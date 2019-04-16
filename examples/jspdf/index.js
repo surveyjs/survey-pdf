@@ -42,6 +42,7 @@ var json = {
       isRequired: true,
       titleLocation: "left",
       description: "Left description",
+      inputType: "password"
     },
     {
       type: "checkbox",
@@ -119,7 +120,8 @@ var json = {
       type: "text",
       title: "Rarrararar:",
       titleLocation: "top",
-      defaultValue: "def"
+      defaultValue: "def",
+      inputType: "password"
     },
     {
       name: "name4",
@@ -133,7 +135,8 @@ var json = {
       name: "name5",
       type: "text",
       title: "Rarrararar:",
-      titleLocation: "top"
+      titleLocation: "top",
+      inputType: "password"
     },
     {
       name: "name6",
