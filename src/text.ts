@@ -38,7 +38,8 @@ export class TextQuestion extends PdfQuestion {
         boundaries.yBot - boundaries.yTop
       ];
       inputField.value = question.inputType !== "password" ?
-        question.value || question.defaultValue || "" : "";
+        question.value || question.defaultValue ||
+        this.getLocString(question.locPlaceHolder) : "";
       inputField.fieldName = question.id;
       this.docController.doc.addField(inputField);
     }

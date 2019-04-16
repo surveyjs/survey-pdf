@@ -194,3 +194,74 @@ test("Check textbox password with data and default value is empty str", () => {
   expect(survey.docController.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields[0].value)
       .toBe("");
 });
+
+test("Set textbox placeHolder", () => {
+  let __dummy_tx = new TextQuestion(null, null);
+  let json = { questions: [ {
+      name: "holder",
+      type: "text",
+      title: "Hearth",
+      placeHolder: "keeper"
+    }]
+  };
+  let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
+  survey.render({
+      fontSize: 30, xScale: 0.22, yScale: 0.36,
+      margins: {
+        marginLeft: 10,
+        marginRight: 10,
+        marginTop: 10,
+        marginBot: 10 }
+    });
+  expect(survey.docController.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields[0].value)
+      .toBe(json.questions[0].placeHolder);
+});
+
+test("Set textbox defaultValue with placeHolder", () => {
+  let __dummy_tx = new TextQuestion(null, null);
+  let json = { questions: [ {
+      name: "holder",
+      type: "text",
+      title: "Birds",
+      defaultValue: "griffin",
+      placeHolder: "gull"
+    }]
+  };
+  let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
+  survey.render({
+      fontSize: 30, xScale: 0.22, yScale: 0.36,
+      margins: {
+        marginLeft: 10,
+        marginRight: 10,
+        marginTop: 10,
+        marginBot: 10 }
+    });
+  expect(survey.docController.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields[0].value)
+      .toBe(json.questions[0].defaultValue);
+});
+
+test("Set textbox data with defaultValue and placeHolder", () => {
+  let __dummy_tx = new TextQuestion(null, null);
+  let json = { questions: [ {
+      name: "holder",
+      type: "text",
+      title: "Birds",
+      defaultValue: "griffin",
+      placeHolder: "gull"
+    }]
+  };
+  let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
+  survey.data = {
+    holder: "phoenix"
+  }
+  survey.render({
+      fontSize: 30, xScale: 0.22, yScale: 0.36,
+      margins: {
+        marginLeft: 10,
+        marginRight: 10,
+        marginTop: 10,
+        marginBot: 10 }
+    });
+  expect(survey.docController.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields[0].value)
+      .toBe(survey.data.holder);
+});

@@ -121,7 +121,8 @@ var json = {
       title: "Rarrararar:",
       titleLocation: "top",
       defaultValue: "def",
-      inputType: "password"
+      inputType: "password",
+      placeHolder: "holder"
     },
     {
       name: "name4",
@@ -129,7 +130,8 @@ var json = {
       title: "Rarrararar:",
       isRequired: true,
       titleLocation: "top",
-      defaultValue: "def2"
+      defaultValue: "def2",
+      placeHolder: "holder"
     },
     {
       name: "name5",
@@ -158,7 +160,8 @@ var json = {
       type: "text",
       title: "Rarrararar:",
       isRequired: true,
-      titleLocation: "top"
+      titleLocation: "top",
+      placeHolder: "holder"
     },
     {
       name: "name9",
