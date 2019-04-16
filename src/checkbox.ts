@@ -10,9 +10,6 @@ export class CheckBoxQuestion extends SelectBaseQuestion {
   ) {
     super(question, docController);
   }
-  public get questionCheck(): QuestionCheckboxModel {
-    return this.question as QuestionCheckboxModel;
-  }
   renderItem(
     point: IPoint,
     question: QuestionCheckboxModel,
@@ -53,9 +50,7 @@ export class CheckBoxQuestion extends SelectBaseQuestion {
         buttonBoudndaries.yBot - buttonBoudndaries.yTop
       ];
       checkBox.readOnly = question.isReadOnly || !itemValue.isEnabled;
-      checkBox.AS = this.questionCheck.isItemSelected(itemValue)
-        ? "/On"
-        : "/Off";
+      checkBox.AS = question.isItemSelected(itemValue) ? "/On" : "/Off";
       this.docController.doc.addField(checkBox);
       this.renderText(textPoint, itemValue.text);
     }
