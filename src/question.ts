@@ -14,7 +14,7 @@ export class PdfQuestion implements IPdfQuestion {
     private renderTitle(point: IPoint, isRender: boolean = true): IRect {
         this.docController.doc.setFontStyle("bold");
         let question: Question = this.getQuestion<Question>();
-        let number: string = question["no"] != "" ? question["no"] + " . " : "";
+        let number: string = question.no != "" ? question.no + " . " : "";
         let boundaries: IRect = this.renderText(
             point,
             number + this.getLocString(question.locTitle),
