@@ -1035,7 +1035,7 @@ test("Calc boundaries with indent 2", () => {
     let assumeBoundaries: IRect = {
         xLeft: docOptions.margins.marginLeft,
         xRight: docOptions.margins.marginLeft +
-            docController.measureText(json.questions[0].title.length + 7).width,
+            docController.measureText(json.questions[0].title.length + 6).width,
         yTop: docOptions.margins.marginTop,
         yBot: docOptions.margins.marginTop + 2 * docController.measureText().height
     };
@@ -1081,7 +1081,7 @@ test("Calc boundaries with indent 3", () => {
     let assumeBoundaries: IRect = {
         xLeft: docOptions.margins.marginLeft,
         xRight: docOptions.margins.marginLeft +
-            docController.measureText(json.questions[0].title.length + 8).width,
+            docController.measureText(json.questions[0].title.length + 7).width,
         yTop: docOptions.margins.marginTop,
         yBot: docOptions.margins.marginTop + 2 * docController.measureText().height
     };

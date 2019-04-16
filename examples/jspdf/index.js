@@ -15,7 +15,8 @@ var json = {
         "Mercedes-Benz",
         "BMW"
       ],
-      titleLocation: "top"
+      titleLocation: "top",
+      indent: 0
     },
     {
       type: "checkbox",
@@ -23,7 +24,8 @@ var json = {
       title: "What radio you are like?",
       titleLocation: "bottom",
       description: "Another description",
-      choices: ["Radio City", "Big FM", "Red FM", "Radio Mirchi"]
+      choices: ["Radio City", "Big FM", "Red FM", "Radio Mirchi"],
+      indent: 2
     },
     {
       name: "name",
@@ -31,6 +33,7 @@ var json = {
       title: "Please enter your name:",
       titleLocation: "hidden",
       description: "Hidden description",
+      indent: 1
     },
     {
       name: "name2",
@@ -108,7 +111,8 @@ var json = {
         "car28",
         "car29"
       ],
-      titleLocation: "top"
+      titleLocation: "top",
+      indent: 4
     },
     {
       name: "name3",
@@ -143,7 +147,8 @@ var json = {
       type: "text",
       title: "Rarrararar:",
       isRequired: true,
-      titleLocation: "top"
+      titleLocation: "top",
+      indent: 6
     },
     {
       name: "name8",
@@ -178,8 +183,7 @@ survey.data = {
   radio: "Red FM",
   name4: "notdef"
 };
-// debugger
-
+debugger
 survey.render(
   {
     fontSize: 30, xScale: 0.22, yScale: 0.36,
