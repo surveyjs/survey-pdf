@@ -10,6 +10,44 @@ export class CheckBoxQuestion extends SelectBaseQuestion {
   ) {
     super(question, docController);
   }
+  //TO REVIEW
+  renderOther(
+    point: IPoint,
+    question: QuestionCheckboxModel,
+    itemValue: ItemValue,
+    index: number,
+    isRender: boolean
+  ) {
+    let itemBoundaries = this.renderItem(
+      point,
+      question,
+      itemValue,
+      index,
+      isRender
+    );
+    let boundaries: IRect = {
+      xLeft: itemBoundaries.xLeft,
+      xRight:
+        this.docController.paperWidth - this.docController.margins.marginRight,
+      yTop: itemBoundaries.yTop,
+      yBot:
+        itemBoundaries.yBot +
+        this.docController.fontSize * this.docController.yScale
+    };
+    if (isRender) {
+      let textField = new (<any>this.docController.doc.AcroFormTextField)();
+      textField.Rect = [
+        itemBoundaries.xLeft,
+        itemBoundaries.yBot,
+        boundaries.xRight - boundaries.xLeft,
+        boundaries.yBot - itemBoundaries.yBot
+      ];
+      textField.multiline = false;
+      textField.value = "";
+      this.docController.doc.addField(textField);
+    }
+    return boundaries;
+  }
   renderItem(
     point: IPoint,
     question: QuestionCheckboxModel,
@@ -66,7 +104,12 @@ export class CheckBoxQuestion extends SelectBaseQuestion {
     let currPoint: IPoint = { xLeft: point.xLeft, yTop: point.yTop };
     let boundaries: Array<IRect> = new Array();
     question.visibleChoices.forEach((itemValue: ItemValue, index: number) => {
-      let checkButtonBoundaries: IRect = this.renderItem(
+      debugger;
+      let render =
+        itemValue.value === question.otherItem.value
+          ? this.renderOther.bind(this)
+          : this.renderItem.bind(this);
+      let checkButtonBoundaries: IRect = render(
         currPoint,
         question,
         itemValue,
@@ -87,7 +130,7 @@ export class CheckBoxQuestion extends SelectBaseQuestion {
         right = this.docController.margins.marginLeft;
         bottom = currPoint.yTop;
       }
-      checkButtonBoundaries = this.renderItem(
+      checkButtonBoundaries = render(
         currPoint,
         question,
         itemValue,
