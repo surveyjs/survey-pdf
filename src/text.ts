@@ -28,17 +28,19 @@ export class TextQuestion extends PdfQuestion {
       yBot: point.yTop + height
     };
     if (isRender) {
-      let textField = new (<any>this.docController.doc.AcroFormTextField)();
-      textField.Rect = [
+      let inputField = question.inputType !== "password" ?
+        new (<any>this.docController.doc.AcroFormTextField)() :
+        new (<any>this.docController.doc.AcroFormPasswordField)();
+      inputField.Rect = [
         boundaries.xLeft,
         boundaries.yTop,
         boundaries.xRight - boundaries.xLeft,
         boundaries.yBot - boundaries.yTop
       ];
-      textField.multiline = false;
-      textField.value = question.value || question.defaultValue || "";
-      textField.fieldName = question.id;
-      this.docController.doc.addField(textField);
+      inputField.value = question.inputType !== "password" ?
+        question.value || question.defaultValue || "" : "";
+      inputField.fieldName = question.id;
+      this.docController.doc.addField(inputField);
     }
     return [boundaries];
   }
