@@ -213,8 +213,10 @@ test("Set textbox placeHolder", () => {
         marginTop: 10,
         marginBot: 10 }
     });
+  expect(survey.docController.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields[0].defaultValue)
+    .toBe(json.questions[0].placeHolder);
   expect(survey.docController.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields[0].value)
-      .toBe(json.questions[0].placeHolder);
+    .toBe("");
 });
 
 test("Set textbox defaultValue with placeHolder", () => {
@@ -236,6 +238,8 @@ test("Set textbox defaultValue with placeHolder", () => {
         marginTop: 10,
         marginBot: 10 }
     });
+  expect(survey.docController.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields[0].defaultValue)
+    .toBe(json.questions[0].placeHolder);
   expect(survey.docController.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields[0].value)
       .toBe(json.questions[0].defaultValue);
 });
@@ -262,6 +266,8 @@ test("Set textbox data with defaultValue and placeHolder", () => {
         marginTop: 10,
         marginBot: 10 }
     });
+  expect(survey.docController.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields[0].defaultValue)
+    .toBe(json.questions[0].placeHolder);
   expect(survey.docController.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields[0].value)
       .toBe(survey.data.holder);
 });
