@@ -1,3 +1,6 @@
+(<any>window)["HTMLCanvasElement"].prototype.getContext = () => {
+  return {};
+};
 import { QuestionCheckboxModel } from "survey-core";
 import { JsPdfSurveyModel } from "../src/survey";
 import { CheckBoxQuestion } from "../src/checkbox";
@@ -38,7 +41,7 @@ test("Test has other  checkbox", () => {
 
   expect(otherText).toBe(json.questions[0].otherText);
   expect(internalOtherTextField).toBeDefined();
-  expect(internalOtherCheckBox).toBe("Other test");
+  expect(internalOtherCheckBox).toBeDefined();
 });
 //TODO
 test("Test has other split", () => {});
