@@ -44,6 +44,7 @@ export class TextQuestion extends PdfQuestion {
       else {
         inputField.value = "";
       }
+      inputField.readOnly = question.isReadOnly;
       inputField.fieldName = question.id;
       this.docController.doc.addField(inputField);
     }

@@ -33,7 +33,8 @@ var json = {
       title: "Please enter your name:",
       titleLocation: "hidden",
       description: "Hidden description",
-      indent: 1
+      indent: 1,
+      readOnly: true
     },
     {
       name: "name2",
@@ -168,7 +169,9 @@ var json = {
       type: "text",
       title: "Rarrararar:",
       isRequired: true,
-      titleLocation: "top"
+      titleLocation: "top",
+      placeHolder: "holder",
+      readOnly: true
     },
     {
       name: "name10",

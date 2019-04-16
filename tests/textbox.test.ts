@@ -271,3 +271,46 @@ test("Set textbox data with defaultValue and placeHolder", () => {
   expect(survey.docController.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields[0].value)
       .toBe(survey.data.holder);
 });
+
+test("Check not readOnly textbox", () => {
+  let __dummy_tx = new TextQuestion(null, null);
+  let json = { questions: [ {
+      name: "readtext",
+      type: "text",
+      title: "Write also"
+    }]
+  };
+  let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
+  survey.render({
+      fontSize: 30, xScale: 0.22, yScale: 0.36,
+      margins: {
+        marginLeft: 10,
+        marginRight: 10,
+        marginTop: 10,
+        marginBot: 10 }
+    });
+  expect(survey.docController.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields[0].readOnly)
+      .toBe(false);
+});
+
+test("Check readOnly textbox", () => {
+  let __dummy_tx = new TextQuestion(null, null);
+  let json = { questions: [ {
+      name: "readtext",
+      type: "text",
+      title: "Write also",
+      readOnly: true
+    }]
+  };
+  let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
+  survey.render({
+      fontSize: 30, xScale: 0.22, yScale: 0.36,
+      margins: {
+        marginLeft: 10,
+        marginRight: 10,
+        marginTop: 10,
+        marginBot: 10 }
+    });
+  expect(survey.docController.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields[0].readOnly)
+      .toBe(true);
+});
