@@ -1,4 +1,4 @@
-import { IQuestion, Question } from "survey-core";
+import { IQuestion, Question, LocalizableString } from "survey-core";
 import { IPoint, IRect, DocController } from "./docController";
 
 export interface IPdfQuestion {
@@ -15,10 +15,9 @@ export class PdfQuestion implements IPdfQuestion {
         this.docController.doc.setFontStyle("bold");
         let question: Question = this.getQuestion<Question>();
         let number: string = question["no"] != "" ? question["no"] + " . " : "";
-        let required: string = question.isRequired ? " " + question.requiredText : "";
         let boundaries: IRect = this.renderText(
             point,
-            number + question.title + required,
+            number + this.getLocString(question.locTitle),
             isRender
         );
         this.docController.doc.setFontStyle("normal");
@@ -188,6 +187,9 @@ export class PdfQuestion implements IPdfQuestion {
             value.xLeft = point.xLeft;
         });
         return contentRects;
+    }
+    getLocString(locObj: LocalizableString): string {
+        return locObj.renderedHtml;
     }
     alignPoint(point: IPoint, boundaries: IRect): IPoint {
         return {
