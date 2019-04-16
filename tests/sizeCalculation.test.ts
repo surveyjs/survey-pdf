@@ -906,3 +906,187 @@ test("Calc boundaries title hidden with description", () => {
     expect(checkboxBoundaries.yTop).toBeCloseTo(assumeBoundaries.yTop);
     expect(checkboxBoundaries.yBot).toBeCloseTo(assumeBoundaries.yBot);
 });
+
+test("Calc boundaries with indent 0", () => {
+    let __dummy_cb = new CheckBoxQuestion(null, null);
+    let json = {
+        questions: [
+            {
+                type: "checkbox",
+                name: "box",
+                title: "I stand straight",
+                indent: 0,
+                choices: [
+                    "Right choice"
+                ]
+            }
+        ]
+    };
+    let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
+    let docOptions: IDocOptions = {
+        fontSize: 10, xScale: 0.22, yScale: 0.36,
+        margins: {
+            marginLeft: 10,
+            marginRight: 10,
+            marginTop: 10,
+            marginBot: 10
+        }
+    };
+    let docController: DocController = new DocController(docOptions);
+    let cbm: QuestionCheckboxModel = <QuestionCheckboxModel>survey.getAllQuestions()[0];
+    let cbq: IPdfQuestion = QuestionRepository.getInstance().create(cbm, docController);
+    let point: IPoint = {
+        xLeft: docOptions.margins.marginLeft,
+        yTop: docOptions.margins.marginTop
+    }
+    let checkboxBoundaries: IRect = cbq.render(point, false)[0];
+    let assumeBoundaries: IRect = {
+        xLeft: docOptions.margins.marginLeft,
+        xRight: docOptions.margins.marginLeft +
+            docController.measureText(json.questions[0].title.length + 4).width,
+        yTop: docOptions.margins.marginTop,
+        yBot: docOptions.margins.marginTop + 2 * docController.measureText().height
+    };
+    expect(checkboxBoundaries.xLeft).toBeCloseTo(assumeBoundaries.xLeft);
+    expect(checkboxBoundaries.xRight).toBeCloseTo(assumeBoundaries.xRight);
+    expect(checkboxBoundaries.yTop).toBeCloseTo(assumeBoundaries.yTop);
+    expect(checkboxBoundaries.yBot).toBeCloseTo(assumeBoundaries.yBot);
+});
+
+test("Calc boundaries with indent 1", () => {
+    let __dummy_cb = new CheckBoxQuestion(null, null);
+    let json = {
+        questions: [
+            {
+                type: "checkbox",
+                name: "box",
+                title: "Birches bent",
+                indent: 1,
+                choices: [
+                    "Choose me"
+                ]
+            }
+        ]
+    };
+    let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
+    let docOptions: IDocOptions = {
+        fontSize: 10, xScale: 0.22, yScale: 0.36,
+        margins: {
+            marginLeft: 10,
+            marginRight: 10,
+            marginTop: 10,
+            marginBot: 10
+        }
+    };
+    let docController: DocController = new DocController(docOptions);
+    let cbm: QuestionCheckboxModel = <QuestionCheckboxModel>survey.getAllQuestions()[0];
+    let cbq: IPdfQuestion = QuestionRepository.getInstance().create(cbm, docController);
+    let point: IPoint = {
+        xLeft: docOptions.margins.marginLeft,
+        yTop: docOptions.margins.marginTop
+    }
+    let checkboxBoundaries: IRect = cbq.render(point, false)[0];
+    let assumeBoundaries: IRect = {
+        xLeft: docOptions.margins.marginLeft,
+        xRight: docOptions.margins.marginLeft +
+            docController.measureText(json.questions[0].title.length + 5).width,
+        yTop: docOptions.margins.marginTop,
+        yBot: docOptions.margins.marginTop + 2 * docController.measureText().height
+    };
+    expect(checkboxBoundaries.xLeft).toBeCloseTo(assumeBoundaries.xLeft);
+    expect(checkboxBoundaries.xRight).toBeCloseTo(assumeBoundaries.xRight);
+    expect(checkboxBoundaries.yTop).toBeCloseTo(assumeBoundaries.yTop);
+    expect(checkboxBoundaries.yBot).toBeCloseTo(assumeBoundaries.yBot);
+});
+
+test("Calc boundaries with indent 2", () => {
+    let __dummy_cb = new CheckBoxQuestion(null, null);
+    let json = {
+        questions: [
+            {
+                type: "checkbox",
+                name: "box",
+                title: "I'm going right",
+                indent: 2,
+                choices: [
+                    "Ckick"
+                ]
+            }
+        ]
+    };
+    let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
+    let docOptions: IDocOptions = {
+        fontSize: 10, xScale: 0.22, yScale: 0.36,
+        margins: {
+            marginLeft: 10,
+            marginRight: 10,
+            marginTop: 10,
+            marginBot: 10
+        }
+    };
+    let docController: DocController = new DocController(docOptions);
+    let cbm: QuestionCheckboxModel = <QuestionCheckboxModel>survey.getAllQuestions()[0];
+    let cbq: IPdfQuestion = QuestionRepository.getInstance().create(cbm, docController);
+    let point: IPoint = {
+        xLeft: docOptions.margins.marginLeft,
+        yTop: docOptions.margins.marginTop
+    }
+    let checkboxBoundaries: IRect = cbq.render(point, false)[0];
+    let assumeBoundaries: IRect = {
+        xLeft: docOptions.margins.marginLeft,
+        xRight: docOptions.margins.marginLeft +
+            docController.measureText(json.questions[0].title.length + 6).width,
+        yTop: docOptions.margins.marginTop,
+        yBot: docOptions.margins.marginTop + 2 * docController.measureText().height
+    };
+    expect(checkboxBoundaries.xLeft).toBeCloseTo(assumeBoundaries.xLeft);
+    expect(checkboxBoundaries.xRight).toBeCloseTo(assumeBoundaries.xRight);
+    expect(checkboxBoundaries.yTop).toBeCloseTo(assumeBoundaries.yTop);
+    expect(checkboxBoundaries.yBot).toBeCloseTo(assumeBoundaries.yBot);
+});
+
+test("Calc boundaries with indent 3", () => {
+    let __dummy_cb = new CheckBoxQuestion(null, null);
+    let json = {
+        questions: [
+            {
+                type: "checkbox",
+                name: "box",
+                title: "I like capital",
+                indent: 3,
+                choices: [
+                    "My PR manager"
+                ]
+            }
+        ]
+    };
+    let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
+    let docOptions: IDocOptions = {
+        fontSize: 10, xScale: 0.22, yScale: 0.36,
+        margins: {
+            marginLeft: 10,
+            marginRight: 10,
+            marginTop: 10,
+            marginBot: 10
+        }
+    };
+    let docController: DocController = new DocController(docOptions);
+    let cbm: QuestionCheckboxModel = <QuestionCheckboxModel>survey.getAllQuestions()[0];
+    let cbq: IPdfQuestion = QuestionRepository.getInstance().create(cbm, docController);
+    let point: IPoint = {
+        xLeft: docOptions.margins.marginLeft,
+        yTop: docOptions.margins.marginTop
+    }
+    let checkboxBoundaries: IRect = cbq.render(point, false)[0];
+    let assumeBoundaries: IRect = {
+        xLeft: docOptions.margins.marginLeft,
+        xRight: docOptions.margins.marginLeft +
+            docController.measureText(json.questions[0].title.length + 7).width,
+        yTop: docOptions.margins.marginTop,
+        yBot: docOptions.margins.marginTop + 2 * docController.measureText().height
+    };
+    expect(checkboxBoundaries.xLeft).toBeCloseTo(assumeBoundaries.xLeft);
+    expect(checkboxBoundaries.xRight).toBeCloseTo(assumeBoundaries.xRight);
+    expect(checkboxBoundaries.yTop).toBeCloseTo(assumeBoundaries.yTop);
+    expect(checkboxBoundaries.yBot).toBeCloseTo(assumeBoundaries.yBot);
+});
