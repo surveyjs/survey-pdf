@@ -1,10 +1,11 @@
 (<any>window)["HTMLCanvasElement"].prototype.getContext = () => {
   return {};
 };
-import { QuestionCheckboxModel, surveyLocalization } from "survey-core";
+import { QuestionCheckboxModel } from "survey-core";
 import { JsPdfSurveyModel } from "../src/survey";
 import { CheckBoxQuestion } from "../src/checkbox";
-import { DocOptions, IDocOptions } from "../src/docController";
+import { IDocOptions, DocController, IRect } from "../src/docController";
+import { QuestionRepository } from "../src/questionRepository";
 let __dummy_cx = new CheckBoxQuestion(null, null);
 //TODO
 test("Test has other  checkbox", () => {
@@ -43,8 +44,51 @@ test("Test has other  checkbox", () => {
   expect(internalOtherTextField.FT).toBe("/Tx");
   expect(internalOtherCheckBox.FT).toBe("/Btn");
 });
-//TODO
-test("Test has other split", () => {});
+
+test("Test has other split", () => {
+  let docOptions: IDocOptions = {
+    fontSize: 30,
+    xScale: 0.22,
+    yScale: 0.36,
+    margins: {
+      marginLeft: 10,
+      marginRight: 10,
+      marginTop: 10,
+      marginBot: 10
+    }
+  };
+  docOptions["paperHeight"] =
+    3 * (docOptions.fontSize * docOptions.yScale) +
+    docOptions.margins.marginBot +
+    docOptions.margins.marginTop;
+  let docController = new DocController(docOptions);
+  let cbm: QuestionCheckboxModel = new QuestionCheckboxModel("Test");
+  cbm.hasOther = true;
+  cbm.choices = ["item1"];
+  let cbq: CheckBoxQuestion = <CheckBoxQuestion>(
+    QuestionRepository.getInstance().create(cbm, docController)
+  );
+  let checkboxBoundaries: IRect[] = cbq.render(
+    {
+      xLeft: docOptions.margins.marginLeft,
+      yTop: docOptions.margins.marginTop
+    },
+    false
+  );
+  let assumeBoundaries = {
+    xLeft: docOptions.margins.marginLeft,
+    xRight: docController.paperWidth - docOptions.margins.marginRight,
+    yTop: docOptions.margins.marginTop,
+    yBot:
+      2 * (docOptions.fontSize * docOptions.yScale) +
+      docOptions.margins.marginTop
+  };
+  expect(checkboxBoundaries.length).toBe(2);
+  expect(checkboxBoundaries[1].xLeft).toBeCloseTo(assumeBoundaries.xLeft);
+  expect(checkboxBoundaries[1].xRight).toBeCloseTo(assumeBoundaries.xRight);
+  expect(checkboxBoundaries[1].yTop).toBeCloseTo(assumeBoundaries.yTop);
+  expect(checkboxBoundaries[1].yBot).toBeCloseTo(assumeBoundaries.yBot);
+});
 test("Test duplicate value other", () => {
   let json = {
     questions: [
