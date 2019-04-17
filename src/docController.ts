@@ -73,7 +73,7 @@ export class DocOptions implements IDocOptions {
         return yBot > this._paperHeight - this.margins.marginBot;
     }
     measureText(text: number | string = 1) {
-        let length = typeof text === "string" ? text.length : text; 
+        let length: number = typeof text === 'string' ? text.length : text; 
         return {
             width: length * this.fontSize * this.xScale,
             height: this.fontSize * this.yScale

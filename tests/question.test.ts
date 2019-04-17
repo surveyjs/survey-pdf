@@ -3,7 +3,7 @@
 };
 
 import { QuestionTextModel } from "survey-core";
-import { JsPdfSurveyModel } from "../src/survey";
+import { JsPdfSurveyModel } from "../src/__survey";
 import { TextQuestion } from "../src/text";
 import { CheckBoxQuestion } from "../src/checkbox";
 test("Check title number", () => {

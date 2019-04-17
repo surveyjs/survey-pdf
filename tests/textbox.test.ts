@@ -2,7 +2,7 @@
     return {};
 };
 
-import { JsPdfSurveyModel } from "../src/survey";
+import { JsPdfSurveyModel } from "../src/__survey";
 import { TextQuestion } from "../src/text";
 
 test("Set textbox no value", () => {

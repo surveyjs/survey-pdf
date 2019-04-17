@@ -4,7 +4,7 @@
 
 import { QuestionRepository } from "../src/questionRepository";
 import { IPoint, IRect, IDocOptions, DocController } from "../src/docController";
-import { JsPdfSurveyModel } from "../src/survey";
+import { JsPdfSurveyModel } from "../src/__survey";
 import { Question, QuestionTextModel, QuestionCheckboxModel } from "survey-core";
 import { PdfQuestion, IPdfQuestion } from "../src/question";
 import { TextQuestion } from "../src/text";

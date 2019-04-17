@@ -2,7 +2,7 @@
     return {};
 };
 
-import { JsPdfSurveyModel } from "../src/survey";
+import { JsPdfSurveyModel } from "../src/__survey";
 
 test("first", () => {
     let survey = new JsPdfSurveyModel({});

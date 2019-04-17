@@ -1,8 +1,8 @@
 import { IRect } from '../docController';
 import { IQuestion } from 'survey-core';
-import { PdfText } from './pdf_text';
+import { PdfQuestion } from "./pdf_question";
 
-export class PdfTitle extends PdfText {
+export class PdfText extends PdfQuestion {
     constructor(question: IQuestion, rect: IRect) {
         super(question, rect);
     }

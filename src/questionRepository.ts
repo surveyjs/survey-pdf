@@ -22,4 +22,3 @@ export class QuestionRepository {
         return new rendererConstructor(question, docController);
     }
 }
-

@@ -2,7 +2,7 @@
   return {};
 };
 import { QuestionCheckboxModel, surveyLocalization } from "survey-core";
-import { JsPdfSurveyModel } from "../src/survey";
+import { JsPdfSurveyModel } from "../src/__survey";
 import { CheckBoxQuestion } from "../src/checkbox";
 import { DocOptions, IDocOptions } from "../src/docController";
 let __dummy_cx = new CheckBoxQuestion(null, null);
