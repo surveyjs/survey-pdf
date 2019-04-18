@@ -17,7 +17,7 @@ test("Test merge rects 2 count", () => {
         (<any>firstRect)[key] += (lessKeys.indexOf(key) < 0) ? 10 : -10;
         (<any>assumeRect)[key] = (<any>firstRect)[key];
         let resultRect = fq.mergeRects(firstRect, secondRect);
-        TestHelper.equalRect(expect, assumeRect, resultRect);
+        TestHelper.equalRect(expect, resultRect, assumeRect);
     })
 });
 
@@ -37,10 +37,24 @@ test("Test create rect", () => {
             yTop: point.yTop,
             yBot: point.yTop + parametres.height
         }
-        TestHelper.equalRect(expect, assumeRect, fq.createRect(point, parametres.width, parametres.height));
+        TestHelper.equalRect(expect, fq.createRect(point, parametres.width, parametres.height), assumeRect);
     }
 });
 
-// test("Test measure text", () => {
-
-// });
+test("Test create point", () => {
+    let rect: IRect = TestHelper.defaultRect;
+    let isTop = true;
+    let isLeft = true;
+    let x = rect.xLeft;
+    let y = rect.yTop;
+    TestHelper.equalPoint(expect, fq.createPoint(rect, isLeft, isTop), { xLeft: x, yTop: y });
+    isLeft = false;
+    x = rect.xRight;
+    TestHelper.equalPoint(expect, fq.createPoint(rect, isLeft, isTop), { xLeft: x, yTop: y });
+    isTop = false;
+    y = rect.yBot;
+    TestHelper.equalPoint(expect, fq.createPoint(rect, isLeft, isTop), { xLeft: x, yTop: y });
+    isLeft = true;
+    x = rect.xLeft;
+    TestHelper.equalPoint(expect, fq.createPoint(rect, isLeft, isTop), { xLeft: x, yTop: y });
+});
