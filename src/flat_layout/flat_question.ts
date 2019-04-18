@@ -77,6 +77,12 @@ export class FlatQuestion implements IFlatQuestion {
         });
         return resultRect;
     }
+    createPoint(rect: IRect): IPoint {
+        return {
+            xLeft: rect.xLeft,
+            yTop: rect.yTop
+        };
+    }
     createRect(point: IPoint, width: number, height: number): IRect {
         return {
             xLeft: point.xLeft,
