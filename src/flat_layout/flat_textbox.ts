@@ -1,14 +1,19 @@
+import { IQuestion, QuestionTextModel } from 'survey-core';
 import { FlatQuestion } from './flat_question';
-import { IPoint, DocController } from "../doc_controller";
+import { IPoint, IRect, DocController } from "../doc_controller";
 import { IPdfBrick } from '../pdf_render/pdf_brick'
 import { FlatRepository } from './flat_repository';
+import { TextFieldBrick } from '../pdf_render/pdf_textfield';
 
 export class FlatTextbox extends FlatQuestion {
-    generateFlatsContent(point: IPoint): IPdfBrick[] {
-        return null;
+    protected question: QuestionTextModel;
+    constructor(question: IQuestion, protected controller: DocController) {
+        super(question, controller);
+        this.question = <QuestionTextModel>question;
     }
-    generateFlats(point: IPoint): IPdfBrick[] {
-        return null;
+    generateFlatsContent(point: IPoint): IPdfBrick[] {
+        let rect: IRect = this.measureTextFieldRect(point);
+        return [new TextFieldBrick(this.question, this.controller, rect)];
     }
 }
 
