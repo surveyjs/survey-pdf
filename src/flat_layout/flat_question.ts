@@ -77,10 +77,11 @@ export class FlatQuestion implements IFlatQuestion {
         });
         return resultRect;
     }
-    createPoint(rect: IRect): IPoint {
+    createPoint(flat: IPdfBrick | IRect, isTop: boolean = false, isLeft: boolean = true): IPoint {
+        let rect: IRect = flat instanceof PdfBrick ? (<PdfBrick>flat).rect : <IRect>flat;
         return {
-            xLeft: rect.xLeft,
-            yTop: rect.yTop
+            xLeft: isLeft ? rect.xLeft : rect.xRight,
+            yTop: isTop ? rect.yTop : rect.yBot
         };
     }
     createRect(point: IPoint, width: number, height: number): IRect {
