@@ -15,7 +15,7 @@ export class FlatQuestion implements IFlatQuestion {
     constructor(
         protected question: IQuestion,
         protected controller: DocController
-    ) {}
+    ) { }
     private generateFlatsTitle(point: IPoint): IPdfBrick {
         let question: Question = this.getQuestion<Question>();
         this.controller.fontStyle = 'bold';
@@ -60,7 +60,7 @@ export class FlatQuestion implements IFlatQuestion {
         let width: number = this.controller.paperWidth - point.xLeft -
             this.controller.margins.marginRight;
         let height: number = this.controller.measureText(question.title).height * lines;
-        return this.createRect(point, width, height);   
+        return this.createRect(point, width, height);
     }
     mergeRects(...rects: IRect[]): IRect {
         let resultRect: IRect = {
@@ -71,9 +71,9 @@ export class FlatQuestion implements IFlatQuestion {
         };
         rects.forEach((rect: IRect) => {
             resultRect.xLeft = Math.min(resultRect.xLeft, rect.xLeft),
-            resultRect.xRight = Math.max(resultRect.xRight, rect.xRight),
-            resultRect.yTop = Math.min(resultRect.yTop, rect.yTop),
-            resultRect.yBot = Math.min(resultRect.yBot, rect.yBot)
+                resultRect.xRight = Math.max(resultRect.xRight, rect.xRight),
+                resultRect.yTop = Math.min(resultRect.yTop, rect.yTop),
+                resultRect.yBot = Math.max(resultRect.yBot, rect.yBot)
         });
         return resultRect;
     }

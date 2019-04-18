@@ -1,7 +1,21 @@
-import { IRect, IDocOptions } from './docController';
+import { IRect, IPoint, IDocOptions } from './docController';
 import { IPdfBrick, PdfBrick } from './pdf_render/pdf_brick';
 
 export class TestHelper {
+    static get defaultPoint(): IPoint {
+        return {
+            xLeft: 10,
+            yTop: 10
+        }
+    }
+    static get defaultRect(): IRect {
+        return {
+            xLeft: 10,
+            xRight: 20,
+            yTop: 10,
+            yBot: 20
+        }
+    }
     static get defaultOptions(): IDocOptions {
         return {
             fontSize: 30, xScale: 0.22, yScale: 0.36,
@@ -23,12 +37,12 @@ export class TestHelper {
         });
         return pdfqs;
     }
-    static equalRect(jest: any, question: IPdfBrick | IRect, rect: IRect) {
+    static equalRect(expect: any, question: IPdfBrick | IRect, rect: IRect) {
         let qRect: IRect = typeof question === 'string' ?
             (<PdfBrick>question).rect : <IRect>question;
-        jest.expect(qRect.xLeft).toBeCloseTo(rect.xLeft);
-        jest.expect(qRect.xRight).toBeCloseTo(rect.xRight);
-        jest.expect(qRect.yTop).toBeCloseTo(rect.yTop);
-        jest.expect(qRect.yBot).toBeCloseTo(rect.yBot);
+        expect(qRect.xLeft).toBeCloseTo(rect.xLeft);
+        expect(qRect.xRight).toBeCloseTo(rect.xRight);
+        expect(qRect.yTop).toBeCloseTo(rect.yTop);
+        expect(qRect.yBot).toBeCloseTo(rect.yBot);
     }
 }
