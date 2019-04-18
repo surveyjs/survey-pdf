@@ -3,7 +3,7 @@
 };
 
 import { QuestionRepository } from "../src/questionRepository";
-import { IPoint, IRect, IDocOptions, DocController } from "../src/docController";
+import { IPoint, IRect, IDocOptions, DocController } from "../src/doc_controller";
 import { JsPdfSurveyModel } from "../src/__survey";
 import { Question, QuestionTextModel, QuestionCheckboxModel } from "survey-core";
 import { PdfQuestion, IPdfQuestion } from "../src/question";

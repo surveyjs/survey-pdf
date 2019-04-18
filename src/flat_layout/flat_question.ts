@@ -1,4 +1,4 @@
-import { IPoint, IRect, DocController } from "../docController";
+import { IPoint, IRect, DocController } from "../doc_controller";
 import { IQuestion, Question, QuestionTextModel, LocalizableString } from 'survey-core';
 import { IPdfBrick, PdfBrick } from '../pdf_render/pdf_brick'
 import { TitleBrick } from '../pdf_render/pdf_title';
@@ -12,34 +12,31 @@ export interface IFlatQuestion {
 
 export class FlatQuestion implements IFlatQuestion {
     static DESCRIPTION_FONT_SIZE_SCALE_MAGIC: number = 2.0 / 3.0;
-    constructor(
-        protected question: IQuestion,
-        protected controller: DocController
-    ) { }
-    private generateFlatsTitle(point: IPoint): IPdfBrick {
-        let question: Question = this.getQuestion<Question>();
+    protected question: Question;
+    constructor(question: IQuestion, protected controller: DocController) {
+        this.question = <Question>question;
+    }
+    private generateFlatTitle(point: IPoint): IPdfBrick {
         this.controller.fontStyle = 'bold';
-        let number: string = question.no != '' ? question.no + ' . ' : '';
+        let number: string = this.question.no != '' ? this.question.no + ' . ' : '';
         let rect: IRect = this.measureTextRect(point,
-            number + this.getLocString(question.locTitle));
+            number + this.getLocString(this.question.locTitle));
         this.controller.fontStyle = 'normal';
         return new TitleBrick(this.question, this.controller, rect);
     }
-    private generateFlatsDescription(point: IPoint): IPdfBrick {
-        let question: Question = this.getQuestion<Question>();
-        if (question.description == '') return null;
+    private generateFlatDescription(point: IPoint): IPdfBrick {
+        if (this.getLocString(this.question.locDescription) == '') return null;
         let oldFontSize: number = this.controller.fontSize;
         this.controller.fontSize = oldFontSize *
             FlatQuestion.DESCRIPTION_FONT_SIZE_SCALE_MAGIC;
         let rect: IRect = this.measureTextRect(point,
-            this.getLocString(question.locDescription));
+            this.getLocString(this.question.locDescription));
         this.controller.fontSize = oldFontSize;
         return new DescriptionBrick(this.question, this.controller, rect);
     }
-    private generateFlatsComment(point: IPoint): IPdfBrick {
-        let question: Question = this.getQuestion<Question>();
+    private generateFlatComment(point: IPoint): IPdfBrick {
         let rectText: IRect = this.measureTextRect(point,
-            this.getLocString(question.locCommentText));
+            this.getLocString(this.question.locCommentText));
         let rectTextField: IRect = this.measureTextFieldRect(point, 3);
         let rect: IRect = this.mergeRects(rectText, rectTextField);
         return new CommentBrick(this.question, this.controller,
@@ -49,7 +46,63 @@ export class FlatQuestion implements IFlatQuestion {
         return null;
     }
     generateFlats(point: IPoint): IPdfBrick[] {
-        return null;
+        let oldMarginLeft: number = this.controller.margins.marginLeft;
+        this.controller.margins.marginLeft += this.controller.measureText(this.question.indent).width;
+        let indentPoint: IPoint = {
+            xLeft: point.xLeft + this.controller.measureText(this.question.indent).width,
+            yTop: point.yTop
+        };
+        let flats: IPdfBrick[] = new Array();
+        switch (this.question.titleLocation) {
+            case 'top':
+            case 'default': {
+                let titleFlat: IPdfBrick = this.generateFlatTitle(indentPoint);
+                flats.push(titleFlat);
+                let descPoint: IPoint = this.createPoint(titleFlat);
+                let contentPoint: IPoint = this.createPoint(titleFlat);
+                let descFlat: IPdfBrick = this.generateFlatDescription(descPoint);
+                if (descFlat !== null) {
+                    flats.push(descFlat);
+                    contentPoint = this.createPoint(descFlat);
+                }
+                flats.push(...this.generateFlatsContent(contentPoint));
+                break;
+            }
+            case 'bottom': {
+                let contentFlats: IPdfBrick[] = this.generateFlatsContent(indentPoint);
+                flats.push(...contentFlats);
+                let titlePoint: IPoint = this.createPoint(contentFlats[contentFlats.length - 1]);
+                let titleFlat: IPdfBrick = this.generateFlatTitle(titlePoint);
+                flats.push(titleFlat);
+                let descPoint: IPoint = this.createPoint(titleFlat);
+                let descFlat: IPdfBrick = this.generateFlatDescription(descPoint);
+                if (descFlat !== null) flats.push(descFlat);
+                break;
+            }
+            case 'left': {
+                let titleFlat: IPdfBrick = this.generateFlatTitle(indentPoint);
+                flats.push(titleFlat);
+                let descPoint: IPoint = this.createPoint(titleFlat);
+                let descFlat: IPdfBrick = this.generateFlatDescription(descPoint);
+                let contentPoint: IPoint = this.createPoint(titleFlat, false);
+                if (descFlat !== null) {
+                    flats.push(descFlat);
+                    contentPoint.xLeft = Math.max(contentPoint.xLeft,
+                        (<PdfBrick>descFlat).rect.xRight);
+                }
+                flats.push(...this.generateFlatsContent(contentPoint));
+                break;
+            }
+            case 'hidden': {
+                flats.push(...this.generateFlatsContent(indentPoint));
+                break;
+            }
+        }
+        if (this.question.hasComment) {
+            flats.push(this.generateFlatComment(this.createPoint(flats[flats.length - 1])));
+        }
+        this.controller.margins.marginLeft = oldMarginLeft;
+        return flats;
     }
     measureTextRect(point: IPoint, text: string): IRect {
         let { width, height } = this.controller.measureText(text);
@@ -77,6 +130,13 @@ export class FlatQuestion implements IFlatQuestion {
         });
         return resultRect;
     }
+    createPoint(flat: IPdfBrick | IRect, isLeft: boolean = true, isTop: boolean = false): IPoint {
+        let rect: IRect = flat instanceof PdfBrick ? (<PdfBrick>flat).rect : <IRect>flat;
+        return {
+            xLeft: isLeft ? rect.xLeft : rect.xRight,
+            yTop: isTop ? rect.yTop : rect.yBot
+        };
+    }
     createRect(point: IPoint, width: number, height: number): IRect {
         return {
             xLeft: point.xLeft,
@@ -88,7 +148,7 @@ export class FlatQuestion implements IFlatQuestion {
     getLocString(locObj: LocalizableString): string {
         return locObj.renderedHtml;
     }
-    getQuestion<T extends IQuestion>(): T {
+    getQuestion<T extends Question>(): T {
         return <T>this.question;
     }
 }

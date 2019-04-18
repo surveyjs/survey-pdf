@@ -1,7 +1,7 @@
 import { IQuestion, PageModel, QuestionRowModel, IElement } from 'survey-core';
 import { PdfSurvey } from '../survey';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
-import { IPoint } from "../docController";
+import { IPoint } from "../doc_controller";
 import { FlatRepository } from './flat_repository';
 import { IFlatQuestion } from './flat_question';
 

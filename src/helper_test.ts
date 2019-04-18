@@ -1,4 +1,4 @@
-import { IRect, IPoint, IDocOptions } from './docController';
+import { IPoint, IRect, IDocOptions } from './doc_controller';
 import { IPdfBrick, PdfBrick } from './pdf_render/pdf_brick';
 
 export class TestHelper {

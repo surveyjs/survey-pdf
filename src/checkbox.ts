@@ -1,6 +1,6 @@
 import { IQuestion, ItemValue, QuestionCheckboxModel } from "survey-core";
 import { SelectBaseQuestion } from "./selectbase";
-import { IPoint, IRect, DocController } from "./docController";
+import { IPoint, IRect, DocController } from "./doc_controller";
 import { QuestionRepository } from "./questionRepository";
 
 export class CheckBoxQuestion extends SelectBaseQuestion {

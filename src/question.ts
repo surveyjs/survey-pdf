@@ -1,5 +1,5 @@
 import { IQuestion, Question, LocalizableString } from "survey-core";
-import { IPoint, IRect, DocController } from "./docController";
+import { IPoint, IRect, DocController } from "./doc_controller";
 
 export interface IPdfQuestion {
     renderContent(point: IPoint, isRender: boolean): IRect[];

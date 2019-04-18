@@ -3,7 +3,7 @@
 };
 import { FlatQuestion } from "../src/flat_layout/flat_question"
 import { TestHelper } from "../src/helper_test"
-import { IRect, IDocOptions, IPoint } from '../src/docController';
+import { IPoint, IRect } from '../src/doc_controller';
 //TODO
 let fq = new FlatQuestion(null, null);
 
@@ -15,7 +15,7 @@ test("Test merge rects 2 count", () => {
         let secondRect: IRect = TestHelper.defaultRect;
         let assumeRect: IRect = TestHelper.defaultRect;
         (<any>firstRect)[key] += (lessKeys.indexOf(key) < 0) ? 10 : -10;
-        (<any>assumeRect)[key] = firstRect[key];
+        (<any>assumeRect)[key] = (<any>firstRect)[key];
         let resultRect = fq.mergeRects(firstRect, secondRect);
         TestHelper.equalRect(expect, assumeRect, resultRect);
     })
@@ -41,6 +41,6 @@ test("Test create rect", () => {
     }
 });
 
-test("Test measure text", () => {
+// test("Test measure text", () => {
 
-});
+// });

@@ -4,7 +4,7 @@
 
 import { PagePacker } from '../src/page_layout/page_packer';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
-import { IRect, IDocOptions, DocController } from '../src/docController';
+import { IRect, IDocOptions, DocController } from '../src/doc_controller';
 import { TestHelper } from '../src/helper_test';
 
 test.skip("Test empty rect page layout", () => {

@@ -1,5 +1,5 @@
 import { IQuestion } from "survey-core";
-import { DocController } from "./docController";
+import { DocController } from "./doc_controller";
 import { IPdfQuestion, PdfQuestion } from "./question";
 
 export type RendererConstructor = new (

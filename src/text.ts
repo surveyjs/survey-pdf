@@ -2,7 +2,7 @@ import {
   IPoint,
   IRect,
   DocController
-} from "./docController";
+} from "./doc_controller";
 import {
   PdfQuestion
 } from "./question";

@@ -1,5 +1,5 @@
 import { IQuestion } from 'survey-core';
-import { DocController } from '../docController';
+import { DocController } from '../doc_controller';
 import { IFlatQuestion, FlatQuestion } from './flat_question';
 
 export type FlatConstructor = new (
