@@ -45,4 +45,10 @@ export class TestHelper {
         expect(qRect.yTop).toBeCloseTo(rect.yTop);
         expect(qRect.yBot).toBeCloseTo(rect.yBot);
     }
+    static equalPoint(expect: any, question: IPdfBrick | IPoint, point: IPoint) {
+        let qPoint: IPoint = typeof question === 'string' ?
+            (<PdfBrick>question).rect : <IPoint>question;
+        expect(qPoint.xLeft).toBeCloseTo(point.xLeft);
+        expect(qPoint.yTop).toBeCloseTo(point.yTop);
+    }
 }
