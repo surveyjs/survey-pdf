@@ -1,5 +1,5 @@
 import { FlatQuestion } from './flat_question';
-import { IPoint, DocController } from "../docController";
+import { IPoint, DocController } from "../doc_controller";
 import { IPdfBrick } from '../pdf_render/pdf_brick'
 import { FlatRepository } from './flat_repository';
 

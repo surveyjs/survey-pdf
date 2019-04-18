@@ -1,4 +1,4 @@
-import { IPoint, IRect, DocController } from '../docController';
+import { IPoint, IRect, DocController } from '../doc_controller';
 import { IQuestion } from 'survey-core';
 
 export interface IPdfBrick {

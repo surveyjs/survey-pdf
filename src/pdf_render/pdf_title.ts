@@ -1,4 +1,4 @@
-import { IRect, DocController } from '../docController';
+import { IRect, DocController } from '../doc_controller';
 import { IQuestion } from 'survey-core';
 import { PdfBrick } from './pdf_brick';
 

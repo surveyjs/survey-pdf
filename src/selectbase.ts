@@ -1,6 +1,6 @@
 import { IQuestion, QuestionSelectBase, ItemValue } from "survey-core";
 import { PdfQuestion } from "./question";
-import { IPoint, IRect, DocController } from "./docController";
+import { IPoint, IRect, DocController } from "./doc_controller";
 
 export class SelectBaseQuestion extends PdfQuestion {
   constructor(

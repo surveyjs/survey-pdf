@@ -12,7 +12,7 @@
 //sift up interface to testing
 
 import { SurveyModel, IQuestion } from "survey-core";
-import { IPoint, IRect, IDocOptions, DocController } from "./docController";
+import { IPoint, IRect, IDocOptions, DocController } from "./doc_controller";
 import { IPdfQuestion } from "./question";
 import { QuestionRepository } from "./questionRepository";
 import addCustomFonts from "./customFonts";

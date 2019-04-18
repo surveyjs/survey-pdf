@@ -1,5 +1,5 @@
 import { SurveyModel } from  'survey-core';
-import { IDocOptions, DocController } from './docController'
+import { IDocOptions, DocController } from './doc_controller'
 import { FlatSurvey } from './flat_layout/flat_survey';
 import { PagePacker } from './page_layout/page_packer';
 import { IPdfBrick } from './pdf_render/pdf_brick';
