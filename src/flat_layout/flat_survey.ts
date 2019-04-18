@@ -1,38 +1,44 @@
-import { IQuestion } from 'survey-core';
+import { IQuestion, PageModel, QuestionRowModel, IElement } from 'survey-core';
 import { PdfSurvey } from '../survey';
-import { IPdfQuestion } from '../pdf_render/pdf_question';
+import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { IPoint } from "../docController";
 import { FlatRepository } from './flat_repository';
 import { IFlatQuestion } from './flat_question';
 
 export class FlatSurvey {
-    static generateFlats(survey: PdfSurvey): IPdfQuestion[] {
+    static parseWidth(width: string): number {
+        return parseFloat(width) / 100.0;
+    }
+    static generateFlats(survey: PdfSurvey): IPdfBrick[] {
         let controller = survey.controller;
         let point: IPoint = {
             xLeft: controller.margins.marginLeft,
             yTop: controller.margins.marginTop
         };
-        survey.pages.forEach((page: any) => {
-            page.questions.forEach((question: IQuestion) => {
-            let flatQuestion: IFlatQuestion =
-                FlatRepository.getInstance().create(question, controller);
-            flatQuestion.generateFlats(point);
-            // let renderBoundaries: IRect[] = renderer.render(point, false);
-            // if (this.docController.isNewPageQuestion(renderBoundaries)) {
-            //     this.docController.addPage();
-            //     point.xLeft = this.docController.margins.marginLeft;
-            //     point.yTop = this.docController.margins.marginTop;
-            // }
-            // renderBoundaries = renderer.render(point, true);
-            // point.yTop = renderBoundaries[renderBoundaries.length - 1].yBot;
-            // point.yTop += this.docController.measureText().height;
-            // if (this.docController.isNewPageElement(point.yTop)) {
-            //     this.docController.addPage();
-            //     point.xLeft = this.docController.margins.marginLeft;
-            //     point.yTop = this.docController.margins.marginTop;
-            // }
+        let flats: IPdfBrick[] = new Array();
+        survey.pages.forEach((page: PageModel) => {
+            if (!page.isVisible) return;
+            page.rows.forEach((row: QuestionRowModel) => {
+                if (!row.visible) return;
+                let width: number = controller.paperWidth -
+                    controller.margins.marginLeft - controller.margins.marginRight;
+                let oldMarginLeft: number = controller.margins.marginLeft;
+                let oldMarginRight: number = controller.margins.marginRight;
+                let currMarginLeft: number = controller.margins.marginLeft;
+                row.elements.forEach((question: IElement) => {
+                    let persWidth: number = width * FlatSurvey.parseWidth(question.width);
+                    controller.margins.marginLeft = currMarginLeft;
+                    controller.margins.marginRight = controller.paperWidth -
+                        currMarginLeft - persWidth;
+                    currMarginLeft = controller.paperWidth - controller.margins.marginRight;
+                    let flatQuestion: IFlatQuestion =
+                        FlatRepository.getInstance().create(<IQuestion>question, controller);
+                    flats.push(...flatQuestion.generateFlats(point));
+                });
+                controller.margins.marginLeft = oldMarginLeft;
+                controller.margins.marginRight = oldMarginRight;
             });
         });
-        return null;
+        return flats;
     }
 }

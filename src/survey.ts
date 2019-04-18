@@ -2,7 +2,7 @@ import { SurveyModel } from  'survey-core';
 import { IDocOptions, DocController } from './docController'
 import { FlatSurvey } from './flat_layout/flat_survey';
 import { PagePacker } from './page_layout/page_packer';
-import { IPdfQuestion } from './pdf_render/pdf_question';
+import { IPdfBrick } from './pdf_render/pdf_brick';
 
 export class PdfSurvey extends SurveyModel {
     controller: DocController;
@@ -11,10 +11,10 @@ export class PdfSurvey extends SurveyModel {
         this.controller = new DocController(options);
     }
     render() {
-        let flats: IPdfQuestion[] = FlatSurvey.generateFlats(this);
-        let packs: IPdfQuestion[][] = PagePacker.pack(flats, this.docController);
-        packs.forEach((page: IPdfQuestion[], index: number) => {
-            page.forEach((question: IPdfQuestion) => {
+        let flats: IPdfBrick[] = FlatSurvey.generateFlats(this);
+        let packs: IPdfBrick[][] = PagePacker.pack(flats, this.controller);
+        packs.forEach((page: IPdfBrick[], index: number) => {
+            page.forEach((question: IPdfBrick) => {
                 question.render();
             });
             if (index != packs.length - 1) this.docController.addPage();

@@ -1,8 +1,8 @@
 import { DocOptions } from "../docController";
-import { IPdfQuestion } from '../pdf_render/pdf_question'
+import { IPdfBrick } from '../pdf_render/pdf_brick';
 
 export class PagePacker {
-    static pack(flats: IPdfQuestion[], options: DocOptions): IPdfQuestion[][] {
+    static pack(flats: IPdfBrick[], options: DocOptions): IPdfBrick[][] {
         return null;
     }
 }

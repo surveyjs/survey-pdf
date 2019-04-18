@@ -4,10 +4,8 @@ export interface IPoint {
     xLeft: number;
     yTop: number;
 }
-export interface IRect {
-    xLeft: number;
+export interface IRect extends IPoint {
     xRight: number;
-    yTop: number;
     yBot: number;
 }
 export interface IMargin {
@@ -102,6 +100,9 @@ export class DocController extends DocOptions {
     set fontSize(fontSize: number) {
         this._fontSize = fontSize;
         this._doc.setFontSize(this._fontSize);
+    }
+    set fontStyle(style: string) {
+        this._doc.setFontStyle(style);
     }
     public addPage() {
         this.doc.addPage([

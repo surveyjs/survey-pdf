@@ -1,6 +1,6 @@
 export * from "./helpers";
 
-export { JsPdfSurveyModel as Survey } from "../survey";
+export { JsPdfSurveyModel as Survey } from "../__survey";
 export {
   IPdfQuestion,
   PdfQuestion

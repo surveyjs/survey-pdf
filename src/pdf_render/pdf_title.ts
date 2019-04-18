@@ -1,10 +1,11 @@
-import { IRect } from '../docController';
+import { IRect, DocController } from '../docController';
 import { IQuestion } from 'survey-core';
-import { PdfText } from './pdf_text';
+import { PdfBrick } from './pdf_brick';
 
-export class PdfTitle extends PdfText {
-    constructor(question: IQuestion, rect: IRect) {
-        super(question, rect);
+export class TitleBrick extends PdfBrick {
+    constructor(protected question: IQuestion, protected controller: DocController,
+        rect: IRect) {
+        super(question, controller, rect);
     }
     render(): void {
 

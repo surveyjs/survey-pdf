@@ -1,5 +1,5 @@
 import { IRect, IDocOptions } from './docController';
-import { IPdfQuestion, PdfQuestion } from './pdf_render/pdf_question';
+import { IPdfBrick, PdfBrick } from './pdf_render/pdf_brick';
 
 export class TestHelper {
     static get defaultOptions(): IDocOptions {
@@ -13,19 +13,19 @@ export class TestHelper {
             }
         };
     }
-    static wrapRect(rect: IRect): IPdfQuestion {
-        return new PdfQuestion(null, rect);
+    static wrapRect(rect: IRect): IPdfBrick {
+        return new PdfBrick(null, null, rect);
     }
-    static wrapRects(rects: IRect[]): IPdfQuestion[] {
-        let pdfqs: IPdfQuestion[] = new Array();
+    static wrapRects(rects: IRect[]): IPdfBrick[] {
+        let pdfqs: IPdfBrick[] = new Array();
         rects.forEach((rect: IRect) => {
             pdfqs.push(TestHelper.wrapRect(rect));
         });
         return pdfqs;
     }
-    static equalRect(jest: any, question: IPdfQuestion | IRect, rect: IRect) {
+    static equalRect(jest: any, question: IPdfBrick | IRect, rect: IRect) {
         let qRect: IRect = typeof question === 'string' ?
-            (<PdfQuestion>question).rect : <IRect>question;
+            (<PdfBrick>question).rect : <IRect>question;
         jest.expect(qRect.xLeft).toBeCloseTo(rect.xLeft);
         jest.expect(qRect.xRight).toBeCloseTo(rect.xRight);
         jest.expect(qRect.yTop).toBeCloseTo(rect.yTop);
