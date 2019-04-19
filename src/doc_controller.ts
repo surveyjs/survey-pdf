@@ -41,6 +41,12 @@ export class DocOptions implements IDocOptions {
             typeof options.paperHeight === "undefined" ? 297 : options.paperHeight;
         this._margins = options.margins;
     }
+    get leftTopPoint(): IPoint {
+        return {
+            xLeft: this.margins.marginLeft,
+            yTop: this.margins.marginRight
+        }
+    }
     get fontSize(): number {
         return this._fontSize;
     }

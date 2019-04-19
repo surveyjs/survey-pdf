@@ -189,7 +189,18 @@ json = {
       name: "text1",
       type: "text",
       title: "Flat text 1"
-    }
+    },
+    {
+      name: "text2",
+      type: "text",
+      title: "Flat text 2",
+      "startWithNewLine": false
+    },
+    {
+      name: "text3",
+      type: "text",
+      title: "Flat text 3"
+    },
   ]
 };
 

@@ -1,6 +1,5 @@
 import { LocalizableString } from 'survey-core';
 import { IPoint, IRect, DocController } from "./doc_controller";
-import { IPdfBrick, PdfBrick } from './pdf_render/pdf_brick'
 
 export class SurveyHelper {
     static measureTextRect(point: IPoint, controller: DocController, text: string): IRect {
@@ -28,8 +27,7 @@ export class SurveyHelper {
         });
         return resultRect;
     }
-    static createPoint(flat: IPdfBrick | IRect, isLeft: boolean = true, isTop: boolean = false): IPoint {
-        let rect: IRect = flat instanceof PdfBrick ? (<PdfBrick>flat).rect : <IRect>flat;
+    static createPoint(rect: IRect, isLeft: boolean = true, isTop: boolean = false): IPoint {
         return {
             xLeft: isLeft ? rect.xLeft : rect.xRight,
             yTop: isTop ? rect.yTop : rect.yBot

@@ -1,20 +1,31 @@
 import { IPoint, IRect, DocController } from '../doc_controller';
 import { IQuestion } from 'survey-core';
 
-export interface IPdfBrick {
+export interface IPdfBrick extends IRect {
     render(): void;
 }
 export class PdfBrick implements IPdfBrick {
-    private _rect: IRect;
-    constructor(protected question: IQuestion, protected controller: DocController,
-        rect: IRect) {
-        this._rect = rect;
+    xLeft: number;
+    xRight: number;
+    yTop: number;
+    yBot: number;
+    constructor(protected question: IQuestion,
+        protected controller: DocController, rect: IRect) {
+        this.rect = rect;
     }
     get rect(): IRect {
-        return this._rect;
+        return {
+            xLeft: this.xLeft,
+            xRight: this.xRight,
+            yTop: this.yTop,
+            yBot: this.yBot
+        }
     }
     set rect(rect: IRect) {
-        this._rect = rect;
+        this.xLeft = rect.xLeft;
+        this.xRight = rect.xRight;
+        this.yTop = rect.yTop;
+        this.yBot = rect.yBot; 
     }
     rendertText(rect: IRect, text: string) {
         let alignPoint = this.alignPoint(rect);

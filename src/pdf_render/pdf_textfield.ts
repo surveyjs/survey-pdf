@@ -16,7 +16,7 @@ export class TextFieldBrick extends PdfBrick {
         let inputField = this.question.inputType !== 'password' ?
             new (<any>this.controller.doc.AcroFormTextField)() :
             new (<any>this.controller.doc.AcroFormPasswordField)();
-        inputField.Rect = SurveyHelper.createAcroformRect(this.rect);
+        inputField.Rect = SurveyHelper.createAcroformRect(this);
         if (this.question.inputType !== 'password') {
             inputField.value = this.question.value || this.question.defaultValue || '';
             inputField.defaultValue = SurveyHelper.getLocString(this.question.locPlaceHolder);

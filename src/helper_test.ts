@@ -37,18 +37,14 @@ export class TestHelper {
         });
         return pdfqs;
     }
-    static equalRect(expect: any, question: IPdfBrick | IRect, rect: IRect) {
-        let qRect: IRect = typeof question === 'string' ?
-            (<PdfBrick>question).rect : <IRect>question;
-        expect(qRect.xLeft).toBeCloseTo(rect.xLeft);
-        expect(qRect.xRight).toBeCloseTo(rect.xRight);
-        expect(qRect.yTop).toBeCloseTo(rect.yTop);
-        expect(qRect.yBot).toBeCloseTo(rect.yBot);
+    static equalRect(expect: any, rect1: IRect, rect2: IRect) {
+        expect(rect1.xLeft).toBeCloseTo(rect2.xLeft);
+        expect(rect1.xRight).toBeCloseTo(rect2.xRight);
+        expect(rect1.yTop).toBeCloseTo(rect2.yTop);
+        expect(rect1.yBot).toBeCloseTo(rect2.yBot);
     }
-    static equalPoint(expect: any, question: IPdfBrick | IPoint, point: IPoint) {
-        let qPoint: IPoint = typeof question === 'string' ?
-            (<PdfBrick>question).rect : <IPoint>question;
-        expect(qPoint.xLeft).toBeCloseTo(point.xLeft);
-        expect(qPoint.yTop).toBeCloseTo(point.yTop);
+    static equalPoint(expect: any, point1: IPoint, point2: IPoint) {
+        expect(point1.xLeft).toBeCloseTo(point2.xLeft);
+        expect(point1.yTop).toBeCloseTo(point2.yTop);
     }
 }

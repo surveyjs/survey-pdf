@@ -11,7 +11,7 @@ export class TitleBrick extends PdfBrick {
     }
     render(): void {
         this.controller.fontStyle = 'bold';
-        this.rendertText(this.rect, this.text);
+        this.rendertText(this, this.text);
         this.controller.fontStyle = 'normal';
     }
 }

@@ -4,6 +4,7 @@ import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { IPoint } from "../doc_controller";
 import { FlatRepository } from './flat_repository';
 import { IFlatQuestion } from './flat_question';
+import { SurveyHelper } from '../helper_survey';
 
 export class FlatSurvey {
     static parseWidth(width: string): number {
@@ -11,10 +12,7 @@ export class FlatSurvey {
     }
     static generateFlats(survey: PdfSurvey): IPdfBrick[] {
         let controller = survey.controller;
-        let point: IPoint = {
-            xLeft: controller.margins.marginLeft,
-            yTop: controller.margins.marginTop
-        };
+        let point: IPoint = controller.leftTopPoint;
         let flats: IPdfBrick[] = new Array();
         survey.pages.forEach((page: PageModel) => {
             if (!page.isVisible) return;
@@ -25,6 +23,7 @@ export class FlatSurvey {
                 let oldMarginLeft: number = controller.margins.marginLeft;
                 let oldMarginRight: number = controller.margins.marginRight;
                 let currMarginLeft: number = controller.margins.marginLeft;
+                let rowFlats: IPdfBrick[] = new Array();
                 row.elements.forEach((question: IElement) => {
                     let persWidth: number = width * FlatSurvey.parseWidth(question.renderWidth);
                     controller.margins.marginLeft = currMarginLeft;
@@ -33,10 +32,14 @@ export class FlatSurvey {
                     currMarginLeft = controller.paperWidth - controller.margins.marginRight;
                     let flatQuestion: IFlatQuestion =
                         FlatRepository.getInstance().create(<IQuestion>question, controller);
-                    flats.push(...flatQuestion.generateFlats(point));
+                    point.xLeft = controller.margins.marginLeft;
+                    rowFlats.push(...flatQuestion.generateFlats(point));
                 });
                 controller.margins.marginLeft = oldMarginLeft;
                 controller.margins.marginRight = oldMarginRight;
+                point.xLeft = controller.margins.marginLeft;
+                point.yTop = SurveyHelper.mergeRects(...rowFlats).yBot;
+                flats.push(...rowFlats);
             });
         });
         return flats;

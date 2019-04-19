@@ -88,8 +88,7 @@ export class FlatQuestion implements IFlatQuestion {
                 let contentPoint: IPoint = SurveyHelper.createPoint(titleFlat, false);
                 if (descFlat !== null) {
                     flats.push(descFlat);
-                    contentPoint.xLeft = Math.max(contentPoint.xLeft,
-                        (<PdfBrick>descFlat).rect.xRight);
+                    contentPoint.xLeft = Math.max(contentPoint.xLeft, descFlat.xRight);
                 }
                 flats.push(...this.generateFlatsContent(contentPoint));
                 break;
