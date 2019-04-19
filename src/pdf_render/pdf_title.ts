@@ -1,13 +1,17 @@
+import { IQuestion, QuestionTextModel } from 'survey-core';
 import { IRect, DocController } from '../doc_controller';
-import { IQuestion } from 'survey-core';
 import { PdfBrick } from './pdf_brick';
 
 export class TitleBrick extends PdfBrick {
-    constructor(protected question: IQuestion, protected controller: DocController,
-        rect: IRect) {
+    protected question: QuestionTextModel;
+    constructor(question: IQuestion, protected controller: DocController,
+        rect: IRect, protected text: string) {
         super(question, controller, rect);
+        this.question = <QuestionTextModel>question;
     }
     render(): void {
-
+        this.controller.fontStyle = 'bold';
+        this.rendertText(this.rect, this.text);
+        this.controller.fontStyle = 'normal';
     }
 }

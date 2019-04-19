@@ -183,7 +183,28 @@ var json = {
   ]
 };
 
+json = {
+  questions: [
+    {
+      name: "text1",
+      type: "text",
+      title: "Flat text 1"
+    }
+  ]
+};
+
+let options = {
+  fontSize: 30, xScale: 0.22, yScale: 0.36,
+  margins: {
+    marginLeft: 10,
+    marginRight: 10,
+    marginTop: 10,
+    marginBot: 10 }
+};
+
 var survey = new SurveyPDF.Survey(json);
+// var survey = new SurveyPDF.Survey(json);
+var survey = new SurveyPDF.Survey(json, options);
 survey.data = {
   car: ["Ford"],
   name: "SUPER",
@@ -192,14 +213,6 @@ survey.data = {
   radio: "Red FM",
   name4: "notdef"
 };
-debugger
-survey.render(
-  {
-    fontSize: 30, xScale: 0.22, yScale: 0.36,
-    margins: {
-      marginLeft: 10,
-      marginRight: 10,
-      marginTop: 10,
-      marginBot: 10 }
-  });
+
+survey.render();
 survey.save();

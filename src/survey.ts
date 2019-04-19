@@ -14,13 +14,11 @@ export class PdfSurvey extends SurveyModel {
         let flats: IPdfBrick[] = FlatSurvey.generateFlats(this);
         let packs: IPdfBrick[][] = PagePacker.pack(flats, this.controller);
         packs.forEach((page: IPdfBrick[], index: number) => {
-            page.forEach((question: IPdfBrick) => {
-                question.render();
-            });
-            if (index != packs.length - 1) this.docController.addPage();
+            page.forEach((brick: IPdfBrick) => brick.render());
+            if (index != packs.length - 1) this.controller.addPage();
         });
     }
     save(fileName: string = 'survey_result.pdf') {
-        this.docController.doc.save(fileName);
+        this.controller.doc.save(fileName);
     }
 }

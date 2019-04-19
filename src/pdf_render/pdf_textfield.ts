@@ -1,15 +1,30 @@
+import { IQuestion, QuestionTextModel } from 'survey-core';
 import { IRect, DocController } from '../doc_controller';
-import { IQuestion } from 'survey-core';
 import { PdfBrick } from './pdf_brick';
+import { SurveyHelper } from '../helper_survey';
 
 export class TextFieldBrick extends PdfBrick {
+    protected question: QuestionTextModel;
     protected isMultiline: boolean;
-    constructor(protected question: IQuestion,
+    constructor(question: IQuestion,
         protected controller: DocController, rect: IRect) {
         super(question, controller, rect);
+        this.question = <QuestionTextModel>question;
         this.isMultiline = false;
     }
     render(): void {
-        //if (this.isMultiline)
+        let inputField = this.question.inputType !== 'password' ?
+            new (<any>this.controller.doc.AcroFormTextField)() :
+            new (<any>this.controller.doc.AcroFormPasswordField)();
+        inputField.Rect = SurveyHelper.createAcroformRect(this.rect);
+        if (this.question.inputType !== 'password') {
+            inputField.value = this.question.value || this.question.defaultValue || '';
+            inputField.defaultValue = SurveyHelper.getLocString(this.question.locPlaceHolder);
+        }
+        else inputField.value = '';
+        inputField.multiline = this.isMultiline;
+        inputField.readOnly = this.question.isReadOnly;
+        inputField.fieldName = this.question.id;
+        this.controller.doc.addField(inputField);
     }
 }

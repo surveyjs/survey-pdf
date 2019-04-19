@@ -26,7 +26,7 @@ export class FlatSurvey {
                 let oldMarginRight: number = controller.margins.marginRight;
                 let currMarginLeft: number = controller.margins.marginLeft;
                 row.elements.forEach((question: IElement) => {
-                    let persWidth: number = width * FlatSurvey.parseWidth(question.width);
+                    let persWidth: number = width * FlatSurvey.parseWidth(question.renderWidth);
                     controller.margins.marginLeft = currMarginLeft;
                     controller.margins.marginRight = controller.paperWidth -
                         currMarginLeft - persWidth;

@@ -4,6 +4,7 @@ import { IPoint, IRect, DocController } from "../doc_controller";
 import { IPdfBrick } from '../pdf_render/pdf_brick'
 import { FlatRepository } from './flat_repository';
 import { TextFieldBrick } from '../pdf_render/pdf_textfield';
+import { SurveyHelper } from '../helper_survey';
 
 export class FlatTextbox extends FlatQuestion {
     protected question: QuestionTextModel;
@@ -12,7 +13,7 @@ export class FlatTextbox extends FlatQuestion {
         this.question = <QuestionTextModel>question;
     }
     generateFlatsContent(point: IPoint): IPdfBrick[] {
-        let rect: IRect = this.measureTextFieldRect(point);
+        let rect: IRect = SurveyHelper.measureTextFieldRect(point, this.controller);
         return [new TextFieldBrick(this.question, this.controller, rect)];
     }
 }
