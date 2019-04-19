@@ -2,16 +2,6 @@ import { LocalizableString } from 'survey-core';
 import { IPoint, IRect, DocController } from "./doc_controller";
 
 export class SurveyHelper {
-    static measureTextRect(point: IPoint, controller: DocController, text: string): IRect {
-        let { width, height } = controller.measureText(text);
-        return SurveyHelper.createRect(point, width, height);
-    }
-    static measureTextFieldRect(point: IPoint, controller: DocController, lines: number = 1): IRect {
-        let width: number = controller.paperWidth - point.xLeft -
-            controller.margins.marginRight;
-        let height: number = controller.measureText().height * lines;
-        return SurveyHelper.createRect(point, width, height);
-    }
     static mergeRects(...rects: IRect[]): IRect {
         let resultRect: IRect = {
             xLeft: rects[0].xLeft,
@@ -40,6 +30,16 @@ export class SurveyHelper {
             yTop: point.yTop,
             yBot: point.yTop + height
         };
+    }
+    static createTextRect(point: IPoint, controller: DocController, text: string): IRect {
+        let { width, height } = controller.measureText(text);
+        return SurveyHelper.createRect(point, width, height);
+    }
+    static createTextFieldRect(point: IPoint, controller: DocController, lines: number = 1): IRect {
+        let width: number = controller.paperWidth - point.xLeft -
+            controller.margins.marginRight;
+        let height: number = controller.measureText().height * lines;
+        return SurveyHelper.createRect(point, width, height);
     }
     static createAcroformRect(rect: IRect): Array<number> {
         return [

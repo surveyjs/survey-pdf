@@ -1,6 +1,7 @@
 import { IPoint, IRect, DocController } from "../doc_controller";
-import { IQuestion, Question, QuestionTextModel } from 'survey-core';
-import { IPdfBrick, PdfBrick } from '../pdf_render/pdf_brick'
+import { IQuestion, Question } from 'survey-core';
+import { IPdfBrick } from '../pdf_render/pdf_brick'
+import { TextBrick } from '../pdf_render/pdf_text';
 import { TitleBrick } from '../pdf_render/pdf_title';
 import { DescriptionBrick } from '../pdf_render/pdf_description';
 import { CommentBrick } from '../pdf_render/pdf_comment';
@@ -21,7 +22,7 @@ export class FlatQuestion implements IFlatQuestion {
         this.controller.fontStyle = 'bold';
         let number: string = this.question.no != '' ? this.question.no + ' . ' : '';
         let text: string = number + SurveyHelper.getLocString(this.question.locTitle);
-        let rect: IRect = SurveyHelper.measureTextRect(point, this.controller, text);
+        let rect: IRect = SurveyHelper.createTextRect(point, this.controller, text);
         this.controller.fontStyle = 'normal';
         return new TitleBrick(this.question, this.controller, rect, text);
     }
@@ -30,18 +31,17 @@ export class FlatQuestion implements IFlatQuestion {
         let oldFontSize: number = this.controller.fontSize;
         this.controller.fontSize = oldFontSize *
             FlatQuestion.DESCRIPTION_FONT_SIZE_SCALE_MAGIC;
-        let rect: IRect = SurveyHelper.measureTextRect(point, this.controller,
+        let rect: IRect = SurveyHelper.createTextRect(point, this.controller,
             SurveyHelper.getLocString(this.question.locDescription));
         this.controller.fontSize = oldFontSize;
         return new DescriptionBrick(this.question, this.controller, rect);
     }
-    private generateFlatComment(point: IPoint): IPdfBrick {
-        let rectText: IRect = SurveyHelper.measureTextRect(point, this.controller,
-            SurveyHelper.getLocString(this.question.locCommentText));
-        let rectTextField: IRect = SurveyHelper.measureTextFieldRect(point, this.controller, 3);
-        let rect: IRect = SurveyHelper.mergeRects(rectText, rectTextField);
-        return new CommentBrick(this.question, this.controller,
-            rect, rectTextField, rectText);
+    private generateFlatsComment(point: IPoint): IPdfBrick[] {
+        let commentText: string = SurveyHelper.getLocString(this.question.locCommentText);
+        let rectText: IRect = SurveyHelper.createTextRect(point, this.controller, commentText);
+        let rectTextField: IRect = SurveyHelper.createTextFieldRect(point, this.controller, 2);
+        return [new TextBrick(this.question, this.controller, rectText, commentText),
+            new CommentBrick(this.question, this.controller, rectTextField)];
     }
     generateFlatsContent(point: IPoint): IPdfBrick[] {
         return null;
@@ -99,7 +99,7 @@ export class FlatQuestion implements IFlatQuestion {
             }
         }
         if (this.question.hasComment) {
-            flats.push(this.generateFlatComment(SurveyHelper.createPoint(flats[flats.length - 1])));
+            flats.push(...this.generateFlatsComment(SurveyHelper.createPoint(flats[flats.length - 1])));
         }
         this.controller.margins.marginLeft = oldMarginLeft;
         return flats;

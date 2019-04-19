@@ -11,17 +11,6 @@ export class PdfBrick implements IPdfBrick {
     yBot: number;
     constructor(protected question: IQuestion,
         protected controller: DocController, rect: IRect) {
-        this.rect = rect;
-    }
-    get rect(): IRect {
-        return {
-            xLeft: this.xLeft,
-            xRight: this.xRight,
-            yTop: this.yTop,
-            yBot: this.yBot
-        }
-    }
-    set rect(rect: IRect) {
         this.xLeft = rect.xLeft;
         this.xRight = rect.xRight;
         this.yTop = rect.yTop;

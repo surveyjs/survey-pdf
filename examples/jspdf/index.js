@@ -183,26 +183,6 @@ var json = {
   ]
 };
 
-json = {
-  questions: [
-    {
-      name: "text1",
-      type: "text",
-      title: "Flat text 1"
-    },
-    {
-      name: "text2",
-      type: "text",
-      title: "Flat text 2",
-      "startWithNewLine": false
-    },
-    {
-      name: "text3",
-      type: "text",
-      title: "Flat text 3"
-    },
-  ]
-};
 
 let options = {
   fontSize: 30, xScale: 0.22, yScale: 0.36,
