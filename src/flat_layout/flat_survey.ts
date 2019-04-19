@@ -16,6 +16,7 @@ export class FlatSurvey {
         let flats: IPdfBrick[] = new Array();
         survey.pages.forEach((page: PageModel) => {
             if (!page.isVisible) return;
+            page.onFirstRendering();
             page.rows.forEach((row: QuestionRowModel) => {
                 if (!row.visible) return;
                 let width: number = controller.paperWidth -

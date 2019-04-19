@@ -11,6 +11,7 @@ export * from './helpers';
 
 export { PdfSurvey as Survey} from '../survey';
 export { IDocOptions, DocOptions, DocController } from '../doc_controller';
+export { FlatRepository } from '../flat_layout/flat_repository';
 export { IFlatQuestion, FlatQuestion } from '../flat_layout/flat_question';
 export { FlatTextbox } from '../flat_layout/flat_textbox';
 export { FlatCheckbox } from '../flat_layout/flat_checkbox';

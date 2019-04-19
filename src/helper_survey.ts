@@ -1,4 +1,4 @@
-import { LocalizableString } from 'survey-core';
+import { LocalizableString, Question } from 'survey-core';
 import { IPoint, IRect, DocController } from "./doc_controller";
 
 export class SurveyHelper {
@@ -48,6 +48,10 @@ export class SurveyHelper {
             rect.xRight - rect.xLeft,
             rect.yBot - rect.yTop
         ];
+    }
+    static getTitleText(question: Question): string {
+        let number: string = question.no != '' ? question.no + ' . ' : '';
+        return number + SurveyHelper.getLocString(question.locTitle);
     }
     static getLocString(locObj: LocalizableString): string {
         return locObj.renderedHtml;

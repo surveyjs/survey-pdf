@@ -18,4 +18,4 @@ export class FlatTextbox extends FlatQuestion {
     }
 }
 
-FlatRepository.getInstance().register("text", FlatTextbox);
+FlatRepository.getInstance().register('text', FlatTextbox);

@@ -15,7 +15,7 @@ import { SurveyModel, IQuestion } from "survey-core";
 import { IPoint, IRect, IDocOptions, DocController } from "./doc_controller";
 import { IPdfQuestion } from "./question";
 import { QuestionRepository } from "./questionRepository";
-import addCustomFonts from "./customFonts";
+import addCustomFonts from "./custom_fonts";
 
 export class JsPdfSurveyModel extends SurveyModel {
   docController: DocController;

@@ -20,8 +20,7 @@ export class FlatQuestion implements IFlatQuestion {
     }
     private generateFlatTitle(point: IPoint): IPdfBrick {
         this.controller.fontStyle = 'bold';
-        let number: string = this.question.no != '' ? this.question.no + ' . ' : '';
-        let text: string = number + SurveyHelper.getLocString(this.question.locTitle);
+        let text: string = SurveyHelper.getTitleText(this.question);
         let rect: IRect = SurveyHelper.createTextRect(point, this.controller, text);
         this.controller.fontStyle = 'normal';
         return new TitleBrick(this.question, this.controller, rect, text);

@@ -1,10 +1,11 @@
-(<any>window)["HTMLCanvasElement"].prototype.getContext = () => {
+(<any>window)['HTMLCanvasElement'].prototype.getContext = () => {
     return {};
 };
 
-import { JsPdfSurveyModel } from "../src/__survey";
+import { PdfSurvey } from '../src/survey';
+import { TestHelper } from '../src/helper_test';
 
 test("first", () => {
-    let survey = new JsPdfSurveyModel({});
+    let survey: PdfSurvey = new PdfSurvey({}, TestHelper.defaultOptions);
     expect(survey).toBeDefined();
 });

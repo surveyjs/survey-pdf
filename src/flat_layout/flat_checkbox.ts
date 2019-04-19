@@ -41,4 +41,4 @@ export class FlatCheckbox extends FlatQuestion {
     }
 }
 
-FlatRepository.getInstance().register("checkbox", FlatCheckbox);
+FlatRepository.getInstance().register('checkbox', FlatCheckbox);
