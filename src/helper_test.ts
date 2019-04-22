@@ -37,6 +37,11 @@ export class TestHelper {
         });
         return pdfqs;
     }
+    static equalRects(expect: any, rects1: IRect[], rects2: IRect[]) {
+        for (let i = 0; i < rects1.length; i++) {
+            this.equalRect(expect, rects1[i], rects2[i]);
+        }
+    }
     static equalRect(expect: any, rect1: IRect, rect2: IRect) {
         expect(rect1.xLeft).toBeCloseTo(rect2.xLeft);
         expect(rect1.xRight).toBeCloseTo(rect2.xRight);

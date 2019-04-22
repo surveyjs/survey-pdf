@@ -1,5 +1,5 @@
 import { LocalizableString, Question } from 'survey-core';
-import { IPoint, IRect, DocController } from "./doc_controller";
+import { IPoint, IRect, DocController } from './doc_controller';
 
 export class SurveyHelper {
     static mergeRects(...rects: IRect[]): IRect {

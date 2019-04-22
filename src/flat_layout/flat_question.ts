@@ -38,9 +38,10 @@ export class FlatQuestion implements IFlatQuestion {
     private generateFlatsComment(point: IPoint): IPdfBrick[] {
         let commentText: string = SurveyHelper.getLocString(this.question.locCommentText);
         let rectText: IRect = SurveyHelper.createTextRect(point, this.controller, commentText);
-        let rectTextField: IRect = SurveyHelper.createTextFieldRect(point, this.controller, 2);
+        let rectTextField: IRect = SurveyHelper.createTextFieldRect(
+            SurveyHelper.createPoint(rectText), this.controller, 2);
         return [new TextBrick(this.question, this.controller, rectText, commentText),
-            new CommentBrick(this.question, this.controller, rectTextField, false)];
+        new CommentBrick(this.question, this.controller, rectTextField, false)];
     }
     generateFlatsContent(point: IPoint): IPdfBrick[] {
         return null;
@@ -53,6 +54,7 @@ export class FlatQuestion implements IFlatQuestion {
             yTop: point.yTop
         };
         let flats: IPdfBrick[] = new Array();
+        let commentPoint: IPoint = indentPoint;
         switch (this.question.titleLocation) {
             case 'top':
             case 'default': {
@@ -66,12 +68,17 @@ export class FlatQuestion implements IFlatQuestion {
                     contentPoint = SurveyHelper.createPoint(descFlat);
                 }
                 flats.push(...this.generateFlatsContent(contentPoint));
+                commentPoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(...flats));
                 break;
             }
             case 'bottom': {
                 let contentFlats: IPdfBrick[] = this.generateFlatsContent(indentPoint);
                 flats.push(...contentFlats);
-                let titlePoint: IPoint = SurveyHelper.createPoint(contentFlats[contentFlats.length - 1]);
+                if (contentFlats.length != 0) {
+                    commentPoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(...contentFlats));
+                }
+                flats.push(...this.generateFlatsComment(commentPoint));
+                let titlePoint: IPoint = SurveyHelper.createPoint(flats[flats.length - 1]);
                 let titleFlat: IPdfBrick = this.generateFlatTitle(titlePoint);
                 flats.push(titleFlat);
                 let descPoint: IPoint = SurveyHelper.createPoint(titleFlat);
@@ -89,16 +96,25 @@ export class FlatQuestion implements IFlatQuestion {
                     flats.push(descFlat);
                     contentPoint.xLeft = Math.max(contentPoint.xLeft, descFlat.xRight);
                 }
-                flats.push(...this.generateFlatsContent(contentPoint));
+                commentPoint.xLeft = SurveyHelper.createPoint(SurveyHelper.mergeRects(...flats), false, true).xLeft;
+                let contentFlats = this.generateFlatsContent(contentPoint);
+                if (contentFlats.length != 0) {
+                    commentPoint =
+                        SurveyHelper.createPoint(SurveyHelper.mergeRects(...flats));
+                }
+                flats.push(...contentFlats);
                 break;
             }
             case 'hidden': {
                 flats.push(...this.generateFlatsContent(indentPoint));
+                if (flats.length != 0) {
+                    commentPoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(...flats));
+                }
                 break;
             }
         }
-        if (this.question.hasComment) {
-            flats.push(...this.generateFlatsComment(SurveyHelper.createPoint(flats[flats.length - 1])));
+        if (this.question.hasComment && this.question.titleLocation != 'bottom') {
+            flats.push(...this.generateFlatsComment(commentPoint));
         }
         this.controller.margins.marginLeft = oldMarginLeft;
         return flats;
