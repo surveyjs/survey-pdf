@@ -2,6 +2,7 @@ import { LocalizableString, Question } from 'survey-core';
 import { IPoint, IRect, DocController } from './doc_controller';
 
 export class SurveyHelper {
+    static DESCRIPTION_FONT_SIZE_SCALE_MAGIC: number = 2.0 / 3.0;
     static mergeRects(...rects: IRect[]): IRect {
         let resultRect: IRect = {
             xLeft: rects[0].xLeft,
@@ -34,6 +35,13 @@ export class SurveyHelper {
     static createTextRect(point: IPoint, controller: DocController, text: string): IRect {
         let { width, height } = controller.measureText(text);
         return SurveyHelper.createRect(point, width, height);
+    }
+    static createDescRect(point: IPoint, controller: DocController, text: string): IRect {
+        let oldFontSize: number = controller.fontSize;
+        controller.fontSize = oldFontSize * SurveyHelper.DESCRIPTION_FONT_SIZE_SCALE_MAGIC;
+        let rect: IRect = SurveyHelper.createTextRect(point, controller, text);
+        controller.fontSize = oldFontSize;
+        return rect;
     }
     static createTextFieldRect(point: IPoint, controller: DocController, lines: number = 1): IRect {
         let width: number = controller.paperWidth - point.xLeft -

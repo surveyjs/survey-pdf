@@ -13,7 +13,6 @@ export interface IFlatQuestion {
 }
 
 export class FlatQuestion implements IFlatQuestion {
-    static DESCRIPTION_FONT_SIZE_SCALE_MAGIC: number = 2.0 / 3.0;
     protected question: Question;
     constructor(question: IQuestion, protected controller: DocController) {
         this.question = <Question>question;
@@ -27,12 +26,8 @@ export class FlatQuestion implements IFlatQuestion {
     }
     private generateFlatDescription(point: IPoint): IPdfBrick {
         if (SurveyHelper.getLocString(this.question.locDescription) == '') return null;
-        let oldFontSize: number = this.controller.fontSize;
-        this.controller.fontSize = oldFontSize *
-            FlatQuestion.DESCRIPTION_FONT_SIZE_SCALE_MAGIC;
-        let rect: IRect = SurveyHelper.createTextRect(point, this.controller,
+        let rect: IRect = SurveyHelper.createDescRect(point, this.controller,
             SurveyHelper.getLocString(this.question.locDescription));
-        this.controller.fontSize = oldFontSize;
         return new DescriptionBrick(this.question, this.controller, rect);
     }
     private generateFlatsComment(point: IPoint): IPdfBrick[] {
@@ -77,8 +72,13 @@ export class FlatQuestion implements IFlatQuestion {
                 if (contentFlats.length != 0) {
                     commentPoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(...contentFlats));
                 }
-                flats.push(...this.generateFlatsComment(commentPoint));
-                let titlePoint: IPoint = SurveyHelper.createPoint(flats[flats.length - 1]);
+                if (this.question.hasComment) {
+                    flats.push(...this.generateFlatsComment(commentPoint));
+                }
+                let titlePoint: IPoint = indentPoint;
+                if (contentFlats.length != 0) {
+                    titlePoint = SurveyHelper.createPoint(flats[flats.length - 1]);
+                }
                 let titleFlat: IPdfBrick = this.generateFlatTitle(titlePoint);
                 flats.push(titleFlat);
                 let descPoint: IPoint = SurveyHelper.createPoint(titleFlat);
@@ -99,8 +99,7 @@ export class FlatQuestion implements IFlatQuestion {
                 commentPoint.xLeft = SurveyHelper.createPoint(SurveyHelper.mergeRects(...flats), false, true).xLeft;
                 let contentFlats = this.generateFlatsContent(contentPoint);
                 if (contentFlats.length != 0) {
-                    commentPoint =
-                        SurveyHelper.createPoint(SurveyHelper.mergeRects(...flats));
+                    commentPoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(...contentFlats));
                 }
                 flats.push(...contentFlats);
                 break;
@@ -119,6 +118,7 @@ export class FlatQuestion implements IFlatQuestion {
         this.controller.margins.marginLeft = oldMarginLeft;
         return flats;
     }
+    //TO REVIEW
     getQuestion<T extends Question>(): T {
         return <T>this.question;
     }

@@ -30,6 +30,7 @@ export class PdfBrick implements IPdfBrick {
             yTop: rect.yTop + (rect.yBot - rect.yTop) / 2.0
         };
     }
+    //TO REVIEW
     getQuestion<T extends IQuestion>(): T {
         return <T>this.question;
     }
