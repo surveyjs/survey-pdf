@@ -5,7 +5,7 @@ import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 import { IPoint, IRect } from '../src/doc_controller';
 
-test("Test merge rects 2 count", () => {
+test('Test merge rects 2 count', () => {
     let rectKeys: string[] = Object.keys(TestHelper.defaultRect);
     let lessKeys = ['yTop', 'xLeft'];
     rectKeys.forEach((key: string) => {

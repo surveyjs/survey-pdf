@@ -2,12 +2,12 @@
   return {};
 };
 
+import { Question } from 'survey-core';
 import { PdfSurvey } from '../src/survey';
 import { FlatTextbox } from '../src/flat_layout/flat_textbox';
 import { FlatCheckbox } from '../src/flat_layout/flat_checkbox';
 import { TestHelper } from '../src/helper_test';
 import { SurveyHelper } from '../src/helper_survey';
-import { Question } from 'survey-core';
 let __dummy_tx = new FlatTextbox(null, null);
 let __dummy_cb = new FlatCheckbox(null, null);
 
