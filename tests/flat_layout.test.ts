@@ -282,5 +282,39 @@ test('Calc boundaries title top shorter than description', () => {
     calcTitleTop(survey.controller, <Question>survey.getAllQuestions()[0],
         flats[0], flats[2], survey.controller.leftTopPoint, flats[1]);
 });
+test('Calc boundaries title bottom longer than description', () => {
+    let json = {
+        questions: [
+            {
+                type: 'text',
+                name: 'box',
+                title: 'What a gorgeous title',
+                titleLocation: 'bottom',
+                description: 'Who reads the descriptions?'
+            }
+        ]
+    };
+    let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
+    let flats: IPdfBrick[] = FlatSurvey.generateFlats(survey);
+    calcTitleBottom(survey.controller, <Question>survey.getAllQuestions()[0],
+        flats[1], flats[0], survey.controller.leftTopPoint, flats[2]);
+});
+test('Calc boundaries title bottom shorter than description', () => {
+    let json = {
+        questions: [
+            {
+                type: 'text',
+                name: 'box',
+                title: 'Piece of title',
+                titleLocation: 'bottom',
+                description: 'Very important information: required to read'
+            }
+        ]
+    };
+    let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
+    let flats: IPdfBrick[] = FlatSurvey.generateFlats(survey);
+    calcTitleBottom(survey.controller, <Question>survey.getAllQuestions()[0],
+        flats[1], flats[0], survey.controller.leftTopPoint, flats[2]);
+});
 
 //TODO empty choices checkbox tests

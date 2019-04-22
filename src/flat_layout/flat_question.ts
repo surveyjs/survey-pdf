@@ -99,8 +99,7 @@ export class FlatQuestion implements IFlatQuestion {
                 commentPoint.xLeft = SurveyHelper.createPoint(SurveyHelper.mergeRects(...flats), false, true).xLeft;
                 let contentFlats = this.generateFlatsContent(contentPoint);
                 if (contentFlats.length != 0) {
-                    commentPoint =
-                        SurveyHelper.createPoint(SurveyHelper.mergeRects(...flats));
+                    commentPoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(...contentFlats));
                 }
                 flats.push(...contentFlats);
                 break;
