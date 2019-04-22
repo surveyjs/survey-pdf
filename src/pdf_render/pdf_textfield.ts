@@ -5,11 +5,13 @@ import { SurveyHelper } from '../helper_survey';
 
 export class TextFieldBrick extends PdfBrick {
     protected question: QuestionTextModel;
+    protected isQuestion: boolean;
     protected isMultiline: boolean;
     constructor(question: IQuestion,
         protected controller: DocController, rect: IRect) {
         super(question, controller, rect);
         this.question = <QuestionTextModel>question;
+        this.isQuestion = true;
         this.isMultiline = false;
     }
     render(): void {
@@ -17,7 +19,7 @@ export class TextFieldBrick extends PdfBrick {
             new (<any>this.controller.doc.AcroFormTextField)() :
             new (<any>this.controller.doc.AcroFormPasswordField)();
         inputField.Rect = SurveyHelper.createAcroformRect(this);
-        if (this.question.inputType !== 'password') {
+        if (this.isQuestion && this.question.inputType !== 'password') {
             inputField.value = this.question.value || this.question.defaultValue || '';
             inputField.defaultValue = SurveyHelper.getLocString(this.question.locPlaceHolder);
         }

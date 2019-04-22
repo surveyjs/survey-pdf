@@ -40,7 +40,7 @@ export class FlatQuestion implements IFlatQuestion {
         let rectText: IRect = SurveyHelper.createTextRect(point, this.controller, commentText);
         let rectTextField: IRect = SurveyHelper.createTextFieldRect(point, this.controller, 2);
         return [new TextBrick(this.question, this.controller, rectText, commentText),
-            new CommentBrick(this.question, this.controller, rectTextField)];
+            new CommentBrick(this.question, this.controller, rectTextField, false)];
     }
     generateFlatsContent(point: IPoint): IPdfBrick[] {
         return null;

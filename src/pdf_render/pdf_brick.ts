@@ -19,8 +19,8 @@ export class PdfBrick implements IPdfBrick {
     rendertText(rect: IRect, text: string) {
         let alignPoint = this.alignPoint(rect);
         this.controller.doc.text(text, alignPoint.xLeft, alignPoint.yTop, {
-            align: "left",
-            baseline: "middle"
+            align: 'left',
+            baseline: 'middle'
         });
     }
     render(): void {}

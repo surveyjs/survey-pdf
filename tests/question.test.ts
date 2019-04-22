@@ -6,148 +6,61 @@ import { PdfSurvey } from '../src/survey';
 import { FlatTextbox } from '../src/flat_layout/flat_textbox';
 import { FlatCheckbox } from '../src/flat_layout/flat_checkbox';
 import { TestHelper } from '../src/helper_test';
+import { SurveyHelper } from '../src/helper_survey';
+import { Question } from 'survey-core';
 let __dummy_tx = new FlatTextbox(null, null);
 let __dummy_cb = new FlatCheckbox(null, null);
 
-test('Check title number', () => {
+function checkTitleText(questionStartIndex: string, isRequired: boolean = false) {
   let json = {
     questions: [
       {
         name: 'textbox',
         type: 'text',
-        title: 'I\'m number 1'
+        title: 'Check my title',
+        isRequired: isRequired
       }
     ]
   };
   let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
+  if (questionStartIndex !== null) {
+    survey.questionStartIndex = questionStartIndex;
+  }
   survey.render();
   let internalContent = survey.controller.doc.internal.pages[1][2];
 	expect(internalContent).toBeDefined();
   let regex = /\((.*)\)/;
   let content = internalContent.match(regex)[1];
-  expect(content).toBe('1 . ' + json.questions[0].title);
+  expect(content).toBe(SurveyHelper.getTitleText(<Question>survey.getAllQuestions()[0]));
+}
+test('Check title number', () => {
+  checkTitleText(null);
 });
-
-// test('Check title number with custom questionStartIndex', () => {
-//   let __dummy_tx = new TextQuestion(null, null);
-//   let json = {
-//     questions: [
-//       {
-//         name: 'textbox',
-//         type: 'text',
-//         title: 'I\'m number 1'
-//       }
-//     ]
-//   };
-//   let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
-//   survey.questionStartIndex = '7';
-//   survey.render({
-//     fontSize: 30,
-//     xScale: 0.22,
-//     yScale: 0.36,
-//     margins: {
-//       marginLeft: 10,
-//       marginRight: 10,
-//       marginTop: 10,
-//       marginBot: 10
-//     }
-//   });
-//   let internalContent = survey.docController.doc.internal.pages[1][2];
-//   let regex = /\((.*)\)/;
-//   let content = internalContent.match(regex)[1];
-//   expect(content).toBe('7 . ' + json.questions[0].title);
-// });
-
-// test('Check title number with alphabetical questionStartIndex', () => {
-//   let __dummy_tx = new TextQuestion(null, null);
-//   let json = {
-//     questions: [
-//       {
-//         name: 'textbox',
-//         type: 'text',
-//         title: 'I\'m number 1'
-//       }
-//     ]
-//   };
-//   let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
-//   survey.questionStartIndex = 'A';
-//   survey.render({
-//     fontSize: 30,
-//     xScale: 0.22,
-//     yScale: 0.36,
-//     margins: {
-//       marginLeft: 10,
-//       marginRight: 10,
-//       marginTop: 10,
-//       marginBot: 10
-//     }
-//   });
-//   let internalContent = survey.docController.doc.internal.pages[1][2];
-//   let regex = /\((.*)\)/;
-//   let content = internalContent.match(regex)[1];
-//   expect(content).toBe('A . ' + json.questions[0].title);
-// });
-
-// test('Check title required text', () => {
-//   let __dummy_tx = new TextQuestion(null, null);
-//   let json = {
-//     questions: [
-//       {
-//         name: 'textbox',
-//         type: 'text',
-//         title: 'Filling Required',
-//         isRequired: true
-//       }
-//     ]
-//   };
-//   let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
-//   survey.render({
-//     fontSize: 30,
-//     xScale: 0.22,
-//     yScale: 0.36,
-//     margins: {
-//       marginLeft: 10,
-//       marginRight: 10,
-//       marginTop: 10,
-//       marginBot: 10
-//     }
-//   });
-//   let internalContent = survey.docController.doc.internal.pages[1][2];
-//   let regex = /\((.*)\)/;
-//   let content = internalContent.match(regex)[1];
-//   expect(content).toBe(
-//     '1 . ' +
-//       json.questions[0].title +
-//       ' ' +
-//       (<QuestionTextModel>survey.getAllQuestions()[0]).requiredText
-//   );
-// });
-// test('Check comment for checkbox', () => {
-//   let __dummy_cx = new CheckBoxQuestion(null, null);
-//   let json = {
-//     questions: [
-//       {
-//         name: 'checkbox',
-//         type: 'checkbox',
-//         hasComment: true,
-//         commentText: 'comment check'
-//       }
-//     ]
-//   };
-//   let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
-//   survey.render({
-//     fontSize: 30,
-//     xScale: 0.22,
-//     yScale: 0.36,
-//     margins: {
-//       marginLeft: 10,
-//       marginRight: 10,
-//       marginTop: 10,
-//       marginBot: 10
-//     }
-//   });
-//   let internalContent = survey.docController.doc.internal.pages[1][3];
-//   let regex = /\((.*)\)/;
-//   let content = internalContent.match(regex)[1];
-//   expect(content).toBe(json.questions[0].commentText);
-// });
+test('Check title number with custom questionStartIndex', () => {
+  checkTitleText('7');
+});
+test('Check title number with alphabetical questionStartIndex', () => {
+  checkTitleText('A');
+});
+test('Check title required text', () => {
+  checkTitleText(null, true);
+});
+test('Check comment', () => {
+  let json = {
+    questions: [
+      {
+        name: 'checkbox',
+        type: 'checkbox',
+        hasComment: true,
+        commentText: 'comment check'
+      }
+    ]
+  };
+  let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
+  survey.render();
+  let internalContent = survey.controller.doc.internal.pages[1][3];
+	expect(internalContent).toBeDefined();
+  let regex = /\((.*)\)/;
+  let content = internalContent.match(regex)[1];
+  expect(content).toBe(json.questions[0].commentText);
+});

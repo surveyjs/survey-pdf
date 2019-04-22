@@ -25,7 +25,7 @@ export class FlatCheckbox extends FlatQuestion {
         if (itemValue.value === this.question.otherItem.value) {
             let otherPoint: IPoint = SurveyHelper.createPoint(itemRect);
             let otherRect: IRect = SurveyHelper.createTextFieldRect(otherPoint, this.controller, 2);
-            itemFlats.push(new CommentBrick(this.question, this.controller, otherRect));
+            itemFlats.push(new CommentBrick(this.question, this.controller, otherRect, false));
         }
         return itemFlats;
     }
