@@ -1,25 +1,21 @@
-(<any>window)["HTMLCanvasElement"].prototype.getContext = () => {
+(<any>window)['HTMLCanvasElement'].prototype.getContext = () => {
     return {};
 };
 
-import { QuestionRepository } from "../src/questionRepository";
-import { IPoint, IRect, IDocOptions, DocController } from "../src/doc_controller";
-import { JsPdfSurveyModel } from "../src/__survey";
-import { Question, QuestionTextModel, QuestionCheckboxModel } from "survey-core";
-import { PdfQuestion, IPdfQuestion } from "../src/question";
-import { TextQuestion } from "../src/text";
-import { CheckBoxQuestion } from "../src/checkbox";
+import { QuestionRepository } from '../src/questionRepository';
+import { IPoint, IRect, IDocOptions, DocController } from '../src/doc_controller';
+import { JsPdfSurveyModel } from '../src/__survey';
+import { Question, QuestionTextModel, QuestionCheckboxModel } from 'survey-core';
+import { PdfQuestion, IPdfQuestion } from '../src/question';
+import { TextQuestion } from '../src/text';
+import { CheckBoxQuestion } from '../src/checkbox';
 
-//TODO
-//refactor to helper code
-//(compare equal rects, title width)
-
-test("Calc title boundaries", () => {
+test('Calc title boundaries', () => {
     let json = {
         questions: [{
-            name: "textbox",
-            type: "text",
-            title: "Please enter your name:"
+            name: 'textbox',
+            type: 'text',
+            title: 'Please enter your name:'
         }]
     };
     let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
@@ -52,13 +48,13 @@ test("Calc title boundaries", () => {
     expect(resultBoundaries.yBot).toBeCloseTo(assumeBoundaries.yBot);
 });
 
-test("Calc textbox boundaries title top", () => {
+test('Calc textbox boundaries title top', () => {
     let __dummy_tx = new TextQuestion(null, null);
     let json = {
         questions: [{
-            name: "textbox",
-            type: "text",
-            title: "Please enter your name:"
+            name: 'textbox',
+            type: 'text',
+            title: 'Please enter your name:'
         }]
     };
     let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
@@ -90,14 +86,14 @@ test("Calc textbox boundaries title top", () => {
     expect(resultBoundaries.yBot).toBeCloseTo(assumeBoundaries.yBot);
 });
 
-test("Calc textbox boundaries title bottom", () => {
+test('Calc textbox boundaries title bottom', () => {
     let __dummy_tx = new TextQuestion(null, null);
     let json = {
         questions: [{
-            name: "textbox",
-            type: "text",
-            title: "Please enter your name:",
-            titleLocation: "bottom"
+            name: 'textbox',
+            type: 'text',
+            title: 'Please enter your name:',
+            titleLocation: 'bottom'
         }]
     };
     let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
@@ -129,14 +125,14 @@ test("Calc textbox boundaries title bottom", () => {
     expect(resultBoundaries.yBot).toBeCloseTo(assumeBoundaries.yBot);
 });
 
-test("Calc textbox boundaries title left", () => {
+test('Calc textbox boundaries title left', () => {
     let __dummy_tx = new TextQuestion(null, null);
     let json = {
         questions: [{
-            name: "textbox",
-            type: "text",
-            title: "Please enter your name:",
-            titleLocation: "left"
+            name: 'textbox',
+            type: 'text',
+            title: 'Please enter your name:',
+            titleLocation: 'left'
         }]
     };
     let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
@@ -168,14 +164,14 @@ test("Calc textbox boundaries title left", () => {
     expect(resultBoundaries.yBot).toBeCloseTo(assumeBoundaries.yBot);
 });
 
-test("Calc textbox boundaries title hidden", () => {
+test('Calc textbox boundaries title hidden', () => {
     let __dummy_tx = new TextQuestion(null, null);
     let json = {
         questions: [{
-            name: "textbox",
-            type: "text",
-            title: "Please enter your name:",
-            titleLocation: "hidden"
+            name: 'textbox',
+            type: 'text',
+            title: 'Please enter your name:',
+            titleLocation: 'hidden'
         }]
     };
     let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
@@ -207,18 +203,18 @@ test("Calc textbox boundaries title hidden", () => {
     expect(resultBoundaries.yBot).toBeCloseTo(assumeBoundaries.yBot);
 });
 
-test("Calc boundaries with space between questions", () => {
+test('Calc boundaries with space between questions', () => {
     let __dummy_tx = new TextQuestion(null, null);
     let json = {
         questions: [{
-            name: "textbox1",
-            type: "text",
-            title: "What have we here?"
+            name: 'textbox1',
+            type: 'text',
+            title: 'What have we here?'
         },
         {
-            name: "textbox2",
-            type: "text",
-            title: "Space between questions!"
+            name: 'textbox2',
+            type: 'text',
+            title: 'Space between questions!'
         }]
     };
     let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
@@ -262,16 +258,16 @@ test("Calc boundaries with space between questions", () => {
     expect(resultBoundaries.yBot).toBeCloseTo(assumeBoundaries.yBot);
 });
 
-test("Calc textbox boundaries title without number", () => {
+test('Calc textbox boundaries title without number', () => {
     let json = {
         questions: [{
-            name: "textbox",
-            type: "text",
-            title: "I do not need a number"
+            name: 'textbox',
+            type: 'text',
+            title: 'I do not need a number'
         }]
     };
     let survey: JsPdfSurveyModel = new JsPdfSurveyModel(json);
-    survey.showQuestionNumbers = "off";
+    survey.showQuestionNumbers = 'off';
     let qm: Question = <Question>survey.getAllQuestions()[0];
     let docOptions: IDocOptions = {
         fontSize: 30, xScale: 0.22, yScale: 0.36,
@@ -301,13 +297,13 @@ test("Calc textbox boundaries title without number", () => {
     expect(resultBoundaries.yBot).toBeCloseTo(assumeBoundaries.yBot);
 });
 
-test("Calc textbox boundaries required", () => {
+test('Calc textbox boundaries required', () => {
     let __dummy_tx = new TextQuestion(null, null);
     let json = {
         questions: [{
-            name: "textbox",
-            type: "text",
-            title: "Please enter your name:",
+            name: 'textbox',
+            type: 'text',
+            title: 'Please enter your name:',
             isRequired: true
         }]
     };
@@ -340,52 +336,52 @@ test("Calc textbox boundaries required", () => {
     expect(resultBoundaries.yBot).toBeCloseTo(assumeBoundaries.yBot);
 });
 
-test("Split large quesion on two pages", () => {
+test('Split large quesion on two pages', () => {
     let __dummy_cb = new CheckBoxQuestion(null, null);
     let json = {
         questions: [{
-            type: "checkbox",
-            name: "longcar_margin",
-            title: "What LONG car are you driving?",
+            type: 'checkbox',
+            name: 'longcar_margin',
+            title: 'What LONG car are you driving?',
             isRequired: true,
             choices: [
-                "Ford",
-                "Vauxhall",
-                "Volkswagen",
-                "Nissan",
-                "Audi",
-                "Mercedes-Benz",
-                "BMW",
-                "car0",
-                "car1",
-                "car2",
-                "car3",
-                "car4",
-                "car5",
-                "car6",
-                "car7",
-                "car8",
-                "car9",
-                "car10",
-                "car11",
-                "car12",
-                "car13",
-                "car14",
-                "car15",
-                "car16",
-                "car17",
-                "car18",
-                "car19",
-                "car20",
-                "car21",
-                "car22",
-                "car23",
-                "car24",
-                "car25",
-                "car26",
-                "car27",
-                "car28",
-                "car29"
+                'Ford',
+                'Vauxhall',
+                'Volkswagen',
+                'Nissan',
+                'Audi',
+                'Mercedes-Benz',
+                'BMW',
+                'car0',
+                'car1',
+                'car2',
+                'car3',
+                'car4',
+                'car5',
+                'car6',
+                'car7',
+                'car8',
+                'car9',
+                'car10',
+                'car11',
+                'car12',
+                'car13',
+                'car14',
+                'car15',
+                'car16',
+                'car17',
+                'car18',
+                'car19',
+                'car20',
+                'car21',
+                'car22',
+                'car23',
+                'car24',
+                'car25',
+                'car26',
+                'car27',
+                'car28',
+                'car29'
             ]
         }]
     };
@@ -402,25 +398,25 @@ test("Split large quesion on two pages", () => {
     expect(survey.docController.doc.internal.getNumberOfPages()).toBe(2);
 });
 
-test("Calc boundaries title on the end of page", () => {
+test('Calc boundaries title on the end of page', () => {
     let __dummy_tx = new TextQuestion(null, null);
     let __dummy_cb = new CheckBoxQuestion(null, null);
     let json = {
         questions: [
             {
-                type: "checkbox",
-                name: "toendpagebox",
-                title: "I am on one page?",
+                type: 'checkbox',
+                name: 'toendpagebox',
+                title: 'I am on one page?',
                 choices: [
-                    "One",
-                    "Two",
-                    "Three"
+                    'One',
+                    'Two',
+                    'Three'
                 ]
             },
             {
-                name: "textbox",
-                type: "text",
-                title: "New page title"
+                name: 'textbox',
+                type: 'text',
+                title: 'New page title'
             }
         ]
     };
@@ -465,15 +461,15 @@ test("Calc boundaries title on the end of page", () => {
     expect(textboxBoundaries.yBot).toBeCloseTo(assumeBoundaries.yBot);
 });
 
-test("Calc boundaries comment on the end of page", () => {
+test('Calc boundaries comment on the end of page', () => {
     let __dummy_cb = new CheckBoxQuestion(null, null);
     let json = {
         questions: [
             {
-                type: "checkbox",
-                name: "toendpagebox",
-                hasComment: "true",
-                choices: ["One"]
+                type: 'checkbox',
+                name: 'toendpagebox',
+                hasComment: 'true',
+                choices: ['One']
             }
         ]
     };
@@ -521,16 +517,16 @@ test("Calc boundaries comment on the end of page", () => {
     expect(checkboxBoundaries[1].yBot).toBeCloseTo(assumeBoundaries.yBot);
 });
 
-test("Check that checkbox has square boundaries", () => {
+test('Check that checkbox has square boundaries', () => {
     let __dummy_cb = new CheckBoxQuestion(null, null);
     let json = {
         questions: [
             {
-                type: "checkbox",
-                name: "box",
-                title: "Square Pants",
+                type: 'checkbox',
+                name: 'box',
+                title: 'Square Pants',
                 choices: [
-                    "S"
+                    'S'
                 ]
             }
         ]
@@ -567,17 +563,17 @@ test("Check that checkbox has square boundaries", () => {
     expect(itemBoundaries.yBot).toBeCloseTo(assumeBoundaries.yBot);
 });
 
-test("Calc boundaries title top longer than description", () => {
+test('Calc boundaries title top longer than description', () => {
     let __dummy_cb = new CheckBoxQuestion(null, null);
     let json = {
         questions: [
             {
-                type: "checkbox",
-                name: "box",
-                title: "My title is so interesting",
-                description: "But the description is not enough",
+                type: 'checkbox',
+                name: 'box',
+                title: 'My title is so interesting',
+                description: 'But the description is not enough',
                 choices: [
-                    "I feel lonely"
+                    'I feel lonely'
                 ]
             }
         ]
@@ -614,17 +610,17 @@ test("Calc boundaries title top longer than description", () => {
     expect(checkboxBoundaries.yBot).toBeCloseTo(assumeBoundaries.yBot);
 });
 
-test("Calc boundaries title top shorter than description", () => {
+test('Calc boundaries title top shorter than description', () => {
     let __dummy_cb = new CheckBoxQuestion(null, null);
     let json = {
         questions: [
             {
-                type: "checkbox",
-                name: "box",
-                title: "Tiny title",
-                description: "The description is so long, very long, very",
+                type: 'checkbox',
+                name: 'box',
+                title: 'Tiny title',
+                description: 'The description is so long, very long, very',
                 choices: [
-                    "Save me!"
+                    'Save me!'
                 ]
             }
         ]
@@ -662,18 +658,18 @@ test("Calc boundaries title top shorter than description", () => {
     expect(checkboxBoundaries.yBot).toBeCloseTo(assumeBoundaries.yBot);
 });
 
-test("Calc boundaries title bottom longer than description", () => {
+test('Calc boundaries title bottom longer than description', () => {
     let __dummy_cb = new CheckBoxQuestion(null, null);
     let json = {
         questions: [
             {
-                type: "checkbox",
-                name: "box",
-                title: "What a gorgeous title",
-                titleLocation: "bottom",
-                description: "Who reads the descriptions?",
+                type: 'checkbox',
+                name: 'box',
+                title: 'What a gorgeous title',
+                titleLocation: 'bottom',
+                description: 'Who reads the descriptions?',
                 choices: [
-                    "Tut-tu-ru"
+                    'Tut-tu-ru'
                 ]
             }
         ]
@@ -710,18 +706,18 @@ test("Calc boundaries title bottom longer than description", () => {
     expect(checkboxBoundaries.yBot).toBeCloseTo(assumeBoundaries.yBot);
 });
 
-test("Calc boundaries title bottom shorter than description", () => {
+test('Calc boundaries title bottom shorter than description', () => {
     let __dummy_cb = new CheckBoxQuestion(null, null);
     let json = {
         questions: [
             {
-                type: "checkbox",
-                name: "box",
-                title: "Piece of title",
-                titleLocation: "bottom",
-                description: "Very important information: required to read",
+                type: 'checkbox',
+                name: 'box',
+                title: 'Piece of title',
+                titleLocation: 'bottom',
+                description: 'Very important information: required to read',
                 choices: [
-                    "Dattebayo"
+                    'Dattebayo'
                 ]
             }
         ]
@@ -759,18 +755,18 @@ test("Calc boundaries title bottom shorter than description", () => {
     expect(checkboxBoundaries.yBot).toBeCloseTo(assumeBoundaries.yBot);
 });
 
-test("Calc boundaries title left longer than description", () => {
+test('Calc boundaries title left longer than description', () => {
     let __dummy_cb = new CheckBoxQuestion(null, null);
     let json = {
         questions: [
             {
-                type: "checkbox",
-                name: "box",
-                title: "I only wish that wisdom",
-                titleLocation: "left",
-                description: "Oh dear Pan",
+                type: 'checkbox',
+                name: 'box',
+                title: 'I only wish that wisdom',
+                titleLocation: 'left',
+                description: 'Oh dear Pan',
                 choices: [
-                    "Amicus Plato"
+                    'Amicus Plato'
                 ]
             }
         ]
@@ -809,18 +805,18 @@ test("Calc boundaries title left longer than description", () => {
     expect(checkboxBoundaries.yBot).toBeCloseTo(assumeBoundaries.yBot);
 });
 
-test("Calc boundaries title left shorter than description", () => {
+test('Calc boundaries title left shorter than description', () => {
     let __dummy_cb = new CheckBoxQuestion(null, null);
     let json = {
         questions: [
             {
-                type: "checkbox",
-                name: "box",
-                title: "Diamonds",
-                titleLocation: "left",
-                description: "Takes One To Know One",
+                type: 'checkbox',
+                name: 'box',
+                title: 'Diamonds',
+                titleLocation: 'left',
+                description: 'Takes One To Know One',
                 choices: [
-                    "Pearl"
+                    'Pearl'
                 ]
             }
         ]
@@ -860,18 +856,18 @@ test("Calc boundaries title left shorter than description", () => {
     expect(checkboxBoundaries.yBot).toBeCloseTo(assumeBoundaries.yBot);
 });
 
-test("Calc boundaries title hidden with description", () => {
+test('Calc boundaries title hidden with description', () => {
     let __dummy_cb = new CheckBoxQuestion(null, null);
     let json = {
         questions: [
             {
-                type: "checkbox",
-                name: "box",
-                title: "Diamonds",
-                titleLocation: "hidden",
-                description: "Takes One To Know One",
+                type: 'checkbox',
+                name: 'box',
+                title: 'Diamonds',
+                titleLocation: 'hidden',
+                description: 'Takes One To Know One',
                 choices: [
-                    "Pearl"
+                    'Pearl'
                 ]
             }
         ]
@@ -907,17 +903,17 @@ test("Calc boundaries title hidden with description", () => {
     expect(checkboxBoundaries.yBot).toBeCloseTo(assumeBoundaries.yBot);
 });
 
-test("Calc boundaries with indent 0", () => {
+test('Calc boundaries with indent 0', () => {
     let __dummy_cb = new CheckBoxQuestion(null, null);
     let json = {
         questions: [
             {
-                type: "checkbox",
-                name: "box",
-                title: "I stand straight",
+                type: 'checkbox',
+                name: 'box',
+                title: 'I stand straight',
                 indent: 0,
                 choices: [
-                    "Right choice"
+                    'Right choice'
                 ]
             }
         ]
@@ -953,17 +949,17 @@ test("Calc boundaries with indent 0", () => {
     expect(checkboxBoundaries.yBot).toBeCloseTo(assumeBoundaries.yBot);
 });
 
-test("Calc boundaries with indent 1", () => {
+test('Calc boundaries with indent 1', () => {
     let __dummy_cb = new CheckBoxQuestion(null, null);
     let json = {
         questions: [
             {
-                type: "checkbox",
-                name: "box",
-                title: "Birches bent",
+                type: 'checkbox',
+                name: 'box',
+                title: 'Birches bent',
                 indent: 1,
                 choices: [
-                    "Choose me"
+                    'Choose me'
                 ]
             }
         ]
@@ -999,17 +995,17 @@ test("Calc boundaries with indent 1", () => {
     expect(checkboxBoundaries.yBot).toBeCloseTo(assumeBoundaries.yBot);
 });
 
-test("Calc boundaries with indent 2", () => {
+test('Calc boundaries with indent 2', () => {
     let __dummy_cb = new CheckBoxQuestion(null, null);
     let json = {
         questions: [
             {
-                type: "checkbox",
-                name: "box",
-                title: "I'm going right",
+                type: 'checkbox',
+                name: 'box',
+                title: 'I\'m going right',
                 indent: 2,
                 choices: [
-                    "Ckick"
+                    'Ckick'
                 ]
             }
         ]
@@ -1045,17 +1041,17 @@ test("Calc boundaries with indent 2", () => {
     expect(checkboxBoundaries.yBot).toBeCloseTo(assumeBoundaries.yBot);
 });
 
-test("Calc boundaries with indent 3", () => {
+test('Calc boundaries with indent 3', () => {
     let __dummy_cb = new CheckBoxQuestion(null, null);
     let json = {
         questions: [
             {
-                type: "checkbox",
-                name: "box",
-                title: "I like capital",
+                type: 'checkbox',
+                name: 'box',
+                title: 'I like capital',
                 indent: 3,
                 choices: [
-                    "My PR manager"
+                    'My PR manager'
                 ]
             }
         ]
