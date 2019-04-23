@@ -1,4 +1,4 @@
-import { IQuestion, ItemValue, QuestionCheckboxModel, SurveyElement } from 'survey-core';
+import { IQuestion, ItemValue, QuestionCheckboxModel } from 'survey-core';
 import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
 import { IPoint, IRect, DocController } from "../doc_controller";
@@ -7,7 +7,7 @@ import { CheckItemBrick } from '../pdf_render/pdf_checkitem';
 import { TextBrick } from '../pdf_render/pdf_text';
 import { CommentBrick } from '../pdf_render/pdf_comment';
 import { SurveyHelper } from '../helper_survey';
-import { ComposeBrick } from '../pdf_render/pdf_compose';
+import { CompositeBrick } from '../pdf_render/pdf_composite';
 
 export class FlatCheckbox extends FlatQuestion {
     protected question: QuestionCheckboxModel;
@@ -16,7 +16,7 @@ export class FlatCheckbox extends FlatQuestion {
         this.question = <QuestionCheckboxModel>question;
     }
     private generateFlatsItem(point: IPoint, itemValue: ItemValue, index: number): IPdfBrick {
-        let composeFlat: ComposeBrick = new ComposeBrick();
+        let composeFlat: CompositeBrick = new CompositeBrick();
         let height: number = this.controller.measureText().height;
         let itemRect: IRect = SurveyHelper.createRect(point, height, height);
         composeFlat.addBrick(new CheckItemBrick(this.question, this.controller, itemRect, itemValue, index));

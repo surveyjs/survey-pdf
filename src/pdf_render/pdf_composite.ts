@@ -1,7 +1,7 @@
-import { IPdfBrick, PdfBrick } from './pdf_brick';
+import { IPdfBrick } from './pdf_brick';
 import { SurveyHelper } from '../helper_survey';
 
-export class ComposeBrick implements IPdfBrick {
+export class CompositeBrick implements IPdfBrick {
     private pdfBricks: IPdfBrick[] = [];
     xLeft: number;
     xRight: number;
