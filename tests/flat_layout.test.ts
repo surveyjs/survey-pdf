@@ -159,25 +159,54 @@ test('Calc textbox boundaries title hidden', () => {
         survey.controller.leftTopPoint, survey.controller);
     TestHelper.equalRect(expect, flats[0], assumeTextbox);
 });
+function descriptionLocationTests() {
+    //     let json = let json = {
+    //         questions: [
+    //             {
+    //                 type: 'text',
+    //                 name: 'textbox',
+    //                 title: 'Title hidden',
+    //                 titleLocation: 'hidden',
+    //                 description: 'test description'
+    //             }
+    //         ]
+    //     };
+    // }
+    // test('calc description boundaries', () => {
+
+
+}
 function commmentPointTests(titleLocation: string, isChoices: boolean) {
-    let question: QuestionCheckboxModel = new QuestionCheckboxModel('test');
-    let docController = new DocController(TestHelper.defaultOptions);
-    question.hasComment = true;
-    question.titleLocation = titleLocation;
-    if (isChoices) question.choices = ["test"];
-    let flatQuestion: FlatCheckbox = new FlatCheckbox(question, docController);
-    let resultRects: IRect[] = flatQuestion.generateFlats(TestHelper.defaultPoint);
+    let json = {
+        questions: [
+            {
+                name: 'checkbox',
+                type: 'checkbox',
+                hasComment: 'true',
+                title: 'test',
+                titleLocation: titleLocation
+            }
+        ]
+    };
+    if (isChoices) {
+        (<any>json.questions[0]).choices = ['test'];
+    }
+    let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
+    let docController: DocController = survey.controller;
+    let resultRects: IPdfBrick[] = FlatSurvey.generateFlats(survey);
+
     switch (titleLocation) {
         case 'hidden':
         case 'bottom': {
-            test('comment point, title: ' + titleLocation, () => {
+            test('comment point, title location: ' + titleLocation + ' with choice: ' + isChoices, () => {
                 let assumePoint = TestHelper.defaultPoint;
                 let resultPoint = resultRects[0];
                 if (isChoices) {
                     let height: number = docController.measureText().height;
-                    let itemRect: IRect = SurveyHelper.createRect(TestHelper.defaultPoint, height, height);
-                    let checkboxRect = SurveyHelper.createTextRect(SurveyHelper.createPoint(itemRect, false, true), docController, question.choices[0]);
-                    assumePoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(itemRect, checkboxRect));
+                    let checkboxItemRect: IRect = SurveyHelper.createRect(TestHelper.defaultPoint, height, height);
+                    let checkboxTextRect = SurveyHelper.createTextRect(SurveyHelper.createPoint(checkboxItemRect, false, true),
+                        docController, (<any>json.questions[0]).choices[0]);
+                    assumePoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(checkboxItemRect, checkboxTextRect));
                     resultPoint = resultRects[2];
                 }
                 TestHelper.equalPoint(expect, resultPoint, assumePoint);
@@ -186,19 +215,22 @@ function commmentPointTests(titleLocation: string, isChoices: boolean) {
         }
         case 'top':
         case 'left': {
-            test('comment point, title:' + titleLocation, () => {
-                let assumePoint;
+            test('comment point, title location:' + titleLocation + ' with choice: ' + isChoices, () => {
+                let assumePoint: IPoint;
                 if (titleLocation == "top") {
-                    assumePoint = SurveyHelper.createPoint(SurveyHelper.createTextRect(TestHelper.defaultPoint, docController, question.title));
+                    assumePoint = SurveyHelper.createPoint(SurveyHelper.createTextRect(TestHelper.defaultPoint, docController,
+                        SurveyHelper.getTitleText(<Question>survey.getAllQuestions()[0])));
                 } else {
-                    assumePoint = SurveyHelper.createPoint(SurveyHelper.createTextRect(TestHelper.defaultPoint, docController, question.title), false, true);
+                    assumePoint = SurveyHelper.createPoint(SurveyHelper.createTextRect(TestHelper.defaultPoint, docController,
+                        SurveyHelper.getTitleText(<Question>survey.getAllQuestions()[0])), false, true);
                 }
-                let resultPoint = resultRects[1];
+                let resultPoint: IPoint = resultRects[1];
                 if (isChoices) {
                     let height: number = docController.measureText().height;
-                    let itemRect: IRect = SurveyHelper.createRect(assumePoint, height, height);
-                    let checkboxRect = SurveyHelper.createTextRect(SurveyHelper.createPoint(itemRect, false, true), docController, question.choices[0]);
-                    assumePoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(itemRect, checkboxRect));
+                    let checkboxItemRect: IRect = SurveyHelper.createRect(assumePoint, height, height);
+                    let checkboxTextRect = SurveyHelper.createTextRect(SurveyHelper.createPoint(checkboxItemRect, false, true),
+                        docController, (<any>json.questions[0]).choices[0]);
+                    assumePoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(checkboxItemRect, checkboxTextRect));
                     resultPoint = resultRects[3];
                 }
                 TestHelper.equalPoint(expect, resultPoint, assumePoint);
