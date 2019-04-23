@@ -25,7 +25,8 @@ var json = {
       titleLocation: "bottom",
       description: "Another description",
       choices: ["Radio City", "Big FM", "Red FM", "Radio Mirchi"],
-      indent: 2
+      indent: 2,
+      startWithNewLine: false
     },
     {
       name: "name",
@@ -114,7 +115,8 @@ var json = {
         "car29"
       ],
       titleLocation: "top",
-      indent: 4
+      indent: 4,
+      startWithNewLine: false
     },
     {
       name: "name3",
@@ -193,8 +195,6 @@ let options = {
     marginBot: 10 }
 };
 
-var survey = new SurveyPDF.Survey(json);
-// var survey = new SurveyPDF.Survey(json);
 var survey = new SurveyPDF.Survey(json, options);
 survey.data = {
   car: ["Ford"],

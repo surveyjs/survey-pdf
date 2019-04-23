@@ -1,4 +1,4 @@
-import { SurveyModel } from  'survey-core';
+import { SurveyModel } from 'survey-core';
 import { IDocOptions, DocController } from './doc_controller'
 import { FlatSurvey } from './flat_layout/flat_survey';
 import { PagePacker } from './page_layout/page_packer';
