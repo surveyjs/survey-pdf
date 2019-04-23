@@ -55,19 +55,19 @@ export class FlatQuestion implements IFlatQuestion {
             case 'top':
             case 'default': {
                 let titleFlat: IPdfBrick = this.generateFlatTitle(indentPoint);
-                let composeBrick: ComposeBrick = new ComposeBrick(titleFlat);
+                let composeFlat: ComposeBrick = new ComposeBrick(titleFlat);
                 let descPoint: IPoint = SurveyHelper.createPoint(titleFlat);
                 let contentPoint: IPoint = SurveyHelper.createPoint(titleFlat);
                 let descFlat: IPdfBrick = this.generateFlatDescription(descPoint);
                 if (descFlat !== null) {
-                    composeBrick.addBrick(descFlat);
+                    composeFlat.addBrick(descFlat);
                     contentPoint = SurveyHelper.createPoint(descFlat);
                 }
                 let contentFlats = this.generateFlatsContent(contentPoint);
                 if (contentFlats.length != 0) {
-                    composeBrick.addBrick(contentFlats.shift());
+                    composeFlat.addBrick(contentFlats.shift());
                 }
-                flats.push(composeBrick);
+                flats.push(composeFlat);
                 flats.push(...contentFlats);
                 commentPoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(...flats));
                 break;
@@ -86,24 +86,24 @@ export class FlatQuestion implements IFlatQuestion {
                     titlePoint = SurveyHelper.createPoint(flats[flats.length - 1]);
                 }
                 let titleFlat: IPdfBrick = this.generateFlatTitle(titlePoint);
-                let composeBrick: ComposeBrick = new ComposeBrick(titleFlat);
+                let composeFlat: ComposeBrick = new ComposeBrick(titleFlat);
                 let descPoint: IPoint = SurveyHelper.createPoint(titleFlat);
                 let descFlat: IPdfBrick = this.generateFlatDescription(descPoint);
-                if (descFlat !== null) { composeBrick.addBrick(descFlat); }
-                flats.push(composeBrick);
+                if (descFlat !== null) { composeFlat.addBrick(descFlat); }
+                flats.push(composeFlat);
                 break;
             }
             case 'left': {
                 let titleFlat: IPdfBrick = this.generateFlatTitle(indentPoint);
-                let composeBrick: ComposeBrick = new ComposeBrick(titleFlat);
+                let composeFlat: ComposeBrick = new ComposeBrick(titleFlat);
                 let descPoint: IPoint = SurveyHelper.createPoint(titleFlat);
                 let descFlat: IPdfBrick = this.generateFlatDescription(descPoint);
                 let contentPoint: IPoint = SurveyHelper.createPoint(titleFlat, false, true);
                 if (descFlat !== null) {
-                    composeBrick.addBrick(descFlat);
+                    composeFlat.addBrick(descFlat);
                     contentPoint.xLeft = Math.max(contentPoint.xLeft, descFlat.xRight);
                 }
-                flats.push(composeBrick);
+                flats.push(composeFlat);
                 commentPoint.xLeft = SurveyHelper.createPoint(SurveyHelper.mergeRects(...flats), false, true).xLeft;
                 let contentFlats = this.generateFlatsContent(contentPoint);
                 if (contentFlats.length != 0) {
