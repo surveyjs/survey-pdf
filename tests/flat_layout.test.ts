@@ -157,23 +157,6 @@ test('Calc textbox boundaries title hidden', () => {
         survey.controller.leftTopPoint, survey.controller);
     TestHelper.equalRect(expect, flats[0], assumeTextbox);
 });
-function descriptionLocationTests() {
-    //     let json = let json = {
-    //         questions: [
-    //             {
-    //                 type: 'text',
-    //                 name: 'textbox',
-    //                 title: 'Title hidden',
-    //                 titleLocation: 'hidden',
-    //                 description: 'test description'
-    //             }
-    //         ]
-    //     };
-    // }
-    // test('calc description boundaries', () => {
-
-
-}
 function commmentPointTests(titleLocation: string, isChoices: boolean) {
     let json = {
         questions: [
