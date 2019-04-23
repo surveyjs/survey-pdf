@@ -6,6 +6,7 @@ import { TitleBrick } from '../pdf_render/pdf_title';
 import { DescriptionBrick } from '../pdf_render/pdf_description';
 import { CommentBrick } from '../pdf_render/pdf_comment';
 import { SurveyHelper } from '../helper_survey';
+import { ComposeBrick } from '../pdf_render/pdf_compose';
 
 export interface IFlatQuestion {
     generateFlatsContent(point: IPoint): IPdfBrick[];
@@ -54,15 +55,20 @@ export class FlatQuestion implements IFlatQuestion {
             case 'top':
             case 'default': {
                 let titleFlat: IPdfBrick = this.generateFlatTitle(indentPoint);
-                flats.push(titleFlat);
+                let composeBrick: ComposeBrick = new ComposeBrick(titleFlat);
                 let descPoint: IPoint = SurveyHelper.createPoint(titleFlat);
                 let contentPoint: IPoint = SurveyHelper.createPoint(titleFlat);
                 let descFlat: IPdfBrick = this.generateFlatDescription(descPoint);
                 if (descFlat !== null) {
-                    flats.push(descFlat);
+                    composeBrick.addBrick(descFlat);
                     contentPoint = SurveyHelper.createPoint(descFlat);
                 }
-                flats.push(...this.generateFlatsContent(contentPoint));
+                let contentFlats = this.generateFlatsContent(contentPoint);
+                if (contentFlats.length != 0) {
+                    composeBrick.addBrick(contentFlats.shift());
+                }
+                flats.push(composeBrick);
+                flats.push(...contentFlats);
                 commentPoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(...flats));
                 break;
             }
