@@ -47,15 +47,11 @@ test('Test duplicate value other', () => {
 	};
 	let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
 	survey.render();
-	let internal = survey.controller.doc.internal;
-	let internalOtherCheckBoxChoice =
-		internal.acroformPlugin.acroFormDictionaryRoot.Fields[0];
-	let internalOtherTextFieldChoice =
-		internal.acroformPlugin.acroFormDictionaryRoot.Fields[1];
-	let internalOtherCheckBox =
-		internal.acroformPlugin.acroFormDictionaryRoot.Fields[2];
-	let internalOtherTextField =
-		internal.acroformPlugin.acroFormDictionaryRoot.Fields[3];
+	let acroFormFields = survey.controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields;
+	let internalOtherCheckBoxChoice = acroFormFields[0];
+	let internalOtherTextFieldChoice = acroFormFields[1];
+	let internalOtherCheckBox = acroFormFields[2];
+	let internalOtherTextField = acroFormFields[3];
 	expect(internalOtherCheckBoxChoice.FT).toBe('/Btn');
 	expect(internalOtherTextFieldChoice.FT).toBe('/Tx');
 	expect(internalOtherCheckBox.FT).toBe('/Btn');
