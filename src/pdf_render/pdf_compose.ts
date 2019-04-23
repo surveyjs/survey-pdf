@@ -24,7 +24,7 @@ export class ComposeBrick implements IPdfBrick {
     }
     addBrick(...pdfBricks: IPdfBrick[]) {
         this.pdfBricks.push(...pdfBricks);
-        let mergeRect = SurveyHelper.mergeRects(...pdfBricks);
+        let mergeRect = SurveyHelper.mergeRects(...this.pdfBricks);
         this.xLeft = mergeRect.xLeft;
         this.xRight = mergeRect.xRight;
         this.yTop = mergeRect.yTop;
