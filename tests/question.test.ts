@@ -87,23 +87,37 @@ test('Check comment readonly', () => {
   let textField = internal.acroformPlugin.acroFormDictionaryRoot.Fields[0]
   expect(textField.readOnly).toBe(true);
 });
-
-test.skip('Check descrition', () => {
+//undefined exception shouldn't be expected
+test('Check empty question', () => {
   let json = {
     questions: [
       {
         titleLocation: 'hidden',
         name: 'checkbox',
         type: 'checkbox',
-        descrition: "test description"
       }
     ]
   };
   let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
   survey.render();
-  let internalContent = survey.controller.doc.internal.pages[1][2];
+});
+
+test('Check descrition with hidden title', () => {
+  let json = {
+    questions: [
+      {
+        titleLocation: 'top',
+        name: 'checkbox',
+        type: 'checkbox',
+        description: "test description",
+      }
+    ]
+  };
+  let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
+  survey.render();
+  let internalContent = survey.controller.doc.internal.pages[1][3];
   expect(internalContent).toBeDefined();
   let regex = /\((.*)\)/;
   let content = internalContent.match(regex)[1];
-  expect(content).toBe(json.questions[0].descrition);
+  expect(content).toBe(json.questions[0].description);
 });

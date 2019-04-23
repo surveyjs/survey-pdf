@@ -159,23 +159,6 @@ test('Calc textbox boundaries title hidden', () => {
         survey.controller.leftTopPoint, survey.controller);
     TestHelper.equalRect(expect, flats[0], assumeTextbox);
 });
-function descriptionLocationTests() {
-    //     let json = let json = {
-    //         questions: [
-    //             {
-    //                 type: 'text',
-    //                 name: 'textbox',
-    //                 title: 'Title hidden',
-    //                 titleLocation: 'hidden',
-    //                 description: 'test description'
-    //             }
-    //         ]
-    //     };
-    // }
-    // test('calc description boundaries', () => {
-
-
-}
 function commmentPointTests(titleLocation: string, isChoices: boolean) {
     let json = {
         questions: [
@@ -489,6 +472,44 @@ test('Calc boundaries with indent', () => {
             flats[1], flats[2], json.questions[0].choices[0],
             <Question>survey.getAllQuestions()[0], flats[0]);
     }
+});
+test('not visible question', () => {
+    let json = {
+        questions: [
+            {
+                type: 'checkbox',
+                name: 'box',
+                visible: false
+            }
+        ]
+    };
+    let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
+    let flats: IPdfBrick[] = FlatSurvey.generateFlats(survey);
+    expect(flats.length).toBe(0);
+});
+test('not visible question and visible question', () => {
+    let json = {
+        questions: [
+            {
+                type: 'checkbox',
+                name: 'box',
+                visible: false
+            },
+            {
+                type: 'checkbox',
+                name: 'box',
+                visible: true
+            }
+        ]
+    };
+    let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
+    let rects: IRect[] = FlatSurvey.generateFlats(survey);
+    survey.controller.fontStyle = 'bold';
+    let text: string = SurveyHelper.getTitleText(<Question>survey.getAllQuestions()[1]);
+    let assumeRect = [];
+    assumeRect[0] = SurveyHelper.createTextRect(TestHelper.defaultPoint, survey.controller, text);
+    survey.controller.fontStyle = 'normal'
+    TestHelper.equalRects(expect, rects, assumeRect)
 });
 
 //TODO empty choices checkbox tests

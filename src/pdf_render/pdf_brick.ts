@@ -14,7 +14,7 @@ export class PdfBrick implements IPdfBrick {
         this.xLeft = rect.xLeft;
         this.xRight = rect.xRight;
         this.yTop = rect.yTop;
-        this.yBot = rect.yBot; 
+        this.yBot = rect.yBot;
     }
     rendertText(rect: IRect, text: string) {
         let alignPoint = this.alignPoint(rect);
@@ -23,7 +23,7 @@ export class PdfBrick implements IPdfBrick {
             baseline: 'middle'
         });
     }
-    render(): void {}
+    render(): void { }
     private alignPoint(rect: IRect): IPoint {
         return {
             xLeft: rect.xLeft,

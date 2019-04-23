@@ -39,9 +39,11 @@ export class FlatSurvey {
                 controller.margins.marginLeft = oldMarginLeft;
                 controller.margins.marginRight = oldMarginRight;
                 point.xLeft = controller.margins.marginLeft;
-                point.yTop = SurveyHelper.mergeRects(...rowFlats).yBot;
-                point.yTop += controller.measureText().height;
-                flats.push(...rowFlats);
+                if (rowFlats.length != 0) {
+                    point.yTop = SurveyHelper.mergeRects(...rowFlats).yBot;
+                    point.yTop += controller.measureText().height;
+                    flats.push(...rowFlats);
+                }
             });
         });
         return flats;

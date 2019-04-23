@@ -28,7 +28,7 @@ export class FlatQuestion implements IFlatQuestion {
         if (SurveyHelper.getLocString(this.question.locDescription) == '') return null;
         let rect: IRect = SurveyHelper.createDescRect(point, this.controller,
             SurveyHelper.getLocString(this.question.locDescription));
-        return new DescriptionBrick(this.question, this.controller, rect);
+        return new DescriptionBrick(this.question, this.controller, rect, this.question.description);
     }
     private generateFlatsComment(point: IPoint): IPdfBrick[] {
         let commentText: string = SurveyHelper.getLocString(this.question.locCommentText);
