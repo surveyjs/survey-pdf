@@ -68,7 +68,7 @@ function calcTitleLeft(controller: DocController, titleQuestion: Question,
     }
     TestHelper.equalRect(expect, textboxFlat, assumeTextbox);
 }
-function calcIndent(leftTopPoint: IPoint, controller: DocController,
+export function calcIndent(expect: any, leftTopPoint: IPoint, controller: DocController,
     checkboxFlat: IPdfBrick, checktextFlat: IPdfBrick, checktext: string,
     titleQuestion: Question = null, titleFlat: IPdfBrick = null) {
     let assumeTitle: IRect = SurveyHelper.createRect(leftTopPoint, 0, 0);
@@ -431,7 +431,7 @@ test('Calc boundaries with indent', () => {
         expect(flats.length).toBe(3);
         let leftTopPoint: IPoint = survey.controller.leftTopPoint;
         leftTopPoint.xLeft += survey.controller.measureText(i).width;
-        calcIndent(leftTopPoint, survey.controller,
+        calcIndent(expect, leftTopPoint, survey.controller,
             flats[1], flats[2], json.questions[0].choices[0],
             <Question>survey.getAllQuestions()[0], flats[0]);
     }
