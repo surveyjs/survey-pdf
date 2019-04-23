@@ -31,13 +31,13 @@ export class FlatQuestion implements IFlatQuestion {
             SurveyHelper.getLocString(this.question.locDescription));
         return new DescriptionBrick(this.question, this.controller, rect, this.question.description);
     }
-    private generateFlatsComment(point: IPoint): IPdfBrick[] {
+    private generateFlatsComment(point: IPoint): IPdfBrick {
         let commentText: string = SurveyHelper.getLocString(this.question.locCommentText);
         let rectText: IRect = SurveyHelper.createTextRect(point, this.controller, commentText);
         let rectTextField: IRect = SurveyHelper.createTextFieldRect(
             SurveyHelper.createPoint(rectText), this.controller, 2);
-        return [new TextBrick(this.question, this.controller, rectText, commentText),
-        new CommentBrick(this.question, this.controller, rectTextField, false)];
+        return new ComposeBrick(new TextBrick(this.question, this.controller, rectText, commentText),
+            new CommentBrick(this.question, this.controller, rectTextField, false));
     }
     generateFlatsContent(point: IPoint): IPdfBrick[] {
         return null;
@@ -79,7 +79,7 @@ export class FlatQuestion implements IFlatQuestion {
                     commentPoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(...contentFlats));
                 }
                 if (this.question.hasComment) {
-                    flats.push(...this.generateFlatsComment(commentPoint));
+                    flats.push(this.generateFlatsComment(commentPoint));
                 }
                 let titlePoint: IPoint = indentPoint;
                 if (contentFlats.length != 0) {
@@ -121,7 +121,7 @@ export class FlatQuestion implements IFlatQuestion {
             }
         }
         if (this.question.hasComment && this.question.titleLocation != 'bottom') {
-            flats.push(...this.generateFlatsComment(commentPoint));
+            flats.push(this.generateFlatsComment(commentPoint));
         }
         this.controller.margins.marginLeft = oldMarginLeft;
         return flats;
