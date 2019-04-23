@@ -9,7 +9,7 @@ export class ComposeBrick implements IPdfBrick {
     yBot: number;
     constructor(...pdfBricks: IPdfBrick[]) {
         if (pdfBricks.length != 0) {
-            pdfBricks.push(...pdfBricks);
+            this.pdfBricks.push(...pdfBricks);
             let mergeRect = SurveyHelper.mergeRects(...pdfBricks);
             this.xLeft = mergeRect.xLeft;
             this.xRight = mergeRect.xRight;
