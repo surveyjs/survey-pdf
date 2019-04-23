@@ -88,7 +88,7 @@ test('Check comment readonly', () => {
   expect(textField.readOnly).toBe(true);
 });
 //undefined exception shouldn't be expected
-test.skip('Check empty question', () => {
+test('Check empty question', () => {
   let json = {
     questions: [
       {
