@@ -86,22 +86,24 @@ export class FlatQuestion implements IFlatQuestion {
                     titlePoint = SurveyHelper.createPoint(flats[flats.length - 1]);
                 }
                 let titleFlat: IPdfBrick = this.generateFlatTitle(titlePoint);
-                flats.push(titleFlat);
+                let composeBrick: ComposeBrick = new ComposeBrick(titleFlat);
                 let descPoint: IPoint = SurveyHelper.createPoint(titleFlat);
                 let descFlat: IPdfBrick = this.generateFlatDescription(descPoint);
-                if (descFlat !== null) flats.push(descFlat);
+                if (descFlat !== null) { composeBrick.addBrick(descFlat); }
+                flats.push(composeBrick);
                 break;
             }
             case 'left': {
                 let titleFlat: IPdfBrick = this.generateFlatTitle(indentPoint);
-                flats.push(titleFlat);
+                let composeBrick: ComposeBrick = new ComposeBrick(titleFlat);
                 let descPoint: IPoint = SurveyHelper.createPoint(titleFlat);
                 let descFlat: IPdfBrick = this.generateFlatDescription(descPoint);
                 let contentPoint: IPoint = SurveyHelper.createPoint(titleFlat, false, true);
                 if (descFlat !== null) {
-                    flats.push(descFlat);
+                    composeBrick.addBrick(descFlat);
                     contentPoint.xLeft = Math.max(contentPoint.xLeft, descFlat.xRight);
                 }
+                flats.push(composeBrick);
                 commentPoint.xLeft = SurveyHelper.createPoint(SurveyHelper.mergeRects(...flats), false, true).xLeft;
                 let contentFlats = this.generateFlatsContent(contentPoint);
                 if (contentFlats.length != 0) {
