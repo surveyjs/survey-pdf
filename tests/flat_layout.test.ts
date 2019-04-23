@@ -10,6 +10,8 @@ import { FlatQuestion } from '../src/flat_layout/flat_question';
 import { FlatTextbox } from '../src/flat_layout/flat_textbox';
 import { FlatCheckbox } from '../src/flat_layout/flat_checkbox';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
+import { TitleBrick } from '../src/pdf_render/pdf_title';
+import { TextFieldBrick } from '../src/pdf_render/pdf_textfield';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 let __dummy_tx = new FlatTextbox(null, null);

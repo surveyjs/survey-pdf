@@ -2,15 +2,16 @@
     return {};
 };
 
-import { Question, QuestionCheckboxModel } from 'survey-core';
+import { Question } from 'survey-core';
 import { PagePacker } from '../src/page_layout/page_packer';
 import { PdfSurvey } from '../src/survey';
 import { IPoint, IRect, IDocOptions, DocController } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { FlatCheckbox } from '../src/flat_layout/flat_checkbox';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
+import { TitleBrick } from '../src/pdf_render/pdf_title';
+import { TextFieldBrick } from '../src/pdf_render/pdf_textfield';
 import { calcIndent } from './flat_layout.test';
-import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 let __dummy_cb = new FlatCheckbox(null, null);
 
@@ -54,7 +55,7 @@ test.skip('Long checkbox with indent', () => {
     let survey: PdfSurvey = new PdfSurvey(json, options);
     let flats: IPdfBrick[] = FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(11);
-    let packs: IPdfBrick[][] = PagePacker.pack(TestHelper.wrapRects(flats), controller);
+    let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
     expect(packs.length).toBe(2);
     expect(packs[0].length).toBe(5);
     expect(packs[1].length).toBe(6);
@@ -71,4 +72,29 @@ test.skip('Long checkbox with indent', () => {
             packs[1][(i - 2) * 2 + 1], json.questions[0].choices[i]);        
         leftTopPoint.yTop += survey.controller.measureText().height;
     }
+});
+test('Check two textbox flats sort order', () => {
+    let json = {
+        questions: [
+            {
+                type: 'text',
+                name: 'textbox',
+                title: 'Sort'
+            },
+            {
+                type: 'text',
+                name: 'textbox',
+                title: 'This',
+                startWithNewLine: false
+            }
+        ]
+    };
+    let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
+    let flats: IPdfBrick[] = FlatSurvey.generateFlats(survey);
+    let packs: IPdfBrick[][] = PagePacker.pack(flats, survey.controller);
+    expect(flats.length).toBe(4);
+    expect(packs[0][0] instanceof TitleBrick).toBe(true);
+    expect(packs[0][1] instanceof TitleBrick).toBe(true);
+    expect(packs[0][2] instanceof TextFieldBrick).toBe(true);
+    expect(packs[0][3] instanceof TextFieldBrick).toBe(true);
 });
