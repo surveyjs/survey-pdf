@@ -18,80 +18,80 @@ let __dummy_tx = new FlatTextbox(null, null);
 let __dummy_cb = new FlatCheckbox(null, null);
 
 function calcTitleTop(leftTopPoint: IPoint, controller: DocController,
-    titleQuestion: Question, titleFlat: IPdfBrick, textboxFlat: IPdfBrick,
-    descFlat: IPdfBrick = null): IPoint {
+    titleQuestion: Question, compositeFlat: IPdfBrick, isDesc: boolean = false): IPoint {
     let assumeTitle: IRect = SurveyHelper.createTextRect(
         leftTopPoint, controller,
         SurveyHelper.getTitleText(titleQuestion));
-    TestHelper.equalRect(expect, titleFlat, assumeTitle);
     let assumeTextbox: IRect = SurveyHelper.createTextFieldRect(
         SurveyHelper.createPoint(assumeTitle), controller);
-    if (descFlat != null) {
+    if (isDesc) {
         let assumeDesc: IRect = SurveyHelper.createDescRect(
             SurveyHelper.createPoint(assumeTitle), controller,
             SurveyHelper.getLocString(titleQuestion.locDescription));
-        TestHelper.equalRect(expect, descFlat, assumeDesc);
         assumeTextbox = SurveyHelper.createTextFieldRect(
             SurveyHelper.createPoint(assumeDesc), controller);
+        TestHelper.equalRect(expect, compositeFlat, SurveyHelper.mergeRects(assumeTitle, assumeDesc, assumeTextbox));
     }
-    TestHelper.equalRect(expect, textboxFlat, assumeTextbox);
+    else {
+        TestHelper.equalRect(expect, compositeFlat, SurveyHelper.mergeRects(assumeTitle, assumeTextbox));
+    }
     return SurveyHelper.createPoint(assumeTextbox);
 }
 function calcTitleBottom(controller: DocController, titleQuestion: Question,
-    titleFlat: IPdfBrick, textboxFlat: IPdfBrick, descFlat: IPdfBrick = null) {
+    compositeFlat: IPdfBrick, textboxFlat: IPdfBrick, isDesc: boolean = false) {
     let assumeTextbox: IRect = SurveyHelper.createTextFieldRect(
         controller.leftTopPoint, controller);
     TestHelper.equalRect(expect, textboxFlat, assumeTextbox);
     let assumeTitle: IRect = SurveyHelper.createTextRect(
         SurveyHelper.createPoint(assumeTextbox), controller,
         SurveyHelper.getTitleText(titleQuestion));
-    TestHelper.equalRect(expect, titleFlat, assumeTitle);
-    if (descFlat != null) {
+    if (isDesc) {
         let assumeDesc: IRect = SurveyHelper.createDescRect(
             SurveyHelper.createPoint(assumeTitle), controller,
             SurveyHelper.getLocString(titleQuestion.locDescription));
-        TestHelper.equalRect(expect, descFlat, assumeDesc);
+        TestHelper.equalRect(expect, compositeFlat, SurveyHelper.mergeRects(assumeTitle, assumeDesc));
+    } else {
+        TestHelper.equalRect(expect, compositeFlat, assumeTitle);
     }
 }
 function calcTitleLeft(controller: DocController, titleQuestion: Question,
-    titleFlat: IPdfBrick, textboxFlat: IPdfBrick, descFlat: IPdfBrick = null) {
+    compositeFlat: IPdfBrick, textboxFlat: IPdfBrick, isDesc: boolean = false) {
     let assumeTitle: IRect = SurveyHelper.createTextRect(
         controller.leftTopPoint, controller,
         SurveyHelper.getTitleText(titleQuestion));
-    TestHelper.equalRect(expect, titleFlat, assumeTitle);
     let assumeTextbox: IRect = SurveyHelper.createTextFieldRect(
         SurveyHelper.createPoint(assumeTitle, false, true), controller);
-    if (descFlat != null) {
+    if (isDesc) {
         let assumeDesc: IRect = SurveyHelper.createDescRect(
             SurveyHelper.createPoint(assumeTitle), controller,
             SurveyHelper.getLocString(titleQuestion.locDescription));
-        TestHelper.equalRect(expect, descFlat, assumeDesc);
+        TestHelper.equalRect(expect, compositeFlat, SurveyHelper.mergeRects(assumeTitle, assumeDesc));
         assumeTextbox.xLeft = Math.max(assumeTextbox.xLeft, assumeDesc.xRight);
+    }
+    else {
+        TestHelper.equalRect(expect, compositeFlat, assumeTitle);
     }
     TestHelper.equalRect(expect, textboxFlat, assumeTextbox);
 }
 export function calcIndent(expect: any, leftTopPoint: IPoint, controller: DocController,
-    checkboxFlat: IPdfBrick, checktextFlat: IPdfBrick, checktext: string,
-    titleQuestion: Question = null, titleFlat: IPdfBrick = null) {
+    compositeFlat: IPdfBrick, checktext: string, titleQuestion: Question = null, isTitle: boolean = false) {
     let assumeTitle: IRect = SurveyHelper.createRect(leftTopPoint, 0, 0);
-    if (titleQuestion != null) {
+    if (isTitle) {
         assumeTitle = SurveyHelper.createTextRect(
             leftTopPoint, controller,
             SurveyHelper.getTitleText(titleQuestion));
-        TestHelper.equalRect(expect, titleFlat, assumeTitle);
     }
     let assumeCheckbox: IRect = SurveyHelper.createRect(
         SurveyHelper.createPoint(assumeTitle),
         controller.measureText().height, controller.measureText().height);
-    TestHelper.equalRect(expect, checkboxFlat, assumeCheckbox);
     let assumeChecktext: IRect = SurveyHelper.createTextRect(
         SurveyHelper.createPoint(assumeCheckbox, false, true),
         controller, checktext);
-    TestHelper.equalRect(expect, checktextFlat, assumeChecktext);
+    TestHelper.equalRect(expect, compositeFlat, SurveyHelper.mergeRects(assumeTitle, assumeCheckbox, assumeChecktext));
     return SurveyHelper.createPoint(assumeCheckbox);
 }
 
-test.skip('Calc textbox boundaries title top', () => {
+test('Calc textbox boundaries title top', () => {
     let json = {
         questions: [
             {
@@ -103,11 +103,11 @@ test.skip('Calc textbox boundaries title top', () => {
     };
     let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
     let flats: IPdfBrick[] = FlatSurvey.generateFlats(survey);
-    expect(flats.length).toBe(2);
+    expect(flats.length).toBe(1);
     calcTitleTop(survey.controller.leftTopPoint, survey.controller,
-        <Question>survey.getAllQuestions()[0], flats[0], flats[1]);
+        <Question>survey.getAllQuestions()[0], flats[0]);
 });
-test.skip('Calc textbox boundaries title bottom', () => {
+test('Calc textbox boundaries title bottom', () => {
     let json = {
         questions: [
             {
@@ -124,7 +124,7 @@ test.skip('Calc textbox boundaries title bottom', () => {
     calcTitleBottom(survey.controller, <Question>survey.getAllQuestions()[0],
         flats[1], flats[0]);
 });
-test.skip('Calc textbox boundaries title left', () => {
+test('Calc textbox boundaries title left', () => {
     let json = {
         questions: [
             {
@@ -141,7 +141,7 @@ test.skip('Calc textbox boundaries title left', () => {
     calcTitleLeft(survey.controller, <Question>survey.getAllQuestions()[0],
         flats[0], flats[1]);
 });
-test.skip('Calc textbox boundaries title hidden', () => {
+test('Calc textbox boundaries title hidden', () => {
     let json = {
         questions: [
             {
@@ -227,7 +227,7 @@ function commmentPointTests(titleLocation: string, isChoices: boolean) {
     commmentPointTests(titleLocation, true);
     commmentPointTests(titleLocation, false);
 })
-test.skip('Calc textbox boundaries title hidden', () => {
+test('Calc textbox boundaries title hidden', () => {
     let json = {
         questions: [
             {
@@ -245,7 +245,7 @@ test.skip('Calc textbox boundaries title hidden', () => {
         controller.leftTopPoint, controller);
     TestHelper.equalRect(expect, flats[0], assumeTextbox);
 });
-test.skip('Calc boundaries with space between questions', () => {
+test('Calc boundaries with space between questions', () => {
     let json = {
         questions: [{
             type: 'text',
@@ -260,14 +260,14 @@ test.skip('Calc boundaries with space between questions', () => {
     };
     let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
     let flats: IPdfBrick[] = FlatSurvey.generateFlats(survey);
-    expect(flats.length).toBe(4);
+    expect(flats.length).toBe(2);
     let title2point: IPoint = calcTitleTop(survey.controller.leftTopPoint,
-        survey.controller, <Question>survey.getAllQuestions()[0], flats[0], flats[1]);
+        survey.controller, <Question>survey.getAllQuestions()[0], flats[0]);
     title2point.yTop += survey.controller.measureText().height;
     calcTitleTop(title2point, survey.controller,
-        <Question>survey.getAllQuestions()[1], flats[2], flats[3]);
+        <Question>survey.getAllQuestions()[1], flats[1]);
 });
-test.skip('Calc textbox boundaries title without number', () => {
+test('Calc textbox boundaries title without number', () => {
     let json = {
         questions: [{
             type: 'text',
@@ -278,11 +278,11 @@ test.skip('Calc textbox boundaries title without number', () => {
     let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
     survey.showQuestionNumbers = 'off';
     let flats: IPdfBrick[] = FlatSurvey.generateFlats(survey);
-    expect(flats.length).toBe(2);
+    expect(flats.length).toBe(1);
     calcTitleTop(survey.controller.leftTopPoint, survey.controller,
-        <Question>survey.getAllQuestions()[0], flats[0], flats[1]);
+        <Question>survey.getAllQuestions()[0], flats[0]);
 });
-test.skip('Calc textbox boundaries required', () => {
+test('Calc textbox boundaries required', () => {
     let json = {
         questions: [{
             type: 'text',
@@ -293,16 +293,18 @@ test.skip('Calc textbox boundaries required', () => {
     };
     let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
     let flats: IPdfBrick[] = FlatSurvey.generateFlats(survey);
-    expect(flats.length).toBe(2);
+    expect(flats.length).toBe(1);
     calcTitleTop(survey.controller.leftTopPoint, survey.controller,
-        <Question>survey.getAllQuestions()[0], flats[0], flats[1]);
+        <Question>survey.getAllQuestions()[0], flats[0]);
 });
-test.skip('Check that checkbox has square boundaries', () => {
+//to review
+test('Check that checkbox has square boundaries', () => {
     let json = {
         questions: [
             {
                 type: 'checkbox',
                 name: 'box',
+                titleLocation: 'hidden',
                 title: 'Square Pants',
                 choices: [
                     'S'
@@ -312,18 +314,18 @@ test.skip('Check that checkbox has square boundaries', () => {
     };
     let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
     let controller: DocController = survey.controller;
-    let flats: IPdfBrick[] = FlatSurvey.generateFlats(survey);
-    expect(flats.length).toBe(3);
-    let assumeTitle: IRect = SurveyHelper.createTextRect(
-        controller.leftTopPoint, controller,
-        SurveyHelper.getTitleText(<Question>survey.getAllQuestions()[0]));
-    TestHelper.equalRect(expect, flats[0], assumeTitle);
+    survey.render();
     let assumeCheckbox: IRect = SurveyHelper.createRect(
-        SurveyHelper.createPoint(assumeTitle),
+        TestHelper.defaultPoint,
         controller.measureText().height, controller.measureText().height);
-    TestHelper.equalRect(expect, flats[1], assumeCheckbox);
+    let acroFormFields = survey.controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields;
+    let internalRect = acroFormFields[0].Rect;
+
+    TestHelper.equalRect(expect, SurveyHelper.createRect(
+        { xLeft: internalRect[0], yTop: internalRect[1] },
+        internalRect[2], internalRect[3]), assumeCheckbox);
 });
-test.skip('Calc boundaries title top longer than description', () => {
+test('Calc boundaries title top longer than description', () => {
     let json = {
         questions: [
             {
@@ -336,11 +338,11 @@ test.skip('Calc boundaries title top longer than description', () => {
     };
     let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
     let flats: IPdfBrick[] = FlatSurvey.generateFlats(survey);
-    expect(flats.length).toBe(3);
+    expect(flats.length).toBe(1);
     calcTitleTop(survey.controller.leftTopPoint, survey.controller,
-        <Question>survey.getAllQuestions()[0], flats[0], flats[2], flats[1]);
+        <Question>survey.getAllQuestions()[0], flats[0], true);
 });
-test.skip('Calc boundaries title top shorter than description', () => {
+test('Calc boundaries title top shorter than description', () => {
     let json = {
         questions: [
             {
@@ -353,11 +355,11 @@ test.skip('Calc boundaries title top shorter than description', () => {
     };
     let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
     let flats: IPdfBrick[] = FlatSurvey.generateFlats(survey);
-    expect(flats.length).toBe(3);
+    expect(flats.length).toBe(1);
     calcTitleTop(survey.controller.leftTopPoint, survey.controller,
-        <Question>survey.getAllQuestions()[0], flats[0], flats[2], flats[1]);
+        <Question>survey.getAllQuestions()[0], flats[0], true);
 });
-test.skip('Calc boundaries title bottom longer than description', () => {
+test('Calc boundaries title bottom longer than description', () => {
     let json = {
         questions: [
             {
@@ -371,11 +373,11 @@ test.skip('Calc boundaries title bottom longer than description', () => {
     };
     let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
     let flats: IPdfBrick[] = FlatSurvey.generateFlats(survey);
-    expect(flats.length).toBe(3);
+    expect(flats.length).toBe(2);
     calcTitleBottom(survey.controller, <Question>survey.getAllQuestions()[0],
-        flats[1], flats[0], flats[2]);
+        flats[1], flats[0], true);
 });
-test.skip('Calc boundaries title bottom shorter than description', () => {
+test('Calc boundaries title bottom shorter than description', () => {
     let json = {
         questions: [
             {
@@ -389,11 +391,11 @@ test.skip('Calc boundaries title bottom shorter than description', () => {
     };
     let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
     let flats: IPdfBrick[] = FlatSurvey.generateFlats(survey);
-    expect(flats.length).toBe(3);
+    expect(flats.length).toBe(2);
     calcTitleBottom(survey.controller, <Question>survey.getAllQuestions()[0],
-        flats[1], flats[0], flats[2]);
+        flats[1], flats[0], true);
 });
-test.skip('Calc boundaries title left longer than description', () => {
+test('Calc boundaries title left longer than description', () => {
     let json = {
         questions: [
             {
@@ -407,11 +409,11 @@ test.skip('Calc boundaries title left longer than description', () => {
     };
     let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
     let flats: IPdfBrick[] = FlatSurvey.generateFlats(survey);
-    expect(flats.length).toBe(3);
+    expect(flats.length).toBe(2);
     calcTitleLeft(survey.controller, <Question>survey.getAllQuestions()[0],
-        flats[0], flats[2], flats[1]);
+        flats[0], flats[1], true);
 });
-test.skip('Calc boundaries title left shorter than description', () => {
+test('Calc boundaries title left shorter than description', () => {
     let json = {
         questions: [
             {
@@ -425,11 +427,11 @@ test.skip('Calc boundaries title left shorter than description', () => {
     };
     let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
     let flats: IPdfBrick[] = FlatSurvey.generateFlats(survey);
-    expect(flats.length).toBe(3);
+    expect(flats.length).toBe(2);
     calcTitleLeft(survey.controller, <Question>survey.getAllQuestions()[0],
-        flats[0], flats[2], flats[1]);
+        flats[0], flats[1], true);
 });
-test.skip('Calc boundaries title hidden with description', () => {
+test('Calc boundaries title hidden with description', () => {
     let json = {
         questions: [
             {
@@ -448,7 +450,7 @@ test.skip('Calc boundaries title hidden with description', () => {
         survey.controller.leftTopPoint, survey.controller);
     TestHelper.equalRect(expect, flats[0], assumeTextbox);
 });
-test.skip('Calc boundaries with indent', () => {
+test('Calc boundaries with indent', () => {
     for (let i = 0; i < 10; i++) {
         let json = {
             questions: [
@@ -465,15 +467,15 @@ test.skip('Calc boundaries with indent', () => {
         };
         let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
         let flats: IPdfBrick[] = FlatSurvey.generateFlats(survey);
-        expect(flats.length).toBe(3);
+        expect(flats.length).toBe(1);
         let leftTopPoint: IPoint = survey.controller.leftTopPoint;
         leftTopPoint.xLeft += survey.controller.measureText(i).width;
         calcIndent(expect, leftTopPoint, survey.controller,
-            flats[1], flats[2], json.questions[0].choices[0],
-            <Question>survey.getAllQuestions()[0], flats[0]);
+            flats[0], json.questions[0].choices[0],
+            <Question>survey.getAllQuestions()[0], true);
     }
 });
-test.skip('not visible question', () => {
+test('not visible question', () => {
     let json = {
         questions: [
             {
@@ -487,7 +489,7 @@ test.skip('not visible question', () => {
     let flats: IPdfBrick[] = FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(0);
 });
-test.skip('not visible question and visible question', () => {
+test('not visible question and visible question', () => {
     let json = {
         questions: [
             {
