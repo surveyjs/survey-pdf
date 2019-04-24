@@ -16,19 +16,19 @@ export class FlatCheckbox extends FlatQuestion {
         this.question = <QuestionCheckboxModel>question;
     }
     private generateFlatsItem(point: IPoint, itemValue: ItemValue, index: number): IPdfBrick {
-        let composeFlat: CompositeBrick = new CompositeBrick();
+        let compositeFlat: CompositeBrick = new CompositeBrick();
         let height: number = this.controller.measureText().height;
         let itemRect: IRect = SurveyHelper.createRect(point, height, height);
-        composeFlat.addBrick(new CheckItemBrick(this.question, this.controller, itemRect, itemValue, index));
+        compositeFlat.addBrick(new CheckItemBrick(this.question, this.controller, itemRect, itemValue, index));
         let textPoint: IPoint = SurveyHelper.createPoint(itemRect, false, true);
         let textRect: IRect = SurveyHelper.createTextRect(textPoint, this.controller, itemValue.text);
-        composeFlat.addBrick(new TextBrick(this.question, this.controller, textRect, itemValue.text));
+        compositeFlat.addBrick(new TextBrick(this.question, this.controller, textRect, itemValue.text));
         if (itemValue.value === this.question.otherItem.value) {
             let otherPoint: IPoint = SurveyHelper.createPoint(itemRect);
             let otherRect: IRect = SurveyHelper.createTextFieldRect(otherPoint, this.controller, 2);
-            composeFlat.addBrick(new CommentBrick(this.question, this.controller, otherRect, false));
+            compositeFlat.addBrick(new CommentBrick(this.question, this.controller, otherRect, false));
         }
-        return composeFlat;
+        return compositeFlat;
     }
     generateFlatsContent(point: IPoint): IPdfBrick[] {
         let currPoint: IPoint = { xLeft: point.xLeft, yTop: point.yTop };
