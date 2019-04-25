@@ -4,18 +4,25 @@ import { IPdfBrick } from '../pdf_render/pdf_brick';
 
 interface PackInterval {
     pageIndex: number;
+    xLeft: number;
+    xRight: number;
     yBot: number;
+    absBot: number;
 }
 export class PagePacker {
-    static findBotInterval(intervals: PackInterval[]): PackInterval {
-        if (intervals.length == 0) {
-            return { pageIndex:0, yBot: 0.0 };
-        }
+    static EPSILON: number = 2.2204460492503130808472633361816e-16;
+    static findBotInterval(intervals: PackInterval[],
+        xLeft: number, xRight: number, options: DocOptions): PackInterval {
+        intervals.push({ pageIndex: 0, xLeft:
+            options.margins.marginLeft, xRight: options.margins.marginLeft,
+            yBot: options.margins.marginTop, absBot: options.margins.marginTop });
         return intervals.reduce((mx, cr) => {
-            if (cr.pageIndex > mx.pageIndex) return cr;
+            if (Math.abs(cr.xRight - xLeft) < PagePacker.EPSILON ||
+                Math.abs(cr.xLeft - xRight) < PagePacker.EPSILON) return mx;
             if (cr.pageIndex < mx.pageIndex) return mx;
+            if (cr.pageIndex > mx.pageIndex) return cr;
             return cr.yBot > mx.yBot ? cr : mx;
-        }, intervals[0]);
+        }, intervals[intervals.length - 1]);
     }
     static addPack(packs: IPdfBrick[][], index: number, brick: IPdfBrick) {
         if (index == packs.length) {
@@ -23,9 +30,7 @@ export class PagePacker {
         }
         packs[index].push(brick);
     }
-    //TODO boundary case problem
     static pack(flats: IPdfBrick[], options: DocOptions): IPdfBrick[][] {
-        return [flats]; //TEMP
         flats.sort((a: IPdfBrick, b: IPdfBrick) => {
             if (a.yTop < b.yTop) return -1;
             if (a.yTop > b.yTop) return 1;
@@ -38,16 +43,17 @@ export class PagePacker {
         let tree: IntervalTree<PackInterval> = new IntervalTree(); 
         flats.forEach((flat: IPdfBrick) => {
             let intervals: PackInterval[] = tree.search(flat.xLeft, flat.xRight);
-            let { pageIndex, yBot } = PagePacker.findBotInterval(intervals);
+            let { pageIndex, yBot, absBot } = PagePacker.findBotInterval(
+                intervals, flat.xLeft, flat.xRight, options);
             let height: number = flat.yBot - flat.yTop;
+            flat.yTop = yBot + flat.yTop - absBot;
             if (yBot + height > pageBot) {
-                tree.insert(flat.xLeft, flat.xRight, { pageIndex: ++pageIndex, yBot: 0 });
-                flat.yTop = 0; 
+                pageIndex++;
+                flat.yTop = options.margins.marginTop;
             }
-            else {
-                tree.insert(flat.xLeft, flat.xRight, { pageIndex: pageIndex, yBot: yBot + height });
-                flat.yTop = yBot;
-            }
+            tree.insert(flat.xLeft, flat.xRight, { pageIndex: pageIndex,
+                xLeft: flat.xLeft, xRight: flat.xRight,
+                yBot: flat.yTop + height, absBot: flat.yBot });
             flat.yBot = flat.yTop + height;
             PagePacker.addPack(packs, pageIndex, flat);
         });

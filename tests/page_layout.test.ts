@@ -19,17 +19,17 @@ test('Pack one flat', () => {
     let flats: IRect[] = [TestHelper.defaultRect];
     let packs: IPdfBrick[][] = PagePacker.pack(TestHelper.wrapRects(flats),
         new DocController(TestHelper.defaultOptions));
-    TestHelper.equalRect(expect, packs[0][0], flats[0]);
+    TestHelper.equalRect(expect, packs[0][0], TestHelper.defaultRect);
 });
-test.skip('Pack two flats on two pages', () => {
+test('Pack two flats on two pages', () => {
     let flats: IRect[] = [TestHelper.defaultRect, TestHelper.defaultRect];
     flats[1].yTop += 10; flats[1].yBot += 10;
     let options: IDocOptions = TestHelper.defaultOptions;
-    options.paperHeight = flats[0].yBot;
+    options.paperHeight = flats[0].yBot + options.margins.marginBot;
     let packs: IPdfBrick[][] = PagePacker.pack(TestHelper.wrapRects(flats),
-        new DocController(TestHelper.defaultOptions));
-    TestHelper.equalRect(expect, packs[0][0], flats[0]);
-    TestHelper.equalRect(expect, packs[1][0], flats[0]);
+        new DocController(options));
+    TestHelper.equalRect(expect, packs[0][0], TestHelper.defaultRect);
+    TestHelper.equalRect(expect, packs[1][0], TestHelper.defaultRect);
 });
 test.skip('Long checkbox with indent', () => {
     let json = {
@@ -97,4 +97,42 @@ test('Check two textbox flats sort order', () => {
     expect(packs[0][1] instanceof TitleBrick).toBe(true);
     expect(packs[0][2] instanceof TextFieldBrick).toBe(true);
     expect(packs[0][3] instanceof TextFieldBrick).toBe(true);
+});
+test('Pack near flats', () => {
+    let flats: IRect[] = [
+        { xLeft: 10, xRight: 20, yTop: 10, yBot: 20 },
+        { xLeft: 20, xRight: 30, yTop: 10, yBot: 20 },
+        { xLeft: 10, xRight: 20, yTop: 20, yBot: 30 },
+        { xLeft: 20, xRight: 30, yTop: 20, yBot: 30 },
+    ];
+    let packs: IPdfBrick[][] = PagePacker.pack(TestHelper.wrapRects(flats),
+        new DocController(TestHelper.defaultOptions));
+    TestHelper.equalRect(expect, packs[0][0],
+        { xLeft: 10, xRight: 20, yTop: 10, yBot: 20 });
+    TestHelper.equalRect(expect, packs[0][1],
+        { xLeft: 20, xRight: 30, yTop: 10, yBot: 20 });
+    TestHelper.equalRect(expect, packs[0][2],
+        { xLeft: 10, xRight: 20, yTop: 20, yBot: 30 });
+    TestHelper.equalRect(expect, packs[0][3],
+        { xLeft: 20, xRight: 30, yTop: 20, yBot: 30 });
+});
+test('Pack near flats new page', () => {
+    let flats: IRect[] = [
+        { xLeft: 10, xRight: 20, yTop: 10, yBot: 20 },
+        { xLeft: 20, xRight: 30, yTop: 10, yBot: 20 },
+        { xLeft: 10, xRight: 20, yTop: 20, yBot: 30 },
+        { xLeft: 20, xRight: 30, yTop: 20, yBot: 30 },
+    ];
+    let options: IDocOptions = TestHelper.defaultOptions;
+    options.paperHeight = flats[0].yBot + options.margins.marginBot;
+    let packs: IPdfBrick[][] = PagePacker.pack(TestHelper.wrapRects(flats),
+        new DocController(options));
+        TestHelper.equalRect(expect, packs[0][0],
+            { xLeft: 10, xRight: 20, yTop: 10, yBot: 20 });
+        TestHelper.equalRect(expect, packs[0][1],
+            { xLeft: 20, xRight: 30, yTop: 10, yBot: 20 });
+        TestHelper.equalRect(expect, packs[1][0],
+            { xLeft: 10, xRight: 20, yTop: 10, yBot: 20 });
+        TestHelper.equalRect(expect, packs[1][1],
+            { xLeft: 20, xRight: 30, yTop: 10, yBot: 20 });
 });
