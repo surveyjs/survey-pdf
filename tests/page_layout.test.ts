@@ -11,8 +11,8 @@ import { FlatCheckbox } from '../src/flat_layout/flat_checkbox';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { TitleBrick } from '../src/pdf_render/pdf_title';
 import { TextFieldBrick } from '../src/pdf_render/pdf_textfield';
-import { calcIndent } from './flat_layout.test';
 import { TestHelper } from '../src/helper_test';
+import { SurveyHelper } from '../src/helper_survey';
 let __dummy_cb = new FlatCheckbox(null, null);
 
 test('Pack one flat', () => {
@@ -31,48 +31,46 @@ test('Pack two flats on two pages', () => {
     TestHelper.equalRect(expect, packs[0][0], TestHelper.defaultRect);
     TestHelper.equalRect(expect, packs[1][0], TestHelper.defaultRect);
 });
-// test.skip('Long checkbox with indent', () => {
-//     let json = {
-//         questions: [
-//             {
-//                 type: 'checkbox',
-//                 name: 'box',
-//                 title: 'Snake',
-//                 indent: 3,
-//                 choices: [
-//                     'azu',
-//                     'buky',
-//                     'vede',
-//                     'glagoli',
-//                     'dobro'
-//                 ]
-//             }
-//         ]
-//     };
-//     let options: IDocOptions = TestHelper.defaultOptions;
-//     let controller: DocController = new DocController(options);
-//     options.paperHeight = options.margins.marginTop + controller.measureText().height * 3;
-//     let survey: PdfSurvey = new PdfSurvey(json, options);
-//     let flats: IPdfBrick[] = FlatSurvey.generateFlats(survey);
-//     expect(flats.length).toBe(11);
-//     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
-//     expect(packs.length).toBe(2);
-//     expect(packs[0].length).toBe(5);
-//     expect(packs[1].length).toBe(6);
-//     let leftTopPoint: IPoint = survey.controller.leftTopPoint;
-//     leftTopPoint.xLeft += survey.controller.measureText(json.questions[0].indent).width;
-//     calcIndent(expect, leftTopPoint, survey.controller, flats[1], flats[2],
-//         json.questions[0].choices[0], <Question>survey.getAllQuestions()[0], flats[0]);
-//     leftTopPoint.yTop += survey.controller.measureText().height;
-//     calcIndent(expect, leftTopPoint, survey.controller,
-//         packs[0][3], packs[0][4], json.questions[0].choices[1]);
-//     leftTopPoint.yTop += survey.controller.measureText().height;
-//     for (let i = 2; i < json.questions[0].choices.length; i++) {
-//         calcIndent(expect, leftTopPoint, survey.controller, packs[1][(i - 2) * 2],
-//             packs[1][(i - 2) * 2 + 1], json.questions[0].choices[i]);
-//         leftTopPoint.yTop += survey.controller.measureText().height;
-//     }
-// });
+test('Long checkbox with indent', () => {
+    let json = {
+        questions: [
+            {
+                type: 'checkbox',
+                name: 'box',
+                title: 'Snake',
+                indent: 3,
+                choices: [
+                    'azu',
+                    'buky',
+                    'vede',
+                    'glagoli',
+                    'dobro'
+                ]
+            }
+        ]
+    };
+    let options: IDocOptions = TestHelper.defaultOptions;
+    let controller: DocController = new DocController(options);
+    options.paperHeight = options.margins.marginTop +
+        controller.measureText().height * 3 + options.margins.marginBot;
+    let survey: PdfSurvey = new PdfSurvey(json, options);
+    let flats: IPdfBrick[] = FlatSurvey.generateFlats(survey);
+    expect(flats.length).toBe(5);
+    let packs: IPdfBrick[][] = PagePacker.pack(flats, survey.controller);
+    expect(packs.length).toBe(2);
+    expect(packs[0].length).toBe(2);
+    expect(packs[1].length).toBe(3);
+    let leftTopPoint: IPoint = survey.controller.leftTopPoint;
+    leftTopPoint.xLeft += survey.controller.measureText(json.questions[0].indent).width;
+    TestHelper.equalPoint(expect, packs[0][0], leftTopPoint);
+    leftTopPoint.yTop += survey.controller.measureText().height * 2;
+    TestHelper.equalPoint(expect, packs[0][1], leftTopPoint);
+    leftTopPoint.yTop = survey.controller.leftTopPoint.yTop;
+    for (let i = 0; i < 3; i++) {
+        TestHelper.equalPoint(expect, packs[1][i], leftTopPoint);
+        leftTopPoint.yTop += survey.controller.measureText().height;
+    }
+});
 test.skip('Check two textbox flats sort order', () => {
     let json = {
         questions: [
