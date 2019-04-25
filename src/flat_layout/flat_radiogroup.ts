@@ -16,8 +16,7 @@ export class FlatRadiogroup extends FlatSelectBase {
         this.radioGroup.readOnly = this.question.isReadOnly;
         controller.doc.addField(this.radioGroup);
     }
-    public createItemBrick(question: IQuestion, controller: DocController,
-        rect: IRect, itemValue: ItemValue, index: number): IPdfBrick {
+    public createItemBrick(rect: IRect, itemValue: ItemValue, index: number): IPdfBrick {
         return new RadioItemBrick(this.question, this.controller, rect,
             itemValue, index, this.radioGroup, true);
     }

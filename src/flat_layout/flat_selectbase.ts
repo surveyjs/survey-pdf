@@ -14,13 +14,12 @@ export abstract class FlatSelectBase extends FlatQuestion {
         super(question, controller);
         this.question = <QuestionSelectBase>question;
     }
-    protected abstract createItemBrick(question: IQuestion, controller: DocController,
-        rect: IRect, itemValue: ItemValue, index: number): IPdfBrick;
+    protected abstract createItemBrick(rect: IRect, itemValue: ItemValue, index?: number): IPdfBrick;
     private generateFlatsItem(point: IPoint, itemValue: ItemValue, index: number): IPdfBrick {
         let compositeFlat: CompositeBrick = new CompositeBrick();
         let height: number = this.controller.measureText().height;
         let itemRect: IRect = SurveyHelper.createRect(point, height, height);
-        compositeFlat.addBrick(this.createItemBrick(this.question, this.controller, itemRect, itemValue, index));
+        compositeFlat.addBrick(this.createItemBrick(itemRect, itemValue, index));
         let textPoint: IPoint = SurveyHelper.createPoint(itemRect, false, true);
         let textRect: IRect = SurveyHelper.createTextRect(textPoint, this.controller, itemValue.text);
         compositeFlat.addBrick(new TextBrick(this.question, this.controller, textRect, itemValue.text));

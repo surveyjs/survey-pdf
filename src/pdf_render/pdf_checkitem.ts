@@ -12,7 +12,7 @@ export class CheckItemBrick extends PdfBrick {
     }
     render(): void {
         let checkBox = new (<any>this.controller.doc.AcroFormCheckBox)();
-        checkBox.fieldName = this.question.id + this.index;
+        checkBox.fieldName = this.question.id + 'index' + this.index;
         checkBox.Rect = SurveyHelper.createAcroformRect(this);
         checkBox.readOnly = this.question.isReadOnly || !this.itemValue.isEnabled;
         checkBox.AS = this.question.isItemSelected(this.itemValue) ? '/On' : '/Off';
