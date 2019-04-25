@@ -80,7 +80,6 @@ test('Test all items disabled or enabled', () => {
 	})
 
 });
-
 test('Test enable one item', () => {
 	let json = {
 		questions: [
@@ -100,6 +99,26 @@ test('Test enable one item', () => {
 			if (index === INDEX_OF_ENABLED_ITEM)
 				expect(acroCheckBox.readOnly).toBe(false);
 			else expect(acroCheckBox.readOnly).toBe(true);
+		}
+	);
+});
+
+test('Test two equal values checkbox', () => {
+	let json = {
+		questions: [
+			{
+				name: 'checkbox',
+				type: 'checkbox',
+				choices: ['item', 'item'],
+				choicesEnableIf: '{item} == item'
+			}
+		]
+	};
+	let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
+	survey.render();
+	survey.controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields.forEach(
+		(acroCheckBox: any, index: number) => {
+			expect(acroCheckBox.readOnly).toBe(false);
 		}
 	);
 });
