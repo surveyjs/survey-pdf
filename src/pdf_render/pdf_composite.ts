@@ -8,14 +8,7 @@ export class CompositeBrick implements IPdfBrick {
     yTop: number;
     yBot: number;
     constructor(...pdfBricks: IPdfBrick[]) {
-        if (pdfBricks.length != 0) {
-            this.pdfBricks.push(...pdfBricks);
-            let mergeRect = SurveyHelper.mergeRects(...pdfBricks);
-            this.xLeft = mergeRect.xLeft;
-            this.xRight = mergeRect.xRight;
-            this.yTop = mergeRect.yTop;
-            this.yBot = mergeRect.yBot;
-        }
+        this.addBrick(...pdfBricks);
     }
     render(): void {
         this.pdfBricks.forEach((pdfBrick: IPdfBrick) => {
@@ -23,12 +16,13 @@ export class CompositeBrick implements IPdfBrick {
         });
     }
     addBrick(...pdfBricks: IPdfBrick[]) {
-        this.pdfBricks.push(...pdfBricks);
-        let mergeRect = SurveyHelper.mergeRects(...this.pdfBricks);
-        this.xLeft = mergeRect.xLeft;
-        this.xRight = mergeRect.xRight;
-        this.yTop = mergeRect.yTop;
-        this.yBot = mergeRect.yBot;
-
+        if (pdfBricks.length != 0) {
+            this.pdfBricks.push(...pdfBricks);
+            let mergeRect = SurveyHelper.mergeRects(...this.pdfBricks);
+            this.xLeft = mergeRect.xLeft;
+            this.xRight = mergeRect.xRight;
+            this.yTop = mergeRect.yTop;
+            this.yBot = mergeRect.yBot;
+        }
     }
 } 
