@@ -121,7 +121,7 @@ var json = {
     {
       name: "name3",
       type: "text",
-      title: "Rarrararar:",
+      title: "Rarr 1",
       titleLocation: "top",
       defaultValue: "def",
       inputType: "password",
@@ -129,8 +129,8 @@ var json = {
     },
     {
       name: "name4",
-      type: "text",
-      title: "Rarrararar:",
+      type: "comment",
+      title: "Comment",
       isRequired: true,
       titleLocation: "top",
       defaultValue: "def2",
@@ -139,16 +139,17 @@ var json = {
     {
       name: "name5",
       type: "text",
-      title: "Rarrararar:",
+      title: "Rarr 2:",
       titleLocation: "top",
       inputType: "password"
     },
     {
       name: "name6",
-      type: "text",
-      title: "Rarrararar:",
+      type: "comment",
+      title: "Comment 2",
       isRequired: true,
-      titleLocation: "top"
+      titleLocation: "top",
+      startWithNewLine: false
     },
     {
       name: "name7",
