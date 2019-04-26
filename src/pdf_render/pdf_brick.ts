@@ -3,6 +3,7 @@ import { IQuestion } from 'survey-core';
 
 export interface IPdfBrick extends IRect {
     render(): void;
+    unfold(): IPdfBrick[];
 }
 export class PdfBrick implements IPdfBrick {
     xLeft: number;
@@ -24,6 +25,9 @@ export class PdfBrick implements IPdfBrick {
         });
     }
     render(): void { }
+    unfold(): IPdfBrick[] {
+        return [this];
+    }
     private alignPoint(rect: IRect): IPoint {
         return {
             xLeft: rect.xLeft,

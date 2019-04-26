@@ -1,7 +1,14 @@
-import { LocalizableString, Question } from 'survey-core';
+import { LocalizableString, Question, IQuestion } from 'survey-core';
 import { IPoint, IRect, DocController } from './doc_controller';
+import { IPdfBrick } from './pdf_render/pdf_brick';
+import { CompositeBrick } from './pdf_render/pdf_composite';
 
+export interface IText {
+    text: string;
+    rect: IRect
+}
 export class SurveyHelper {
+    static EPSILON: number = 2.2204460492503130808472633361816e-15;
     static DESCRIPTION_FONT_SIZE_SCALE_MAGIC: number = 2.0 / 3.0;
     static mergeRects(...rects: IRect[]): IRect {
         let resultRect: IRect = {
@@ -32,16 +39,59 @@ export class SurveyHelper {
             yBot: point.yTop + height
         };
     }
-    static createTextRect(point: IPoint, controller: DocController, text: string): IRect {
-        let { width, height } = controller.measureText(text);
-        return SurveyHelper.createRect(point, width, height);
+    static createTextFlat<T extends IPdfBrick>(point: IPoint, question: IQuestion,
+        controller: DocController, text: string, fabric: new (question: IQuestion,
+            controller: DocController, rect: IRect, text: string) => T): IPdfBrick {
+        let words: string[] = new Array<string>();
+        text.match(/\S+/g).forEach((word: string) => {
+            while (word.length > 0) {
+                for (let i: number = word.length; i > 0; i--) {
+                    let subword: string = word.substring(0, i);
+                    let width: number = controller.measureText(subword).width;
+                    if (i == 1 || point.xLeft + width <= controller.paperWidth -
+                            controller.margins.marginRight + SurveyHelper.EPSILON) {
+                        words.push(subword);
+                        word = word.substring(i);
+                        break;
+                    }
+                }
+            }
+        });
+        let texts: IText[] = new Array<IText>();
+        let currPoint: IPoint = { xLeft: point.xLeft, yTop: point.yTop };
+        texts.push({ text: '', rect: null });
+        words.forEach((word: string) => {
+            let lastIndex: number = texts.length - 1;
+            let currText: string = texts[lastIndex].text;
+            let space: string = currText != '' ? ' ' : '';
+            let width: number = controller.measureText(currText + space + word).width;
+            if (currPoint.xLeft + width <= controller.paperWidth -
+                    controller.margins.marginRight + SurveyHelper.EPSILON) {
+                texts[lastIndex].text += space + word;
+            }
+            else {
+                let { width, height } = controller.measureText(texts[lastIndex].text);
+                texts[lastIndex].rect = SurveyHelper.createRect(currPoint, width, height);
+                texts.push({ text: word, rect: null });
+                currPoint.yTop += height;
+            }
+        });
+        let { width, height } = controller.measureText(texts[texts.length - 1].text);
+        texts[texts.length - 1].rect = SurveyHelper.createRect(currPoint, width, height);
+        let composite: CompositeBrick = new CompositeBrick();
+        texts.forEach((text: IText) => {
+            composite.addBrick(new fabric(question, controller, text.rect, text.text));
+        });
+        return composite;
     }
-    static createDescRect(point: IPoint, controller: DocController, text: string): IRect {
+    static createDescFlat<T extends IPdfBrick>(point: IPoint, question: IQuestion,
+        controller: DocController, text: string, fabric: new (question: IQuestion,
+            controller: DocController, rect: IRect, text: string) => T): IPdfBrick {
         let oldFontSize: number = controller.fontSize;
         controller.fontSize = oldFontSize * SurveyHelper.DESCRIPTION_FONT_SIZE_SCALE_MAGIC;
-        let rect: IRect = SurveyHelper.createTextRect(point, controller, text);
+        let composite: IPdfBrick = SurveyHelper.createTextFlat(point, question, controller, text, fabric);
         controller.fontSize = oldFontSize;
-        return rect;
+        return composite;
     }
     static createTextFieldRect(point: IPoint, controller: DocController, lines: number = 1): IRect {
         let width: number = controller.paperWidth - point.xLeft -

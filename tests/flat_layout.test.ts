@@ -6,34 +6,37 @@ import { Question, QuestionCheckboxModel } from 'survey-core';
 import { PdfSurvey } from '../src/survey';
 import { IPoint, IRect, DocController } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
-import { FlatQuestion } from '../src/flat_layout/flat_question';
 import { FlatTextbox } from '../src/flat_layout/flat_textbox';
 import { FlatCheckbox } from '../src/flat_layout/flat_checkbox';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { TitleBrick } from '../src/pdf_render/pdf_title';
-import { TextFieldBrick } from '../src/pdf_render/pdf_textfield';
+import { DescriptionBrick } from '../src/pdf_render/pdf_description';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
+import { TextBrick } from '../src/pdf_render/pdf_text';
 let __dummy_tx = new FlatTextbox(null, null);
 let __dummy_cb = new FlatCheckbox(null, null);
 
 function calcTitleTop(leftTopPoint: IPoint, controller: DocController,
     titleQuestion: Question, compositeFlat: IPdfBrick, isDesc: boolean = false): IPoint {
-    let assumeTitle: IRect = SurveyHelper.createTextRect(
-        leftTopPoint, controller,
-        SurveyHelper.getTitleText(titleQuestion));
+    let assumeTitle: IRect = SurveyHelper.createTextFlat(
+        leftTopPoint, null, controller,
+        SurveyHelper.getTitleText(titleQuestion), TitleBrick);
     let assumeTextbox: IRect = SurveyHelper.createTextFieldRect(
         SurveyHelper.createPoint(assumeTitle), controller);
     if (isDesc) {
-        let assumeDesc: IRect = SurveyHelper.createDescRect(
-            SurveyHelper.createPoint(assumeTitle), controller,
-            SurveyHelper.getLocString(titleQuestion.locDescription));
+        let assumeDesc: IRect = SurveyHelper.createDescFlat(
+            SurveyHelper.createPoint(assumeTitle), null,
+            controller, SurveyHelper.getLocString(
+                titleQuestion.locDescription), DescriptionBrick);
         assumeTextbox = SurveyHelper.createTextFieldRect(
             SurveyHelper.createPoint(assumeDesc), controller);
-        TestHelper.equalRect(expect, compositeFlat, SurveyHelper.mergeRects(assumeTitle, assumeDesc, assumeTextbox));
+        TestHelper.equalRect(expect, compositeFlat, 
+            SurveyHelper.mergeRects(assumeTitle, assumeDesc, assumeTextbox));
     }
     else {
-        TestHelper.equalRect(expect, compositeFlat, SurveyHelper.mergeRects(assumeTitle, assumeTextbox));
+        TestHelper.equalRect(expect, compositeFlat,
+            SurveyHelper.mergeRects(assumeTitle, assumeTextbox));
     }
     return SurveyHelper.createPoint(assumeTextbox);
 }
@@ -42,13 +45,14 @@ function calcTitleBottom(controller: DocController, titleQuestion: Question,
     let assumeTextbox: IRect = SurveyHelper.createTextFieldRect(
         controller.leftTopPoint, controller);
     TestHelper.equalRect(expect, textboxFlat, assumeTextbox);
-    let assumeTitle: IRect = SurveyHelper.createTextRect(
-        SurveyHelper.createPoint(assumeTextbox), controller,
-        SurveyHelper.getTitleText(titleQuestion));
+    let assumeTitle: IRect = SurveyHelper.createTextFlat(
+            SurveyHelper.createPoint(assumeTextbox), null, controller,
+            SurveyHelper.getTitleText(titleQuestion), TitleBrick);
     if (isDesc) {
-        let assumeDesc: IRect = SurveyHelper.createDescRect(
-            SurveyHelper.createPoint(assumeTitle), controller,
-            SurveyHelper.getLocString(titleQuestion.locDescription));
+        let assumeDesc: IRect = SurveyHelper.createDescFlat(
+            SurveyHelper.createPoint(assumeTitle), null,
+            controller, SurveyHelper.getLocString(
+                titleQuestion.locDescription), DescriptionBrick);
         TestHelper.equalRect(expect, compositeFlat, SurveyHelper.mergeRects(assumeTitle, assumeDesc));
     } else {
         TestHelper.equalRect(expect, compositeFlat, assumeTitle);
@@ -56,15 +60,16 @@ function calcTitleBottom(controller: DocController, titleQuestion: Question,
 }
 function calcTitleLeft(controller: DocController, titleQuestion: Question,
     compositeFlat: IPdfBrick, textboxFlat: IPdfBrick, isDesc: boolean = false) {
-    let assumeTitle: IRect = SurveyHelper.createTextRect(
-        controller.leftTopPoint, controller,
-        SurveyHelper.getTitleText(titleQuestion));
+    let assumeTitle: IRect = SurveyHelper.createTextFlat(
+        controller.leftTopPoint, null, controller,
+        SurveyHelper.getTitleText(titleQuestion), TitleBrick);
     let assumeTextbox: IRect = SurveyHelper.createTextFieldRect(
         SurveyHelper.createPoint(assumeTitle, false, true), controller);
     if (isDesc) {
-        let assumeDesc: IRect = SurveyHelper.createDescRect(
-            SurveyHelper.createPoint(assumeTitle), controller,
-            SurveyHelper.getLocString(titleQuestion.locDescription));
+        let assumeDesc: IRect = SurveyHelper.createDescFlat(
+            SurveyHelper.createPoint(assumeTitle), null,
+            controller, SurveyHelper.getLocString(
+                titleQuestion.locDescription), DescriptionBrick);
         TestHelper.equalRect(expect, compositeFlat, SurveyHelper.mergeRects(assumeTitle, assumeDesc));
         assumeTextbox.xLeft = Math.max(assumeTextbox.xLeft, assumeDesc.xRight);
     }
@@ -77,16 +82,16 @@ export function calcIndent(expect: any, leftTopPoint: IPoint, controller: DocCon
     compositeFlat: IPdfBrick, checktext: string, titleQuestion: Question = null) {
     let assumeTitle: IRect = SurveyHelper.createRect(leftTopPoint, 0, 0);
     if (titleQuestion != null) {
-        assumeTitle = SurveyHelper.createTextRect(
-            leftTopPoint, controller,
-            SurveyHelper.getTitleText(titleQuestion));
+        assumeTitle = SurveyHelper.createTextFlat(
+            leftTopPoint, null, controller,
+            SurveyHelper.getTitleText(titleQuestion), TitleBrick);
     }
     let assumeCheckbox: IRect = SurveyHelper.createRect(
         SurveyHelper.createPoint(assumeTitle),
         controller.measureText().height, controller.measureText().height);
-    let assumeChecktext: IRect = SurveyHelper.createTextRect(
+    let assumeChecktext: IRect = SurveyHelper.createTextFlat(
         SurveyHelper.createPoint(assumeCheckbox, false, true),
-        controller, checktext);
+        null, controller, checktext, TextBrick);
     TestHelper.equalRect(expect, compositeFlat, SurveyHelper.mergeRects(assumeTitle, assumeCheckbox, assumeChecktext));
     return SurveyHelper.createPoint(assumeCheckbox);
 }
@@ -187,8 +192,9 @@ function commmentPointTests(titleLocation: string, isChoices: boolean) {
                 if (isChoices) {
                     let height: number = docController.measureText().height;
                     let checkboxItemRect: IRect = SurveyHelper.createRect(TestHelper.defaultPoint, height, height);
-                    let checkboxTextRect = SurveyHelper.createTextRect(SurveyHelper.createPoint(checkboxItemRect, false, true),
-                        docController, (<any>json.questions[0]).choices[0]);
+                    let checkboxTextRect = SurveyHelper.createTextFlat(SurveyHelper.createPoint(
+                        checkboxItemRect, false, true), null, docController,
+                        (<any>json.questions[0]).choices[0], TextBrick);
                     assumePoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(checkboxItemRect, checkboxTextRect));
                     resultPoint = resultRects[1];
                 }
@@ -201,18 +207,21 @@ function commmentPointTests(titleLocation: string, isChoices: boolean) {
             test('comment point, title location:' + titleLocation + ' with choice: ' + isChoices, () => {
                 let assumePoint: IPoint;
                 if (titleLocation == "top") {
-                    assumePoint = SurveyHelper.createPoint(SurveyHelper.createTextRect(TestHelper.defaultPoint, docController,
-                        SurveyHelper.getTitleText(<Question>survey.getAllQuestions()[0])));
+                    assumePoint = SurveyHelper.createPoint(SurveyHelper.createTextFlat(
+                        TestHelper.defaultPoint, null, docController,
+                        SurveyHelper.getTitleText(<Question>survey.getAllQuestions()[0]), TextBrick));
                 } else {
-                    assumePoint = SurveyHelper.createPoint(SurveyHelper.createTextRect(TestHelper.defaultPoint, docController,
-                        SurveyHelper.getTitleText(<Question>survey.getAllQuestions()[0])), false, true);
+                    assumePoint = SurveyHelper.createPoint(SurveyHelper.createTextFlat(
+                        TestHelper.defaultPoint, null, docController, SurveyHelper.getTitleText(
+                            <Question>survey.getAllQuestions()[0]), TextBrick), false, true);
                 }
                 let resultPoint: IPoint = resultRects[1];
                 if (isChoices) {
                     let height: number = docController.measureText().height;
                     let checkboxItemRect: IRect = SurveyHelper.createRect(assumePoint, height, height);
-                    let checkboxTextRect = SurveyHelper.createTextRect(SurveyHelper.createPoint(checkboxItemRect, false, true),
-                        docController, (<any>json.questions[0]).choices[0]);
+                    let checkboxTextRect = SurveyHelper.createTextFlat(
+                        SurveyHelper.createPoint(checkboxItemRect, false, true),
+                        null, docController, (<any>json.questions[0]).choices[0], TextBrick);
                     assumePoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(checkboxItemRect, checkboxTextRect));
                     resultPoint = resultRects[2];
                 }
@@ -509,7 +518,8 @@ test('not visible question and visible question', () => {
     survey.controller.fontStyle = 'bold';
     let text: string = SurveyHelper.getTitleText(<Question>survey.getAllQuestions()[1]);
     let assumeRect = [];
-    assumeRect[0] = SurveyHelper.createTextRect(TestHelper.defaultPoint, survey.controller, text);
+    assumeRect[0] = SurveyHelper.createTextFlat(TestHelper.defaultPoint, null,
+        survey.controller, text, TextBrick);
     survey.controller.fontStyle = 'normal'
     TestHelper.equalRects(expect, rects, assumeRect)
 });

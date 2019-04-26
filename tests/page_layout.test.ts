@@ -7,12 +7,15 @@ import { PagePacker } from '../src/page_layout/page_packer';
 import { PdfSurvey } from '../src/survey';
 import { IPoint, IRect, IDocOptions, DocController } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
+import { FlatTextbox } from '../src/flat_layout/flat_textbox';
 import { FlatCheckbox } from '../src/flat_layout/flat_checkbox';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { TitleBrick } from '../src/pdf_render/pdf_title';
 import { TextFieldBrick } from '../src/pdf_render/pdf_textfield';
 import { TestHelper } from '../src/helper_test';
 import { SurveyHelper } from '../src/helper_survey';
+import { TextBrick } from '../src/pdf_render/pdf_text';
+let __dummy_tx = new FlatTextbox(null, null);
 let __dummy_cb = new FlatCheckbox(null, null);
 
 test('Pack one flat', () => {
@@ -50,9 +53,8 @@ test('Long checkbox with indent', () => {
         ]
     };
     let options: IDocOptions = TestHelper.defaultOptions;
-    let controller: DocController = new DocController(options);
-    options.paperHeight = options.margins.marginTop +
-        controller.measureText().height * 3 + options.margins.marginBot;
+    options.paperHeight = options.margins.marginTop + (new DocController(options)).
+        measureText().height * 3 + options.margins.marginBot;
     let survey: PdfSurvey = new PdfSurvey(json, options);
     let flats: IPdfBrick[] = FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(5);
@@ -101,7 +103,7 @@ test('Pack near flats', () => {
         { xLeft: 10, xRight: 20, yTop: 10, yBot: 20 },
         { xLeft: 20, xRight: 30, yTop: 10, yBot: 20 },
         { xLeft: 10, xRight: 20, yTop: 20, yBot: 30 },
-        { xLeft: 20, xRight: 30, yTop: 20, yBot: 30 },
+        { xLeft: 20, xRight: 30, yTop: 20, yBot: 30 }
     ];
     let packs: IPdfBrick[][] = PagePacker.pack(TestHelper.wrapRects(flats),
         new DocController(TestHelper.defaultOptions));
@@ -133,4 +135,56 @@ test('Pack near flats new page', () => {
             { xLeft: 10, xRight: 20, yTop: 10, yBot: 20 });
         TestHelper.equalRect(expect, packs[1][1],
             { xLeft: 20, xRight: 30, yTop: 10, yBot: 20 });
+});
+test('Unfold compose brick', () => {
+    let json = {
+        questions: [
+            {
+                type: 'text',
+                name: 'textbox',
+                title: 'I am alone'
+            }
+        ]
+    };
+    let options: IDocOptions = TestHelper.defaultOptions;
+    options.paperHeight = options.margins.marginTop + (new DocController(options)).
+        measureText().height + options.margins.marginBot;
+    let survey: PdfSurvey = new PdfSurvey(json, options);
+    let flats: IPdfBrick[] = FlatSurvey.generateFlats(survey);
+    expect(flats.length).toBe(1);
+    let packs: IPdfBrick[][] = PagePacker.pack(flats, survey.controller);
+    expect(packs.length).toBe(2);
+    expect(packs[0].length).toBe(1);
+    expect(packs[1].length).toBe(1);
+    TestHelper.equalRect(expect, packs[0][0], SurveyHelper.createTextFlat(
+        survey.controller.leftTopPoint, null, survey.controller,
+        SurveyHelper.getTitleText(<Question>survey.getAllQuestions()[0]), TextBrick));
+    TestHelper.equalRect(expect, packs[1][0],
+        SurveyHelper.createTextFieldRect(survey.controller.leftTopPoint, survey.controller));
+});
+test('Pack to little page', () => {
+    let json = {
+        questions: [
+            {
+                type: 'text',
+                name: 'textbox',
+                title: 'I am so big'
+            }
+        ]
+    };
+    let options: IDocOptions = TestHelper.defaultOptions;
+    options.paperHeight = options.margins.marginTop + (new DocController(options)).
+        measureText().height / 2 + options.margins.marginBot;
+    let survey: PdfSurvey = new PdfSurvey(json, options);
+    let flats: IPdfBrick[] = FlatSurvey.generateFlats(survey);
+    expect(flats.length).toBe(1);
+    let packs: IPdfBrick[][] = PagePacker.pack(flats, survey.controller);
+    expect(packs.length).toBe(2);
+    expect(packs[0].length).toBe(1);
+    expect(packs[1].length).toBe(1);
+    TestHelper.equalRect(expect, packs[0][0], SurveyHelper.createTextFlat(
+        survey.controller.leftTopPoint, null, survey.controller,
+        SurveyHelper.getTitleText(<Question>survey.getAllQuestions()[0]), TextBrick));
+    TestHelper.equalRect(expect, packs[1][0],
+        SurveyHelper.createTextFieldRect(survey.controller.leftTopPoint, survey.controller));
 });

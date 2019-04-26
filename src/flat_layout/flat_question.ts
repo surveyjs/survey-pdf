@@ -5,8 +5,8 @@ import { TextBrick } from '../pdf_render/pdf_text';
 import { TitleBrick } from '../pdf_render/pdf_title';
 import { DescriptionBrick } from '../pdf_render/pdf_description';
 import { CommentBrick } from '../pdf_render/pdf_comment';
-import { SurveyHelper } from '../helper_survey';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
+import { SurveyHelper } from '../helper_survey';
 
 export interface IFlatQuestion {
     generateFlatsContent(point: IPoint): IPdfBrick[];
@@ -21,22 +21,24 @@ export class FlatQuestion implements IFlatQuestion {
     private generateFlatTitle(point: IPoint): IPdfBrick {
         this.controller.fontStyle = 'bold';
         let text: string = SurveyHelper.getTitleText(this.question);
-        let rect: IRect = SurveyHelper.createTextRect(point, this.controller, text);
+        let composite: IPdfBrick = SurveyHelper.createTextFlat
+            (point, this.question, this.controller, text, TitleBrick);
         this.controller.fontStyle = 'normal';
-        return new TitleBrick(this.question, this.controller, rect, text);
+        return composite
     }
     private generateFlatDescription(point: IPoint): IPdfBrick {
-        if (SurveyHelper.getLocString(this.question.locDescription) == '') return null;
-        let rect: IRect = SurveyHelper.createDescRect(point, this.controller,
-            SurveyHelper.getLocString(this.question.locDescription));
-        return new DescriptionBrick(this.question, this.controller, rect, this.question.description);
+        let text: string = SurveyHelper.getLocString(this.question.locDescription);
+        if (text == '') return null;
+        return SurveyHelper.createDescFlat(point, this.question,
+            this.controller, text, DescriptionBrick);
     }
     private generateFlatsComment(point: IPoint): IPdfBrick {
-        let commentText: string = SurveyHelper.getLocString(this.question.locCommentText);
-        let rectText: IRect = SurveyHelper.createTextRect(point, this.controller, commentText);
+        let text: string = SurveyHelper.getLocString(this.question.locCommentText);
+        let compositeText: IPdfBrick = SurveyHelper.createTextFlat(
+            point, this.question, this.controller, text, TextBrick);
         let rectTextField: IRect = SurveyHelper.createTextFieldRect(
-            SurveyHelper.createPoint(rectText), this.controller, 2);
-        return new CompositeBrick(new TextBrick(this.question, this.controller, rectText, commentText),
+            SurveyHelper.createPoint(compositeText), this.controller, 2);
+        return new CompositeBrick(compositeText,
             new CommentBrick(this.question, this.controller, rectTextField, false));
     }
     generateFlatsContent(point: IPoint): IPdfBrick[] {

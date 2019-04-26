@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es5",
     "module": "es2015",
-    "lib": ["DOM", "ES5", "ES2015.Promise", "ES6"],
+    "lib": ["dom", "es5", "es2015.promise", "es6"],
     "sourceMap": true,
     "noImplicitAny": true,
     "importHelpers": true,

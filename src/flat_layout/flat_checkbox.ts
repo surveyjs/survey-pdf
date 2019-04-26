@@ -15,14 +15,14 @@ export class FlatCheckbox extends FlatQuestion {
         super(question, controller);
         this.question = <QuestionCheckboxModel>question;
     }
-    private generateFlatsItem(point: IPoint, itemValue: ItemValue, index: number): IPdfBrick {
-        let compositeFlat: CompositeBrick = new CompositeBrick();
+    private generateFlatItem(point: IPoint, itemValue: ItemValue, index: number): IPdfBrick {
         let height: number = this.controller.measureText().height;
         let itemRect: IRect = SurveyHelper.createRect(point, height, height);
-        compositeFlat.addBrick(new CheckItemBrick(this.question, this.controller, itemRect, itemValue, index));
+        let compositeFlat: CompositeBrick = new CompositeBrick(new CheckItemBrick(
+            this.question, this.controller, itemRect, itemValue, index));
         let textPoint: IPoint = SurveyHelper.createPoint(itemRect, false, true);
-        let textRect: IRect = SurveyHelper.createTextRect(textPoint, this.controller, itemValue.text);
-        compositeFlat.addBrick(new TextBrick(this.question, this.controller, textRect, itemValue.text));
+        compositeFlat.addBrick(SurveyHelper.createTextFlat(
+            textPoint, this.question, this.controller, itemValue.text, TextBrick));
         if (itemValue.value === this.question.otherItem.value) {
             let otherPoint: IPoint = SurveyHelper.createPoint(itemRect);
             let otherRect: IRect = SurveyHelper.createTextFieldRect(otherPoint, this.controller, 2);
@@ -34,7 +34,7 @@ export class FlatCheckbox extends FlatQuestion {
         let currPoint: IPoint = { xLeft: point.xLeft, yTop: point.yTop };
         let flats: IPdfBrick[] = new Array();
         this.question.visibleChoices.forEach((itemValue: ItemValue, index: number) => {
-            let itemFlat: IPdfBrick = this.generateFlatsItem(currPoint, itemValue, index);
+            let itemFlat: IPdfBrick = this.generateFlatItem(currPoint, itemValue, index);
             currPoint.yTop = itemFlat.yBot;
             flats.push(itemFlat);
         });
