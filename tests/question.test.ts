@@ -8,6 +8,8 @@ import { FlatTextbox } from '../src/flat_layout/flat_textbox';
 import { FlatCheckbox } from '../src/flat_layout/flat_checkbox';
 import { TestHelper } from '../src/helper_test';
 import { SurveyHelper } from '../src/helper_survey';
+import { FlatSurvey } from '../src/flat_layout/flat_survey';
+import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 let __dummy_tx = new FlatTextbox(null, null);
 let __dummy_cb = new FlatCheckbox(null, null);
 
@@ -99,7 +101,8 @@ test('Check empty question', () => {
     ]
   };
   let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
-  survey.render();
+  let flats: IPdfBrick[] = FlatSurvey.generateFlats(survey);
+  expect(flats.length).toBe(0);
 });
 
 test('Check descrition with hidden title', () => {

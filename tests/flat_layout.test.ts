@@ -306,7 +306,6 @@ test('Calc textbox boundaries required', () => {
     calcTitleTop(survey.controller.leftTopPoint, survey.controller,
         <Question>survey.getAllQuestions()[0], flats[0]);
 });
-//to review
 test('Check that checkbox has square boundaries', () => {
     let json = {
         questions: [
@@ -329,7 +328,6 @@ test('Check that checkbox has square boundaries', () => {
         controller.measureText().height, controller.measureText().height);
     let acroFormFields = survey.controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields;
     let internalRect = acroFormFields[0].Rect;
-
     TestHelper.equalRect(expect, SurveyHelper.createRect(
         { xLeft: internalRect[0], yTop: internalRect[1] },
         internalRect[2], internalRect[3]), assumeCheckbox);

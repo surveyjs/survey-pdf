@@ -43,7 +43,7 @@ var json = {
       title: "Rarrararar:",
       isRequired: true,
       titleLocation: "left",
-      description: "Left description",
+      description: "Left descriptionnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn",
       inputType: "password"
     },
     {
@@ -71,7 +71,7 @@ var json = {
       titleLocation: "top"
     },
     {
-      type: "checkbox",
+      type: "radiogroup",
       name: "car4",
       title: "What LONG car are you driving?",
       isRequired: true,
@@ -185,14 +185,15 @@ var json = {
   ]
 };
 
-
 let options = {
-  fontSize: 30, xScale: 0.22, yScale: 0.36,
-  margins: {
-    marginLeft: 10,
-    marginRight: 10,
-    marginTop: 10,
-    marginBot: 10 }
+	fontSize: 30, xScale: 0.22, yScale: 0.36,
+	margins:
+	{
+		marginLeft: 10,
+		marginRight: 10,
+		marginTop: 10,
+		marginBot: 10
+	}
 };
 
 var survey = new SurveyPDF.Survey(json, options);

@@ -57,45 +57,29 @@ test('Test duplicate value other', () => {
 	expect(internalOtherCheckBox.FT).toBe('/Btn');
 	expect(internalOtherTextField.FT).toBe('/Tx');
 });
-test('Test all items disabled', () => {
+test('Test all items disabled or enabled', () => {
 	let json = {
 		questions: [
 			{
 				name: 'checkbox',
 				type: 'checkbox',
 				choices: ['item1', 'item2', 'item3'],
-				readOnly: true
 			}
 		]
 	};
-	let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
-	survey.render();
-	survey.controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields.forEach(
-		(acroCheckBox: any) => {
-			expect(acroCheckBox.readOnly).toBe(true);
-		}
-	);
-});
-test('Test all items enabled', () => {
-	let json = {
-		questions: [
-			{
-				name: 'checkbox',
-				type: 'checkbox',
-				choices: ['item1', 'item2', 'item3'],
-				readOnly: false
-			}
-		]
-	};
-	let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
-	survey.render();
-	survey.controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields.forEach(
-		(acroCheckBox: any) => {
-			expect(acroCheckBox.readOnly).toBe(false);
-		}
-	);
-});
+	[false, true].forEach((readOnly) => {
+		(<any>json).questions[0].readOnly = readOnly;
+		let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
+		survey.render();
+		survey.controller.doc.internal.acroformPlugin.
+			acroFormDictionaryRoot.Fields.forEach(
+				(acroCheckBox: any) => {
+					expect(acroCheckBox.readOnly).toBe(readOnly);
+				}
+			);
+	})
 
+});
 test('Test enable one item', () => {
 	let json = {
 		questions: [
@@ -115,6 +99,26 @@ test('Test enable one item', () => {
 			if (index === INDEX_OF_ENABLED_ITEM)
 				expect(acroCheckBox.readOnly).toBe(false);
 			else expect(acroCheckBox.readOnly).toBe(true);
+		}
+	);
+});
+
+test('Test two equal values checkbox', () => {
+	let json = {
+		questions: [
+			{
+				name: 'checkbox',
+				type: 'checkbox',
+				choices: ['item', 'item'],
+				choicesEnableIf: '{item} == item'
+			}
+		]
+	};
+	let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
+	survey.render();
+	survey.controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields.forEach(
+		(acroCheckBox: any, index: number) => {
+			expect(acroCheckBox.readOnly).toBe(false);
 		}
 	);
 });

@@ -6,13 +6,13 @@ import { SurveyHelper } from '../helper_survey';
 export class CheckItemBrick extends PdfBrick {
     protected question: QuestionCheckboxModel;
     constructor(question: IQuestion, controller: DocController,
-        rect: IRect, protected itemValue: ItemValue, protected index: number) {
+        rect: IRect, protected itemValue: ItemValue) {
         super(question, controller, rect);
         this.question = <QuestionCheckboxModel>question;
     }
     render(): void {
         let checkBox = new (<any>this.controller.doc.AcroFormCheckBox)();
-        checkBox.fieldName = this.question.id + this.index;
+        checkBox.fieldName = this.question.id + 'value' + this.itemValue.value;
         checkBox.Rect = SurveyHelper.createAcroformRect(this);
         checkBox.readOnly = this.question.isReadOnly || !this.itemValue.isEnabled;
         checkBox.AS = this.question.isItemSelected(this.itemValue) ? '/On' : '/Off';
