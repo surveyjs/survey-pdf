@@ -73,30 +73,38 @@ test('Long checkbox with indent', () => {
         leftTopPoint.yTop += survey.controller.measureText().height;
     }
 });
-test.skip('Check two textbox flats sort order', () => {
+test('Check two textbox flats sort order', () => {
     let json = {
         questions: [
             {
-                type: 'text',
-                name: 'textbox',
-                title: 'Sort'
+                type: 'checkbox',
+                name: 'box',
+                title: 'Sort',
+                choices: [
+                    'This',
+                    'Very'
+                ]
             },
             {
                 type: 'text',
                 name: 'textbox',
-                title: 'This',
+                title: 'Please',
                 startWithNewLine: false
             }
         ]
     };
     let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
     let flats: IPdfBrick[] = FlatSurvey.generateFlats(survey);
+    expect(flats.length).toBe(3);
+    let composite1: IPdfBrick = flats[0];
+    let composite2: IPdfBrick = flats[1];
+    let composite3: IPdfBrick = flats[2];
     let packs: IPdfBrick[][] = PagePacker.pack(flats, survey.controller);
-    expect(flats.length).toBe(4);
-    expect(packs[0][0] instanceof TitleBrick).toBe(true);
-    expect(packs[0][1] instanceof TitleBrick).toBe(true);
-    expect(packs[0][2] instanceof TextFieldBrick).toBe(true);
-    expect(packs[0][3] instanceof TextFieldBrick).toBe(true);
+    expect(packs.length).toBe(1);
+    expect(packs[0].length).toBe(3);
+    expect(packs[0][0] === composite1).toBe(true);
+    expect(packs[0][1] === composite3).toBe(true);
+    expect(packs[0][2] === composite2).toBe(true);
 });
 test('Pack near flats', () => {
     let flats: IRect[] = [
