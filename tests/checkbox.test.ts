@@ -31,9 +31,6 @@ test('Test has other checkbox', () => {
 	let internalOtherCheckBox: any = internal.acroformPlugin.acroFormDictionaryRoot.Fields[0];
 	expect(internalOtherCheckBox.FT).toBe('/Btn');
 });
-
-test.skip('Test has other split', () => { });
-
 test('Test duplicate value other', () => {
 	let json = {
 		questions: [
@@ -57,7 +54,10 @@ test('Test duplicate value other', () => {
 	expect(internalOtherCheckBox.FT).toBe('/Btn');
 	expect(internalOtherTextField.FT).toBe('/Tx');
 });
-test('Test all items disabled or enabled', () => {
+
+test.skip('Check has other split', () => { });
+
+test('Check all items disabled or enabled', () => {
 	let json = {
 		questions: [
 			{
