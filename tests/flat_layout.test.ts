@@ -548,10 +548,34 @@ test('Calc comment boundaries title hidden', () => {
     let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
+
     let assumeComment: IRect = SurveyHelper.createTextFieldRect(
         survey.controller.leftTopPoint, survey.controller,
         (<QuestionCommentModel>survey.getAllQuestions()[0]).rows);
     TestHelper.equalRect(expect, flats[0][0], assumeComment);
+});
+test('Calc question comment', () => {
+    let json = {
+        questions: [
+            {
+                commentText: 'test',
+                type: 'checkbox',
+                hasComment: true,
+                name: 'comment',
+                title: 'No comments',
+                titleLocation: 'hidden'
+            }
+        ]
+    };
+    let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
+    expect(flats.length).toBe(1);
+    expect(flats[0].length).toBe(1);
+    let assumeText: IRect = SurveyHelper.createTextFlat(survey.controller.leftTopPoint, survey.getAllQuestions()[0], survey.controller, json.questions[0].commentText, TextBrick);
+    let assumeTextField: IRect = SurveyHelper.createTextFieldRect(
+        SurveyHelper.createPoint(assumeText), survey.controller, 2);
+    TestHelper.equalRect(expect, flats[0][0].unfold()[0].unfold()[0], assumeText);
+    TestHelper.equalRect(expect, flats[0][0].unfold()[1], assumeTextField);
 });
 test('Check two pages start point', () => {
     let json = {

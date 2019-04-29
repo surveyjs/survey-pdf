@@ -55,8 +55,6 @@ test('Test duplicate value other', () => {
 	expect(internalOtherTextField.FT).toBe('/Tx');
 });
 
-test.skip('Check has other split', () => { });
-
 test('Check all items disabled or enabled', () => {
 	let json = {
 		questions: [
