@@ -1,6 +1,9 @@
 import { LocalizableString, Question, IQuestion } from 'survey-core';
 import { IPoint, IRect, DocController } from './doc_controller';
 import { IPdfBrick } from './pdf_render/pdf_brick';
+import { TitleBrick } from './pdf_render/pdf_title';
+import { TitlePanelBrick } from './pdf_render/pdf_titlepanel';
+import { DescriptionBrick } from './pdf_render/pdf_description';
 import { CompositeBrick } from './pdf_render/pdf_composite';
 
 export interface IText {
@@ -9,6 +12,7 @@ export interface IText {
 }
 export class SurveyHelper {
     static EPSILON: number = 2.2204460492503130808472633361816e-15;
+    static TITLE_PANEL_FONT_SIZE_SCALE_MAGIC: number = 1.3;
     static DESCRIPTION_FONT_SIZE_SCALE_MAGIC: number = 2.0 / 3.0;
     static mergeRects(...rects: IRect[]): IRect {
         let resultRect: IRect = {
@@ -84,12 +88,26 @@ export class SurveyHelper {
         });
         return composite;
     }
-    static createDescFlat<T extends IPdfBrick>(point: IPoint, question: IQuestion,
-        controller: DocController, text: string, fabric: new (question: IQuestion,
-            controller: DocController, rect: IRect, text: string) => T): IPdfBrick {
+    static createTitleFlat(point: IPoint, question: IQuestion, controller: DocController, text: string): IPdfBrick {
+        controller.fontStyle = 'bold';
+        let composite: IPdfBrick = SurveyHelper.createTextFlat(point, question, controller, text, TitleBrick);
+        controller.fontStyle = 'normal';
+        return composite;
+    }
+    static createTitlePanelFlat(point: IPoint, question: IQuestion,
+        controller: DocController, text: string): IPdfBrick {
+        let oldFontSize: number = controller.fontSize;
+        controller.fontSize = oldFontSize * SurveyHelper.TITLE_PANEL_FONT_SIZE_SCALE_MAGIC;
+        controller.fontStyle = 'bold';
+        let composite: IPdfBrick = SurveyHelper.createTextFlat(point, question, controller, text, TitlePanelBrick);
+        controller.fontStyle = 'normal';
+        controller.fontSize = oldFontSize;
+        return composite;
+    }
+    static createDescFlat(point: IPoint, question: IQuestion, controller: DocController, text: string): IPdfBrick {
         let oldFontSize: number = controller.fontSize;
         controller.fontSize = oldFontSize * SurveyHelper.DESCRIPTION_FONT_SIZE_SCALE_MAGIC;
-        let composite: IPdfBrick = SurveyHelper.createTextFlat(point, question, controller, text, fabric);
+        let composite: IPdfBrick = SurveyHelper.createTextFlat(point, question, controller, text, DescriptionBrick);
         controller.fontSize = oldFontSize;
         return composite;
     }
