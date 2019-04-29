@@ -101,10 +101,25 @@ test('Check empty question', () => {
     ]
   };
   let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
-  let flats: IPdfBrick[] = FlatSurvey.generateFlats(survey);
-  expect(flats.length).toBe(0);
+  let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
+  expect(flats.length).toBe(1);
+  expect(flats[0].length).toBe(0);
 });
-
+test('Not visible question', () => {
+    let json = {
+        questions: [
+            {
+                type: 'checkbox',
+                name: 'box',
+                visible: false
+            }
+        ]
+    };
+    let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
+    expect(flats.length).toBe(1);
+    expect(typeof flats[0]).toBe('undefined');
+});
 test('Check descrition with hidden title', () => {
   let json = {
     questions: [
@@ -112,7 +127,7 @@ test('Check descrition with hidden title', () => {
         titleLocation: 'top',
         name: 'checkbox',
         type: 'checkbox',
-        description: "test description",
+        description: 'test description',
       }
     ]
   };
@@ -123,4 +138,33 @@ test('Check descrition with hidden title', () => {
   let regex = /\((.*)\)/;
   let content = internalContent.match(regex)[1];
   expect(content).toBe(json.questions[0].description);
+});
+test('Two pages', () => {
+    let json = {
+		pages: [
+			{
+				name: 'First Page',
+				elements: [
+					{
+						type: 'text',
+						name: 'Enter me'
+					}
+				]
+			},
+			{
+				name: 'Second Page',
+				elements: [
+					{
+						type: 'text',
+						name: 'Not, me'
+					}
+				]
+			}
+		]
+	};
+    let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
+    expect(flats.length).toBe(2);
+    expect(flats[0].length).toBe(1);
+    expect(flats[1].length).toBe(1);
 });
