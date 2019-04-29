@@ -17,6 +17,7 @@ import { SurveyHelper } from '../src/helper_survey';
 import { TextBrick } from '../src/pdf_render/pdf_text';
 let __dummy_tx = new FlatTextbox(null, null);
 let __dummy_cb = new FlatCheckbox(null, null);
+SurveyHelper.setFontSize(TestHelper.defaultOptions.fontSize);
 
 test('Pack one flat', () => {
     let flats: IRect[] = [TestHelper.defaultRect];
@@ -53,8 +54,8 @@ test('Long checkbox with indent', () => {
         ]
     };
     let options: IDocOptions = TestHelper.defaultOptions;
-    options.paperHeight = options.margins.marginTop + (new DocController(options)).
-        measureText().height * 3 + options.margins.marginBot;
+    options.paperHeight = options.margins.marginTop + SurveyHelper.
+        measureText().height * 3.5 + options.margins.marginBot;
     let survey: PdfSurvey = new PdfSurvey(json, options);
     let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
@@ -64,14 +65,14 @@ test('Long checkbox with indent', () => {
     expect(packs[0].length).toBe(2);
     expect(packs[1].length).toBe(3);
     let leftTopPoint: IPoint = survey.controller.leftTopPoint;
-    leftTopPoint.xLeft += survey.controller.measureText(json.questions[0].indent).width;
+    leftTopPoint.xLeft += SurveyHelper.measureText(json.questions[0].indent).width;
     TestHelper.equalPoint(expect, packs[0][0], leftTopPoint);
-    leftTopPoint.yTop += survey.controller.measureText().height * 2;
+    leftTopPoint.yTop += SurveyHelper.measureText().height * 2;
     TestHelper.equalPoint(expect, packs[0][1], leftTopPoint);
     leftTopPoint.yTop = survey.controller.leftTopPoint.yTop;
     for (let i = 0; i < 3; i++) {
         TestHelper.equalPoint(expect, packs[1][i], leftTopPoint);
-        leftTopPoint.yTop += survey.controller.measureText().height;
+        leftTopPoint.yTop += SurveyHelper.measureText().height;
     }
 });
 test('Check two textbox flats sort order', () => {
@@ -137,14 +138,14 @@ test('Pack near flats new page', () => {
     options.paperHeight = flats[0].yBot + options.margins.marginBot;
     let packs: IPdfBrick[][] = PagePacker.pack(TestHelper.wrapRectsPage(flats),
         new DocController(options));
-        TestHelper.equalRect(expect, packs[0][0],
-            { xLeft: 10, xRight: 20, yTop: 10, yBot: 20 });
-        TestHelper.equalRect(expect, packs[0][1],
-            { xLeft: 20, xRight: 30, yTop: 10, yBot: 20 });
-        TestHelper.equalRect(expect, packs[1][0],
-            { xLeft: 10, xRight: 20, yTop: 10, yBot: 20 });
-        TestHelper.equalRect(expect, packs[1][1],
-            { xLeft: 20, xRight: 30, yTop: 10, yBot: 20 });
+    TestHelper.equalRect(expect, packs[0][0],
+        { xLeft: 10, xRight: 20, yTop: 10, yBot: 20 });
+    TestHelper.equalRect(expect, packs[0][1],
+        { xLeft: 20, xRight: 30, yTop: 10, yBot: 20 });
+    TestHelper.equalRect(expect, packs[1][0],
+        { xLeft: 10, xRight: 20, yTop: 10, yBot: 20 });
+    TestHelper.equalRect(expect, packs[1][1],
+        { xLeft: 20, xRight: 30, yTop: 10, yBot: 20 });
 });
 test('Unfold compose brick', () => {
     let json = {
@@ -157,7 +158,7 @@ test('Unfold compose brick', () => {
         ]
     };
     let options: IDocOptions = TestHelper.defaultOptions;
-    options.paperHeight = options.margins.marginTop + (new DocController(options)).
+    options.paperHeight = options.margins.marginTop + SurveyHelper.
         measureText().height + options.margins.marginBot;
     let survey: PdfSurvey = new PdfSurvey(json, options);
     let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
@@ -166,9 +167,11 @@ test('Unfold compose brick', () => {
     expect(packs.length).toBe(2);
     expect(packs[0].length).toBe(1);
     expect(packs[1].length).toBe(1);
+    survey.controller.fontStyle = 'bold';
     TestHelper.equalRect(expect, packs[0][0], SurveyHelper.createTextFlat(
         survey.controller.leftTopPoint, null, survey.controller,
         SurveyHelper.getTitleText(<Question>survey.getAllQuestions()[0]), TextBrick));
+    survey.controller.fontStyle = 'normal';
     TestHelper.equalRect(expect, packs[1][0],
         SurveyHelper.createTextFieldRect(survey.controller.leftTopPoint, survey.controller));
 });
@@ -183,7 +186,7 @@ test('Pack to little page', () => {
         ]
     };
     let options: IDocOptions = TestHelper.defaultOptions;
-    options.paperHeight = options.margins.marginTop + (new DocController(options)).
+    options.paperHeight = options.margins.marginTop + SurveyHelper.
         measureText().height / 2 + options.margins.marginBot;
     let survey: PdfSurvey = new PdfSurvey(json, options);
     let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
@@ -193,9 +196,11 @@ test('Pack to little page', () => {
     expect(packs.length).toBe(2);
     expect(packs[0].length).toBe(1);
     expect(packs[1].length).toBe(1);
+    survey.controller.fontStyle = 'bold';
     TestHelper.equalRect(expect, packs[0][0], SurveyHelper.createTextFlat(
         survey.controller.leftTopPoint, null, survey.controller,
         SurveyHelper.getTitleText(<Question>survey.getAllQuestions()[0]), TextBrick));
+    survey.controller.fontStyle = 'normal';
     TestHelper.equalRect(expect, packs[1][0],
         SurveyHelper.createTextFieldRect(survey.controller.leftTopPoint, survey.controller));
 });

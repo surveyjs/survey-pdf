@@ -5,6 +5,7 @@ import { TitleBrick } from './pdf_render/pdf_title';
 import { TitlePanelBrick } from './pdf_render/pdf_titlepanel';
 import { DescriptionBrick } from './pdf_render/pdf_description';
 import { CompositeBrick } from './pdf_render/pdf_composite';
+import * as jsPDF from 'jspdf';
 
 export interface IText {
     text: string;
@@ -14,6 +15,35 @@ export class SurveyHelper {
     static EPSILON: number = 2.2204460492503130808472633361816e-15;
     static TITLE_PANEL_FONT_SIZE_SCALE_MAGIC: number = 1.3;
     static DESCRIPTION_FONT_SIZE_SCALE_MAGIC: number = 2.0 / 3.0;
+    private static _doc: any = new jsPDF();
+    public static setFontSize(fontSize: number, font?: string) {
+        this._doc.setFontSize(fontSize);
+        if (font != undefined) {
+            this._doc.setFont(font)
+        }
+    }
+    static measureText(text: number | string = 1, fontSize: number = this._doc.getFontSize(),
+        fontStyle: string = 'normal') {
+        let oldFontSize = this._doc.getFontSize();
+        this._doc.setFontSize(fontSize);
+        this._doc.setFontStyle(fontStyle);
+        let height: number = this._doc.getLineHeight() / this._doc.internal.scaleFactor
+        let width: number = 0;
+        if (typeof text === 'string') {
+            text.split('').forEach((char: string) => {
+                width += this._doc.getTextWidth(char)
+            });
+        }
+        else {
+            width = this._doc.getTextWidth(' ') * text;
+        }
+        this._doc.setFontSize(oldFontSize);
+        this._doc.setFontStyle('normal');
+        return {
+            width: width,
+            height: height
+        }
+    }
     static mergeRects(...rects: IRect[]): IRect {
         let resultRect: IRect = {
             xLeft: rects[0].xLeft,
@@ -51,9 +81,9 @@ export class SurveyHelper {
             while (word.length > 0) {
                 for (let i: number = word.length; i > 0; i--) {
                     let subword: string = word.substring(0, i);
-                    let width: number = controller.measureText(subword).width;
+                    let width: number = SurveyHelper.measureText(subword, controller.fontSize, controller.fontStyle).width;
                     if (i == 1 || point.xLeft + width <= controller.paperWidth -
-                            controller.margins.marginRight + SurveyHelper.EPSILON) {
+                        controller.margins.marginRight + SurveyHelper.EPSILON) {
                         words.push(subword);
                         word = word.substring(i);
                         break;
@@ -68,19 +98,19 @@ export class SurveyHelper {
             let lastIndex: number = texts.length - 1;
             let currText: string = texts[lastIndex].text;
             let space: string = currText != '' ? ' ' : '';
-            let width: number = controller.measureText(currText + space + word).width;
+            let width: number = SurveyHelper.measureText(currText + space + word, controller.fontSize, controller.fontStyle).width;
             if (currPoint.xLeft + width <= controller.paperWidth -
-                    controller.margins.marginRight + SurveyHelper.EPSILON) {
+                controller.margins.marginRight + SurveyHelper.EPSILON) {
                 texts[lastIndex].text += space + word;
             }
             else {
-                let { width, height } = controller.measureText(texts[lastIndex].text);
+                let { width, height } = SurveyHelper.measureText(texts[lastIndex].text, controller.fontSize, controller.fontStyle);
                 texts[lastIndex].rect = SurveyHelper.createRect(currPoint, width, height);
                 texts.push({ text: word, rect: null });
                 currPoint.yTop += height;
             }
         });
-        let { width, height } = controller.measureText(texts[texts.length - 1].text);
+        let { width, height } = SurveyHelper.measureText(texts[texts.length - 1].text, controller.fontSize, controller.fontStyle);
         texts[texts.length - 1].rect = SurveyHelper.createRect(currPoint, width, height);
         let composite: CompositeBrick = new CompositeBrick();
         texts.forEach((text: IText) => {
@@ -114,7 +144,7 @@ export class SurveyHelper {
     static createTextFieldRect(point: IPoint, controller: DocController, lines: number = 1): IRect {
         let width: number = controller.paperWidth - point.xLeft -
             controller.margins.marginRight;
-        let height: number = controller.measureText().height * lines;
+        let height: number = SurveyHelper.measureText().height * lines;
         return SurveyHelper.createRect(point, width, height);
     }
     static createAcroformRect(rect: IRect): Array<number> {

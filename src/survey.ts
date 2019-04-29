@@ -3,12 +3,14 @@ import { IDocOptions, DocController } from './doc_controller'
 import { FlatSurvey } from './flat_layout/flat_survey';
 import { PagePacker } from './page_layout/page_packer';
 import { IPdfBrick } from './pdf_render/pdf_brick';
+import { SurveyHelper } from './helper_survey';
 
 export class PdfSurvey extends SurveyModel {
     controller: DocController;
     constructor(jsonObject: any, options: IDocOptions) {
         super(jsonObject);
         this.controller = new DocController(options);
+        SurveyHelper.setFontSize(options.fontSize);
     }
     render() {
         let flats: IPdfBrick[][] = FlatSurvey.generateFlats(this);

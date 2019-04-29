@@ -43,9 +43,9 @@ export class FlatQuestion implements IFlatQuestion {
     }
     generateFlats(point: IPoint): IPdfBrick[] {
         let oldMarginLeft: number = this.controller.margins.marginLeft;
-        this.controller.margins.marginLeft += this.controller.measureText(this.question.indent).width;
+        this.controller.margins.marginLeft += SurveyHelper.measureText(this.question.indent).width;
         let indentPoint: IPoint = {
-            xLeft: point.xLeft + this.controller.measureText(this.question.indent).width,
+            xLeft: point.xLeft + SurveyHelper.measureText(this.question.indent).width,
             yTop: point.yTop
         };
         let flats: IPdfBrick[] = new Array();

@@ -53,7 +53,7 @@ export class FlatSurvey {
             currPoint.xLeft = controller.margins.marginLeft;
             if (rowFlats.length != 0) {
                 currPoint.yTop = SurveyHelper.mergeRects(...rowFlats).yBot;
-                currPoint.yTop += controller.measureText().height;
+                currPoint.yTop += SurveyHelper.measureText().height;
                 pagePanelFlats.push(...rowFlats);
             }
         });
