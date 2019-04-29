@@ -634,3 +634,32 @@ test('Check panel with title', () => {
     calcTitleTop(SurveyHelper.createPoint(panelTitleFlat), survey.controller,
         <Question>survey.getAllQuestions()[0], flats[0][1]);
 });
+test('Check panel with title and description', () => {
+    let json = {
+        elements: [
+           {
+                type: 'panel',
+                name: 'Simple Panel',
+                title: 'Panel Title',
+                description: 'Panel description',
+                elements: [
+                    {
+                        type: 'text',
+                        name: 'I am in the panel'
+                    }
+                ]
+           }
+        ]
+    };
+    let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
+    expect(flats.length).toBe(1);
+    expect(flats[0].length).toBe(2);
+    let panelTitleFlat: IPdfBrick = SurveyHelper.createTitlePanelFlat(
+        survey.controller.leftTopPoint, null, survey.controller, json.elements[0].title);
+    let panelDescFlat: IPdfBrick = SurveyHelper.createDescFlat(
+        SurveyHelper.createPoint(panelTitleFlat), null, survey.controller, json.elements[0].description);
+    TestHelper.equalRect(expect, flats[0][0], SurveyHelper.mergeRects(panelTitleFlat, panelDescFlat));
+    calcTitleTop(SurveyHelper.createPoint(SurveyHelper.mergeRects(panelTitleFlat, panelDescFlat)), survey.controller,
+        <Question>survey.getAllQuestions()[0], flats[0][1]);
+});

@@ -1,9 +1,10 @@
 import { IElement, IQuestion, PanelModelBase, PanelModel, QuestionRowModel } from 'survey-core';
 import { PdfSurvey } from '../survey';
-import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { IPoint, DocController } from "../doc_controller";
 import { FlatRepository } from './flat_repository';
 import { IFlatQuestion } from './flat_question';
+import { IPdfBrick } from '../pdf_render/pdf_brick';
+import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
 
 export class FlatSurvey {
@@ -36,8 +37,16 @@ export class FlatSurvey {
                     if (!!question.title) {
                         let panelTitleFlat: IPdfBrick = SurveyHelper.createTitlePanelFlat(
                             currPoint, null, controller, question.title);
-                        rowFlats.push(panelTitleFlat);
+                        let compositeFlat: CompositeBrick = new CompositeBrick(panelTitleFlat);
                         panelContentPoint = SurveyHelper.createPoint(panelTitleFlat);
+                        if (!!question.description) {
+                            let panelDescFlat: IPdfBrick = SurveyHelper.createDescFlat(
+                                panelContentPoint, null, controller,
+                                SurveyHelper.getLocString(question.locDescription));
+                            compositeFlat.addBrick(panelDescFlat);
+                            panelContentPoint = SurveyHelper.createPoint(panelDescFlat);
+                        }
+                        rowFlats.push(compositeFlat);
                     }
                     rowFlats.push(...this.generateFlatsPagePanel(
                         question, controller, panelContentPoint));
