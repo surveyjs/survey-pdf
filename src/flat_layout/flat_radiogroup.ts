@@ -4,7 +4,7 @@ import { IRect, DocController } from "../doc_controller";
 import { IPdfBrick } from '../pdf_render/pdf_brick'
 import { RadioItemBrick } from '../pdf_render/pdf_radioitem';
 import { FlatSelectBase } from './flat_selectbase';
-import {RadioGroupWrap} from "../RadioGroupWrap";
+import { RadioGroupWrap } from "../radiogroup_wrap";
 
 export class FlatRadiogroup extends FlatSelectBase {
     protected question: QuestionCheckboxModel;

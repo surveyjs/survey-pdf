@@ -2,7 +2,7 @@ import { IQuestion, QuestionRadiogroupModel, ItemValue } from 'survey-core';
 import { IRect, DocController } from '../doc_controller';
 import { PdfBrick } from './pdf_brick';
 import { SurveyHelper } from '../helper_survey';
-import {RadioGroupWrap} from "../RadioGroupWrap";
+import { RadioGroupWrap } from "../radiogroup_wrap";
 
 export class RadioItemBrick extends PdfBrick {
     protected question: QuestionRadiogroupModel;
@@ -13,7 +13,7 @@ export class RadioItemBrick extends PdfBrick {
         this.question = <QuestionRadiogroupModel>question;
     }
     render(): void {
-        if(this.index == 0){
+        if (this.index == 0) {
             this.radioGroupWrap.addToPdf();
         }
         let name = this.question.id + 'index' + this.index;
