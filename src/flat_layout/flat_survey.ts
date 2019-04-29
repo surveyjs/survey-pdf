@@ -15,6 +15,7 @@ export class FlatSurvey {
         if (!pagePanel.isVisible) return;
         pagePanel.onFirstRendering();
         let pagePanelFlats: IPdfBrick[] = new Array<IPdfBrick>();
+        let currPoint: IPoint = { xLeft: point.xLeft, yTop: point.yTop };
         pagePanel.rows.forEach((row: QuestionRowModel) => {
             if (!row.visible) return;
             let width: number = controller.paperWidth -
@@ -29,17 +30,30 @@ export class FlatSurvey {
                 controller.margins.marginRight = controller.paperWidth -
                     currMarginLeft - persWidth;
                 currMarginLeft = controller.paperWidth - controller.margins.marginRight;
-                let flatQuestion: IFlatQuestion =
-                    FlatRepository.getInstance().create(<IQuestion>question, controller);
-                point.xLeft = controller.margins.marginLeft;
-                rowFlats.push(...flatQuestion.generateFlats(point));
+                currPoint.xLeft = controller.margins.marginLeft;
+                if (question instanceof PanelModel) {
+                    let panelContentPoint: IPoint = { xLeft: currPoint.xLeft, yTop: currPoint.yTop };
+                    if (!!question.title) {
+                        let panelTitleFlat: IPdfBrick = SurveyHelper.createTitlePanelFlat(
+                            currPoint, null, controller, question.title);
+                        rowFlats.push(panelTitleFlat);
+                        panelContentPoint = SurveyHelper.createPoint(panelTitleFlat);
+                    }
+                    rowFlats.push(...this.generateFlatsPagePanel(
+                        question, controller, panelContentPoint));
+                }
+                else {
+                    let flatQuestion: IFlatQuestion =
+                        FlatRepository.getInstance().create(<IQuestion>question, controller);
+                    rowFlats.push(...flatQuestion.generateFlats(currPoint));
+                }
             });
             controller.margins.marginLeft = oldMarginLeft;
             controller.margins.marginRight = oldMarginRight;
-            point.xLeft = controller.margins.marginLeft;
+            currPoint.xLeft = controller.margins.marginLeft;
             if (rowFlats.length != 0) {
-                point.yTop = SurveyHelper.mergeRects(...rowFlats).yBot;
-                point.yTop += SurveyHelper.measureText().height;
+                currPoint.yTop = SurveyHelper.mergeRects(...rowFlats).yBot;
+                currPoint.yTop += SurveyHelper.measureText().height;
                 pagePanelFlats.push(...rowFlats);
             }
         });

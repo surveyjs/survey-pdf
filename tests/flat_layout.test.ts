@@ -21,18 +21,16 @@ let __dummy_cb = new FlatCheckbox(null, null);
 SurveyHelper.setFontSize(TestHelper.defaultOptions.fontSize);
 function calcTitleTop(leftTopPoint: IPoint, controller: DocController,
     titleQuestion: Question, compositeFlat: IPdfBrick, isDesc: boolean = false): IPoint {
-    controller.fontStyle = 'bold'
-    let assumeTitle: IRect = SurveyHelper.createTextFlat(
+    let assumeTitle: IRect = SurveyHelper.createTitleFlat(
         leftTopPoint, null, controller,
-        SurveyHelper.getTitleText(titleQuestion), TitleBrick);
-    controller.fontStyle = 'normal'
+        SurveyHelper.getTitleText(titleQuestion));
     let assumeTextbox: IRect = SurveyHelper.createTextFieldRect(
         SurveyHelper.createPoint(assumeTitle), controller);
     if (isDesc) {
         let assumeDesc: IRect = SurveyHelper.createDescFlat(
             SurveyHelper.createPoint(assumeTitle), null,
             controller, SurveyHelper.getLocString(
-                titleQuestion.locDescription), DescriptionBrick);
+                titleQuestion.locDescription));
         assumeTextbox = SurveyHelper.createTextFieldRect(
             SurveyHelper.createPoint(assumeDesc), controller);
         TestHelper.equalRect(expect, compositeFlat,
@@ -49,16 +47,14 @@ function calcTitleBottom(controller: DocController, titleQuestion: Question,
     let assumeTextbox: IRect = SurveyHelper.createTextFieldRect(
         controller.leftTopPoint, controller);
     TestHelper.equalRect(expect, textboxFlat, assumeTextbox);
-    controller.fontStyle = 'bold'
-    let assumeTitle: IRect = SurveyHelper.createTextFlat(
-        SurveyHelper.createPoint(assumeTextbox), null, controller,
-        SurveyHelper.getTitleText(titleQuestion), TitleBrick);
-    controller.fontStyle = 'normal'
+    let assumeTitle: IRect = SurveyHelper.createTitleFlat(
+            SurveyHelper.createPoint(assumeTextbox), null, controller,
+            SurveyHelper.getTitleText(titleQuestion));
     if (isDesc) {
         let assumeDesc: IRect = SurveyHelper.createDescFlat(
             SurveyHelper.createPoint(assumeTitle), null,
             controller, SurveyHelper.getLocString(
-                titleQuestion.locDescription), DescriptionBrick);
+                titleQuestion.locDescription));
         TestHelper.equalRect(expect, compositeFlat, SurveyHelper.mergeRects(assumeTitle, assumeDesc));
     } else {
         TestHelper.equalRect(expect, compositeFlat, assumeTitle);
@@ -66,18 +62,16 @@ function calcTitleBottom(controller: DocController, titleQuestion: Question,
 }
 function calcTitleLeft(controller: DocController, titleQuestion: Question,
     compositeFlat: IPdfBrick, textboxFlat: IPdfBrick, isDesc: boolean = false) {
-    controller.fontStyle = 'bold'
-    let assumeTitle: IRect = SurveyHelper.createTextFlat(
+    let assumeTitle: IRect = SurveyHelper.createTitleFlat(
         controller.leftTopPoint, null, controller,
-        SurveyHelper.getTitleText(titleQuestion), TitleBrick);
-    controller.fontStyle = 'normal'
+        SurveyHelper.getTitleText(titleQuestion));
     let assumeTextbox: IRect = SurveyHelper.createTextFieldRect(
         SurveyHelper.createPoint(assumeTitle, false, true), controller);
     if (isDesc) {
         let assumeDesc: IRect = SurveyHelper.createDescFlat(
             SurveyHelper.createPoint(assumeTitle), null,
             controller, SurveyHelper.getLocString(
-                titleQuestion.locDescription), DescriptionBrick);
+                titleQuestion.locDescription));
         TestHelper.equalRect(expect, compositeFlat, SurveyHelper.mergeRects(assumeTitle, assumeDesc));
         assumeTextbox.xLeft = Math.max(assumeTextbox.xLeft, assumeDesc.xRight);
     }
@@ -615,4 +609,52 @@ test('Check two pages start point', () => {
         flats[0][0], true, true), survey.controller.leftTopPoint);
     TestHelper.equalPoint(expect, SurveyHelper.createPoint(
         flats[1][0], true, true), survey.controller.leftTopPoint);
+});
+test('Check panel wihtout title', () => {
+    let json = {
+        elements: [
+           {
+                type: 'panel',
+                name: 'Simple Panel',
+                elements: [
+                    {
+                        type: 'text',
+                        name: 'I am in the panel'
+                    }
+                ]
+           }
+        ]
+    };
+    let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
+    expect(flats.length).toBe(1);
+    expect(flats[0].length).toBe(1);
+    calcTitleTop(survey.controller.leftTopPoint, survey.controller,
+        <Question>survey.getAllQuestions()[0], flats[0][0]);
+});
+test('Check panel with title', () => {
+    let json = {
+        elements: [
+           {
+                type: 'panel',
+                name: 'Simple Panel',
+                title: 'Panel Title',
+                elements: [
+                    {
+                        type: 'text',
+                        name: 'I am in the panel'
+                    }
+                ]
+           }
+        ]
+    };
+    let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
+    expect(flats.length).toBe(1);
+    expect(flats[0].length).toBe(2);
+    let panelTitleFlat: IPdfBrick = SurveyHelper.createTitlePanelFlat(
+        survey.controller.leftTopPoint, null, survey.controller, json.elements[0].title);
+    TestHelper.equalRect(expect, flats[0][0], panelTitleFlat);
+    calcTitleTop(SurveyHelper.createPoint(panelTitleFlat), survey.controller,
+        <Question>survey.getAllQuestions()[0], flats[0][1]);
 });

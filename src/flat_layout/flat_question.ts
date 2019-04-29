@@ -19,18 +19,15 @@ export class FlatQuestion implements IFlatQuestion {
         this.question = <Question>question;
     }
     private generateFlatTitle(point: IPoint): IPdfBrick {
-        this.controller.fontStyle = 'bold';
         let text: string = SurveyHelper.getTitleText(this.question);
-        let composite: IPdfBrick = SurveyHelper.createTextFlat
-            (point, this.question, this.controller, text, TitleBrick);
-        this.controller.fontStyle = 'normal';
-        return composite;
+        let composite: IPdfBrick = SurveyHelper.createTitleFlat(point,
+            this.question, this.controller, text);
+        return composite
     }
     private generateFlatDescription(point: IPoint): IPdfBrick {
         let text: string = SurveyHelper.getLocString(this.question.locDescription);
         if (text == '') return null;
-        return SurveyHelper.createDescFlat(point, this.question,
-            this.controller, text, DescriptionBrick);
+        return SurveyHelper.createDescFlat(point, this.question, this.controller, text);
     }
     private generateFlatsComment(point: IPoint): IPdfBrick {
         let text: string = SurveyHelper.getLocString(this.question.locCommentText);

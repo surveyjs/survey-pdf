@@ -17,8 +17,8 @@ import { SurveyHelper } from '../src/helper_survey';
 import { TextBrick } from '../src/pdf_render/pdf_text';
 let __dummy_tx = new FlatTextbox(null, null);
 let __dummy_cb = new FlatCheckbox(null, null);
-
 SurveyHelper.setFontSize(TestHelper.defaultOptions.fontSize);
+
 test('Pack one flat', () => {
     let flats: IRect[] = [TestHelper.defaultRect];
     let packs: IPdfBrick[][] = PagePacker.pack(TestHelper.wrapRectsPage(flats),
