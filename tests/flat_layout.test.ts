@@ -18,12 +18,14 @@ import { TextBrick } from '../src/pdf_render/pdf_text';
 let __dummy_tx = new FlatTextbox(null, null);
 let __dummy_cm = new FlatComment(null, null);
 let __dummy_cb = new FlatCheckbox(null, null);
-
+SurveyHelper.setFontSize(TestHelper.defaultOptions.fontSize);
 function calcTitleTop(leftTopPoint: IPoint, controller: DocController,
     titleQuestion: Question, compositeFlat: IPdfBrick, isDesc: boolean = false): IPoint {
+    controller.fontStyle = 'bold'
     let assumeTitle: IRect = SurveyHelper.createTextFlat(
         leftTopPoint, null, controller,
         SurveyHelper.getTitleText(titleQuestion), TitleBrick);
+    controller.fontStyle = 'normal'
     let assumeTextbox: IRect = SurveyHelper.createTextFieldRect(
         SurveyHelper.createPoint(assumeTitle), controller);
     if (isDesc) {
@@ -33,7 +35,7 @@ function calcTitleTop(leftTopPoint: IPoint, controller: DocController,
                 titleQuestion.locDescription), DescriptionBrick);
         assumeTextbox = SurveyHelper.createTextFieldRect(
             SurveyHelper.createPoint(assumeDesc), controller);
-        TestHelper.equalRect(expect, compositeFlat, 
+        TestHelper.equalRect(expect, compositeFlat,
             SurveyHelper.mergeRects(assumeTitle, assumeDesc, assumeTextbox));
     }
     else {
@@ -47,9 +49,11 @@ function calcTitleBottom(controller: DocController, titleQuestion: Question,
     let assumeTextbox: IRect = SurveyHelper.createTextFieldRect(
         controller.leftTopPoint, controller);
     TestHelper.equalRect(expect, textboxFlat, assumeTextbox);
+    controller.fontStyle = 'bold'
     let assumeTitle: IRect = SurveyHelper.createTextFlat(
-            SurveyHelper.createPoint(assumeTextbox), null, controller,
-            SurveyHelper.getTitleText(titleQuestion), TitleBrick);
+        SurveyHelper.createPoint(assumeTextbox), null, controller,
+        SurveyHelper.getTitleText(titleQuestion), TitleBrick);
+    controller.fontStyle = 'normal'
     if (isDesc) {
         let assumeDesc: IRect = SurveyHelper.createDescFlat(
             SurveyHelper.createPoint(assumeTitle), null,
@@ -62,9 +66,11 @@ function calcTitleBottom(controller: DocController, titleQuestion: Question,
 }
 function calcTitleLeft(controller: DocController, titleQuestion: Question,
     compositeFlat: IPdfBrick, textboxFlat: IPdfBrick, isDesc: boolean = false) {
+    controller.fontStyle = 'bold'
     let assumeTitle: IRect = SurveyHelper.createTextFlat(
         controller.leftTopPoint, null, controller,
         SurveyHelper.getTitleText(titleQuestion), TitleBrick);
+    controller.fontStyle = 'normal'
     let assumeTextbox: IRect = SurveyHelper.createTextFieldRect(
         SurveyHelper.createPoint(assumeTitle, false, true), controller);
     if (isDesc) {
@@ -84,13 +90,15 @@ export function calcIndent(expect: any, leftTopPoint: IPoint, controller: DocCon
     compositeFlat: IPdfBrick, checktext: string, titleQuestion: Question = null) {
     let assumeTitle: IRect = SurveyHelper.createRect(leftTopPoint, 0, 0);
     if (titleQuestion != null) {
+        controller.fontStyle = 'bold'
         assumeTitle = SurveyHelper.createTextFlat(
             leftTopPoint, null, controller,
             SurveyHelper.getTitleText(titleQuestion), TitleBrick);
+        controller.fontStyle = 'normal'
     }
     let assumeCheckbox: IRect = SurveyHelper.createRect(
         SurveyHelper.createPoint(assumeTitle),
-        controller.measureText().height, controller.measureText().height);
+        SurveyHelper.measureText().height, SurveyHelper.measureText().height);
     let assumeChecktext: IRect = SurveyHelper.createTextFlat(
         SurveyHelper.createPoint(assumeCheckbox, false, true),
         null, controller, checktext, TextBrick);
@@ -192,8 +200,9 @@ function commmentPointTests(titleLocation: string, isChoices: boolean) {
                 let assumePoint = TestHelper.defaultPoint;
                 let resultPoint = resultRects[0];
                 if (isChoices) {
-                    let height: number = docController.measureText().height;
+                    let height: number = SurveyHelper.measureText().height;
                     let checkboxItemRect: IRect = SurveyHelper.createRect(TestHelper.defaultPoint, height, height);
+                    docController.fontStyle = 'bold';
                     let checkboxTextRect = SurveyHelper.createTextFlat(SurveyHelper.createPoint(
                         checkboxItemRect, false, true), null, docController,
                         (<any>json.questions[0]).choices[0], TextBrick);
@@ -208,6 +217,7 @@ function commmentPointTests(titleLocation: string, isChoices: boolean) {
         case 'left': {
             test('comment point, title location:' + titleLocation + ' with choice: ' + isChoices, () => {
                 let assumePoint: IPoint;
+                docController.fontStyle = 'bold';
                 if (titleLocation == "top") {
                     assumePoint = SurveyHelper.createPoint(SurveyHelper.createTextFlat(
                         TestHelper.defaultPoint, null, docController,
@@ -217,9 +227,11 @@ function commmentPointTests(titleLocation: string, isChoices: boolean) {
                         TestHelper.defaultPoint, null, docController, SurveyHelper.getTitleText(
                             <Question>survey.getAllQuestions()[0]), TextBrick), false, true);
                 }
+
+                docController.fontStyle = 'normal';
                 let resultPoint: IPoint = resultRects[1];
                 if (isChoices) {
-                    let height: number = docController.measureText().height;
+                    let height: number = SurveyHelper.measureText().height;
                     let checkboxItemRect: IRect = SurveyHelper.createRect(assumePoint, height, height);
                     let checkboxTextRect = SurveyHelper.createTextFlat(
                         SurveyHelper.createPoint(checkboxItemRect, false, true),
@@ -274,7 +286,7 @@ test('Calc boundaries with space between questions', () => {
     expect(flats.length).toBe(2);
     let title2point: IPoint = calcTitleTop(survey.controller.leftTopPoint,
         survey.controller, <Question>survey.getAllQuestions()[0], flats[0]);
-    title2point.yTop += survey.controller.measureText().height;
+    title2point.yTop += SurveyHelper.measureText().height;
     calcTitleTop(title2point, survey.controller,
         <Question>survey.getAllQuestions()[1], flats[1]);
 });
@@ -327,7 +339,7 @@ test('Check that checkbox has square boundaries', () => {
     survey.render();
     let assumeCheckbox: IRect = SurveyHelper.createRect(
         TestHelper.defaultPoint,
-        controller.measureText().height, controller.measureText().height);
+        SurveyHelper.measureText().height, SurveyHelper.measureText().height);
     let acroFormFields = survey.controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields;
     let internalRect = acroFormFields[0].Rect;
     TestHelper.equalRect(expect, SurveyHelper.createRect(
@@ -478,7 +490,7 @@ test('Calc boundaries with indent', () => {
         let flats: IPdfBrick[] = FlatSurvey.generateFlats(survey);
         expect(flats.length).toBe(1);
         let leftTopPoint: IPoint = survey.controller.leftTopPoint;
-        leftTopPoint.xLeft += survey.controller.measureText(i).width;
+        leftTopPoint.xLeft += SurveyHelper.measureText(i).width;
         calcIndent(expect, leftTopPoint, survey.controller,
             flats[0], json.questions[0].choices[0],
             <Question>survey.getAllQuestions()[0]);

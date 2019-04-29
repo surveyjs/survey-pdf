@@ -24,7 +24,7 @@ export class FlatQuestion implements IFlatQuestion {
         let composite: IPdfBrick = SurveyHelper.createTextFlat
             (point, this.question, this.controller, text, TitleBrick);
         this.controller.fontStyle = 'normal';
-        return composite
+        return composite;
     }
     private generateFlatDescription(point: IPoint): IPdfBrick {
         let text: string = SurveyHelper.getLocString(this.question.locDescription);
@@ -46,9 +46,9 @@ export class FlatQuestion implements IFlatQuestion {
     }
     generateFlats(point: IPoint): IPdfBrick[] {
         let oldMarginLeft: number = this.controller.margins.marginLeft;
-        this.controller.margins.marginLeft += this.controller.measureText(this.question.indent).width;
+        this.controller.margins.marginLeft += SurveyHelper.measureText(this.question.indent).width;
         let indentPoint: IPoint = {
-            xLeft: point.xLeft + this.controller.measureText(this.question.indent).width,
+            xLeft: point.xLeft + SurveyHelper.measureText(this.question.indent).width,
             yTop: point.yTop
         };
         let flats: IPdfBrick[] = new Array();

@@ -1,5 +1,4 @@
 import * as jsPDF from "jspdf";
-
 export interface IPoint {
     xLeft: number;
     yTop: number;
@@ -76,17 +75,11 @@ export class DocOptions implements IDocOptions {
     isNewPageElement(yBot: number): boolean {
         return yBot > this._paperHeight - this.margins.marginBot;
     }
-    measureText(text: number | string = 1) {
-        let length: number = typeof text === 'string' ? text.length : text; 
-        return {
-            width: length * this.fontSize * this.xScale,
-            height: this.fontSize * this.yScale
-        }
-    }
 }
 
 export class DocController extends DocOptions {
     private _doc: any;
+    private _fontStyle: string;
     constructor(options: IDocOptions) {
         super(options);
         let logicWidth: number =
@@ -94,7 +87,6 @@ export class DocController extends DocOptions {
         let logicHeight: number =
             this._paperHeight * DocOptions.PAPER_TO_LOGIC_SCALE_MAGIC;
         this._doc = new jsPDF({ format: [logicWidth, logicHeight] });
-        // addCustomustomFonts(jsPDF);
         this._doc.setFontSize(this._fontSize);
     }
     get doc(): any {
@@ -103,12 +95,16 @@ export class DocController extends DocOptions {
     get fontSize(): number {
         return this._fontSize;
     }
+    get fontStyle(): string {
+        return this._fontStyle;
+    }
     set fontSize(fontSize: number) {
         this._fontSize = fontSize;
         this._doc.setFontSize(this._fontSize);
     }
-    set fontStyle(style: string) {
-        this._doc.setFontStyle(style);
+    set fontStyle(fontStyle: string) {
+        this._fontStyle = fontStyle;
+        this._doc.setFontStyle(fontStyle);
     }
     public addPage() {
         this.doc.addPage([
