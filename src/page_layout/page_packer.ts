@@ -30,43 +30,52 @@ export class PagePacker {
         }
         packs[index].push(brick);
     }
-    static pack(flats: IPdfBrick[], options: DocOptions): IPdfBrick[][] {
+    static pack(flats: IPdfBrick[][], options: DocOptions): IPdfBrick[][] {
         let pageHeight: number = options.paperHeight -
             options.margins.marginTop - options.margins.marginBot; 
-        let unfoldFlats: IPdfBrick[] = new Array<IPdfBrick>();
-        flats.forEach((flat: IPdfBrick) => {
-            let flatHeight: number = flat.yBot - flat.yTop;
-            if (flatHeight > pageHeight + SurveyHelper.EPSILON) {
-                unfoldFlats.push(...flat.unfold());
-            }
-            else unfoldFlats.push(flat);
+        let unfoldFlats: IPdfBrick[][] = new Array<IPdfBrick[]>();
+        flats.forEach((flatsPage: IPdfBrick[]) => {
+            unfoldFlats.push(new Array<IPdfBrick>());
+            flatsPage.forEach((flat: IPdfBrick) => {
+                let flatHeight: number = flat.yBot - flat.yTop;
+                if (flatHeight > pageHeight + SurveyHelper.EPSILON) {
+                    unfoldFlats[unfoldFlats.length - 1].push(...flat.unfold());
+                }
+                else unfoldFlats[unfoldFlats.length - 1].push(flat);
+            });
         });
-        unfoldFlats.sort((a: IPdfBrick, b: IPdfBrick) => {
-            if (a.yTop < b.yTop) return -1;
-            if (a.yTop > b.yTop) return 1;
-            if (a.xLeft > b.xLeft) return 1;
-            if (a.xLeft < b.xLeft) return -1;
-            return 0;
+        unfoldFlats.forEach((unfoldFlatsPage: IPdfBrick[]) => {
+            unfoldFlatsPage.sort((a: IPdfBrick, b: IPdfBrick) => {
+                if (a.yTop < b.yTop) return -1;
+                if (a.yTop > b.yTop) return 1;
+                if (a.xLeft > b.xLeft) return 1;
+                if (a.xLeft < b.xLeft) return -1;
+                return 0;
+            });
         });
-        let pageBot: number = options.paperHeight - options.margins.marginBot;
+        let pageIndexModel: number = 0;
         let packs: IPdfBrick[][] = new Array<IPdfBrick[]>();
-        let tree: IntervalTree<PackInterval> = new IntervalTree(); 
-        unfoldFlats.forEach((flat: IPdfBrick) => {
-            let intervals: PackInterval[] = tree.search(flat.xLeft, flat.xRight);
-            let { pageIndex, yBot, absBot } = PagePacker.findBotInterval(
-                intervals, flat.xLeft, flat.xRight, options);
-            let height: number = flat.yBot - flat.yTop;
-            flat.yTop = yBot + flat.yTop - absBot;
-            if (Math.abs(flat.yTop - options.margins.marginTop) > SurveyHelper.EPSILON &&
-                flat.yTop + height > pageBot + SurveyHelper.EPSILON) {
-                pageIndex++;
-                flat.yTop = options.margins.marginTop;
-            }
-            tree.insert(flat.xLeft, flat.xRight, { pageIndex: pageIndex,
-                xLeft: flat.xLeft, xRight: flat.xRight,
-                yBot: flat.yTop + height, absBot: flat.yBot });
-            flat.yBot = flat.yTop + height;
-            PagePacker.addPack(packs, pageIndex, flat);
+        unfoldFlats.forEach((unfoldFlatsPage: IPdfBrick[]) => {
+            let pageBot: number = options.paperHeight - options.margins.marginBot;
+            let tree: IntervalTree<PackInterval> = new IntervalTree();
+            unfoldFlatsPage.forEach((flat: IPdfBrick) => {
+                let intervals: PackInterval[] = tree.search(flat.xLeft, flat.xRight);
+                let { pageIndex, yBot, absBot } = PagePacker.findBotInterval(
+                    intervals, flat.xLeft, flat.xRight, options);
+                let height: number = flat.yBot - flat.yTop;
+                flat.yTop = yBot + flat.yTop - absBot;
+                if (Math.abs(flat.yTop - options.margins.marginTop) > SurveyHelper.EPSILON &&
+                    flat.yTop + height > pageBot + SurveyHelper.EPSILON) {
+                    pageIndex++;
+                    flat.yTop = options.margins.marginTop;
+                }
+                tree.insert(flat.xLeft, flat.xRight, { pageIndex: pageIndex,
+                    xLeft: flat.xLeft, xRight: flat.xRight,
+                    yBot: flat.yTop + height, absBot: flat.yBot });
+                flat.yBot = flat.yTop + height;
+                PagePacker.addPack(packs, pageIndexModel + pageIndex, flat);
+            });
+            pageIndexModel++;
         });
         return packs;
     }

@@ -13,7 +13,7 @@ export class PdfSurvey extends SurveyModel {
         SurveyHelper.setFontSize(options.fontSize);
     }
     render() {
-        let flats: IPdfBrick[] = FlatSurvey.generateFlats(this);
+        let flats: IPdfBrick[][] = FlatSurvey.generateFlats(this);
         let packs: IPdfBrick[][] = PagePacker.pack(flats, this.controller);
         packs.forEach((page: IPdfBrick[], index: number) => {
             page.forEach((brick: IPdfBrick) => brick.render());
