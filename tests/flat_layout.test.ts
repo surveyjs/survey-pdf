@@ -49,8 +49,8 @@ function calcTitleBottom(controller: DocController, titleQuestion: Question,
         controller.leftTopPoint, controller);
     TestHelper.equalRect(expect, textboxFlat, assumeTextbox);
     let assumeTitle: IRect = SurveyHelper.createTitleFlat(
-            SurveyHelper.createPoint(assumeTextbox), null, controller,
-            SurveyHelper.getTitleText(titleQuestion));
+        SurveyHelper.createPoint(assumeTextbox), null, controller,
+        SurveyHelper.getTitleText(titleQuestion));
     if (isDesc) {
         let assumeDesc: IRect = SurveyHelper.createDescFlat(
             SurveyHelper.createPoint(assumeTitle), null,
@@ -173,7 +173,58 @@ test('Calc textbox boundaries title hidden', () => {
         survey.controller.leftTopPoint, survey.controller);
     TestHelper.equalRect(expect, flats[0][0], assumeTextbox);
 });
-function commmentPointTests(titleLocation: string, isChoices: boolean) {
+
+function commentPointBeforeTitle(resultRects: IPdfBrick[][]) {
+    let commentPoint = TestHelper.defaultPoint;
+    let resultPoint = resultRects[0][0];
+    TestHelper.equalPoint(expect, resultPoint, commentPoint);
+    return commentPoint;
+}
+function commentPointAfterTitle(titleLocation: string, resultRects: IPdfBrick[][], controller: DocController, survey: PdfSurvey) {
+    let commentAssumePoint: IPoint = SurveyHelper.createPoint(SurveyHelper.createTitleFlat(
+        TestHelper.defaultPoint, null, controller,
+        SurveyHelper.getTitleText(<Question>survey.getAllQuestions()[0])),
+        titleLocation === 'top', titleLocation !== 'top');;
+    let commentResultPoint: IPoint = resultRects[0][1];
+    TestHelper.equalPoint(expect, commentResultPoint, commentAssumePoint);
+    return commentAssumePoint;
+}
+function commmentPointToTitleTests() {
+    let json = {
+        questions: [
+            {
+                name: 'checkbox',
+                type: 'checkbox',
+                hasComment: 'true',
+                title: 'test'
+            }
+        ]
+    };
+    ['left', 'top', 'bottom', 'hidden'].forEach((titleLocation) => {
+        (<any>json).questions[0].titleLocation = titleLocation;
+        let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
+        let controller: DocController = survey.controller;
+        let resultRects: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
+        switch (titleLocation) {
+            case 'hidden':
+            case 'bottom': {
+                test('Comment point, title location: ' + titleLocation, () => {
+                    commentPointBeforeTitle(resultRects);
+                });
+                break;
+            }
+            case 'top':
+            case 'left': {
+                test('Comment point, title location: ' + titleLocation, () => {
+                    commentPointAfterTitle(titleLocation, resultRects, controller, survey);
+                });
+                break;
+            }
+        }
+    });
+}
+commmentPointToTitleTests();
+function commentPointAfterItem() {
     let json = {
         questions: [
             {
@@ -181,63 +232,27 @@ function commmentPointTests(titleLocation: string, isChoices: boolean) {
                 type: 'checkbox',
                 hasComment: 'true',
                 title: 'test',
-                titleLocation: titleLocation
+                choices: ['test']
             }
         ]
     };
-    if (isChoices) {
-        (<any>json.questions[0]).choices = ['test'];
-    }
-    let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
-    let controller: DocController = survey.controller;
-    let resultRects: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
-
-    switch (titleLocation) {
-        case 'hidden':
-        case 'bottom': {
-            test('Comment point, title location: ' + titleLocation + ' with choice: ' + isChoices, () => {
-                let commentPoint = TestHelper.defaultPoint;
-                let resultPoint = resultRects[0][0];
-                if (isChoices) {
-                    let height: number = SurveyHelper.measureText().height;
-                    let checkboxItemRect: IRect = SurveyHelper.createRect(TestHelper.defaultPoint, height, height);
-                    let checkboxTextRect = SurveyHelper.createTextFlat(SurveyHelper.createPoint(
-                        checkboxItemRect, false, true), null, controller,
-                        (<any>json.questions[0]).choices[0], TextBrick);
-                    commentPoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(checkboxItemRect, checkboxTextRect));
-                    resultPoint = resultRects[0][1];
-                }
-                TestHelper.equalPoint(expect, resultPoint, commentPoint);
-            });
-            break;
-        }
-        case 'top':
-        case 'left': {
-            test('Comment point, title location: ' + titleLocation + ' with choice: ' + isChoices, () => {
-                let commentAssumePoint: IPoint = SurveyHelper.createPoint(SurveyHelper.createTitleFlat(
-                    TestHelper.defaultPoint, null, controller,
-                    SurveyHelper.getTitleText(<Question>survey.getAllQuestions()[0])),
-                    titleLocation == 'top', titleLocation != 'top');;
-                let commetnResultPoint: IPoint = resultRects[0][0].unfold()[1];
-                if (isChoices) {
-                    let height: number = SurveyHelper.measureText().height;
-                    let checkboxItemRect: IRect = SurveyHelper.createRect(commentAssumePoint, height, height);
-                    let checkboxTextRect = SurveyHelper.createTextFlat(
-                        SurveyHelper.createPoint(checkboxItemRect, false, true),
-                        null, controller, (<any>json.questions[0]).choices[0], TextBrick);
-                    commentAssumePoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(checkboxItemRect, checkboxTextRect));
-                    commetnResultPoint = resultRects[0][1];
-                }
-                TestHelper.equalPoint(expect, commetnResultPoint, commentAssumePoint);
-            });
-            break;
-        }
-    }
+    ['bottom', 'hidden', 'top', 'left'].forEach((titleLocation) => {
+        (<any>json).questions[0].titleLocation = titleLocation;
+        let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
+        let resultRects: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
+        test('Comment point after choice, title location:' + titleLocation, () => {
+            expect(resultRects.length).toBe(1);
+            if (titleLocation !== 'bottom') expect(resultRects[0].length).toBe(2);
+            else expect(resultRects[0].length).toBe(3);
+            if (titleLocation == 'top' || titleLocation == 'left') {
+                TestHelper.equalPoint(expect, SurveyHelper.createPoint(resultRects[0][0].unfold()[1]), resultRects[0][1]);
+            } else {
+                TestHelper.equalPoint(expect, SurveyHelper.createPoint(resultRects[0][0]), resultRects[0][1]);
+            }
+        });
+    })
 }
-// ['right', 'left', 'bottom', 'hidden'].forEach((titleLocation) => {
-//     commmentPointTests(titleLocation, true);
-//     commmentPointTests(titleLocation, false);
-// })
+commentPointAfterItem();
 test('Calc textbox boundaries title hidden', () => {
     let json = {
         questions: [
@@ -605,7 +620,7 @@ test('Check two pages start point', () => {
 test('Check panel wihtout title', () => {
     let json = {
         elements: [
-           {
+            {
                 type: 'panel',
                 name: 'Simple Panel',
                 elements: [
@@ -614,7 +629,7 @@ test('Check panel wihtout title', () => {
                         name: 'I am in the panel'
                     }
                 ]
-           }
+            }
         ]
     };
     let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
@@ -627,7 +642,7 @@ test('Check panel wihtout title', () => {
 test('Check panel with title', () => {
     let json = {
         elements: [
-           {
+            {
                 type: 'panel',
                 name: 'Simple Panel',
                 title: 'Panel Title',
@@ -637,7 +652,7 @@ test('Check panel with title', () => {
                         name: 'I am in the panel'
                     }
                 ]
-           }
+            }
         ]
     };
     let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
@@ -653,7 +668,7 @@ test('Check panel with title', () => {
 test('Check panel with title and description', () => {
     let json = {
         elements: [
-           {
+            {
                 type: 'panel',
                 name: 'Simple Panel',
                 title: 'Panel Title',
@@ -664,7 +679,7 @@ test('Check panel with title and description', () => {
                         name: 'I am in the panel'
                     }
                 ]
-           }
+            }
         ]
     };
     let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
@@ -682,7 +697,7 @@ test('Check panel with title and description', () => {
 test('Check panel with inner indent', () => {
     let json = {
         elements: [
-           {
+            {
                 type: 'panel',
                 name: 'Simple Panel',
                 innerIndent: 3,
@@ -692,7 +707,7 @@ test('Check panel with inner indent', () => {
                         name: 'I am in the panel'
                     }
                 ]
-           }
+            }
         ]
     };
     let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
