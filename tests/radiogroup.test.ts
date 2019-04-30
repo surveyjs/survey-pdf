@@ -1,13 +1,10 @@
 (<any>window)['HTMLCanvasElement'].prototype.getContext = () => {
     return {};
 };
-
 import { PdfSurvey } from '../src/survey';
 import { FlatRadiogroup } from '../src/flat_layout/flat_radiogroup';
 import { TestHelper } from '../src/helper_test';
-import { DocController } from '../src/doc_controller';
-import { Question } from 'survey-core';
-let __dummy_flatradiogroup = new FlatRadiogroup(new Question('test'), new DocController(TestHelper.defaultOptions));
+let __dummy_rg = new FlatRadiogroup(null, null);
 
 test('Test has other radiogroup', () => {
     let json = {
