@@ -12,6 +12,7 @@ import { FlatCheckbox } from '../src/flat_layout/flat_checkbox';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { TextBrick } from '../src/pdf_render/pdf_text';
 import { TitleBrick } from '../src/pdf_render/pdf_title';
+import { TextFieldBrick } from '../src/pdf_render/pdf_textfield';
 import { CompositeBrick } from '../src/pdf_render/pdf_composite';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
@@ -718,4 +719,27 @@ test('Check panel with inner indent', () => {
     panelContentPoint.xLeft += SurveyHelper.measureText(json.elements[0].innerIndent).width;
     calcTitleTop(panelContentPoint, survey.controller,
         <Question>survey.getAllQuestions()[0], flats[0][0]);
+});
+test('Check question title location in panel', () => {
+    let json = {
+        elements: [
+           {
+                type: 'panel',
+                name: 'Simple Panel',
+                questionTitleLocation: 'bottom',
+                elements: [
+                    {
+                        type: 'text',
+                        name: 'At the very bottom'
+                    }
+                ]
+           }
+        ]
+    };
+    let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
+    expect(flats.length).toBe(1);
+    expect(flats[0].length).toBe(2);
+    expect(flats[0][0] instanceof TextFieldBrick).toBe(true);
+    expect(flats[0][1].unfold()[0] instanceof TitleBrick).toBe(true);
 });

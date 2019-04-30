@@ -1,9 +1,22 @@
-import { IQuestion, QuestionRadiogroupModel, ItemValue } from 'survey-core';
+import { IQuestion, Question, QuestionRadiogroupModel, ItemValue } from 'survey-core';
 import { IRect, DocController } from '../doc_controller';
 import { PdfBrick } from './pdf_brick';
 import { SurveyHelper } from '../helper_survey';
-import { RadioGroupWrap } from "../radiogroup_wrap";
 
+export class RadioGroupWrap {
+    private _radioGroup: any;
+    constructor(private question: IQuestion, private controller: DocController) {
+    }
+    addToPdf() {
+        this._radioGroup = new this.controller.doc.AcroFormRadioButton();
+        this._radioGroup.value = (<Question>this.question).id;
+        this._radioGroup.readOnly = this.question.isReadOnly;
+        this.controller.doc.addField(this._radioGroup);
+    }
+    get radioGroup() {
+        return this._radioGroup;
+    }
+}
 export class RadioItemBrick extends PdfBrick {
     protected question: QuestionRadiogroupModel;
     constructor(question: IQuestion, controller: DocController,

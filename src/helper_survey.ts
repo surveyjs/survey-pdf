@@ -30,9 +30,7 @@ export class SurveyHelper {
         let height: number = this._doc.getLineHeight() / this._doc.internal.scaleFactor;
         let width: number = 0;
         if (typeof text === 'string') {
-            text.split('').forEach((char: string) => {
-                width += this._doc.getTextWidth(char)
-            });
+            width = text.split('').reduce((sm: number, cr: string) => sm + this._doc.getTextWidth(cr), 0);
         }
         else {
             width = this._doc.getTextWidth(' ') * text;
