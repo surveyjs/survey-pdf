@@ -100,12 +100,13 @@ export class FlatQuestion implements IFlatQuestion {
                     compositeFlat.addBrick(descFlat);
                     contentPoint.xLeft = Math.max(contentPoint.xLeft, descFlat.xRight);
                 }
-                flats.push(compositeFlat);
-                commentPoint.xLeft = SurveyHelper.createPoint(SurveyHelper.mergeRects(...flats), false, true).xLeft;
+                commentPoint.xLeft = SurveyHelper.createPoint(compositeFlat, false, true).xLeft;
                 let contentFlats = this.generateFlatsContent(contentPoint);
                 if (contentFlats.length != 0) {
                     commentPoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(...contentFlats));
+                    compositeFlat.addBrick(contentFlats.shift());
                 }
+                flats.push(compositeFlat);
                 flats.push(...contentFlats);
                 break;
             }

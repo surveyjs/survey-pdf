@@ -9,14 +9,14 @@ import { IPoint, IRect, IDocOptions, DocController } from '../src/doc_controller
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { FlatTextbox } from '../src/flat_layout/flat_textbox';
 import { FlatCheckbox } from '../src/flat_layout/flat_checkbox';
+import { FlatRadiogroup } from '../src/flat_layout/flat_radiogroup';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
-import { TitleBrick } from '../src/pdf_render/pdf_title';
-import { TextFieldBrick } from '../src/pdf_render/pdf_textfield';
 import { TestHelper } from '../src/helper_test';
 import { SurveyHelper } from '../src/helper_survey';
 import { TextBrick } from '../src/pdf_render/pdf_text';
 let __dummy_tx = new FlatTextbox(null, null);
 let __dummy_cb = new FlatCheckbox(null, null);
+let __dummy_rg = new FlatRadiogroup(null, null);
 SurveyHelper.setFontSize(TestHelper.defaultOptions.fontSize);
 
 test('Pack one flat', () => {
@@ -203,4 +203,79 @@ test('Pack to little page', () => {
     survey.controller.fontStyle = 'normal';
     TestHelper.equalRect(expect, packs[1][0],
         SurveyHelper.createTextFieldRect(survey.controller.leftTopPoint, survey.controller));
+});
+test('Check yTop on new page with panel', () => {
+    let json = {
+        elements: [
+           {
+                type: 'panel',
+                name: 'Simple Panel',
+                title: 'Panel Title',
+                description: 'Panel description',
+                innerIndent: 3,
+                elements: [
+                    {
+                        type: 'radiogroup',
+                        name: 'car4',
+                        title: 'What LONG car are you driving?',
+                        isRequired: true,
+                        choices: [
+                            'Ford',
+                            'Vauxhall',
+                            'Volkswagen',
+                            'Nissan',
+                            'Audi',
+                            'Mercedes-Benz',
+                            'BMW',
+                            'car0',
+                            'car1',
+                            'car2',
+                            'car3',
+                            'car4',
+                            'car5',
+                            'car6',
+                            'car7',
+                            'car8',
+                            'car9',
+                            'car10',
+                            'car11',
+                            'car12',
+                            'car13',
+                            'car14',
+                            'car15',
+                            'car16',
+                            'car17',
+                            'car18',
+                            'car19',
+                            'car20',
+                            'car21',
+                            'car22',
+                            'car23',
+                            'car24',
+                            'car25',
+                            'car26',
+                            'car27',
+                            'car28',
+                            'car29'
+                        ],
+                        titleLocation: 'top',
+                        indent: 4,
+                        startWithNewLine: false
+                        },
+                ]
+             },
+             {
+                type: 'checkbox',
+                name: 'car2',
+                title: 'What car are YOU driving?',
+                isRequired: true,
+                choices: ['A', 'B', 'EEE', 'UU'],
+                titleLocation: 'left'
+             }
+        ]
+    };
+    let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
+    let packs: IPdfBrick[][] = PagePacker.pack(flats, survey.controller);
+    expect(packs[1][19].yTop).toBeCloseTo(packs[1][20].yTop - SurveyHelper.measureText().height);
 });

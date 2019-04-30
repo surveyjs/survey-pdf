@@ -27,7 +27,7 @@ export class SurveyHelper {
         let oldFontSize = this._doc.getFontSize();
         this._doc.setFontSize(fontSize);
         this._doc.setFontStyle(fontStyle);
-        let height: number = this._doc.getLineHeight() / this._doc.internal.scaleFactor
+        let height: number = this._doc.getLineHeight() / this._doc.internal.scaleFactor;
         let width: number = 0;
         if (typeof text === 'string') {
             text.split('').forEach((char: string) => {

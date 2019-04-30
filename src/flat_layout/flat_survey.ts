@@ -48,8 +48,12 @@ export class FlatSurvey {
                         }
                         rowFlats.push(compositeFlat);
                     }
+                    let oldPanelMarginLeft: number = controller.margins.marginLeft;
+                    controller.margins.marginLeft += SurveyHelper.measureText(question.innerIndent).width;
+                    panelContentPoint.xLeft += SurveyHelper.measureText(question.innerIndent).width;
                     rowFlats.push(...this.generateFlatsPagePanel(
                         question, controller, panelContentPoint));
+                    controller.margins.marginLeft = oldPanelMarginLeft;
                 }
                 else {
                     let flatQuestion: IFlatQuestion =
