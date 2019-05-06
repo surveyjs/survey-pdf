@@ -15,7 +15,9 @@ export class FlatRadiogroup extends FlatSelectBase {
     }
     public createItemBrick(rect: IRect, itemValue: ItemValue, index: number): IPdfBrick {
         return new RadioItemBrick(this.question, this.controller, rect,
-            itemValue, index, this.radioGroupWrap);
+            itemValue.value, this.question === itemValue.value,
+            this.question.isReadOnly || itemValue.isEnabled,
+            this.radioGroupWrap, index === 0);
     }
 }
 
