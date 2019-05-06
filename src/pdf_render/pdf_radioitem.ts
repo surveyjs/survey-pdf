@@ -17,22 +17,24 @@ export class RadioGroupWrap {
         return this._radioGroup;
     }
 }
+
 export class RadioItemBrick extends PdfBrick {
     protected question: QuestionRadiogroupModel;
     constructor(question: IQuestion, controller: DocController,
-        rect: IRect, protected itemValue: ItemValue, protected index: number,
-        private radioGroupWrap: RadioGroupWrap) {
+        rect: IRect, private itemValue: string, private сhecked: boolean, private readOnly: boolean,
+        private radioGroupWrap: RadioGroupWrap, private isFirst: boolean = false) {
         super(question, controller, rect);
         this.question = <QuestionRadiogroupModel>question;
     }
     render(): void {
-        if (this.index == 0) {
+        if (this.isFirst) {
             this.radioGroupWrap.addToPdf();
         }
-        let name = this.question.id + 'index' + this.index;
+        let name = this.question.id + 'value' + this.itemValue;
         let radioButton = this.radioGroupWrap.radioGroup.createOption(name);
         radioButton.Rect = SurveyHelper.createAcroformRect(this);
-        if (this.itemValue.value == this.question.value) {
+        radioButton.readOnly = this.readOnly;
+        if (this.сhecked) {
             radioButton.AS = '/' + name;
         }
         this.radioGroupWrap.radioGroup.setAppearance(this.controller.doc.AcroForm.Appearance.RadioButton.Circle);
