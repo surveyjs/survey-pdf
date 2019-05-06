@@ -5,12 +5,12 @@ import { SurveyHelper } from '../helper_survey';
 
 export class RadioGroupWrap {
     private _radioGroup: any;
-    constructor(private question: IQuestion, private controller: DocController) {
+    constructor(private name: string, private controller: DocController, private readOnly: boolean = false) {
     }
     addToPdf() {
         this._radioGroup = new this.controller.doc.AcroFormRadioButton();
-        this._radioGroup.value = (<Question>this.question).id;
-        this._radioGroup.readOnly = this.question.isReadOnly;
+        this._radioGroup.value = this.name;
+        this._radioGroup.readOnly = this.readOnly;
         this.controller.doc.addField(this._radioGroup);
     }
     get radioGroup() {
@@ -19,21 +19,18 @@ export class RadioGroupWrap {
 }
 
 export class RadioItemBrick extends PdfBrick {
-    protected question: QuestionRadiogroupModel;
     constructor(question: IQuestion, controller: DocController,
-        rect: IRect, private itemValue: string, private сhecked: boolean, private readOnly: boolean,
+        rect: IRect, private itemValue: string, private сhecked: Boolean,
         private radioGroupWrap: RadioGroupWrap, private isFirst: boolean = false) {
         super(question, controller, rect);
-        this.question = <QuestionRadiogroupModel>question;
     }
     render(): void {
         if (this.isFirst) {
             this.radioGroupWrap.addToPdf();
         }
-        let name = this.question.id + 'value' + this.itemValue;
+        let name = this.radioGroupWrap.radioGroup.name + 'value' + this.itemValue;
         let radioButton = this.radioGroupWrap.radioGroup.createOption(name);
         radioButton.Rect = SurveyHelper.createAcroformRect(this);
-        radioButton.readOnly = this.readOnly;
         if (this.сhecked) {
             radioButton.AS = '/' + name;
         }

@@ -11,12 +11,13 @@ export class FlatRadiogroup extends FlatSelectBase {
     constructor(question: IQuestion, protected controller: DocController) {
         super(question, controller);
         this.question = <QuestionCheckboxModel>question;
-        this.radioGroupWrap = new RadioGroupWrap(question, controller);
     }
     public createItemBrick(rect: IRect, itemValue: ItemValue, index: number): IPdfBrick {
+        if (index == 0) {
+            this.radioGroupWrap = new RadioGroupWrap(this.question.id, this.controller, this.question.readOnly);
+        }
         return new RadioItemBrick(this.question, this.controller, rect,
             itemValue.value, this.question === itemValue.value,
-            this.question.isReadOnly || itemValue.isEnabled,
             this.radioGroupWrap, index === 0);
     }
 }
