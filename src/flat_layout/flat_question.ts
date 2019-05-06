@@ -48,7 +48,9 @@ export class FlatQuestion implements IFlatQuestion {
         };
         let flats: IPdfBrick[] = new Array();
         let commentPoint: IPoint = indentPoint;
-        switch (this.question.getTitleLocation()) {
+        let titleLocation: string = this.question.getTitleLocation();
+        titleLocation = this.question.hasTitle ? titleLocation : 'hidden';
+        switch (titleLocation) {
             case 'top':
             case 'default': {
                 let titleFlat: IPdfBrick = this.generateFlatTitle(indentPoint);

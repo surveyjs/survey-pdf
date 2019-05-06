@@ -9,6 +9,7 @@ import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { FlatTextbox } from '../src/flat_layout/flat_textbox';
 import { FlatComment } from '../src/flat_layout/flat_comment';
 import { FlatCheckbox } from '../src/flat_layout/flat_checkbox';
+import { FlatBoolean } from '../src/flat_layout/flat_boolean';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { TextBrick } from '../src/pdf_render/pdf_text';
 import { TitleBrick } from '../src/pdf_render/pdf_title';
@@ -19,13 +20,13 @@ import { TestHelper } from '../src/helper_test';
 let __dummy_tx = new FlatTextbox(null, null);
 let __dummy_cm = new FlatComment(null, null);
 let __dummy_cb = new FlatCheckbox(null, null);
+let __dummy_bl = new FlatBoolean(null, null);
 SurveyHelper.setFontSize(TestHelper.defaultOptions.fontSize);
 
 function calcTitleTop(leftTopPoint: IPoint, controller: DocController,
     titleQuestion: Question, compositeFlat: IPdfBrick, isDesc: boolean = false): IPoint {
     let assumeTitle: IRect = SurveyHelper.createTitleFlat(
-        leftTopPoint, null, controller,
-        SurveyHelper.getTitleText(titleQuestion));
+        leftTopPoint, titleQuestion, controller);
     let assumeTextbox: IRect = SurveyHelper.createTextFieldRect(
         SurveyHelper.createPoint(assumeTitle), controller);
     if (isDesc) {
@@ -50,8 +51,7 @@ function calcTitleBottom(controller: DocController, titleQuestion: Question,
         controller.leftTopPoint, controller);
     TestHelper.equalRect(expect, textboxFlat, assumeTextbox);
     let assumeTitle: IRect = SurveyHelper.createTitleFlat(
-            SurveyHelper.createPoint(assumeTextbox), null, controller,
-            SurveyHelper.getTitleText(titleQuestion));
+            SurveyHelper.createPoint(assumeTextbox), titleQuestion, controller);
     if (isDesc) {
         let assumeDesc: IRect = SurveyHelper.createDescFlat(
             SurveyHelper.createPoint(assumeTitle), null,
@@ -65,8 +65,7 @@ function calcTitleBottom(controller: DocController, titleQuestion: Question,
 function calcTitleLeft(controller: DocController, titleQuestion: Question,
     compositeFlat: IPdfBrick, textboxFlat: IPdfBrick, isDesc: boolean = false) {
     let assumeTitle: IRect = SurveyHelper.createTitleFlat(
-        controller.leftTopPoint, null, controller,
-        SurveyHelper.getTitleText(titleQuestion));
+        controller.leftTopPoint, titleQuestion, controller);
     let assumeTextbox: IRect = SurveyHelper.createTextFieldRect(
         SurveyHelper.createPoint(assumeTitle, false, true), controller);
     if (isDesc) {
@@ -216,8 +215,7 @@ function commmentPointTests(titleLocation: string, isChoices: boolean) {
         case 'left': {
             test('Comment point, title location: ' + titleLocation + ' with choice: ' + isChoices, () => {
                 let commentAssumePoint: IPoint = SurveyHelper.createPoint(SurveyHelper.createTitleFlat(
-                    TestHelper.defaultPoint, null, controller,
-                    SurveyHelper.getTitleText(<Question>survey.getAllQuestions()[0])),
+                    TestHelper.defaultPoint, <Question>survey.getAllQuestions()[0], controller),
                     titleLocation == 'top', titleLocation != 'top');;
                 let commetnResultPoint: IPoint = resultRects[0][0].unfold()[1];
                 if (isChoices) {
@@ -518,12 +516,9 @@ test('Not visible question and visible question', () => {
     };
     let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
     let rects: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
-    survey.controller.fontStyle = 'bold';
-    let text: string = SurveyHelper.getTitleText(<Question>survey.getAllQuestions()[1]);
     let assumeRect = [];
-    assumeRect[0] = SurveyHelper.createTextFlat(TestHelper.defaultPoint, null,
-        survey.controller, text, TextBrick);
-    survey.controller.fontStyle = 'normal'
+    assumeRect[0] = SurveyHelper.createTitleFlat(TestHelper.defaultPoint,
+        <Question>survey.getAllQuestions()[1], survey.controller);
     TestHelper.equalRects(expect, rects[0], assumeRect)
 });
 test('Calc comment boundaries title hidden', () => {
@@ -727,4 +722,49 @@ test('Check question title location in panel', () => {
     expect(flats[0].length).toBe(2);
     expect(flats[0][0] instanceof TextFieldBrick).toBe(true);
     expect(flats[0][1].unfold()[0] instanceof TitleBrick).toBe(true);
+});
+test('Check boolean without title', () => {
+    let json = {
+        elements: [
+            {
+                type: 'boolean',
+                name: 'Boolman',
+                title: 'Ama label'
+            }
+        ]
+    };
+    let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
+    expect(flats.length).toBe(1);
+    expect(flats[0].length).toBe(1);
+    TestHelper.equalRect(expect, flats[0][0], {
+        xLeft: survey.controller.leftTopPoint.xLeft,
+        xRight: survey.controller.leftTopPoint.xLeft + SurveyHelper.measureText().height +
+            SurveyHelper.measureText(json.elements[0].title).width,
+        yTop: survey.controller.leftTopPoint.yTop,
+        yBot: survey.controller.leftTopPoint.yTop + SurveyHelper.measureText().height
+    })
+});
+test('Check boolean with title', () => {
+    let json = {
+        elements: [
+            {
+                type: 'boolean',
+                name: 'Boolman',
+                title: 'Ama title',
+                showTitle: true
+            }
+        ]
+    };
+    let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
+    expect(flats.length).toBe(1);
+    expect(flats[0].length).toBe(1);
+    TestHelper.equalRect(expect, flats[0][0], {
+        xLeft: survey.controller.leftTopPoint.xLeft,
+        xRight: SurveyHelper.createTitleFlat(survey.controller.leftTopPoint,
+            <Question>survey.getAllQuestions()[0], survey.controller).xRight,
+        yTop: survey.controller.leftTopPoint.yTop,
+        yBot: survey.controller.leftTopPoint.yTop + SurveyHelper.measureText().height * 2
+    })
 });

@@ -7,6 +7,7 @@ export { IFlatQuestion, FlatQuestion } from '../flat_layout/flat_question';
 export { FlatTextbox } from '../flat_layout/flat_textbox';
 export { FlatComment } from '../flat_layout/flat_comment';
 export { FlatCheckbox } from '../flat_layout/flat_checkbox';
+export { FlatBoolean } from '../flat_layout/flat_boolean';
 export { FlatRadiogroup } from '../flat_layout/flat_radiogroup';
 export { PagePacker } from '../page_layout/page_packer';
 export { IPdfBrick, PdfBrick } from '../pdf_render/pdf_brick';
