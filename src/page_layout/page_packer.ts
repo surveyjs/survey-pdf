@@ -55,19 +55,20 @@ export class PagePacker {
         });
         let pageIndexModel: number = 0;
         let packs: IPdfBrick[][] = new Array<IPdfBrick[]>();
+        let pageBot: number = options.paperHeight - options.margins.marginBot;
         unfoldFlats.forEach((unfoldFlatsPage: IPdfBrick[]) => {
-            let pageBot: number = options.paperHeight - options.margins.marginBot;
             let tree: IntervalTree<PackInterval> = new IntervalTree();
             unfoldFlatsPage.forEach((flat: IPdfBrick) => {
                 let intervals: PackInterval[] = tree.search(flat.xLeft, flat.xRight);
                 let { pageIndex, yBot, absBot } = PagePacker.findBotInterval(
                     intervals, flat.xLeft, flat.xRight, options);
                 let height: number = flat.yBot - flat.yTop;
-                flat.yTop = yBot + flat.yTop - absBot;
+                let yShift: number = flat.yTop - absBot;
+                flat.yTop = yBot + yShift;
                 if (Math.abs(flat.yTop - options.margins.marginTop) > SurveyHelper.EPSILON &&
                     flat.yTop + height > pageBot + SurveyHelper.EPSILON) {
+                    flat.yTop = options.margins.marginTop + yShift - pageHeight + yBot;
                     pageIndex++;
-                    flat.yTop = options.margins.marginTop;
                 }
                 tree.insert(flat.xLeft, flat.xRight, { pageIndex: pageIndex,
                     xLeft: flat.xLeft, xRight: flat.xRight,
