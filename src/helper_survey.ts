@@ -116,9 +116,10 @@ export class SurveyHelper {
         });
         return composite;
     }
-    static createTitleFlat(point: IPoint, question: IQuestion, controller: DocController, text: string): IPdfBrick {
+    static createTitleFlat(point: IPoint, question: Question, controller: DocController): IPdfBrick {
         controller.fontStyle = 'bold';
-        let composite: IPdfBrick = SurveyHelper.createTextFlat(point, question, controller, text, TitleBrick);
+        let composite: IPdfBrick = SurveyHelper.createTextFlat(point, question, controller,
+            SurveyHelper.getTitleText(question), TitleBrick);
         controller.fontStyle = 'normal';
         return composite;
     }

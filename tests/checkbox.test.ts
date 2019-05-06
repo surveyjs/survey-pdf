@@ -5,7 +5,7 @@
 import { PdfSurvey } from '../src/survey';
 import { FlatCheckbox } from '../src/flat_layout/flat_checkbox';
 import { TestHelper } from '../src/helper_test';
-let __dummy_flatcheckbox = new FlatCheckbox(null, null);
+let __dummy_cb = new FlatCheckbox(null, null);
 
 test('Test has other checkbox', () => {
 	let json = {
