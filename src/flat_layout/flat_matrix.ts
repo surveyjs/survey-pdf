@@ -49,7 +49,7 @@ export class FlatMatrix extends FlatQuestion {
         let cells: IPdfBrick[] = [];
         let isVertical = false;
         let cellWidth = SurveyHelper.getColumnWidth(this.question, this.controller);
-        if (cellWidth < SurveyHelper.measureText(10).width) {
+        if (cellWidth < SurveyHelper.measureText(5).width) {
             isVertical = true;
         }
         if (!isVertical && this.question.showHeader) {
