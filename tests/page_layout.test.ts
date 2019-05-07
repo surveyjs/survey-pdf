@@ -163,15 +163,13 @@ test('Unfold compose brick', () => {
     let survey: PdfSurvey = new PdfSurvey(json, options);
     let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
+    expect(flats[0].length).toBe(1);
     let packs: IPdfBrick[][] = PagePacker.pack(flats, survey.controller);
     expect(packs.length).toBe(2);
     expect(packs[0].length).toBe(1);
     expect(packs[1].length).toBe(1);
-    survey.controller.fontStyle = 'bold';
-    TestHelper.equalRect(expect, packs[0][0], SurveyHelper.createTextFlat(
-        survey.controller.leftTopPoint, null, survey.controller,
-        SurveyHelper.getTitleText(<Question>survey.getAllQuestions()[0]), TextBrick));
-    survey.controller.fontStyle = 'normal';
+    TestHelper.equalRect(expect, packs[0][0], SurveyHelper.createTitleFlat(
+        survey.controller.leftTopPoint, <Question>survey.getAllQuestions()[0], survey.controller));
     TestHelper.equalRect(expect, packs[1][0],
         SurveyHelper.createTextFieldRect(survey.controller.leftTopPoint, survey.controller));
 });

@@ -63,11 +63,10 @@ export class PagePacker {
                 let { pageIndex, yBot, absBot } = PagePacker.findBotInterval(
                     intervals, flat.xLeft, flat.xRight, options);
                 let height: number = flat.yBot - flat.yTop;
-                let yShift: number = flat.yTop - absBot;
-                flat.yTop = yBot + yShift;
+                flat.yTop = yBot + flat.yTop - absBot;
                 if (Math.abs(flat.yTop - options.margins.marginTop) > SurveyHelper.EPSILON &&
                     flat.yTop + height > pageBot + SurveyHelper.EPSILON) {
-                    flat.yTop = options.margins.marginTop + yShift - pageHeight + yBot;
+                    flat.yTop = options.margins.marginTop;
                     pageIndex++;
                 }
                 tree.insert(flat.xLeft, flat.xRight, { pageIndex: pageIndex,

@@ -5,6 +5,7 @@ import { FlatRepository } from './flat_repository';
 import { IFlatQuestion } from './flat_question';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
+import { RowlineBrick } from '../pdf_render/pdf_rowline';
 import { SurveyHelper } from '../helper_survey';
 
 export class FlatSurvey {
@@ -73,14 +74,30 @@ export class FlatSurvey {
                 currPoint.yTop = SurveyHelper.mergeRects(...rowFlats).yBot;
                 currPoint.yTop += SurveyHelper.measureText().height;
                 pagePanelFlats.push(...rowFlats);
+                pagePanelFlats.push(new RowlineBrick({
+                    xLeft: controller.margins.marginLeft,
+                    xRight: controller.paperWidth - controller.margins.marginRight,
+                    yTop: currPoint.yTop + SurveyHelper.EPSILON,
+                    yBot: currPoint.yTop + SurveyHelper.EPSILON
+                }));
+                currPoint.yTop += SurveyHelper.EPSILON;
             }
         });
         return pagePanelFlats;
     }
+    private static popRowlines(flats: IPdfBrick[]) {
+        while (flats.length > 0 && flats[flats.length - 1] instanceof RowlineBrick) {
+            flats.pop();
+        }
+    }
     static generateFlats(survey: PdfSurvey): IPdfBrick[][] {
         let flats: IPdfBrick[][] = new Array<IPdfBrick[]>();
         survey.pages.forEach((page: PanelModelBase) => {
-            flats.push(this.generateFlatsPagePanel(survey.controller.leftTopPoint, page, survey.controller));
+            let pageFlats: IPdfBrick[] = new Array<IPdfBrick>();
+            pageFlats.push(...this.generateFlatsPagePanel(
+                survey.controller.leftTopPoint, page, survey.controller));
+            flats.push(pageFlats);
+            this.popRowlines(flats[flats.length - 1]);
         });
         return flats;
     }
