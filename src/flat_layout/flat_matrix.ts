@@ -144,8 +144,9 @@ export class FlatMatrixRow extends FlatQuestion {
                     checked, radioGroupWrap, index == 0);
                 currPoint = SurveyHelper.createPoint(radioItem, false, true);
                 let radioText: IPdfBrick = SurveyHelper.createTextFlat(currPoint, this.question, this.controller, SurveyHelper.getLocString(column.locText), TextBrick);
-                currPoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(radioItem, radioText));
-                cells.push(radioItem, radioText);
+                let compositeBrick: CompositeBrick = new CompositeBrick(radioItem, radioText);
+                currPoint = SurveyHelper.createPoint(compositeBrick);
+                cells.push(compositeBrick);
             }
         });
         return [new CompositeBrick(...cells), SurveyHelper.createRowlineFlat(currPoint, this.controller)];

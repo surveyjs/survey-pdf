@@ -34,7 +34,7 @@ export class SurveyHelper {
             width = text.split('').reduce((sm: number, cr: string) => sm + this._doc.getTextWidth(cr), 0);
         }
         else {
-            width = this._doc.getTextWidth(' ') * text;
+            width = height * text;
         }
         this._doc.setFontSize(oldFontSize);
         this._doc.setFontStyle('normal');
