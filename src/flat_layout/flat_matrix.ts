@@ -1,13 +1,12 @@
-import { IQuestion, ItemValue, QuestionMatrixModel, MatrixRowModel, QuestionCheckboxModel } from 'survey-core';
+import { IQuestion, QuestionMatrixModel, MatrixRowModel, QuestionCheckboxModel } from 'survey-core';
 import { DocController, IPoint, IRect } from "../doc_controller";
-import { IPdfBrick, PdfBrick } from '../pdf_render/pdf_brick'
+import { IPdfBrick } from '../pdf_render/pdf_brick'
 import { FlatRepository } from './flat_repository';
 import { FlatQuestion } from './flat_question';
 import { SurveyHelper } from '../helper_survey';
 import { TextBrick } from '../pdf_render/pdf_text';
 import { RadioGroupWrap, RadioItemBrick } from '../pdf_render/pdf_radioitem';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
-import { RowlineBrick } from '../pdf_render/pdf_rowline';
 
 
 export class FlatMatrix extends FlatQuestion {
