@@ -16,11 +16,10 @@ export class FlatQuestion implements IFlatQuestion {
     constructor(question: IQuestion, protected controller: DocController) {
         this.question = <Question>question;
     }
+
     private generateFlatTitle(point: IPoint): IPdfBrick {
-        let text: string = SurveyHelper.getTitleText(this.question);
-        let composite: IPdfBrick = SurveyHelper.createTitleFlat(point,
-            this.question, this.controller);
-        return composite
+        return SurveyHelper.createTitleFlat(point,
+            this.question, this.controller)
     }
     private generateFlatDescription(point: IPoint): IPdfBrick {
         let text: string = SurveyHelper.getLocString(this.question.locDescription);

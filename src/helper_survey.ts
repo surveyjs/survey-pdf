@@ -5,6 +5,7 @@ import { TitleBrick } from './pdf_render/pdf_title';
 import { TitlePanelBrick } from './pdf_render/pdf_titlepanel';
 import { DescriptionBrick } from './pdf_render/pdf_description';
 import { CompositeBrick } from './pdf_render/pdf_composite';
+import { RowlineBrick } from './pdf_render/pdf_rowline';
 import * as jsPDF from 'jspdf';
 
 export interface IText {
@@ -176,5 +177,13 @@ export class SurveyHelper {
         let cellWidth = this.getColumnWidth(question, controller);
         controller.margins.marginLeft = controller.margins.marginLeft + column * cellWidth;
         controller.margins.marginRight = controller.paperWidth - controller.margins.marginLeft - cellWidth;
+    }
+    static createRowlineFlat(point: IPoint, controller: DocController): IPdfBrick {
+        return new RowlineBrick({
+            xLeft: controller.margins.marginLeft,
+            xRight: controller.paperWidth - controller.margins.marginRight,
+            yTop: point.yTop + SurveyHelper.EPSILON,
+            yBot: point.yTop + SurveyHelper.EPSILON
+        });
     }
 }

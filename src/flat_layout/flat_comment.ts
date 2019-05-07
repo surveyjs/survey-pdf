@@ -1,8 +1,8 @@
 import { IQuestion, QuestionCommentModel } from 'survey-core';
 import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
-import { IPoint, IRect, DocController } from "../doc_controller";
-import { IPdfBrick } from '../pdf_render/pdf_brick'
+import { IPoint, IRect, DocController } from '../doc_controller';
+import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { CommentBrick } from '../pdf_render/pdf_comment';
 import { SurveyHelper } from '../helper_survey';
 

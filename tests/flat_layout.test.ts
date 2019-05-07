@@ -15,6 +15,7 @@ import { TextBrick } from '../src/pdf_render/pdf_text';
 import { TitleBrick } from '../src/pdf_render/pdf_title';
 import { TextFieldBrick } from '../src/pdf_render/pdf_textfield';
 import { CompositeBrick } from '../src/pdf_render/pdf_composite';
+import { RowlineBrick } from '../src/pdf_render/pdf_rowline';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 let __dummy_tx = new FlatTextbox(null, null);
@@ -239,7 +240,7 @@ function commentPointAfterItem() {
         (<any>json).questions[0].titleLocation = titleLocation;
         let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
         let resultRects: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
-        test('Comment point after choice, title location:' + titleLocation, () => {
+        test('Comment point after choice, title location: ' + titleLocation, () => {
             expect(resultRects.length).toBe(1);
             if (titleLocation !== 'bottom') expect(resultRects[0].length).toBe(2);
             else expect(resultRects[0].length).toBe(3);
@@ -252,26 +253,6 @@ function commentPointAfterItem() {
     })
 }
 commentPointAfterItem();
-test('Calc textbox boundaries title hidden', () => {
-    let json = {
-        questions: [
-            {
-                name: 'textbox',
-                type: 'text',
-                title: 'Title hidden',
-                titleLocation: 'hidden'
-            }
-        ]
-    };
-    let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
-    let controller: DocController = survey.controller;
-    let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
-    expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(1);
-    let assumeTextbox: IRect = SurveyHelper.createTextFieldRect(
-        controller.leftTopPoint, controller);
-    TestHelper.equalRect(expect, flats[0][0], assumeTextbox);
-});
 test('Calc boundaries with space between questions', () => {
     let json = {
         questions: [{
@@ -288,13 +269,13 @@ test('Calc boundaries with space between questions', () => {
     let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
     let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(2);
+    expect(flats[0].length).toBe(3);
     let title2point: IPoint = calcTitleTop(survey.controller.leftTopPoint,
         survey.controller, <Question>survey.getAllQuestions()[0], flats[0][0]);
     title2point.yTop += SurveyHelper.measureText().height;
-
+    expect(flats[0][1] instanceof RowlineBrick).toBe(true);
     calcTitleTop(title2point, survey.controller,
-        <Question>survey.getAllQuestions()[1], flats[0][1]);
+        <Question>survey.getAllQuestions()[1], flats[0][2]);
 });
 test('Calc textbox boundaries title without number', () => {
     let json = {

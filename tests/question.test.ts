@@ -89,7 +89,6 @@ test('Check comment readonly', () => {
   let textField = internal.acroformPlugin.acroFormDictionaryRoot.Fields[0]
   expect(textField.readOnly).toBe(true);
 });
-//undefined exception shouldn't be expected
 test('Check empty question', () => {
   let json = {
     questions: [
@@ -103,6 +102,7 @@ test('Check empty question', () => {
   let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
   let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
   expect(flats.length).toBe(1);
+  expect(typeof flats[0]).not.toBe('undefined');
   expect(flats[0].length).toBe(0);
 });
 test('Not visible question', () => {
@@ -118,7 +118,8 @@ test('Not visible question', () => {
     let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
     let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
-    expect(typeof flats[0]).toBe('undefined');
+    expect(typeof flats[0]).not.toBe('undefined');
+    expect(flats[0].length).toBe(0);
 });
 test('Check descrition with hidden title', () => {
   let json = {
