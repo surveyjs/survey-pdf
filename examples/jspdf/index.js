@@ -1,22 +1,51 @@
+
+
 var json = {
   questions: [
     {
-      type: "checkbox",
-      name: "car",
-      title: "What car are you driving?",
-      description: "Description",
-      isRequired: true,
-      choices: [
-        "Ford",
-        "Vauxhall",
-        "Volkswagen",
-        "Nissan",
-        "Audi",
-        "Mercedes-Benz",
-        "BMW"
+      type: "matrix",
+      name: "Quality",
+      title: "Please indicate if you agree or disagree with the following statements",
+      columns: [
+        {
+          value: 1,
+          text: "Strongly Disagree"
+        }, {
+          value: 2,
+          text: "Disagree"
+        }, {
+          value: 3,
+          text: "Neutral"
+        }, {
+          value: 4,
+          text: "Agree"
+        }, {
+          value: 5,
+          text: "Strongly Agree"
+        }
       ],
-      titleLocation: "top",
-      indent: 0
+      rows: [
+        {
+          value: "affordable",
+          text: "Product is affordable"
+        }, {
+          value: "does what it claims",
+          text: "Product does what it claims"
+        }, {
+          value: "better then others",
+          text: "Product is better than other products on the marketfewfwefwefwqefgweqfjkqw;111111111111111111111111111111111111111111111111111111"
+        }, {
+          value: "easy to use",
+          text: "Product is easy to use22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222"
+        }
+      ]
+    },
+    {
+      name: 'checkbox',
+      type: 'checkbox',
+      hasComment: 'true',
+      titleLocation: 'left',
+      title: 'test'
     },
     {
       type: "checkbox",
@@ -55,10 +84,11 @@ var json = {
       titleLocation: "left"
     },
     {
-      type: "checkbox",
+      type: "radiogroup",
       name: "car3",
       title: "What car are you driving?",
       isRequired: true,
+      readOnly: true,
       choices: [
         "Ford",
         "Vauxhall",
@@ -187,14 +217,14 @@ var json = {
 };
 
 let options = {
-	fontSize: 30, xScale: 0.22, yScale: 0.36,
-	margins:
-	{
-		marginLeft: 10,
-		marginRight: 10,
-		marginTop: 10,
-		marginBot: 10
-	}
+  fontSize: 30, xScale: 0.22, yScale: 0.36,
+  margins:
+  {
+    marginLeft: 10,
+    marginRight: 10,
+    marginTop: 10,
+    marginBot: 10
+  }
 };
 
 var survey = new SurveyPDF.Survey(json, options);
@@ -209,3 +239,4 @@ survey.data = {
 
 survey.render();
 survey.save();
+

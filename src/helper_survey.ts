@@ -116,11 +116,16 @@ export class SurveyHelper {
         });
         return composite;
     }
-    static createTitleFlat(point: IPoint, question: Question, controller: DocController): IPdfBrick {
+    static createBoldTextFlat(point: IPoint, question: Question, controller: DocController, text: string) {
         controller.fontStyle = 'bold';
         let composite: IPdfBrick = SurveyHelper.createTextFlat(point, question, controller,
-            SurveyHelper.getTitleText(question), TitleBrick);
+            text, TitleBrick);
         controller.fontStyle = 'normal';
+        return composite;
+    }
+    static createTitleFlat(point: IPoint, question: Question, controller: DocController): IPdfBrick {
+        let composite: IPdfBrick = SurveyHelper.createBoldTextFlat(point, question, controller,
+            SurveyHelper.getTitleText(question));
         return composite;
     }
     static createTitlePanelFlat(point: IPoint, question: IQuestion,
@@ -160,5 +165,16 @@ export class SurveyHelper {
     }
     static getLocString(locObj: LocalizableString): string {
         return locObj.renderedHtml;
+    }
+    static getColumnWidth(question: Question, controller: DocController) {
+        return (controller.paperWidth - controller.margins.marginLeft
+            - controller.margins.marginRight) /
+            (question.hasRows ? (question.visibleColumns.length + 1)
+                : question.visibleColumns.length);
+    }
+    static setColumnMargins(question: Question, controller: DocController, column: number) {
+        let cellWidth = this.getColumnWidth(question, controller);
+        controller.margins.marginLeft = controller.margins.marginLeft + column * cellWidth;
+        controller.margins.marginRight = controller.paperWidth - controller.margins.marginLeft - cellWidth;
     }
 }

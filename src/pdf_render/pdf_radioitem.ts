@@ -28,7 +28,7 @@ export class RadioItemBrick extends PdfBrick {
         if (this.isFirst) {
             this.radioGroupWrap.addToPdf();
         }
-        let name = this.radioGroupWrap.radioGroup.name + 'value' + this.itemValue;
+        let name = this.radioGroupWrap.radioGroup.value + 'value' + this.itemValue;
         let radioButton = this.radioGroupWrap.radioGroup.createOption(name);
         radioButton.Rect = SurveyHelper.createAcroformRect(this);
         if (this.сhecked) {
