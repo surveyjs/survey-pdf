@@ -5,6 +5,11 @@
 import { PdfSurvey } from '../src/survey';
 import { FlatCheckbox } from '../src/flat_layout/flat_checkbox';
 import { TestHelper } from '../src/helper_test';
+import { FlatSurvey } from '../src/flat_layout/flat_survey';
+import { IPdfBrick } from '../src/pdf_render/pdf_brick';
+import { SurveyHelper } from '../src/helper_survey';
+import { TextBrick } from '../src/pdf_render/pdf_text';
+import { IRect } from '../src/doc_controller';
 let __dummy_cb = new FlatCheckbox(null, null);
 
 test('Test has other checkbox', () => {
@@ -119,4 +124,35 @@ test('Test two equal values checkbox', () => {
 			expect(acroCheckBox.readOnly).toBe(false);
 		}
 	);
+});
+test('Test has other checkbox', () => {
+	let json = {
+		questions: [
+			{
+				titleLocation: 'hidden',
+				name: 'checkbox',
+				type: 'checkbox',
+				hasOther: true,
+				otherText: 'Other(describe)'
+			}
+		]
+	};
+	let options = TestHelper.defaultOptions;
+	options.paperWidth = 40;
+	let survey: PdfSurvey = new PdfSurvey(json, options);
+	let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
+	let receivedRects: IRect[] = flats[0][0].unfold();
+	let currPoint = TestHelper.defaultPoint;
+	let itemWidth = SurveyHelper.measureText().width;
+	let assumeRects: IRect[] = [];
+	let itemRect = SurveyHelper.createRect(currPoint, itemWidth, itemWidth);
+	assumeRects.push(itemRect);
+	currPoint = SurveyHelper.createPoint(itemRect, false, true);
+	let textRect =
+		SurveyHelper.createTextFlat(currPoint, survey.getAllQuestions()[0], survey.controller, json.questions[0].otherText, TextBrick).unfold();
+	currPoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(itemRect, ...textRect));
+	assumeRects.push(...textRect);
+	let textFieldRect = SurveyHelper.createTextFieldRect(currPoint, survey.controller, 2);
+	assumeRects.push(textFieldRect);
+	TestHelper.equalRects(expect, receivedRects, assumeRects);
 });
