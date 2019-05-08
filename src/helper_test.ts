@@ -18,7 +18,7 @@ export class TestHelper {
     }
     static get defaultOptions(): IDocOptions {
         return {
-            fontSize: 30, xScale: 0.22, yScale: 0.36,
+            fontSize: 30,
             margins: {
                 marginLeft: 10,
                 marginRight: 10,

@@ -1,220 +1,198 @@
-
-
 var json = {
-  questions: [
-    {
-      type: "matrix",
-      name: "Quality",
-      title: "Please indicate if you agree or disagree with the following statements",
-      columns: [
-        {
-          value: 1,
-          text: "Strongly Disagree"
-        }, {
-          value: 2,
-          text: "Disagree"
-        }, {
-          value: 3,
-          text: "Neutral"
-        }, {
-          value: 4,
-          text: "Agree"
-        }, {
-          value: 5,
-          text: "Strongly Agree"
-        }
-      ],
-      rows: [
-        {
-          value: "affordable",
-          text: "Product is affordable"
-        }, {
-          value: "does what it claims",
-          text: "Product does what it claims"
-        }, {
-          value: "better then others",
-          text: "Product is better than other products on the marketfewfwefwefwqefgweqfjkqw;111111111111111111111111111111111111111111111111111111"
-        }, {
-          value: "easy to use",
-          text: "Product is easy to use22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222"
-        }
-      ]
-    },
-    {
-      name: 'checkbox',
-      type: 'checkbox',
-      hasComment: 'true',
-      titleLocation: 'left',
-      title: 'test'
-
-    },
-    {
-      type: "checkbox",
-      name: "radio",
-      title: "What radio you are like?",
-      titleLocation: "bottom",
-      description: "Another description",
-      choices: ["Radio City", "Big FM", "Red FM", "Radio Mirchi"],
-      indent: 2,
-      startWithNewLine: false
-    },
-    {
-      name: "name",
-      type: "text",
-      title: "Please enter your name:",
-      titleLocation: "hidden",
-      description: "Hidden description",
-      indent: 1,
-      readOnly: true
-    },
-    {
-      name: "name2",
-      type: "text",
-      title: "Rarrararar:",
-      isRequired: true,
-      titleLocation: "left",
-      description: "Left descriptionnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn",
-      inputType: "password"
-    },
-    {
-      type: "checkbox",
-      name: "car2",
-      title: "What car are YOU driving?",
-      isRequired: true,
-      choices: ["A", "B", "EEE", "UU"],
-      titleLocation: "left"
-    },
-    {
-      type: "radiogroup",
-      name: "car3",
-      title: "What car are you driving?",
-      isRequired: true,
-      readOnly: true,
-      choices: [
-        "Ford",
-        "Vauxhall",
-        "Volkswagen",
-        "Nissan",
-        "Audi",
-        "Mercedes-Benz",
-        "BMW"
-      ],
-      titleLocation: "top"
-    },
-    {
-      type: "radiogroup",
-      name: "car4",
-      title: "What LONG car are you driving?",
-      isRequired: true,
-      choices: [
-        "Ford",
-        "Vauxhall",
-        "Volkswagen",
-        "Nissan",
-        "Audi",
-        "Mercedes-Benz",
-        "BMW",
-        "car0",
-        "car1",
-        "car2",
-        "car3",
-        "car4",
-        "car5",
-        "car6",
-        "car7",
-        "car8",
-        "car9",
-        "car10",
-        "car11",
-        "car12",
-        "car13",
-        "car14",
-        "car15",
-        "car16",
-        "car17",
-        "car18",
-        "car19",
-        "car20",
-        "car21",
-        "car22",
-        "car23",
-        "car24",
-        "car25",
-        "car26",
-        "car27",
-        "car28",
-        "car29"
-      ],
-      titleLocation: "top",
-      indent: 4,
-      startWithNewLine: false
-    },
-    {
-      name: "name3",
-      type: "text",
-      title: "Rarr 1",
-      titleLocation: "top",
-      defaultValue: "def",
-      inputType: "password",
-      placeHolder: "holder"
-    },
-    {
-      name: "name4",
-      type: "comment",
-      title: "Comment",
-      isRequired: true,
-      titleLocation: "top",
-      defaultValue: "def2",
-      placeHolder: "holder"
-    },
-    {
-      name: "name5",
-      type: "text",
-      title: "Rarr 2:",
-      titleLocation: "top",
-      inputType: "password"
-    },
-    {
-      name: "name6",
-      type: "comment",
-      title: "Comment 2",
-      isRequired: true,
-      titleLocation: "top",
-      startWithNewLine: false
-    },
-    {
-      name: "name7",
-      type: "text",
-      title: "Rarrararar:",
-      isRequired: true,
-      titleLocation: "top",
-      indent: 6
-    },
-    {
-      name: "name8",
-      type: "text",
-      title: "Rarrararar:",
-      isRequired: true,
-      titleLocation: "top",
-      placeHolder: "holder"
-    },
-    {
-      name: "name9",
-      type: "text",
-      title: "Rarrararar:",
-      isRequired: true,
-      titleLocation: "top",
-      placeHolder: "holder",
-      readOnly: true
-    },
-    {
-      name: "name10",
-      type: "text",
-      title: "Rarrararar:",
-      isRequired: true,
-      titleLocation: "top"
-    }
-  ]
+questions: [
+{
+	type: "checkbox",
+	name: "car",
+	title: "What car are you driving?",
+	description: "Description",
+	isRequired: true,
+	choices: [
+		"Ford",
+		"Vauxhall",
+		"Volkswagen",
+		"Nissan",
+		"Audi",
+		"Mercedes-Benz",
+		"BMW"
+	],
+	titleLocation: "top",
+	indent: 0
+},
+{
+	type: "checkbox",
+	name: "radio",
+	title: "What radio you are like?",
+	titleLocation: "bottom",
+	description: "Another description",
+	choices: ["Radio City", "Big FM", "Red FM", "Radio Mirchi"],
+	indent: 2,
+	startWithNewLine: false
+},
+{
+	name: "name",
+	type: "text",
+	title: "Please enter your name:",
+	titleLocation: "hidden",
+	description: "Hidden description",
+	indent: 1,
+	readOnly: true
+},
+{
+type: 'dropdown',
+name: 'Expand me',
+	choices: [
+		'item1',
+		'item2',
+		'item3'
+	]
+},
+{
+	name: "name2",
+	type: "text",
+	title: "Rarrararar:",
+	isRequired: true,
+	titleLocation: "left",
+	description: "Left descriptionnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn",
+	inputType: "password"
+},
+{
+	type: "checkbox",
+	name: "car2",
+	title: "What car are YOU driving?",
+	isRequired: true,
+	choices: ["A", "B", "EEE", "UU"],
+	titleLocation: "left"
+},
+{
+	type: "checkbox",
+	name: "car3",
+	title: "What car are you driving?",
+	isRequired: true,
+	choices: [
+		"Ford",
+		"Vauxhall",
+		"Volkswagen",
+		"Nissan",
+		"Audi",
+		"Mercedes-Benz",
+		"BMW"
+	],
+	titleLocation: "top"
+},
+{
+	type: "radiogroup",
+	name: "car4",
+	title: "What LONG car are you driving?",
+	isRequired: true,
+	choices: [
+		"Ford",
+		"Vauxhall",
+		"Volkswagen",
+		"Nissan",
+		"Audi",
+		"Mercedes-Benz",
+		"BMW",
+		"car0",
+		"car1",
+		"car2",
+		"car3",
+		"car4",
+		"car5",
+		"car6",
+		"car7",
+		"car8",
+		"car9",
+		"car10",
+		"car11",
+		"car12",
+		"car13",
+		"car14",
+		"car15",
+		"car16",
+		"car17",
+		"car18",
+		"car19",
+		"car20",
+		"car21",
+		"car22",
+		"car23",
+		"car24",
+		"car25",
+		"car26",
+		"car27",
+		"car28",
+		"car29"
+	],
+	titleLocation: "top",
+	indent: 4,
+	startWithNewLine: false
+},
+{
+	name: "name3",
+	type: "text",
+	title: "Rarr 1",
+	titleLocation: "top",
+	defaultValue: "def",
+	inputType: "password",
+	placeHolder: "holder"
+},
+{
+	name: "name4",
+	type: "comment",
+	title: "Comment",
+	isRequired: true,
+	titleLocation: "top",
+	defaultValue: "def2",
+	placeHolder: "holder"
+},
+{
+	name: "name5",
+	type: "text",
+	title: "Rarr 2:",
+	titleLocation: "top",
+	inputType: "password"
+},
+{
+	name: "name6",
+	type: "comment",
+	title: "Comment 2",
+	isRequired: true,
+	titleLocation: "top",
+	startWithNewLine: false
+},
+{
+	name: "name7",
+	type: "text",
+	title: "Rarrararar:",
+	isRequired: true,
+	titleLocation: "top",
+	indent: 6
+},
+{
+	name: "name8",
+	type: "text",
+	title: "Rarrararar:",
+	isRequired: true,
+	titleLocation: "top",
+	placeHolder: "holder"
+},
+{
+	name: "name9",
+	type: "text",
+	title: "Rarrararar:",
+	isRequired: true,
+	titleLocation: "top",
+	placeHolder: "holder",
+	readOnly: true
+},
+{
+	name: "name10",
+	type: "text",
+	title: "Rarrararar:",
+	isRequired: true,
+	titleLocation: "top"
+}
+]
 };
 
 // var json = {
@@ -368,26 +346,25 @@ var json = {
 //  };
 
 let options = {
-  fontSize: 30, xScale: 0.22, yScale: 0.36,
-  margins:
-  {
-    marginLeft: 10,
-    marginRight: 10,
-    marginTop: 10,
-    marginBot: 10
-  }
+fontSize: 30,
+margins:
+{
+	marginLeft: 10,
+	marginRight: 10,
+	marginTop: 10,
+	marginBot: 10
+}
 };
 
 var survey = new SurveyPDF.Survey(json, options);
 survey.data = {
-  car: ["Ford"],
-  name: "SUPER",
-  name2: "DATA",
-  car2: ["A", "EEE"],
-  radio: "Red FM",
-  name4: "notdef"
+	car: ["Ford"],
+	name: "SUPER",
+	name2: "DATA",
+	car2: ["A", "EEE"],
+	radio: "Red FM",
+	name4: "notdef"
 };
 
 survey.render();
 survey.save();
-
