@@ -18,6 +18,10 @@ export class TextFieldBrick extends PdfBrick {
         let inputField = this.question.inputType !== 'password' ?
             new (<any>this.controller.doc.AcroFormTextField)() :
             new (<any>this.controller.doc.AcroFormPasswordField)();
+        inputField.fieldName = this.question.id;
+        if (!this.isQuestion) {
+            inputField.fieldName += '_comment';
+        }
         inputField.Rect = SurveyHelper.createAcroformRect(this);
         if (this.isQuestion && this.question.inputType !== 'password') {
             inputField.value = this.question.value || this.question.defaultValue || '';
@@ -26,7 +30,6 @@ export class TextFieldBrick extends PdfBrick {
         else inputField.value = '';
         inputField.multiline = this.isMultiline;
         inputField.readOnly = this.question.isReadOnly;
-        inputField.fieldName = this.question.id;
         this.controller.doc.addField(inputField);
     }
 }

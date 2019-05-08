@@ -12,8 +12,8 @@ export class FlatRadiogroup extends FlatSelectBase {
         super(question, controller);
         this.question = <QuestionCheckboxModel>question;
     }
-    public createItemBrick(rect: IRect, itemValue: ItemValue, index: number): IPdfBrick {
-        if (index == 0) {
+    createItemBrick(rect: IRect, itemValue: ItemValue, index: number): IPdfBrick {
+        if (index === 0) {
             this.radioGroupWrap = new RadioGroupWrap(this.question.id, this.controller, this.question.readOnly);
         }
         return new RadioItemBrick(this.question, this.controller, rect,

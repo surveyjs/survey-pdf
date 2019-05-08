@@ -1,4 +1,4 @@
-import * as jsPDF from "jspdf";
+import * as jsPDF from 'jspdf';
 export interface IPoint {
     xLeft: number;
     yTop: number;
@@ -15,8 +15,6 @@ export interface IMargin {
 }
 export interface IDocOptions {
     fontSize: number;
-    xScale: number;
-    yScale: number;
     paperWidth?: number;
     paperHeight?: number;
     margins: IMargin;
@@ -25,15 +23,11 @@ export interface IDocOptions {
 export class DocOptions implements IDocOptions {
     protected static PAPER_TO_LOGIC_SCALE_MAGIC: number = 595.28 / 210.0;
     protected _fontSize: number;
-    protected _xScale: number;
-    protected _yScale: number;
     protected _paperWidth: number;
     protected _paperHeight: number;
     protected _margins: IMargin;
     constructor(options: IDocOptions) {
         this._fontSize = options.fontSize;
-        this._xScale = options.xScale;
-        this._yScale = options.yScale;
         this._paperWidth =
             typeof options.paperWidth === "undefined" ? 210 : options.paperWidth;
         this._paperHeight =
@@ -48,12 +42,6 @@ export class DocOptions implements IDocOptions {
     }
     get fontSize(): number {
         return this._fontSize;
-    }
-    get xScale(): number {
-        return this._xScale;
-    }
-    get yScale(): number {
-        return this._yScale;
     }
     get paperWidth(): number {
         return this._paperWidth;

@@ -2,13 +2,14 @@
     return {};
 };
 
-import { Question, QuestionCommentModel } from 'survey-core';
+import { Question, QuestionCommentModel, ExpressionOperand } from 'survey-core';
 import { PdfSurvey } from '../src/survey';
 import { IPoint, IRect, DocController } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { FlatTextbox } from '../src/flat_layout/flat_textbox';
 import { FlatComment } from '../src/flat_layout/flat_comment';
 import { FlatCheckbox } from '../src/flat_layout/flat_checkbox';
+import { FlatDropdown } from '../src/flat_layout/flat_dropdown';
 import { FlatBoolean } from '../src/flat_layout/flat_boolean';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { TextBrick } from '../src/pdf_render/pdf_text';
@@ -21,6 +22,7 @@ import { TestHelper } from '../src/helper_test';
 let __dummy_tx = new FlatTextbox(null, null);
 let __dummy_cm = new FlatComment(null, null);
 let __dummy_cb = new FlatCheckbox(null, null);
+let __dummy_dd = new FlatDropdown(null, null);
 let __dummy_bl = new FlatBoolean(null, null);
 SurveyHelper.setFontSize(TestHelper.defaultOptions.fontSize);
 
@@ -86,11 +88,7 @@ export function calcIndent(expect: any, leftTopPoint: IPoint, controller: DocCon
     compositeFlat: IPdfBrick, checktext: string, titleQuestion: Question = null) {
     let assumeTitle: IRect = SurveyHelper.createRect(leftTopPoint, 0, 0);
     if (titleQuestion != null) {
-        controller.fontStyle = 'bold'
-        assumeTitle = SurveyHelper.createTextFlat(
-            leftTopPoint, null, controller,
-            SurveyHelper.getTitleText(titleQuestion), TitleBrick);
-        controller.fontStyle = 'normal'
+        assumeTitle = SurveyHelper.createTitleFlat(leftTopPoint, titleQuestion, controller);
     }
     let assumeCheckbox: IRect = SurveyHelper.createRect(
         SurveyHelper.createPoint(assumeTitle),
@@ -763,4 +761,46 @@ test('Check boolean with title', () => {
         yTop: survey.controller.leftTopPoint.yTop,
         yBot: survey.controller.leftTopPoint.yTop + SurveyHelper.measureText().height * 2
     })
+});
+test('Check dropdown', () => {
+    let json = {
+        elements: [
+            {
+                type: 'dropdown',
+                name: 'expand me',
+                choices: [
+                    'right choice'
+                ]
+            }
+        ]
+    };
+    let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
+    expect(flats.length).toBe(1);
+    expect(flats[0].length).toBe(1);
+    calcTitleTop(survey.controller.leftTopPoint, survey.controller,
+        <Question>survey.getAllQuestions()[0], flats[0][0]);
+});
+test('Check dropdown with other', () => {
+    let json = {
+        elements: [
+            {
+                type: 'dropdown',
+                name: 'expand me',
+                choices: [
+                    'right choice'
+                ],
+                hasOther: true
+            }
+        ]
+    };
+    let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
+    expect(flats.length).toBe(1);
+    expect(flats[0].length).toBe(1);
+    let otherPoint: IPoint = calcTitleTop(survey.controller.leftTopPoint, survey.controller,
+        <Question>survey.getAllQuestions()[0], TestHelper.wrapRect(SurveyHelper.mergeRects( 
+            flats[0][0].unfold()[0], flats[0][0].unfold()[1])));
+    TestHelper.equalRect(expect, flats[0][0].unfold()[2], SurveyHelper.createOtherFlat(
+        otherPoint, null, survey.controller));
 });

@@ -4,6 +4,7 @@ import { IPdfBrick } from './pdf_render/pdf_brick';
 import { TitleBrick } from './pdf_render/pdf_title';
 import { TitlePanelBrick } from './pdf_render/pdf_titlepanel';
 import { DescriptionBrick } from './pdf_render/pdf_description';
+import { CommentBrick } from './pdf_render/pdf_comment';
 import { CompositeBrick } from './pdf_render/pdf_composite';
 import { RowlineBrick } from './pdf_render/pdf_rowline';
 import * as jsPDF from 'jspdf';
@@ -145,6 +146,10 @@ export class SurveyHelper {
         let composite: IPdfBrick = SurveyHelper.createTextFlat(point, question, controller, text, DescriptionBrick);
         controller.fontSize = oldFontSize;
         return composite;
+    }
+    static createOtherFlat(point: IPoint, question: IQuestion, controller: DocController): IPdfBrick {
+        let otherRect: IRect = SurveyHelper.createTextFieldRect(point, controller, 2);
+        return new CommentBrick(question, controller, otherRect, false);
     }
     static createTextFieldRect(point: IPoint, controller: DocController, lines: number = 1): IRect {
         let width: number = controller.paperWidth - point.xLeft -
