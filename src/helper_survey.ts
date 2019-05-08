@@ -186,4 +186,13 @@ export class SurveyHelper {
             yBot: point.yTop + SurveyHelper.EPSILON
         });
     }
+    static clone(src: any) {
+        let target: any = {};
+        for (let prop in src) {
+            if (src.hasOwnProperty(prop)) {
+                target[prop] = src[prop];
+            }
+        }
+        return target;
+    }
 }

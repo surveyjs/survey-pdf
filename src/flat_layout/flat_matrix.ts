@@ -17,7 +17,7 @@ export class FlatMatrix extends FlatQuestion {
     }
     protected generateFlatsHeader(point: IPoint): IPdfBrick[] {
         let headers: IPdfBrick[] = [];
-        let currPoint: IPoint = Object.assign({}, point);
+        let currPoint: IPoint = SurveyHelper.clone(point);
         this.question.visibleColumns.forEach((column: any, index: number) => {
             let columText = SurveyHelper.getLocString(column.locText);
             let oldLeftMargin = this.controller.margins.marginLeft;
@@ -34,7 +34,7 @@ export class FlatMatrix extends FlatQuestion {
     }
     protected generateFlatsRows(point: IPoint, isVertical: boolean): IPdfBrick[] {
         let cells: IPdfBrick[] = [];
-        let currPoint: IPoint = Object.assign({}, point);
+        let currPoint: IPoint = SurveyHelper.clone(point);
         this.question.visibleRows.forEach((row: any, index: number) => {
             let key = "row" + index;
             let flatsRow = new FlatMatrixRow(this.question, this.controller, row, key, index == 0, isVertical).generateFlatsContent(currPoint);
@@ -45,7 +45,7 @@ export class FlatMatrix extends FlatQuestion {
     }
     public generateFlatsContent(point: IPoint): IPdfBrick[] {
         if (!this.question) return null;
-        let currPoint: IPoint = Object.assign({}, point);
+        let currPoint: IPoint = SurveyHelper.clone(point);
         let cells: IPdfBrick[] = [];
         let isVertical = false;
         let cellWidth = SurveyHelper.getColumnWidth(this.question, this.controller);
@@ -72,7 +72,7 @@ export class FlatMatrixRow extends FlatQuestion {
     }
     generateFlatsContent(point: IPoint): IPdfBrick[] {
         if (!this.row) return null;
-        let currPoint: IPoint = Object.assign({}, point);
+        let currPoint: IPoint = SurveyHelper.clone(point);
         let cells: IPdfBrick[] = [];
         if (this.isVertical) {
             cells.push(...this.generateFlatsVerticallyCells(currPoint))
@@ -85,7 +85,7 @@ export class FlatMatrixRow extends FlatQuestion {
     }
     generateFlatsHorizontallyCells(point: IPoint): IPdfBrick[] {
         let cells: IPdfBrick[] = [];
-        let currPoint: IPoint = Object.assign({}, point);
+        let currPoint: IPoint = SurveyHelper.clone(point);
         let radioGroupWrap: RadioGroupWrap = new RadioGroupWrap(this.question.id + this.key, this.controller);
         if (this.question.hasRows) {
             let oldLeftMargin = this.controller.margins.marginLeft;
@@ -121,7 +121,7 @@ export class FlatMatrixRow extends FlatQuestion {
 
     generateFlatsVerticallyCells(point: IPoint): IPdfBrick[] {
         let radioGroupWrap: RadioGroupWrap = new RadioGroupWrap(this.question.id + this.key, this.controller);
-        let currPoint: IPoint = Object.assign({}, point);
+        let currPoint: IPoint = SurveyHelper.clone(point);
         let cells: IPdfBrick[] = [];
         if (this.question.hasRows) {
             let rowTextFlat = SurveyHelper.createTextFlat(currPoint, this.question,
