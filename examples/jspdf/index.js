@@ -169,6 +169,28 @@ name: 'Expand me',
 	indent: 6
 },
 {
+	type: "rating",
+	name: "ratq",
+	rateValues: [
+		{
+			value: "item1",
+			text: "Text 1"
+		},
+		{
+			value: "item2",
+			text: "TE2222222222XT"
+		},
+		{
+			value: "item3",
+			text: "T33333E333333333X3333333333333333333333333333333333"
+		},
+		'item4',
+		'item5',
+		'item6',
+		'item7'
+	]
+},
+{
 	name: "name8",
 	type: "text",
 	title: "Rarrararar:",

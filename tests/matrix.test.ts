@@ -35,7 +35,7 @@ test('test matrix hasRows true columns', () => {
     let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
     let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
     let assumeCells: IRect[] = [];
-    let header = SurveyHelper.measureText(json.questions[0].columns[0].text, TestHelper.defaultOptions.fontSize, 'bold');
+    let header = SurveyHelper.measureText(json.questions[0].columns[0].text, 'bold');
     let currPoint = TestHelper.defaultPoint;
     let cellWidth = (210 - TestHelper.defaultOptions.margins.marginLeft
         - TestHelper.defaultOptions.margins.marginRight) / 2;
@@ -70,7 +70,7 @@ test('test matrix hasRows false columns', () => {
     let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
     let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
     let assumeCells: IRect[] = [];
-    let header = SurveyHelper.measureText(json.questions[0].columns[0].text, TestHelper.defaultOptions.fontSize, 'bold');
+    let header = SurveyHelper.measureText(json.questions[0].columns[0].text, 'bold');
     let columnRect = SurveyHelper.createRect(TestHelper.defaultPoint, header.width, header.height);
     assumeCells.push(columnRect);
     let rowLineRect = SurveyHelper.createRowlineFlat(SurveyHelper.createPoint(columnRect), survey.controller);

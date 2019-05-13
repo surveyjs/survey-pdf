@@ -42,7 +42,7 @@ export class FlatSurvey {
         if (!pagePanel.isVisible) return;
         pagePanel.onFirstRendering();
         let pagePanelFlats: IPdfBrick[] = new Array<IPdfBrick>();
-        let currPoint: IPoint = { xLeft: point.xLeft, yTop: point.yTop };
+        let currPoint: IPoint = SurveyHelper.clone(point);
         pagePanel.rows.forEach((row: QuestionRowModel) => {
             if (!row.visible) return;
             let width: number = controller.paperWidth -

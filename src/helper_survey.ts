@@ -1,4 +1,4 @@
-import { LocalizableString, Question, IQuestion } from 'survey-core';
+import { IQuestion, Question, QuestionRatingModel, ItemValue, LocalizableString } from 'survey-core';
 import { IPoint, IRect, DocController } from './doc_controller';
 import { IPdfBrick } from './pdf_render/pdf_brick';
 import { TitleBrick } from './pdf_render/pdf_title';
@@ -17,6 +17,8 @@ export class SurveyHelper {
     static EPSILON: number = 2.2204460492503130808472633361816e-15;
     static TITLE_PANEL_FONT_SIZE_SCALE_MAGIC: number = 1.3;
     static DESCRIPTION_FONT_SIZE_SCALE_MAGIC: number = 2.0 / 3.0;
+    static RATING_MIN_WIDTH: number = 3;
+    static RATING_MIN_HEIGHT: number = 2;
     private static _doc: any = new jsPDF();
     public static setFontSize(fontSize: number, font?: string) {
         this._doc.setFontSize(fontSize);
@@ -24,8 +26,8 @@ export class SurveyHelper {
             this._doc.setFont(font)
         }
     }
-    static measureText(text: number | string = 1, fontSize: number = this._doc.getFontSize(),
-        fontStyle: string = 'normal') {
+    static measureText(text: number | string = 1, fontStyle: string = 'normal',
+        fontSize: number = this._doc.getFontSize()) {
         let oldFontSize = this._doc.getFontSize();
         this._doc.setFontSize(fontSize);
         this._doc.setFontStyle(fontStyle);
@@ -81,7 +83,8 @@ export class SurveyHelper {
             while (word.length > 0) {
                 for (let i: number = word.length; i > 0; i--) {
                     let subword: string = word.substring(0, i);
-                    let width: number = SurveyHelper.measureText(subword, controller.fontSize, controller.fontStyle).width;
+                    let width: number = SurveyHelper.measureText(subword,
+                        controller.fontStyle, controller.fontSize).width;
                     if (i == 1 || point.xLeft + width <= controller.paperWidth -
                         controller.margins.marginRight + SurveyHelper.EPSILON) {
                         words.push(subword);
@@ -92,25 +95,28 @@ export class SurveyHelper {
             }
         });
         let texts: IText[] = new Array<IText>();
-        let currPoint: IPoint = { xLeft: point.xLeft, yTop: point.yTop };
+        let currPoint: IPoint = SurveyHelper.clone(point);
         texts.push({ text: '', rect: null });
         words.forEach((word: string) => {
             let lastIndex: number = texts.length - 1;
             let currText: string = texts[lastIndex].text;
             let space: string = currText != '' ? ' ' : '';
-            let width: number = SurveyHelper.measureText(currText + space + word, controller.fontSize, controller.fontStyle).width;
+            let width: number = SurveyHelper.measureText(currText + space + word,
+                controller.fontStyle, controller.fontSize).width;
             if (currPoint.xLeft + width <= controller.paperWidth -
                 controller.margins.marginRight + SurveyHelper.EPSILON) {
                 texts[lastIndex].text += space + word;
             }
             else {
-                let { width, height } = SurveyHelper.measureText(texts[lastIndex].text, controller.fontSize, controller.fontStyle);
+                let { width, height } = SurveyHelper.measureText(texts[lastIndex].text,
+                    controller.fontStyle, controller.fontSize);
                 texts[lastIndex].rect = SurveyHelper.createRect(currPoint, width, height);
                 texts.push({ text: word, rect: null });
                 currPoint.yTop += height;
             }
         });
-        let { width, height } = SurveyHelper.measureText(texts[texts.length - 1].text, controller.fontSize, controller.fontStyle);
+        let { width, height } = SurveyHelper.measureText(texts[texts.length - 1].text,
+            controller.fontStyle, controller.fontSize);
         texts[texts.length - 1].rect = SurveyHelper.createRect(currPoint, width, height);
         let composite: CompositeBrick = new CompositeBrick();
         texts.forEach((text: IText) => {
@@ -171,6 +177,21 @@ export class SurveyHelper {
     }
     static getLocString(locObj: LocalizableString): string {
         return locObj.renderedHtml;
+    }
+    static getRatingMinWidth(): number {
+        return SurveyHelper.measureText(SurveyHelper.RATING_MIN_WIDTH).width;
+    }
+    static getRatingItemText(question: QuestionRatingModel,
+        index: number, text: string): string {
+        if (index == 0 && question.minRateDescription) {
+            text = SurveyHelper.getLocString(
+                question.locMinRateDescription) + text;
+        }
+        else if (index == question.visibleRateValues.length - 1 &&
+            question.maxRateDescription) {
+                text += SurveyHelper.getLocString(question.locMaxRateDescription);
+        }
+        return text;
     }
     static getColumnWidth(question: Question, controller: DocController) {
         return (controller.paperWidth - controller.margins.marginLeft
