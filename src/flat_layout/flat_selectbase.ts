@@ -29,7 +29,7 @@ export abstract class FlatSelectBase extends FlatQuestion {
         return compositeFlat;
     }
     generateFlatsContent(point: IPoint): IPdfBrick[] {
-        let currPoint: IPoint = { xLeft: point.xLeft, yTop: point.yTop };
+        let currPoint: IPoint = SurveyHelper.clone(point);
         let flats: IPdfBrick[] = new Array();
         this.question.visibleChoices.forEach((itemValue: ItemValue, index: number) => {
             let itemFlat: IPdfBrick = this.generateFlatsItem(currPoint, itemValue, index);

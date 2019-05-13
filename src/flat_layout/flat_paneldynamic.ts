@@ -14,7 +14,7 @@ export class FlatPanelDynamic extends FlatQuestion {
     }
     generateFlatsContent(point: IPoint): IPdfBrick[] {
         let flats: IPdfBrick[] = new Array<IPdfBrick>();
-        let currPoint: IPoint = { xLeft: point.xLeft, yTop: point.yTop };
+        let currPoint: IPoint = SurveyHelper.clone(point);
         this.question.panels.forEach((panel: PanelModel) => {
             let panelFlats: IPdfBrick[] = FlatSurvey.generateFlatsPanel(
                 currPoint, panel, this.controller);

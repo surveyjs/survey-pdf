@@ -92,7 +92,7 @@ export class SurveyHelper {
             }
         });
         let texts: IText[] = new Array<IText>();
-        let currPoint: IPoint = { xLeft: point.xLeft, yTop: point.yTop };
+        let currPoint: IPoint = SurveyHelper.clone(point);
         texts.push({ text: '', rect: null });
         words.forEach((word: string) => {
             let lastIndex: number = texts.length - 1;
