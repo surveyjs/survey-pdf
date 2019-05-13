@@ -1,4 +1,4 @@
-import { IQuestion, ItemValue, QuestionSelectBase } from 'survey-core';
+import { IQuestion, ItemValue, QuestionSelectBase, QuestionMatrixModel } from 'survey-core';
 import { IPoint, IRect, DocController } from "../doc_controller";
 import { FlatQuestion } from './flat_question';
 import { IPdfBrick } from '../pdf_render/pdf_brick'
@@ -8,7 +8,7 @@ import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
 
 export abstract class FlatSelectBase extends FlatQuestion {
-    protected question: QuestionSelectBase;
+    protected question: QuestionSelectBase | QuestionMatrixModel;
     constructor(question: IQuestion, protected controller: DocController) {
         super(question, controller);
         this.question = <QuestionSelectBase>question;
