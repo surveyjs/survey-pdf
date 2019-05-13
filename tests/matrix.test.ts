@@ -52,7 +52,7 @@ test('test matrix hasRows true columns', () => {
     receivedCells.push(...flats[0][0].unfold(), ...flats[0][2].unfold());
     TestHelper.equalRects(expect, receivedCells, assumeCells);
 })
-test.skip('test matrix hasRows false columns', () => {
+test('test matrix hasRows false columns', () => {
     let json = {
         questions: [
             {
@@ -73,12 +73,13 @@ test.skip('test matrix hasRows false columns', () => {
     let header = SurveyHelper.measureText(json.questions[0].columns[0].text, TestHelper.defaultOptions.fontSize, 'bold');
     let columnRect = SurveyHelper.createRect(TestHelper.defaultPoint, header.width, header.height);
     assumeCells.push(columnRect);
-    let currPoint = SurveyHelper.createPoint(columnRect);
+    let rowLineRect = SurveyHelper.createRowlineFlat(SurveyHelper.createPoint(columnRect), survey.controller);
+    assumeCells.push(rowLineRect);
+    let currPoint = SurveyHelper.createPoint(rowLineRect);
     let itemWidth = SurveyHelper.measureText().width;
     assumeCells.push(SurveyHelper.createRect(currPoint, itemWidth, itemWidth));
     TestHelper.equalRects(expect, flats[0], assumeCells);
 })
-
 test('test matrix vertical', () => {
     let json = {
         questions: [
@@ -161,4 +162,27 @@ test('test hidden header', () => {
         assumeCells.push(SurveyHelper.createRect(currPoint, itemWidth, itemWidth));
     }
     TestHelper.equalRects(expect, flats[0][0].unfold(), assumeCells);
+});
+test('test default value', () => {
+    let json = {
+        questions: [
+            {
+                titleLocation: 'hidden',
+                showHeader: false,
+                type: "matrix",
+                name: "Quality",
+                title: "Please indicate if you agree or disagree with the following statements",
+                defaultValue: "Column",
+                columns: [
+                    "Column",
+                    "Column2"
+                ]
+            }]
+    };
+    let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
+    survey.render();
+    let acroFormFields = survey.controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields;
+    expect(acroFormFields[0].value).toBe("sq_104row0");
+    expect(acroFormFields[1].AS).toBe("/sq_104row0index0");
+    expect(acroFormFields[2].AS).toBe("/Off");
 });
