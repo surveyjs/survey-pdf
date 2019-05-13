@@ -1,18 +1,18 @@
-import { IQuestion, QuestionMatrixModel, MatrixRowModel, QuestionCheckboxModel } from 'survey-core';
+import { IQuestion, QuestionMatrixModel, MatrixRowModel, QuestionRadiogroupModel } from 'survey-core';
 import { DocController, IPoint, IRect } from "../doc_controller";
 import { IPdfBrick } from '../pdf_render/pdf_brick'
 import { FlatRepository } from './flat_repository';
 import { FlatQuestion } from './flat_question';
 import { SurveyHelper } from '../helper_survey';
 import { TextBrick } from '../pdf_render/pdf_text';
-import { RadioGroupWrap, RadioItemBrick } from '../pdf_render/pdf_radioitem';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
+import { FlatRadiogroup } from './flat_radiogroup';
 
 
 export class FlatMatrix extends FlatQuestion {
     protected question: QuestionMatrixModel;
     constructor(question: IQuestion, protected controller: DocController) {
-        super(question, controller);
+        super(<QuestionRadiogroupModel>question, controller);
         this.question = <QuestionMatrixModel>question;
     }
     protected generateFlatsHeader(point: IPoint): IPdfBrick[] {
@@ -30,7 +30,8 @@ export class FlatMatrix extends FlatQuestion {
             this.controller.margins.marginLeft = oldLeftMargin;
             this.controller.margins.marginRight = oldRightMargin;
         });
-        return [new CompositeBrick(...headers), SurveyHelper.createRowlineFlat(currPoint, this.controller)];;
+        let compositeBrick = new CompositeBrick(...headers);
+        return [compositeBrick, SurveyHelper.createRowlineFlat(SurveyHelper.createPoint(compositeBrick), this.controller)];
     }
     protected generateFlatsRows(point: IPoint, isVertical: boolean): IPdfBrick[] {
         let cells: IPdfBrick[] = [];
@@ -63,7 +64,7 @@ export class FlatMatrix extends FlatQuestion {
     }
 }
 
-export class FlatMatrixRow extends FlatQuestion {
+export class FlatMatrixRow extends FlatRadiogroup {
     protected question: QuestionMatrixModel;
     constructor(question: IQuestion, protected controller: DocController, private row: MatrixRowModel,
         private key: string, protected isFirst: boolean = false, protected isVertical: boolean = false) {
@@ -86,7 +87,6 @@ export class FlatMatrixRow extends FlatQuestion {
     generateFlatsHorizontallyCells(point: IPoint): IPdfBrick[] {
         let cells: IPdfBrick[] = [];
         let currPoint: IPoint = SurveyHelper.clone(point);
-        let radioGroupWrap: RadioGroupWrap = new RadioGroupWrap(this.question.id + this.key, this.controller);
         if (this.question.hasRows) {
             let oldLeftMargin = this.controller.margins.marginLeft;
             let oldRightMargin = this.controller.margins.marginRight;
@@ -110,17 +110,16 @@ export class FlatMatrixRow extends FlatQuestion {
             else {
                 let height: number = SurveyHelper.measureText().height;
                 let itemRect: IRect = SurveyHelper.createRect(currPoint, height, height);
-                cells.push(new RadioItemBrick(this.question, this.controller, itemRect, column.value,
-                    checked, radioGroupWrap, index == 0));
+                cells.push(this.createItemBrick(itemRect, column, index, this.key, checked));
             }
             this.controller.margins.marginLeft = oldLeftMargin;
             this.controller.margins.marginRight = oldRightMargin;
         });
-        return [new CompositeBrick(...cells), SurveyHelper.createRowlineFlat(currPoint, this.controller)];
+        let compositeBrick = new CompositeBrick(...cells);
+        return [compositeBrick, SurveyHelper.createRowlineFlat(SurveyHelper.createPoint(compositeBrick), this.controller)];
     }
 
     generateFlatsVerticallyCells(point: IPoint): IPdfBrick[] {
-        let radioGroupWrap: RadioGroupWrap = new RadioGroupWrap(this.question.id + this.key, this.controller);
         let currPoint: IPoint = SurveyHelper.clone(point);
         let cells: IPdfBrick[] = [];
         if (this.question.hasRows) {
@@ -140,8 +139,7 @@ export class FlatMatrixRow extends FlatQuestion {
             else {
                 let height: number = SurveyHelper.measureText().height;
                 let itemRect: IRect = SurveyHelper.createRect(currPoint, height, height);
-                let radioItem: IPdfBrick = new RadioItemBrick(this.question, this.controller, itemRect, column.value,
-                    checked, radioGroupWrap, index == 0);
+                let radioItem: IPdfBrick = this.createItemBrick(itemRect, column, index, this.key, checked);
                 currPoint = SurveyHelper.createPoint(radioItem, false, true);
                 let radioText: IPdfBrick = SurveyHelper.createTextFlat(currPoint, this.question, this.controller, SurveyHelper.getLocString(column.locText), TextBrick);
                 let compositeBrick: CompositeBrick = new CompositeBrick(radioItem, radioText);
@@ -149,7 +147,8 @@ export class FlatMatrixRow extends FlatQuestion {
                 cells.push(compositeBrick);
             }
         });
-        return [new CompositeBrick(...cells), SurveyHelper.createRowlineFlat(currPoint, this.controller)];
+        let compositeBrick = new CompositeBrick(...cells);
+        return [compositeBrick, SurveyHelper.createRowlineFlat(SurveyHelper.createPoint(compositeBrick), this.controller)];
     }
 }
 
