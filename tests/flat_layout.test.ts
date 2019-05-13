@@ -2,14 +2,15 @@
     return {};
 };
 
-import { Question, QuestionCommentModel, ExpressionOperand } from 'survey-core';
+import { Question, QuestionCommentModel, QuestionRatingModel } from 'survey-core';
 import { PdfSurvey } from '../src/survey';
-import { IPoint, IRect, DocController } from '../src/doc_controller';
+import { IPoint, IRect, DocController, IDocOptions } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { FlatTextbox } from '../src/flat_layout/flat_textbox';
 import { FlatComment } from '../src/flat_layout/flat_comment';
 import { FlatCheckbox } from '../src/flat_layout/flat_checkbox';
 import { FlatDropdown } from '../src/flat_layout/flat_dropdown';
+import { FlatRating } from '../src/entries/pdf';
 import { FlatBoolean } from '../src/flat_layout/flat_boolean';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { TextBrick } from '../src/pdf_render/pdf_text';
@@ -20,9 +21,10 @@ import { RowlineBrick } from '../src/pdf_render/pdf_rowline';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 let __dummy_tx = new FlatTextbox(null, null);
-let __dummy_cm = new FlatComment(null, null);
 let __dummy_cb = new FlatCheckbox(null, null);
 let __dummy_dd = new FlatDropdown(null, null);
+let __dummy_cm = new FlatComment(null, null);
+let __dummy_rt = new FlatRating(null, null);
 let __dummy_bl = new FlatBoolean(null, null);
 SurveyHelper.setFontSize(TestHelper.defaultOptions.fontSize);
 
@@ -803,4 +805,152 @@ test('Check dropdown with other', () => {
             flats[0][0].unfold()[0], flats[0][0].unfold()[1])));
     TestHelper.equalRect(expect, flats[0][0].unfold()[2], SurveyHelper.createOtherFlat(
         otherPoint, null, survey.controller));
+});
+test('Check rating two elements', () => {
+    let json = {
+        elements: [
+            {
+                type: 'rating',
+                name: 'rateme',
+                titleLocation: 'hidden',
+                rateMax: 2
+            }
+        ]
+    };
+    let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
+    expect(flats.length).toBe(1);
+    expect(flats[0].length).toBe(1);
+    let assumeRating: IRect = {
+        xLeft: survey.controller.leftTopPoint.xLeft,
+        xRight: survey.controller.leftTopPoint.xLeft +
+            SurveyHelper.getRatingMinWidth() * 2,
+        yTop: survey.controller.leftTopPoint.yTop,
+        yBot: survey.controller.leftTopPoint.yTop +
+            SurveyHelper.measureText().height * SurveyHelper.RATING_MIN_HEIGHT
+    };
+    TestHelper.equalRect(expect, flats[0][0], assumeRating);
+});
+test('Check rating two elements with min rate description', () => {
+    let json = {
+        elements: [
+            {
+                type: 'rating',
+                name: 'rateme',
+                titleLocation: 'hidden',
+                rateMax: 2,
+                minRateDescription: 'I\'m sooooooo little'
+            }
+        ]
+    };
+    let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
+    expect(flats.length).toBe(1);
+    expect(flats[0].length).toBe(1);
+    let question: QuestionRatingModel = <QuestionRatingModel>survey.getAllQuestions()[0];
+    let assumeRating: IRect = {
+        xLeft: survey.controller.leftTopPoint.xLeft,
+        xRight: survey.controller.leftTopPoint.xLeft +
+            SurveyHelper.getRatingMinWidth() + SurveyHelper.measureText(
+                SurveyHelper.getRatingItemText(question, 0,
+                    question.rateMin.toString()), 'bold').width +
+                SurveyHelper.measureText().height,
+        yTop: survey.controller.leftTopPoint.yTop,
+        yBot: survey.controller.leftTopPoint.yTop +
+            SurveyHelper.measureText().height * SurveyHelper.RATING_MIN_HEIGHT
+    };
+    TestHelper.equalRect(expect, flats[0][0], assumeRating);
+});
+test('Check rating two elements with max rate description', () => {
+    let json = {
+        elements: [
+            {
+                type: 'rating',
+                name: 'rateme',
+                titleLocation: 'hidden',
+                rateMax: 2,
+                maxRateDescription: 'High rate !'
+            }
+        ]
+    };
+    let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
+    expect(flats.length).toBe(1);
+    expect(flats[0].length).toBe(1);
+    let question: QuestionRatingModel = <QuestionRatingModel>survey.getAllQuestions()[0];
+
+    let a = SurveyHelper.getRatingMinWidth();
+    let b = SurveyHelper.measureText(
+        SurveyHelper.getRatingItemText(question, 1, question.rateMax.toString()), 'bold').width;
+
+    let assumeRating: IRect = {
+        xLeft: survey.controller.leftTopPoint.xLeft,
+        xRight: survey.controller.leftTopPoint.xLeft +
+            SurveyHelper.getRatingMinWidth() + SurveyHelper.measureText(
+                SurveyHelper.getRatingItemText(question, 1,
+                    question.rateMax.toString()), 'bold').width +
+                SurveyHelper.measureText().height,
+        yTop: survey.controller.leftTopPoint.yTop,
+        yBot: survey.controller.leftTopPoint.yTop +
+            SurveyHelper.measureText().height * SurveyHelper.RATING_MIN_HEIGHT
+    };
+    TestHelper.equalRect(expect, flats[0][0], assumeRating);
+});
+test('Check rating many elements', () => {
+    let json = {
+        elements: [
+            {
+                type: 'rating',
+                name: 'rateme',
+                titleLocation: 'hidden',
+                rateMax: 6
+            }
+        ]
+    };
+    let options: IDocOptions = TestHelper.defaultOptions;
+    options.paperWidth = options.margins.marginLeft + options.margins.marginRight +
+        SurveyHelper.getRatingMinWidth() * 3;
+    let survey: PdfSurvey = new PdfSurvey(json, options);
+    let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
+    expect(flats.length).toBe(1);
+    expect(flats[0].length).toBe(2);
+    let assumeRating: IRect = {
+        xLeft: survey.controller.leftTopPoint.xLeft,
+        xRight: survey.controller.paperWidth - survey.controller.margins.marginRight,
+        yTop: survey.controller.leftTopPoint.yTop,
+        yBot: survey.controller.leftTopPoint.yTop +
+            SurveyHelper.measureText().height * SurveyHelper.RATING_MIN_HEIGHT * 2
+    };
+    TestHelper.equalRect(expect, SurveyHelper.mergeRects(flats[0][0], flats[0][1]), assumeRating);
+});
+test('Check rating two elements with long min rate description', () => {
+    let json = {
+        elements: [
+            {
+                type: 'rating',
+                name: 'rateme',
+                titleLocation: 'hidden',
+                rateMax: 2,
+                minRateDescription: '123456789'
+            }
+        ]
+    };
+    let longRateDesc: number = SurveyHelper.measureText(
+        json.elements[0].minRateDescription + ' 1', 'bold').width +
+        SurveyHelper.measureText().height;
+    let options: IDocOptions = TestHelper.defaultOptions;
+    options.paperWidth = options.margins.marginLeft +
+        options.margins.marginRight + longRateDesc;
+    let survey: PdfSurvey = new PdfSurvey(json, options);
+    let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
+    expect(flats.length).toBe(1);
+    expect(flats[0].length).toBe(2);
+    let assumeRating: IRect = {
+        xLeft: survey.controller.leftTopPoint.xLeft,
+        xRight: survey.controller.paperWidth - survey.controller.margins.marginRight,
+        yTop: survey.controller.leftTopPoint.yTop,
+        yBot: survey.controller.leftTopPoint.yTop +
+            SurveyHelper.measureText().height * SurveyHelper.RATING_MIN_HEIGHT * 2
+    };
+    TestHelper.equalRect(expect, SurveyHelper.mergeRects(flats[0][0], flats[0][1]), assumeRating);
 });

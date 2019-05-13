@@ -20,7 +20,7 @@ export class RadioGroupWrap {
 
 export class RadioItemBrick extends PdfBrick {
     constructor(question: IQuestion, controller: DocController,
-        rect: IRect, private itemValue: string, private сhecked: Boolean,
+        rect: IRect, private name: string, private сhecked: Boolean,
         private radioGroupWrap: RadioGroupWrap, private isFirst: boolean = false) {
         super(question, controller, rect);
     }
@@ -28,7 +28,7 @@ export class RadioItemBrick extends PdfBrick {
         if (this.isFirst) {
             this.radioGroupWrap.addToPdf();
         }
-        let name = this.radioGroupWrap.radioGroup.value + 'value' + this.itemValue;
+        let name = this.radioGroupWrap.radioGroup.value + 'value' + this.name;
         let radioButton = this.radioGroupWrap.radioGroup.createOption(name);
         radioButton.Rect = SurveyHelper.createAcroformRect(this);
         if (this.сhecked) {
