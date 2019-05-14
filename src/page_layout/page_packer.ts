@@ -14,8 +14,8 @@ export class PagePacker {
     static findBotInterval(intervals: PackInterval[],
         xLeft: number, xRight: number, options: DocOptions): PackInterval {
         intervals.push({ pageIndex: 0, xLeft:
-            options.margins.marginLeft, xRight: options.margins.marginLeft,
-            yBot: options.margins.marginTop, absBot: options.margins.marginTop });
+            options.margins.left, xRight: options.margins.left,
+            yBot: options.margins.top, absBot: options.margins.top });
         return intervals.reduce((mx, cr) => {
             if (Math.abs(cr.xRight - xLeft) < SurveyHelper.EPSILON ||
                 Math.abs(cr.xLeft - xRight) < SurveyHelper.EPSILON) return mx;
@@ -32,7 +32,7 @@ export class PagePacker {
     }
     static pack(flats: IPdfBrick[][], options: DocOptions): IPdfBrick[][] {
         let pageHeight: number = options.paperHeight -
-            options.margins.marginTop - options.margins.marginBot; 
+            options.margins.top - options.margins.bot; 
         let unfoldFlats: IPdfBrick[][] = new Array<IPdfBrick[]>();
         flats.forEach((flatsPage: IPdfBrick[]) => {
             unfoldFlats.push(new Array<IPdfBrick>());
@@ -55,7 +55,7 @@ export class PagePacker {
         });
         let pageIndexModel: number = 0;
         let packs: IPdfBrick[][] = new Array<IPdfBrick[]>();
-        let pageBot: number = options.paperHeight - options.margins.marginBot;
+        let pageBot: number = options.paperHeight - options.margins.bot;
         unfoldFlats.forEach((unfoldFlatsPage: IPdfBrick[]) => {
             let tree: IntervalTree<PackInterval> = new IntervalTree();
             unfoldFlatsPage.forEach((flat: IPdfBrick) => {
@@ -64,9 +64,9 @@ export class PagePacker {
                     intervals, flat.xLeft, flat.xRight, options);
                 let height: number = flat.yBot - flat.yTop;
                 flat.yTop = yBot + flat.yTop - absBot;
-                if (Math.abs(flat.yTop - options.margins.marginTop) > SurveyHelper.EPSILON &&
+                if (Math.abs(flat.yTop - options.margins.top) > SurveyHelper.EPSILON &&
                     flat.yTop + height > pageBot + SurveyHelper.EPSILON) {
-                    flat.yTop = options.margins.marginTop;
+                    flat.yTop = options.margins.top;
                     pageIndex++;
                 }
                 tree.insert(flat.xLeft, flat.xRight, { pageIndex: pageIndex,

@@ -7,7 +7,7 @@ import { TestHelper } from '../src/helper_test';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { IRect } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
-import { PdfSurvey } from '../src/survey';
+import { SurveyPDF } from '../src/survey';
 let __dummy_mx = new FlatMatrix(null, null);
 SurveyHelper.setFontSize(TestHelper.defaultOptions.fontSize);
 
@@ -32,14 +32,14 @@ test('test matrix hasRows true columns', () => {
                 ]
             }]
     };
-    let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
+    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
     let assumeCells: IRect[] = [];
     let header = SurveyHelper.measureText(json.questions[0].columns[0].text, 'bold');
     let currPoint = TestHelper.defaultPoint;
-    let cellWidth = (210 - TestHelper.defaultOptions.margins.marginLeft
-        - TestHelper.defaultOptions.margins.marginRight) / 2;
-    currPoint.xLeft = cellWidth + TestHelper.defaultOptions.margins.marginLeft;
+    let cellWidth = (210 - TestHelper.defaultOptions.margins.left
+        - TestHelper.defaultOptions.margins.right) / 2;
+    currPoint.xLeft = cellWidth + TestHelper.defaultOptions.margins.left;
     let columnRect = SurveyHelper.createRect(currPoint, header.width, header.height);
     assumeCells.push(columnRect);
     currPoint = SurveyHelper.createPoint(columnRect);
@@ -67,7 +67,7 @@ test('test matrix hasRows false columns', () => {
                 ]
             }]
     };
-    let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
+    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
     let assumeCells: IRect[] = [];
     let header = SurveyHelper.measureText(json.questions[0].columns[0].text, 'bold');
@@ -105,7 +105,7 @@ test('test matrix vertical', () => {
                 ]
             }]
     };
-    let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
+    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
     let assumeCells: IRect[] = [];
     let itemWidth = SurveyHelper.measureText().width;
@@ -150,15 +150,15 @@ test('test hidden header', () => {
                 ]
             }]
     };
-    let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
+    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
     let assumeCells: IRect[] = [];
     let itemWidth = SurveyHelper.measureText().width;
-    let cellWidth = (210 - TestHelper.defaultOptions.margins.marginLeft
-        - TestHelper.defaultOptions.margins.marginRight) / 3;
+    let cellWidth = (210 - TestHelper.defaultOptions.margins.left
+        - TestHelper.defaultOptions.margins.right) / 3;
     for (let i = 0; i < json.questions[0].columns.length; i++) {
         let currPoint = TestHelper.defaultPoint;
-        currPoint.xLeft = cellWidth * i + TestHelper.defaultOptions.margins.marginLeft;
+        currPoint.xLeft = cellWidth * i + TestHelper.defaultOptions.margins.left;
         assumeCells.push(SurveyHelper.createRect(currPoint, itemWidth, itemWidth));
     }
     TestHelper.equalRects(expect, flats[0][0].unfold(), assumeCells);
@@ -179,7 +179,7 @@ test('test default value', () => {
                 ]
             }]
     };
-    let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
+    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     survey.render();
     let acroFormFields = survey.controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields;
     expect(acroFormFields[0].value).toBe("sq_104row0");

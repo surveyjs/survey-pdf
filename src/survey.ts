@@ -5,7 +5,7 @@ import { PagePacker } from './page_layout/page_packer';
 import { IPdfBrick } from './pdf_render/pdf_brick';
 import { SurveyHelper } from './helper_survey';
 
-export class PdfSurvey extends SurveyModel {
+export class SurveyPDF extends SurveyModel {
     controller: DocController;
     constructor(jsonObject: any, options: IDocOptions) {
         super(jsonObject);

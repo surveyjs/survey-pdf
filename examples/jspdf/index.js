@@ -374,10 +374,10 @@ let options = {
 fontSize: 30,
 margins:
 {
-	marginLeft: 10,
-	marginRight: 10,
-	marginTop: 10,
-	marginBot: 10
+	left: 10,
+	right: 10,
+	top: 10,
+	bot: 10
 }
 };
 

@@ -20,15 +20,15 @@ export class FlatMatrix extends FlatQuestion {
         let currPoint: IPoint = SurveyHelper.clone(point);
         this.question.visibleColumns.forEach((column: any, index: number) => {
             let columText = SurveyHelper.getLocString(column.locText);
-            let oldLeftMargin = this.controller.margins.marginLeft;
-            let oldRightMargin = this.controller.margins.marginRight;
+            let oldLeftMargin = this.controller.margins.left;
+            let oldRightMargin = this.controller.margins.right;
             let columnNumber = (this.question.hasRows) ? index + 1 : index;
             SurveyHelper.setColumnMargins(this.question, this.controller, columnNumber);
-            currPoint.xLeft = this.controller.margins.marginLeft;
+            currPoint.xLeft = this.controller.margins.left;
             headers.push(SurveyHelper.createBoldTextFlat(currPoint,
                 this.question, this.controller, columText));
-            this.controller.margins.marginLeft = oldLeftMargin;
-            this.controller.margins.marginRight = oldRightMargin;
+            this.controller.margins.left = oldLeftMargin;
+            this.controller.margins.right = oldRightMargin;
         });
         let compositeBrick = new CompositeBrick(...headers);
         return [compositeBrick, SurveyHelper.createRowlineFlat(SurveyHelper.createPoint(compositeBrick), this.controller)];
@@ -88,21 +88,21 @@ export class FlatMatrixRow extends FlatRadiogroup {
         let cells: IPdfBrick[] = [];
         let currPoint: IPoint = SurveyHelper.clone(point);
         if (this.questionMatrix.hasRows) {
-            let oldLeftMargin = this.controller.margins.marginLeft;
-            let oldRightMargin = this.controller.margins.marginRight;
+            let oldLeftMargin = this.controller.margins.left;
+            let oldRightMargin = this.controller.margins.right;
             SurveyHelper.setColumnMargins(this.questionMatrix, this.controller, 0);
-            currPoint.xLeft = this.controller.margins.marginLeft
+            currPoint.xLeft = this.controller.margins.left
             cells.push(SurveyHelper.createTextFlat(currPoint, this.questionMatrix, this.controller, SurveyHelper.getLocString(this.row.locText), TextBrick));
-            this.controller.margins.marginLeft = oldLeftMargin;
-            this.controller.margins.marginRight = oldRightMargin;
+            this.controller.margins.left = oldLeftMargin;
+            this.controller.margins.right = oldRightMargin;
         }
         this.questionMatrix.visibleColumns.forEach((column, index) => {
             let checked = this.row.value == column.value;
-            let oldLeftMargin = this.controller.margins.marginLeft;
-            let oldRightMargin = this.controller.margins.marginRight;
+            let oldLeftMargin = this.controller.margins.left;
+            let oldRightMargin = this.controller.margins.right;
             let columnNumber = this.questionMatrix.hasRows ? index + 1 : index;
             SurveyHelper.setColumnMargins(this.questionMatrix, this.controller, columnNumber);
-            currPoint.xLeft = this.controller.margins.marginLeft;
+            currPoint.xLeft = this.controller.margins.left;
             if (this.questionMatrix.hasCellText) {
                 cells.push(SurveyHelper.createTextFlat(currPoint, this.questionMatrix, this.controller,
                     SurveyHelper.getLocString(this.questionMatrix.getCellDisplayLocText(this.row.name, column)), TextBrick));
@@ -112,8 +112,8 @@ export class FlatMatrixRow extends FlatRadiogroup {
                 let itemRect: IRect = SurveyHelper.createRect(currPoint, height, height);
                 cells.push(this.createItemBrick(itemRect, column, index, this.key, checked));
             }
-            this.controller.margins.marginLeft = oldLeftMargin;
-            this.controller.margins.marginRight = oldRightMargin;
+            this.controller.margins.left = oldLeftMargin;
+            this.controller.margins.right = oldRightMargin;
         });
         let compositeBrick = new CompositeBrick(...cells);
         return [compositeBrick, SurveyHelper.createRowlineFlat(SurveyHelper.createPoint(compositeBrick), this.controller)];

@@ -19,6 +19,7 @@ export class SurveyHelper {
     static DESCRIPTION_FONT_SIZE_SCALE_MAGIC: number = 2.0 / 3.0;
     static RATING_MIN_WIDTH: number = 3;
     static RATING_MIN_HEIGHT: number = 2;
+    static MULTIPLETEXT_TEXT_PERS: number = Math.E / 10.0;
     private static _doc: any = new jsPDF();
     public static setFontSize(fontSize: number, font?: string) {
         this._doc.setFontSize(fontSize);
@@ -86,7 +87,7 @@ export class SurveyHelper {
                     let width: number = SurveyHelper.measureText(subword,
                         controller.fontStyle, controller.fontSize).width;
                     if (i == 1 || point.xLeft + width <= controller.paperWidth -
-                        controller.margins.marginRight + SurveyHelper.EPSILON) {
+                        controller.margins.right + SurveyHelper.EPSILON) {
                         words.push(subword);
                         word = word.substring(i);
                         break;
@@ -104,7 +105,7 @@ export class SurveyHelper {
             let width: number = SurveyHelper.measureText(currText + space + word,
                 controller.fontStyle, controller.fontSize).width;
             if (currPoint.xLeft + width <= controller.paperWidth -
-                controller.margins.marginRight + SurveyHelper.EPSILON) {
+                controller.margins.right + SurveyHelper.EPSILON) {
                 texts[lastIndex].text += space + word;
             }
             else {
@@ -159,7 +160,7 @@ export class SurveyHelper {
     }
     static createTextFieldRect(point: IPoint, controller: DocController, lines: number = 1): IRect {
         let width: number = controller.paperWidth - point.xLeft -
-            controller.margins.marginRight;
+            controller.margins.right;
         let height: number = SurveyHelper.measureText().height * lines;
         return SurveyHelper.createRect(point, width, height);
     }
@@ -194,20 +195,20 @@ export class SurveyHelper {
         return text;
     }
     static getColumnWidth(question: Question, controller: DocController) {
-        return (controller.paperWidth - controller.margins.marginLeft
-            - controller.margins.marginRight) /
+        return (controller.paperWidth - controller.margins.left
+            - controller.margins.right) /
             (question.hasRows ? (question.visibleColumns.length + 1)
                 : question.visibleColumns.length);
     }
     static setColumnMargins(question: Question, controller: DocController, column: number) {
         let cellWidth = this.getColumnWidth(question, controller);
-        controller.margins.marginLeft = controller.margins.marginLeft + column * cellWidth;
-        controller.margins.marginRight = controller.paperWidth - controller.margins.marginLeft - cellWidth;
+        controller.margins.left = controller.margins.left + column * cellWidth;
+        controller.margins.right = controller.paperWidth - controller.margins.left - cellWidth;
     }
     static createRowlineFlat(point: IPoint, controller: DocController): IPdfBrick {
         return new RowlineBrick({
-            xLeft: controller.margins.marginLeft,
-            xRight: controller.paperWidth - controller.margins.marginRight,
+            xLeft: controller.margins.left,
+            xRight: controller.paperWidth - controller.margins.right,
             yTop: point.yTop + SurveyHelper.EPSILON,
             yBot: point.yTop + SurveyHelper.EPSILON
         });

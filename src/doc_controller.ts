@@ -8,10 +8,10 @@ export interface IRect extends IPoint {
     yBot: number;
 }
 export interface IMargin {
-    marginLeft: number;
-    marginRight: number;
-    marginTop: number;
-    marginBot: number;
+    left: number;
+    right: number;
+    top: number;
+    bot: number;
 }
 export interface IDocOptions {
     fontSize: number;
@@ -36,8 +36,8 @@ export class DocOptions implements IDocOptions {
     }
     get leftTopPoint(): IPoint {
         return {
-            xLeft: this.margins.marginLeft,
-            yTop: this.margins.marginRight
+            xLeft: this.margins.left,
+            yTop: this.margins.right
         }
     }
     get fontSize(): number {
@@ -57,11 +57,11 @@ export class DocOptions implements IDocOptions {
         boundaries.forEach((rect: IRect) => {
             height += rect.yBot - rect.yTop;
         });
-        return height <= this._paperHeight - this.margins.marginTop - this.margins.marginBot &&
+        return height <= this._paperHeight - this.margins.top - this.margins.bot &&
             (boundaries.length > 1 || this.isNewPageElement(boundaries[0].yBot));
     }
     isNewPageElement(yBot: number): boolean {
-        return yBot > this._paperHeight - this.margins.marginBot;
+        return yBot > this._paperHeight - this.margins.bot;
     }
 }
 

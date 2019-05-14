@@ -16,11 +16,11 @@ export class FlatRating extends FlatRadiogroup {
     private generateFlatItem(point: IPoint, index: number, item: ItemValue): IPdfBrick {
         let itemText: string = SurveyHelper.getRatingItemText(
             this.questionRating, index, SurveyHelper.getLocString(item.locText));
-        let oldMarginRight: number = this.controller.margins.marginRight;
-        this.controller.margins.marginRight += SurveyHelper.measureText().height;
+        let oldMarginRight: number = this.controller.margins.right;
+        this.controller.margins.right += SurveyHelper.measureText().height;
         let compositeFlat: CompositeBrick = new CompositeBrick(SurveyHelper.
             createBoldTextFlat(point, this.questionRating, this.controller, itemText));
-        this.controller.margins.marginRight = oldMarginRight;
+        this.controller.margins.right = oldMarginRight;
         let textWidth: number = compositeFlat.xRight - compositeFlat.xLeft; 
         if (textWidth < SurveyHelper.getRatingMinWidth()) {
             compositeFlat.xLeft += (SurveyHelper.getRatingMinWidth() - textWidth) / 2.0;
@@ -45,7 +45,7 @@ export class FlatRating extends FlatRadiogroup {
                 this.questionRating.visibleRateValues[i]);
             rowsFlats[rowsFlats.length - 1].addBrick(itemFlat);
             let leftWidth: number = this.controller.paperWidth -
-            this.controller.margins.marginRight - itemFlat.xRight;
+            this.controller.margins.right - itemFlat.xRight;
             if (SurveyHelper.getRatingMinWidth() <= leftWidth + SurveyHelper.EPSILON) {
                 currPoint.xLeft = itemFlat.xRight;
             }
@@ -55,6 +55,7 @@ export class FlatRating extends FlatRadiogroup {
                 if (i !== this.questionRating.visibleRateValues.length - 1) {
                     rowsFlats[rowsFlats.length - 1].addBrick(
                         SurveyHelper.createRowlineFlat(currPoint, this.controller));
+                    currPoint.yTop += SurveyHelper.EPSILON;
                     rowsFlats.push(new CompositeBrick());
                 }
             }

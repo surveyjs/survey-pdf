@@ -1,6 +1,6 @@
 export * from './helpers';
 
-export { PdfSurvey as Survey } from '../survey';
+export { SurveyPDF as Survey } from '../survey';
 export { IDocOptions, DocOptions, DocController } from '../doc_controller';
 export { FlatRepository } from '../flat_layout/flat_repository';
 export { IFlatQuestion, FlatQuestion } from '../flat_layout/flat_question';

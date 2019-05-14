@@ -3,7 +3,7 @@
 };
 
 import { Question } from 'survey-core';
-import { PdfSurvey } from '../src/survey';
+import { SurveyPDF } from '../src/survey';
 import { FlatTextbox } from '../src/flat_layout/flat_textbox';
 import { FlatCheckbox } from '../src/flat_layout/flat_checkbox';
 import { TestHelper } from '../src/helper_test';
@@ -24,7 +24,7 @@ function checkTitleText(questionStartIndex: string, isRequired: boolean = false)
       }
     ]
   };
-  let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
+  let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
   if (questionStartIndex !== null) {
     survey.questionStartIndex = questionStartIndex;
   }
@@ -59,7 +59,7 @@ test('Check comment', () => {
       }
     ]
   };
-  let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
+  let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
   survey.render();
   let internal = survey.controller.doc.internal;
   let internalContent = survey.controller.doc.internal.pages[1][2];
@@ -83,7 +83,7 @@ test('Check comment readonly', () => {
       }
     ]
   };
-  let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
+  let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
   survey.render();
   let internal = survey.controller.doc.internal;
   let textField = internal.acroformPlugin.acroFormDictionaryRoot.Fields[0]
@@ -99,7 +99,7 @@ test('Check empty question', () => {
       }
     ]
   };
-  let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
+  let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
   let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
   expect(flats.length).toBe(1);
   expect(typeof flats[0]).not.toBe('undefined');
@@ -115,7 +115,7 @@ test('Not visible question', () => {
             }
         ]
     };
-    let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
+    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(typeof flats[0]).not.toBe('undefined');
@@ -132,7 +132,7 @@ test('Check descrition with hidden title', () => {
       }
     ]
   };
-  let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
+  let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
   survey.render();
   let internalContent = survey.controller.doc.internal.pages[1][3];
   expect(internalContent).toBeDefined();
@@ -163,7 +163,7 @@ test('Two pages', () => {
 			}
 		]
 	};
-    let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
+    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(2);
     expect(flats[0].length).toBe(1);
