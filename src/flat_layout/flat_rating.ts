@@ -4,6 +4,7 @@ import { FlatRepository } from './flat_repository';
 import { IPoint, DocController } from "../doc_controller";
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
+import { RowlineBrick } from '../pdf_render/pdf_rowline';
 import { SurveyHelper } from '../helper_survey';
 
 export class FlatRating extends FlatRadiogroup {
@@ -15,8 +16,11 @@ export class FlatRating extends FlatRadiogroup {
     private generateFlatItem(point: IPoint, index: number, item: ItemValue): IPdfBrick {
         let itemText: string = SurveyHelper.getRatingItemText(
             this.questionRating, index, SurveyHelper.getLocString(item.locText));
+        let oldMarginRight: number = this.controller.margins.marginRight;
+        this.controller.margins.marginRight += SurveyHelper.measureText().height;
         let compositeFlat: CompositeBrick = new CompositeBrick(SurveyHelper.
             createBoldTextFlat(point, this.questionRating, this.controller, itemText));
+        this.controller.margins.marginRight = oldMarginRight;
         let textWidth: number = compositeFlat.xRight - compositeFlat.xLeft; 
         if (textWidth < SurveyHelper.getRatingMinWidth()) {
             compositeFlat.xLeft += (SurveyHelper.getRatingMinWidth() - textWidth) / 2.0;
@@ -49,6 +53,8 @@ export class FlatRating extends FlatRadiogroup {
                 currPoint.xLeft = point.xLeft;
                 currPoint.yTop = itemFlat.yBot;
                 if (i !== this.questionRating.visibleRateValues.length - 1) {
+                    rowsFlats[rowsFlats.length - 1].addBrick(
+                        SurveyHelper.createRowlineFlat(currPoint, this.controller));
                     rowsFlats.push(new CompositeBrick());
                 }
             }
