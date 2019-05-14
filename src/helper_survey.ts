@@ -1,5 +1,5 @@
 import { IQuestion, Question, QuestionRatingModel, ItemValue, LocalizableString } from 'survey-core';
-import { IPoint, IRect, DocController } from './doc_controller';
+import { IPoint, IRect, DocController, IMargin } from './doc_controller';
 import { IPdfBrick } from './pdf_render/pdf_brick';
 import { TitleBrick } from './pdf_render/pdf_title';
 import { TitlePanelBrick } from './pdf_render/pdf_titlepanel';
@@ -8,6 +8,7 @@ import { CommentBrick } from './pdf_render/pdf_comment';
 import { CompositeBrick } from './pdf_render/pdf_composite';
 import { RowlineBrick } from './pdf_render/pdf_rowline';
 import * as jsPDF from 'jspdf';
+import { HTMLBrick } from './pdf_render/pdf_html';
 
 export interface IText {
     text: string;
@@ -75,54 +76,57 @@ export class SurveyHelper {
             yBot: point.yTop + height
         };
     }
+    static createDivBlock(element: string, controller: DocController) {
+        return `<div style=` + this.generateCssTextRule(controller.fontSize, controller.fontStyle, controller.doc.internal.getFont().fontName) + `>` + element + `</div>`;
+    }
+    static generateCssTextRule(fontSize: number, fontStyle: string, fontName: string): string {
+        return `'font-size: ` + fontSize + `; font-weight:` + fontStyle + `; font-family:` + fontName + `;'`;
+    }
     static createTextFlat<T extends IPdfBrick>(point: IPoint, question: IQuestion,
         controller: DocController, text: string, fabric: new (question: IQuestion,
             controller: DocController, rect: IRect, text: string) => T): IPdfBrick {
-        let words: string[] = new Array<string>();
-        text.match(/\S+/g).forEach((word: string) => {
-            while (word.length > 0) {
-                for (let i: number = word.length; i > 0; i--) {
-                    let subword: string = word.substring(0, i);
-                    let width: number = SurveyHelper.measureText(subword,
-                        controller.fontStyle, controller.fontSize).width;
-                    if (i == 1 || point.xLeft + width <= controller.paperWidth -
-                        controller.margins.marginRight + SurveyHelper.EPSILON) {
-                        words.push(subword);
-                        word = word.substring(i);
-                        break;
-                    }
-                }
-            }
-        });
-        let texts: IText[] = new Array<IText>();
-        let currPoint: IPoint = SurveyHelper.clone(point);
-        texts.push({ text: '', rect: null });
-        words.forEach((word: string) => {
-            let lastIndex: number = texts.length - 1;
-            let currText: string = texts[lastIndex].text;
-            let space: string = currText != '' ? ' ' : '';
-            let width: number = SurveyHelper.measureText(currText + space + word,
-                controller.fontStyle, controller.fontSize).width;
-            if (currPoint.xLeft + width <= controller.paperWidth -
-                controller.margins.marginRight + SurveyHelper.EPSILON) {
-                texts[lastIndex].text += space + word;
-            }
-            else {
-                let { width, height } = SurveyHelper.measureText(texts[lastIndex].text,
-                    controller.fontStyle, controller.fontSize);
-                texts[lastIndex].rect = SurveyHelper.createRect(currPoint, width, height);
-                texts.push({ text: word, rect: null });
-                currPoint.yTop += height;
-            }
-        });
-        let { width, height } = SurveyHelper.measureText(texts[texts.length - 1].text,
-            controller.fontStyle, controller.fontSize);
-        texts[texts.length - 1].rect = SurveyHelper.createRect(currPoint, width, height);
-        let composite: CompositeBrick = new CompositeBrick();
-        texts.forEach((text: IText) => {
-            composite.addBrick(new fabric(question, controller, text.rect, text.text));
-        });
-        return composite;
+        debugger;
+        return this.createHTMLFlat(point, <Question>question, controller, this.createDivBlock(text, controller), fabric);
+    }
+    static htmlMargins(controller: DocController) {
+        return {
+            top: controller.margins.marginTop,
+            bot: controller.margins.marginBot,
+            left: controller.margins.marginLeft,
+            width: controller.paperWidth - controller.margins.marginLeft - controller.margins.marginRight,
+            useFor: 'page'
+        }
+    }
+    static rectToHtmlMargins(rect: IRect, controller: DocController) {
+        return {
+            top: rect.yTop,
+            left: rect.xLeft,
+            bot: controller.margins.marginBot,
+            width: rect.xRight - rect.xLeft,
+            useFor: 'page'
+        }
+    }
+    static createHTMLFlat<T extends IPdfBrick>(point: IPoint, question: Question, controller: DocController, element: any, fabric: new (question: IQuestion,
+        controller: DocController, rect: IRect, text: string) => T): IPdfBrick {
+        let margins = this.htmlMargins(controller);
+        SurveyHelper._doc.page = 1;
+        let result = SurveyHelper._doc.fromHTML(element, point.xLeft, point.yTop, {
+            'pagesplit': true,
+            width: margins.width
+        }, margins);
+        let y: number;
+        if (SurveyHelper._doc.page == 1) {
+            y = result.y - point.yTop;
+        }
+        else {
+            y = (controller.paperHeight - margins.bot - point.yTop) +
+                (SurveyHelper._doc.page - 2) *
+                (controller.paperHeight - margins.bot - margins.top)
+                + result.y - margins.top;
+        }
+        SurveyHelper._doc.page = 1;
+        let rect = SurveyHelper.createRect(point, margins.width, y);
+        return new HTMLBrick(question, controller, rect, element);
     }
     static createBoldTextFlat(point: IPoint, question: Question, controller: DocController, text: string) {
         controller.fontStyle = 'bold';
@@ -189,7 +193,7 @@ export class SurveyHelper {
         }
         else if (index == question.visibleRateValues.length - 1 &&
             question.maxRateDescription) {
-                text += SurveyHelper.getLocString(question.locMaxRateDescription);
+            text += SurveyHelper.getLocString(question.locMaxRateDescription);
         }
         return text;
     }
