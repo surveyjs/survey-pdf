@@ -65,11 +65,11 @@ export class FlatMatrix extends FlatQuestion {
 }
 
 export class FlatMatrixRow extends FlatRadiogroup {
-    protected question: QuestionMatrixModel;
+    protected questionMatrix: QuestionMatrixModel;
     constructor(question: IQuestion, protected controller: DocController, private row: MatrixRowModel,
         private key: string, protected isFirst: boolean = false, protected isVertical: boolean = false) {
         super(question, controller);
-        this.question = <QuestionMatrixModel>question;
+        this.questionMatrix = <QuestionMatrixModel>question;
     }
     generateFlatsContent(point: IPoint): IPdfBrick[] {
         if (!this.row) return null;
@@ -87,25 +87,25 @@ export class FlatMatrixRow extends FlatRadiogroup {
     generateFlatsHorizontallyCells(point: IPoint): IPdfBrick[] {
         let cells: IPdfBrick[] = [];
         let currPoint: IPoint = SurveyHelper.clone(point);
-        if (this.question.hasRows) {
+        if (this.questionMatrix.hasRows) {
             let oldLeftMargin = this.controller.margins.marginLeft;
             let oldRightMargin = this.controller.margins.marginRight;
-            SurveyHelper.setColumnMargins(this.question, this.controller, 0);
+            SurveyHelper.setColumnMargins(this.questionMatrix, this.controller, 0);
             currPoint.xLeft = this.controller.margins.marginLeft
-            cells.push(SurveyHelper.createTextFlat(currPoint, this.question, this.controller, SurveyHelper.getLocString(this.row.locText), TextBrick));
+            cells.push(SurveyHelper.createTextFlat(currPoint, this.questionMatrix, this.controller, SurveyHelper.getLocString(this.row.locText), TextBrick));
             this.controller.margins.marginLeft = oldLeftMargin;
             this.controller.margins.marginRight = oldRightMargin;
         }
-        this.question.visibleColumns.forEach((column, index) => {
+        this.questionMatrix.visibleColumns.forEach((column, index) => {
             let checked = this.row.value == column.value;
             let oldLeftMargin = this.controller.margins.marginLeft;
             let oldRightMargin = this.controller.margins.marginRight;
-            let columnNumber = this.question.hasRows ? index + 1 : index;
-            SurveyHelper.setColumnMargins(this.question, this.controller, columnNumber);
+            let columnNumber = this.questionMatrix.hasRows ? index + 1 : index;
+            SurveyHelper.setColumnMargins(this.questionMatrix, this.controller, columnNumber);
             currPoint.xLeft = this.controller.margins.marginLeft;
-            if (this.question.hasCellText) {
-                cells.push(SurveyHelper.createTextFlat(currPoint, this.question, this.controller,
-                    SurveyHelper.getLocString(this.question.getCellDisplayLocText(this.row.name, column)), TextBrick));
+            if (this.questionMatrix.hasCellText) {
+                cells.push(SurveyHelper.createTextFlat(currPoint, this.questionMatrix, this.controller,
+                    SurveyHelper.getLocString(this.questionMatrix.getCellDisplayLocText(this.row.name, column)), TextBrick));
             }
             else {
                 let height: number = SurveyHelper.measureText().height;
@@ -122,17 +122,17 @@ export class FlatMatrixRow extends FlatRadiogroup {
     generateFlatsVerticallyCells(point: IPoint): IPdfBrick[] {
         let currPoint: IPoint = SurveyHelper.clone(point);
         let cells: IPdfBrick[] = [];
-        if (this.question.hasRows) {
-            let rowTextFlat = SurveyHelper.createTextFlat(currPoint, this.question,
+        if (this.questionMatrix.hasRows) {
+            let rowTextFlat = SurveyHelper.createTextFlat(currPoint, this.questionMatrix,
                 this.controller, SurveyHelper.getLocString(this.row.locText), TextBrick);
             currPoint.yTop = rowTextFlat.yBot;
             cells.push(rowTextFlat);
         }
-        this.question.visibleColumns.forEach((column, index) => {
+        this.questionMatrix.visibleColumns.forEach((column, index) => {
             let checked = this.row.value == column.value;
-            if (this.question.hasCellText) {
-                let cellTextFlat = SurveyHelper.createTextFlat(currPoint, this.question, this.controller,
-                    SurveyHelper.getLocString(this.question.getCellDisplayLocText(this.row.name, column)), TextBrick);
+            if (this.questionMatrix.hasCellText) {
+                let cellTextFlat = SurveyHelper.createTextFlat(currPoint, this.questionMatrix, this.controller,
+                    SurveyHelper.getLocString(this.questionMatrix.getCellDisplayLocText(this.row.name, column)), TextBrick);
                 currPoint.yTop = cellTextFlat.yBot;
                 cells.push(cellTextFlat);
             }
@@ -141,7 +141,7 @@ export class FlatMatrixRow extends FlatRadiogroup {
                 let itemRect: IRect = SurveyHelper.createRect(currPoint, height, height);
                 let radioItem: IPdfBrick = this.createItemBrick(itemRect, column, index, this.key, checked);
                 currPoint = SurveyHelper.createPoint(radioItem, false, true);
-                let radioText: IPdfBrick = SurveyHelper.createTextFlat(currPoint, this.question, this.controller, SurveyHelper.getLocString(column.locText), TextBrick);
+                let radioText: IPdfBrick = SurveyHelper.createTextFlat(currPoint, this.questionMatrix, this.controller, SurveyHelper.getLocString(column.locText), TextBrick);
                 let compositeBrick: CompositeBrick = new CompositeBrick(radioItem, radioText);
                 currPoint = SurveyHelper.createPoint(compositeBrick);
                 cells.push(compositeBrick);

@@ -6,7 +6,7 @@ import { RadioGroupWrap, RadioItemBrick } from '../pdf_render/pdf_radioitem';
 import { FlatSelectBase } from './flat_selectbase';
 
 export class FlatRadiogroup extends FlatSelectBase {
-    protected question: QuestionRadiogroupModel | QuestionMatrixModel;
+    protected question: QuestionRadiogroupModel;
     private radioGroupWrap: RadioGroupWrap;
     constructor(question: IQuestion, protected controller: DocController) {
         super(question, controller);

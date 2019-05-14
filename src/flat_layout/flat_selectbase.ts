@@ -7,7 +7,7 @@ import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
 
 export abstract class FlatSelectBase extends FlatQuestion {
-    protected question: QuestionSelectBase | QuestionMatrixModel;
+    protected question: QuestionSelectBase;
     constructor(question: IQuestion, protected controller: DocController) {
         super(question, controller);
         this.question = <QuestionSelectBase>question;
