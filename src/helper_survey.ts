@@ -200,6 +200,9 @@ export class SurveyHelper {
             (question.hasRows ? (question.visibleColumns.length + 1)
                 : question.visibleColumns.length);
     }
+    static getPageAvailableWidth(controller: DocController): number {
+        return controller.paperWidth - controller.margins.left - controller.margins.right;
+    }
     static setColumnMargins(question: Question, controller: DocController, column: number) {
         let cellWidth = this.getColumnWidth(question, controller);
         controller.margins.left = controller.margins.left + column * cellWidth;

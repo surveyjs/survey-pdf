@@ -987,7 +987,7 @@ test('Check rating two elements with long min rate description', () => {
     };
     TestHelper.equalRect(expect, SurveyHelper.mergeRects(flats[0][0], flats[0][1]), assumeRating);
 });
-test.skip('Check multiple text one item', () => {
+test('Check multiple text one item', () => {
     let json = { 
         elements: [
             {
@@ -1013,8 +1013,24 @@ test.skip('Check multiple text one item', () => {
         yBot: survey.controller.leftTopPoint.yTop + SurveyHelper.measureText().height
     };
     TestHelper.equalRect(expect, flats[0][0], assumeMultipleText);
+    let assumeText: IRect = {
+        xLeft: survey.controller.leftTopPoint.xLeft,
+        xRight: survey.controller.leftTopPoint.xLeft +
+            SurveyHelper.measureText(json.elements[0].items[0].name, 'bold').width,
+        yTop: survey.controller.leftTopPoint.yTop,
+        yBot: survey.controller.leftTopPoint.yTop + SurveyHelper.measureText().height
+    }
+    TestHelper.equalRect(expect, flats[0][0].unfold()[0], assumeText);
+    let assumeBox: IRect = {
+        xLeft: survey.controller.leftTopPoint.xLeft +
+            SurveyHelper.getPageAvailableWidth(survey.controller) * SurveyHelper.MULTIPLETEXT_TEXT_PERS,
+        xRight: assumeMultipleText.xRight,
+        yTop: survey.controller.leftTopPoint.yTop,
+        yBot: survey.controller.leftTopPoint.yTop + SurveyHelper.measureText().height
+    }
+    TestHelper.equalRect(expect, flats[0][0].unfold()[1], assumeBox);
 });
-test.skip('Check multiple text two items', () => {
+test('Check multiple text two items', () => {
     let json = { 
         elements: [
             {
@@ -1044,7 +1060,7 @@ test.skip('Check multiple text two items', () => {
     };
     TestHelper.equalRect(expect, SurveyHelper.mergeRects(flats[0][0], flats[0][1]), assumeMultipleText);
 });
-test.skip('Check multiple text with colCount and long text', () => {
+test('Check multiple text with colCount and long text', () => {
     let sign: string = '|';
     let json = { 
         elements: [

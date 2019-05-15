@@ -202,6 +202,19 @@ name: 'Expand me',
 	placeHolder: "holder"
 },
 {
+	type: 'multipletext',
+	name: 'multi',
+	titleLocation: 'hidden',
+	items: [
+		{
+			name: 'Input me'
+		},
+		{
+			name: 'Oh eee'
+		}
+	]
+},
+{
 	name: "name9",
 	type: "text",
 	title: "Rarrararar:",
@@ -370,15 +383,70 @@ name: 'Expand me',
 // 	]
 //  };
 
+// json = {
+// 	"pages": [
+// 	 {
+// 	  "name": "page1",
+// 	  "elements": [
+// 	   {
+// 		"type": "multipletext",
+// 		"name": "question1",
+// 		"startWithNewLine": false,
+// 		"description": "edwqdq",
+// 		"defaultValue": {
+// 		 "text5": "5"
+// 		},
+// 		"items": [
+// 		 {
+// 		  "name": "text1",
+// 				'title': 'bla'
+// 		 },
+// 		 {
+// 		  "name": "text2"
+// 		 },
+// 		 {
+// 		  "name": "text3"
+// 		 },
+// 		 {
+// 		  "name": "text4"
+// 		 },
+// 		 {
+// 		  "name": "text5"
+// 		 },
+// 		 {
+// 		  "name": "text66666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666"
+// 		 },
+// 		 {
+// 		  "name": "text7"
+// 		 },
+// 		 {
+// 		  "name": "text8"
+// 		 },
+// 		 {
+// 		  "name": "text9"
+// 		 },
+// 		 {
+// 		  "name": "text10"
+// 		 }
+// 		],
+// 		"colCount": 3
+// 	   }
+// 	  ]
+// 	 }
+// 	]
+//    };
+
+
+
 let options = {
-fontSize: 30,
-margins:
-{
-	left: 10,
-	right: 10,
-	top: 10,
-	bot: 10
-}
+	fontSize: 30,
+	margins:
+	{
+		left: 10,
+		right: 10,
+		top: 10,
+		bot: 10
+	}
 };
 
 var survey = new SurveyPDF.Survey(json, options);
