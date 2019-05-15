@@ -15,8 +15,7 @@ export class FlatMultipleText extends FlatQuestion {
     }
     private generateFlatItem(point: IPoint, row_index: number, col_index: number,
          item: MultipleTextItemModel): IPdfBrick {
-        let colWidth: number = this.controller.paperWidth -
-            this.controller.margins.left - this.controller.margins.right;
+        let colWidth: number = SurveyHelper.getPageAvailableWidth(this.controller);
         let oldMarginRight: number = this.controller.margins.right;
         this.controller.margins.right = this.controller.paperWidth -
             this.controller.margins.left - colWidth * SurveyHelper.MULTIPLETEXT_TEXT_PERS;
@@ -33,8 +32,8 @@ export class FlatMultipleText extends FlatQuestion {
     generateFlatsContent(point: IPoint): IPdfBrick[] {
         let rowsFlats: CompositeBrick[] = new Array<CompositeBrick>();
         let currPoint: IPoint = SurveyHelper.clone(point);
-        let colWidth: number = (this.controller.paperWidth - this.controller.margins.left -
-            this.controller.margins.right) / this.question.colCount;
+        let colWidth: number = SurveyHelper.getPageAvailableWidth(
+            this.controller) / this.question.colCount;
         this.question.getRows().forEach((row: MultipleTextItemModel[], row_index: number) => {
             rowsFlats.push(new CompositeBrick());
             let yBot: number = currPoint.yTop

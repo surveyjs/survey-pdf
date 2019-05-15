@@ -159,8 +159,7 @@ export class SurveyHelper {
         return new CommentBrick(question, controller, otherRect, false);
     }
     static createTextFieldRect(point: IPoint, controller: DocController, lines: number = 1): IRect {
-        let width: number = controller.paperWidth - point.xLeft -
-            controller.margins.right;
+        let width: number = controller.paperWidth - point.xLeft - controller.margins.right;
         let height: number = SurveyHelper.measureText().height * lines;
         return SurveyHelper.createRect(point, width, height);
     }
@@ -195,8 +194,7 @@ export class SurveyHelper {
         return text;
     }
     static getColumnWidth(question: Question, controller: DocController) {
-        return (controller.paperWidth - controller.margins.left
-            - controller.margins.right) /
+        return SurveyHelper.getPageAvailableWidth(controller) /
             (question.hasRows ? (question.visibleColumns.length + 1)
                 : question.visibleColumns.length);
     }

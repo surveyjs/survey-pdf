@@ -45,8 +45,7 @@ export class FlatSurvey {
         let currPoint: IPoint = SurveyHelper.clone(point);
         pagePanel.rows.forEach((row: QuestionRowModel) => {
             if (!row.visible) return;
-            let width: number = controller.paperWidth -
-                controller.margins.left - controller.margins.right;
+            let width: number = SurveyHelper.getPageAvailableWidth(controller);
             let oldMarginLeft: number = controller.margins.left;
             let oldMarginRight: number = controller.margins.right;
             let currMarginLeft: number = controller.margins.left;

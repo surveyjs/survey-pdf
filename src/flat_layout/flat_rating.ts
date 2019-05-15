@@ -45,7 +45,7 @@ export class FlatRating extends FlatRadiogroup {
                 this.questionRating.visibleRateValues[i]);
             rowsFlats[rowsFlats.length - 1].addBrick(itemFlat);
             let leftWidth: number = this.controller.paperWidth -
-            this.controller.margins.right - itemFlat.xRight;
+                this.controller.margins.right - itemFlat.xRight;
             if (SurveyHelper.getRatingMinWidth() <= leftWidth + SurveyHelper.EPSILON) {
                 currPoint.xLeft = itemFlat.xRight;
             }
