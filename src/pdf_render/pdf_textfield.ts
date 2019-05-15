@@ -5,31 +5,27 @@ import { SurveyHelper } from '../helper_survey';
 
 export class TextFieldBrick extends PdfBrick {
     protected question: QuestionTextModel;
-    protected isQuestion: boolean;
-    protected isMultiline: boolean;
-    constructor(question: IQuestion,
-        protected controller: DocController, rect: IRect) {
+    constructor(question: IQuestion, controller: DocController, rect: IRect,
+        protected isQuestion: boolean, protected fieldName: string,
+        protected value: string, protected placeholder: string,
+        protected isReadOnly: boolean, protected isMultiline: boolean,
+        protected isPassword: boolean) {
         super(question, controller, rect);
         this.question = <QuestionTextModel>question;
-        this.isQuestion = true;
-        this.isMultiline = false;
     }
     render(): void {
-        let inputField = this.question.inputType !== 'password' ?
-            new (<any>this.controller.doc.AcroFormTextField)() :
-            new (<any>this.controller.doc.AcroFormPasswordField)();
-        inputField.fieldName = this.question.id;
-        if (!this.isQuestion) {
-            inputField.fieldName += '_comment';
-        }
+        let inputField = this.isPassword ?
+            new (<any>this.controller.doc.AcroFormPasswordField)() :
+            new (<any>this.controller.doc.AcroFormTextField)();
+        inputField.fieldName = this.fieldName;
         inputField.Rect = SurveyHelper.createAcroformRect(this);
-        if (this.isQuestion && this.question.inputType !== 'password') {
-            inputField.value = this.question.value || this.question.defaultValue || '';
-            inputField.defaultValue = SurveyHelper.getLocString(this.question.locPlaceHolder);
+        if (this.isQuestion && !this.isPassword) {
+            inputField.value = this.value;
+            inputField.defaultValue = this.placeholder;
         }
         else inputField.value = '';
         inputField.multiline = this.isMultiline;
-        inputField.readOnly = this.question.isReadOnly;
+        inputField.readOnly = this.isReadOnly;
         this.controller.doc.addField(inputField);
     }
 }

@@ -1,4 +1,4 @@
-import { IQuestion, Question, QuestionRadiogroupModel, ItemValue } from 'survey-core';
+import { IQuestion } from 'survey-core';
 import { IRect, DocController } from '../doc_controller';
 import { PdfBrick } from './pdf_brick';
 import { SurveyHelper } from '../helper_survey';

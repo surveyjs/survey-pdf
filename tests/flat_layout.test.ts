@@ -16,7 +16,7 @@ import { FlatMultipleText } from '../src/flat_layout/flat_multipletext';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { TextBrick } from '../src/pdf_render/pdf_text';
 import { TitleBrick } from '../src/pdf_render/pdf_title';
-import { TextFieldBrick } from '../src/pdf_render/pdf_textfield';
+import { TextBoxBrick } from '../src/pdf_render/pdf_textbox';
 import { CompositeBrick } from '../src/pdf_render/pdf_composite';
 import { RowlineBrick } from '../src/pdf_render/pdf_rowline';
 import { SurveyHelper } from '../src/helper_survey';
@@ -336,6 +336,37 @@ test('Check that checkbox has square boundaries', () => {
     TestHelper.equalRect(expect, SurveyHelper.createRect(
         { xLeft: internalRect[0], yTop: internalRect[1] },
         internalRect[2], internalRect[3]), assumeCheckbox);
+});
+test('Check other checkbox place ', () => {
+	let json = {
+		questions: [
+			{
+				titleLocation: 'hidden',
+				name: 'checkbox',
+				type: 'checkbox',
+				hasOther: true,
+				otherText: 'Other(describe)'
+			}
+		]
+	};
+	let options = TestHelper.defaultOptions;
+	options.paperWidth = 40;
+	let survey: SurveyPDF = new SurveyPDF(json, options);
+	let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
+	let receivedRects: IRect[] = flats[0][0].unfold();
+	let currPoint = TestHelper.defaultPoint;
+	let itemWidth = SurveyHelper.measureText().width;
+	let assumeRects: IRect[] = [];
+	let itemRect = SurveyHelper.createRect(currPoint, itemWidth, itemWidth);
+	assumeRects.push(itemRect);
+	currPoint = SurveyHelper.createPoint(itemRect, false, true);
+	let textRect =
+		SurveyHelper.createTextFlat(currPoint, survey.getAllQuestions()[0], survey.controller, json.questions[0].otherText, TextBrick).unfold();
+	currPoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(itemRect, ...textRect));
+	assumeRects.push(...textRect);
+	let textFieldRect = SurveyHelper.createTextFieldRect(currPoint, survey.controller, 2);
+	assumeRects.push(textFieldRect);
+	TestHelper.equalRects(expect, receivedRects, assumeRects);
 });
 test('Calc boundaries title top longer than description', () => {
     let json = {
@@ -718,7 +749,7 @@ test('Check question title location in panel', () => {
     let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(2);
-    expect(flats[0][0] instanceof TextFieldBrick).toBe(true);
+    expect(flats[0][0] instanceof TextBoxBrick).toBe(true);
     expect(flats[0][1].unfold()[0] instanceof TitleBrick).toBe(true);
 });
 test('Check boolean without title', () => {
@@ -806,7 +837,7 @@ test('Check dropdown with other', () => {
         <Question>survey.getAllQuestions()[0], TestHelper.wrapRect(SurveyHelper.mergeRects( 
             flats[0][0].unfold()[0], flats[0][0].unfold()[1])));
     TestHelper.equalRect(expect, flats[0][0].unfold()[2], SurveyHelper.createOtherFlat(
-        otherPoint, null, survey.controller));
+        otherPoint, survey.getAllQuestions()[0], survey.controller));
 });
 test('Check rating two elements', () => {
     let json = {
@@ -1037,7 +1068,7 @@ test.skip('Check multiple text with colCount and long text', () => {
         ]
     };
     let options: IDocOptions = TestHelper.defaultOptions;
-    let signWidth: number = SurveyHelper.measureText(sign).width;
+    let signWidth: number = SurveyHelper.measureText(sign, 'bold').width;
     options.paperWidth = options.margins.right + options.margins.right +
         2 * signWidth / SurveyHelper.MULTIPLETEXT_TEXT_PERS;
     let survey: SurveyPDF = new SurveyPDF(json, options);
