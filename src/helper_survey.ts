@@ -1,9 +1,6 @@
 import { IQuestion, Question, QuestionRatingModel, ItemValue, LocalizableString } from 'survey-core';
 import { IPoint, IRect, DocController, IMargin } from './doc_controller';
 import { IPdfBrick } from './pdf_render/pdf_brick';
-import { TitleBrick } from './pdf_render/pdf_title';
-import { TitlePanelBrick } from './pdf_render/pdf_titlepanel';
-import { DescriptionBrick } from './pdf_render/pdf_description';
 import { CommentBrick } from './pdf_render/pdf_comment';
 import { CompositeBrick } from './pdf_render/pdf_composite';
 import { RowlineBrick } from './pdf_render/pdf_rowline';

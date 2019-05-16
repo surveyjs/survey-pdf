@@ -1,7 +1,6 @@
 import { IPoint, IRect, DocController } from "../doc_controller";
 import { IQuestion, Question } from 'survey-core';
 import { IPdfBrick } from '../pdf_render/pdf_brick'
-import { TextBrick } from '../pdf_render/pdf_text';
 import { CommentBrick } from '../pdf_render/pdf_comment';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';

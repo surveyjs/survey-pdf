@@ -15,8 +15,7 @@ export { FlatMatrix } from '../flat_layout/flat_matrix';
 export { FlatPanelDynamic } from '../flat_layout/flat_paneldynamic';
 export { PagePacker } from '../page_layout/page_packer';
 export { IPdfBrick, PdfBrick } from '../pdf_render/pdf_brick';
-export { TextBrick } from '../pdf_render/pdf_text';
-export { TitleBrick } from '../pdf_render/pdf_title';
+export { HTMLBrick } from '../pdf_render/pdf_html'
 export { TextFieldBrick } from '../pdf_render/pdf_textfield';
 export { CommentBrick } from '../pdf_render/pdf_comment';
 export { CheckItemBrick } from '../pdf_render/pdf_checkitem';

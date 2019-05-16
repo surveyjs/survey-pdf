@@ -2,7 +2,6 @@ import { IQuestion, ItemValue, QuestionSelectBase, QuestionMatrixModel } from 's
 import { IPoint, IRect, DocController } from "../doc_controller";
 import { FlatQuestion } from './flat_question';
 import { IPdfBrick } from '../pdf_render/pdf_brick'
-import { TextBrick } from '../pdf_render/pdf_text';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
 

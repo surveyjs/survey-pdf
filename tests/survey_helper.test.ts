@@ -61,7 +61,7 @@ test('Not Carry text', () => {
     let text: string = '111 11111 1111';
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     let composite: IPdfBrick = SurveyHelper.createTextFlat(controller.leftTopPoint,
-        null, controller, text, TextBrick);
+        null, controller, text);
     let assumeRect: IRect = {
         xLeft: controller.leftTopPoint.xLeft,
         xRight: controller.leftTopPoint.xLeft + SurveyHelper.measureText(text).width,
@@ -78,7 +78,7 @@ test('Carry text', () => {
         options.margins.marginRight;
     let controller: DocController = new DocController(options);
     let composite: IPdfBrick = SurveyHelper.createTextFlat(controller.leftTopPoint,
-        null, controller, text, TextBrick);
+        null, controller, text);
     let assumeRect: IRect = {
         xLeft: controller.leftTopPoint.xLeft,
         xRight: controller.leftTopPoint.xLeft + SurveyHelper.measureText('11111').width,
@@ -95,7 +95,7 @@ test('Carry split long text', () => {
         options.margins.marginRight;
     let controller: DocController = new DocController(options);
     let composite: IPdfBrick = SurveyHelper.createTextFlat(controller.leftTopPoint,
-        null, controller, text, TextBrick);
+        null, controller, text);
     let assumeRect: IRect = {
         xLeft: controller.leftTopPoint.xLeft,
         xRight: controller.leftTopPoint.xLeft + SurveyHelper.measureText('111').width,
