@@ -13,7 +13,6 @@ import { FlatRadiogroup } from '../src/flat_layout/flat_radiogroup';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { TestHelper } from '../src/helper_test';
 import { SurveyHelper } from '../src/helper_survey';
-import { TextBrick } from '../src/pdf_render/pdf_text';
 let __dummy_tx = new FlatTextbox(null, null);
 let __dummy_cb = new FlatCheckbox(null, null);
 let __dummy_rg = new FlatRadiogroup(null, null);
@@ -197,7 +196,7 @@ test('Pack to little page', () => {
     survey.controller.fontStyle = 'bold';
     TestHelper.equalRect(expect, packs[0][0], SurveyHelper.createTextFlat(
         survey.controller.leftTopPoint, null, survey.controller,
-        SurveyHelper.getTitleText(<Question>survey.getAllQuestions()[0]), TextBrick));
+        SurveyHelper.getTitleText(<Question>survey.getAllQuestions()[0])));
     survey.controller.fontStyle = 'normal';
     TestHelper.equalRect(expect, packs[1][0],
         SurveyHelper.createTextFieldRect(survey.controller.leftTopPoint, survey.controller));
@@ -205,7 +204,7 @@ test('Pack to little page', () => {
 test('Check yTop on new page with panel', () => {
     let json = {
         elements: [
-           {
+            {
                 type: 'panel',
                 name: 'Simple Panel',
                 title: 'Panel Title',
@@ -259,17 +258,17 @@ test('Check yTop on new page with panel', () => {
                         titleLocation: 'top',
                         indent: 4,
                         startWithNewLine: false
-                        },
+                    },
                 ]
-             },
-             {
+            },
+            {
                 type: 'checkbox',
                 name: 'car2',
                 title: 'What car are YOU driving?',
                 isRequired: true,
                 choices: ['A', 'B', 'EEE', 'UU'],
                 titleLocation: 'left'
-             }
+            }
         ]
     };
     let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);

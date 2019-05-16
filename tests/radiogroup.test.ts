@@ -6,10 +6,11 @@ import { FlatRadiogroup } from '../src/flat_layout/flat_radiogroup';
 import { TestHelper } from '../src/helper_test';
 let __dummy_rg = new FlatRadiogroup(null, null);
 
-test('Test has other radiogroup', () => {
+test('check has other radiogroup', () => {
     let json = {
         questions: [
             {
+                titleLocation: "hidden",
                 readOnly: true,
                 name: 'radiogroup',
                 type: 'radiogroup',
@@ -21,7 +22,7 @@ test('Test has other radiogroup', () => {
     let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
     survey.render();
     let internal: any = survey.controller.doc.internal;
-    let internalOtherText: string = internal.pages[1][3];
+    let internalOtherText: string = internal.pages[1][6];
     expect(internalOtherText).toBeDefined();
     let regex: RegExp = /\((.*)\)/;
     let otherText: string = internalOtherText.match(regex)[1];

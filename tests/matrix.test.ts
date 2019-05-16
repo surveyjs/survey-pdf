@@ -5,9 +5,10 @@ import { FlatMatrix } from '../src/flat_layout/flat_matrix';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
-import { IRect } from '../src/doc_controller';
+import { IRect, DocOptions, DocController } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { PdfSurvey } from '../src/survey';
+import { CompositeBrick } from '../src/pdf_render/pdf_composite';
 let __dummy_mx = new FlatMatrix(null, null);
 SurveyHelper.setFontSize(TestHelper.defaultOptions.fontSize);
 
@@ -35,21 +36,21 @@ test('test matrix hasRows true columns', () => {
     let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
     let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
     let assumeCells: IRect[] = [];
-    let header = SurveyHelper.measureText(json.questions[0].columns[0].text, 'bold');
     let currPoint = TestHelper.defaultPoint;
-    let cellWidth = (210 - TestHelper.defaultOptions.margins.marginLeft
+    let cellWidth = (TestHelper.defaultOptions.paperWidth - TestHelper.defaultOptions.margins.marginLeft
         - TestHelper.defaultOptions.margins.marginRight) / 2;
     currPoint.xLeft = cellWidth + TestHelper.defaultOptions.margins.marginLeft;
-    let columnRect = SurveyHelper.createRect(currPoint, header.width, header.height);
+    let columnRect = SurveyHelper.createTextFlat(currPoint, survey.getAllQuestions()[0], survey.controller, json.questions[0].columns[0].text);
     assumeCells.push(columnRect);
+    currPoint.xLeft = TestHelper.defaultPoint.xLeft;
+    currPoint.yTop = SurveyHelper.createPoint(columnRect).yTop;
+    let rowRect = SurveyHelper.createTextFlat(currPoint, survey.getAllQuestions()[0], survey.controller, json.questions[0].rows[0].text);
+    assumeCells.push(rowRect)
     currPoint = SurveyHelper.createPoint(columnRect);
-    assumeCells.push(SurveyHelper.createRect({ xLeft: TestHelper.defaultPoint.xLeft, yTop: columnRect.yBot },
-        SurveyHelper.measureText(json.questions[0].rows[0].text).width,
-        SurveyHelper.measureText(json.questions[0].rows[0].text).height));
     let itemWidth = SurveyHelper.measureText().width;
     assumeCells.push(SurveyHelper.createRect(currPoint, itemWidth, itemWidth));
-    let receivedCells = [];
-    receivedCells.push(...flats[0][0].unfold(), ...flats[0][2].unfold());
+    let receivedCells: IRect[] = [];
+    receivedCells.push(flats[0][0], ...(<CompositeBrick>flats[0][2]).unfoldOnce());
     TestHelper.equalRects(expect, receivedCells, assumeCells);
 })
 test('test matrix hasRows false columns', () => {
@@ -154,7 +155,7 @@ test('test hidden header', () => {
     let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
     let assumeCells: IRect[] = [];
     let itemWidth = SurveyHelper.measureText().width;
-    let cellWidth = (210 - TestHelper.defaultOptions.margins.marginLeft
+    let cellWidth = (210 * 72 / 25.4 - TestHelper.defaultOptions.margins.marginLeft
         - TestHelper.defaultOptions.margins.marginRight) / 3;
     for (let i = 0; i < json.questions[0].columns.length; i++) {
         let currPoint = TestHelper.defaultPoint;

@@ -8,10 +8,10 @@ export class CompositeBrick implements IPdfBrick {
     private _yTop: number;
     private _yBot: number;
     constructor(...bricks: IPdfBrick[]) {
-		this._xLeft = 0.0;
-		this._xRight = 0.0;
-		this._yTop = 0.0;
-		this._yBot = 0.0;
+        this._xLeft = 0.0;
+        this._xRight = 0.0;
+        this._yTop = 0.0;
+        this._yBot = 0.0;
         this.addBrick(...bricks);
     }
     get xLeft(): number { return this._xLeft; }
@@ -20,27 +20,27 @@ export class CompositeBrick implements IPdfBrick {
     get yBot(): number { return this._yBot; }
     private shift(leftShift: number, rightShift: number,
         topShift: number, botShift: number) {
-		this.bricks.forEach((brick: IPdfBrick) => {
-			brick.xLeft += leftShift;
-			brick.xRight += rightShift;
-			brick.yTop += topShift;
-			brick.yBot += botShift;
-		});
+        this.bricks.forEach((brick: IPdfBrick) => {
+            brick.xLeft += leftShift;
+            brick.xRight += rightShift;
+            brick.yTop += topShift;
+            brick.yBot += botShift;
+        });
     }
     set xLeft(xLeft: number) {
-		this.shift(xLeft - this.xLeft, 0.0, 0.0, 0.0);
+        this.shift(xLeft - this.xLeft, 0.0, 0.0, 0.0);
         this._xLeft = xLeft;
     }
     set xRight(xRight: number) {
-		this.shift(0.0, xRight - this.xRight, 0.0, 0.0);
+        this.shift(0.0, xRight - this.xRight, 0.0, 0.0);
         this._xRight = xRight;
     }
     set yTop(yTop: number) {
-		this.shift(0.0, 0.0, yTop - this.yTop, 0.0);
+        this.shift(0.0, 0.0, yTop - this.yTop, 0.0);
         this._yTop = yTop;
     }
     set yBot(yBot: number) {
-		this.shift(0.0, 0.0, 0.0, yBot - this.yBot);
+        this.shift(0.0, 0.0, 0.0, yBot - this.yBot);
         this._yBot = yBot;
     }
     render(): void {
@@ -62,6 +62,13 @@ export class CompositeBrick implements IPdfBrick {
         let unfoldBricks: IPdfBrick[] = new Array<IPdfBrick>();
         this.bricks.forEach((brick: IPdfBrick) => {
             unfoldBricks.push(...brick.unfold());
+        });
+        return unfoldBricks;
+    }
+    unfoldOnce(): IPdfBrick[] {
+        let unfoldBricks: IPdfBrick[] = new Array<IPdfBrick>();
+        this.bricks.forEach((brick: IPdfBrick) => {
+            unfoldBricks.push(brick);
         });
         return unfoldBricks;
     }

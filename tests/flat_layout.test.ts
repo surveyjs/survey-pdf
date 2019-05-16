@@ -10,11 +10,9 @@ import { FlatTextbox } from '../src/flat_layout/flat_textbox';
 import { FlatComment } from '../src/flat_layout/flat_comment';
 import { FlatCheckbox } from '../src/flat_layout/flat_checkbox';
 import { FlatDropdown } from '../src/flat_layout/flat_dropdown';
-import { FlatRating } from '../src/entries/pdf';
+import { FlatRating, HTMLBrick } from '../src/entries/pdf';
 import { FlatBoolean } from '../src/flat_layout/flat_boolean';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
-import { TextBrick } from '../src/pdf_render/pdf_text';
-import { TitleBrick } from '../src/pdf_render/pdf_title';
 import { TextFieldBrick } from '../src/pdf_render/pdf_textfield';
 import { CompositeBrick } from '../src/pdf_render/pdf_composite';
 import { RowlineBrick } from '../src/pdf_render/pdf_rowline';
@@ -97,7 +95,7 @@ export function calcIndent(expect: any, leftTopPoint: IPoint, controller: DocCon
         SurveyHelper.measureText().height, SurveyHelper.measureText().height);
     let assumeChecktext: IRect = SurveyHelper.createTextFlat(
         SurveyHelper.createPoint(assumeCheckbox, false, true),
-        null, controller, checktext, TextBrick);
+        null, controller, checktext);
     TestHelper.equalRect(expect, compositeFlat, SurveyHelper.mergeRects(assumeTitle, assumeCheckbox, assumeChecktext));
     return SurveyHelper.createPoint(assumeCheckbox);
 }
@@ -555,7 +553,7 @@ test('Calc question comment', () => {
     let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
-    let assumeText: IRect = SurveyHelper.createTextFlat(survey.controller.leftTopPoint, survey.getAllQuestions()[0], survey.controller, json.questions[0].commentText, TextBrick);
+    let assumeText: IRect = SurveyHelper.createTextFlat(survey.controller.leftTopPoint, survey.getAllQuestions()[0], survey.controller, json.questions[0].commentText);
     let assumeTextField: IRect = SurveyHelper.createTextFieldRect(
         SurveyHelper.createPoint(assumeText), survey.controller, 2);
     TestHelper.equalRect(expect, flats[0][0].unfold()[0].unfold()[0], assumeText);
@@ -699,7 +697,7 @@ test('Check panel with inner indent', () => {
 test('Check question title location in panel', () => {
     let json = {
         elements: [
-           {
+            {
                 type: 'panel',
                 name: 'Simple Panel',
                 questionTitleLocation: 'bottom',
@@ -709,7 +707,7 @@ test('Check question title location in panel', () => {
                         name: 'At the very bottom'
                     }
                 ]
-           }
+            }
         ]
     };
     let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
@@ -717,7 +715,7 @@ test('Check question title location in panel', () => {
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(2);
     expect(flats[0][0] instanceof TextFieldBrick).toBe(true);
-    expect(flats[0][1].unfold()[0] instanceof TitleBrick).toBe(true);
+    expect(flats[0][1].unfold()[0] instanceof HTMLBrick).toBe(true);
 });
 test('Check boolean without title', () => {
     let json = {
@@ -801,7 +799,7 @@ test('Check dropdown with other', () => {
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
     let otherPoint: IPoint = calcTitleTop(survey.controller.leftTopPoint, survey.controller,
-        <Question>survey.getAllQuestions()[0], TestHelper.wrapRect(SurveyHelper.mergeRects( 
+        <Question>survey.getAllQuestions()[0], TestHelper.wrapRect(SurveyHelper.mergeRects(
             flats[0][0].unfold()[0], flats[0][0].unfold()[1])));
     TestHelper.equalRect(expect, flats[0][0].unfold()[2], SurveyHelper.createOtherFlat(
         otherPoint, null, survey.controller));
@@ -854,7 +852,7 @@ test('Check rating two elements with min rate description', () => {
             SurveyHelper.getRatingMinWidth() + SurveyHelper.measureText(
                 SurveyHelper.getRatingItemText(question, 0,
                     question.rateMin.toString()), 'bold').width +
-                SurveyHelper.measureText().height,
+            SurveyHelper.measureText().height,
         yTop: survey.controller.leftTopPoint.yTop,
         yBot: survey.controller.leftTopPoint.yTop +
             SurveyHelper.measureText().height * SurveyHelper.RATING_MIN_HEIGHT
@@ -889,7 +887,7 @@ test('Check rating two elements with max rate description', () => {
             SurveyHelper.getRatingMinWidth() + SurveyHelper.measureText(
                 SurveyHelper.getRatingItemText(question, 1,
                     question.rateMax.toString()), 'bold').width +
-                SurveyHelper.measureText().height,
+            SurveyHelper.measureText().height,
         yTop: survey.controller.leftTopPoint.yTop,
         yBot: survey.controller.leftTopPoint.yTop +
             SurveyHelper.measureText().height * SurveyHelper.RATING_MIN_HEIGHT

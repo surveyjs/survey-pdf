@@ -8,7 +8,6 @@ import { TestHelper } from '../src/helper_test';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { SurveyHelper } from '../src/helper_survey';
-import { TextBrick } from '../src/pdf_render/pdf_text';
 import { IRect } from '../src/doc_controller';
 let __dummy_cb = new FlatCheckbox(null, null);
 
@@ -149,9 +148,9 @@ test('Test has other checkbox', () => {
 	assumeRects.push(itemRect);
 	currPoint = SurveyHelper.createPoint(itemRect, false, true);
 	let textRect =
-		SurveyHelper.createTextFlat(currPoint, survey.getAllQuestions()[0], survey.controller, json.questions[0].otherText, TextBrick).unfold();
-	currPoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(itemRect, ...textRect));
-	assumeRects.push(...textRect);
+		SurveyHelper.createTextFlat(currPoint, survey.getAllQuestions()[0], survey.controller, json.questions[0].otherText);
+	currPoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(itemRect, textRect));
+	assumeRects.push(textRect);
 	let textFieldRect = SurveyHelper.createTextFieldRect(currPoint, survey.controller, 2);
 	assumeRects.push(textFieldRect);
 	TestHelper.equalRects(expect, receivedRects, assumeRects);

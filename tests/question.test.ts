@@ -29,7 +29,7 @@ function checkTitleText(questionStartIndex: string, isRequired: boolean = false)
     survey.questionStartIndex = questionStartIndex;
   }
   survey.render();
-  let internalContent = survey.controller.doc.internal.pages[1][2];
+  let internalContent = survey.controller.doc.internal.pages[1][6];
   expect(internalContent).toBeDefined();
   let regex = /\((.*)\)/;
   let content = internalContent.match(regex)[1];
@@ -62,7 +62,7 @@ test('Check comment', () => {
   let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
   survey.render();
   let internal = survey.controller.doc.internal;
-  let internalContent = survey.controller.doc.internal.pages[1][2];
+  let internalContent = survey.controller.doc.internal.pages[1][6];
   let textField = internal.acroformPlugin.acroFormDictionaryRoot.Fields[0]
   expect(internalContent).toBeDefined();
   let regex = /\((.*)\)/;
@@ -106,20 +106,20 @@ test('Check empty question', () => {
   expect(flats[0].length).toBe(0);
 });
 test('Not visible question', () => {
-    let json = {
-        questions: [
-            {
-                type: 'checkbox',
-                name: 'box',
-                visible: false
-            }
-        ]
-    };
-    let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
-    expect(flats.length).toBe(1);
-    expect(typeof flats[0]).not.toBe('undefined');
-    expect(flats[0].length).toBe(0);
+  let json = {
+    questions: [
+      {
+        type: 'checkbox',
+        name: 'box',
+        visible: false
+      }
+    ]
+  };
+  let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
+  let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
+  expect(flats.length).toBe(1);
+  expect(typeof flats[0]).not.toBe('undefined');
+  expect(flats[0].length).toBe(0);
 });
 test('Check descrition with hidden title', () => {
   let json = {
@@ -134,38 +134,38 @@ test('Check descrition with hidden title', () => {
   };
   let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
   survey.render();
-  let internalContent = survey.controller.doc.internal.pages[1][3];
+  let internalContent = survey.controller.doc.internal.pages[1][13];
   expect(internalContent).toBeDefined();
   let regex = /\((.*)\)/;
   let content = internalContent.match(regex)[1];
   expect(content).toBe(json.questions[0].description);
 });
 test('Two pages', () => {
-    let json = {
-		pages: [
-			{
-				name: 'First Page',
-				elements: [
-					{
-						type: 'text',
-						name: 'Enter me'
-					}
-				]
-			},
-			{
-				name: 'Second Page',
-				elements: [
-					{
-						type: 'text',
-						name: 'Not, me'
-					}
-				]
-			}
-		]
-	};
-    let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
-    expect(flats.length).toBe(2);
-    expect(flats[0].length).toBe(1);
-    expect(flats[1].length).toBe(1);
+  let json = {
+    pages: [
+      {
+        name: 'First Page',
+        elements: [
+          {
+            type: 'text',
+            name: 'Enter me'
+          }
+        ]
+      },
+      {
+        name: 'Second Page',
+        elements: [
+          {
+            type: 'text',
+            name: 'Not, me'
+          }
+        ]
+      }
+    ]
+  };
+  let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
+  let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
+  expect(flats.length).toBe(2);
+  expect(flats[0].length).toBe(1);
+  expect(flats[1].length).toBe(1);
 });
