@@ -22,7 +22,7 @@ export class FlatBoolean extends FlatQuestion {
         let text: string = SurveyHelper.getLocString(this.question.locDisplayLabel);
         if (text) {
             composite.addBrick(SurveyHelper.createTextFlat(SurveyHelper.createPoint(
-                composite, false, true), this.question, this.controller, text, TextBrick));
+                composite, false, true), this.question, this.controller, text));
         }
         return [composite];
     }

@@ -21,6 +21,7 @@ export interface IDocOptions {
 }
 
 export class DocOptions implements IDocOptions {
+    protected static MM_TO_PT = 72 / 25.4;
     protected static PAPER_TO_LOGIC_SCALE_MAGIC: number = 595.28 / 210.0;
     protected _fontSize: number;
     protected _paperWidth: number;
@@ -33,6 +34,9 @@ export class DocOptions implements IDocOptions {
         this._paperHeight =
             typeof options.paperHeight === "undefined" ? 297 : options.paperHeight;
         this._margins = options.margins;
+        Object.keys(this._margins).forEach((name: string) => {
+            (<any>this._margins)[name] = (<any>this._margins)[name] * DocOptions.MM_TO_PT;
+        });
     }
     get leftTopPoint(): IPoint {
         return {
@@ -74,7 +78,9 @@ export class DocController extends DocOptions {
             this._paperWidth * DocOptions.PAPER_TO_LOGIC_SCALE_MAGIC;
         let logicHeight: number =
             this._paperHeight * DocOptions.PAPER_TO_LOGIC_SCALE_MAGIC;
-        this._doc = new jsPDF({ format: [logicWidth, logicHeight] });
+        this._doc = new jsPDF({ unit: 'pt', format: [logicWidth, logicHeight] });
+        this._paperWidth = this._paperWidth * DocOptions.MM_TO_PT;
+        this._paperHeight = this._paperHeight * DocOptions.MM_TO_PT;
         this._doc.setFontSize(this._fontSize);
     }
     get doc(): any {
@@ -96,8 +102,8 @@ export class DocController extends DocOptions {
     }
     public addPage() {
         this.doc.addPage([
-            this._paperWidth * DocOptions.PAPER_TO_LOGIC_SCALE_MAGIC,
-            this._paperHeight * DocOptions.PAPER_TO_LOGIC_SCALE_MAGIC
+            this._paperWidth * DocOptions.PAPER_TO_LOGIC_SCALE_MAGIC / DocOptions.MM_TO_PT,
+            this._paperHeight * DocOptions.PAPER_TO_LOGIC_SCALE_MAGIC / DocOptions.MM_TO_PT
         ]);
     }
 }

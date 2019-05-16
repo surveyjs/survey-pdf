@@ -29,7 +29,7 @@ export class FlatQuestion implements IFlatQuestion {
     private generateFlatsComment(point: IPoint): IPdfBrick {
         let text: string = SurveyHelper.getLocString(this.question.locCommentText);
         let compositeText: IPdfBrick = SurveyHelper.createTextFlat(
-            point, this.question, this.controller, text, TextBrick);
+            point, this.question, this.controller, text);
         let rectTextField: IRect = SurveyHelper.createTextFieldRect(
             SurveyHelper.createPoint(compositeText), this.controller, 2);
         return new CompositeBrick(compositeText,
