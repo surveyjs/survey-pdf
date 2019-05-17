@@ -9,7 +9,7 @@ export class TitlePanelBrick extends TitleBrick {
         rect: IRect, text: string) {
         super(question, controller, rect, text);
     }
-    render(): void {
+    async render() {
         let oldFontSize = this.controller.fontSize;
         this.controller.fontSize = oldFontSize * SurveyHelper.TITLE_PANEL_FONT_SIZE_SCALE_MAGIC;
         super.render();

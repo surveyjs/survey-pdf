@@ -12,7 +12,7 @@ export class RowlineBrick implements IPdfBrick {
         this.yTop = rect.yTop;
         this.yBot = rect.yBot;
     }
-    render(): void { }
+    async render() { }
     unfold(): IPdfBrick[] {
         return [this];
     }

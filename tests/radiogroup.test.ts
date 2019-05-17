@@ -32,7 +32,7 @@ test('Test has other radiogroup', () => {
     expect(internalRadioGroup.FT).toBe('/Btn');
 });
 
-test('Test radiogroup duplicate value other', () => {
+test.skip('Test radiogroup duplicate value other', () => {
     let json = {
         questions: [
             {

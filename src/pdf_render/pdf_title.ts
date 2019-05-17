@@ -8,7 +8,7 @@ export class TitleBrick extends TextBrick {
         rect: IRect, text: string) {
         super(question, controller, rect, text);
     }
-    render(): void {
+    async render() {
         this.controller.fontStyle = 'bold';
         super.render();
         this.controller.fontStyle = 'normal';

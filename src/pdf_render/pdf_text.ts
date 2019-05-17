@@ -9,7 +9,7 @@ export class TextBrick extends PdfBrick {
         super(question, controller, rect);
         this.question = <QuestionTextModel>question;
     }
-    render(): void {
+    async render() {
         this.rendertText(this, this.text);
     }
 }

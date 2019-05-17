@@ -8,7 +8,7 @@ import { SurveyHelper } from '../helper_survey';
 
 export class FlatTextbox extends FlatQuestion {
     protected question: QuestionTextModel;
-    constructor(question: IQuestion, protected controller: DocController) {
+    constructor(question: IQuestion, controller: DocController) {
         super(question, controller);
         this.question = <QuestionTextModel>question;
     }

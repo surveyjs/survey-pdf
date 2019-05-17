@@ -12,15 +12,19 @@ export class SurveyPDF extends SurveyModel {
         this.controller = new DocController(options);
         SurveyHelper.setFontSize(options.fontSize);
     }
-    render() {
+    async render()
+    {
         let flats: IPdfBrick[][] = FlatSurvey.generateFlats(this);
         let packs: IPdfBrick[][] = PagePacker.pack(flats, this.controller);
-        packs.forEach((page: IPdfBrick[], index: number) => {
-            page.forEach((brick: IPdfBrick) => brick.render());
-            if (index != packs.length - 1) this.controller.addPage();
-        });
+        for (let i = 0; i < packs.length; i++) {
+            for (let j = 0; j < packs[i].length; j++) {
+                await packs[i][j].render();
+            }
+            if (i != packs.length - 1) this.controller.addPage();
+        }
     }
-    save(fileName: string = 'survey_result.pdf') {
+    async save(fileName: string = 'survey_result.pdf') {
+        await this.render();
         this.controller.doc.save(fileName);
     }
 }

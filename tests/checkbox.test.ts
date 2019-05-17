@@ -31,7 +31,7 @@ test('Test has other checkbox', () => {
 	let internalOtherCheckBox: any = internal.acroformPlugin.acroFormDictionaryRoot.Fields[0];
 	expect(internalOtherCheckBox.FT).toBe('/Btn');
 });
-test('Test checkbox duplicate value other', () => {
+test.skip('Test checkbox duplicate value other', () => {
 	let json = {
 		questions: [
 			{

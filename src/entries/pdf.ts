@@ -11,6 +11,7 @@ export { FlatDropdown } from '../flat_layout/flat_dropdown';
 export { FlatComment } from '../flat_layout/flat_comment';
 export { FlatRating } from '../flat_layout/flat_rating';
 export { FlatBoolean } from '../flat_layout/flat_boolean';
+export { FlatHTML } from '../flat_layout/flat_html';
 export { FlatMatrix } from '../flat_layout/flat_matrix';
 export { FlatMultipleText } from '../flat_layout/flat_multipletext';
 export { FlatPanelDynamic } from '../flat_layout/flat_paneldynamic';

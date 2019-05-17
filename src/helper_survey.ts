@@ -154,9 +154,9 @@ export class SurveyHelper {
         controller.fontSize = oldFontSize;
         return composite;
     }
-    static createOtherFlat(point: IPoint, question: IQuestion, controller: DocController): IPdfBrick {
+    static createOtherFlat(point: IPoint, question: IQuestion, controller: DocController, index: number = 0): IPdfBrick {
         let otherRect: IRect = SurveyHelper.createTextFieldRect(point, controller, 2);
-        return new CommentBrick(question, controller, otherRect, false);
+        return new CommentBrick(question, controller, otherRect, false, index);
     }
     static createTextFieldRect(point: IPoint, controller: DocController, lines: number = 1): IRect {
         let width: number = controller.paperWidth - point.xLeft - controller.margins.right;

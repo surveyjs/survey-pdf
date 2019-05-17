@@ -11,8 +11,8 @@ export class FlatCheckbox extends FlatSelectBase {
         super(question, controller);
         this.question = <QuestionCheckboxModel>question;
     }
-    createItemBrick(rect: IRect, item: ItemValue): IPdfBrick {
-        return new CheckboxItemBrick(this.question, this.controller, rect, item);
+    createItemBrick(rect: IRect, item: ItemValue, index: number): IPdfBrick {
+        return new CheckboxItemBrick(this.question, this.controller, rect, item, index);
     }
 }
 

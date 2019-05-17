@@ -2,7 +2,7 @@ import { IPoint, IRect, DocController } from '../doc_controller';
 import { IQuestion } from 'survey-core';
 
 export interface IPdfBrick extends IRect {
-    render(): void;
+    render(): any;
     unfold(): IPdfBrick[];
 }
 export class PdfBrick implements IPdfBrick {
@@ -24,7 +24,7 @@ export class PdfBrick implements IPdfBrick {
             baseline: 'middle'
         });
     }
-    render(): void { }
+    async render() { }
     unfold(): IPdfBrick[] {
         return [this];
     }
