@@ -1,4 +1,4 @@
-import { IQuestion, QuestionTextModel } from 'survey-core';
+import { IQuestion } from 'survey-core';
 import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
 import { IPoint, IRect, DocController } from "../doc_controller";
