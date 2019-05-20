@@ -9,13 +9,13 @@ import { TestHelper } from '../src/helper_test';
 let __dummy_tx = new FlatTextbox(null, null);
 let __dummy_cm = new FlatComment(null, null);
 
-function checkTextboxValue(json: any, tobe: string,
+async function checkTextboxValue(json: any, tobe: string,
 	data: any = null, tobeDef: string = null, readOnly: boolean = false) {
   	let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     if (data !== null) {
       survey.data = data;
     }
-    survey.render();
+    await survey.render();
     expect(survey.controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields[0].value)
 		.toBe(tobe);
 	if (tobeDef != null) {

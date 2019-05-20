@@ -2,7 +2,7 @@
     return {};
 };
 
-import { Question, QuestionCommentModel, QuestionRatingModel } from 'survey-core';
+import { Question, QuestionCommentModel, QuestionRatingModel, QuestionImagePickerModel } from 'survey-core';
 import { SurveyPDF } from '../src/survey';
 import { IPoint, IRect, DocController, IDocOptions } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
@@ -313,7 +313,7 @@ test('Calc textbox boundaries required', () => {
     calcTitleTop(survey.controller.leftTopPoint, survey.controller,
         <Question>survey.getAllQuestions()[0], flats[0][0]);
 });
-test('Check that checkbox has square boundaries', () => {
+test('Check that checkbox has square boundaries', async () => {
     let json = {
         questions: [
             {
@@ -328,8 +328,7 @@ test('Check that checkbox has square boundaries', () => {
         ]
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let controller: DocController = survey.controller;
-    survey.render();
+    await survey.render();
     let assumeCheckbox: IRect = SurveyHelper.createRect(
         TestHelper.defaultPoint,
         SurveyHelper.measureText().height, SurveyHelper.measureText().height);
@@ -1101,7 +1100,7 @@ test('Check multiple text with colCount and long text', () => {
     };
     TestHelper.equalRect(expect, SurveyHelper.mergeRects(flats[0][0], flats[0][1]), assumeMultipleText);
 });
-test.skip('Check imagepicker one image 100x100px', () => {
+test('Check imagepicker one image 100x100px', () => {
     let json = { 
         elements: [
             {
@@ -1121,15 +1120,20 @@ test.skip('Check imagepicker one image 100x100px', () => {
     let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
-    let assumeMultipleText: IRect = {
+    let width: number = SurveyHelper.getImagePickerAvailableWidth(
+        survey.controller) / SurveyHelper.IMAGEPICKER_COUNT;
+    let ratio: number = parseInt((<QuestionImagePickerModel>survey.getAllQuestions()[0]).imageWidth) /
+            parseInt((<QuestionImagePickerModel>survey.getAllQuestions()[0]).imageHeight);
+    let height: number = width / ratio;
+    let assumeimagePicker: IRect = {
         xLeft: survey.controller.leftTopPoint.xLeft,
-        xRight: survey.controller.leftTopPoint.xLeft + 100.0,
+        xRight: survey.controller.leftTopPoint.xLeft + width,
         yTop: survey.controller.leftTopPoint.yTop,
-        yBot: survey.controller.leftTopPoint.yTop + 100.0 + SurveyHelper.measureText().height
+        yBot: survey.controller.leftTopPoint.yTop + height + SurveyHelper.measureText().height
     };
-    TestHelper.equalRect(expect, SurveyHelper.mergeRects(flats[0][0], flats[0][1]), assumeMultipleText);
+    TestHelper.equalRect(expect, flats[0][0], assumeimagePicker);
 });
-test.skip('Check imagepicker one image 100x100px with label', () => {
+test('Check imagepicker one image 100x100px with label', () => {
     let json = { 
         elements: [
             {
@@ -1150,15 +1154,20 @@ test.skip('Check imagepicker one image 100x100px with label', () => {
     let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
-    let assumeMultipleText: IRect = {
+    let width: number = SurveyHelper.getImagePickerAvailableWidth(
+        survey.controller) / SurveyHelper.IMAGEPICKER_COUNT;
+    let ratio: number = parseInt((<QuestionImagePickerModel>survey.getAllQuestions()[0]).imageWidth) /
+            parseInt((<QuestionImagePickerModel>survey.getAllQuestions()[0]).imageHeight);
+    let height: number = width / ratio;
+    let assumeimagePicker: IRect = {
         xLeft: survey.controller.leftTopPoint.xLeft,
-        xRight: survey.controller.leftTopPoint.xLeft + 100.0,
+        xRight: survey.controller.leftTopPoint.xLeft + width,
         yTop: survey.controller.leftTopPoint.yTop,
-        yBot: survey.controller.leftTopPoint.yTop + 100.0 + SurveyHelper.measureText().height * 2
+        yBot: survey.controller.leftTopPoint.yTop + height + 2.0 * SurveyHelper.measureText().height
     };
-    TestHelper.equalRect(expect, SurveyHelper.mergeRects(flats[0][0], flats[0][1]), assumeMultipleText);
+    TestHelper.equalRect(expect, flats[0][0], assumeimagePicker);
 });
-test.skip('Check imagepicker two images 100x100px', () => {
+test('Check imagepicker two images 100x100px', () => {
     let json = { 
         elements: [
             {
@@ -1178,18 +1187,20 @@ test.skip('Check imagepicker two images 100x100px', () => {
             }
         ]
     };
-    let options: IDocOptions = TestHelper.defaultOptions;
-    options.paperWidth = options.margins.left +
-        options.margins.right + 200.0 + SurveyHelper.measureText().height;
-    let survey: SurveyPDF = new SurveyPDF(json, options);
+    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
-    let assumeMultipleText: IRect = {
+    let width: number = SurveyHelper.getImagePickerAvailableWidth(
+        survey.controller) / SurveyHelper.IMAGEPICKER_COUNT;
+    let ratio: number = parseInt((<QuestionImagePickerModel>survey.getAllQuestions()[0]).imageWidth) /
+            parseInt((<QuestionImagePickerModel>survey.getAllQuestions()[0]).imageHeight);
+    let height: number = width / ratio;
+    let assumeimagePicker: IRect = {
         xLeft: survey.controller.leftTopPoint.xLeft,
-        xRight: survey.controller.paperWidth - survey.controller.margins.right,
+        xRight: survey.controller.leftTopPoint.xLeft + 2.0 * width + SurveyHelper.measureText().height,
         yTop: survey.controller.leftTopPoint.yTop,
-        yBot: survey.controller.leftTopPoint.yTop + 100.0 + SurveyHelper.measureText().height
+        yBot: survey.controller.leftTopPoint.yTop + height + SurveyHelper.measureText().height
     };
-    TestHelper.equalRect(expect, SurveyHelper.mergeRects(flats[0][0], flats[0][1]), assumeMultipleText);
+    TestHelper.equalRect(expect, flats[0][0], assumeimagePicker);
 });

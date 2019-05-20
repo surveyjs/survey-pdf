@@ -1,10 +1,12 @@
-import { IQuestion, Question, QuestionRatingModel, ItemValue, LocalizableString } from 'survey-core';
+import { IQuestion, ItemValue, LocalizableString, Question,
+    QuestionRatingModel, QuestionImagePickerModel } from 'survey-core';
 import { IPoint, IRect, DocController } from './doc_controller';
 import { IPdfBrick } from './pdf_render/pdf_brick';
 import { TitleBrick } from './pdf_render/pdf_title';
 import { TitlePanelBrick } from './pdf_render/pdf_titlepanel';
 import { DescriptionBrick } from './pdf_render/pdf_description';
 import { CommentBrick } from './pdf_render/pdf_comment';
+import { HTMLBrick } from './pdf_render/pdf_html';
 import { CompositeBrick } from './pdf_render/pdf_composite';
 import { RowlineBrick } from './pdf_render/pdf_rowline';
 import * as jsPDF from 'jspdf';
@@ -20,6 +22,7 @@ export class SurveyHelper {
     static RATING_MIN_WIDTH: number = 3;
     static RATING_MIN_HEIGHT: number = 2;
     static MULTIPLETEXT_TEXT_PERS: number = Math.E / 10.0;
+    static IMAGEPICKER_COUNT: number = 4;
     private static _doc: any = new jsPDF();
     public static setFontSize(fontSize: number, font?: string) {
         this._doc.setFontSize(fontSize);
@@ -35,7 +38,8 @@ export class SurveyHelper {
         let height: number = this._doc.getLineHeight() / this._doc.internal.scaleFactor;
         let width: number = 0;
         if (typeof text === 'string') {
-            width = text.split('').reduce((sm: number, cr: string) => sm + this._doc.getTextWidth(cr), 0);
+            width = text.split('').reduce((sm: number, cr: string) =>
+                sm + this._doc.getTextWidth(cr), 0);
         }
         else {
             width = height * text;
@@ -125,7 +129,8 @@ export class SurveyHelper {
         });
         return composite;
     }
-    static createBoldTextFlat(point: IPoint, question: Question, controller: DocController, text: string) {
+    static createBoldTextFlat(point: IPoint, question: Question,
+        controller: DocController, text: string) {
         controller.fontStyle = 'bold';
         let composite: IPdfBrick = SurveyHelper.createTextFlat(point, question, controller,
             text, TitleBrick);
@@ -142,21 +147,39 @@ export class SurveyHelper {
         let oldFontSize: number = controller.fontSize;
         controller.fontSize = oldFontSize * SurveyHelper.TITLE_PANEL_FONT_SIZE_SCALE_MAGIC;
         controller.fontStyle = 'bold';
-        let composite: IPdfBrick = SurveyHelper.createTextFlat(point, question, controller, text, TitlePanelBrick);
+        let composite: IPdfBrick = SurveyHelper.createTextFlat(point,
+            question, controller, text, TitlePanelBrick);
         controller.fontStyle = 'normal';
         controller.fontSize = oldFontSize;
         return composite;
     }
-    static createDescFlat(point: IPoint, question: IQuestion, controller: DocController, text: string): IPdfBrick {
+    static createDescFlat(point: IPoint, question: IQuestion,
+        controller: DocController, text: string): IPdfBrick {
         let oldFontSize: number = controller.fontSize;
         controller.fontSize = oldFontSize * SurveyHelper.DESCRIPTION_FONT_SIZE_SCALE_MAGIC;
-        let composite: IPdfBrick = SurveyHelper.createTextFlat(point, question, controller, text, DescriptionBrick);
+        let composite: IPdfBrick = SurveyHelper.createTextFlat(point,
+            question, controller, text, DescriptionBrick);
         controller.fontSize = oldFontSize;
         return composite;
     }
-    static createOtherFlat(point: IPoint, question: IQuestion, controller: DocController, index: number = 0): IPdfBrick {
+    static createOtherFlat(point: IPoint, question: IQuestion,
+        controller: DocController, index: number = 0): IPdfBrick {
         let otherRect: IRect = SurveyHelper.createTextFieldRect(point, controller, 2);
         return new CommentBrick(question, controller, otherRect, false, index);
+    }
+    static createImageFlat(point: IPoint, question: IQuestion,
+        controller: DocController, item: ItemValue, width: number): IPdfBrick {
+        let ratio: number = parseInt((<QuestionImagePickerModel>question).imageWidth) /
+            parseInt((<QuestionImagePickerModel>question).imageHeight);
+        let height: number = width / ratio;
+        let html: string =
+            `<img
+                src="${item['imageLink']}"
+                width="${width}"
+                height="${height}"
+            />`;
+        return new HTMLBrick(question, controller,
+            SurveyHelper.createRect(point, width, height), html);
     }
     static createTextFieldRect(point: IPoint, controller: DocController, lines: number = 1): IRect {
         let width: number = controller.paperWidth - point.xLeft - controller.margins.right;
@@ -200,6 +223,11 @@ export class SurveyHelper {
     }
     static getPageAvailableWidth(controller: DocController): number {
         return controller.paperWidth - controller.margins.left - controller.margins.right;
+    }
+    static getImagePickerAvailableWidth(controller: DocController): number {
+        let width: number = (SurveyHelper.getPageAvailableWidth(
+            controller) - 3 * SurveyHelper.measureText().height);
+        return width > 0 ? width : SurveyHelper.measureText().height;
     }
     static setColumnMargins(question: Question, controller: DocController, column: number) {
         let cellWidth = this.getColumnWidth(question, controller);

@@ -44,9 +44,9 @@ export class CompositeBrick implements IPdfBrick {
         this._yBot = yBot;
     }
     async render() {
-        this.bricks.forEach((brick: IPdfBrick) => {
-            brick.render();
-        });
+        for (let i = 0; i < this.bricks.length; i++) {
+            await this.bricks[i].render();
+        }
     }
     addBrick(...bricks: IPdfBrick[]) {
         if (bricks.length != 0) {

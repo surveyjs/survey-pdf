@@ -47,7 +47,7 @@ test('Check title number with alphabetical questionStartIndex', () => {
 test('Check title required text', () => {
   checkTitleText(null, true);
 });
-test('Check comment', () => {
+test('Check comment', async () => {
   let json = {
     questions: [
       {
@@ -60,7 +60,7 @@ test('Check comment', () => {
     ]
   };
   let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-  survey.render();
+  await survey.render();
   let internal = survey.controller.doc.internal;
   let internalContent = survey.controller.doc.internal.pages[1][2];
   let textField = internal.acroformPlugin.acroFormDictionaryRoot.Fields[0]
@@ -70,7 +70,7 @@ test('Check comment', () => {
   expect(content).toBe(json.questions[0].commentText);
   expect(textField.FT).toBe('/Tx');
 });
-test('Check comment readonly', () => {
+test('Check comment readonly', async () => {
   let json = {
     questions: [
       {
@@ -84,7 +84,7 @@ test('Check comment readonly', () => {
     ]
   };
   let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-  survey.render();
+  await survey.render();
   let internal = survey.controller.doc.internal;
   let textField = internal.acroformPlugin.acroFormDictionaryRoot.Fields[0]
   expect(textField.readOnly).toBe(true);
@@ -121,7 +121,7 @@ test('Not visible question', () => {
     expect(typeof flats[0]).not.toBe('undefined');
     expect(flats[0].length).toBe(0);
 });
-test('Check descrition with hidden title', () => {
+test('Check descrition with hidden title', async () => {
   let json = {
     questions: [
       {
@@ -133,7 +133,7 @@ test('Check descrition with hidden title', () => {
     ]
   };
   let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-  survey.render();
+  await survey.render();
   let internalContent = survey.controller.doc.internal.pages[1][3];
   expect(internalContent).toBeDefined();
   let regex = /\((.*)\)/;

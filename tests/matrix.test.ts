@@ -163,7 +163,7 @@ test('test hidden header', () => {
     }
     TestHelper.equalRects(expect, flats[0][0].unfold(), assumeCells);
 });
-test('test default value', () => {
+test('Matrix default value', async () => {
     let json = {
         questions: [
             {
@@ -180,7 +180,7 @@ test('test default value', () => {
             }]
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    survey.render();
+    await survey.render();
     let acroFormFields = survey.controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields;
     expect(acroFormFields[0].value).toBe("sq_104row0");
     expect(acroFormFields[1].AS).toBe("/sq_104row0index0");
