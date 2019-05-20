@@ -21,10 +21,11 @@ export class TestHelper {
         return {
             fontSize: 30,
             margins: {
-                marginLeft: 10 * this.MM_TO_PT,
-                marginRight: 10 * this.MM_TO_PT,
-                marginTop: 10 * this.MM_TO_PT,
-                marginBot: 10 * this.MM_TO_PT
+
+                left: 10,
+                right: 10,
+                top: 10,
+                bot: 10
             }
         };
     }

@@ -38,8 +38,8 @@ export class FlatQuestion implements IFlatQuestion {
         return null;
     }
     generateFlats(point: IPoint): IPdfBrick[] {
-        let oldMarginLeft: number = this.controller.margins.marginLeft;
-        this.controller.margins.marginLeft += SurveyHelper.measureText(this.question.indent).width;
+        let oldMarginLeft: number = this.controller.margins.left;
+        this.controller.margins.left += SurveyHelper.measureText(this.question.indent).width;
         let indentPoint: IPoint = {
             xLeft: point.xLeft + SurveyHelper.measureText(this.question.indent).width,
             yTop: point.yTop
@@ -121,7 +121,7 @@ export class FlatQuestion implements IFlatQuestion {
         if (this.question.hasComment && this.question.titleLocation != 'bottom') {
             flats.push(this.generateFlatsComment(commentPoint));
         }
-        this.controller.margins.marginLeft = oldMarginLeft;
+        this.controller.margins.left = oldMarginLeft;
         return flats;
     }
     //TO REVIEW

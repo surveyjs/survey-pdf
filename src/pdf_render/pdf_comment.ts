@@ -1,12 +1,10 @@
-import { IQuestion, QuestionTextModel } from 'survey-core';
+import { IQuestion } from 'survey-core';
 import { IRect, DocController } from '../doc_controller';
-import { TextFieldBrick } from './pdf_textfield';
+import { TextBoxBrick } from './pdf_textbox';
 
-export class CommentBrick extends TextFieldBrick {
+export class CommentBrick extends TextBoxBrick {
     constructor(question: IQuestion, protected controller: DocController,
-        rect: IRect, isQuestion: boolean) {
-        super(question, controller, rect);
-        this.isQuestion = isQuestion;
-        this.isMultiline = true;
+        rect: IRect, isQuestion: boolean, index: number = 0) {
+        super(question, controller, rect, isQuestion, true, index);
     }
 }

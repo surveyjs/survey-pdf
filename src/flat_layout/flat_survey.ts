@@ -1,5 +1,5 @@
 import { IElement, IQuestion, PanelModelBase, PanelModel, QuestionRowModel } from 'survey-core';
-import { PdfSurvey } from '../survey';
+import { SurveyPDF } from '../survey';
 import { IPoint, DocController } from "../doc_controller";
 import { FlatRepository } from './flat_repository';
 import { IFlatQuestion } from './flat_question';
@@ -30,11 +30,11 @@ export class FlatSurvey {
             }
             panelFlats.push(compositeFlat);
         }
-        let oldPanelMarginLeft: number = controller.margins.marginLeft;
-        controller.margins.marginLeft += SurveyHelper.measureText(question.innerIndent).width;
+        let oldPanelMarginLeft: number = controller.margins.left;
+        controller.margins.left += SurveyHelper.measureText(question.innerIndent).width;
         panelContentPoint.xLeft += SurveyHelper.measureText(question.innerIndent).width;
         panelFlats.push(...this.generateFlatsPagePanel(panelContentPoint, question, controller));
-        controller.margins.marginLeft = oldPanelMarginLeft;
+        controller.margins.left = oldPanelMarginLeft;
         return panelFlats;
     }
     private static generateFlatsPagePanel(point: IPoint,
@@ -45,19 +45,18 @@ export class FlatSurvey {
         let currPoint: IPoint = SurveyHelper.clone(point);
         pagePanel.rows.forEach((row: QuestionRowModel) => {
             if (!row.visible) return;
-            let width: number = controller.paperWidth -
-                controller.margins.marginLeft - controller.margins.marginRight;
-            let oldMarginLeft: number = controller.margins.marginLeft;
-            let oldMarginRight: number = controller.margins.marginRight;
-            let currMarginLeft: number = controller.margins.marginLeft;
+            let width: number = SurveyHelper.getPageAvailableWidth(controller);
+            let oldMarginLeft: number = controller.margins.left;
+            let oldMarginRight: number = controller.margins.right;
+            let currMarginLeft: number = controller.margins.left;
             let rowFlats: IPdfBrick[] = new Array();
             row.elements.forEach((question: IElement) => {
                 let persWidth: number = width * FlatSurvey.parseWidth(question.renderWidth);
-                controller.margins.marginLeft = currMarginLeft;
-                controller.margins.marginRight = controller.paperWidth -
+                controller.margins.left = currMarginLeft;
+                controller.margins.right = controller.paperWidth -
                     currMarginLeft - persWidth;
-                currMarginLeft = controller.paperWidth - controller.margins.marginRight;
-                currPoint.xLeft = controller.margins.marginLeft;
+                currMarginLeft = controller.paperWidth - controller.margins.right;
+                currPoint.xLeft = controller.margins.left;
                 if (question instanceof PanelModel) {
                     rowFlats.push(...this.generateFlatsPanel(currPoint, question, controller));
                 }
@@ -67,9 +66,9 @@ export class FlatSurvey {
                     rowFlats.push(...flatQuestion.generateFlats(currPoint));
                 }
             });
-            controller.margins.marginLeft = oldMarginLeft;
-            controller.margins.marginRight = oldMarginRight;
-            currPoint.xLeft = controller.margins.marginLeft;
+            controller.margins.left = oldMarginLeft;
+            controller.margins.right = oldMarginRight;
+            currPoint.xLeft = controller.margins.left;
             if (rowFlats.length !== 0) {
                 currPoint.yTop = SurveyHelper.mergeRects(...rowFlats).yBot;
                 currPoint.yTop += SurveyHelper.measureText().height;
@@ -85,7 +84,7 @@ export class FlatSurvey {
             flats.pop();
         }
     }
-    static generateFlats(survey: PdfSurvey): IPdfBrick[][] {
+    static generateFlats(survey: SurveyPDF): IPdfBrick[][] {
         let flats: IPdfBrick[][] = new Array<IPdfBrick[]>();
         survey.pages.forEach((page: PanelModelBase) => {
             let pageFlats: IPdfBrick[] = new Array<IPdfBrick>();

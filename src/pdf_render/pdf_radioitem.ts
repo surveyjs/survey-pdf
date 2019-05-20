@@ -24,7 +24,7 @@ export class RadioItemBrick extends PdfBrick {
         private radioGroupWrap: RadioGroupWrap) {
         super(question, controller, rect);
     }
-    render(): void {
+    async render() {
         if (this.index == 0) {
             this.radioGroupWrap.addToPdf();
         }

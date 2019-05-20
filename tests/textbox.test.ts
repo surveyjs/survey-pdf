@@ -2,7 +2,7 @@
     return {};
 };
 
-import { PdfSurvey } from '../src/survey';
+import { SurveyPDF } from '../src/survey';
 import { FlatTextbox } from '../src/flat_layout/flat_textbox';
 import { FlatComment } from '../src/flat_layout/flat_comment';
 import { TestHelper } from '../src/helper_test';
@@ -11,7 +11,7 @@ let __dummy_cm = new FlatComment(null, null);
 
 function checkTextboxValue(json: any, tobe: string,
 	data: any = null, tobeDef: string = null, readOnly: boolean = false) {
-  	let survey: PdfSurvey = new PdfSurvey(json, TestHelper.defaultOptions);
+  	let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     if (data !== null) {
       survey.data = data;
     }
