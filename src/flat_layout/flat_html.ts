@@ -10,7 +10,7 @@ export class FlatHTML extends FlatQuestion {
     constructor(question: IQuestion, controller: DocController) {
         super(question, controller);
     }
-    generateFlatsContent(point: IPoint): IPdfBrick[] {
+    async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         return [new HTMLBrick(this.question, this.controller,
             SurveyHelper.createRect(point, 50, 50), `
                 <img

@@ -12,7 +12,7 @@ export class FlatImagePicker extends FlatQuestion {
         super(question, controller);
         this.question = <QuestionImagePickerModel>question;
     }
-    generateFlatsContent(point: IPoint): IPdfBrick[] {
+    async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         return null;
     }
 }

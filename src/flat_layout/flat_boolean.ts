@@ -13,14 +13,14 @@ export class FlatBoolean extends FlatQuestion {
         super(question, controller);
         this.question = <QuestionBooleanModel>question;
     }
-    generateFlatsContent(point: IPoint): IPdfBrick[] {
+    async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         let height: number = SurveyHelper.measureText().height;
         let composite: CompositeBrick = new CompositeBrick(
             new BooleanItemBrick(this.question, this.controller,
                 SurveyHelper.createRect(point, height, height)));
         let text: string = SurveyHelper.getLocString(this.question.locDisplayLabel);
         if (text) {
-            composite.addBrick(SurveyHelper.createTextFlat(SurveyHelper.createPoint(
+            composite.addBrick(await SurveyHelper.createTextFlat(SurveyHelper.createPoint(
                 composite, false, true), this.question, this.controller, text));
         }
         return [composite];

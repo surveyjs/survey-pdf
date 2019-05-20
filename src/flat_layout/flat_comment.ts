@@ -12,7 +12,7 @@ export class FlatComment extends FlatQuestion {
         super(question, controller);
         this.question = <QuestionCommentModel>question;
     }
-    generateFlatsContent(point: IPoint): IPdfBrick[] {
+    async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         let rect: IRect = SurveyHelper.createTextFieldRect(point, this.controller, this.question.rows);
         return [new CommentBrick(this.question, this.controller, rect, true)];
     }

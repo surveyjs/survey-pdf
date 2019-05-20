@@ -13,7 +13,7 @@ export class FlatDropdown extends FlatQuestion {
         super(question, controller);
         this.question = <QuestionDropdownModel>question;
     }
-    generateFlatsContent(point: IPoint): IPdfBrick[] {
+    async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         let rect: IRect = SurveyHelper.createTextFieldRect(point, this.controller);
         let compositeFlat: CompositeBrick = new CompositeBrick(
             new DropdownBrick(this.question, this.controller, rect));

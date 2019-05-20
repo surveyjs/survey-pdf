@@ -18,7 +18,6 @@ export { FlatMultipleText } from '../flat_layout/flat_multipletext';
 export { FlatPanelDynamic } from '../flat_layout/flat_paneldynamic';
 export { PagePacker } from '../page_layout/page_packer';
 export { IPdfBrick, PdfBrick } from '../pdf_render/pdf_brick';
-export { HTMLBrick } from '../pdf_render/pdf_html'
 export { TextFieldBrick } from '../pdf_render/pdf_textfield';
 export { TextBoxBrick } from '../pdf_render/pdf_textbox';
 export { CommentBrick } from '../pdf_render/pdf_comment';
@@ -29,5 +28,4 @@ export { DropdownBrick } from '../pdf_render/pdf_dropdown';
 export { BooleanItemBrick } from '../pdf_render/pdf_booleanitem';
 export { HTMLBrick } from '../pdf_render/pdf_html';
 export { MultipleTextBoxBrick } from '../pdf_render/pdf_multipletextbox';
-export { TitlePanelBrick } from '../pdf_render/pdf_titlepanel';
 export { RowlineBrick } from '../pdf_render/pdf_rowline';

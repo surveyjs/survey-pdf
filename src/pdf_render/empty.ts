@@ -7,6 +7,6 @@ export class EmptyBrick extends PdfBrick {
     constructor(rect: IRect) {
         super(null, null, rect);
     }
-    render(): void {
+    async render(): Promise<void> {
     }
 }

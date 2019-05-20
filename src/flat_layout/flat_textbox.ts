@@ -12,7 +12,7 @@ export class FlatTextbox extends FlatQuestion {
         super(question, controller);
         this.question = <QuestionTextModel>question;
     }
-    generateFlatsContent(point: IPoint): IPdfBrick[] {
+    async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         let rect: IRect = SurveyHelper.createTextFieldRect(point, this.controller);
         return [new TextBoxBrick(this.question, this.controller, rect)];
     }

@@ -13,15 +13,15 @@ export class FlatRating extends FlatRadiogroup {
         super(question, controller);
         this.questionRating = <QuestionRatingModel>question;
     }
-    private generateFlatItem(point: IPoint, index: number, item: ItemValue): IPdfBrick {
+    private async  generateFlatItem(point: IPoint, index: number, item: ItemValue): Promise<IPdfBrick> {
         let itemText: string = SurveyHelper.getRatingItemText(
             this.questionRating, index, SurveyHelper.getLocString(item.locText));
         let oldMarginRight: number = this.controller.margins.right;
         this.controller.margins.right += SurveyHelper.measureText().height;
-        let compositeFlat: CompositeBrick = new CompositeBrick(SurveyHelper.
+        let compositeFlat: CompositeBrick = new CompositeBrick(await SurveyHelper.
             createBoldTextFlat(point, this.questionRating, this.controller, itemText));
         this.controller.margins.right = oldMarginRight;
-        let textWidth: number = compositeFlat.xRight - compositeFlat.xLeft; 
+        let textWidth: number = compositeFlat.xRight - compositeFlat.xLeft;
         if (textWidth < SurveyHelper.getRatingMinWidth()) {
             compositeFlat.xLeft += (SurveyHelper.getRatingMinWidth() - textWidth) / 2.0;
             textWidth = SurveyHelper.getRatingMinWidth();
@@ -36,12 +36,12 @@ export class FlatRating extends FlatRadiogroup {
             radioPoint, textWidth, SurveyHelper.measureText().height), item, index));
         return compositeFlat;
     }
-    generateFlatsContent(point: IPoint): IPdfBrick[] {
+    async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         let rowsFlats: CompositeBrick[] = new Array<CompositeBrick>();
         rowsFlats.push(new CompositeBrick());
         let currPoint: IPoint = SurveyHelper.clone(point);
         for (var i = 0; i < this.questionRating.visibleRateValues.length; i++) {
-            let itemFlat: IPdfBrick = this.generateFlatItem(currPoint, i,
+            let itemFlat: IPdfBrick = await this.generateFlatItem(currPoint, i,
                 this.questionRating.visibleRateValues[i]);
             rowsFlats[rowsFlats.length - 1].addBrick(itemFlat);
             let leftWidth: number = this.controller.paperWidth -
@@ -59,7 +59,7 @@ export class FlatRating extends FlatRadiogroup {
                     rowsFlats.push(new CompositeBrick());
                 }
             }
-          }
+        }
         return rowsFlats;
     }
 }

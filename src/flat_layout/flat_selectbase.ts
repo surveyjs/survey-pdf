@@ -11,14 +11,14 @@ export abstract class FlatSelectBase extends FlatQuestion {
         super(question, controller);
         this.question = <QuestionSelectBase>question;
     }
-    protected abstract createItemBrick(rect: IRect, item: ItemValue, index: number): IPdfBrick;
-    private generateFlatsItem(point: IPoint, item: ItemValue, index: number): IPdfBrick {
+    protected abstract createItemBrick(rect: IRect, item: ItemValue, index?: number): IPdfBrick;
+    private async  generateFlatsItem(point: IPoint, item: ItemValue, index: number): Promise<IPdfBrick> {
         let compositeFlat: CompositeBrick = new CompositeBrick();
         let height: number = SurveyHelper.measureText().height;
         let itemRect: IRect = SurveyHelper.createRect(point, height, height);
         compositeFlat.addBrick(this.createItemBrick(itemRect, item, index));
         let textPoint: IPoint = SurveyHelper.createPoint(itemRect, false, true);
-        compositeFlat.addBrick(SurveyHelper.createTextFlat(
+        compositeFlat.addBrick(await SurveyHelper.createTextFlat(
             textPoint, this.question, this.controller, item.text));
         if (item.value === this.question.otherItem.value) {
             compositeFlat.addBrick(SurveyHelper.createOtherFlat(
@@ -26,14 +26,16 @@ export abstract class FlatSelectBase extends FlatQuestion {
         }
         return compositeFlat;
     }
-    generateFlatsContent(point: IPoint): IPdfBrick[] {
+    async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         let currPoint: IPoint = SurveyHelper.clone(point);
         let flats: IPdfBrick[] = new Array();
-        this.question.visibleChoices.forEach((item: ItemValue, index: number) => {
-            let itemFlat: IPdfBrick = this.generateFlatsItem(currPoint, item, index);
+        let index = 0;
+        for (let item of this.question.visibleChoices) {
+            let itemFlat: IPdfBrick = await this.generateFlatsItem(currPoint, item, index);
             currPoint.yTop = itemFlat.yBot;
             flats.push(itemFlat);
-        });
+            index++;
+        }
         return flats;
     }
 }
