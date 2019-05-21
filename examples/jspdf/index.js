@@ -249,6 +249,29 @@ name: 'Expand me',
 	readOnly: true
 },
 {
+	type: 'file',
+	name: 'faque',
+	defaultValue: [
+		{
+			name: 'text.txt',
+			type: 'text/plain',
+			content: 'data:text/plain;base64,aGVsbG8='
+		},
+		{
+			name: 'letter.txt',
+			type: 'text/plain',
+			content: 'data:text/plain;base64,dG8gaG9tZQ=='
+		},
+		{
+			name: 'cat.png',
+			type: 'image/png',
+			content: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAA3NCSVQICAjb4U/gAAAAt1BMVEVHcExTXGROYmJIT1ZPXmVJV11ES1JYZ24+SE5JU1s+R0xVYmtYZW1ETlRRXWVUYWpKV1xZZ25YZW5YanNrfIdTYWlaZ29nd4JUYmhIU1lHUVtRXWQ+SlA6QkouNzpFT1ZCS1JSXWVxhI98kp53iZZSXmVcaXE5QkdCTFNndn9WY2tZZm5canJfbXVbZ29hcHlXZGxtfYVNWmFRXWVCTFNKVl04QEdoeINnZGxrc3uAk6Fzb3dxg43scHiMAAAAKnRSTlMALwQXZU4MImyJQbCrPOPZRdOHx4X4t2fR0SfsoHhYseyioqbHwOy+59gMe1UiAAAAuElEQVQYlU2P5xKCQAyEI1gABVSKUu3tOgL2938u74Ybx/2xk3yT2SQAPw2Yb8KfRp6VzAxVDDVwYej1ZbHbG9tQTy030sJP+1po4MfSZs+qsrp+KubSg8e7Wq8mk/E44LinwqJr22IskCA4UgBiUqueUUqJ2gLzO0MCC8Ypx1MFXEIEqhFGjB/0zTXNbPvcXOkx7YjFbYDydsq7DIAeKyS9mSYadGBR51A0JVwy/dcyScFxwLAdgC+IFhIbrHyDqAAAAABJRU5ErkJggg=='
+		}
+	],
+	allowMultiple: true,
+	allowImagesPreview: true
+},
+{
 	name: "name10",
 	type: "text",
 	title: "Rarrararar:",
@@ -270,13 +293,11 @@ let options = {
 };
 
 var survey = new SurveyPDF.Survey(json, options);
-survey.data = {
-	car: ["Ford"],
-	name: "SUPER",
-	name2: "DATA",
-	car2: ["A", "EEE"],
-	radio: "Red FM",
-	name4: "notdef"
-};
+survey.setValue('car', 'Ford');
+survey.setValue('name', 'SUPER');
+survey.setValue('name2', 'DATA');
+survey.setValue('car2', ['A', 'EEE']);
+survey.setValue('radio', 'Red FM');
+survey.setValue('name4', 'notdef');
 
 survey.save();

@@ -25,7 +25,7 @@ export class SurveyHelper {
     static RATING_MIN_HEIGHT: number = 2;
     static MULTIPLETEXT_TEXT_PERS: number = Math.E / 10.0;
     static IMAGEPICKER_COUNT: number = 4;
-    static LINK_LINE_GAP_PERS: number = 0.1;
+    static IMAGEPICKER_RATIO: number = 4.0 / 3.0;
     private static _doc: any = new jsPDF();
     public static setFontSize(fontSize: number, font?: string) {
         this._doc.setFontSize(fontSize);
@@ -171,13 +171,11 @@ export class SurveyHelper {
         return new CommentBrick(question, controller, otherRect, false, index);
     }
     static createImageFlat(point: IPoint, question: IQuestion,
-        controller: DocController, item: ItemValue, width: number): IPdfBrick {
-        let ratio: number = parseInt((<QuestionImagePickerModel>question).imageWidth) /
-            parseInt((<QuestionImagePickerModel>question).imageHeight);
-        let height: number = width / ratio;
+        controller: DocController, imagelink: string, width: number): IPdfBrick {
+        let height: number = width / SurveyHelper.IMAGEPICKER_RATIO;
         let html: string =
             `<img
-                src="${item['imageLink']}"
+                src="${imagelink}"
                 width="${width}"
                 height="${height}"
             />`;
@@ -188,9 +186,9 @@ export class SurveyHelper {
         width?: number, color?: string): IPdfBrick {
         let xRight: number = typeof width === 'undefined' ?
             controller.paperWidth - controller.margins.right :
-            controller.margins.left + width;
+            point.xLeft + width;
         return new RowlineBrick(controller, {
-            xLeft: controller.margins.left,
+            xLeft: point.xLeft,
             xRight: xRight,
             yTop: point.yTop + SurveyHelper.EPSILON,
             yBot: point.yTop + SurveyHelper.EPSILON
@@ -204,8 +202,6 @@ export class SurveyHelper {
         compositeText.unfold().forEach((text: TextBrick) => {
             compositeLink.addBrick(new LinkBrick(text, link));
             let linePoint: IPoint = SurveyHelper.createPoint(compositeLink);
-            linePoint.yTop += (compositeLink.yBot - compositeLink.yTop) *
-                SurveyHelper.LINK_LINE_GAP_PERS;
             compositeLink.addBrick(SurveyHelper.createRowlineFlat(linePoint,
                 controller, compositeLink.xRight - compositeLink.xLeft, LinkBrick.COLOR));
         });

@@ -36,8 +36,7 @@ export class FlatRating extends FlatRadiogroup {
         return compositeFlat;
     }
     generateFlatsContent(point: IPoint): IPdfBrick[] {
-        let rowsFlats: CompositeBrick[] = new Array<CompositeBrick>();
-        rowsFlats.push(new CompositeBrick());
+        let rowsFlats: CompositeBrick[] = new Array<CompositeBrick>(new CompositeBrick());
         let currPoint: IPoint = SurveyHelper.clone(point);
         for (let i = 0; i < this.questionRating.visibleRateValues.length; i++) {
             let itemFlat: IPdfBrick = this.generateFlatItem(currPoint, i,

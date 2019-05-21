@@ -13,6 +13,7 @@ import { FlatDropdown } from '../src/flat_layout/flat_dropdown';
 import { FlatRating } from '../src/flat_layout/flat_rating';
 import { FlatImagePicker } from '../src/flat_layout/flat_imagepicker';
 import { FlatBoolean } from '../src/flat_layout/flat_boolean';
+import { FlatFile } from '../src/flat_layout/flat_file';
 import { FlatMultipleText } from '../src/flat_layout/flat_multipletext';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { TextBrick } from '../src/pdf_render/pdf_text';
@@ -29,6 +30,7 @@ let __dummy_cm = new FlatComment(null, null);
 let __dummy_rt = new FlatRating(null, null);
 let __dummy_ip = new FlatImagePicker(null, null);
 let __dummy_bl = new FlatBoolean(null, null);
+let __dummy_fl = new FlatFile(null, null);
 let __dummy_mt = new FlatMultipleText(null, null);
 SurveyHelper.setFontSize(TestHelper.defaultOptions.fontSize);
 
@@ -1122,9 +1124,7 @@ test('Check imagepicker one image 100x100px', () => {
     expect(flats[0].length).toBe(1);
     let width: number = SurveyHelper.getImagePickerAvailableWidth(
         survey.controller) / SurveyHelper.IMAGEPICKER_COUNT;
-    let ratio: number = parseInt((<QuestionImagePickerModel>survey.getAllQuestions()[0]).imageWidth) /
-            parseInt((<QuestionImagePickerModel>survey.getAllQuestions()[0]).imageHeight);
-    let height: number = width / ratio;
+    let height: number = width / SurveyHelper.IMAGEPICKER_RATIO;
     let assumeimagePicker: IRect = {
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.leftTopPoint.xLeft + width,
@@ -1156,9 +1156,7 @@ test('Check imagepicker one image 100x100px with label', () => {
     expect(flats[0].length).toBe(1);
     let width: number = SurveyHelper.getImagePickerAvailableWidth(
         survey.controller) / SurveyHelper.IMAGEPICKER_COUNT;
-    let ratio: number = parseInt((<QuestionImagePickerModel>survey.getAllQuestions()[0]).imageWidth) /
-            parseInt((<QuestionImagePickerModel>survey.getAllQuestions()[0]).imageHeight);
-    let height: number = width / ratio;
+    let height: number = width / SurveyHelper.IMAGEPICKER_RATIO;
     let assumeimagePicker: IRect = {
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.leftTopPoint.xLeft + width,
@@ -1193,9 +1191,7 @@ test('Check imagepicker two images 100x100px', () => {
     expect(flats[0].length).toBe(1);
     let width: number = SurveyHelper.getImagePickerAvailableWidth(
         survey.controller) / SurveyHelper.IMAGEPICKER_COUNT;
-    let ratio: number = parseInt((<QuestionImagePickerModel>survey.getAllQuestions()[0]).imageWidth) /
-            parseInt((<QuestionImagePickerModel>survey.getAllQuestions()[0]).imageHeight);
-    let height: number = width / ratio;
+    let height: number = width / SurveyHelper.IMAGEPICKER_RATIO;
     let assumeimagePicker: IRect = {
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.leftTopPoint.xLeft + 2.0 * width + SurveyHelper.measureText().height,
@@ -1204,7 +1200,7 @@ test('Check imagepicker two images 100x100px', () => {
     };
     TestHelper.equalRect(expect, flats[0][0], assumeimagePicker);
 });
-test.skip('Check no files', () => {
+test('Check no files', () => {
     let json = { 
         elements: [
             {
@@ -1222,7 +1218,7 @@ test.skip('Check no files', () => {
         <Question>survey.getAllQuestions()[0], survey.controller, 'No file chosen', TextBrick);
     TestHelper.equalRect(expect, flats[0][0], assumeFile);
 });
-test.skip('Check one text file', () => {
+test('Check one text file', () => {
     let json = { 
         elements: [
             {
@@ -1248,7 +1244,7 @@ test.skip('Check one text file', () => {
         json.elements[0].defaultValue[0].name, json.elements[0].defaultValue[0].content);
     TestHelper.equalRect(expect, flats[0][0], assumeFile);
 });
-test.skip('Check two text files', () => {
+test('Check two text files', () => {
     let json = { 
         elements: [
             {
@@ -1291,7 +1287,7 @@ test.skip('Check two text files', () => {
     };
     TestHelper.equalRect(expect, flats[0][0], assumeFile);
 });
-test.skip('Check one image 16x16px file', () => {
+test('Check one image 16x16px file', () => {
     let json = { 
         elements: [
             {
@@ -1315,9 +1311,7 @@ test.skip('Check one image 16x16px file', () => {
     expect(flats[0].length).toBe(1);
     let width: number = SurveyHelper.getImagePickerAvailableWidth(
         survey.controller) / SurveyHelper.IMAGEPICKER_COUNT;
-    let ratio: number = parseInt((<QuestionImagePickerModel>survey.getAllQuestions()[0]).imageWidth) /
-            parseInt((<QuestionImagePickerModel>survey.getAllQuestions()[0]).imageHeight);
-    let height: number = width / ratio;
+    let height: number = width / SurveyHelper.IMAGEPICKER_RATIO;
     let assumeFile: IRect = {
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.leftTopPoint.xLeft + width,

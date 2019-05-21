@@ -16,10 +16,10 @@ export class FlatImagePicker extends FlatQuestion {
         super(question, controller);
         this.question = <QuestionImagePickerModel>question;
     }
-    private generateFlatItem(point: IPoint, item: ItemValue,
-        index: number, colWidth: number): IPdfBrick {
+    private generateFlatItem(point: IPoint, item: ItemValue, index: number): IPdfBrick {
         let compositeFlat: CompositeBrick = new CompositeBrick(SurveyHelper.
-            createImageFlat(point, this.question, this.controller, item, colWidth));
+            createImageFlat(point, this.question, this.controller, item['imageLink'],
+                SurveyHelper.getPageAvailableWidth(this.controller)));
         let buttonPoint: IPoint = SurveyHelper.createPoint(compositeFlat);
         if (this.question.showLabel) {
             let labelFlat: IPdfBrick = SurveyHelper.createTextFlat(buttonPoint,
@@ -28,7 +28,8 @@ export class FlatImagePicker extends FlatQuestion {
             buttonPoint = SurveyHelper.createPoint(labelFlat);
         }
         let height: number = SurveyHelper.measureText().height;
-        let buttonRect: IRect = SurveyHelper.createRect(buttonPoint, colWidth, height);
+        let buttonRect: IRect = SurveyHelper.createRect(buttonPoint,
+            SurveyHelper.getPageAvailableWidth(this.controller), height);
         if (this.question.multiSelect) {
             compositeFlat.addBrick(new CheckItemBrick(this.question, this.controller,
                 buttonRect, this.question.id + 'index' + index,
@@ -43,11 +44,9 @@ export class FlatImagePicker extends FlatQuestion {
     generateFlatsContent(point: IPoint): IPdfBrick[] {
         this.radio = this.question.multiSelect ? null :
             new FlatRadiogroup(this.question, this.controller);
-        let rowsFlats: CompositeBrick[] = new Array<CompositeBrick>();
-        rowsFlats.push(new CompositeBrick());
-        let availWidth: number = SurveyHelper.
-            getImagePickerAvailableWidth(this.controller);
-        let colWidth: number = availWidth / SurveyHelper.IMAGEPICKER_COUNT;
+        let rowsFlats: CompositeBrick[] = new Array<CompositeBrick>(new CompositeBrick());
+        let colWidth: number = SurveyHelper.getImagePickerAvailableWidth(
+            this.controller) / SurveyHelper.IMAGEPICKER_COUNT;
         let cols: number = ~~(SurveyHelper.
             getPageAvailableWidth(this.controller) / colWidth) || 1;
         let count: number = this.question.visibleChoices.length;
@@ -65,10 +64,10 @@ export class FlatImagePicker extends FlatQuestion {
                 this.controller.margins.right = this.controller.paperWidth -
                     currMarginLeft - colWidth;
                 currMarginLeft = this.controller.paperWidth -
-                    this.controller.margins.right + SurveyHelper.measureText().height;
+                    this.controller.margins.right + SurveyHelper.measureText().width;
                 currPoint.xLeft = this.controller.margins.left;
                 let itemFlat: IPdfBrick = this.generateFlatItem(currPoint,
-                    this.question.visibleChoices[index], index, colWidth);
+                    this.question.visibleChoices[index], index);
                 rowsFlats[rowsFlats.length - 1].addBrick(itemFlat);
                 yBot = Math.max(yBot, itemFlat.yBot);
             }
