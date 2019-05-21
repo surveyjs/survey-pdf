@@ -13,7 +13,7 @@ export class TextFieldBrick extends PdfBrick {
         super(question, controller, rect);
         this.question = <QuestionTextModel>question;
     }
-    async render() {
+    async render(): Promise<void> {
         let inputField = this.isPassword ?
             new (<any>this.controller.doc.AcroFormPasswordField)() :
             new (<any>this.controller.doc.AcroFormTextField)();

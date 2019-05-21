@@ -1204,3 +1204,125 @@ test('Check imagepicker two images 100x100px', () => {
     };
     TestHelper.equalRect(expect, flats[0][0], assumeimagePicker);
 });
+test.skip('Check no files', () => {
+    let json = { 
+        elements: [
+            {
+                type: 'file',
+                name: 'faque',
+                titleLocation: 'hidden'
+            }
+        ]
+    };
+    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
+    expect(flats.length).toBe(1);
+    expect(flats[0].length).toBe(1);
+    let assumeFile: IRect = SurveyHelper.createTextFlat(survey.controller.leftTopPoint,
+        <Question>survey.getAllQuestions()[0], survey.controller, 'No file chosen', TextBrick);
+    TestHelper.equalRect(expect, flats[0][0], assumeFile);
+});
+test.skip('Check one text file', () => {
+    let json = { 
+        elements: [
+            {
+                type: 'file',
+                name: 'faque',
+                titleLocation: 'hidden',
+                defaultValue: [
+                    {
+                        name: 'text.txt',
+                        type: 'text/plain',
+                        content: 'data:text/plain;base64,aGVsbG8='
+                    }
+                ]
+            }
+        ]
+    };
+    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
+    expect(flats.length).toBe(1);
+    expect(flats[0].length).toBe(1);
+    let assumeFile: IRect = SurveyHelper.createLinkFlat(survey.controller.leftTopPoint,
+        <Question>survey.getAllQuestions()[0], survey.controller,
+        json.elements[0].defaultValue[0].name, json.elements[0].defaultValue[0].content);
+    TestHelper.equalRect(expect, flats[0][0], assumeFile);
+});
+test.skip('Check two text files', () => {
+    let json = { 
+        elements: [
+            {
+                type: 'file',
+                name: 'faque',
+                titleLocation: 'hidden',
+                allowMultiple: true,
+                defaultValue: [
+                    {
+                        name: 'text.txt',
+                        type: 'text/plain',
+                        content: 'data:text/plain;base64,aGVsbG8='
+                    },
+                    {
+                        name: 'letter.txt',
+                        type: 'text/plain',
+                        content: 'data:text/plain;base64,dG8gaG9tZQ=='
+                    }
+                ]
+            }
+        ]
+    };
+    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
+    expect(flats.length).toBe(1);
+    expect(flats[0].length).toBe(1);
+    let firstFileFlat: IRect = SurveyHelper.createLinkFlat(survey.controller.leftTopPoint,
+        <Question>survey.getAllQuestions()[0], survey.controller,
+        json.elements[0].defaultValue[0].name, json.elements[0].defaultValue[0].content);
+    let secondFilePoint: IPoint = SurveyHelper.createPoint(firstFileFlat, false, true);
+    secondFilePoint.xLeft += SurveyHelper.measureText().width;
+    let secondFileFlat: IRect = SurveyHelper.createLinkFlat(secondFilePoint,
+        <Question>survey.getAllQuestions()[0], survey.controller,
+        json.elements[0].defaultValue[1].name, json.elements[0].defaultValue[1].content);
+    let assumeFile: IRect = {
+        xLeft: survey.controller.leftTopPoint.xLeft,
+        xRight: secondFileFlat.xRight,
+        yTop: survey.controller.leftTopPoint.yTop,
+        yBot: Math.max(firstFileFlat.yBot, secondFileFlat.yBot)
+    };
+    TestHelper.equalRect(expect, flats[0][0], assumeFile);
+});
+test.skip('Check one image 16x16px file', () => {
+    let json = { 
+        elements: [
+            {
+                type: 'file',
+                name: 'faque',
+                titleLocation: 'hidden',
+                allowImagesPreview: true,
+                defaultValue: [
+                    {
+                        name: 'cat.png',
+                        type: 'image/png',
+                        content: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAA3NCSVQICAjb4U/gAAAAt1BMVEVHcExTXGROYmJIT1ZPXmVJV11ES1JYZ24+SE5JU1s+R0xVYmtYZW1ETlRRXWVUYWpKV1xZZ25YZW5YanNrfIdTYWlaZ29nd4JUYmhIU1lHUVtRXWQ+SlA6QkouNzpFT1ZCS1JSXWVxhI98kp53iZZSXmVcaXE5QkdCTFNndn9WY2tZZm5canJfbXVbZ29hcHlXZGxtfYVNWmFRXWVCTFNKVl04QEdoeINnZGxrc3uAk6Fzb3dxg43scHiMAAAAKnRSTlMALwQXZU4MImyJQbCrPOPZRdOHx4X4t2fR0SfsoHhYseyioqbHwOy+59gMe1UiAAAAuElEQVQYlU2P5xKCQAyEI1gABVSKUu3tOgL2938u74Ybx/2xk3yT2SQAPw2Yb8KfRp6VzAxVDDVwYej1ZbHbG9tQTy030sJP+1po4MfSZs+qsrp+KubSg8e7Wq8mk/E44LinwqJr22IskCA4UgBiUqueUUqJ2gLzO0MCC8Ypx1MFXEIEqhFGjB/0zTXNbPvcXOkx7YjFbYDydsq7DIAeKyS9mSYadGBR51A0JVwy/dcyScFxwLAdgC+IFhIbrHyDqAAAAABJRU5ErkJggg=='
+                    }
+                ]
+            }
+        ]
+    };
+    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
+    expect(flats.length).toBe(1);
+    expect(flats[0].length).toBe(1);
+    let width: number = SurveyHelper.getImagePickerAvailableWidth(
+        survey.controller) / SurveyHelper.IMAGEPICKER_COUNT;
+    let ratio: number = parseInt((<QuestionImagePickerModel>survey.getAllQuestions()[0]).imageWidth) /
+            parseInt((<QuestionImagePickerModel>survey.getAllQuestions()[0]).imageHeight);
+    let height: number = width / ratio;
+    let assumeFile: IRect = {
+        xLeft: survey.controller.leftTopPoint.xLeft,
+        xRight: survey.controller.leftTopPoint.xLeft + width,
+        yTop: survey.controller.leftTopPoint.yTop,
+        yBot: survey.controller.leftTopPoint.yTop + height + SurveyHelper.measureText().height
+    };
+    TestHelper.equalRect(expect, flats[0][0], assumeFile);
+});

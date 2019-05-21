@@ -7,9 +7,11 @@ import { TitlePanelBrick } from './pdf_render/pdf_titlepanel';
 import { DescriptionBrick } from './pdf_render/pdf_description';
 import { CommentBrick } from './pdf_render/pdf_comment';
 import { HTMLBrick } from './pdf_render/pdf_html';
+import { LinkBrick } from './pdf_render/pdf_link';
 import { CompositeBrick } from './pdf_render/pdf_composite';
 import { RowlineBrick } from './pdf_render/pdf_rowline';
 import * as jsPDF from 'jspdf';
+import { TextBrick } from './pdf_render/pdf_text';
 
 export interface IText {
     text: string;
@@ -23,6 +25,7 @@ export class SurveyHelper {
     static RATING_MIN_HEIGHT: number = 2;
     static MULTIPLETEXT_TEXT_PERS: number = Math.E / 10.0;
     static IMAGEPICKER_COUNT: number = 4;
+    static LINK_LINE_GAP_PERS: number = 0.1;
     private static _doc: any = new jsPDF();
     public static setFontSize(fontSize: number, font?: string) {
         this._doc.setFontSize(fontSize);
@@ -181,6 +184,33 @@ export class SurveyHelper {
         return new HTMLBrick(question, controller,
             SurveyHelper.createRect(point, width, height), html);
     }
+    static createRowlineFlat(point: IPoint, controller: DocController,
+        width?: number, color?: string): IPdfBrick {
+        let xRight: number = typeof width === 'undefined' ?
+            controller.paperWidth - controller.margins.right :
+            controller.margins.left + width;
+        return new RowlineBrick(controller, {
+            xLeft: controller.margins.left,
+            xRight: xRight,
+            yTop: point.yTop + SurveyHelper.EPSILON,
+            yBot: point.yTop + SurveyHelper.EPSILON
+        }, typeof color === 'undefined' ? null : color);
+    }
+    static createLinkFlat(point: IPoint, question: Question,
+        controller: DocController, text: string, link: string) {
+        let compositeText: CompositeBrick = <CompositeBrick>SurveyHelper.
+            createTextFlat(point, question, controller, text, TextBrick);
+        let compositeLink: CompositeBrick = new CompositeBrick();
+        compositeText.unfold().forEach((text: TextBrick) => {
+            compositeLink.addBrick(new LinkBrick(text, link));
+            let linePoint: IPoint = SurveyHelper.createPoint(compositeLink);
+            linePoint.yTop += (compositeLink.yBot - compositeLink.yTop) *
+                SurveyHelper.LINK_LINE_GAP_PERS;
+            compositeLink.addBrick(SurveyHelper.createRowlineFlat(linePoint,
+                controller, compositeLink.xRight - compositeLink.xLeft, LinkBrick.COLOR));
+        });
+        return compositeLink;
+    }
     static createTextFieldRect(point: IPoint, controller: DocController, lines: number = 1): IRect {
         let width: number = controller.paperWidth - point.xLeft - controller.margins.right;
         let height: number = SurveyHelper.measureText().height * lines;
@@ -233,14 +263,6 @@ export class SurveyHelper {
         let cellWidth = this.getColumnWidth(question, controller);
         controller.margins.left = controller.margins.left + column * cellWidth;
         controller.margins.right = controller.paperWidth - controller.margins.left - cellWidth;
-    }
-    static createRowlineFlat(point: IPoint, controller: DocController): IPdfBrick {
-        return new RowlineBrick({
-            xLeft: controller.margins.left,
-            xRight: controller.paperWidth - controller.margins.right,
-            yTop: point.yTop + SurveyHelper.EPSILON,
-            yBot: point.yTop + SurveyHelper.EPSILON
-        });
     }
     static clone(src: any) {
         let target: any = {};
