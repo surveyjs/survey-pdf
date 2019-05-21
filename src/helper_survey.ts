@@ -7,6 +7,7 @@ import { RowlineBrick } from './pdf_render/pdf_rowline';
 import * as jsPDF from 'jspdf';
 import { HTMLBrick } from './pdf_render/pdf_html';
 import { EmptyBrick } from './pdf_render/empty';
+import { TitleBrick } from './pdf_render/pdf_title';
 
 export interface IText {
     text: string;
@@ -32,7 +33,7 @@ export class SurveyHelper {
         let oldFontSize = this._doc.getFontSize();
         this._doc.setFontSize(fontSize);
         this._doc.setFontStyle(fontStyle);
-        let height: number = this._doc.getLineHeight();
+        let height: number = this._doc.getLineHeight() / this._doc.internal.scaleFactor;;
         let width: number = 0;
         if (typeof text === 'string') {
             width = text.split('').reduce((sm: number, cr: string) => sm + this._doc.getTextWidth(cr), 0);
@@ -82,7 +83,7 @@ export class SurveyHelper {
     static generateCssTextRule(fontSize: number, fontStyle: string, fontName: string): string {
         return `'font-size: ` + fontSize + `; font-weight:` + fontStyle + `; font-family:` + fontName + `;'`;
     }
-    static splitHtmlRect(htmlBrick: IPdfBrick): IPdfBrick[] {
+    static splitHtmlRect(htmlBrick: IPdfBrick): IPdfBrick {
         let bricks: IPdfBrick[] = [];
         let brickWidth = htmlBrick.xRight - htmlBrick.xLeft;
         let sizeOfPoint = this.measureText(1, 'normal', 1).width;
@@ -95,12 +96,68 @@ export class SurveyHelper {
             bricks.push(emptyBrick);
             currPoint = SurveyHelper.createPoint(emptyBrick);
         }
-        return bricks;
-    }
-    static async createTextFlat(point: IPoint, question: IQuestion,
-        controller: DocController, text: string): Promise<IPdfBrick> {
-        let bricks: IPdfBrick[] = this.splitHtmlRect(await this.createHTMLFlat(point, <Question>question, controller, this.createDivBlock(text, controller)));
         return new CompositeBrick(...bricks);
+    }
+    static createPlainTextFlat<T extends IPdfBrick>(point: IPoint, question: IQuestion,
+        controller: DocController, text: string, fabric: new (question: IQuestion,
+            controller: DocController, rect: IRect, text: string) => T): IPdfBrick {
+        let words: string[] = new Array<string>();
+        text.match(/\S+/g).forEach((word: string) => {
+            while (word.length > 0) {
+                for (let i: number = word.length; i > 0; i--) {
+                    let subword: string = word.substring(0, i);
+                    let width: number = SurveyHelper.measureText(subword,
+                        controller.fontStyle, controller.fontSize).width;
+                    if (i == 1 || point.xLeft + width <= controller.paperWidth -
+                        controller.margins.right + SurveyHelper.EPSILON) {
+                        words.push(subword);
+                        word = word.substring(i);
+                        break;
+                    }
+                }
+            }
+        });
+        let texts: IText[] = new Array<IText>();
+        let currPoint: IPoint = SurveyHelper.clone(point);
+        texts.push({ text: '', rect: null });
+        words.forEach((word: string) => {
+            let lastIndex: number = texts.length - 1;
+            let currText: string = texts[lastIndex].text;
+            let space: string = currText != '' ? ' ' : '';
+            let width: number = SurveyHelper.measureText(currText + space + word,
+                controller.fontStyle, controller.fontSize).width;
+            if (currPoint.xLeft + width <= controller.paperWidth -
+                controller.margins.right + SurveyHelper.EPSILON) {
+                texts[lastIndex].text += space + word;
+            }
+            else {
+                let { width, height } = SurveyHelper.measureText(texts[lastIndex].text,
+                    controller.fontStyle, controller.fontSize);
+                texts[lastIndex].rect = SurveyHelper.createRect(currPoint, width, height);
+                texts.push({ text: word, rect: null });
+                currPoint.yTop += height;
+            }
+        });
+        let { width, height } = SurveyHelper.measureText(texts[texts.length - 1].text,
+            controller.fontStyle, controller.fontSize);
+        texts[texts.length - 1].rect = SurveyHelper.createRect(currPoint, width, height);
+        let composite: CompositeBrick = new CompositeBrick();
+        texts.forEach((text: IText) => {
+            composite.addBrick(new fabric(question, controller, text.rect, text.text));
+        });
+        return composite;
+    }
+    static async createTextFlat<T extends IPdfBrick>(point: IPoint, question: IQuestion,
+        controller: DocController, text: LocalizableString | string, fabric: new (question: IQuestion,
+            controller: DocController, rect: IRect, text: string) => T): Promise<IPdfBrick> {
+        if (typeof text === 'string' || !text.hasHtml) {
+            return this.createPlainTextFlat(point, question, controller, typeof text === 'string' ?
+                text : SurveyHelper.getLocString(<LocalizableString>text), fabric);
+        }
+        else {
+            return this.splitHtmlRect(await this.createHTMLFlat(point, <Question>question, controller, this.createDivBlock(text.html, controller)));
+        }
+
     }
     static htmlMargins(controller: DocController) {
         return {
@@ -129,10 +186,10 @@ export class SurveyHelper {
             }, margins)
         });
     }
-    static async createBoldTextFlat(point: IPoint, question: Question, controller: DocController, text: string) {
+    static async createBoldTextFlat(point: IPoint, question: Question, controller: DocController, text: LocalizableString | string) {
         controller.fontStyle = 'bold';
         let composite: IPdfBrick = await SurveyHelper.createTextFlat(point, question, controller,
-            text);
+            text, TitleBrick);
         controller.fontStyle = 'normal';
         return composite;
     }
@@ -146,15 +203,15 @@ export class SurveyHelper {
         let oldFontSize: number = controller.fontSize;
         controller.fontSize = oldFontSize * SurveyHelper.TITLE_PANEL_FONT_SIZE_SCALE_MAGIC;
         controller.fontStyle = 'bold';
-        let composite: IPdfBrick = await SurveyHelper.createTextFlat(point, question, controller, text);
+        let composite: IPdfBrick = await SurveyHelper.createTextFlat(point, question, controller, text, TitleBrick);
         controller.fontStyle = 'normal';
         controller.fontSize = oldFontSize;
         return composite;
     }
-    static async createDescFlat(point: IPoint, question: IQuestion, controller: DocController, text: string) {
+    static async createDescFlat(point: IPoint, question: IQuestion, controller: DocController, text: LocalizableString | string) {
         let oldFontSize: number = controller.fontSize;
         controller.fontSize = oldFontSize * SurveyHelper.DESCRIPTION_FONT_SIZE_SCALE_MAGIC;
-        let composite: IPdfBrick = await SurveyHelper.createTextFlat(point, question, controller, text);
+        let composite: IPdfBrick = await SurveyHelper.createTextFlat(point, question, controller, text, TitleBrick);
         controller.fontSize = oldFontSize;
         return composite;
     }

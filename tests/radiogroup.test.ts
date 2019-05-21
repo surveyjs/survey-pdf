@@ -6,11 +6,10 @@ import { FlatRadiogroup } from '../src/flat_layout/flat_radiogroup';
 import { TestHelper } from '../src/helper_test';
 let __dummy_rg = new FlatRadiogroup(null, null);
 
-test('check has other radiogroup', () => {
+test('Test has other radiogroup', async () => {
     let json = {
         questions: [
             {
-                titleLocation: "hidden",
                 readOnly: true,
                 name: 'radiogroup',
                 type: 'radiogroup',
@@ -20,9 +19,9 @@ test('check has other radiogroup', () => {
         ]
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    survey.render();
+    await survey.render();
     let internal: any = survey.controller.doc.internal;
-    let internalOtherText: string = internal.pages[1][6];
+    let internalOtherText: string = internal.pages[1][3];
     expect(internalOtherText).toBeDefined();
     let regex: RegExp = /\((.*)\)/;
     let otherText: string = internalOtherText.match(regex)[1];
@@ -33,7 +32,7 @@ test('check has other radiogroup', () => {
     expect(internalRadioGroup.FT).toBe('/Btn');
 });
 
-test.skip('Test radiogroup duplicate value other', () => {
+test.skip('Test radiogroup duplicate value other', async () => {
     let json = {
         questions: [
             {
@@ -45,7 +44,7 @@ test.skip('Test radiogroup duplicate value other', () => {
         ]
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    survey.render();
+    await survey.render();
     let acroFormFields = survey.controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields;
     let internalRadioGroup = acroFormFields[0];
     let internalOtherTextFieldChoice = acroFormFields[2];
@@ -54,7 +53,7 @@ test.skip('Test radiogroup duplicate value other', () => {
     expect(internalOtherTextFieldChoice.FT).toBe('/Tx');
     expect(internalOtherTextField.FT).toBe('/Tx');
 });
-test('Test all items disabled or enabled', () => {
+test('Test all items disabled or enabled', async () => {
     let json = {
         questions: [
             {
@@ -64,12 +63,11 @@ test('Test all items disabled or enabled', () => {
             }
         ]
     };
-    [false, true].forEach((readOnly) => {
+    for (let readOnly of [false, true]) {
         (<any>json).questions[0].readOnly = readOnly;
         let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-        survey.render();
+        await survey.render();
         expect(survey.controller.doc.internal.acroformPlugin.
             acroFormDictionaryRoot.Fields[0].readOnly).toBe(readOnly);
-    })
-
+    }
 });

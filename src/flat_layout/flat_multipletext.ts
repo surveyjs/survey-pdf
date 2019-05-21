@@ -21,7 +21,7 @@ export class FlatMultipleText extends FlatQuestion {
             this.controller.margins.left - colWidth * SurveyHelper.MULTIPLETEXT_TEXT_PERS;
         let compositeFlat: CompositeBrick = new CompositeBrick(await SurveyHelper.
             createBoldTextFlat(point, this.question, this.controller,
-                SurveyHelper.getLocString(item.locTitle)));
+                item.locTitle));
         this.controller.margins.right = oldMarginRight;
         compositeFlat.addBrick(new MultipleTextBoxBrick(this.question, this.controller,
             SurveyHelper.createTextFieldRect({

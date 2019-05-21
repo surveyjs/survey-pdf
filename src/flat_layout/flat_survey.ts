@@ -24,7 +24,7 @@ export class FlatSurvey {
             if (!!question.description) {
                 let panelDescFlat: IPdfBrick = await SurveyHelper.createDescFlat(
                     panelContentPoint, null, controller,
-                    SurveyHelper.getLocString(question.locDescription));
+                    question.locDescription);
                 compositeFlat.addBrick(panelDescFlat);
                 panelContentPoint = SurveyHelper.createPoint(panelDescFlat);
             }

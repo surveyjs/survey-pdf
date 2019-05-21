@@ -4,6 +4,7 @@ import { FlatQuestion } from './flat_question';
 import { IPdfBrick } from '../pdf_render/pdf_brick'
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
+import { TextBrick } from '../pdf_render/pdf_text';
 
 export abstract class FlatSelectBase extends FlatQuestion {
     protected question: QuestionSelectBase;
@@ -19,7 +20,7 @@ export abstract class FlatSelectBase extends FlatQuestion {
         compositeFlat.addBrick(this.createItemBrick(itemRect, item, index));
         let textPoint: IPoint = SurveyHelper.createPoint(itemRect, false, true);
         compositeFlat.addBrick(await SurveyHelper.createTextFlat(
-            textPoint, this.question, this.controller, item.text));
+            textPoint, this.question, this.controller, item.locText, TextBrick));
         if (item.value === this.question.otherItem.value) {
             compositeFlat.addBrick(SurveyHelper.createOtherFlat(
                 SurveyHelper.createPoint(compositeFlat), this.question, this.controller, index));

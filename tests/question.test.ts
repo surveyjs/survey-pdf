@@ -29,7 +29,7 @@ function checkTitleText(questionStartIndex: string, isRequired: boolean = false)
     survey.questionStartIndex = questionStartIndex;
   }
   survey.render();
-  let internalContent = survey.controller.doc.internal.pages[1][6];
+  let internalContent = survey.controller.doc.internal.pages[1][2];
   expect(internalContent).toBeDefined();
   let regex = /\((.*)\)/;
   let content = internalContent.match(regex)[1];
@@ -47,7 +47,7 @@ test('Check title number with alphabetical questionStartIndex', () => {
 test('Check title required text', () => {
   checkTitleText(null, true);
 });
-test('Check comment', () => {
+test('Check comment', async () => {
   let json = {
     questions: [
       {
@@ -60,9 +60,9 @@ test('Check comment', () => {
     ]
   };
   let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-  survey.render();
+  await survey.render();
   let internal = survey.controller.doc.internal;
-  let internalContent = survey.controller.doc.internal.pages[1][6];
+  let internalContent = survey.controller.doc.internal.pages[1][2];
   let textField = internal.acroformPlugin.acroFormDictionaryRoot.Fields[0]
   expect(internalContent).toBeDefined();
   let regex = /\((.*)\)/;
@@ -70,7 +70,7 @@ test('Check comment', () => {
   expect(content).toBe(json.questions[0].commentText);
   expect(textField.FT).toBe('/Tx');
 });
-test('Check comment readonly', () => {
+test('Check comment readonly', async () => {
   let json = {
     questions: [
       {
@@ -84,12 +84,12 @@ test('Check comment readonly', () => {
     ]
   };
   let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-  survey.render();
+  await survey.render();
   let internal = survey.controller.doc.internal;
   let textField = internal.acroformPlugin.acroFormDictionaryRoot.Fields[0]
   expect(textField.readOnly).toBe(true);
 });
-test('Check empty question', () => {
+test('Check empty question', async () => {
   let json = {
     questions: [
       {
@@ -100,13 +100,12 @@ test('Check empty question', () => {
     ]
   };
   let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-  let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
+  let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
   expect(flats.length).toBe(1);
   expect(typeof flats[0]).not.toBe('undefined');
   expect(flats[0].length).toBe(0);
 });
-test('Not visible question', () => {
-
+test('Not visible question', async () => {
   let json = {
     questions: [
       {
@@ -117,12 +116,12 @@ test('Not visible question', () => {
     ]
   };
   let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-  let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
+  let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
   expect(flats.length).toBe(1);
   expect(typeof flats[0]).not.toBe('undefined');
   expect(flats[0].length).toBe(0);
 });
-test('Check descrition with hidden title', () => {
+test('Check descrition with hidden title', async () => {
   let json = {
     questions: [
       {
@@ -134,14 +133,14 @@ test('Check descrition with hidden title', () => {
     ]
   };
   let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-  survey.render();
-  let internalContent = survey.controller.doc.internal.pages[1][13];
+  await survey.render();
+  let internalContent = survey.controller.doc.internal.pages[1][3];
   expect(internalContent).toBeDefined();
   let regex = /\((.*)\)/;
   let content = internalContent.match(regex)[1];
   expect(content).toBe(json.questions[0].description);
 });
-test('Two pages', () => {
+test('Two pages', async () => {
   let json = {
     pages: [
       {
@@ -165,7 +164,7 @@ test('Two pages', () => {
     ]
   };
   let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-  let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
+  let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
   expect(flats.length).toBe(2);
   expect(flats[0].length).toBe(1);
   expect(flats[1].length).toBe(1);

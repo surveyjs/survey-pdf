@@ -1,4 +1,4 @@
-import { IQuestion, QuestionBooleanModel } from 'survey-core';
+import { IQuestion, QuestionBooleanModel, LocalizableString } from 'survey-core';
 import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
 import { IPoint, DocController } from "../doc_controller";
@@ -6,6 +6,7 @@ import { IPdfBrick } from '../pdf_render/pdf_brick'
 import { BooleanItemBrick } from '../pdf_render/pdf_booleanitem'; ''
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
+import { TextBrick } from '../pdf_render/pdf_text';
 
 export class FlatBoolean extends FlatQuestion {
     protected question: QuestionBooleanModel;
@@ -18,10 +19,10 @@ export class FlatBoolean extends FlatQuestion {
         let composite: CompositeBrick = new CompositeBrick(
             new BooleanItemBrick(this.question, this.controller,
                 SurveyHelper.createRect(point, height, height)));
-        let text: string = SurveyHelper.getLocString(this.question.locDisplayLabel);
+        let text: LocalizableString = this.question.locDisplayLabel;
         if (text) {
             composite.addBrick(await SurveyHelper.createTextFlat(SurveyHelper.createPoint(
-                composite, false, true), this.question, this.controller, text));
+                composite, false, true), this.question, this.controller, text, TextBrick));
         }
         return [composite];
     }

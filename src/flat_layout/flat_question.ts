@@ -1,9 +1,10 @@
 import { IPoint, IRect, DocController } from "../doc_controller";
-import { IQuestion, Question } from 'survey-core';
+import { IQuestion, Question, LocalizableString } from 'survey-core';
 import { IPdfBrick } from '../pdf_render/pdf_brick'
 import { CommentBrick } from '../pdf_render/pdf_comment';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
+import { TextBrick } from '../pdf_render/pdf_text';
 
 export interface IFlatQuestion {
     generateFlatsContent(point: IPoint): Promise<IPdfBrick[]>;
@@ -21,14 +22,15 @@ export class FlatQuestion implements IFlatQuestion {
             this.question, this.controller)
     }
     private async generateFlatDescription(point: IPoint): Promise<IPdfBrick> {
-        let text: string = SurveyHelper.getLocString(this.question.locDescription);
-        if (text == '') return null;
+        let text: LocalizableString = this.question.locDescription;
+
+        if (SurveyHelper.getLocString(text) == '') return null;
         return await SurveyHelper.createDescFlat(point, this.question, this.controller, text);
     }
     private async generateFlatsComment(point: IPoint): Promise<IPdfBrick> {
-        let text: string = SurveyHelper.getLocString(this.question.locCommentText);
+        let text: LocalizableString = this.question.locCommentText;
         let compositeText: IPdfBrick = await SurveyHelper.createTextFlat(
-            point, this.question, this.controller, text);
+            point, this.question, this.controller, text, TextBrick);
         let rectTextField: IRect = SurveyHelper.createTextFieldRect(
             SurveyHelper.createPoint(compositeText), this.controller, 2);
         return new CompositeBrick(compositeText,

@@ -13,6 +13,7 @@ import { FlatRadiogroup } from '../src/flat_layout/flat_radiogroup';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { TestHelper } from '../src/helper_test';
 import { SurveyHelper } from '../src/helper_survey';
+import { TextBrick } from '../src/pdf_render/pdf_text';
 let __dummy_tx = new FlatTextbox(null, null);
 let __dummy_cb = new FlatCheckbox(null, null);
 let __dummy_rg = new FlatRadiogroup(null, null);
@@ -34,7 +35,7 @@ test('Pack two flats on two pages', () => {
     TestHelper.equalRect(expect, packs[0][0], TestHelper.defaultRect);
     TestHelper.equalRect(expect, packs[1][0], TestHelper.defaultRect);
 });
-test('Long checkbox with indent', () => {
+test('Long checkbox with indent', async () => {
     let json = {
         questions: [
             {
@@ -56,7 +57,7 @@ test('Long checkbox with indent', () => {
     options.paperHeight = options.margins.top + SurveyHelper.
         measureText().height * 3.5 + options.margins.bot;
     let survey: SurveyPDF = new SurveyPDF(json, options);
-    let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(5);
     let packs: IPdfBrick[][] = PagePacker.pack(flats, survey.controller);
@@ -74,7 +75,7 @@ test('Long checkbox with indent', () => {
         leftTopPoint.yTop += SurveyHelper.measureText().height;
     }
 });
-test('Check two textbox flats sort order', () => {
+test('Check two textbox flats sort order', async () => {
     let json = {
         questions: [
             {
@@ -95,7 +96,7 @@ test('Check two textbox flats sort order', () => {
         ]
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(3);
     let composite1: IPdfBrick = flats[0][0];
@@ -146,7 +147,7 @@ test('Pack near flats new page', () => {
     TestHelper.equalRect(expect, packs[1][1],
         { xLeft: 20, xRight: 30, yTop: 10, yBot: 20 });
 });
-test('Unfold compose brick', () => {
+test('Unfold compose brick', async () => {
     let json = {
         questions: [
             {
@@ -160,19 +161,19 @@ test('Unfold compose brick', () => {
     options.paperHeight = options.margins.top + SurveyHelper.
         measureText().height + options.margins.bot;
     let survey: SurveyPDF = new SurveyPDF(json, options);
-    let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
     let packs: IPdfBrick[][] = PagePacker.pack(flats, survey.controller);
     expect(packs.length).toBe(2);
     expect(packs[0].length).toBe(1);
     expect(packs[1].length).toBe(1);
-    TestHelper.equalRect(expect, packs[0][0], SurveyHelper.createTitleFlat(
+    TestHelper.equalRect(expect, packs[0][0], await SurveyHelper.createTitleFlat(
         survey.controller.leftTopPoint, <Question>survey.getAllQuestions()[0], survey.controller));
     TestHelper.equalRect(expect, packs[1][0],
         SurveyHelper.createTextFieldRect(survey.controller.leftTopPoint, survey.controller));
 });
-test('Pack to little page', () => {
+test('Pack to little page', async () => {
     let json = {
         questions: [
             {
@@ -186,7 +187,7 @@ test('Pack to little page', () => {
     options.paperHeight = options.margins.top + SurveyHelper.
         measureText().height / 2 + options.margins.bot;
     let survey: SurveyPDF = new SurveyPDF(json, options);
-    let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
     let packs: IPdfBrick[][] = PagePacker.pack(flats, survey.controller);
@@ -194,14 +195,14 @@ test('Pack to little page', () => {
     expect(packs[0].length).toBe(1);
     expect(packs[1].length).toBe(1);
     survey.controller.fontStyle = 'bold';
-    TestHelper.equalRect(expect, packs[0][0], SurveyHelper.createTextFlat(
+    TestHelper.equalRect(expect, packs[0][0], await SurveyHelper.createTextFlat(
         survey.controller.leftTopPoint, null, survey.controller,
-        SurveyHelper.getTitleText(<Question>survey.getAllQuestions()[0])));
+        SurveyHelper.getTitleText(<Question>survey.getAllQuestions()[0]), TextBrick));
     survey.controller.fontStyle = 'normal';
     TestHelper.equalRect(expect, packs[1][0],
         SurveyHelper.createTextFieldRect(survey.controller.leftTopPoint, survey.controller));
 });
-test('Check yTop on new page with panel', () => {
+test('Check yTop on new page with panel', async () => {
     let json = {
         elements: [
             {
@@ -272,7 +273,7 @@ test('Check yTop on new page with panel', () => {
         ]
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = FlatSurvey.generateFlats(survey);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     let packs: IPdfBrick[][] = PagePacker.pack(flats, survey.controller);
     expect(packs[1][19].yTop).toBeCloseTo(packs[1][20].yTop - SurveyHelper.measureText().height);
 });
