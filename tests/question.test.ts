@@ -33,7 +33,7 @@ async function checkTitleText(questionStartIndex: string, isRequired: boolean = 
   expect(internalContent).toBeDefined();
   let regex = /\((.*)\)/;
   let content = internalContent.match(regex)[1];
-  expect(content).toBe(SurveyHelper.getTitleText(<Question>survey.getAllQuestions()[0]));
+  expect(content).toBe(SurveyHelper.getLocString(SurveyHelper.getTitleText(<Question>survey.getAllQuestions()[0])));
 }
 test('Check title number', async () => {
   await checkTitleText(null);
