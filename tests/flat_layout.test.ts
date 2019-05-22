@@ -237,7 +237,7 @@ test('Comment point, title location left', async () => {
 test('Comment point, title location hidden', async () => {
     await commmentPointToTitleTests('hidden');
 });
-async function commentPointAfterItem() {
+async function commentPointAfterItem(titleLocation: string) {
     let json = {
         questions: [
             {
@@ -249,23 +249,33 @@ async function commentPointAfterItem() {
             }
         ]
     };
-    for (let titleLocation of ['bottom', 'hidden', 'top', 'left']) {
-        (<any>json).questions[0].titleLocation = titleLocation;
-        let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-        let resultRects: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
-        test('Comment point after choice, title location: ' + titleLocation, async () => {
-            expect(resultRects.length).toBe(1);
-            if (titleLocation !== 'bottom') expect(resultRects[0].length).toBe(2);
-            else expect(resultRects[0].length).toBe(3);
-            if (titleLocation == 'top' || titleLocation == 'left') {
-                TestHelper.equalPoint(expect, SurveyHelper.createPoint(resultRects[0][0].unfold()[1]), resultRects[0][1]);
-            } else {
-                TestHelper.equalPoint(expect, SurveyHelper.createPoint(resultRects[0][0]), resultRects[0][1]);
-            }
-        });
+    (<any>json).questions[0].titleLocation = titleLocation;
+    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    let resultRects: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
+
+    expect(resultRects.length).toBe(1);
+    if (titleLocation !== 'bottom') expect(resultRects[0].length).toBe(2);
+    else expect(resultRects[0].length).toBe(3);
+    if (titleLocation === 'top' || titleLocation === 'left') {
+        TestHelper.equalPoint(expect, SurveyHelper.createPoint(resultRects[0][0].unfold()[1]), resultRects[0][1]);
+    } else {
+        TestHelper.equalPoint(expect, SurveyHelper.createPoint(resultRects[0][0]), resultRects[0][1]);
     }
 }
-commentPointAfterItem();
+
+test('Comment point after choice, title location: ' + 'top', async () => {
+    commentPointAfterItem('top');
+})
+test('Comment point after choice, title location: ' + 'bottom', async () => {
+    commentPointAfterItem('bottom');
+})
+test('Comment point after choice, title location: ' + 'hidden', async () => {
+    commentPointAfterItem('hidden');
+})
+test('Comment point after choice, title location: ' + 'left', async () => {
+    commentPointAfterItem('left');
+})
+
 test('Calc boundaries with space between questions', async () => {
     let json = {
         questions: [{
