@@ -20,7 +20,7 @@ export class FlatBoolean extends FlatQuestion {
             new BooleanItemBrick(this.question, this.controller,
                 SurveyHelper.createRect(point, height, height)));
         let text: LocalizableString = this.question.locDisplayLabel;
-        if (text) {
+        if (text.renderedHtml) {
             composite.addBrick(await SurveyHelper.createTextFlat(SurveyHelper.createPoint(
                 composite, false, true), this.question, this.controller, text, TextBrick));
         }

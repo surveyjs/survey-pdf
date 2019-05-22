@@ -13,7 +13,7 @@ import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 let __dummy_tx = new FlatTextbox(null, null);
 let __dummy_cb = new FlatCheckbox(null, null);
 
-function checkTitleText(questionStartIndex: string, isRequired: boolean = false) {
+async function checkTitleText(questionStartIndex: string, isRequired: boolean = false) {
   let json = {
     questions: [
       {
@@ -28,24 +28,24 @@ function checkTitleText(questionStartIndex: string, isRequired: boolean = false)
   if (questionStartIndex !== null) {
     survey.questionStartIndex = questionStartIndex;
   }
-  survey.render();
+  await survey.render();
   let internalContent = survey.controller.doc.internal.pages[1][2];
   expect(internalContent).toBeDefined();
   let regex = /\((.*)\)/;
   let content = internalContent.match(regex)[1];
   expect(content).toBe(SurveyHelper.getTitleText(<Question>survey.getAllQuestions()[0]));
 }
-test('Check title number', () => {
-  checkTitleText(null);
+test('Check title number', async () => {
+  await checkTitleText(null);
 });
-test('Check title number with custom questionStartIndex', () => {
-  checkTitleText('7');
+test('Check title number with custom questionStartIndex', async () => {
+  await checkTitleText('7');
 });
-test('Check title number with alphabetical questionStartIndex', () => {
-  checkTitleText('A');
+test('Check title number with alphabetical questionStartIndex', async () => {
+  await checkTitleText('A');
 });
-test('Check title required text', () => {
-  checkTitleText(null, true);
+test('Check title required text', async () => {
+  await checkTitleText(null, true);
 });
 test('Check comment', async () => {
   let json = {

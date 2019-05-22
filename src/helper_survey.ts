@@ -176,7 +176,7 @@ export class SurveyHelper {
     }
     static async createHTMLFlat(point: IPoint, question: Question, controller: DocController, html: any): Promise<IPdfBrick> {
         let margins = this.htmlMargins(controller);
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
             SurveyHelper._doc.fromHTML(html, point.xLeft, margins.top, {
                 'pagesplit': true,
                 width: margins.width

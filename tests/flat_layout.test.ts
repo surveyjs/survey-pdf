@@ -181,7 +181,7 @@ test('Calc textbox boundaries title hidden', async () => {
     TestHelper.equalRect(expect, flats[0][0], assumeTextbox);
 });
 
-function commentPointBeforeTitle(resultRects: IPdfBrick[][]) {
+async function commentPointBeforeTitle(resultRects: IPdfBrick[][]) {
     let commentPoint = TestHelper.defaultPoint;
     let resultPoint = resultRects[0][0];
     TestHelper.equalPoint(expect, resultPoint, commentPoint);
@@ -195,7 +195,7 @@ async function commentPointAfterTitle(titleLocation: string, resultRects: IPdfBr
     TestHelper.equalPoint(expect, commentResultPoint, commentAssumePoint);
     return commentAssumePoint;
 }
-async function commmentPointToTitleTests() {
+async function commmentPointToTitleTests(titleLocation: string) {
     let json = {
         questions: [
             {
@@ -206,30 +206,35 @@ async function commmentPointToTitleTests() {
             }
         ]
     };
-    for (let titleLocation of ['left', 'top', 'bottom', 'hidden']) {
-        (<any>json).questions[0].titleLocation = titleLocation;
-        let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-        let controller: DocController = survey.controller;
-        let resultRects: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
-        switch (titleLocation) {
-            case 'hidden':
-            case 'bottom': {
-                test('Comment point, title location: ' + titleLocation, async () => {
-                    commentPointBeforeTitle(resultRects);
-                });
-                break;
-            }
-            case 'top':
-            case 'left': {
-                test('Comment point, title location: ' + titleLocation, async () => {
-                    commentPointAfterTitle(titleLocation, resultRects, controller, survey);
-                });
-                break;
-            }
+    (<any>json).questions[0].titleLocation = titleLocation;
+    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    let controller: DocController = survey.controller;
+    let resultRects: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
+    switch (titleLocation) {
+        case 'hidden':
+        case 'bottom': {
+            await commentPointBeforeTitle(resultRects)
+            break;
+        }
+        case 'top':
+        case 'left': {
+            await commentPointAfterTitle(titleLocation, resultRects, controller, survey);
+            break;
         }
     }
 }
-commmentPointToTitleTests();
+test('Comment point, title location top', async () => {
+    await commmentPointToTitleTests('top');
+});
+test('Comment point, title location bottom', async () => {
+    await commmentPointToTitleTests('bottom');
+});
+test('Comment point, title location left', async () => {
+    await commmentPointToTitleTests('left');
+});
+test('Comment point, title location hidden', async () => {
+    await commmentPointToTitleTests('hidden');
+});
 async function commentPointAfterItem() {
     let json = {
         questions: [
@@ -945,7 +950,7 @@ test('Check rating many elements', async () => {
     };
     let options: IDocOptions = TestHelper.defaultOptions;
     options.paperWidth = options.margins.left + options.margins.right +
-        SurveyHelper.getRatingMinWidth() * 3;
+        SurveyHelper.getRatingMinWidth() * 3 / TestHelper.MM_TO_PT;
     let survey: SurveyPDF = new SurveyPDF(json, options);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
@@ -971,9 +976,9 @@ test('Check rating two elements with long min rate description', async () => {
             }
         ]
     };
-    let longRateDesc: number = SurveyHelper.measureText(
+    let longRateDesc: number = (SurveyHelper.measureText(
         json.elements[0].minRateDescription + ' 1', 'bold').width +
-        SurveyHelper.measureText().height;
+        SurveyHelper.measureText().height) / TestHelper.MM_TO_PT;
     let options: IDocOptions = TestHelper.defaultOptions;
     options.paperWidth = options.margins.left +
         options.margins.right + longRateDesc;
@@ -1087,7 +1092,7 @@ test('Check multiple text with colCount and long text', async () => {
         ]
     };
     let options: IDocOptions = TestHelper.defaultOptions;
-    let signWidth: number = SurveyHelper.measureText(sign, 'bold').width;
+    let signWidth: number = SurveyHelper.measureText(sign, 'bold').width / TestHelper.MM_TO_PT;
     options.paperWidth = options.margins.right + options.margins.right +
         2 * signWidth / SurveyHelper.MULTIPLETEXT_TEXT_PERS;
     let survey: SurveyPDF = new SurveyPDF(json, options);

@@ -37,9 +37,9 @@ test('test matrix hasRows true columns', async () => {
     let assumeCells: IRect[] = [];
     let header = SurveyHelper.measureText(json.questions[0].columns[0].text, 'bold');
     let currPoint = TestHelper.defaultPoint;
-    let cellWidth = (210 - TestHelper.defaultOptions.margins.left
-        - TestHelper.defaultOptions.margins.right) / 2;
-    currPoint.xLeft = cellWidth + TestHelper.defaultOptions.margins.left;
+    let cellWidth = (210 * TestHelper.MM_TO_PT - survey.controller.margins.left
+        - survey.controller.margins.right) / 2;
+    currPoint.xLeft = cellWidth + survey.controller.margins.left;
     let columnRect = SurveyHelper.createRect(currPoint, header.width, header.height);
     assumeCells.push(columnRect);
     currPoint = SurveyHelper.createPoint(columnRect);
@@ -154,11 +154,11 @@ test('test hidden header', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     let assumeCells: IRect[] = [];
     let itemWidth = SurveyHelper.measureText().width;
-    let cellWidth = (210 - TestHelper.defaultOptions.margins.left
-        - TestHelper.defaultOptions.margins.right) / 3;
+    let cellWidth = (210 * TestHelper.MM_TO_PT - survey.controller.margins.left
+        - survey.controller.margins.right) / 3;
     for (let i = 0; i < json.questions[0].columns.length; i++) {
         let currPoint = TestHelper.defaultPoint;
-        currPoint.xLeft = cellWidth * i + TestHelper.defaultOptions.margins.left;
+        currPoint.xLeft = cellWidth * i + survey.controller.margins.left;
         assumeCells.push(SurveyHelper.createRect(currPoint, itemWidth, itemWidth));
     }
     TestHelper.equalRects(expect, flats[0][0].unfold(), assumeCells);
