@@ -87,7 +87,7 @@ export class SurveyHelper {
         return `<div style=` + this.generateCssTextRule(controller.fontSize, controller.fontStyle, controller.doc.internal.getFont().fontName) + `>` + element + `</div>`;
     }
     static generateCssTextRule(fontSize: number, fontStyle: string, fontName: string): string {
-        return `'font-size: ` + fontSize + `; font-weight:` + fontStyle + `; font-family:` + fontName + `;'`;
+        return `'font-size: ` + fontSize + `pt; font-weight:` + fontStyle + `; font-family:` + fontName + `;'`;
     }
     static splitHtmlRect(htmlBrick: IPdfBrick): IPdfBrick {
         let bricks: IPdfBrick[] = [];
@@ -200,9 +200,8 @@ export class SurveyHelper {
         return composite;
     }
     static async createTitleFlat(point: IPoint, question: Question, controller: DocController) {
-        let composite: IPdfBrick = await SurveyHelper.createBoldTextFlat(point, question, controller,
+        return await SurveyHelper.createBoldTextFlat(point, question, controller,
             SurveyHelper.getTitleText(question));
-        return composite;
     }
     static async createTitlePanelFlat(point: IPoint, question: IQuestion,
         controller: DocController, text: string) {
@@ -277,9 +276,10 @@ export class SurveyHelper {
             rect.yBot - rect.yTop
         ];
     }
-    static getTitleText(question: Question): string {
-        let number: string = question.no != '' ? question.no + ' . ' : '';
-        return number + SurveyHelper.getLocString(question.locTitle);
+    static getTitleText(question: Question): LocalizableString {
+        let title = new LocalizableString(question.locTitle.owner, question.locTitle.useMarkdown)
+        title.text = (question.no != '' ? question.no + ' . ' : '') + question.locTitle.text;
+        return title;
     }
     static getLocString(locObj: LocalizableString): string {
         return locObj.renderedHtml;
