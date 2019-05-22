@@ -1,4 +1,4 @@
-import { IQuestion, ItemValue, QuestionRatingModel } from 'survey-core';
+import { IQuestion, ItemValue, QuestionRatingModel, LocalizableString } from 'survey-core';
 import { FlatRadiogroup } from './flat_radiogroup';
 import { FlatRepository } from './flat_repository';
 import { IPoint, DocController } from "../doc_controller";
@@ -13,8 +13,8 @@ export class FlatRating extends FlatRadiogroup {
         this.questionRating = <QuestionRatingModel>question;
     }
     private async  generateFlatItem(point: IPoint, index: number, item: ItemValue): Promise<IPdfBrick> {
-        let itemText: string = SurveyHelper.getRatingItemText(
-            this.questionRating, index, SurveyHelper.getLocString(item.locText));
+        let itemText: LocalizableString = SurveyHelper.getRatingItemText(
+            this.questionRating, index, item.locText);
         let oldMarginRight: number = this.controller.margins.right;
         this.controller.margins.right += SurveyHelper.measureText().height;
         let compositeFlat: CompositeBrick = new CompositeBrick(await SurveyHelper.

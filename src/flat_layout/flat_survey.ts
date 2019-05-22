@@ -78,9 +78,6 @@ export class FlatSurvey {
                 currPoint.yTop += SurveyHelper.EPSILON;
             }
         }
-        pagePanel.rows.forEach((row: QuestionRowModel) => {
-
-        });
         return pagePanelFlats;
     }
     private static popRowlines(flats: IPdfBrick[]) {

@@ -892,10 +892,8 @@ test('Check rating two elements with min rate description', async () => {
     let assumeRating: IRect = {
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.leftTopPoint.xLeft +
-            SurveyHelper.getRatingMinWidth() + SurveyHelper.measureText(
-                SurveyHelper.getRatingItemText(question, 0,
-                    question.rateMin.toString()), 'bold').width +
-            SurveyHelper.measureText().height,
+            SurveyHelper.getRatingMinWidth() + SurveyHelper.measureText(SurveyHelper.getRatingItemText(question, 0, question.visibleRateValues[0].locText),
+                'bold').width + SurveyHelper.measureText().height,
         yTop: survey.controller.leftTopPoint.yTop,
         yBot: survey.controller.leftTopPoint.yTop +
             SurveyHelper.measureText().height * SurveyHelper.RATING_MIN_HEIGHT
@@ -922,14 +920,14 @@ test('Check rating two elements with max rate description', async () => {
 
     let a = SurveyHelper.getRatingMinWidth();
     let b = SurveyHelper.measureText(
-        SurveyHelper.getRatingItemText(question, 1, question.rateMax.toString()), 'bold').width;
+        SurveyHelper.getRatingItemText(question, 1, question.visibleRateValues[0].locText), 'bold').width;
 
     let assumeRating: IRect = {
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.leftTopPoint.xLeft +
             SurveyHelper.getRatingMinWidth() + SurveyHelper.measureText(
                 SurveyHelper.getRatingItemText(question, 1,
-                    question.rateMax.toString()), 'bold').width +
+                    question.visibleRateValues[0].locText), 'bold').width +
             SurveyHelper.measureText().height,
         yTop: survey.controller.leftTopPoint.yTop,
         yBot: survey.controller.leftTopPoint.yTop +
