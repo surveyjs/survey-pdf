@@ -45,7 +45,7 @@ export class CompositeBrick implements IPdfBrick {
     }
 
     async render(): Promise<void> {
-        for (let i = 0; i < this.bricks.length; i++) {
+        for (let i: number = 0; i < this.bricks.length; i++) {
             await this.bricks[i].render();
         }
     }

@@ -18,15 +18,16 @@ export interface IText {
     rect: IRect
 }
 export class SurveyHelper {
-    static EPSILON: number = 2.2204460492503130808472633361816e-15;
-    static TITLE_PANEL_FONT_SIZE_SCALE_MAGIC: number = 1.3;
-    static DESCRIPTION_FONT_SIZE_SCALE_MAGIC: number = 2.0 / 3.0;
-    static RATING_MIN_WIDTH: number = 3;
-    static RATING_MIN_HEIGHT: number = 2;
+    static readonly EPSILON: number = 2.2204460492503130808472633361816e-15;
+    static readonly TITLE_PANEL_FONT_SIZE_SCALE_MAGIC: number = 1.3;
+    static readonly DESCRIPTION_FONT_SIZE_SCALE_MAGIC: number = 2.0 / 3.0;
+    static readonly RATING_MIN_WIDTH: number = 3;
+    static readonly RATING_MIN_HEIGHT: number = 2;
+    static readonly IMAGEPICKER_COUNT: number = 4;
+    static readonly IMAGEPICKER_RATIO: number = 4.0 / 3.0;
+    static readonly MATRIX_COLUMN_WIDTH: number = 5;
+    static readonly MULTIPLETEXT_TEXT_PERS: number = Math.E / 10.0;
     private static _doc: any = new jsPDF({ unit: 'pt' });
-    static MULTIPLETEXT_TEXT_PERS: number = Math.E / 10.0;
-    static IMAGEPICKER_COUNT: number = 4;
-    static IMAGEPICKER_RATIO: number = 4.0 / 3.0;
     public static setFontSize(fontSize: number, font?: string) {
         this._doc.setFontSize(fontSize);
         if (typeof font !== 'undefined') {
@@ -99,7 +100,7 @@ export class SurveyHelper {
         htmlBrick.yBot = htmlBrick.yTop + sizeOfPoint;
         bricks.push(htmlBrick);
         let currPoint = SurveyHelper.createPoint(htmlBrick);
-        for (let i = 0; i < emptyBrickCount; i++) {
+        for (let i: number = 0; i < emptyBrickCount; i++) {
             let emptyBrick = new EmptyBrick(SurveyHelper.createRect(currPoint, brickWidth, sizeOfPoint))
             bricks.push(emptyBrick);
             currPoint = SurveyHelper.createPoint(emptyBrick);
@@ -186,7 +187,7 @@ export class SurveyHelper {
                 y = (SurveyHelper._doc.getNumberOfPages() - 1) *
                     (controller.paperHeight - controller.margins.bot - controller.margins.top)
                     + result.y - margins.top;
-                for (let i = 0; i < SurveyHelper._doc.getNumberOfPages() - 1; i++) {
+                for (let i: number = 0; i < SurveyHelper._doc.getNumberOfPages() - 1; i++) {
                     SurveyHelper._doc.deletePage(1);
                 }
                 let rect = SurveyHelper.createRect(point, margins.width, y);

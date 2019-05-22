@@ -31,12 +31,11 @@ export abstract class FlatSelectBase extends FlatQuestion {
     async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         let currPoint: IPoint = SurveyHelper.clone(point);
         let flats: IPdfBrick[] = new Array();
-        let index = 0;
-        for (let item of this.question.visibleChoices) {
-            let itemFlat: IPdfBrick = await this.generateFlatsItem(currPoint, item, index);
+        for (let i: number = 0; i < this.question.visibleChoices.length; i++) {
+            let itemFlat: IPdfBrick = await this.generateFlatsItem(
+                currPoint, this.question.visibleChoices[i], i);
             currPoint.yTop = itemFlat.yBot;
             flats.push(itemFlat);
-            index++;
         }
         return flats;
     }

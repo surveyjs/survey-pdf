@@ -15,8 +15,8 @@ export class SurveyPDF extends SurveyModel {
     async render() {
         let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(this);
         let packs: IPdfBrick[][] = PagePacker.pack(flats, this.controller);
-        for (let i = 0; i < packs.length; i++) {
-            for (let j = 0; j < packs[i].length; j++) {
+        for (let i: number = 0; i < packs.length; i++) {
+            for (let j: number = 0; j < packs[i].length; j++) {
                 await packs[i][j].render();
             }
             if (i != packs.length - 1) this.controller.addPage();

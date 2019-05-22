@@ -156,7 +156,7 @@ test('test hidden header', async () => {
     let itemWidth = SurveyHelper.measureText().width;
     let cellWidth = (210 * TestHelper.MM_TO_PT - survey.controller.margins.left
         - survey.controller.margins.right) / 3;
-    for (let i = 0; i < json.questions[0].columns.length; i++) {
+    for (let i: number = 0; i < json.questions[0].columns.length; i++) {
         let currPoint = TestHelper.defaultPoint;
         currPoint.xLeft = cellWidth * i + survey.controller.margins.left;
         assumeCells.push(SurveyHelper.createRect(currPoint, itemWidth, itemWidth));

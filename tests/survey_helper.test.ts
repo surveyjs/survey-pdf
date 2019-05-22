@@ -27,7 +27,7 @@ test('Create rect', () => {
         height: 0
     }
     let point: IPoint = TestHelper.defaultPoint;
-    for (let i = 0; i < 10; i++) {
+    for (let i: number = 0; i < 10; i++) {
         Object.keys(parametres).forEach((key: string) => {
             (<any>parametres)[key]++;
         })

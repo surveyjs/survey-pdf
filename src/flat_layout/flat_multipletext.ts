@@ -36,24 +36,23 @@ export class FlatMultipleText extends FlatQuestion {
         let currPoint: IPoint = SurveyHelper.clone(point);
         let colWidth: number = SurveyHelper.getPageAvailableWidth(
             this.controller) / this.question.colCount;
-        let row_index = 0;
-        for (let row of this.question.getRows()) {
+        let rows = this.question.getRows();
+        for (let i: number = 0; i < rows.length; i++) {
             rowsFlats.push(new CompositeBrick());
             let yBot: number = currPoint.yTop
             let oldMarginLeft: number = this.controller.margins.left;
             let oldMarginRight: number = this.controller.margins.right;
             let currMarginLeft: number = this.controller.margins.left;
-            let col_index = 0;
-            for (let item of row) {
+            for (let j: number = 0; j < rows[i].length; j++) {
                 this.controller.margins.left = currMarginLeft;
                 this.controller.margins.right = this.controller.paperWidth -
                     currMarginLeft - colWidth;
                 currMarginLeft = this.controller.paperWidth - this.controller.margins.right;
                 currPoint.xLeft = this.controller.margins.left;
-                let itemFlat: IPdfBrick = await this.generateFlatItem(currPoint, row_index, col_index, item);
+                let itemFlat: IPdfBrick = await this.generateFlatItem(
+                    currPoint, i, j, rows[i][j]);
                 rowsFlats[rowsFlats.length - 1].addBrick(itemFlat);
                 yBot = Math.max(yBot, itemFlat.yBot);
-                col_index++
             }
             this.controller.margins.left = oldMarginLeft;
             this.controller.margins.right = oldMarginRight;
@@ -62,7 +61,7 @@ export class FlatMultipleText extends FlatQuestion {
             rowsFlats[rowsFlats.length - 1].addBrick(
                 SurveyHelper.createRowlineFlat(currPoint, this.controller));
             currPoint.yTop += SurveyHelper.EPSILON;
-            row_index++;
+
         }
         return rowsFlats;
     }

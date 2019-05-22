@@ -43,7 +43,7 @@ export class TestHelper {
         return [TestHelper.wrapRects(rects)];
     }
     static equalRects(expect: any, rects1: IRect[], rects2: IRect[]) {
-        for (let i = 0; i < rects1.length; i++) {
+        for (let i: number = 0; i < rects1.length; i++) {
             this.equalRect(expect, rects1[i], rects2[i]);
         }
     }

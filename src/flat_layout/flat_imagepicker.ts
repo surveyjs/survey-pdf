@@ -53,7 +53,7 @@ export class FlatImagePicker extends FlatQuestion {
         cols = cols <= count ? cols : count;
         let rows: number = ~~(Math.ceil(count / cols));
         let currPoint: IPoint = SurveyHelper.clone(point);
-        for (let i = 0; i < rows; i++) {
+        for (let i: number = 0; i < rows; i++) {
             let yBot: number = currPoint.yTop;
             let oldMarginLeft: number = this.controller.margins.left;
             let oldMarginRight: number = this.controller.margins.right;
