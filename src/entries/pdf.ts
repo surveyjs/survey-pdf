@@ -13,6 +13,7 @@ export { FlatRating } from '../flat_layout/flat_rating';
 export { FlatImagePicker } from '../flat_layout/flat_imagepicker';
 export { FlatBoolean } from '../flat_layout/flat_boolean';
 export { FlatHTML } from '../flat_layout/flat_html';
+export { FlatExpression } from '../flat_layout/flat_expression';
 export { FlatFile } from '../flat_layout/flat_file';
 export { FlatMatrix } from '../flat_layout/flat_matrix';
 export { FlatMultipleText } from '../flat_layout/flat_multipletext';

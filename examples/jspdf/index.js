@@ -235,7 +235,6 @@ var json = {
 					name: 'Input me'
 				},
 				{
-					type: 'boolean',
 					name: 'Boolman',
 					title: 'Ama label'
 				}
@@ -274,6 +273,11 @@ var json = {
 			allowImagesPreview: true
 		},
 		{
+			type: 'expression',
+			name: 'expque',
+			expression: '(6239 / 17 + 11) / 9'
+		},
+		{
 			name: "name10",
 			type: "text",
 			title: "Rarrararar:",
@@ -296,6 +300,12 @@ let options = {
 };
 
 var survey = new SurveyPDF.Survey(json, options);
+survey.setValue('car', 'Ford');
+survey.setValue('name', 'SUPER');
+survey.setValue('name2', 'DATA');
+survey.setValue('car2', ['A', 'EEE']);
+survey.setValue('radio', 'Red FM');
+survey.setValue('name4', 'notdef');
 
 var converter = new showdown.Converter();
 survey
@@ -309,12 +319,5 @@ survey
 		//set html
 		options.html = str;
 	});
-survey.save();
-survey.setValue('car', 'Ford');
-survey.setValue('name', 'SUPER');
-survey.setValue('name2', 'DATA');
-survey.setValue('car2', ['A', 'EEE']);
-survey.setValue('radio', 'Red FM');
-survey.setValue('name4', 'notdef');
-
+	
 survey.save();
