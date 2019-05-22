@@ -17,7 +17,7 @@ export class FlatQuestion implements IFlatQuestion {
         this.question = <Question>question;
     }
 
-    private async  generateFlatTitle(point: IPoint): Promise<IPdfBrick> {
+    private async generateFlatTitle(point: IPoint): Promise<IPdfBrick> {
         return await SurveyHelper.createTitleFlat(point,
             this.question, this.controller)
     }

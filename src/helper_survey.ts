@@ -1,12 +1,11 @@
-
-import { IQuestion, Question, QuestionRatingModel, ItemValue, LocalizableString } from 'survey-core';
-import { IPoint, IRect, DocController, IMargin } from './doc_controller';
+import * as jsPDF from 'jspdf';
+import { IQuestion, Question, QuestionRatingModel, LocalizableString } from 'survey-core';
+import { IPoint, IRect, DocController } from './doc_controller';
 import { IPdfBrick } from './pdf_render/pdf_brick';
 import { CommentBrick } from './pdf_render/pdf_comment';
 import { LinkBrick } from './pdf_render/pdf_link';
 import { CompositeBrick } from './pdf_render/pdf_composite';
 import { RowlineBrick } from './pdf_render/pdf_rowline';
-import * as jsPDF from 'jspdf';
 import { HTMLBrick } from './pdf_render/pdf_html';
 import { EmptyBrick } from './pdf_render/empty';
 import { TitleBrick } from './pdf_render/pdf_title';
@@ -30,7 +29,7 @@ export class SurveyHelper {
     static IMAGEPICKER_RATIO: number = 4.0 / 3.0;
     public static setFontSize(fontSize: number, font?: string) {
         this._doc.setFontSize(fontSize);
-        if (font != undefined) {
+        if (typeof font !== 'undefined') {
             this._doc.setFont(font)
         }
     }

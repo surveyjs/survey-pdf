@@ -2,7 +2,7 @@
     return {};
 };
 
-import { Question, QuestionCommentModel, QuestionRatingModel, QuestionImagePickerModel } from 'survey-core';
+import { Question, QuestionCommentModel, QuestionRatingModel, QuestionExpressionModel } from 'survey-core';
 import { SurveyPDF } from '../src/survey';
 import { IPoint, IRect, DocController, IDocOptions } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
@@ -13,6 +13,7 @@ import { FlatDropdown } from '../src/flat_layout/flat_dropdown';
 import { FlatRating } from '../src/flat_layout/flat_rating';
 import { FlatImagePicker } from '../src/flat_layout/flat_imagepicker';
 import { FlatBoolean } from '../src/flat_layout/flat_boolean';
+import { FlatExpression } from '../src/flat_layout/flat_expression';
 import { FlatFile } from '../src/flat_layout/flat_file';
 import { FlatMultipleText } from '../src/flat_layout/flat_multipletext';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
@@ -30,6 +31,7 @@ let __dummy_cm = new FlatComment(null, null);
 let __dummy_rt = new FlatRating(null, null);
 let __dummy_ip = new FlatImagePicker(null, null);
 let __dummy_bl = new FlatBoolean(null, null);
+let __dummy_ex = new FlatExpression(null, null);
 let __dummy_fl = new FlatFile(null, null);
 let __dummy_mt = new FlatMultipleText(null, null);
 SurveyHelper.setFontSize(TestHelper.defaultOptions.fontSize);
@@ -1325,4 +1327,28 @@ test('Check one image 16x16px file', async () => {
         yBot: survey.controller.leftTopPoint.yTop + height + SurveyHelper.measureText().height
     };
     TestHelper.equalRect(expect, flats[0][0], assumeFile);
+});
+test('Check expression', async () => {
+    let json = {
+        elements: [
+            {
+                type: 'expression',
+                name: 'expque',
+                titleLocation: 'hidden',
+                expression: '1'
+            }
+        ]
+    };
+    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
+    expect(flats.length).toBe(1);
+    expect(flats[0].length).toBe(1);
+    let assumeExpression: IRect = {
+        xLeft: survey.controller.leftTopPoint.xLeft,
+        xRight: survey.controller.leftTopPoint.xLeft + SurveyHelper.measureText(
+            (<QuestionExpressionModel>survey.getAllQuestions()[0]).displayValue).width,
+        yTop: survey.controller.leftTopPoint.yTop,
+        yBot: survey.controller.leftTopPoint.yTop + SurveyHelper.measureText().height
+    };
+    TestHelper.equalRect(expect, flats[0][0], assumeExpression);
 });
