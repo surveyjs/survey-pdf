@@ -33,19 +33,21 @@ export class SurveyHelper {
             this._doc.setFont(font)
         }
     }
-    static measureText(text: number | string = 1, fontStyle: string = 'normal',
+    static measureText(text: number | LocalizableString | string = 1, fontStyle: string = 'normal',
         fontSize: number = this._doc.getFontSize()) {
         let oldFontSize = this._doc.getFontSize();
         this._doc.setFontSize(fontSize);
         this._doc.setFontStyle(fontStyle);
         let height: number = this._doc.getLineHeight() / this._doc.internal.scaleFactor;;
         let width: number = 0;
-        if (typeof text === 'string') {
-            width = text.split('').reduce((sm: number, cr: string) =>
-                sm + this._doc.getTextWidth(cr), 0);
+
+        if (typeof text === 'number') {
+            width = height * text;
         }
         else {
-            width = height * text;
+            text = (typeof text === 'string') ? text : SurveyHelper.getLocString(text);
+            width = text.split('').reduce((sm: number, cr: string) =>
+                sm + this._doc.getTextWidth(cr), 0);
         }
         this._doc.setFontSize(oldFontSize);
         this._doc.setFontStyle('normal');
@@ -288,16 +290,19 @@ export class SurveyHelper {
         return SurveyHelper.measureText(SurveyHelper.RATING_MIN_WIDTH).width;
     }
     static getRatingItemText(question: QuestionRatingModel,
-        index: number, text: string): string {
+        index: number, locText: LocalizableString): LocalizableString {
+        let ratingItemLocText = new LocalizableString(locText.owner, locText.useMarkdown);
+        ratingItemLocText.text = locText.text;
         if (index == 0 && question.minRateDescription) {
-            text = SurveyHelper.getLocString(
-                question.locMinRateDescription) + text;
+            ratingItemLocText.text =
+                question.locMinRateDescription.text + locText.text;
         }
         else if (index == question.visibleRateValues.length - 1 &&
             question.maxRateDescription) {
-            text += SurveyHelper.getLocString(question.locMaxRateDescription);
+            ratingItemLocText.text =
+                locText.text + question.locMaxRateDescription.text;
         }
-        return text;
+        return ratingItemLocText;
     }
     static getColumnWidth(question: Question, controller: DocController) {
         return SurveyHelper.getPageAvailableWidth(controller) /
