@@ -12,7 +12,7 @@ export class FlatSurvey {
     static parseWidth(width: string): number {
         return parseFloat(width) / 100.0;
     }
-    public static async  generateFlatsPanel(point: IPoint,
+    public static async generateFlatsPanel(point: IPoint,
         question: PanelModel, controller: DocController): Promise<IPdfBrick[]> {
         let panelFlats: IPdfBrick[] = new Array<IPdfBrick>();
         let panelContentPoint: IPoint = { xLeft: point.xLeft, yTop: point.yTop };
@@ -37,14 +37,14 @@ export class FlatSurvey {
         controller.margins.left = oldPanelMarginLeft;
         return panelFlats;
     }
-    private static async  generateFlatsPagePanel(point: IPoint,
+    private static async generateFlatsPagePanel(point: IPoint,
         pagePanel: PanelModelBase, controller: DocController): Promise<IPdfBrick[]> {
         if (!pagePanel.isVisible) return;
         pagePanel.onFirstRendering();
         let pagePanelFlats: IPdfBrick[] = new Array<IPdfBrick>();
         let currPoint: IPoint = SurveyHelper.clone(point);
         for (let row of pagePanel.rows) {
-            if (!row.visible) return;
+            if (!row.visible) continue;
             let width: number = SurveyHelper.getPageAvailableWidth(controller);
             let oldMarginLeft: number = controller.margins.left;
             let oldMarginRight: number = controller.margins.right;
@@ -78,9 +78,6 @@ export class FlatSurvey {
                 currPoint.yTop += SurveyHelper.EPSILON;
             }
         }
-        pagePanel.rows.forEach((row: QuestionRowModel) => {
-
-        });
         return pagePanelFlats;
     }
     private static popRowlines(flats: IPdfBrick[]) {

@@ -560,6 +560,29 @@ test('Not visible question and visible question', async () => {
         <Question>survey.getAllQuestions()[1], survey.controller);
     TestHelper.equalRects(expect, rects[0], assumeRect)
 });
+test('VisibleIf row', async () => {
+    let json = {
+        questions: [
+            {
+                type: 'text',
+                name: 'Look at visible me'
+            },
+            {
+                type: 'text',
+                name: 'Please! Don\'t look!',
+                visibleIf: 'false'
+            },
+            {
+                type: 'text',
+                name: 'I\'m here'
+            }
+        ]
+    };
+    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
+    expect(flats.length).toBe(1);
+    expect(flats[0].length).toBe(3);
+});
 test('Calc comment boundaries title hidden', async () => {
     let json = {
         questions: [
