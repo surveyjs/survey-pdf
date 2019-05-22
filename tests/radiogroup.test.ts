@@ -31,28 +31,6 @@ test('Test has other radiogroup', async () => {
     let internalRadioGroup: any = internal.acroformPlugin.acroFormDictionaryRoot.Fields[0];
     expect(internalRadioGroup.FT).toBe('/Btn');
 });
-
-test.skip('Test radiogroup duplicate value other', async () => {
-    let json = {
-        questions: [
-            {
-                name: 'radiogroup',
-                type: 'radiogroup',
-                choices: ['other'],
-                hasOther: true
-            }
-        ]
-    };
-    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    await survey.render();
-    let acroFormFields = survey.controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields;
-    let internalRadioGroup = acroFormFields[0];
-    let internalOtherTextFieldChoice = acroFormFields[2];
-    let internalOtherTextField = acroFormFields[4];
-    expect(internalRadioGroup.FT).toBe('/Btn');
-    expect(internalOtherTextFieldChoice.FT).toBe('/Tx');
-    expect(internalOtherTextField.FT).toBe('/Tx');
-});
 test('Test all items disabled or enabled', async () => {
     let json = {
         questions: [
