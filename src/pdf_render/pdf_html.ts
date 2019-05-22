@@ -1,5 +1,3 @@
-
-import { resolve } from 'path';
 import { IQuestion } from 'survey-core';
 import { PdfBrick } from './pdf_brick';
 import { IRect, DocController } from '../doc_controller';
@@ -14,7 +12,7 @@ export class HTMLBrick extends PdfBrick {
             bottom: controller.margins.bot
         };
     }
-    async render() {
+    async render(): Promise<void> {
         await new Promise((resolve) => {
             this.controller.doc.fromHTML(this.html, this.xLeft, this.yTop, {
                 width: this.xRight - this.xLeft,

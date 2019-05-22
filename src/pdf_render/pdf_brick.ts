@@ -1,8 +1,8 @@
-import { IPoint, IRect, DocController } from '../doc_controller';
+import { IRect, DocController } from '../doc_controller';
 import { IQuestion } from 'survey-core';
 
 export interface IPdfBrick extends IRect {
-    render(): any;
+    render(): Promise<void>;
     unfold(): IPdfBrick[];
 }
 export class PdfBrick implements IPdfBrick {
@@ -17,24 +17,10 @@ export class PdfBrick implements IPdfBrick {
         this.yTop = rect.yTop;
         this.yBot = rect.yBot;
     }
-    rendertText(rect: IRect, text: string) {
-        let alignPoint = this.alignPoint(rect);
-        this.controller.doc.text(text, alignPoint.xLeft, alignPoint.yTop, {
-            align: 'left',
-            baseline: 'middle'
-        });
-    }
-    async render() { }
+    async render(): Promise<void> { }
     unfold(): IPdfBrick[] {
         return [this];
     }
-    private alignPoint(rect: IRect): IPoint {
-        return {
-            xLeft: rect.xLeft,
-            yTop: rect.yTop + (rect.yBot - rect.yTop) / 2.0
-        };
-    }
-    //TO REVIEW
     getQuestion<T extends IQuestion>(): T {
         return <T>this.question;
     }

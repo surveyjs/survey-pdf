@@ -4,7 +4,6 @@ import { FlatRepository } from './flat_repository';
 import { IPoint, DocController } from "../doc_controller";
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
-import { RowlineBrick } from '../pdf_render/pdf_rowline';
 import { SurveyHelper } from '../helper_survey';
 
 export class FlatRating extends FlatRadiogroup {
@@ -37,10 +36,9 @@ export class FlatRating extends FlatRadiogroup {
         return compositeFlat;
     }
     async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
-        let rowsFlats: CompositeBrick[] = new Array<CompositeBrick>();
-        rowsFlats.push(new CompositeBrick());
+        let rowsFlats: CompositeBrick[] = new Array<CompositeBrick>(new CompositeBrick());
         let currPoint: IPoint = SurveyHelper.clone(point);
-        for (var i = 0; i < this.questionRating.visibleRateValues.length; i++) {
+        for (let i = 0; i < this.questionRating.visibleRateValues.length; i++) {
             let itemFlat: IPdfBrick = await this.generateFlatItem(currPoint, i,
                 this.questionRating.visibleRateValues[i]);
             rowsFlats[rowsFlats.length - 1].addBrick(itemFlat);

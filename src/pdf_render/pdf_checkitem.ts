@@ -11,7 +11,7 @@ export class CheckItemBrick extends PdfBrick {
         super(question, controller, rect);
         this.question = <QuestionCheckboxModel>question;
     }
-    async render() {
+    async render(): Promise<void> {
         let checkBox = new (<any>this.controller.doc.AcroFormCheckBox)();
         checkBox.fontSize = this.controller.fontSize * 0.5;
         checkBox.maxFontSize = this.controller.fontSize * 0.5;

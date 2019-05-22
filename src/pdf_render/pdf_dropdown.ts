@@ -12,7 +12,7 @@ export class DropdownBrick extends PdfBrick {
         super(question, controller, rect);
         this.question = <QuestionDropdownModel>question;
     }
-    async render() {
+    async render(): Promise<void> {
         let comboBox = new (<any>this.controller.doc.AcroFormComboBox)();
         comboBox.fieldName = this.question.id;
         comboBox.Rect = SurveyHelper.createAcroformRect(this);
