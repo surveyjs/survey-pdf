@@ -31,30 +31,6 @@ test('Test has other checkbox', async () => {
 	let internalOtherCheckBox: any = internal.acroformPlugin.acroFormDictionaryRoot.Fields[0];
 	expect(internalOtherCheckBox.FT).toBe('/Btn');
 });
-test.skip('Test checkbox duplicate value other', () => {
-	let json = {
-		questions: [
-			{
-				name: 'checkbox',
-				type: 'checkbox',
-				choices: ['other'],
-				hasOther: true
-			}
-		]
-	};
-	let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-	survey.render();
-	let acroFormFields = survey.controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields;
-	let internalOtherCheckBoxChoice = acroFormFields[0];
-	let internalOtherTextFieldChoice = acroFormFields[1];
-	let internalOtherCheckBox = acroFormFields[2];
-	let internalOtherTextField = acroFormFields[3];
-	expect(internalOtherCheckBoxChoice.FT).toBe('/Btn');
-	expect(internalOtherTextFieldChoice.FT).toBe('/Tx');
-	expect(internalOtherCheckBox.FT).toBe('/Btn');
-	expect(internalOtherTextField.FT).toBe('/Tx');
-});
-
 test('Check all items disabled or enabled', async () => {
 	let json = {
 		questions: [
