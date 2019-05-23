@@ -1,5 +1,5 @@
 import IntervalTree from 'node-interval-tree';
-import { DocOptions } from '../doc_controller';
+import { DocOptions, DocController } from '../doc_controller';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { SurveyHelper } from '../helper_survey';
 
@@ -13,9 +13,11 @@ interface PackInterval {
 export class PagePacker {
     private static findBotInterval(intervals: PackInterval[],
         xLeft: number, xRight: number, options: DocOptions): PackInterval {
-        intervals.push({ pageIndex: 0, xLeft:
-            options.margins.left, xRight: options.margins.left,
-            yBot: options.margins.top, absBot: options.margins.top });
+        intervals.push({
+            pageIndex: 0, xLeft:
+                options.margins.left, xRight: options.margins.left,
+            yBot: options.margins.top, absBot: options.margins.top
+        });
         return intervals.reduce((mx, cr) => {
             if (Math.abs(cr.xRight - xLeft) < SurveyHelper.EPSILON ||
                 Math.abs(cr.xLeft - xRight) < SurveyHelper.EPSILON) return mx;
@@ -30,9 +32,9 @@ export class PagePacker {
         }
         packs[index].push(brick);
     }
-    public static pack(flats: IPdfBrick[][], options: DocOptions): IPdfBrick[][] {
-        let pageHeight: number = options.paperHeight -
-            options.margins.top - options.margins.bot; 
+    public static pack(flats: IPdfBrick[][], controller: DocController): IPdfBrick[][] {
+        let pageHeight: number = controller.paperHeight -
+            controller.margins.top - controller.margins.bot;
         let unfoldFlats: IPdfBrick[][] = [];
         flats.forEach((flatsPage: IPdfBrick[]) => {
             unfoldFlats.push([]);
@@ -55,23 +57,25 @@ export class PagePacker {
         });
         let pageIndexModel: number = 0;
         let packs: IPdfBrick[][] = [];
-        let pageBot: number = options.paperHeight - options.margins.bot;
+        let pageBot: number = controller.paperHeight - controller.margins.bot;
         unfoldFlats.forEach((unfoldFlatsPage: IPdfBrick[]) => {
             let tree: IntervalTree<PackInterval> = new IntervalTree();
             unfoldFlatsPage.forEach((flat: IPdfBrick) => {
                 let intervals: PackInterval[] = tree.search(flat.xLeft, flat.xRight);
                 let { pageIndex, yBot, absBot } = PagePacker.findBotInterval(
-                    intervals, flat.xLeft, flat.xRight, options);
+                    intervals, flat.xLeft, flat.xRight, controller);
                 let height: number = flat.yBot - flat.yTop;
                 flat.yTop = yBot + flat.yTop - absBot;
-                if (Math.abs(flat.yTop - options.margins.top) > SurveyHelper.EPSILON &&
+                if (Math.abs(flat.yTop - controller.margins.top) > SurveyHelper.EPSILON &&
                     flat.yTop + height > pageBot + SurveyHelper.EPSILON) {
-                    flat.yTop = options.margins.top;
+                    flat.yTop = controller.margins.top;
                     pageIndex++;
                 }
-                tree.insert(flat.xLeft, flat.xRight, { pageIndex: pageIndex,
+                tree.insert(flat.xLeft, flat.xRight, {
+                    pageIndex: pageIndex,
                     xLeft: flat.xLeft, xRight: flat.xRight,
-                    yBot: flat.yTop + height, absBot: flat.yBot });
+                    yBot: flat.yTop + height, absBot: flat.yBot
+                });
                 flat.yBot = flat.yTop + height;
                 PagePacker.addPack(packs, pageIndexModel + pageIndex, flat);
             });

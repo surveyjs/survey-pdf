@@ -119,7 +119,6 @@ export class FlatMatrixRow extends FlatRadiogroup {
                 cells.push(cellTextFlat);
             }
             else {
-                this.controller.pushMargins();
                 let height: number = SurveyHelper.measureText().height;
                 let itemRect: IRect = SurveyHelper.createRect(currPoint, height, height);
                 let radioItem: IPdfBrick = this.createItemBrick(itemRect, column, i, this.key, checked);
@@ -130,7 +129,6 @@ export class FlatMatrixRow extends FlatRadiogroup {
                 let compositeBrick: CompositeBrick = new CompositeBrick(radioItem, radioText);
                 currPoint = SurveyHelper.createPoint(compositeBrick);
                 cells.push(compositeBrick);
-                this.controller.popMargins();
             }
         }
         let compositeBrick = new CompositeBrick(...cells);

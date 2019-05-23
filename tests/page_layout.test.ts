@@ -29,7 +29,8 @@ test('Pack two flats on two pages', () => {
     let flats: IRect[] = [TestHelper.defaultRect, TestHelper.defaultRect];
     flats[1].yTop += 10 * TestHelper.MM_TO_PT; flats[1].yBot += 10 * TestHelper.MM_TO_PT;
     let options: IDocOptions = TestHelper.defaultOptions;
-    options.paperHeight = flats[0].yBot / TestHelper.MM_TO_PT + options.margins.bot;
+    options.format = [210, flats[0].yBot / TestHelper.MM_TO_PT + options.margins.bot];
+    options.orientation = 'l';
     let packs: IPdfBrick[][] = PagePacker.pack(TestHelper.wrapRectsPage(flats),
         new DocController(options));
     TestHelper.equalRect(expect, packs[0][0], TestHelper.defaultRect);
@@ -54,8 +55,9 @@ test('Long checkbox with indent', async () => {
         ]
     };
     let options: IDocOptions = TestHelper.defaultOptions;
-    options.paperHeight = options.margins.top + SurveyHelper.
-        measureText().height * 3.5 / TestHelper.MM_TO_PT + options.margins.bot;
+    options.format = [210, options.margins.top + SurveyHelper.
+        measureText().height * 3.5 / TestHelper.MM_TO_PT + options.margins.bot];
+    options.orientation = 'l';
     let survey: SurveyPDF = new SurveyPDF(json, options);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
@@ -135,7 +137,8 @@ test('Pack near flats new page', () => {
         { xLeft: 20 * TestHelper.MM_TO_PT, xRight: 30 * TestHelper.MM_TO_PT, yTop: 20 * TestHelper.MM_TO_PT, yBot: 30 * TestHelper.MM_TO_PT },
     ];
     let options: IDocOptions = TestHelper.defaultOptions;
-    options.paperHeight = flats[0].yBot / TestHelper.MM_TO_PT + options.margins.bot;
+    options.format = [210, flats[0].yBot / TestHelper.MM_TO_PT + options.margins.bot];
+    options.orientation = 'l';
     let packs: IPdfBrick[][] = PagePacker.pack(TestHelper.wrapRectsPage(flats),
         new DocController(options));
     TestHelper.equalRect(expect, packs[0][0],
@@ -158,8 +161,9 @@ test('Unfold compose brick', async () => {
         ]
     };
     let options: IDocOptions = TestHelper.defaultOptions;
-    options.paperHeight = options.margins.top + SurveyHelper.
-        measureText().height / TestHelper.MM_TO_PT + options.margins.bot;
+    options.format = [210, options.margins.top + SurveyHelper.
+        measureText().height / TestHelper.MM_TO_PT + options.margins.bot];
+    options.orientation = 'l';
     let survey: SurveyPDF = new SurveyPDF(json, options);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
@@ -184,8 +188,9 @@ test('Pack to little page', async () => {
         ]
     };
     let options: IDocOptions = TestHelper.defaultOptions;
-    options.paperHeight = options.margins.top + SurveyHelper.
-        measureText().height / 2 + options.margins.bot;
+    options.format = [210, options.margins.top + SurveyHelper.
+        measureText().height / 2 + options.margins.bot];
+    options.orientation = 'l';
     let survey: SurveyPDF = new SurveyPDF(json, options);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);

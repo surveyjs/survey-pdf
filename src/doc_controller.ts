@@ -1,4 +1,5 @@
 import * as jsPDF from 'jspdf';
+import { SurveyHelper } from './helper_survey';
 export interface IPoint {
     xLeft: number;
     yTop: number;
@@ -16,26 +17,26 @@ export interface IMargin extends IMarginLR {
     bot: number;
 }
 export interface IDocOptions {
-    fontSize: number;
-    paperWidth?: number;
-    paperHeight?: number;
+    orientation?: 'p' | 'l';
+    format?: string | number[];
+    fontSize?: number;
     margins: IMargin;
 }
 
 export class DocOptions implements IDocOptions {
     protected static MM_TO_PT = 72 / 25.4;
-    protected static PAPER_TO_LOGIC_SCALE_MAGIC: number = 595.28 / 210.0;
     protected _fontSize: number;
-    protected _paperWidth: number;
-    protected _paperHeight: number;
     protected _margins: IMargin;
+    protected _format: string | number[];
+    protected _orientation: 'l' | 'p';
     public constructor(options: IDocOptions) {
-        this._fontSize = options.fontSize;
-        this._paperWidth =
-            typeof options.paperWidth === "undefined" ? 210 : options.paperWidth;
-        this._paperHeight =
-            typeof options.paperHeight === "undefined" ? 297 : options.paperHeight;
-        this._margins = options.margins;
+        this._orientation = options.orientation || 'p';
+        this._format = options.format || 'a4';
+        if (Array.isArray(this._format)) {
+            this._format = this._format.map(f => f * DocOptions.MM_TO_PT);
+        }
+        this._fontSize = options.fontSize || 12;
+        this._margins = SurveyHelper.clone(options.margins);
         Object.keys(this._margins).forEach((name: string) => {
             (<any>this._margins)[name] = (<any>this._margins)[name] * DocOptions.MM_TO_PT;
         });
@@ -49,14 +50,14 @@ export class DocOptions implements IDocOptions {
     get fontSize(): number {
         return this._fontSize;
     }
-    get paperWidth(): number {
-        return this._paperWidth;
-    }
-    get paperHeight(): number {
-        return this._paperHeight;
-    }
     get margins(): IMargin {
         return this._margins;
+    }
+    get format(): string | number[] {
+        return this._format;
+    }
+    get orientation(): 'l' | 'p' {
+        return this._orientation;
     }
 }
 
@@ -64,26 +65,21 @@ export class DocController extends DocOptions {
     private _doc: any;
     private _fontStyle: string;
     private marginsStack: IMarginLR[];
+
     public constructor(options: IDocOptions) {
         super(options);
-        let logicWidth: number =
-            this._paperWidth * DocOptions.PAPER_TO_LOGIC_SCALE_MAGIC;
-        let logicHeight: number =
-            this._paperHeight * DocOptions.PAPER_TO_LOGIC_SCALE_MAGIC;
-        this._doc = new jsPDF({ unit: 'pt', format: [logicWidth, logicHeight] });
-        this._paperWidth = this._paperWidth * DocOptions.MM_TO_PT;
-        this._paperHeight = this._paperHeight * DocOptions.MM_TO_PT;
-        this._doc.setFontSize(this._fontSize);
+        this._doc = new jsPDF({ orientation: this.orientation, unit: 'pt', format: this.format });
+        this._doc.setFontSize(this.fontSize);
         this.marginsStack = [];
     }
     get doc(): any {
         return this._doc;
     }
-    get fontSize(): number {
-        return this._fontSize;
-    }
     get fontStyle(): string {
         return this._fontStyle;
+    }
+    get fontSize(): number {
+        return this._fontSize;
     }
     set fontSize(fontSize: number) {
         this._fontSize = fontSize;
@@ -103,10 +99,13 @@ export class DocController extends DocOptions {
         this.margins.left = margins.left;
         this.margins.right = margins.right;
     }
+    get paperWidth(): number {
+        return this.doc.internal.pageSize.width;
+    }
+    get paperHeight(): number {
+        return this.doc.internal.pageSize.height;
+    }
     public addPage(): void {
-        this.doc.addPage([
-            this._paperWidth * DocOptions.PAPER_TO_LOGIC_SCALE_MAGIC / DocOptions.MM_TO_PT,
-            this._paperHeight * DocOptions.PAPER_TO_LOGIC_SCALE_MAGIC / DocOptions.MM_TO_PT
-        ]);
+        this.doc.addPage();
     }
 }

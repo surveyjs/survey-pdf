@@ -384,7 +384,7 @@ test('Check other checkbox place ', async () => {
         ]
     };
     let options = TestHelper.defaultOptions;
-    options.paperWidth = 40;
+    options.format = [40, 297];
     let survey: SurveyPDF = new SurveyPDF(json, options);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     let receivedRects: IRect[] = flats[0][0].unfold();
@@ -996,8 +996,8 @@ test('Check rating many elements', async () => {
         ]
     };
     let options: IDocOptions = TestHelper.defaultOptions;
-    options.paperWidth = options.margins.left + options.margins.right +
-        SurveyHelper.getRatingMinWidth() * 3 / TestHelper.MM_TO_PT;
+    options.format = [options.margins.left + options.margins.right +
+        SurveyHelper.getRatingMinWidth() * 3 / TestHelper.MM_TO_PT, 297];
     let survey: SurveyPDF = new SurveyPDF(json, options);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
@@ -1027,8 +1027,8 @@ test('Check rating two elements with long min rate description', async () => {
         json.elements[0].minRateDescription + ' 1', 'bold').width +
         SurveyHelper.measureText().height) / TestHelper.MM_TO_PT;
     let options: IDocOptions = TestHelper.defaultOptions;
-    options.paperWidth = options.margins.left +
-        options.margins.right + longRateDesc;
+    options.format = [options.margins.left +
+        options.margins.right + longRateDesc, 297];
     let survey: SurveyPDF = new SurveyPDF(json, options);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
@@ -1140,8 +1140,8 @@ test('Check multiple text with colCount and long text', async () => {
     };
     let options: IDocOptions = TestHelper.defaultOptions;
     let signWidth: number = SurveyHelper.measureText(sign, 'bold').width / TestHelper.MM_TO_PT;
-    options.paperWidth = options.margins.right + options.margins.right +
-        2 * signWidth / SurveyHelper.MULTIPLETEXT_TEXT_PERS;
+    options.format = [options.margins.right + options.margins.right +
+        2 * signWidth / SurveyHelper.MULTIPLETEXT_TEXT_PERS, 297];
     let survey: SurveyPDF = new SurveyPDF(json, options);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
