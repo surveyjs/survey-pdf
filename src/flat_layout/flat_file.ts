@@ -1,4 +1,4 @@
-import { IQuestion, QuestionFileModel } from 'survey-core';
+import { IQuestion, QuestionFileModel, surveyLocalization } from 'survey-core';
 import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
 import { IPoint, DocController } from "../doc_controller";
@@ -36,8 +36,8 @@ export class FlatFile extends FlatQuestion {
     }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         if (this.question.previewValue.length === 0) {
-            return [await SurveyHelper.createTextFlat(point, this.question, this.controller,
-                'No file chosen', TextBrick)];
+            return [await SurveyHelper.createTextFlat(point, this.question,
+                this.controller, surveyLocalization.getString('noFileChosen'), TextBrick)];
         }
         let rowsFlats: CompositeBrick[] = [new CompositeBrick()];
         let imageWidth: number = SurveyHelper.getImagePickerAvailableWidth(
