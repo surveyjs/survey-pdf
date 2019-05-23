@@ -1,13 +1,12 @@
 (<any>window)['HTMLCanvasElement'].prototype.getContext = () => {
     return {};
 };
-import { SurveyHelper } from '../src/helper_survey';
-import { TestHelper } from '../src/helper_test';
 import { IPoint, IRect, IDocOptions, DocController } from '../src/doc_controller';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { TextBrick } from '../src/pdf_render/pdf_text';
+import { SurveyHelper } from '../src/helper_survey';
+import { TestHelper } from '../src/helper_test';
 
-SurveyHelper.setFontSize(TestHelper.defaultOptions.fontSize);
 test('Merge rects 2 count', () => {
     let rectKeys: string[] = Object.keys(TestHelper.defaultRect);
     let lessKeys = ['yTop', 'xLeft'];
@@ -64,9 +63,9 @@ test('Not Carry text', async () => {
         null, controller, text, TextBrick);
     let assumeRect: IRect = {
         xLeft: controller.leftTopPoint.xLeft,
-        xRight: controller.leftTopPoint.xLeft + SurveyHelper.measureText(text).width,
+        xRight: controller.leftTopPoint.xLeft + controller.measureText(text).width,
         yTop: controller.leftTopPoint.yTop,
-        yBot: controller.leftTopPoint.yTop + SurveyHelper.measureText().height
+        yBot: controller.leftTopPoint.yTop + controller.measureText().height
     };
     TestHelper.equalRect(expect, composite, assumeRect);
 });
@@ -74,16 +73,16 @@ test('Carry text', async () => {
     let text: string = '111 11111 1111';
     let options: IDocOptions = TestHelper.defaultOptions;
     options.format = [options.margins.left +
-        SurveyHelper.measureText('1').width * 5 / TestHelper.MM_TO_PT +
+        new DocController(options).measureText('1').width * 5 / DocController.MM_TO_PT +
         options.margins.right, 297];
     let controller: DocController = new DocController(options);
     let composite: IPdfBrick = await SurveyHelper.createTextFlat(controller.leftTopPoint,
         null, controller, text, TextBrick);
     let assumeRect: IRect = {
         xLeft: controller.leftTopPoint.xLeft,
-        xRight: controller.leftTopPoint.xLeft + SurveyHelper.measureText('11111').width,
+        xRight: controller.leftTopPoint.xLeft + controller.measureText('11111').width,
         yTop: controller.leftTopPoint.yTop,
-        yBot: controller.leftTopPoint.yTop + SurveyHelper.measureText('1').height * 3
+        yBot: controller.leftTopPoint.yTop + controller.measureText('1').height * 3
     };
     TestHelper.equalRect(expect, composite, assumeRect);
 });
@@ -91,16 +90,16 @@ test('Carry split long text', async () => {
     let text: string = '111111';
     let options: IDocOptions = TestHelper.defaultOptions;
     options.format = [options.margins.left +
-        SurveyHelper.measureText('1').width * 3 / TestHelper.MM_TO_PT +
+        new DocController(options).measureText('1').width * 3 / DocController.MM_TO_PT +
         options.margins.right, 297];
     let controller: DocController = new DocController(options);
     let composite: IPdfBrick = await SurveyHelper.createTextFlat(controller.leftTopPoint,
         null, controller, text, TextBrick);
     let assumeRect: IRect = {
         xLeft: controller.leftTopPoint.xLeft,
-        xRight: controller.leftTopPoint.xLeft + SurveyHelper.measureText('111').width,
+        xRight: controller.leftTopPoint.xLeft + controller.measureText('111').width,
         yTop: controller.leftTopPoint.yTop,
-        yBot: controller.leftTopPoint.yTop + SurveyHelper.measureText('1').height * 2
+        yBot: controller.leftTopPoint.yTop + controller.measureText('1').height * 2
     };
     TestHelper.equalRect(expect, composite, assumeRect);
 });

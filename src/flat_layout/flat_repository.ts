@@ -9,11 +9,11 @@ export type FlatConstructor = new (
 
 export class FlatRepository {
     private questions: { [index: string]: FlatConstructor } = {};
-    private static instance = new FlatRepository();
+    private static instance: FlatRepository = new FlatRepository();
     public static getInstance(): FlatRepository {
         return FlatRepository.instance;
     }
-    public register(modelType: string, rendererConstructor: FlatConstructor) {
+    public register(modelType: string, rendererConstructor: FlatConstructor): void {
         this.questions[modelType] = rendererConstructor;
     }
     public create(question: IQuestion, docController: DocController): IFlatQuestion {

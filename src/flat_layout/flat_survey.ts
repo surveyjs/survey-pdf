@@ -9,7 +9,7 @@ import { RowlineBrick } from '../pdf_render/pdf_rowline';
 import { SurveyHelper } from '../helper_survey';
 
 export class FlatSurvey {
-    static parseWidth(width: string): number {
+    private static parseWidth(width: string): number {
         return parseFloat(width) / 100.0;
     }
     public static async generateFlatsPanel(point: IPoint,
@@ -31,8 +31,8 @@ export class FlatSurvey {
             panelFlats.push(compositeFlat);
         }
         controller.pushMargins();
-        controller.margins.left += SurveyHelper.measureText(question.innerIndent).width;
-        panelContentPoint.xLeft += SurveyHelper.measureText(question.innerIndent).width;
+        controller.margins.left += controller.measureText(question.innerIndent).width;
+        panelContentPoint.xLeft += controller.measureText(question.innerIndent).width;
         panelFlats.push(...await this.generateFlatsPagePanel(panelContentPoint, question, controller));
         controller.popMargins();
         return panelFlats;
@@ -70,7 +70,7 @@ export class FlatSurvey {
             currPoint.xLeft = controller.margins.left;
             if (rowFlats.length !== 0) {
                 currPoint.yTop = SurveyHelper.mergeRects(...rowFlats).yBot;
-                currPoint.yTop += SurveyHelper.measureText().height;
+                currPoint.yTop += controller.measureText().height;
                 pagePanelFlats.push(...rowFlats);
                 pagePanelFlats.push(SurveyHelper.createRowlineFlat(currPoint, controller));
                 currPoint.yTop += SurveyHelper.EPSILON;
