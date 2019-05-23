@@ -77,15 +77,24 @@ async function calcTitleBottom(controller: DocController, titleQuestion: Questio
 }
 async function calcTitleLeft(controller: DocController, titleQuestion: Question,
     compositeFlat: IPdfBrick, textboxFlat: IPdfBrick, isDesc: boolean = false) {
+    let oldRightMargins = controller.margins.right;
+    controller.margins.right = controller.paperWidth - controller.margins.left -
+        SurveyHelper.getPageAvailableWidth(controller)
+        * SurveyHelper.MULTIPLETEXT_TEXT_PERS;
     let assumeTitle: IRect = await SurveyHelper.createTitleFlat(
         controller.leftTopPoint, titleQuestion, controller);
+    controller.margins.right = oldRightMargins;
     let assumeTextbox: IRect = SurveyHelper.createTextFieldRect(
         SurveyHelper.createPoint(assumeTitle, false, true), controller);
     if (isDesc) {
+        controller.margins.right = controller.paperWidth - controller.margins.left -
+            SurveyHelper.getPageAvailableWidth(controller)
+            * SurveyHelper.MULTIPLETEXT_TEXT_PERS;
         let assumeDesc: IRect = await SurveyHelper.createDescFlat(
             SurveyHelper.createPoint(assumeTitle), null,
             controller, SurveyHelper.getLocString(
                 titleQuestion.locDescription));
+        controller.margins.right = oldRightMargins;
         TestHelper.equalRect(expect, compositeFlat, SurveyHelper.mergeRects(assumeTitle, assumeDesc));
         assumeTextbox.xLeft = Math.max(assumeTextbox.xLeft, assumeDesc.xRight);
     }
@@ -124,7 +133,7 @@ test('Calc textbox boundaries title top', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
-    calcTitleTop(survey.controller.leftTopPoint, survey.controller,
+    await calcTitleTop(survey.controller.leftTopPoint, survey.controller,
         <Question>survey.getAllQuestions()[0], flats[0][0]);
 });
 test('Calc textbox boundaries title bottom', async () => {
@@ -142,7 +151,7 @@ test('Calc textbox boundaries title bottom', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(2);
-    calcTitleBottom(survey.controller, <Question>survey.getAllQuestions()[0],
+    await calcTitleBottom(survey.controller, <Question>survey.getAllQuestions()[0],
         flats[0][1], flats[0][0]);
 });
 test('Calc textbox boundaries title left', async () => {
@@ -150,8 +159,8 @@ test('Calc textbox boundaries title left', async () => {
         questions: [
             {
                 type: 'text',
-                name: 'textbox',
-                title: 'Title left',
+                name: 'textbox left bound',
+                title: 'Title',
                 titleLocation: 'left'
             }
         ]
@@ -160,7 +169,7 @@ test('Calc textbox boundaries title left', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
-    calcTitleLeft(survey.controller, <Question>survey.getAllQuestions()[0],
+    await calcTitleLeft(survey.controller, <Question>survey.getAllQuestions()[0],
         flats[0][0].unfold()[0], flats[0][0].unfold()[1]);
 });
 test('Calc textbox boundaries title hidden', async () => {
@@ -190,6 +199,11 @@ async function commentPointBeforeTitle(resultRects: IPdfBrick[][]) {
     return commentPoint;
 }
 async function commentPointAfterTitle(titleLocation: string, resultRects: IPdfBrick[][], controller: DocController, survey: SurveyPDF) {
+    if (titleLocation === 'left') {
+        controller.margins.right = controller.paperWidth - controller.margins.left -
+            SurveyHelper.getPageAvailableWidth(controller)
+            * SurveyHelper.MULTIPLETEXT_TEXT_PERS;
+    }
     let commentAssumePoint: IPoint = await SurveyHelper.createPoint(await SurveyHelper.createTitleFlat(
         TestHelper.defaultPoint, <Question>survey.getAllQuestions()[0], controller),
         titleLocation === 'top', titleLocation !== 'top');
@@ -297,7 +311,7 @@ test('Calc boundaries with space between questions', async () => {
         survey.controller, <Question>survey.getAllQuestions()[0], flats[0][0]);
     title2point.yTop += SurveyHelper.measureText().height;
     expect(flats[0][1] instanceof RowlineBrick).toBe(true);
-    calcTitleTop(title2point, survey.controller,
+    await calcTitleTop(title2point, survey.controller,
         <Question>survey.getAllQuestions()[1], flats[0][2]);
 });
 test('Calc textbox boundaries title without number', async () => {
@@ -313,7 +327,7 @@ test('Calc textbox boundaries title without number', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
-    calcTitleTop(survey.controller.leftTopPoint, survey.controller,
+    await calcTitleTop(survey.controller.leftTopPoint, survey.controller,
         <Question>survey.getAllQuestions()[0], flats[0][0]);
 });
 test('Calc textbox boundaries required', async () => {
@@ -329,7 +343,7 @@ test('Calc textbox boundaries required', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
-    calcTitleTop(survey.controller.leftTopPoint, survey.controller,
+    await calcTitleTop(survey.controller.leftTopPoint, survey.controller,
         <Question>survey.getAllQuestions()[0], flats[0][0]);
 });
 test('Check that checkbox has square boundaries', async () => {
@@ -403,7 +417,7 @@ test('Calc boundaries title top longer than description', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
-    calcTitleTop(survey.controller.leftTopPoint, survey.controller,
+    await calcTitleTop(survey.controller.leftTopPoint, survey.controller,
         <Question>survey.getAllQuestions()[0], flats[0][0], true);
 });
 test('Calc boundaries title top shorter than description', async () => {
@@ -421,7 +435,7 @@ test('Calc boundaries title top shorter than description', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
-    calcTitleTop(survey.controller.leftTopPoint, survey.controller,
+    await calcTitleTop(survey.controller.leftTopPoint, survey.controller,
         <Question>survey.getAllQuestions()[0], flats[0][0], true);
 });
 test('Calc boundaries title bottom longer than description', async () => {
@@ -440,7 +454,7 @@ test('Calc boundaries title bottom longer than description', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(2);
-    calcTitleBottom(survey.controller, <Question>survey.getAllQuestions()[0],
+    await calcTitleBottom(survey.controller, <Question>survey.getAllQuestions()[0],
         flats[0][1], flats[0][0], true);
 });
 test('Calc boundaries title bottom shorter than description', async () => {
@@ -459,7 +473,7 @@ test('Calc boundaries title bottom shorter than description', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(2);
-    calcTitleBottom(survey.controller, <Question>survey.getAllQuestions()[0],
+    await calcTitleBottom(survey.controller, <Question>survey.getAllQuestions()[0],
         flats[0][1], flats[0][0], true);
 });
 test('Calc boundaries title left longer than description', async () => {
@@ -468,9 +482,9 @@ test('Calc boundaries title left longer than description', async () => {
             {
                 type: 'text',
                 name: 'box',
-                title: 'I only wish that wisdom',
+                title: 'Pain',
                 titleLocation: 'left',
-                description: 'Oh dear Pan'
+                description: 'pan'
             }
         ]
     };
@@ -478,7 +492,7 @@ test('Calc boundaries title left longer than description', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
-    calcTitleLeft(survey.controller, <Question>survey.getAllQuestions()[0],
+    await calcTitleLeft(survey.controller, <Question>survey.getAllQuestions()[0],
         new CompositeBrick(flats[0][0].unfold()[0], flats[0][0].unfold()[1]),
         flats[0][0].unfold()[2], true);
 });
@@ -488,9 +502,9 @@ test('Calc boundaries title left shorter than description', async () => {
             {
                 type: 'text',
                 name: 'box',
-                title: 'Diamonds',
+                title: 'A',
                 titleLocation: 'left',
-                description: 'Takes One To Know One'
+                description: 'Major Pain'
             }
         ]
     };
@@ -498,7 +512,7 @@ test('Calc boundaries title left shorter than description', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
-    calcTitleLeft(survey.controller, <Question>survey.getAllQuestions()[0],
+    await calcTitleLeft(survey.controller, <Question>survey.getAllQuestions()[0],
         new CompositeBrick(flats[0][0].unfold()[0], flats[0][0].unfold()[1]),
         flats[0][0].unfold()[2], true);
 });
@@ -543,7 +557,7 @@ test('Calc boundaries with indent', async () => {
         expect(flats[0].length).toBe(1);
         let leftTopPoint: IPoint = survey.controller.leftTopPoint;
         leftTopPoint.xLeft += SurveyHelper.measureText(i).width;
-        calcIndent(expect, leftTopPoint, survey.controller,
+        await calcIndent(expect, leftTopPoint, survey.controller,
             flats[0][0], json.questions[0].choices[0],
             <Question>survey.getAllQuestions()[0]);
     }
@@ -689,7 +703,7 @@ test('Check panel wihtout title', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
-    calcTitleTop(survey.controller.leftTopPoint, survey.controller,
+    await calcTitleTop(survey.controller.leftTopPoint, survey.controller,
         <Question>survey.getAllQuestions()[0], flats[0][0]);
 });
 test('Check panel with title', async () => {
@@ -715,7 +729,7 @@ test('Check panel with title', async () => {
     let panelTitleFlat: IPdfBrick = await SurveyHelper.createTitlePanelFlat(
         survey.controller.leftTopPoint, null, survey.controller, json.elements[0].title);
     TestHelper.equalRect(expect, flats[0][0], panelTitleFlat);
-    calcTitleTop(SurveyHelper.createPoint(panelTitleFlat), survey.controller,
+    await calcTitleTop(SurveyHelper.createPoint(panelTitleFlat), survey.controller,
         <Question>survey.getAllQuestions()[0], flats[0][1]);
 });
 test('Check panel with title and description', async () => {
@@ -744,7 +758,7 @@ test('Check panel with title and description', async () => {
     let panelDescFlat: IPdfBrick = await SurveyHelper.createDescFlat(
         SurveyHelper.createPoint(panelTitleFlat), null, survey.controller, json.elements[0].description);
     TestHelper.equalRect(expect, flats[0][0], SurveyHelper.mergeRects(panelTitleFlat, panelDescFlat));
-    calcTitleTop(SurveyHelper.createPoint(SurveyHelper.mergeRects(panelTitleFlat, panelDescFlat)), survey.controller,
+    await calcTitleTop(SurveyHelper.createPoint(SurveyHelper.mergeRects(panelTitleFlat, panelDescFlat)), survey.controller,
         <Question>survey.getAllQuestions()[0], flats[0][1]);
 });
 test('Check panel with inner indent', async () => {
@@ -769,7 +783,7 @@ test('Check panel with inner indent', async () => {
     expect(flats[0].length).toBe(1);
     let panelContentPoint: IPoint = survey.controller.leftTopPoint;
     panelContentPoint.xLeft += SurveyHelper.measureText(json.elements[0].innerIndent).width;
-    calcTitleTop(panelContentPoint, survey.controller,
+    await calcTitleTop(panelContentPoint, survey.controller,
         <Question>survey.getAllQuestions()[0], flats[0][0]);
 });
 test('Check question title location in panel', async () => {
@@ -856,7 +870,7 @@ test('Check dropdown', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
-    calcTitleTop(survey.controller.leftTopPoint, survey.controller,
+    await calcTitleTop(survey.controller.leftTopPoint, survey.controller,
         <Question>survey.getAllQuestions()[0], flats[0][0]);
 });
 test('Check dropdown with other', async () => {
