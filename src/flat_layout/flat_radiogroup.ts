@@ -8,11 +8,11 @@ import { FlatSelectBase } from './flat_selectbase';
 export class FlatRadiogroup extends FlatSelectBase {
     protected question: QuestionRadiogroupModel;
     private radioGroupWrap: RadioGroupWrap;
-    constructor(question: IQuestion, protected controller: DocController) {
+    public constructor(question: IQuestion, protected controller: DocController) {
         super(question, controller);
         this.question = <QuestionRadiogroupModel>question;
     }
-    createItemBrick(rect: IRect, itemValue: ItemValue,
+    public createItemBrick(rect: IRect, itemValue: ItemValue,
         index: number, key?: string, checked?: boolean): IPdfBrick {
         if (index === 0) {
             this.radioGroupWrap = new RadioGroupWrap(this.question.id + ((typeof key === 'undefined') ? '' : key),

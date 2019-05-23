@@ -7,7 +7,7 @@ export class CompositeBrick implements IPdfBrick {
     private _xRight: number;
     private _yTop: number;
     private _yBot: number;
-    constructor(...bricks: IPdfBrick[]) {
+    public constructor(...bricks: IPdfBrick[]) {
         this._xLeft = 0.0;
         this._xRight = 0.0;
         this._yTop = 0.0;
@@ -43,13 +43,12 @@ export class CompositeBrick implements IPdfBrick {
         this.shift(0.0, 0.0, 0.0, yBot - this.yBot);
         this._yBot = yBot;
     }
-
-    async render(): Promise<void> {
+    public async render(): Promise<void> {
         for (let i: number = 0; i < this.bricks.length; i++) {
             await this.bricks[i].render();
         }
     }
-    addBrick(...bricks: IPdfBrick[]) {
+    public addBrick(...bricks: IPdfBrick[]) {
         if (bricks.length != 0) {
             this.bricks.push(...bricks);
             let mergeRect = SurveyHelper.mergeRects(...this.bricks);
@@ -59,15 +58,15 @@ export class CompositeBrick implements IPdfBrick {
             this._yBot = mergeRect.yBot;
         }
     }
-    unfold(): IPdfBrick[] {
-        let unfoldBricks: IPdfBrick[] = new Array<IPdfBrick>();
+    public unfold(): IPdfBrick[] {
+        let unfoldBricks: IPdfBrick[] = [];
         this.bricks.forEach((brick: IPdfBrick) => {
             unfoldBricks.push(...brick.unfold());
         });
         return unfoldBricks;
     }
-    unfoldOnce(): IPdfBrick[] {
-        let unfoldBricks: IPdfBrick[] = new Array<IPdfBrick>();
+    public unfoldOnce(): IPdfBrick[] {
+        let unfoldBricks: IPdfBrick[] = [];
         this.bricks.forEach((brick: IPdfBrick) => {
             unfoldBricks.push(brick);
         });

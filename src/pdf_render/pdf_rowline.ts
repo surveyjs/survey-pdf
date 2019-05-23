@@ -6,14 +6,14 @@ export class RowlineBrick implements IPdfBrick {
     xRight: number;
     yTop: number;
     yBot: number;
-    constructor(protected controller: DocController,
+    public constructor(protected controller: DocController,
         rect: IRect, protected color: string) {
         this.xLeft = rect.xLeft;
         this.xRight = rect.xRight;
         this.yTop = rect.yTop;
         this.yBot = rect.yBot;
     }
-    async render(): Promise<void> {
+    public async render(): Promise<void> {
         if (this.color !== null) {
             let oldDrawColor: string = this.controller.doc.getDrawColor();
             this.controller.doc.setDrawColor('#0000EE');
@@ -21,7 +21,7 @@ export class RowlineBrick implements IPdfBrick {
             this.controller.doc.setDrawColor(oldDrawColor);
         }
     }
-    unfold(): IPdfBrick[] {
+    public unfold(): IPdfBrick[] {
         return [this];
     }
 }

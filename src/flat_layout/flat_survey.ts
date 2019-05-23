@@ -14,7 +14,7 @@ export class FlatSurvey {
     }
     public static async generateFlatsPanel(point: IPoint,
         question: PanelModel, controller: DocController): Promise<IPdfBrick[]> {
-        let panelFlats: IPdfBrick[] = new Array<IPdfBrick>();
+        let panelFlats: IPdfBrick[] = [];
         let panelContentPoint: IPoint = { xLeft: point.xLeft, yTop: point.yTop };
         if (!!question.title) {
             let panelTitleFlat: IPdfBrick = await SurveyHelper.createTitlePanelFlat(
@@ -30,26 +30,25 @@ export class FlatSurvey {
             }
             panelFlats.push(compositeFlat);
         }
-        let oldPanelMarginLeft: number = controller.margins.left;
+        controller.pushMargins();
         controller.margins.left += SurveyHelper.measureText(question.innerIndent).width;
         panelContentPoint.xLeft += SurveyHelper.measureText(question.innerIndent).width;
         panelFlats.push(...await this.generateFlatsPagePanel(panelContentPoint, question, controller));
-        controller.margins.left = oldPanelMarginLeft;
+        controller.popMargins();
         return panelFlats;
     }
     private static async generateFlatsPagePanel(point: IPoint,
         pagePanel: PanelModelBase, controller: DocController): Promise<IPdfBrick[]> {
         if (!pagePanel.isVisible) return;
         pagePanel.onFirstRendering();
-        let pagePanelFlats: IPdfBrick[] = new Array<IPdfBrick>();
+        let pagePanelFlats: IPdfBrick[] = [];
         let currPoint: IPoint = SurveyHelper.clone(point);
         for (let row of pagePanel.rows) {
             if (!row.visible) continue;
             let width: number = SurveyHelper.getPageAvailableWidth(controller);
-            let oldMarginLeft: number = controller.margins.left;
-            let oldMarginRight: number = controller.margins.right;
+            controller.pushMargins();
             let currMarginLeft: number = controller.margins.left;
-            let rowFlats: IPdfBrick[] = new Array();
+            let rowFlats: IPdfBrick[] = [];
             for (let question of row.elements) {
                 let persWidth: number = width * FlatSurvey.parseWidth(question.renderWidth);
                 controller.margins.left = currMarginLeft;
@@ -67,8 +66,7 @@ export class FlatSurvey {
                 }
 
             }
-            controller.margins.left = oldMarginLeft;
-            controller.margins.right = oldMarginRight;
+            controller.popMargins();
             currPoint.xLeft = controller.margins.left;
             if (rowFlats.length !== 0) {
                 currPoint.yTop = SurveyHelper.mergeRects(...rowFlats).yBot;
@@ -85,10 +83,10 @@ export class FlatSurvey {
             flats.pop();
         }
     }
-    static async generateFlats(survey: SurveyPDF): Promise<IPdfBrick[][]> {
-        let flats: IPdfBrick[][] = new Array<IPdfBrick[]>();
+    public static async generateFlats(survey: SurveyPDF): Promise<IPdfBrick[][]> {
+        let flats: IPdfBrick[][] = [];
         for (let page of survey.pages) {
-            let pageFlats: IPdfBrick[] = new Array<IPdfBrick>();
+            let pageFlats: IPdfBrick[] = [];
             pageFlats.push(...await this.generateFlatsPagePanel(
                 survey.controller.leftTopPoint, page, survey.controller));
             flats.push(pageFlats);

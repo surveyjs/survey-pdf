@@ -4,7 +4,7 @@ import { TextFieldBrick } from './pdf_textfield';
 import { SurveyHelper } from '../helper_survey';
 
 export class MultipleTextBoxBrick extends TextFieldBrick {
-    constructor(question: IQuestion, controller: DocController, rect: IRect,
+    public constructor(question: IQuestion, controller: DocController, rect: IRect,
         row_index: number, col_index: number, item: MultipleTextItemModel) {
         super(question, controller, rect, true,
             (<QuestionMultipleTextModel>question).id + 'row' + row_index + 'col' + col_index,

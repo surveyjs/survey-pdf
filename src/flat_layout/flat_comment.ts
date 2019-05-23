@@ -8,11 +8,11 @@ import { SurveyHelper } from '../helper_survey';
 
 export class FlatComment extends FlatQuestion {
     protected question: QuestionCommentModel;
-    constructor(question: IQuestion, protected controller: DocController) {
+    public constructor(question: IQuestion, protected controller: DocController) {
         super(question, controller);
         this.question = <QuestionCommentModel>question;
     }
-    async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
+    public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         let rect: IRect = SurveyHelper.createTextFieldRect(point, this.controller, this.question.rows);
         return [new CommentBrick(this.question, this.controller, rect, true)];
     }

@@ -8,12 +8,12 @@ import { SurveyHelper } from '../helper_survey';
 
 export class FlatPanelDynamic extends FlatQuestion {
     protected question: QuestionPanelDynamicModel;
-    constructor(question: IQuestion, protected controller: DocController) {
+    public constructor(question: IQuestion, protected controller: DocController) {
         super(question, controller);
         this.question = <QuestionPanelDynamicModel>question;
     }
-    async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
-        let flats: IPdfBrick[] = new Array<IPdfBrick>();
+    public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
+        let flats: IPdfBrick[] = [];
         let currPoint: IPoint = SurveyHelper.clone(point);
         for (let panel of this.question.panels) {
             let panelFlats: IPdfBrick[] = await FlatSurvey.generateFlatsPanel(

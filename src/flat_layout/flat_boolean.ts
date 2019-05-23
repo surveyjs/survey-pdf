@@ -14,7 +14,7 @@ export class FlatBoolean extends FlatQuestion {
         super(question, controller);
         this.question = <QuestionBooleanModel>question;
     }
-    async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
+    public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         let height: number = SurveyHelper.measureText().height;
         let composite: CompositeBrick = new CompositeBrick(
             new BooleanItemBrick(this.question, this.controller,

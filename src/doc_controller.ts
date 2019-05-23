@@ -7,9 +7,11 @@ export interface IRect extends IPoint {
     xRight: number;
     yBot: number;
 }
-export interface IMargin {
+interface IMarginLR {
     left: number;
     right: number;
+}
+export interface IMargin extends IMarginLR {
     top: number;
     bot: number;
 }
@@ -27,7 +29,7 @@ export class DocOptions implements IDocOptions {
     protected _paperWidth: number;
     protected _paperHeight: number;
     protected _margins: IMargin;
-    constructor(options: IDocOptions) {
+    public constructor(options: IDocOptions) {
         this._fontSize = options.fontSize;
         this._paperWidth =
             typeof options.paperWidth === "undefined" ? 210 : options.paperWidth;
@@ -56,23 +58,13 @@ export class DocOptions implements IDocOptions {
     get margins(): IMargin {
         return this._margins;
     }
-    isNewPageQuestion(boundaries: IRect[]): boolean {
-        let height = 0;
-        boundaries.forEach((rect: IRect) => {
-            height += rect.yBot - rect.yTop;
-        });
-        return height <= this._paperHeight - this.margins.top - this.margins.bot &&
-            (boundaries.length > 1 || this.isNewPageElement(boundaries[0].yBot));
-    }
-    isNewPageElement(yBot: number): boolean {
-        return yBot > this._paperHeight - this.margins.bot;
-    }
 }
 
 export class DocController extends DocOptions {
     private _doc: any;
     private _fontStyle: string;
-    constructor(options: IDocOptions) {
+    private marginsStack: IMarginLR[];
+    public constructor(options: IDocOptions) {
         super(options);
         let logicWidth: number =
             this._paperWidth * DocOptions.PAPER_TO_LOGIC_SCALE_MAGIC;
@@ -82,6 +74,7 @@ export class DocController extends DocOptions {
         this._paperWidth = this._paperWidth * DocOptions.MM_TO_PT;
         this._paperHeight = this._paperHeight * DocOptions.MM_TO_PT;
         this._doc.setFontSize(this._fontSize);
+        this.marginsStack = [];
     }
     get doc(): any {
         return this._doc;
@@ -100,7 +93,17 @@ export class DocController extends DocOptions {
         this._fontStyle = fontStyle;
         this._doc.setFontStyle(fontStyle);
     }
-    public addPage() {
+    public pushMargins(left?: number, right?: number): void {
+        this.marginsStack.push({ left: this.margins.left, right: this.margins.right });
+        if (typeof left !== 'undefined') this.margins.left = left;
+        if (typeof right !== 'undefined') this.margins.right = right;
+    }
+    public popMargins(): void {
+        let margins: IMarginLR = this.marginsStack.pop();
+        this.margins.left = margins.left;
+        this.margins.right = margins.right;
+    }
+    public addPage(): void {
         this.doc.addPage([
             this._paperWidth * DocOptions.PAPER_TO_LOGIC_SCALE_MAGIC / DocOptions.MM_TO_PT,
             this._paperHeight * DocOptions.PAPER_TO_LOGIC_SCALE_MAGIC / DocOptions.MM_TO_PT

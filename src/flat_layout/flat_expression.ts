@@ -8,11 +8,11 @@ import { SurveyHelper } from '../helper_survey';
 
 export class FlatExpression extends FlatQuestion {
     protected question: QuestionExpressionModel;
-    constructor(question: IQuestion, controller: DocController) {
+    public constructor(question: IQuestion, controller: DocController) {
         super(question, controller);
         this.question = <QuestionExpressionModel>question;
     }
-    async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
+    public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         let rect: IRect = SurveyHelper.createTextFieldRect(point, this.controller);
         return [await SurveyHelper.createTextFlat(point, this.question, this.controller,
             this.question.displayValue, TextBrick)];
