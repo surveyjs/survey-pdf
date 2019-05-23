@@ -63,7 +63,7 @@ export class FlatFile extends FlatQuestion {
                 this.controller.popMargins();
             }
             else {
-                if (availableWidth < SurveyHelper.measureText().width) {
+                if (availableWidth < this.controller.measureText().width) {
                     currPoint.xLeft = point.xLeft;
                     currPoint.yTop = yBot;
                     this.addLine(rowsFlats, currPoint, i);
@@ -73,7 +73,7 @@ export class FlatFile extends FlatQuestion {
                 currPoint.xLeft += itemFlat.xRight - itemFlat.xLeft;
                 yBot = Math.max(yBot, itemFlat.yBot);
             }
-            currPoint.xLeft += SurveyHelper.measureText().width;
+            currPoint.xLeft += this.controller.measureText().width;
         };
         return rowsFlats;
     }

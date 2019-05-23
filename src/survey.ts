@@ -10,7 +10,6 @@ export class SurveyPDF extends SurveyModel {
     public constructor(jsonObject: any, options: IDocOptions) {
         super(jsonObject);
         this.controller = new DocController(options);
-        SurveyHelper.setFontSize(options.fontSize);
     }
     public async render(): Promise<void> {
         let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(this);

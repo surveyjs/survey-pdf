@@ -16,23 +16,23 @@ export class FlatRating extends FlatRadiogroup {
         let itemText: LocalizableString = SurveyHelper.getRatingItemText(
             this.questionRating, index, item.locText);
         this.controller.pushMargins();
-        this.controller.margins.right += SurveyHelper.measureText().height;
+        this.controller.margins.right += this.controller.measureText().height;
         let compositeFlat: CompositeBrick = new CompositeBrick(await SurveyHelper.
             createBoldTextFlat(point, this.questionRating, this.controller, itemText));
         this.controller.popMargins();
         let textWidth: number = compositeFlat.xRight - compositeFlat.xLeft;
-        if (textWidth < SurveyHelper.getRatingMinWidth()) {
-            compositeFlat.xLeft += (SurveyHelper.getRatingMinWidth() - textWidth) / 2.0;
-            textWidth = SurveyHelper.getRatingMinWidth();
+        if (textWidth < SurveyHelper.getRatingMinWidth(this.controller)) {
+            compositeFlat.xLeft += (SurveyHelper.getRatingMinWidth(this.controller) - textWidth) / 2.0;
+            textWidth = SurveyHelper.getRatingMinWidth(this.controller);
         }
         else {
-            compositeFlat.xLeft += SurveyHelper.measureText().height / 2.0;
-            textWidth += SurveyHelper.measureText().height;
+            compositeFlat.xLeft += this.controller.measureText().height / 2.0;
+            textWidth += this.controller.measureText().height;
         }
         let radioPoint: IPoint = SurveyHelper.createPoint(compositeFlat);
         radioPoint.xLeft = point.xLeft;
         compositeFlat.addBrick(this.createItemBrick(SurveyHelper.createRect(
-            radioPoint, textWidth, SurveyHelper.measureText().height), item, index));
+            radioPoint, textWidth, this.controller.measureText().height), item, index));
         return compositeFlat;
     }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
@@ -44,7 +44,7 @@ export class FlatRating extends FlatRadiogroup {
             rowsFlats[rowsFlats.length - 1].addBrick(itemFlat);
             let leftWidth: number = this.controller.paperWidth -
                 this.controller.margins.right - itemFlat.xRight;
-            if (SurveyHelper.getRatingMinWidth() <= leftWidth + SurveyHelper.EPSILON) {
+            if (SurveyHelper.getRatingMinWidth(this.controller) <= leftWidth + SurveyHelper.EPSILON) {
                 currPoint.xLeft = itemFlat.xRight;
             }
             else {

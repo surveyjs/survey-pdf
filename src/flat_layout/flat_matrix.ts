@@ -43,7 +43,7 @@ export class FlatMatrix extends FlatQuestion {
     }
     async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         let cellWidth = SurveyHelper.getColumnWidth(this.question, this.controller);
-        let isVertical = cellWidth < SurveyHelper.measureText(SurveyHelper.MATRIX_COLUMN_WIDTH).width;
+        let isVertical = cellWidth < this.controller.measureText(SurveyHelper.MATRIX_COLUMN_WIDTH).width;
         let currPoint: IPoint = SurveyHelper.clone(point);
         let cells: IPdfBrick[] = [];
         if (!isVertical && this.question.showHeader) {
@@ -90,7 +90,7 @@ export class FlatMatrixRow extends FlatRadiogroup {
                     this.questionMatrix.getCellDisplayLocText(this.row.name, column), TextBrick));
             }
             else {
-                let height: number = SurveyHelper.measureText().height;
+                let height: number = this.controller.measureText().height;
                 let itemRect: IRect = SurveyHelper.createRect(currPoint, height, height);
                 cells.push(this.createItemBrick(itemRect, column, i, this.key, checked));
             }
@@ -120,7 +120,7 @@ export class FlatMatrixRow extends FlatRadiogroup {
             }
             else {
                 this.controller.pushMargins();
-                let height: number = SurveyHelper.measureText().height;
+                let height: number = this.controller.measureText().height;
                 let itemRect: IRect = SurveyHelper.createRect(currPoint, height, height);
                 let radioItem: IPdfBrick = this.createItemBrick(itemRect, column, i, this.key, checked);
                 currPoint = SurveyHelper.createPoint(radioItem, false, true);

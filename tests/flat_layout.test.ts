@@ -34,7 +34,6 @@ let __dummy_bl = new FlatBoolean(null, null);
 let __dummy_ex = new FlatExpression(null, null);
 let __dummy_fl = new FlatFile(null, null);
 let __dummy_mt = new FlatMultipleText(null, null);
-SurveyHelper.setFontSize(TestHelper.defaultOptions.fontSize);
 
 async function calcTitleTop(leftTopPoint: IPoint, controller: DocController,
     titleQuestion: Question, compositeFlat: IPdfBrick, isDesc: boolean = false): Promise<IPoint> {
@@ -102,7 +101,7 @@ export async function calcIndent(expect: any, leftTopPoint: IPoint, controller: 
     }
     let assumeCheckbox: IRect = SurveyHelper.createRect(
         SurveyHelper.createPoint(assumeTitle),
-        SurveyHelper.measureText().height, SurveyHelper.measureText().height);
+        controller.measureText().height, controller.measureText().height);
     let assumeChecktext: IRect = await SurveyHelper.createTextFlat(
         SurveyHelper.createPoint(assumeCheckbox, false, true),
         null, controller, checktext, TextBrick);
@@ -295,7 +294,7 @@ test('Calc boundaries with space between questions', async () => {
     expect(flats[0].length).toBe(3);
     let title2point: IPoint = await calcTitleTop(survey.controller.leftTopPoint,
         survey.controller, <Question>survey.getAllQuestions()[0], flats[0][0]);
-    title2point.yTop += SurveyHelper.measureText().height;
+    title2point.yTop += survey.controller.measureText().height;
     expect(flats[0][1] instanceof RowlineBrick).toBe(true);
     calcTitleTop(title2point, survey.controller,
         <Question>survey.getAllQuestions()[1], flats[0][2]);
@@ -350,7 +349,7 @@ test('Check that checkbox has square boundaries', async () => {
     await survey.render();
     let assumeCheckbox: IRect = SurveyHelper.createRect(
         TestHelper.defaultPoint,
-        SurveyHelper.measureText().height, SurveyHelper.measureText().height);
+        survey.controller.measureText().height, survey.controller.measureText().height);
     let acroFormFields = survey.controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields;
     let internalRect = acroFormFields[0].Rect;
     TestHelper.equalRect(expect, SurveyHelper.createRect(
@@ -375,7 +374,7 @@ test('Check other checkbox place ', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     let receivedRects: IRect[] = flats[0][0].unfold();
     let currPoint = TestHelper.defaultPoint;
-    let itemWidth = SurveyHelper.measureText().width;
+    let itemWidth = survey.controller.measureText().width;
     let assumeRects: IRect[] = [];
     let itemRect = SurveyHelper.createRect(currPoint, itemWidth, itemWidth);
     assumeRects.push(itemRect);
@@ -542,7 +541,7 @@ test('Calc boundaries with indent', async () => {
         expect(flats.length).toBe(1);
         expect(flats[0].length).toBe(1);
         let leftTopPoint: IPoint = survey.controller.leftTopPoint;
-        leftTopPoint.xLeft += SurveyHelper.measureText(i).width;
+        leftTopPoint.xLeft += survey.controller.measureText(i).width;
         calcIndent(expect, leftTopPoint, survey.controller,
             flats[0][0], json.questions[0].choices[0],
             <Question>survey.getAllQuestions()[0]);
@@ -768,7 +767,7 @@ test('Check panel with inner indent', async () => {
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
     let panelContentPoint: IPoint = survey.controller.leftTopPoint;
-    panelContentPoint.xLeft += SurveyHelper.measureText(json.elements[0].innerIndent).width;
+    panelContentPoint.xLeft += survey.controller.measureText(json.elements[0].innerIndent).width;
     calcTitleTop(panelContentPoint, survey.controller,
         <Question>survey.getAllQuestions()[0], flats[0][0]);
 });
@@ -811,10 +810,10 @@ test('Check boolean without title', async () => {
     expect(flats[0].length).toBe(1);
     TestHelper.equalRect(expect, flats[0][0], {
         xLeft: survey.controller.leftTopPoint.xLeft,
-        xRight: survey.controller.leftTopPoint.xLeft + SurveyHelper.measureText().height +
-            SurveyHelper.measureText(json.elements[0].title).width,
+        xRight: survey.controller.leftTopPoint.xLeft + survey.controller.measureText().height +
+            survey.controller.measureText(json.elements[0].title).width,
         yTop: survey.controller.leftTopPoint.yTop,
-        yBot: survey.controller.leftTopPoint.yTop + SurveyHelper.measureText().height
+        yBot: survey.controller.leftTopPoint.yTop + survey.controller.measureText().height
     })
 });
 test('Check boolean with title', async () => {
@@ -837,7 +836,7 @@ test('Check boolean with title', async () => {
         xRight: (await SurveyHelper.createTitleFlat(survey.controller.leftTopPoint,
             <Question>survey.getAllQuestions()[0], survey.controller)).xRight,
         yTop: survey.controller.leftTopPoint.yTop,
-        yBot: survey.controller.leftTopPoint.yTop + SurveyHelper.measureText().height * 2
+        yBot: survey.controller.leftTopPoint.yTop + survey.controller.measureText().height * 2
     })
 });
 test('Check dropdown', async () => {
@@ -900,10 +899,10 @@ test('Check rating two elements', async () => {
     let assumeRating: IRect = {
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.leftTopPoint.xLeft +
-            SurveyHelper.getRatingMinWidth() * 2,
+            SurveyHelper.getRatingMinWidth(survey.controller) * 2,
         yTop: survey.controller.leftTopPoint.yTop,
         yBot: survey.controller.leftTopPoint.yTop +
-            SurveyHelper.measureText().height * SurveyHelper.RATING_MIN_HEIGHT
+            survey.controller.measureText().height * SurveyHelper.RATING_MIN_HEIGHT
     };
     TestHelper.equalRect(expect, flats[0][0], assumeRating);
 });
@@ -927,11 +926,12 @@ test('Check rating two elements with min rate description', async () => {
     let assumeRating: IRect = {
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.leftTopPoint.xLeft +
-            SurveyHelper.getRatingMinWidth() + SurveyHelper.measureText(SurveyHelper.getRatingItemText(question, 0, question.visibleRateValues[0].locText),
-                'bold').width + SurveyHelper.measureText().height,
+            SurveyHelper.getRatingMinWidth(survey.controller) + survey.controller.measureText(
+                SurveyHelper.getRatingItemText(question, 0, question.visibleRateValues[0].locText),
+                'bold').width + survey.controller.measureText().height,
         yTop: survey.controller.leftTopPoint.yTop,
         yBot: survey.controller.leftTopPoint.yTop +
-            SurveyHelper.measureText().height * SurveyHelper.RATING_MIN_HEIGHT
+            survey.controller.measureText().height * SurveyHelper.RATING_MIN_HEIGHT
     };
     TestHelper.equalRect(expect, flats[0][0], assumeRating);
 });
@@ -952,21 +952,16 @@ test('Check rating two elements with max rate description', async () => {
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
     let question: QuestionRatingModel = <QuestionRatingModel>survey.getAllQuestions()[0];
-
-    let a = SurveyHelper.getRatingMinWidth();
-    let b = SurveyHelper.measureText(
-        SurveyHelper.getRatingItemText(question, 1, question.visibleRateValues[0].locText), 'bold').width;
-
     let assumeRating: IRect = {
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.leftTopPoint.xLeft +
-            SurveyHelper.getRatingMinWidth() + SurveyHelper.measureText(
+            SurveyHelper.getRatingMinWidth(survey.controller) + survey.controller.measureText(
                 SurveyHelper.getRatingItemText(question, 1,
                     question.visibleRateValues[0].locText), 'bold').width +
-            SurveyHelper.measureText().height,
+            survey.controller.measureText().height,
         yTop: survey.controller.leftTopPoint.yTop,
         yBot: survey.controller.leftTopPoint.yTop +
-            SurveyHelper.measureText().height * SurveyHelper.RATING_MIN_HEIGHT
+            survey.controller.measureText().height * SurveyHelper.RATING_MIN_HEIGHT
     };
     TestHelper.equalRect(expect, flats[0][0], assumeRating);
 });
@@ -983,7 +978,7 @@ test('Check rating many elements', async () => {
     };
     let options: IDocOptions = TestHelper.defaultOptions;
     options.paperWidth = options.margins.left + options.margins.right +
-        SurveyHelper.getRatingMinWidth() * 3 / TestHelper.MM_TO_PT;
+        SurveyHelper.getRatingMinWidth(new SurveyPDF(json, options).controller) * 3 / DocController.MM_TO_PT;
     let survey: SurveyPDF = new SurveyPDF(json, options);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
@@ -993,7 +988,7 @@ test('Check rating many elements', async () => {
         xRight: survey.controller.paperWidth - survey.controller.margins.right,
         yTop: survey.controller.leftTopPoint.yTop,
         yBot: survey.controller.leftTopPoint.yTop +
-            SurveyHelper.measureText().height * SurveyHelper.RATING_MIN_HEIGHT * 2
+            survey.controller.measureText().height * SurveyHelper.RATING_MIN_HEIGHT * 2
     };
     TestHelper.equalRect(expect, SurveyHelper.mergeRects(flats[0][0], flats[0][1]), assumeRating);
 });
@@ -1009,9 +1004,9 @@ test('Check rating two elements with long min rate description', async () => {
             }
         ]
     };
-    let longRateDesc: number = (SurveyHelper.measureText(
+    let longRateDesc: number = (new DocController(TestHelper.defaultOptions).measureText(
         json.elements[0].minRateDescription + ' 1', 'bold').width +
-        SurveyHelper.measureText().height) / TestHelper.MM_TO_PT;
+        new DocController(TestHelper.defaultOptions).measureText().height) / DocController.MM_TO_PT;
     let options: IDocOptions = TestHelper.defaultOptions;
     options.paperWidth = options.margins.left +
         options.margins.right + longRateDesc;
@@ -1024,7 +1019,7 @@ test('Check rating two elements with long min rate description', async () => {
         xRight: survey.controller.paperWidth - survey.controller.margins.right,
         yTop: survey.controller.leftTopPoint.yTop,
         yBot: survey.controller.leftTopPoint.yTop +
-            SurveyHelper.measureText().height * SurveyHelper.RATING_MIN_HEIGHT * 2
+            survey.controller.measureText().height * SurveyHelper.RATING_MIN_HEIGHT * 2
     };
     TestHelper.equalRect(expect, SurveyHelper.mergeRects(flats[0][0], flats[0][1]), assumeRating);
 });
@@ -1033,7 +1028,7 @@ test('Check multiple text one item', async () => {
         elements: [
             {
                 type: 'multipletext',
-                name: 'multi',
+                name: 'multi one item',
                 titleLocation: 'hidden',
                 items: [
                     {
@@ -1051,15 +1046,15 @@ test('Check multiple text one item', async () => {
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.paperWidth - survey.controller.margins.right,
         yTop: survey.controller.leftTopPoint.yTop,
-        yBot: survey.controller.leftTopPoint.yTop + SurveyHelper.measureText().height
+        yBot: survey.controller.leftTopPoint.yTop + survey.controller.measureText().height
     };
     TestHelper.equalRect(expect, flats[0][0], assumeMultipleText);
     let assumeText: IRect = {
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.leftTopPoint.xLeft +
-            SurveyHelper.measureText(json.elements[0].items[0].name, 'bold').width,
+            survey.controller.measureText(json.elements[0].items[0].name, 'bold').width,
         yTop: survey.controller.leftTopPoint.yTop,
-        yBot: survey.controller.leftTopPoint.yTop + SurveyHelper.measureText().height
+        yBot: survey.controller.leftTopPoint.yTop + survey.controller.measureText().height
     }
     TestHelper.equalRect(expect, flats[0][0].unfold()[0], assumeText);
     let assumeBox: IRect = {
@@ -1067,7 +1062,7 @@ test('Check multiple text one item', async () => {
             SurveyHelper.getPageAvailableWidth(survey.controller) * SurveyHelper.MULTIPLETEXT_TEXT_PERS,
         xRight: assumeMultipleText.xRight,
         yTop: survey.controller.leftTopPoint.yTop,
-        yBot: survey.controller.leftTopPoint.yTop + SurveyHelper.measureText().height
+        yBot: survey.controller.leftTopPoint.yTop + survey.controller.measureText().height
     }
     TestHelper.equalRect(expect, flats[0][0].unfold()[1], assumeBox);
 });
@@ -1097,7 +1092,7 @@ test('Check multiple text two items', async () => {
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.paperWidth - survey.controller.margins.right,
         yTop: survey.controller.leftTopPoint.yTop,
-        yBot: survey.controller.leftTopPoint.yTop + SurveyHelper.measureText().height * 2
+        yBot: survey.controller.leftTopPoint.yTop + survey.controller.measureText().height * 2
     };
     TestHelper.equalRect(expect, SurveyHelper.mergeRects(flats[0][0], flats[0][1]), assumeMultipleText);
 });
@@ -1125,7 +1120,8 @@ test('Check multiple text with colCount and long text', async () => {
         ]
     };
     let options: IDocOptions = TestHelper.defaultOptions;
-    let signWidth: number = SurveyHelper.measureText(sign, 'bold').width / TestHelper.MM_TO_PT;
+    let signWidth: number = new SurveyPDF(json, TestHelper.defaultOptions).
+        controller.measureText(sign, 'bold').width / DocController.MM_TO_PT;
     options.paperWidth = options.margins.right + options.margins.right +
         2 * signWidth / SurveyHelper.MULTIPLETEXT_TEXT_PERS;
     let survey: SurveyPDF = new SurveyPDF(json, options);
@@ -1136,7 +1132,7 @@ test('Check multiple text with colCount and long text', async () => {
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.paperWidth - survey.controller.margins.right,
         yTop: survey.controller.leftTopPoint.yTop,
-        yBot: survey.controller.leftTopPoint.yTop + SurveyHelper.measureText().height * 3
+        yBot: survey.controller.leftTopPoint.yTop + survey.controller.measureText().height * 3
     };
     TestHelper.equalRect(expect, SurveyHelper.mergeRects(flats[0][0], flats[0][1]), assumeMultipleText);
 });
@@ -1168,7 +1164,7 @@ test('Check imagepicker one image 100x100px', async () => {
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.leftTopPoint.xLeft + width,
         yTop: survey.controller.leftTopPoint.yTop,
-        yBot: survey.controller.leftTopPoint.yTop + height + SurveyHelper.measureText().height
+        yBot: survey.controller.leftTopPoint.yTop + height + survey.controller.measureText().height
     };
     TestHelper.equalRect(expect, flats[0][0], assumeimagePicker);
 });
@@ -1200,7 +1196,7 @@ test('Check imagepicker one image 100x100px with label', async () => {
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.leftTopPoint.xLeft + width,
         yTop: survey.controller.leftTopPoint.yTop,
-        yBot: survey.controller.leftTopPoint.yTop + height + 2.0 * SurveyHelper.measureText().height
+        yBot: survey.controller.leftTopPoint.yTop + height + 2.0 * survey.controller.measureText().height
     };
     TestHelper.equalRect(expect, flats[0][0], assumeimagePicker);
 });
@@ -1233,9 +1229,9 @@ test('Check imagepicker two images 100x100px', async () => {
     let height: number = width / SurveyHelper.IMAGEPICKER_RATIO;
     let assumeimagePicker: IRect = {
         xLeft: survey.controller.leftTopPoint.xLeft,
-        xRight: survey.controller.leftTopPoint.xLeft + 2.0 * width + SurveyHelper.measureText().height,
+        xRight: survey.controller.leftTopPoint.xLeft + 2.0 * width + survey.controller.measureText().height,
         yTop: survey.controller.leftTopPoint.yTop,
-        yBot: survey.controller.leftTopPoint.yTop + height + SurveyHelper.measureText().height
+        yBot: survey.controller.leftTopPoint.yTop + height + survey.controller.measureText().height
     };
     TestHelper.equalRect(expect, flats[0][0], assumeimagePicker);
 });
@@ -1314,7 +1310,7 @@ test('Check two text files', async () => {
         <Question>survey.getAllQuestions()[0], survey.controller,
         json.elements[0].defaultValue[0].name, json.elements[0].defaultValue[0].content);
     let secondFilePoint: IPoint = SurveyHelper.createPoint(firstFileFlat, false, true);
-    secondFilePoint.xLeft += SurveyHelper.measureText().width;
+    secondFilePoint.xLeft += survey.controller.measureText().width;
     let secondFileFlat: IRect = await SurveyHelper.createLinkFlat(secondFilePoint,
         <Question>survey.getAllQuestions()[0], survey.controller,
         json.elements[0].defaultValue[1].name, json.elements[0].defaultValue[1].content);
@@ -1355,7 +1351,7 @@ test('Check one image 16x16px file', async () => {
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.leftTopPoint.xLeft + width,
         yTop: survey.controller.leftTopPoint.yTop,
-        yBot: survey.controller.leftTopPoint.yTop + height + SurveyHelper.measureText().height
+        yBot: survey.controller.leftTopPoint.yTop + height + survey.controller.measureText().height
     };
     TestHelper.equalRect(expect, flats[0][0], assumeFile);
 });
@@ -1376,10 +1372,10 @@ test('Check expression', async () => {
     expect(flats[0].length).toBe(1);
     let assumeExpression: IRect = {
         xLeft: survey.controller.leftTopPoint.xLeft,
-        xRight: survey.controller.leftTopPoint.xLeft + SurveyHelper.measureText(
+        xRight: survey.controller.leftTopPoint.xLeft + survey.controller.measureText(
             (<QuestionExpressionModel>survey.getAllQuestions()[0]).displayValue).width,
         yTop: survey.controller.leftTopPoint.yTop,
-        yBot: survey.controller.leftTopPoint.yTop + SurveyHelper.measureText().height
+        yBot: survey.controller.leftTopPoint.yTop + survey.controller.measureText().height
     };
     TestHelper.equalRect(expect, flats[0][0], assumeExpression);
 });
