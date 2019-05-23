@@ -158,7 +158,8 @@ export class SurveyHelper {
                 yBot = (controller.helperDoc.getNumberOfPages() - 1) *
                     (controller.paperHeight - controller.margins.bot - controller.margins.top)
                     + result.y - margins.top + SurveyHelper.HTML_TAIL_TEXT * controller.fontSize;
-                for (let i = 0; i < controller.helperDoc.getNumberOfPages() - 1; i++) {
+                controller.helperDoc.addPage();
+                for (let i = 0; i < controller.helperDoc.getNumberOfPages(); i++) {
                     controller.helperDoc.deletePage(1);
                 }
                 let rect = SurveyHelper.createRect(point, margins.width, yBot);
