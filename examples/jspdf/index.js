@@ -299,62 +299,62 @@ let options = {
 	}
 };
 
-let json2 = {
-    "completedHtml": "<h3>Thank you for your feedback.</h3> <h5>Your thoughts and ideas will help us to create a great product!</h5>",
-    "completedHtmlOnCondition": [
-        {
-            "expression": "{nps_score} > 8",
-            "html": "<h3>Thank you for your feedback.</h3> <h5>We glad that you love our product. Your ideas and suggestions will help us to make our product even better!</h5>"
-        }, {
-            "expression": "{nps_score} < 7",
-            "html": "<h3>Thank you for your feedback.</h3> <h5> We are glad that you share with us your ideas.We highly value all suggestions from our customers. We do our best to improve the product and reach your expectation.</h5>\n"
-        }
-    ],
-    "pages": [
-        {
-            "name": "page1",
-            "elements": [
-                {
-                    "type": "rating",
-                    "name": "nps_score",
-                    "title": "On a scale of zero to ten, how likely are you to recommend our product to a friend or colleague?",
-                    "isRequired": true,
-                    "rateMin": 0,
-                    "rateMax": 10,
-                    "minRateDescription": "(Most unlikely)",
-                    "maxRateDescription": "(Most likely)"
-                }, {
-                    "type": "checkbox",
-                    "name": "promoter_features",
-                    "title": "What features do you value the most?",
-                    "isRequired": true,
-                    "validators": [
-                        {
-                            "type": "answercount",
-                            "text": "Please select two features maximum.",
-                            "maxCount": 2
-                        }
-                    ],
-                    "hasOther": true,
-                    "choices": [
-                        "Performance", "Stability", "User Interface", "Complete Functionality"
-                    ],
-                    "otherText": "Other feature:",
-                    "colCount": 2
-                }, {
-                    "type": "comment",
-                    "name": "passive_experience",
-                    "title": "What is the primary reason for your score?"
-                }, {
-                    "type": "comment",
-                    "name": "disappointed_experience",
-                    "title": "What do you miss and what was disappointing in your experience with us?"
-                }
-            ]
-        }
-    ],
-    "showQuestionNumbers": "off"
-};
+// let json2 = {
+//     "completedHtml": "<h3>Thank you for your feedback.</h3> <h5>Your thoughts and ideas will help us to create a great product!</h5>",
+//     "completedHtmlOnCondition": [
+//         {
+//             "expression": "{nps_score} > 8",
+//             "html": "<h3>Thank you for your feedback.</h3> <h5>We glad that you love our product. Your ideas and suggestions will help us to make our product even better!</h5>"
+//         }, {
+//             "expression": "{nps_score} < 7",
+//             "html": "<h3>Thank you for your feedback.</h3> <h5> We are glad that you share with us your ideas.We highly value all suggestions from our customers. We do our best to improve the product and reach your expectation.</h5>\n"
+//         }
+//     ],
+//     "pages": [
+//         {
+//             "name": "page1",
+//             "elements": [
+//                 {
+//                     "type": "rating",
+//                     "name": "nps_score",
+//                     "title": "On a scale of zero to ten, how likely are you to recommend our product to a friend or colleague?",
+//                     "isRequired": true,
+//                     "rateMin": 0,
+//                     "rateMax": 10,
+//                     "minRateDescription": "(Most unlikely)",
+//                     "maxRateDescription": "(Most likely)"
+//                 }, {
+//                     "type": "checkbox",
+//                     "name": "promoter_features",
+//                     "title": "What features do you value the most?",
+//                     "isRequired": true,
+//                     "validators": [
+//                         {
+//                             "type": "answercount",
+//                             "text": "Please select two features maximum.",
+//                             "maxCount": 2
+//                         }
+//                     ],
+//                     "hasOther": true,
+//                     "choices": [
+//                         "Performance", "Stability", "User Interface", "Complete Functionality"
+//                     ],
+//                     "otherText": "Other feature:",
+//                     "colCount": 2
+//                 }, {
+//                     "type": "comment",
+//                     "name": "passive_experience",
+//                     "title": "What is the primary reason for your score?"
+//                 }, {
+//                     "type": "comment",
+//                     "name": "disappointed_experience",
+//                     "title": "What do you miss and what was disappointing in your experience with us?"
+//                 }
+//             ]
+//         }
+//     ],
+//     "showQuestionNumbers": "off"
+// };
 
 let survey = new SurveyPDF.Survey(json, options);
 survey.setValue('car', 'Ford');
@@ -377,6 +377,6 @@ survey
 		options.html = str;
 	});
 
-let survey2 = new SurveyPDF.Survey(json2, options);
-survey.save('a.pdf');
-survey2.save('b.pdf');
+// let survey2 = new SurveyPDF.Survey(json2, options);
+survey.save();
+// survey2.save('b.pdf');

@@ -26,6 +26,7 @@ export class TextFieldBrick extends PdfBrick {
         else inputField.value = '';
         inputField.multiline = this.isMultiline;
         inputField.readOnly = this.isReadOnly;
+        inputField.maxFontSize  = this.controller.fontSize;
         this.controller.doc.addField(inputField);
     }
 }
