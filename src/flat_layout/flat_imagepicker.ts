@@ -12,7 +12,7 @@ import { SurveyHelper } from '../helper_survey';
 export class FlatImagePicker extends FlatQuestion {
     protected question: QuestionImagePickerModel;
     protected radio: FlatRadiogroup;
-    constructor(question: IQuestion, controller: DocController) {
+    public constructor(question: IQuestion, controller: DocController) {
         super(question, controller);
         this.question = <QuestionImagePickerModel>question;
     }
@@ -41,10 +41,10 @@ export class FlatImagePicker extends FlatQuestion {
         }
         return compositeFlat;
     }
-    async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
+    public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         this.radio = this.question.multiSelect ? null :
             new FlatRadiogroup(this.question, this.controller);
-        let rowsFlats: CompositeBrick[] = new Array<CompositeBrick>(new CompositeBrick());
+        let rowsFlats: CompositeBrick[] = [new CompositeBrick()];
         let colWidth: number = SurveyHelper.getImagePickerAvailableWidth(
             this.controller) / SurveyHelper.IMAGEPICKER_COUNT;
         let cols: number = ~~(SurveyHelper.
@@ -53,10 +53,9 @@ export class FlatImagePicker extends FlatQuestion {
         cols = cols <= count ? cols : count;
         let rows: number = ~~(Math.ceil(count / cols));
         let currPoint: IPoint = SurveyHelper.clone(point);
-        for (let i = 0; i < rows; i++) {
+        for (let i: number = 0; i < rows; i++) {
             let yBot: number = currPoint.yTop;
-            let oldMarginLeft: number = this.controller.margins.left;
-            let oldMarginRight: number = this.controller.margins.right;
+            this.controller.pushMargins();
             let currMarginLeft: number = this.controller.margins.left;
             for (let j = 0; j < cols; j++) {
                 let index: number = i * cols + j;
@@ -71,8 +70,7 @@ export class FlatImagePicker extends FlatQuestion {
                 rowsFlats[rowsFlats.length - 1].addBrick(itemFlat);
                 yBot = Math.max(yBot, itemFlat.yBot);
             }
-            this.controller.margins.left = oldMarginLeft;
-            this.controller.margins.right = oldMarginRight;
+            this.controller.popMargins();
             currPoint.xLeft = point.xLeft;
             currPoint.yTop = yBot;
             if (i !== rows - 1) {

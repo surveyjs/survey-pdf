@@ -5,9 +5,9 @@ import { SurveyHelper } from '../helper_survey';
 
 export class RadioGroupWrap {
     private _radioGroup: any;
-    constructor(private name: string, private controller: DocController, private readOnly: boolean = false) {
+    public constructor(private name: string, private controller: DocController, private readOnly: boolean = false) {
     }
-    addToPdf() {
+    public addToPdf() {
         this._radioGroup = new this.controller.doc.AcroFormRadioButton();
         this._radioGroup.value = this.name;
         this._radioGroup.readOnly = this.readOnly;
@@ -19,12 +19,12 @@ export class RadioGroupWrap {
 }
 
 export class RadioItemBrick extends PdfBrick {
-    constructor(question: IQuestion, controller: DocController,
+    public constructor(question: IQuestion, controller: DocController,
         rect: IRect, private index: number, private сhecked: Boolean,
         private radioGroupWrap: RadioGroupWrap) {
         super(question, controller, rect);
     }
-    async render(): Promise<void> {
+    public async render(): Promise<void> {
         if (this.index == 0) {
             this.radioGroupWrap.addToPdf();
         }

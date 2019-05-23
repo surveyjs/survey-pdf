@@ -13,7 +13,7 @@ export interface IFlatQuestion {
 
 export class FlatQuestion implements IFlatQuestion {
     protected question: Question;
-    constructor(question: IQuestion, protected controller: DocController) {
+    public constructor(question: IQuestion, protected controller: DocController) {
         this.question = <Question>question;
     }
 
@@ -36,17 +36,17 @@ export class FlatQuestion implements IFlatQuestion {
         return new CompositeBrick(compositeText,
             new CommentBrick(this.question, this.controller, rectTextField, false));
     }
-    async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
+    public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         return null;
     }
-    async generateFlats(point: IPoint): Promise<IPdfBrick[]> {
-        let oldMarginLeft: number = this.controller.margins.left;
+    public async generateFlats(point: IPoint): Promise<IPdfBrick[]> {
+        this.controller.pushMargins();
         this.controller.margins.left += SurveyHelper.measureText(this.question.indent).width;
         let indentPoint: IPoint = {
             xLeft: point.xLeft + SurveyHelper.measureText(this.question.indent).width,
             yTop: point.yTop
         };
-        let flats: IPdfBrick[] = new Array();
+        let flats: IPdfBrick[] = [];
         let commentPoint: IPoint = indentPoint;
         let titleLocation: string = this.question.getTitleLocation();
         titleLocation = this.question.hasTitle ? titleLocation : 'hidden';
@@ -128,11 +128,7 @@ export class FlatQuestion implements IFlatQuestion {
         if (this.question.hasComment && this.question.titleLocation != 'bottom') {
             flats.push(await this.generateFlatsComment(commentPoint));
         }
-        this.controller.margins.left = oldMarginLeft;
+        this.controller.popMargins();
         return flats;
-    }
-    //TO REVIEW
-    getQuestion<T extends Question>(): T {
-        return <T>this.question;
     }
 }

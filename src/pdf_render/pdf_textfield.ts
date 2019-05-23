@@ -5,7 +5,7 @@ import { SurveyHelper } from '../helper_survey';
 
 export class TextFieldBrick extends PdfBrick {
     protected question: QuestionTextModel;
-    constructor(question: IQuestion, controller: DocController, rect: IRect,
+    public constructor(question: IQuestion, controller: DocController, rect: IRect,
         protected isQuestion: boolean, protected fieldName: string,
         protected value: string, protected placeholder: string,
         protected isReadOnly: boolean, protected isMultiline: boolean,
@@ -13,7 +13,7 @@ export class TextFieldBrick extends PdfBrick {
         super(question, controller, rect);
         this.question = <QuestionTextModel>question;
     }
-    async render(): Promise<void> {
+    public async render(): Promise<void> {
         let inputField = this.isPassword ?
             new (<any>this.controller.doc.AcroFormPasswordField)() :
             new (<any>this.controller.doc.AcroFormTextField)();

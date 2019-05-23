@@ -537,7 +537,7 @@ test('Calc boundaries title hidden with description', async () => {
     TestHelper.equalRect(expect, flats[0][0], assumeTextbox);
 });
 test('Calc boundaries with indent', async () => {
-    for (let i = 0; i < 10; i++) {
+    for (let i: number = 0; i < 10; i++) {
         let json = {
             questions: [
                 {

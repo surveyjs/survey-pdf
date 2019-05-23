@@ -3,7 +3,7 @@ import { IRect, DocController } from '../doc_controller';
 import { TextBoxBrick } from './pdf_textbox';
 
 export class CommentBrick extends TextBoxBrick {
-    constructor(question: IQuestion, protected controller: DocController,
+    public constructor(question: IQuestion, protected controller: DocController,
         rect: IRect, isQuestion: boolean, index: number = 0) {
         super(question, controller, rect, isQuestion, true, index);
     }

@@ -9,7 +9,7 @@ import { SurveyHelper } from '../helper_survey';
 
 export class FlatFile extends FlatQuestion {
     protected question: QuestionFileModel;
-    constructor(question: IQuestion, controller: DocController) {
+    public constructor(question: IQuestion, controller: DocController) {
         super(question, controller);
         this.question = <QuestionFileModel>question;
     }
@@ -34,43 +34,39 @@ export class FlatFile extends FlatQuestion {
             rowsFlats.push(new CompositeBrick());
         }
     }
-    async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
+    public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         if (this.question.previewValue.length === 0) {
             return [await SurveyHelper.createTextFlat(point, this.question, this.controller,
                 'No file chosen', TextBrick)];
         }
-        let rowsFlats: CompositeBrick[] = new Array<CompositeBrick>(new CompositeBrick());
+        let rowsFlats: CompositeBrick[] = [new CompositeBrick()];
         let imageWidth: number = SurveyHelper.getImagePickerAvailableWidth(
             this.controller) / SurveyHelper.IMAGEPICKER_COUNT;
         let currPoint: IPoint = SurveyHelper.clone(point);
         let yBot: number = currPoint.yTop;
-        let index = 0;
-        for (let item of this.question.previewValue) {
+        for (let i: number = 0; i < this.question.previewValue.length; i++) {
+            let item: { name: string, type: string, content: string } = this.question.previewValue[i];
             let availableWidth: number = this.controller.paperWidth -
                 this.controller.margins.right - currPoint.xLeft;
             if (this.question.canPreviewImage(item)) {
                 if (availableWidth < imageWidth) {
                     currPoint.xLeft = point.xLeft;
                     currPoint.yTop = yBot;
-                    this.addLine(rowsFlats, currPoint, index);
+                    this.addLine(rowsFlats, currPoint, i);
                 }
-                let oldMarginLeft: number = this.controller.margins.left;
-                let oldMarginRight: number = this.controller.margins.right;
-                this.controller.margins.left = currPoint.xLeft;
-                this.controller.margins.right = this.controller.paperWidth -
-                    this.controller.margins.left - imageWidth;
+                this.controller.pushMargins(currPoint.xLeft,
+                    this.controller.paperWidth - currPoint.xLeft - imageWidth);
                 let itemFlat: IPdfBrick = await this.generateFlatItem(currPoint, item);
                 rowsFlats[rowsFlats.length - 1].addBrick(itemFlat);
                 currPoint.xLeft += itemFlat.xRight - itemFlat.xLeft;
                 yBot = Math.max(yBot, itemFlat.yBot);
-                this.controller.margins.left = oldMarginLeft;
-                this.controller.margins.right = oldMarginRight;
+                this.controller.popMargins();
             }
             else {
                 if (availableWidth < SurveyHelper.measureText().width) {
                     currPoint.xLeft = point.xLeft;
                     currPoint.yTop = yBot;
-                    this.addLine(rowsFlats, currPoint, index);
+                    this.addLine(rowsFlats, currPoint, i);
                 }
                 let itemFlat: IPdfBrick = await this.generateFlatItem(currPoint, item);
                 rowsFlats[rowsFlats.length - 1].addBrick(itemFlat);
@@ -78,7 +74,6 @@ export class FlatFile extends FlatQuestion {
                 yBot = Math.max(yBot, itemFlat.yBot);
             }
             currPoint.xLeft += SurveyHelper.measureText().width;
-            index++;
         };
         return rowsFlats;
     }

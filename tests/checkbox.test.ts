@@ -90,7 +90,7 @@ test('Test two equal values checkbox', async () => {
 	let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
 	await survey.render();
 	survey.controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields.forEach(
-		(acroCheckBox: any, index: number) => {
+		(acroCheckBox: any) => {
 			expect(acroCheckBox.readOnly).toBe(false);
 		}
 	);

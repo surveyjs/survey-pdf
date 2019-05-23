@@ -3,7 +3,7 @@ import { IRect, DocController } from '../doc_controller';
 import { CheckItemBrick } from './pdf_checkitem';
 
 export class BooleanItemBrick extends CheckItemBrick {
-    constructor(question: IQuestion, controller: DocController,
+    public constructor(question: IQuestion, controller: DocController,
         rect: IRect) {
         super(question, controller, rect,
             (<QuestionBooleanModel>question).id,

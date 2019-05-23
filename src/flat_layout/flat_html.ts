@@ -7,10 +7,10 @@ import { HTMLBrick } from '../pdf_render/pdf_html';
 import { SurveyHelper } from '../helper_survey';
 
 export class FlatHTML extends FlatQuestion {
-    constructor(question: IQuestion, controller: DocController) {
+    public constructor(question: IQuestion, controller: DocController) {
         super(question, controller);
     }
-    async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
+    public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         return [new HTMLBrick(this.question, this.controller,
             SurveyHelper.createRect(point, 50, 50), `
                 <img

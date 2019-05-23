@@ -8,12 +8,12 @@ import { TextBrick } from '../pdf_render/pdf_text';
 
 export abstract class FlatSelectBase extends FlatQuestion {
     protected question: QuestionSelectBase;
-    constructor(question: IQuestion, protected controller: DocController) {
+    public constructor(question: IQuestion, protected controller: DocController) {
         super(question, controller);
         this.question = <QuestionSelectBase>question;
     }
 
-    abstract createItemBrick(rect: IRect, item: ItemValue, index: number): IPdfBrick;
+    public abstract createItemBrick(rect: IRect, item: ItemValue, index: number): IPdfBrick;
     private async generateFlatsItem(point: IPoint, item: ItemValue, index: number): Promise<IPdfBrick> {
         let compositeFlat: CompositeBrick = new CompositeBrick();
         let height: number = SurveyHelper.measureText().height;
@@ -28,15 +28,14 @@ export abstract class FlatSelectBase extends FlatQuestion {
         }
         return compositeFlat;
     }
-    async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
+    public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         let currPoint: IPoint = SurveyHelper.clone(point);
-        let flats: IPdfBrick[] = new Array();
-        let index = 0;
-        for (let item of this.question.visibleChoices) {
-            let itemFlat: IPdfBrick = await this.generateFlatsItem(currPoint, item, index);
+        let flats: IPdfBrick[] = [];
+        for (let i: number = 0; i < this.question.visibleChoices.length; i++) {
+            let itemFlat: IPdfBrick = await this.generateFlatsItem(
+                currPoint, this.question.visibleChoices[i], i);
             currPoint.yTop = itemFlat.yBot;
             flats.push(itemFlat);
-            index++;
         }
         return flats;
     }

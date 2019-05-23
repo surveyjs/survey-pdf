@@ -4,7 +4,7 @@ import { IRect, DocController } from '../doc_controller';
 
 export class HTMLBrick extends PdfBrick {
     private margins: { top: number, bottom: number };
-    constructor(question: IQuestion, controller: DocController,
+    public constructor(question: IQuestion, controller: DocController,
         rect: IRect, protected html: string) {
         super(question, controller, rect);
         this.margins = {
@@ -12,7 +12,7 @@ export class HTMLBrick extends PdfBrick {
             bottom: controller.margins.bot
         };
     }
-    async render(): Promise<void> {
+    public async render(): Promise<void> {
         await new Promise((resolve) => {
             this.controller.doc.fromHTML(this.html, this.xLeft, this.yTop, {
                 width: this.xRight - this.xLeft,

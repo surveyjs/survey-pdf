@@ -5,13 +5,13 @@ import { SurveyHelper } from '../helper_survey';
 4
 export class CheckItemBrick extends PdfBrick {
     protected question: QuestionCheckboxModel;
-    constructor(question: IQuestion, controller: DocController,
+    public constructor(question: IQuestion, controller: DocController,
         rect: IRect, protected fieldName: string,
         protected readonly: boolean, protected checked: boolean) {
         super(question, controller, rect);
         this.question = <QuestionCheckboxModel>question;
     }
-    async render(): Promise<void> {
+    public async render(): Promise<void> {
         let checkBox = new (<any>this.controller.doc.AcroFormCheckBox)();
         checkBox.fontSize = this.controller.fontSize * 0.5;
         checkBox.maxFontSize = this.controller.fontSize * 0.5;

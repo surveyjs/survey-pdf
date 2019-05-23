@@ -10,18 +10,15 @@ export class PdfBrick implements IPdfBrick {
     xRight: number;
     yTop: number;
     yBot: number;
-    constructor(protected question: IQuestion,
+    public constructor(protected question: IQuestion,
         protected controller: DocController, rect: IRect) {
         this.xLeft = rect.xLeft;
         this.xRight = rect.xRight;
         this.yTop = rect.yTop;
         this.yBot = rect.yBot;
     }
-    async render(): Promise<void> { }
-    unfold(): IPdfBrick[] {
+    public async render(): Promise<void> { }
+    public unfold(): IPdfBrick[] {
         return [this];
-    }
-    getQuestion<T extends IQuestion>(): T {
-        return <T>this.question;
     }
 }

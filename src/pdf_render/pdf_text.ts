@@ -5,7 +5,7 @@ import { PdfBrick } from './pdf_brick';
 export class TextBrick extends PdfBrick {
     protected question: QuestionTextModel;
     protected align: { align: string, baseline: string };
-    constructor(question: IQuestion, controller: DocController,
+    public constructor(question: IQuestion, controller: DocController,
         rect: IRect, protected text: string) {
         super(question, controller, rect);
         this.question = <QuestionTextModel>question;
@@ -14,7 +14,7 @@ export class TextBrick extends PdfBrick {
             baseline: 'middle'
         };
     }
-    async render(): Promise<void> {
+    public async render(): Promise<void> {
         let alignPoint = this.alignPoint(this);
         this.controller.doc.text(this.text, alignPoint.xLeft, alignPoint.yTop, this.align);
     }

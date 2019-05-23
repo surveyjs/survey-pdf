@@ -7,17 +7,17 @@ export class DropdownBrick extends PdfBrick {
     protected question: QuestionDropdownModel;
     protected isQuestion: boolean;
     protected isMultiline: boolean;
-    constructor(question: IQuestion,
+    public constructor(question: IQuestion,
         protected controller: DocController, rect: IRect) {
         super(question, controller, rect);
         this.question = <QuestionDropdownModel>question;
     }
-    async render(): Promise<void> {
+    public async render(): Promise<void> {
         let comboBox = new (<any>this.controller.doc.AcroFormComboBox)();
         comboBox.fieldName = this.question.id;
         comboBox.Rect = SurveyHelper.createAcroformRect(this);
         comboBox.edit = false;
-        let options: string[] = new Array<string>();
+        let options: string[] = [];
         if (this.question.showOptionsCaption) {
             options.push(this.question.optionsCaption);
         }

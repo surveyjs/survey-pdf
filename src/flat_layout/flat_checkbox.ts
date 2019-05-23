@@ -7,11 +7,11 @@ import { CheckboxItemBrick } from '../pdf_render/pdf_checkboxitem';
 
 export class FlatCheckbox extends FlatSelectBase {
     protected question: QuestionCheckboxModel;
-    constructor(question: IQuestion, protected controller: DocController) {
+    public constructor(question: IQuestion, protected controller: DocController) {
         super(question, controller);
         this.question = <QuestionCheckboxModel>question;
     }
-    createItemBrick(rect: IRect, item: ItemValue, index: number): IPdfBrick {
+    public createItemBrick(rect: IRect, item: ItemValue, index: number): IPdfBrick {
         return new CheckboxItemBrick(this.question, this.controller, rect, item, index);
     }
 }

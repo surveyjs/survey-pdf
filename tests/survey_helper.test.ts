@@ -27,7 +27,7 @@ test('Create rect', () => {
         height: 0
     }
     let point: IPoint = TestHelper.defaultPoint;
-    for (let i = 0; i < 10; i++) {
+    for (let i: number = 0; i < 10; i++) {
         Object.keys(parametres).forEach((key: string) => {
             (<any>parametres)[key]++;
         })
@@ -103,4 +103,30 @@ test('Carry split long text', async () => {
         yBot: controller.leftTopPoint.yTop + SurveyHelper.measureText('1').height * 2
     };
     TestHelper.equalRect(expect, composite, assumeRect);
+});
+test('Push pop margins', async () => {
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let oldMarginLeft: number = controller.margins.left;
+    let oldMarginRight: number = controller.margins.right;
+    controller.pushMargins();
+    controller.margins.left = oldMarginLeft + 1.0;
+    controller.margins.right = oldMarginLeft + 1.0;
+    controller.popMargins();
+    expect(controller.margins.left).toBe(oldMarginLeft);
+    expect(controller.margins.right).toBe(oldMarginRight);
+});
+test('Push pop margins with params', async () => {
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let oldMarginLeft_1: number = controller.margins.left;
+    let oldMarginRight_1: number = controller.margins.right;
+    controller.pushMargins(oldMarginLeft_1 + 1.0, oldMarginRight_1 + 1.0);
+    let oldMarginLeft_2: number = controller.margins.left;
+    let oldMarginRight_2: number = controller.margins.right;
+    controller.pushMargins(oldMarginLeft_2 + 1.0, oldMarginRight_1 + 2.0);
+    controller.popMargins();
+    expect(controller.margins.left).toBe(oldMarginLeft_2);
+    expect(controller.margins.right).toBe(oldMarginRight_2);
+    controller.popMargins();
+    expect(controller.margins.left).toBe(oldMarginLeft_1);
+    expect(controller.margins.right).toBe(oldMarginRight_1);
 });
