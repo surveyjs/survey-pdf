@@ -17,6 +17,12 @@ export class PdfBrick implements IPdfBrick {
         this.yTop = rect.yTop;
         this.yBot = rect.yBot;
     }
+    public get width(): number {
+        return this.xRight - this.xLeft;
+    }
+    public get height(): number {
+        return this.yBot - this.yTop;
+    }
     public async render(): Promise<void> { }
     public unfold(): IPdfBrick[] {
         return [this];

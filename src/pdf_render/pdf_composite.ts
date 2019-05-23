@@ -43,6 +43,12 @@ export class CompositeBrick implements IPdfBrick {
         this.shift(0.0, 0.0, 0.0, yBot - this.yBot);
         this._yBot = yBot;
     }
+    public get width(): number {
+        return this.xRight - this.xLeft;
+    }
+    public get height(): number {
+        return this.yBot - this.yTop;
+    }
     public async render(): Promise<void> {
         for (let i: number = 0; i < this.bricks.length; i++) {
             await this.bricks[i].render();
