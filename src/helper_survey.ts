@@ -27,6 +27,7 @@ export class SurveyHelper {
     static MULTIPLETEXT_TEXT_PERS: number = Math.E / 10.0;
     static IMAGEPICKER_COUNT: number = 4;
     static IMAGEPICKER_RATIO: number = 4.0 / 3.0;
+    static HTML_TAIL_TEXT: number = 0.3;
     public static setFontSize(fontSize: number, font?: string) {
         this._doc.setFontSize(fontSize);
         if (typeof font !== 'undefined') {
@@ -167,29 +168,28 @@ export class SurveyHelper {
         }
 
     }
-    static htmlMargins(controller: DocController) {
+    static htmlMargins(controller: DocController, point: IPoint) {
         return {
             top: controller.margins.top,
             bottom: controller.margins.bot,
-            left: controller.margins.left,
-            width: controller.paperWidth - controller.margins.left - controller.margins.right,
+            width: controller.paperWidth - point.xLeft - controller.margins.right,
         }
     }
     static async createHTMLFlat(point: IPoint, question: Question, controller: DocController, html: any): Promise<IPdfBrick> {
-        let margins = this.htmlMargins(controller);
-        return new Promise((resolve) => {
+        let margins = this.htmlMargins(controller, point);
+        return await new Promise((resolve) => {
             SurveyHelper._doc.fromHTML(html, point.xLeft, margins.top, {
                 'pagesplit': true,
                 width: margins.width
             }, function (result: any) {
-                let y: number;
-                y = (SurveyHelper._doc.getNumberOfPages() - 1) *
+                let yBot: number;
+                yBot = (SurveyHelper._doc.getNumberOfPages() - 1) *
                     (controller.paperHeight - controller.margins.bot - controller.margins.top)
-                    + result.y - margins.top;
+                    + result.y - margins.top + SurveyHelper.HTML_TAIL_TEXT * controller.fontSize;
                 for (let i = 0; i < SurveyHelper._doc.getNumberOfPages() - 1; i++) {
                     SurveyHelper._doc.deletePage(1);
                 }
-                let rect = SurveyHelper.createRect(point, margins.width, y);
+                let rect = SurveyHelper.createRect(point, margins.width, yBot);
                 resolve(new HTMLBrick(question, controller, rect, html));
             }, margins)
         });
