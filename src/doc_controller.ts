@@ -41,7 +41,7 @@ export class DocOptions implements IDocOptions {
     get leftTopPoint(): IPoint {
         return {
             xLeft: this.margins.left,
-            yTop: this.margins.right
+            yTop: this.margins.top
         }
     }
     get fontSize(): number {
