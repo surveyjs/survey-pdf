@@ -20,7 +20,7 @@ export class FlatRating extends FlatRadiogroup {
         let compositeFlat: CompositeBrick = new CompositeBrick(await SurveyHelper.
             createBoldTextFlat(point, this.questionRating, this.controller, itemText));
         this.controller.popMargins();
-        let textWidth: number = compositeFlat.xRight - compositeFlat.xLeft;
+        let textWidth: number = compositeFlat.width;
         if (textWidth < SurveyHelper.getRatingMinWidth(this.controller)) {
             compositeFlat.xLeft += (SurveyHelper.getRatingMinWidth(this.controller) - textWidth) / 2.0;
             textWidth = SurveyHelper.getRatingMinWidth(this.controller);

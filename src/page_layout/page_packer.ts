@@ -39,8 +39,7 @@ export class PagePacker {
         flats.forEach((flatsPage: IPdfBrick[]) => {
             unfoldFlats.push([]);
             flatsPage.forEach((flat: IPdfBrick) => {
-                let flatHeight: number = flat.yBot - flat.yTop;
-                if (flatHeight > pageHeight + SurveyHelper.EPSILON) {
+                if (flat.height > pageHeight + SurveyHelper.EPSILON) {
                     unfoldFlats[unfoldFlats.length - 1].push(...flat.unfold());
                 }
                 else unfoldFlats[unfoldFlats.length - 1].push(flat);
@@ -64,7 +63,7 @@ export class PagePacker {
                 let intervals: PackInterval[] = tree.search(flat.xLeft, flat.xRight);
                 let { pageIndex, yBot, absBot } = PagePacker.findBotInterval(
                     intervals, flat.xLeft, flat.xRight, controller);
-                let height: number = flat.yBot - flat.yTop;
+                let height: number = flat.height;
                 flat.yTop = yBot + flat.yTop - absBot;
                 if (Math.abs(flat.yTop - controller.margins.top) > SurveyHelper.EPSILON &&
                     flat.yTop + height > pageBot + SurveyHelper.EPSILON) {

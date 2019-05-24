@@ -93,14 +93,13 @@ export class FlatQuestion implements IFlatQuestion {
                 break;
             }
             case 'left': {
-                let oldMarginRight = this.controller.margins.right;
-                this.controller.margins.right = this.controller.paperWidth - this.controller.margins.left -
-                    SurveyHelper.getPageAvailableWidth(this.controller)
-                    * SurveyHelper.MULTIPLETEXT_TEXT_PERS;
+                this.controller.pushMargins(this.controller.margins.left,
+                    this.controller.paperWidth - this.controller.margins.left -
+                    SurveyHelper.getPageAvailableWidth(this.controller) * SurveyHelper.MULTIPLETEXT_TEXT_PERS);
                 let titleFlat: IPdfBrick = await this.generateFlatTitle(indentPoint);
                 let descPoint: IPoint = SurveyHelper.createPoint(titleFlat);
                 let descFlat: IPdfBrick = await this.generateFlatDescription(descPoint);
-                this.controller.margins.right = oldMarginRight;
+                this.controller.popMargins();
                 let compositeFlat: CompositeBrick = new CompositeBrick(titleFlat);
                 let contentPoint: IPoint = SurveyHelper.createPoint(titleFlat, false, true);
                 if (descFlat !== null) {

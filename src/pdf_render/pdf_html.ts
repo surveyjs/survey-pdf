@@ -15,7 +15,7 @@ export class HTMLBrick extends PdfBrick {
     public async render(): Promise<void> {
         await new Promise((resolve) => {
             this.controller.doc.fromHTML(this.html, this.xLeft, this.yTop, {
-                width: this.xRight - this.xLeft,
+                width: this.width,
                 'pagesplit': true,
             }, () => resolve(), this.margins)
         });

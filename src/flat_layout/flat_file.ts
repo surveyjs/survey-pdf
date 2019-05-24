@@ -58,7 +58,7 @@ export class FlatFile extends FlatQuestion {
                     this.controller.paperWidth - currPoint.xLeft - imageWidth);
                 let itemFlat: IPdfBrick = await this.generateFlatItem(currPoint, item);
                 rowsFlats[rowsFlats.length - 1].addBrick(itemFlat);
-                currPoint.xLeft += itemFlat.xRight - itemFlat.xLeft;
+                currPoint.xLeft += itemFlat.width;
                 yBot = Math.max(yBot, itemFlat.yBot);
                 this.controller.popMargins();
             }

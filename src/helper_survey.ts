@@ -65,16 +65,15 @@ export class SurveyHelper {
     }
     public static splitHtmlRect(controller: DocController, htmlBrick: IPdfBrick): IPdfBrick {
         let bricks: IPdfBrick[] = [];
-        let brickWidth = htmlBrick.xRight - htmlBrick.xLeft;
-        let sizeOfPoint = controller.measureText(1, 'normal', 1).width;
-        let emptyBrickCount = (htmlBrick.yBot - htmlBrick.yTop) / sizeOfPoint - 1;
-        htmlBrick.yBot = htmlBrick.yTop + sizeOfPoint;
+        let minHeight = controller.measureText(1, 'normal', 1).width;
+        let emptyBrickCount = Math.ceil(htmlBrick.height / minHeight) - 1;
+        htmlBrick.yBot = htmlBrick.yTop + minHeight;
         bricks.push(htmlBrick);
         let currPoint = SurveyHelper.createPoint(htmlBrick);
         for (let i: number = 0; i < emptyBrickCount; i++) {
-            let emptyBrick = new EmptyBrick(SurveyHelper.createRect(currPoint, brickWidth, sizeOfPoint))
+            let emptyBrick = new EmptyBrick(SurveyHelper.createRect(currPoint, htmlBrick.width, minHeight))
             bricks.push(emptyBrick);
-            currPoint = SurveyHelper.createPoint(emptyBrick);
+            currPoint.yTop += minHeight;
         }
         return new CompositeBrick(...bricks);
     }
@@ -147,7 +146,8 @@ export class SurveyHelper {
             width: controller.paperWidth - point.xLeft - controller.margins.right,
         }
     }
-    static async createHTMLFlat(point: IPoint, question: Question, controller: DocController, html: any): Promise<IPdfBrick> {
+    static async createHTMLFlat(point: IPoint, question: Question,
+        controller: DocController, html: string): Promise<IPdfBrick> {
         let margins = this.htmlMargins(controller, point);
         return await new Promise((resolve) => {
             controller.helperDoc.fromHTML(html, point.xLeft, margins.top, {
@@ -235,7 +235,7 @@ export class SurveyHelper {
             compositeLink.addBrick(new LinkBrick(text, link));
             let linePoint: IPoint = SurveyHelper.createPoint(compositeLink);
             compositeLink.addBrick(SurveyHelper.createRowlineFlat(linePoint,
-                controller, compositeLink.xRight - compositeLink.xLeft, LinkBrick.COLOR));
+                controller, compositeLink.width, LinkBrick.COLOR));
         });
         return compositeLink;
     }
