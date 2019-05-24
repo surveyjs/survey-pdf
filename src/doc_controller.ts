@@ -95,25 +95,27 @@ export class DocController extends DocOptions {
     set fontSize(fontSize: number) {
         this._fontSize = fontSize;
         this._doc.setFontSize(fontSize);
+        this._helperDoc.setFontSize(fontSize);
     }
     set fontStyle(fontStyle: string) {
         this._fontStyle = fontStyle;
         this._doc.setFontStyle(fontStyle);
+        this._helperDoc.setFontStyle(fontStyle);
     }
-    public measureText(text: LocalizableString | string | number = 1, fontStyle: string = 'normal',
-        fontSize: number = this._helperDoc.getFontSize()): { width: number, height: number } {
+    public measureText(text: LocalizableString | string | number = 1, fontStyle: string = this._fontStyle,
+        fontSize: number = this._fontSize): { width: number, height: number } {
         let oldFontSize = this._helperDoc.getFontSize();
         this._helperDoc.setFontSize(fontSize);
         this._helperDoc.setFontStyle(fontStyle);
         let height: number = this._helperDoc.getLineHeight() / this._helperDoc.internal.scaleFactor;;
-        let width: number = 0;
+        let width: number = 0.0;
         if (typeof text === 'number') {
             width = height * text;
         }
         else {
             text = typeof text === 'string' ? text : SurveyHelper.getLocString(text);
             width = text.split('').reduce((sm: number, cr: string) =>
-                sm + this._helperDoc.getTextWidth(cr), 0);
+                sm + this._helperDoc.getTextWidth(cr), 0.0);
         }
         this._helperDoc.setFontSize(oldFontSize);
         this._helperDoc.setFontStyle('normal');

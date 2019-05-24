@@ -1134,11 +1134,10 @@ test('Check multiple text with colCount and long text', async () => {
         ]
     };
     let options: IDocOptions = TestHelper.defaultOptions;
-
     let signWidth: number = new SurveyPDF(json, TestHelper.defaultOptions).
         controller.measureText(sign, 'bold').width / DocController.MM_TO_PT;
-    options.format = [options.margins.right + options.margins.right +
-        2 * signWidth / SurveyHelper.MULTIPLETEXT_TEXT_PERS, 297];
+    options.format = [options.margins.left + options.margins.right +
+        2.5 * signWidth / SurveyHelper.MULTIPLETEXT_TEXT_PERS, 297];
     let survey: SurveyPDF = new SurveyPDF(json, options);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);

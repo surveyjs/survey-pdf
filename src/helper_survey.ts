@@ -12,10 +12,6 @@ import { EmptyBrick } from './pdf_render/pdf_empty';
 import { RowlineBrick } from './pdf_render/pdf_rowline';
 import { CompositeBrick } from './pdf_render/pdf_composite';
 
-export interface IText {
-    text: string;
-    rect: IRect
-}
 export class SurveyHelper {
     public static readonly EPSILON: number = 2.2204460492503130808472633361816e-15;
     public static readonly TITLE_PANEL_FONT_SIZE_SCALE_MAGIC: number = 1.3;
@@ -80,49 +76,15 @@ export class SurveyHelper {
     public static createPlainTextFlat<T extends IPdfBrick>(point: IPoint, question: IQuestion,
         controller: DocController, text: string, fabric: new (question: IQuestion,
             controller: DocController, rect: IRect, text: string) => T): IPdfBrick {
-        let words: string[] = [];
-        text.match(/\S+/g).forEach((word: string) => {
-            while (word.length > 0) {
-                for (let i: number = word.length; i > 0; i--) {
-                    let subword: string = word.substring(0, i);
-                    let width: number = controller.measureText(subword,
-                        controller.fontStyle, controller.fontSize).width;
-                    if (i == 1 || point.xLeft + width <= controller.paperWidth -
-                        controller.margins.right + SurveyHelper.EPSILON) {
-                        words.push(subword);
-                        word = word.substring(i);
-                        break;
-                    }
-                }
-            }
-        });
-        let texts: IText[] = [];
+        let lines: string[] = controller.doc.splitTextToSize(text,
+            controller.paperWidth - controller.margins.right - point.xLeft);
         let currPoint: IPoint = SurveyHelper.clone(point);
-        texts.push({ text: '', rect: null });
-        words.forEach((word: string) => {
-            let lastIndex: number = texts.length - 1;
-            let currText: string = texts[lastIndex].text;
-            let space: string = currText != '' ? ' ' : '';
-            let width: number = controller.measureText(currText + space + word,
-                controller.fontStyle, controller.fontSize).width;
-            if (currPoint.xLeft + width <= controller.paperWidth -
-                controller.margins.right + SurveyHelper.EPSILON) {
-                texts[lastIndex].text += space + word;
-            }
-            else {
-                let { width, height } = controller.measureText(texts[lastIndex].text,
-                    controller.fontStyle, controller.fontSize);
-                texts[lastIndex].rect = SurveyHelper.createRect(currPoint, width, height);
-                texts.push({ text: word, rect: null });
-                currPoint.yTop += height;
-            }
-        });
-        let { width, height } = controller.measureText(texts[texts.length - 1].text,
-            controller.fontStyle, controller.fontSize);
-        texts[texts.length - 1].rect = SurveyHelper.createRect(currPoint, width, height);
         let composite: CompositeBrick = new CompositeBrick();
-        texts.forEach((text: IText) => {
-            composite.addBrick(new fabric(question, controller, text.rect, text.text));
+        lines.forEach((line: string) => {
+            let { width, height } = controller.measureText(line);
+            composite.addBrick(new fabric(question, controller,
+                SurveyHelper.createRect(currPoint, width, height), line));
+            currPoint.yTop += height;
         });
         return composite;
     }

@@ -90,7 +90,7 @@ test('Carry split long text', async () => {
     let text: string = '111111';
     let options: IDocOptions = TestHelper.defaultOptions;
     options.format = [options.margins.left +
-        new DocController(options).measureText('1').width * 3 / DocController.MM_TO_PT +
+        new DocController(options).measureText('1').width * 3.5 / DocController.MM_TO_PT +
         options.margins.right, 297];
     let controller: DocController = new DocController(options);
     let composite: IPdfBrick = await SurveyHelper.createTextFlat(controller.leftTopPoint,
