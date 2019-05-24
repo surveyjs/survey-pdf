@@ -137,17 +137,15 @@ export class SurveyHelper {
             return this.splitHtmlRect(controller, await this.createHTMLFlat(point,
                 <Question>question, controller, this.createDivBlock(text.html, controller)));
         }
-
     }
-    static htmlMargins(controller: DocController, point: IPoint) {
+    static htmlMargins(controller: DocController, point: IPoint): { top: number, bottom: number, width: number } {
         return {
             top: controller.margins.top,
             bottom: controller.margins.bot,
             width: controller.paperWidth - point.xLeft - controller.margins.right,
         }
     }
-    static async createHTMLFlat(point: IPoint, question: Question,
-        controller: DocController, html: string): Promise<IPdfBrick> {
+    static async createHTMLFlat(point: IPoint, question: Question, controller: DocController, html: string): Promise<IPdfBrick> {
         let margins = this.htmlMargins(controller, point);
         return await new Promise((resolve) => {
             controller.helperDoc.fromHTML(html, point.xLeft, margins.top, {
@@ -158,7 +156,8 @@ export class SurveyHelper {
                 yBot = (controller.helperDoc.getNumberOfPages() - 1) *
                     (controller.paperHeight - controller.margins.bot - controller.margins.top)
                     + result.y - margins.top + SurveyHelper.HTML_TAIL_TEXT * controller.fontSize;
-                for (let i = 0; i < controller.helperDoc.getNumberOfPages() - 1; i++) {
+                controller.helperDoc.addPage();
+                for (let i = 0; i < controller.helperDoc.getNumberOfPages(); i++) {
                     controller.helperDoc.deletePage(1);
                 }
                 let rect = SurveyHelper.createRect(point, margins.width, yBot);
