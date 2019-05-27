@@ -16,9 +16,12 @@ export class FlatRating extends FlatRadiogroup {
         let itemText: LocalizableString = SurveyHelper.getRatingItemText(
             this.questionRating, index, item.locText);
         this.controller.pushMargins();
-        this.controller.margins.right += this.controller.measureText().height;
+        this.controller.margins.left += this.controller.measureText().width / 2.0
+        this.controller.margins.right += this.controller.measureText().width / 2.0;
+        let textPoint: IPoint = SurveyHelper.clone(point);
+        textPoint.xLeft += this.controller.measureText().width / 2.0
         let compositeFlat: CompositeBrick = new CompositeBrick(await SurveyHelper.
-            createBoldTextFlat(point, this.questionRating, this.controller, itemText));
+            createBoldTextFlat(textPoint, this.questionRating, this.controller, itemText));
         this.controller.popMargins();
         let textWidth: number = compositeFlat.width;
         if (textWidth < SurveyHelper.getRatingMinWidth(this.controller)) {
@@ -26,8 +29,7 @@ export class FlatRating extends FlatRadiogroup {
             textWidth = SurveyHelper.getRatingMinWidth(this.controller);
         }
         else {
-            compositeFlat.xLeft += this.controller.measureText().height / 2.0;
-            textWidth += this.controller.measureText().height;
+            textWidth += this.controller.measureText().width;
         }
         let radioPoint: IPoint = SurveyHelper.createPoint(compositeFlat);
         radioPoint.xLeft = point.xLeft;
