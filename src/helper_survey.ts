@@ -63,7 +63,7 @@ export class SurveyHelper {
         let bricks: IPdfBrick[] = [];
         let htmlHeight = htmlBrick.height;
         let minHeight = controller.measureText(1, 'normal', controller.doc.fontSize).height;
-        let emptyBrickCount = Math.floor(htmlBrick.height / minHeight) - 1;
+        let emptyBrickCount = Math.floor(htmlHeight / minHeight) - 1;
         htmlBrick.yBot = htmlBrick.yTop + minHeight;
         bricks.push(htmlBrick);
         let currPoint = SurveyHelper.createPoint(htmlBrick);
