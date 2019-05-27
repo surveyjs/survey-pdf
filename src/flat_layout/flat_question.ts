@@ -116,7 +116,8 @@ export class FlatQuestion implements IFlatQuestion {
                 flats.push(...contentFlats);
                 break;
             }
-            case 'hidden': {
+            case 'hidden':
+            default: {
                 flats.push(...await this.generateFlatsContent(indentPoint));
                 if (flats.length != 0) {
                     commentPoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(...flats));
