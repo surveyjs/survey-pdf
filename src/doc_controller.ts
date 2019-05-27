@@ -9,6 +9,10 @@ export interface IRect extends IPoint {
     xRight: number;
     yBot: number;
 }
+export interface ISize {
+    width: number,
+    height: number
+}
 export interface IMarginLR {
     left: number;
     right: number;
@@ -102,8 +106,8 @@ export class DocController extends DocOptions {
         this._doc.setFontStyle(fontStyle);
         this._helperDoc.setFontStyle(fontStyle);
     }
-    public measureText(text: LocalizableString | string | number = 1, fontStyle: string = this._fontStyle,
-        fontSize: number = this._fontSize): { width: number, height: number } {
+    public measureText(text: string | LocalizableString | number = 1, fontStyle: string = this._fontStyle,
+        fontSize: number = this._fontSize): ISize {
         let oldFontSize = this._helperDoc.getFontSize();
         this._helperDoc.setFontSize(fontSize);
         this._helperDoc.setFontStyle(fontStyle);

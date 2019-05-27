@@ -42,7 +42,7 @@ export class FlatMatrix extends FlatQuestion {
         return cells;
     }
     async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
-        let cellWidth = SurveyHelper.getColumnWidth(this.question, this.controller);
+        let cellWidth = SurveyHelper.getColumnWidth(this.question, this.controller, this.question.hasRows);
         let isVertical = cellWidth < this.controller.measureText(SurveyHelper.MATRIX_COLUMN_WIDTH).width;
         let currPoint: IPoint = SurveyHelper.clone(point);
         let cells: IPdfBrick[] = [];

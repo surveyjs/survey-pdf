@@ -1,5 +1,5 @@
 import { IQuestion, Question, QuestionRatingModel, LocalizableString } from 'survey-core';
-import { IPoint, IRect, DocController } from './doc_controller';
+import { IPoint, IRect, ISize, DocController,  } from './doc_controller';
 import { IPdfBrick } from './pdf_render/pdf_brick';
 import { TextBrick } from './pdf_render/pdf_text';
 import { TitleBrick } from './pdf_render/pdf_title';
@@ -83,15 +83,15 @@ export class SurveyHelper {
         let currPoint: IPoint = SurveyHelper.clone(point);
         let composite: CompositeBrick = new CompositeBrick();
         lines.forEach((line: string) => {
-            let { width, height } = controller.measureText(line);
+            let size: ISize = controller.measureText(line);
             composite.addBrick(new fabric(question, controller,
-                SurveyHelper.createRect(currPoint, width, height), line));
-            currPoint.yTop += height;
+                SurveyHelper.createRect(currPoint, size.width, size.height), line));
+            currPoint.yTop += size.height;
         });
         return composite;
     }
     public static async createTextFlat<T extends IPdfBrick>(point: IPoint, question: IQuestion,
-        controller: DocController, text: LocalizableString | string, fabric: new (question: IQuestion,
+        controller: DocController, text: string | LocalizableString, fabric: new (question: IQuestion,
             controller: DocController, rect: IRect, text: string) => T): Promise<IPdfBrick> {
         if (typeof text === 'string' || !text.hasHtml) {
             return this.createPlainTextFlat(point, question, controller, typeof text === 'string' ?
@@ -130,7 +130,7 @@ export class SurveyHelper {
         });
     }
     public static async createBoldTextFlat(point: IPoint, question: Question,
-        controller: DocController, text: LocalizableString | string) {
+        controller: DocController, text: string | LocalizableString) {
         controller.fontStyle = 'bold';
         let composite: IPdfBrick = await SurveyHelper.createTextFlat(
             point, question, controller, text, TitleBrick);
@@ -153,7 +153,7 @@ export class SurveyHelper {
         return composite;
     }
     public static async createDescFlat(point: IPoint, question: IQuestion,
-        controller: DocController, text: LocalizableString | string) {
+        controller: DocController, text: string | LocalizableString) {
         let oldFontSize: number = controller.fontSize;
         controller.fontSize = oldFontSize * SurveyHelper.DESCRIPTION_FONT_SIZE_SCALE_MAGIC;
         let composite: IPdfBrick = await SurveyHelper.createTextFlat(point, question, controller, text, DescriptionBrick);
@@ -241,10 +241,8 @@ export class SurveyHelper {
         }
         return ratingItemLocText;
     }
-    public static getColumnWidth(question: Question, controller: DocController) {
-        return SurveyHelper.getPageAvailableWidth(controller) /
-            (question.hasRows ? (question.visibleColumns.length + 1)
-                : question.visibleColumns.length);
+    public static getColumnWidth(question: Question, controller: DocController, hasRows: boolean = true) {
+        return SurveyHelper.getPageAvailableWidth(controller) / (question.visibleColumns.length + hasRows);
     }
     public static getPageAvailableWidth(controller: DocController): number {
         return controller.paperWidth - controller.margins.left - controller.margins.right;
@@ -255,7 +253,7 @@ export class SurveyHelper {
         return width > 0 ? width : controller.measureText().height;
     }
     public static setColumnMargins(question: Question, controller: DocController, column: number) {
-        let cellWidth = this.getColumnWidth(question, controller);
+        let cellWidth = this.getColumnWidth(question, controller, question.hasRows);
         controller.margins.left = controller.margins.left + column * cellWidth;
         controller.margins.right = controller.paperWidth - controller.margins.left - cellWidth;
     }
