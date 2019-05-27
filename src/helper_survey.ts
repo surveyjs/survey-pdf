@@ -22,7 +22,7 @@ export class SurveyHelper {
     public static readonly IMAGEPICKER_COUNT: number = 4;
     public static readonly IMAGEPICKER_RATIO: number = 4.0 / 3.0;
     public static readonly MULTIPLETEXT_TEXT_PERS: number = Math.E / 10.0;
-    public static readonly HTML_TAIL_TEXT: number = 0.2;
+    public static readonly HTML_TAIL_TEXT: number = 0.24;
     public static mergeRects(...rects: IRect[]): IRect {
         let resultRect: IRect = {
             xLeft: rects[0].xLeft,
@@ -61,8 +61,9 @@ export class SurveyHelper {
     }
     public static splitHtmlRect(controller: DocController, htmlBrick: IPdfBrick): IPdfBrick {
         let bricks: IPdfBrick[] = [];
-        let minHeight = controller.measureText(1, 'normal', 1).width;
-        let emptyBrickCount = Math.ceil(htmlBrick.height / minHeight) - 1;
+        let htmlHeight = htmlBrick.height;
+        let minHeight = controller.measureText(1, 'normal', controller.doc.fontSize).height;
+        let emptyBrickCount = Math.floor(htmlBrick.height / minHeight) - 1;
         htmlBrick.yBot = htmlBrick.yTop + minHeight;
         bricks.push(htmlBrick);
         let currPoint = SurveyHelper.createPoint(htmlBrick);
@@ -71,6 +72,7 @@ export class SurveyHelper {
             bricks.push(emptyBrick);
             currPoint.yTop += minHeight;
         }
+        bricks.push(new EmptyBrick(SurveyHelper.createRect(currPoint, htmlBrick.width, htmlHeight - (emptyBrickCount + 1) * minHeight)));
         return new CompositeBrick(...bricks);
     }
     public static createPlainTextFlat<T extends IPdfBrick>(point: IPoint, question: IQuestion,
