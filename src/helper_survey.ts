@@ -72,7 +72,10 @@ export class SurveyHelper {
             bricks.push(emptyBrick);
             currPoint.yTop += minHeight;
         }
-        bricks.push(new EmptyBrick(SurveyHelper.createRect(currPoint, htmlBrick.width, htmlHeight - (emptyBrickCount + 1) * minHeight)));
+        let remainingHeight = htmlHeight - (emptyBrickCount + 1) * minHeight;
+        if (remainingHeight > 0) {
+            bricks.push(new EmptyBrick(SurveyHelper.createRect(currPoint, htmlBrick.width, remainingHeight)));
+        }
         return new CompositeBrick(...bricks);
     }
     public static createPlainTextFlat<T extends IPdfBrick>(point: IPoint, question: IQuestion,
