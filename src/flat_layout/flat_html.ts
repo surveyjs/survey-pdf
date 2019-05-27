@@ -3,22 +3,18 @@ import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
 import { IPoint, DocController } from "../doc_controller";
 import { IPdfBrick } from '../pdf_render/pdf_brick';
-import { HTMLBrick } from '../pdf_render/pdf_html';
+import { QuestionHtmlModel } from 'survey-core'
 import { SurveyHelper } from '../helper_survey';
 
 export class FlatHTML extends FlatQuestion {
+    protected question: QuestionHtmlModel;
     public constructor(question: IQuestion, controller: DocController) {
         super(question, controller);
+        this.question = <QuestionHtmlModel>question;
     }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
-        return [new HTMLBrick(this.question, this.controller,
-            SurveyHelper.createRect(point, 50, 50), `
-                <img
-                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/1200px-Cat03.jpg"
-                        width="50"
-                        height="50"
-                        />
-                `)];
+        let html = SurveyHelper.createDivBlock(this.question.locHtml.renderedHtml, this.controller);
+        return [await SurveyHelper.splitHtmlRect(this.controller, await SurveyHelper.createHTMLFlat(point, this.question, this.controller, html))];
     }
 }
 
