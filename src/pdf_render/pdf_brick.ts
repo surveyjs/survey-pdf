@@ -1,9 +1,7 @@
-import { IRect, DocController } from '../doc_controller';
+import { IRect, ISize, DocController } from '../doc_controller';
 import { IQuestion } from 'survey-core';
 
-export interface IPdfBrick extends IRect {
-    width: number;
-    height: number;
+export interface IPdfBrick extends IRect, ISize {
     render(): Promise<void>;
     unfold(): IPdfBrick[];
 }
