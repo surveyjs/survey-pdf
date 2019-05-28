@@ -1473,7 +1473,7 @@ test.skip('Check matrix multiple one column one row', async () => {
         xLeft: assumeHeader.xLeft,
         xRight: assumeMatrix.xRight,
         yTop: assumeRowText.yTop,
-        yBot: assumeRowText.yTop + survey.controller.measureText().height  
+        yBot: assumeRowText.yTop + survey.controller.measureText().height
     };
     TestHelper.equalRect(expect, flats[0][3], assumeRowQuestion);
 });
@@ -1533,7 +1533,7 @@ test.skip('Check matrix multiple two columns one row vertical layout', async () 
         xLeft: assumeHeader.xLeft,
         xRight: assumeMatrix.xRight,
         yTop: assumeRow1Text.yTop,
-        yBot: assumeRow1Text.yTop + survey.controller.measureText().height  
+        yBot: assumeRow1Text.yTop + survey.controller.measureText().height
     };
     TestHelper.equalRect(expect, flats[0][3], assumeRow1Question);
     let row2Text: ISize = survey.controller.measureText(json.elements[0].columns[1].name, 'bold');
@@ -1548,7 +1548,114 @@ test.skip('Check matrix multiple two columns one row vertical layout', async () 
         xLeft: assumeHeader.xLeft,
         xRight: assumeMatrix.xRight,
         yTop: assumeRow2Text.yTop,
-        yBot: assumeRow2Text.yTop + survey.controller.measureText().height  
+        yBot: assumeRow2Text.yTop + survey.controller.measureText().height
     };
     TestHelper.equalRect(expect, flats[0][6], assumeRow2Question);
+});
+test('check checkbox with colcount 4', async () => {
+    let json = {
+        questions: [
+            {
+                titleLocation: "hidden",
+                name: 'checkbox',
+                type: 'checkbox',
+                choices: ['item1', 'item2', 'item3', 'item4', 'item5'],
+                colCount: 4
+            }
+        ]
+    };
+    let options = TestHelper.defaultOptions;
+    options.fontSize = 12;
+    let survey: SurveyPDF = new SurveyPDF(json, options);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
+    let receivedFlats: IRect[] = [];;
+    receivedFlats.push(...flats[0][0].unfold(), ...flats[0][1].unfold());
+    let itemHeight = survey.controller.measureText(1).height;
+    let assumetFlats: IRect[] = [];
+    let currPoint = TestHelper.defaultPoint;
+    for (let i = 0; i < 4; i++) {
+        let itemRect = SurveyHelper.createRect(currPoint, itemHeight, itemHeight);
+        let text = survey.controller.measureText(json.questions[0].choices[i]);
+        let textRect = SurveyHelper.createRect(SurveyHelper.createPoint(itemRect, false, true), text.width, text.height)
+        assumetFlats.push(itemRect, textRect);
+        currPoint.xLeft += SurveyHelper.getColumnWidth(survey.controller, 4);
+    }
+    currPoint = TestHelper.defaultPoint;
+    currPoint.yTop += itemHeight;
+    let rowLineRect = SurveyHelper.createRowlineFlat(currPoint, survey.controller);
+    currPoint.yTop = rowLineRect.yBot;
+    let itemRect = SurveyHelper.createRect(currPoint, itemHeight, itemHeight);
+    let text = survey.controller.measureText(json.questions[0].choices[5]);
+    let textRect = SurveyHelper.createRect(SurveyHelper.createPoint(itemRect, false, true), text.width, text.height)
+    assumetFlats.push(rowLineRect, itemRect, textRect);
+    TestHelper.equalRects(expect, receivedFlats, assumetFlats);
+});
+
+test('check checkbox with colcount 4 with big font size', async () => {
+    let json = {
+        questions: [
+            {
+                titleLocation: "hidden",
+                name: 'checkbox',
+                type: 'checkbox',
+                choices: ['item1', 'item2', 'item3', 'item4', 'item5'],
+                colCount: 4
+            }
+        ]
+    };
+    let options = TestHelper.defaultOptions;
+    let survey: SurveyPDF = new SurveyPDF(json, options);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
+    let receivedFlats: IRect[] = [];;
+    for (let i = 0; i < 5; i++) {
+        receivedFlats.push(...flats[0][i].unfold());
+    }
+    let itemHeight = survey.controller.measureText(1).height;
+    let assumetFlats: IRect[] = [];
+    let currPoint = TestHelper.defaultPoint;
+    for (let i = 0; i < 5; i++) {
+        let itemRect = SurveyHelper.createRect(currPoint, itemHeight, itemHeight);
+        let text = survey.controller.measureText(json.questions[0].choices[i]);
+        let textRect = SurveyHelper.createRect(SurveyHelper.createPoint(itemRect, false, true), text.width, text.height)
+        assumetFlats.push(itemRect, textRect);
+        currPoint.yTop = itemRect.yBot;
+    }
+    TestHelper.equalRects(expect, receivedFlats, assumetFlats);
+});
+test('check checkbox with colcount 0', async () => {
+    let json = {
+        questions: [
+            {
+                titleLocation: "hidden",
+                name: 'checkbox',
+                type: 'checkbox',
+                choices: ['item1', 'item2', 'item3', 'item4'],
+                colCount: 0
+            }
+        ]
+    };
+    let options = TestHelper.defaultOptions;
+    let survey: SurveyPDF = new SurveyPDF(json, options);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
+    let receivedFlats: IRect[] = [];;
+    receivedFlats.push(...flats[0][0].unfold(), ...flats[0][1].unfold());
+    let itemHeight = survey.controller.measureText(1).height;
+    let assumetFlats: IRect[] = [];
+    let currPoint = TestHelper.defaultPoint;
+    for (let i = 0; i < 3; i++) {
+        let itemRect = SurveyHelper.createRect(currPoint, itemHeight, itemHeight);
+        let text = survey.controller.measureText(json.questions[0].choices[i]);
+        let textRect = SurveyHelper.createRect(SurveyHelper.createPoint(itemRect, false, true), text.width, text.height)
+        assumetFlats.push(itemRect, textRect);
+        currPoint.xLeft += SurveyHelper.getColumnWidth(survey.controller, 3);
+    }
+    currPoint = TestHelper.defaultPoint;
+    currPoint.yTop += itemHeight;
+    let rowLineRect = SurveyHelper.createRowlineFlat(currPoint, survey.controller);
+    currPoint.yTop = rowLineRect.yBot;
+    let itemRect = SurveyHelper.createRect(currPoint, itemHeight, itemHeight);
+    let text = survey.controller.measureText(json.questions[0].choices[4]);
+    let textRect = SurveyHelper.createRect(SurveyHelper.createPoint(itemRect, false, true), text.width, text.height)
+    assumetFlats.push(rowLineRect, itemRect, textRect);
+    TestHelper.equalRects(expect, receivedFlats, assumetFlats);
 });
