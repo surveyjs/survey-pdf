@@ -83,6 +83,7 @@ export class FlatQuestion implements IFlatQuestion {
                 let titlePoint: IPoint = indentPoint;
                 if (contentFlats.length != 0) {
                     titlePoint = SurveyHelper.createPoint(flats[flats.length - 1]);
+                    titlePoint.xLeft = indentPoint.xLeft;
                 }
                 let titleFlat: IPdfBrick = await this.generateFlatTitle(titlePoint);
                 let compositeFlat: CompositeBrick = new CompositeBrick(titleFlat);
