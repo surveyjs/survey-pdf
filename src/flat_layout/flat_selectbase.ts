@@ -58,7 +58,7 @@ export abstract class FlatSelectBase extends FlatQuestion {
         let row: CompositeBrick = new CompositeBrick();
         for (let i: number = 0; i < this.question.visibleChoices.length; i++) {
             this.controller.pushMargins(this.controller.margins.left, this.controller.margins.right);
-            SurveyHelper.setColumnMargins(this.controller, i % colCount, colCount);
+            SurveyHelper.setColumnMargins(this.controller, colCount, i % colCount);
             currPoint.xLeft = this.controller.margins.left;
             let itemFlat: IPdfBrick = await this.generateFlatsItem(
                 currPoint, this.question.visibleChoices[i], i);

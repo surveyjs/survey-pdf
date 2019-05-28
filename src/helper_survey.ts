@@ -256,7 +256,7 @@ export class SurveyHelper {
             controller) - 3 * controller.measureText().height);
         return width > 0 ? width : controller.measureText().height;
     }
-    public static setColumnMargins(controller: DocController, column: number, colCount: number) {
+    public static setColumnMargins(controller: DocController, colCount: number, column: number) {
         let cellWidth = this.getColumnWidth(controller, colCount);
         controller.margins.left = controller.margins.left + column * cellWidth;
         controller.margins.right = controller.paperWidth - controller.margins.left - cellWidth;

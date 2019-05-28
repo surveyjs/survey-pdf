@@ -21,7 +21,7 @@ export class FlatMatrix extends FlatQuestion {
         for (let i: number = 0; i < this.question.visibleColumns.length; i++) {
             let column = this.question.hasRows ? i + 1 : i;
             this.controller.pushMargins();
-            SurveyHelper.setColumnMargins(this.controller, column, colCount);
+            SurveyHelper.setColumnMargins(this.controller, colCount, column);
             currPoint.xLeft = this.controller.margins.left;
             headers.push(await SurveyHelper.createBoldTextFlat(currPoint,
                 this.question, this.controller, this.question.visibleColumns[i].locText));
@@ -77,7 +77,7 @@ export class FlatMatrixRow extends FlatRadiogroup {
         let colCount = this.question.visibleColumns.length + (this.question.hasRows ? 1 : 0)
         if (this.questionMatrix.hasRows) {
             this.controller.pushMargins();
-            SurveyHelper.setColumnMargins(this.controller, 0, colCount);
+            SurveyHelper.setColumnMargins(this.controller, colCount, 0);
             currPoint.xLeft = this.controller.margins.left
             cells.push(await SurveyHelper.createTextFlat(currPoint, this.questionMatrix, this.controller, this.row.locText, TextBrick));
             this.controller.popMargins();
@@ -87,7 +87,7 @@ export class FlatMatrixRow extends FlatRadiogroup {
             let checked: boolean = this.row.value == column.value;
             let columnNumber: number = this.questionMatrix.hasRows ? i + 1 : i;
             this.controller.pushMargins();
-            SurveyHelper.setColumnMargins(this.controller, columnNumber, colCount);
+            SurveyHelper.setColumnMargins(this.controller, colCount, columnNumber);
             currPoint.xLeft = this.controller.margins.left;
             if (this.questionMatrix.hasCellText) {
                 let itemRect: IRect = SurveyHelper.createRect(currPoint, columnWidth, itemHeight)
