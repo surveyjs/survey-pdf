@@ -1,5 +1,5 @@
 import { IQuestion, Question, QuestionRatingModel, LocalizableString } from 'survey-core';
-import { IPoint, IRect, ISize, DocController,  } from './doc_controller';
+import { IPoint, IRect, ISize, DocController, } from './doc_controller';
 import { IPdfBrick } from './pdf_render/pdf_brick';
 import { TextBrick } from './pdf_render/pdf_text';
 import { TitleBrick } from './pdf_render/pdf_title';
@@ -244,8 +244,9 @@ export class SurveyHelper {
         }
         return ratingItemLocText;
     }
-    public static getColumnWidth(question: Question, controller: DocController, hasRows: boolean = true) {
-        return SurveyHelper.getPageAvailableWidth(controller) / (question.visibleColumns.length + hasRows);
+
+    public static getColumnWidth(controller: DocController, colCount: number) {
+        return SurveyHelper.getPageAvailableWidth(controller) / (colCount);
     }
     public static getPageAvailableWidth(controller: DocController): number {
         return controller.paperWidth - controller.margins.left - controller.margins.right;
@@ -255,8 +256,8 @@ export class SurveyHelper {
             controller) - 3 * controller.measureText().height);
         return width > 0 ? width : controller.measureText().height;
     }
-    public static setColumnMargins(question: Question, controller: DocController, column: number) {
-        let cellWidth = this.getColumnWidth(question, controller, question.hasRows);
+    public static setColumnMargins(controller: DocController, colCount: number, column: number) {
+        let cellWidth = this.getColumnWidth(controller, colCount);
         controller.margins.left = controller.margins.left + column * cellWidth;
         controller.margins.right = controller.paperWidth - controller.margins.left - cellWidth;
     }

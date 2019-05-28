@@ -17,10 +17,11 @@ export class FlatMatrix extends FlatQuestion {
     protected async generateFlatsHeader(point: IPoint): Promise<IPdfBrick[]> {
         let headers: IPdfBrick[] = [];
         let currPoint: IPoint = SurveyHelper.clone(point);
+        let colCount = this.question.visibleColumns.length + (this.question.hasRows ? 1 : 0)
         for (let i: number = 0; i < this.question.visibleColumns.length; i++) {
             let column = this.question.hasRows ? i + 1 : i;
             this.controller.pushMargins();
-            SurveyHelper.setColumnMargins(this.question, this.controller, column);
+            SurveyHelper.setColumnMargins(this.controller, colCount, column);
             currPoint.xLeft = this.controller.margins.left;
             headers.push(await SurveyHelper.createBoldTextFlat(currPoint,
                 this.question, this.controller, this.question.visibleColumns[i].locText));
@@ -42,8 +43,8 @@ export class FlatMatrix extends FlatQuestion {
         return cells;
     }
     async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
-        let cellWidth: number = SurveyHelper.getColumnWidth(this.question, this.controller, this.question.hasRows);
-        let isVertical: boolean = cellWidth < this.controller.measureText(SurveyHelper.MATRIX_COLUMN_WIDTH).width;
+        let cellWidth = SurveyHelper.getColumnWidth(this.controller, this.question.visibleColumns.length + (this.question.hasRows ? 1 : 0));
+        let isVertical = cellWidth < this.controller.measureText(SurveyHelper.MATRIX_COLUMN_WIDTH).width;
         let currPoint: IPoint = SurveyHelper.clone(point);
         let cells: IPdfBrick[] = [];
         if (!isVertical && this.question.showHeader) {
@@ -71,11 +72,12 @@ export class FlatMatrixRow extends FlatRadiogroup {
     private async generateFlatsHorizontallyCells(point: IPoint) {
         let cells: IPdfBrick[] = [];
         let currPoint: IPoint = SurveyHelper.clone(point);
-        let columnWidth: number = SurveyHelper.getColumnWidth(this.question, this.controller, this.question.hasRows);
+        let columnWidth = SurveyHelper.getColumnWidth(this.controller, this.question.visibleColumns.length + (this.question.hasRows ? 1 : 0));
         let itemHeight: number = this.controller.measureText().height;
+        let colCount = this.question.visibleColumns.length + (this.question.hasRows ? 1 : 0)
         if (this.questionMatrix.hasRows) {
             this.controller.pushMargins();
-            SurveyHelper.setColumnMargins(this.questionMatrix, this.controller, 0);
+            SurveyHelper.setColumnMargins(this.controller, colCount, 0);
             currPoint.xLeft = this.controller.margins.left
             cells.push(await SurveyHelper.createTextFlat(currPoint, this.questionMatrix, this.controller, this.row.locText, TextBrick));
             this.controller.popMargins();
@@ -85,7 +87,7 @@ export class FlatMatrixRow extends FlatRadiogroup {
             let checked: boolean = this.row.value == column.value;
             let columnNumber: number = this.questionMatrix.hasRows ? i + 1 : i;
             this.controller.pushMargins();
-            SurveyHelper.setColumnMargins(this.questionMatrix, this.controller, columnNumber);
+            SurveyHelper.setColumnMargins(this.controller, colCount, columnNumber);
             currPoint.xLeft = this.controller.margins.left;
             if (this.questionMatrix.hasCellText) {
                 let itemRect: IRect = SurveyHelper.createRect(currPoint, columnWidth, itemHeight)

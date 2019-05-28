@@ -18,7 +18,7 @@ export class FlatMatrixMultiple extends FlatQuestion {
         let currPoint: IPoint = SurveyHelper.clone(point);
         for (let i = 0; i < this.question.visibleColumns.length; i++) {
             this.controller.pushMargins();
-            SurveyHelper.setColumnMargins(this.question, this.controller, i + 1);
+            SurveyHelper.setColumnMargins(this.controller, this.question.visibleColumns.length + 1, i + 1);
             currPoint.xLeft = this.controller.margins.left;
             composite.addBrick(await SurveyHelper.createBoldTextFlat(
                 currPoint, this.question, this.controller,
