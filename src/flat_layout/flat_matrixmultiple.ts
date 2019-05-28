@@ -16,7 +16,7 @@ export class FlatMatrixMultiple extends FlatQuestion {
     private async generateFlatsHeader(point: IPoint): Promise<CompositeBrick> {
         let composite: CompositeBrick = new CompositeBrick();
         let currPoint: IPoint = SurveyHelper.clone(point);
-        for (var i = 0; i < this.question.visibleColumns.length; i++) {
+        for (let i = 0; i < this.question.visibleColumns.length; i++) {
             this.controller.pushMargins();
             SurveyHelper.setColumnMargins(this.question, this.controller, i + 1);
             currPoint.xLeft = this.controller.margins.left;
@@ -28,6 +28,10 @@ export class FlatMatrixMultiple extends FlatQuestion {
         return composite;
     }
     private async generateFlatsRowsAsHeaders(point: IPoint): Promise<CompositeBrick> {
+        let currPoint: IPoint = SurveyHelper.clone(point);
+        for (let i = 0; i < this.question.visibleRows.length; i++) {
+
+        }
         return null;
     }
     private async generateFlatsRows(point: IPoint): Promise<CompositeBrick[]> {
@@ -37,10 +41,17 @@ export class FlatMatrixMultiple extends FlatQuestion {
         return null;
     }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
-        let rowsFlats: CompositeBrick[] = [new CompositeBrick(
+        let cellWidth: number = SurveyHelper.getColumnWidth(this.question, this.controller, true);
+        let isVertical: boolean = cellWidth < this.controller.measureText(SurveyHelper.MATRIX_COLUMN_WIDTH).width;
+        let currPoint: IPoint = SurveyHelper.clone(point);
+        let rowsFlats: CompositeBrick[] = [];
+        if (!isVertical) {
+            rowsFlats.push(
+        new CompositeBrick(
             this.question.isColumnLayoutHorizontal
                 ? await this.generateFlatsHeader(point)
-                : await this.generateFlatsRowsAsHeaders(point))];
+                : await this.generateFlatsRowsAsHeaders(point)));
+        }
         let rowsPoint: IPoint = SurveyHelper.createPoint(
             SurveyHelper.mergeRects(...rowsFlats));
         rowsPoint.xLeft = point.xLeft;
