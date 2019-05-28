@@ -33,6 +33,9 @@ export abstract class FlatSelectBase extends FlatQuestion {
         if (this.question.colCount == 0) {
             colCount = Math.floor(SurveyHelper.getPageAvailableWidth(this.controller)
                 / this.controller.measureText(SurveyHelper.MATRIX_COLUMN_WIDTH).width);
+            if (this.question.visibleChoices.length < colCount) {
+                colCount = this.question.visibleChoices.length;
+            }
         }
         else if (this.question.colCount > 1) {
             colCount = (SurveyHelper.getColumnWidth(this.controller, this.question.colCount) <
