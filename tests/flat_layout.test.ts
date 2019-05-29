@@ -15,6 +15,7 @@ import { FlatImagePicker } from '../src/flat_layout/flat_imagepicker';
 import { FlatBoolean } from '../src/flat_layout/flat_boolean';
 import { FlatExpression } from '../src/flat_layout/flat_expression';
 import { FlatFile } from '../src/flat_layout/flat_file';
+import { FlatMatrixMultiple } from '../src/flat_layout/flat_matrixmultiple';
 import { FlatMultipleText } from '../src/flat_layout/flat_multipletext';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { TextBrick } from '../src/pdf_render/pdf_text';
@@ -33,6 +34,7 @@ let __dummy_ip = new FlatImagePicker(null, null);
 let __dummy_bl = new FlatBoolean(null, null);
 let __dummy_ex = new FlatExpression(null, null);
 let __dummy_fl = new FlatFile(null, null);
+let __dummy_mm = new FlatMatrixMultiple(null, null);
 let __dummy_mt = new FlatMultipleText(null, null);
 
 async function calcTitleTop(leftTopPoint: IPoint, controller: DocController,
@@ -1393,7 +1395,7 @@ test('Check expression', async () => {
     };
     TestHelper.equalRect(expect, flats[0][0], assumeExpression);
 });
-test.skip('Check matrix multiple one column no rows', async () => {
+test('Check matrix multiple one column no rows', async () => {
     let json = {
         elements: [
             {
@@ -1414,14 +1416,16 @@ test.skip('Check matrix multiple one column no rows', async () => {
     expect(flats[0].length).toBe(1);
     let size: ISize = survey.controller.measureText(json.elements[0].columns[0].name, 'bold');
     let assumeMatrix: IRect = {
-        xLeft: survey.controller.leftTopPoint.xLeft,
-        xRight: survey.controller.leftTopPoint.xLeft + size.width,
+        xLeft: survey.controller.leftTopPoint.xLeft +
+            SurveyHelper.getPageAvailableWidth(survey.controller) / 2.0,
+        xRight: survey.controller.leftTopPoint.xLeft +
+            SurveyHelper.getPageAvailableWidth(survey.controller) / 2.0 + size.width,
         yTop: survey.controller.leftTopPoint.yTop,
         yBot: survey.controller.leftTopPoint.yTop + size.height
     };
-    TestHelper.equalRect(expect, flats[0][0], assumeMatrix);
+    TestHelper.equalRect(expect, flats[0][0].unfold()[0], assumeMatrix);
 });
-test.skip('Check matrix multiple one column one row', async () => {
+test('Check matrix multiple one column one row', async () => {
     let json = {
         elements: [
             {
@@ -1442,7 +1446,11 @@ test.skip('Check matrix multiple one column one row', async () => {
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(4);
+    expect(flats[0].length).toBe(2);
+    let unfoldHeaderFlats: IPdfBrick[] = flats[0][0].unfold();
+    expect(unfoldHeaderFlats.length).toBe(2);
+    let unfoldRowFlats: IPdfBrick[] = flats[0][1].unfold();
+    expect(unfoldRowFlats.length).toBe(2);
     let header: ISize = survey.controller.measureText(json.elements[0].columns[0].name, 'bold');
     let assumeMatrix: IRect = {
         xLeft: survey.controller.leftTopPoint.xLeft,
@@ -1451,7 +1459,7 @@ test.skip('Check matrix multiple one column one row', async () => {
         yBot: survey.controller.leftTopPoint.yTop + header.height +
             SurveyHelper.EPSILON + survey.controller.measureText().height
     };
-    TestHelper.equalRect(expect, SurveyHelper.mergeRects(flats[0][0], flats[0][2], flats[0][3]), assumeMatrix);
+    TestHelper.equalRect(expect, SurveyHelper.mergeRects(flats[0][0], flats[0][1]), assumeMatrix);
     let assumeHeader: IRect = {
         xLeft: survey.controller.leftTopPoint.xLeft +
             SurveyHelper.getPageAvailableWidth(survey.controller) / 2.0,
@@ -1460,7 +1468,7 @@ test.skip('Check matrix multiple one column one row', async () => {
         yTop: survey.controller.leftTopPoint.yTop,
         yBot: survey.controller.leftTopPoint.yTop + header.height
     };
-    TestHelper.equalRect(expect, flats[0][0], assumeHeader);
+    TestHelper.equalRect(expect, unfoldHeaderFlats[0], assumeHeader);
     let rowText: ISize = survey.controller.measureText(json.elements[0].rows[0]);
     let assumeRowText: IRect = {
         xLeft: survey.controller.leftTopPoint.xLeft,
@@ -1468,14 +1476,14 @@ test.skip('Check matrix multiple one column one row', async () => {
         yTop: assumeHeader.yBot + SurveyHelper.EPSILON,
         yBot: assumeHeader.yBot + SurveyHelper.EPSILON + rowText.height
     };
-    TestHelper.equalRect(expect, flats[0][2], assumeRowText);
+    TestHelper.equalRect(expect, unfoldRowFlats[0], assumeRowText);
     let assumeRowQuestion: IRect = {
         xLeft: assumeHeader.xLeft,
         xRight: assumeMatrix.xRight,
         yTop: assumeRowText.yTop,
         yBot: assumeRowText.yTop + survey.controller.measureText().height
     };
-    TestHelper.equalRect(expect, flats[0][3], assumeRowQuestion);
+    TestHelper.equalRect(expect, unfoldRowFlats[1], assumeRowQuestion);
 });
 test.skip('Check matrix multiple two columns one row vertical layout', async () => {
     let json = {
