@@ -129,3 +129,33 @@ test('Push pop margins with params', async () => {
     expect(controller.margins.left).toBe(oldMarginLeft_1);
     expect(controller.margins.right).toBe(oldMarginRight_1);
 });
+test('scale rect 0.8', async () => {
+    let rect: IRect = {
+        xLeft: 10,
+        xRight: 20,
+        yTop: 10,
+        yBot: 20
+    }
+    let assumeRect: IRect = {
+        xLeft: 11,
+        xRight: 19,
+        yTop: 11,
+        yBot: 19
+    }
+    TestHelper.equalRect(expect, SurveyHelper.scaleRect(rect, 0.8), assumeRect);
+})
+test('scale rect 0.2', async () => {
+    let rect: IRect = {
+        xLeft: 10,
+        xRight: 20,
+        yTop: 10,
+        yBot: 20
+    }
+    let assumeRect: IRect = {
+        xLeft: 14,
+        xRight: 16,
+        yTop: 14,
+        yBot: 16
+    }
+    TestHelper.equalRect(expect, SurveyHelper.scaleRect(rect, 0.2), assumeRect);
+})
