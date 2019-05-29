@@ -288,7 +288,7 @@ var json = {
 };
 
 let options = {
-	fontSize: 30,
+	fontSize: 14,
 	margins:
 	{
 		left: 10,
@@ -355,6 +355,27 @@ let options = {
 //     ],
 //     "showQuestionNumbers": "off"
 // };
+
+json = {
+	"elements": [
+		{
+		 "type": "matrixdropdown",
+		 "name": "matri drop",
+		 "titleLocation": "default",
+		 "columns": [
+		  {
+		   "name": "First power"
+		  },
+		  {
+		   "name": "Second choice"
+		  }
+		 ],
+		 "rows": [
+		  "Cap"
+		 ]
+		}
+	   ]
+}
 
 let survey = new SurveyPDF.Survey(json, options);
 survey.setValue('car', 'Ford');
