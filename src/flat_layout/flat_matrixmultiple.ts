@@ -20,7 +20,7 @@ export class FlatMatrixMultiple extends FlatQuestion {
             ? this.question.visibleColumns.length
             : this.question.visibleRows.length;
         let currPoint: IPoint = SurveyHelper.clone(point);
-        for (let i = 0; i < count; i++) {
+        for (let i: number = 0; i < count; i++) {
             this.controller.pushMargins();
             SurveyHelper.setColumnMargins(this.controller, count + 1, i + 1);
             currPoint.xLeft = this.controller.margins.left;
@@ -36,7 +36,8 @@ export class FlatMatrixMultiple extends FlatQuestion {
         composite.addBrick(SurveyHelper.createRowlineFlat(currPoint, this.controller));
         return composite;
     }
-    private async generateFlatsRows(point: IPoint, isHorizontal: boolean): Promise<CompositeBrick[]> {
+    private async generateFlatsRows(point: IPoint, isHorizontal: boolean,
+        isWide: boolean): Promise<CompositeBrick[]> {
         let rowsFlats: CompositeBrick[] = [];
         let countInner: number = isHorizontal
             ? this.question.visibleColumns.length
@@ -45,13 +46,15 @@ export class FlatMatrixMultiple extends FlatQuestion {
             ? this.question.visibleRows.length
             : this.question.visibleColumns.length;
         let currPoint: IPoint = SurveyHelper.clone(point);
-        for (let i = 0; i < countOuter; i++) {
+        for (let i: number = 0; i < countOuter; i++) {
             rowsFlats.push(new CompositeBrick());
-            this.controller.pushMargins();
-            SurveyHelper.setColumnMargins(this.controller, countInner + 1, 0);
-            currPoint.xLeft = this.controller.margins.left
+            if (isWide) {
+                this.controller.pushMargins();
+                SurveyHelper.setColumnMargins(this.controller, countInner + 1, 0);
+                currPoint.xLeft = this.controller.margins.left
+            }
             if (isHorizontal) {
-                let row: any = this.question.visibleRows[i];
+                let row: MatrixDropdownRowModel = <MatrixDropdownRowModel>this.question.visibleRows[i];
                 if (true) {// has row names
                     rowsFlats[rowsFlats.length - 1].addBrick(await SurveyHelper.createTextFlat(
                         currPoint, this.question, this.controller, row.locText, TextBrick));
@@ -62,20 +65,35 @@ export class FlatMatrixMultiple extends FlatQuestion {
                 rowsFlats[rowsFlats.length - 1].addBrick(await SurveyHelper.createBoldTextFlat(
                     currPoint, this.question, this.controller, column.locTitle));
             }
-            this.controller.popMargins();
-            for (let j = 0; j < countInner; j++) {
+            if (isWide) {
+                this.controller.popMargins();
+            }
+            for (let j: number = 0; j < countInner; j++) {
                 let cellI: number = isHorizontal ? i : j;
                 let cellJ: number = isHorizontal ? j : i;
                 let cell: MatrixDropdownCell = this.question.visibleRows[cellI].cells[cellJ];
-                this.controller.pushMargins();
-                SurveyHelper.setColumnMargins(this.controller, countInner + 1, j + 1);
-                currPoint.xLeft = this.controller.margins.left;
+                if (isWide) {
+                    this.controller.pushMargins();
+                    SurveyHelper.setColumnMargins(this.controller, countInner + 1, j + 1);
+                    currPoint.xLeft = this.controller.margins.left;
+                }
+                else {
+                    currPoint.yTop = rowsFlats[rowsFlats.length - 1].yBot;
+                    let locText: LocalizableString = isHorizontal
+                        ? this.question.visibleColumns[cellJ].locTitle
+                        : (<MatrixDropdownRowModel>this.question.visibleRows[cellI]).locText;
+                    rowsFlats[rowsFlats.length - 1].addBrick(await SurveyHelper.createTextFlat(
+                        currPoint, this.question, this.controller, locText, TextBrick));
+                    currPoint.yTop = rowsFlats[rowsFlats.length - 1].yBot;
+                }
                 cell.question.titleLocation = 'hidden';
                 let flatQuestion: IFlatQuestion = FlatRepository.getInstance().
                     create(cell.question, this.controller);
                 rowsFlats[rowsFlats.length - 1].addBrick(
                     ...await flatQuestion.generateFlats(currPoint));
-                this.controller.popMargins();
+                if (isWide) {
+                    this.controller.popMargins();
+                }
             }
             currPoint.xLeft = point.xLeft;
             currPoint.yTop = rowsFlats[rowsFlats.length - 1].yBot;
@@ -87,35 +105,22 @@ export class FlatMatrixMultiple extends FlatQuestion {
         }
         return rowsFlats;
     }
-    private async generateFlatsRowsVertical(point: IPoint): Promise<CompositeBrick[]> {
-        return null;
-    }
-    private async generateFlatsColumnsAsRowsVertical(point: IPoint): Promise<CompositeBrick[]> {
-        return null;
-    }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         let cellWidth: number = SurveyHelper.getColumnWidth(
             this.controller, this.question.visibleColumns.length + 1);
-        let isHorizontal: boolean = cellWidth >=
+        let isWide: boolean = cellWidth >=
             this.controller.measureText(SurveyHelper.MATRIX_COLUMN_WIDTH).width;
         let currPoint: IPoint = SurveyHelper.clone(point);
         let rowsFlats: CompositeBrick[] = [];
-        if (isHorizontal) {
+        if (isWide) {
             let headers: CompositeBrick = await this.generateFlatsHeader(
                 point, this.question.isColumnLayoutHorizontal);
             currPoint = SurveyHelper.createPoint(headers);
             currPoint.xLeft = point.xLeft;
             rowsFlats.push(headers);
         }
-        if (isHorizontal) {
-            rowsFlats.push(...await this.generateFlatsRows(currPoint,
-                this.question.isColumnLayoutHorizontal));
-        }
-        else {
-            rowsFlats.push(...this.question.isColumnLayoutHorizontal
-                ? await this.generateFlatsRowsVertical(currPoint)
-                : await this.generateFlatsColumnsAsRowsVertical(currPoint));
-        }
+        rowsFlats.push(...await this.generateFlatsRows(currPoint,
+            this.question.isColumnLayoutHorizontal, isWide));
         return rowsFlats;
     }
 }
