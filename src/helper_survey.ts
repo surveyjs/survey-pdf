@@ -53,11 +53,16 @@ export class SurveyHelper {
         };
     }
     public static createDivBlock(element: string, controller: DocController) {
-        return `<div style=` + this.generateCssTextRule(controller.fontSize,
-            controller.fontStyle, controller.doc.internal.getFont().fontName) + `>` + element + `</div>`;
+        return `<div style= ${this.generateCssTextRule(controller.fontSize,
+            controller.fontStyle,
+            controller.doc.internal.getFont().fontName)}>
+            ${element}
+            </div>`;
     }
     public static generateCssTextRule(fontSize: number, fontStyle: string, fontName: string): string {
-        return `'font-size: ` + fontSize + `pt; font-weight:` + fontStyle + `; font-family:` + fontName + `;'`;
+        return `'font-size: ${fontSize}pt; 
+                 font-weight: ${fontStyle}; 
+                 font-family:${fontName};'`;
     }
     public static splitHtmlRect(controller: DocController, htmlBrick: IPdfBrick): IPdfBrick {
         let bricks: IPdfBrick[] = [];
