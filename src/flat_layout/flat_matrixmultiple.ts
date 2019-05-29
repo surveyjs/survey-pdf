@@ -53,7 +53,8 @@ export class FlatMatrixMultiple extends FlatQuestion {
                 let cell: MatrixDropdownCell = this.question.visibleRows[i].cells[j];
                 this.controller.pushMargins();
                 SurveyHelper.setColumnMargins(this.controller, colCount + 1, j + 1);
-                currPoint.xLeft = this.controller.margins.left
+                currPoint.xLeft = this.controller.margins.left;
+                cell.question.titleLocation = 'hidden';
                 let flatQuestion: IFlatQuestion = FlatRepository.getInstance().
                     create(cell.question, this.controller);
                 rowsFlats[rowsFlats.length - 1].addBrick(
