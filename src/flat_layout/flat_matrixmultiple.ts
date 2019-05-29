@@ -27,7 +27,7 @@ export class FlatMatrixMultiple extends FlatQuestion {
             this.controller.popMargins();
         }
         currPoint.xLeft = point.xLeft;
-        currPoint.yTop = composite.yBot;
+        currPoint.yTop = colCount !== 0 ? composite.yBot : point.yTop;
         composite.addBrick(SurveyHelper.createRowlineFlat(currPoint, this.controller));
         return composite;
     }
