@@ -17,7 +17,7 @@ export class FlatMatrixMultiple extends FlatQuestion {
     }
     private async generateFlatsHeader(point: IPoint, isHorizontal: boolean): Promise<CompositeBrick> {
         let composite: CompositeBrick = new CompositeBrick();
-        if (!isHorizontal && !this.isMultiple) return composite;
+        if (!this.isMultiple && (!isHorizontal || !this.question.showHeader)) return composite;
         let count: number = isHorizontal
             ? this.question.visibleColumns.length
             : this.question.visibleRows.length;
@@ -46,7 +46,8 @@ export class FlatMatrixMultiple extends FlatQuestion {
         let countOuter: number = isHorizontal
             ? this.question.visibleRows.length
             : this.question.visibleColumns.length;
-        let rowNamesGain: number = this.isMultiple ? 1 : 0;
+        let rowNamesGain: number = this.isMultiple ||
+            (!isHorizontal && this.question.showHeader) ? 1 : 0;
         let currPoint: IPoint = SurveyHelper.clone(point);
         for (let i: number = 0; i < countOuter; i++) {
             let composite: CompositeBrick = new CompositeBrick();
@@ -56,13 +57,13 @@ export class FlatMatrixMultiple extends FlatQuestion {
                 currPoint.xLeft = this.controller.margins.left
             }
             if (isHorizontal) {
-                let row: MatrixDropdownRowModel = <MatrixDropdownRowModel>this.question.visibleRows[i];
                 if (this.isMultiple) {
+                    let row: MatrixDropdownRowModel = <MatrixDropdownRowModel>this.question.visibleRows[i];
                     composite.addBrick(await SurveyHelper.createTextFlat(
                         currPoint, this.question, this.controller, row.locText, TextBrick));
                 }
             }
-            else {
+            else if (this.isMultiple || this.question.showHeader) {
                 let column: MatrixDropdownColumn = this.question.visibleColumns[i];
                 composite.addBrick(await SurveyHelper.createBoldTextFlat(
                     currPoint, this.question, this.controller, column.locTitle));
@@ -84,7 +85,7 @@ export class FlatMatrixMultiple extends FlatQuestion {
                     currPoint.yTop = composite.yBot;
                     let locText: LocalizableString = isHorizontal
                         ? this.question.visibleColumns[cellJ].locTitle
-                        : (<MatrixDropdownRowModel>this.question.visibleRows[cellI]).locText;
+                        : (<MatrixDropdownRowModel>this.question.visibleRows[cellI]).locText; //dynamic
                     composite.addBrick(await SurveyHelper.createTextFlat(
                         currPoint, this.question, this.controller, locText, TextBrick));
                     currPoint.yTop = composite.yBot;
