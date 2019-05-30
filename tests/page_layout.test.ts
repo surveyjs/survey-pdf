@@ -53,9 +53,10 @@ test('Long checkbox with indent', async () => {
             }
         ]
     };
+    let checkGap: number = 1.0 + SurveyHelper.GAP_BETWEEN_ROWS;
     let options: IDocOptions = TestHelper.defaultOptions;
-    options.format = [210, options.margins.top + new DocController(options).
-        measureText().height * 3.5 / DocController.MM_TO_PT + options.margins.bot];
+    options.format = [210.0, options.margins.top + new DocController(options).
+        measureText().height * checkGap * 3.5 / DocController.MM_TO_PT + options.margins.bot];
     options.orientation = 'l';
     let survey: SurveyPDF = new SurveyPDF(json, options);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
@@ -68,12 +69,12 @@ test('Long checkbox with indent', async () => {
     let leftTopPoint: IPoint = survey.controller.leftTopPoint;
     leftTopPoint.xLeft += survey.controller.measureText(json.questions[0].indent).width;
     TestHelper.equalPoint(expect, packs[0][0], leftTopPoint);
-    leftTopPoint.yTop += survey.controller.measureText().height * 2;
+    leftTopPoint.yTop += survey.controller.measureText().height * (1.0 + checkGap);
     TestHelper.equalPoint(expect, packs[0][1], leftTopPoint);
     leftTopPoint.yTop = survey.controller.leftTopPoint.yTop;
     for (let i: number = 0; i < 3; i++) {
         TestHelper.equalPoint(expect, packs[1][i], leftTopPoint);
-        leftTopPoint.yTop += survey.controller.measureText().height;
+        leftTopPoint.yTop += survey.controller.measureText().height * checkGap;
     }
 });
 test('Check two textbox flats sort order', async () => {
@@ -279,5 +280,6 @@ test('Check yTop on new page with panel', async () => {
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     let packs: IPdfBrick[][] = PagePacker.pack(flats, survey.controller);
-    expect(packs[1][19].yTop).toBeCloseTo(packs[1][20].yTop - survey.controller.measureText().height);
+    expect(packs[2][0].yTop).toBeCloseTo(packs[2][1].yTop -
+        survey.controller.measureText().height * (1.0 + SurveyHelper.GAP_BETWEEN_ROWS));
 });

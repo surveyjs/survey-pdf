@@ -18,8 +18,13 @@ export abstract class FlatSelectBase extends FlatQuestion {
         let compositeFlat: CompositeBrick = new CompositeBrick();
         let height: number = this.controller.measureText().height;
         let itemRect: IRect = SurveyHelper.createRect(point, height, height);
-        compositeFlat.addBrick(this.createItemBrick(itemRect, item, index));
-        let textPoint: IPoint = SurveyHelper.createPoint(itemRect, false, true);
+
+        let itemFlat: IPdfBrick = this.createItemBrick(SurveyHelper.moveRect(
+            SurveyHelper.scaleRect(itemRect, SurveyHelper.SELECT_ITEM_SCALE),
+            point.xLeft), item, index);
+        compositeFlat.addBrick(itemFlat);
+        let textPoint: IPoint = SurveyHelper.clone(point);
+        textPoint.xLeft = itemFlat.xRight + itemFlat.width;
         compositeFlat.addBrick(await SurveyHelper.createTextFlat(
             textPoint, this.question, this.controller, item.locText, TextBrick));
         if (item.value === this.question.otherItem.value) {
@@ -50,7 +55,9 @@ export abstract class FlatSelectBase extends FlatQuestion {
         for (let i: number = 0; i < this.question.visibleChoices.length; i++) {
             let itemFlat: IPdfBrick = await this.generateFlatsItem(
                 currPoint, this.question.visibleChoices[i], i);
-            currPoint.yTop = itemFlat.yBot;
+            currPoint.yTop = itemFlat.yBot +
+                SurveyHelper.GAP_BETWEEN_ROWS *
+                this.controller.measureText(1).height;
             flats.push(itemFlat);
         }
         return flats;
@@ -69,7 +76,9 @@ export abstract class FlatSelectBase extends FlatQuestion {
             this.controller.popMargins();
             if (i % colCount == colCount - 1 || i == this.question.visibleChoices.length - 1) {
                 let rowLineFlat = SurveyHelper.createRowlineFlat(SurveyHelper.createPoint(row), this.controller);
-                currPoint.yTop = rowLineFlat.yBot;
+                currPoint.yTop = rowLineFlat.yBot +
+                    SurveyHelper.GAP_BETWEEN_ROWS *
+                    this.controller.measureText(1).height;
                 flats.push(row, rowLineFlat);
                 row = new CompositeBrick();
             }

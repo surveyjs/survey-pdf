@@ -23,6 +23,8 @@ export class SurveyHelper {
     public static readonly IMAGEPICKER_RATIO: number = 4.0 / 3.0;
     public static readonly MULTIPLETEXT_TEXT_PERS: number = Math.E / 10.0;
     public static readonly HTML_TAIL_TEXT: number = 0.24;
+    public static readonly SELECT_ITEM_SCALE: number = 0.8;
+    public static readonly GAP_BETWEEN_ROWS: number = 0.25;
     public static mergeRects(...rects: IRect[]): IRect {
         let resultRect: IRect = {
             xLeft: rects[0].xLeft,

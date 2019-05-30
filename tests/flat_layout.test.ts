@@ -110,14 +110,17 @@ export async function calcIndent(expect: any, leftTopPoint: IPoint, controller: 
     if (titleQuestion != null) {
         assumeTitle = await SurveyHelper.createTitleFlat(leftTopPoint, titleQuestion, controller);
     }
-    let assumeCheckbox: IRect = SurveyHelper.createRect(
-        SurveyHelper.createPoint(assumeTitle),
-        controller.measureText().height, controller.measureText().height);
-    let assumeChecktext: IRect = await SurveyHelper.createTextFlat(
-        SurveyHelper.createPoint(assumeCheckbox, false, true),
+    let minHeight = controller.measureText().height;
+    let assumeCheckbox: IRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(SurveyHelper.createRect(
+        SurveyHelper.createPoint(assumeTitle), minHeight, minHeight), SurveyHelper.SELECT_ITEM_SCALE));
+    let textPoint = SurveyHelper.createPoint(assumeTitle);
+    textPoint.xLeft = 2 * assumeCheckbox.xRight - assumeCheckbox.xLeft;
+    let assumeChecktext: IRect = await SurveyHelper.createTextFlat(textPoint,
         null, controller, checktext, TextBrick);
     TestHelper.equalRect(expect, compositeFlat, SurveyHelper.mergeRects(assumeTitle, assumeCheckbox, assumeChecktext));
-    return SurveyHelper.createPoint(assumeCheckbox);
+    let point = SurveyHelper.createPoint(assumeCheckbox);
+    point.yTop += minHeight * SurveyHelper.GAP_BETWEEN_ROWS;
+    return
 }
 
 test('Calc textbox boundaries title top', async () => {
@@ -272,23 +275,24 @@ async function commentPointAfterItem(titleLocation: string) {
     if (titleLocation !== 'bottom') expect(resultRects[0].length).toBe(2);
     else expect(resultRects[0].length).toBe(3);
     if (titleLocation === 'top' || titleLocation === 'left') {
-        TestHelper.equalPoint(expect, SurveyHelper.createPoint(resultRects[0][0].unfold()[1]), resultRects[0][1]);
+        TestHelper.equalPoint(expect, SurveyHelper.createPoint(SurveyHelper.mergeRects(resultRects[0][0].unfold()[1],
+            SurveyHelper.mergeRects(resultRects[0][0].unfold()[2]))), resultRects[0][1]);
     } else {
         TestHelper.equalPoint(expect, SurveyHelper.createPoint(resultRects[0][0]), resultRects[0][1]);
     }
 }
 
 test('Comment point after choice, title location: ' + 'top', async () => {
-    commentPointAfterItem('top');
+    await commentPointAfterItem('top');
 })
 test('Comment point after choice, title location: ' + 'bottom', async () => {
-    commentPointAfterItem('bottom');
+    await commentPointAfterItem('bottom');
 })
 test('Comment point after choice, title location: ' + 'hidden', async () => {
-    commentPointAfterItem('hidden');
+    await commentPointAfterItem('hidden');
 })
 test('Comment point after choice, title location: ' + 'left', async () => {
-    commentPointAfterItem('left');
+    await commentPointAfterItem('left');
 })
 
 test('Calc boundaries with space between questions', async () => {
@@ -363,9 +367,11 @@ test('Check that checkbox has square boundaries', async () => {
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     await survey.render();
-    let assumeCheckbox: IRect = SurveyHelper.createRect(
+    let assumeCheckbox: IRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(SurveyHelper.createRect(
         TestHelper.defaultPoint,
-        survey.controller.measureText().height, survey.controller.measureText().height);
+        survey.controller.measureText().height, survey.controller.measureText().height),
+        SurveyHelper.SELECT_ITEM_SCALE),
+        TestHelper.defaultPoint.xLeft);
     let acroFormFields = survey.controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields;
     let internalRect = acroFormFields[0].Rect;
     TestHelper.equalRect(expect, SurveyHelper.createRect(
@@ -390,11 +396,13 @@ test('Check other checkbox place ', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     let receivedRects: IRect[] = flats[0][0].unfold();
     let currPoint = TestHelper.defaultPoint;
-    let itemWidth: number = survey.controller.measureText().width;
+    let minHeight: number = survey.controller.measureText().width;
     let assumeRects: IRect[] = [];
-    let itemRect: IRect = SurveyHelper.createRect(currPoint, itemWidth, itemWidth);
+    let itemRect: IRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(
+        SurveyHelper.createRect(currPoint, minHeight, minHeight),
+        SurveyHelper.SELECT_ITEM_SCALE), currPoint.xLeft);
     assumeRects.push(itemRect);
-    currPoint = SurveyHelper.createPoint(itemRect, false, true);
+    currPoint.xLeft = 2 * itemRect.xRight - itemRect.xLeft;
     let textRect =
         (await SurveyHelper.createTextFlat(currPoint, survey.getAllQuestions()[0], survey.controller, json.questions[0].otherText, TextBrick)).unfold();
     currPoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(itemRect, ...textRect));
@@ -538,7 +546,7 @@ test('Calc boundaries title hidden with description', async () => {
     TestHelper.equalRect(expect, flats[0][0], assumeTextbox);
 });
 test('Calc boundaries with indent', async () => {
-    for (let i: number = 0; i < 10; i++) {
+    for (let i: number = 0; i < 9; i++) {
         let json = {
             questions: [
                 {
@@ -558,7 +566,7 @@ test('Calc boundaries with indent', async () => {
         expect(flats[0].length).toBe(1);
         let leftTopPoint: IPoint = survey.controller.leftTopPoint;
         leftTopPoint.xLeft += survey.controller.measureText(i).width;
-        calcIndent(expect, leftTopPoint, survey.controller,
+        await calcIndent(expect, leftTopPoint, survey.controller,
             flats[0][0], json.questions[0].choices[0],
             <Question>survey.getAllQuestions()[0]);
     }
@@ -784,7 +792,7 @@ test('Check panel with inner indent', async () => {
     expect(flats[0].length).toBe(1);
     let panelContentPoint: IPoint = survey.controller.leftTopPoint;
     panelContentPoint.xLeft += survey.controller.measureText(json.elements[0].innerIndent).width;
-    calcTitleTop(panelContentPoint, survey.controller,
+    await calcTitleTop(panelContentPoint, survey.controller,
         <Question>survey.getAllQuestions()[0], flats[0][0]);
 });
 test('Check question title location in panel', async () => {
@@ -1609,7 +1617,7 @@ test.skip('Check matrix multiple two columns one row horizontal layout narrow wi
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.paperWidth - survey.controller.margins.right,
         yTop: assumeRow1Text.yBot,
-        yBot: assumeRow1Text.yBot + survey.controller.measureText().height  
+        yBot: assumeRow1Text.yBot + survey.controller.measureText().height
     };
     TestHelper.equalRect(expect, flats[0][3], assumeRow1Question);
     let row2Text: ISize = survey.controller.measureText(json.elements[0].columns[1].name);
@@ -1624,7 +1632,7 @@ test.skip('Check matrix multiple two columns one row horizontal layout narrow wi
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.paperWidth - survey.controller.margins.right,
         yTop: assumeRow2Text.yBot,
-        yBot: assumeRow2Text.yBot + survey.controller.measureText().height  
+        yBot: assumeRow2Text.yBot + survey.controller.measureText().height
     };
     TestHelper.equalRect(expect, flats[0][6], assumeRow2Question);
     let assumeMatrix: IRect = {
@@ -1686,7 +1694,7 @@ test.skip('Check matrix multiple two columns one row vertical layout narrow widt
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.paperWidth - survey.controller.margins.right,
         yTop: assumeRow1Text.yBot,
-        yBot: assumeRow1Text.yBot + survey.controller.measureText().height  
+        yBot: assumeRow1Text.yBot + survey.controller.measureText().height
     };
     TestHelper.equalRect(expect, flats[0][3], assumeRow1Question);
     let header2: ISize = survey.controller.measureText(json.elements[0].columns[1].name, 'bold');
@@ -1709,7 +1717,7 @@ test.skip('Check matrix multiple two columns one row vertical layout narrow widt
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.paperWidth - survey.controller.margins.right,
         yTop: assumeRow2Text.yBot,
-        yBot: assumeRow2Text.yBot + survey.controller.measureText().height  
+        yBot: assumeRow2Text.yBot + survey.controller.measureText().height
     };
     TestHelper.equalRect(expect, flats[0][8], assumeRow2Question);
     let assumeMatrix: IRect = {
@@ -1739,23 +1747,31 @@ test('Check checkbox with colCount 4 with small font size 12', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     let receivedFlats: IRect[] = [];;
     receivedFlats.push(...flats[0][0].unfold(), ...flats[0][1].unfold());
-    let itemHeight = survey.controller.measureText(1).height;
+    let minHeight = survey.controller.measureText(1).height;
     let assumetFlats: IRect[] = [];
     let currPoint = TestHelper.defaultPoint;
     for (let i = 0; i < 4; i++) {
-        let itemRect = SurveyHelper.createRect(currPoint, itemHeight, itemHeight);
+        let itemRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(
+            SurveyHelper.createRect(currPoint, minHeight, minHeight),
+            SurveyHelper.SELECT_ITEM_SCALE), currPoint.xLeft);
+        let textPoint = SurveyHelper.clone(currPoint);
+        textPoint.xLeft = 2 * itemRect.xRight - itemRect.xLeft;
         let text = survey.controller.measureText(json.questions[0].choices[i]);
-        let textRect = SurveyHelper.createRect(SurveyHelper.createPoint(itemRect, false, true), text.width, text.height)
+        let textRect = SurveyHelper.createRect(textPoint, text.width, text.height)
         assumetFlats.push(itemRect, textRect);
         currPoint.xLeft += SurveyHelper.getColumnWidth(survey.controller, 4);
     }
     currPoint = TestHelper.defaultPoint;
-    currPoint.yTop += itemHeight;
+    currPoint.yTop += minHeight;
     let rowLineRect = SurveyHelper.createRowlineFlat(currPoint, survey.controller);
-    currPoint.yTop = rowLineRect.yBot;
-    let itemRect = SurveyHelper.createRect(currPoint, itemHeight, itemHeight);
+    currPoint.yTop += rowLineRect.yBot + minHeight;
+    let itemRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(
+        SurveyHelper.createRect(currPoint, minHeight, minHeight),
+        SurveyHelper.SELECT_ITEM_SCALE), currPoint.xLeft);
+    let textPoint = SurveyHelper.clone(currPoint);
+    textPoint.xLeft = 2 * itemRect.xRight - itemRect.xLeft;
     let text = survey.controller.measureText(json.questions[0].choices[5]);
-    let textRect = SurveyHelper.createRect(SurveyHelper.createPoint(itemRect, false, true), text.width, text.height)
+    let textRect = SurveyHelper.createRect(textPoint, text.width, text.height)
     assumetFlats.push(rowLineRect, itemRect, textRect);
     TestHelper.equalRects(expect, receivedFlats, assumetFlats);
 });
@@ -1779,15 +1795,19 @@ test('Check checkbox with colCount 4 with big font size 30', async () => {
     for (let i = 0; i < 5; i++) {
         receivedFlats.push(...flats[0][i].unfold());
     }
-    let itemHeight = survey.controller.measureText(1).height;
+    let minHeight = survey.controller.measureText(1).height;
     let assumetFlats: IRect[] = [];
     let currPoint = TestHelper.defaultPoint;
     for (let i = 0; i < 5; i++) {
-        let itemRect = SurveyHelper.createRect(currPoint, itemHeight, itemHeight);
+        let itemRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(
+            SurveyHelper.createRect(currPoint, minHeight, minHeight),
+            SurveyHelper.SELECT_ITEM_SCALE), currPoint.xLeft);
+        let textPoint = SurveyHelper.clone(currPoint);
+        textPoint.xLeft = 2 * itemRect.xRight - itemRect.xLeft;
         let text = survey.controller.measureText(json.questions[0].choices[i]);
-        let textRect = SurveyHelper.createRect(SurveyHelper.createPoint(itemRect, false, true), text.width, text.height)
+        let textRect = SurveyHelper.createRect(textPoint, text.width, text.height)
         assumetFlats.push(itemRect, textRect);
-        currPoint.yTop = itemRect.yBot;
+        currPoint.yTop += minHeight + SurveyHelper.GAP_BETWEEN_ROWS * minHeight;
     }
     TestHelper.equalRects(expect, receivedFlats, assumetFlats);
 });
@@ -1807,24 +1827,33 @@ test('Check checkbox with colCount 0 with big font size 30', async () => {
     let survey: SurveyPDF = new SurveyPDF(json, options);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     let receivedFlats: IRect[] = [];;
-    receivedFlats.push(...flats[0][0].unfold(), ...flats[0][1].unfold());
-    let itemHeight = survey.controller.measureText(1).height;
+    receivedFlats.push(...flats[0][0].unfold(), ...flats[0][1].unfold(), ...flats[0][2].unfold());
+    let minHeight = survey.controller.measureText(1).height;
     let assumetFlats: IRect[] = [];
     let currPoint = TestHelper.defaultPoint;
     for (let i = 0; i < 3; i++) {
-        let itemRect = SurveyHelper.createRect(currPoint, itemHeight, itemHeight);
+        let itemRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(
+            SurveyHelper.createRect(currPoint, minHeight, minHeight),
+            SurveyHelper.SELECT_ITEM_SCALE), currPoint.xLeft);
+        let textPoint = SurveyHelper.clone(currPoint);
+        textPoint.xLeft = 2 * itemRect.xRight - itemRect.xLeft;
         let text = survey.controller.measureText(json.questions[0].choices[i]);
-        let textRect = SurveyHelper.createRect(SurveyHelper.createPoint(itemRect, false, true), text.width, text.height)
+        let textRect = SurveyHelper.createRect(textPoint, text.width, text.height)
         assumetFlats.push(itemRect, textRect);
         currPoint.xLeft += SurveyHelper.getColumnWidth(survey.controller, 3);
     }
     currPoint = TestHelper.defaultPoint;
-    currPoint.yTop += itemHeight;
+    currPoint.yTop += minHeight;
     let rowLineRect = SurveyHelper.createRowlineFlat(currPoint, survey.controller);
     currPoint.yTop = rowLineRect.yBot;
-    let itemRect = SurveyHelper.createRect(currPoint, itemHeight, itemHeight);
-    let text = survey.controller.measureText(json.questions[0].choices[4]);
-    let textRect = SurveyHelper.createRect(SurveyHelper.createPoint(itemRect, false, true), text.width, text.height)
+    currPoint.yTop += SurveyHelper.GAP_BETWEEN_ROWS * minHeight;
+    let itemRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(
+        SurveyHelper.createRect(currPoint, minHeight, minHeight),
+        SurveyHelper.SELECT_ITEM_SCALE), currPoint.xLeft);
+    let textPoint = SurveyHelper.clone(currPoint);
+    textPoint.xLeft = 2 * itemRect.xRight - itemRect.xLeft;
+    let text = survey.controller.measureText(json.questions[0].choices[3]);
+    let textRect = SurveyHelper.createRect(textPoint, text.width, text.height)
     assumetFlats.push(rowLineRect, itemRect, textRect);
     TestHelper.equalRects(expect, receivedFlats, assumetFlats);
 });
@@ -1846,13 +1875,17 @@ test('Check checkbox with colCount 0 with small font size 12', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     let receivedFlats: IRect[] = [];;
     receivedFlats.push(...flats[0][0].unfold());
-    let itemHeight = survey.controller.measureText(1).height;
+    let minHeight = survey.controller.measureText(1).height;
     let assumetFlats: IRect[] = [];
     let currPoint = TestHelper.defaultPoint;
     for (let i = 0; i < 4; i++) {
-        let itemRect = SurveyHelper.createRect(currPoint, itemHeight, itemHeight);
+        let itemRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(
+            SurveyHelper.createRect(currPoint, minHeight, minHeight),
+            SurveyHelper.SELECT_ITEM_SCALE), currPoint.xLeft);
         let text = survey.controller.measureText(json.questions[0].choices[i]);
-        let textRect = SurveyHelper.createRect(SurveyHelper.createPoint(itemRect, false, true), text.width, text.height)
+        let textPoint = SurveyHelper.clone(currPoint);
+        textPoint.xLeft = 2 * itemRect.xRight - itemRect.xLeft;
+        let textRect = SurveyHelper.createRect(textPoint, text.width, text.height)
         assumetFlats.push(itemRect, textRect);
         currPoint.xLeft += SurveyHelper.getColumnWidth(survey.controller, 4);
     }
