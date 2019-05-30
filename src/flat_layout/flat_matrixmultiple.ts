@@ -10,12 +10,14 @@ import { SurveyHelper } from '../helper_survey';
 
 export class FlatMatrixMultiple extends FlatQuestion {
     protected question: QuestionMatrixDropdownModelBase;
-    public constructor(question: IQuestion, controller: DocController) {
+    public constructor(question: IQuestion, controller: DocController,
+        protected isMultiple: boolean = true) {
         super(question, controller);
         this.question = <QuestionMatrixDropdownModelBase>question;
     }
     private async generateFlatsHeader(point: IPoint, isHorizontal: boolean): Promise<CompositeBrick> {
         let composite: CompositeBrick = new CompositeBrick();
+        if (!isHorizontal && !this.isMultiple) return composite;
         let count: number = isHorizontal
             ? this.question.visibleColumns.length
             : this.question.visibleRows.length;
@@ -31,9 +33,6 @@ export class FlatMatrixMultiple extends FlatQuestion {
                 currPoint, this.question, this.controller, locText));
             this.controller.popMargins();
         }
-        currPoint.xLeft = point.xLeft;
-        currPoint.yTop = count !== 0 ? composite.yBot : point.yTop;
-        composite.addBrick(SurveyHelper.createRowlineFlat(currPoint, this.controller));
         return composite;
     }
     private async generateFlatsRows(point: IPoint, isHorizontal: boolean,
@@ -115,8 +114,10 @@ export class FlatMatrixMultiple extends FlatQuestion {
         if (isWide) {
             let headers: CompositeBrick = await this.generateFlatsHeader(
                 point, this.question.isColumnLayoutHorizontal);
-            currPoint = SurveyHelper.createPoint(headers);
             currPoint.xLeft = point.xLeft;
+            currPoint.yTop = headers.xLeft !== 0 ? headers.yBot : point.yTop;
+            headers.addBrick(SurveyHelper.createRowlineFlat(currPoint, this.controller));
+            currPoint.yTop += SurveyHelper.EPSILON;
             rowsFlats.push(headers);
         }
         rowsFlats.push(...await this.generateFlatsRows(currPoint,
