@@ -266,6 +266,16 @@ export class SurveyHelper {
         controller.margins.left = controller.margins.left + column * cellWidth;
         controller.margins.right = controller.paperWidth - controller.margins.left - cellWidth;
     }
+    public static moveRect(rect: IRect, left: number = rect.xLeft, top: number = rect.yTop): IRect {
+        let width: number = rect.xRight - rect.xLeft;
+        let height: number = rect.yBot - rect.yTop;
+        return {
+            xLeft: left,
+            yTop: top,
+            xRight: left + width,
+            yBot: top + height
+        }
+    }
     public static scaleRect(rect: IRect, scale: number) {
         let scaleWidth: number = (rect.xRight - rect.xLeft) * ((1 - scale) / 2);
         let scaleHeight: number = (rect.yBot - rect.yTop) * ((1 - scale) / 2);

@@ -159,3 +159,49 @@ test('scale rect 0.2', async () => {
     }
     TestHelper.equalRect(expect, SurveyHelper.scaleRect(rect, 0.2), assumeRect);
 })
+test('move rect to (0,0)', async () => {
+    let rect: IRect = {
+        xLeft: 10,
+        xRight: 20,
+        yTop: 10,
+        yBot: 20
+    }
+    let assumeRect: IRect = {
+        xLeft: 0,
+        xRight: 10,
+        yTop: 0,
+        yBot: 10
+    }
+    TestHelper.equalRect(expect, SurveyHelper.moveRect(rect, 0, 0), assumeRect);
+}
+);
+test('move rect to (0, undefined)', async () => {
+    let rect: IRect = {
+        xLeft: 10,
+        xRight: 20,
+        yTop: 10,
+        yBot: 20
+    }
+    let assumeRect: IRect = {
+        xLeft: 0,
+        xRight: 10,
+        yTop: 10,
+        yBot: 20
+    }
+    TestHelper.equalRect(expect, SurveyHelper.moveRect(rect, 0), assumeRect);
+})
+test('move rect to (undefined, 0)', async () => {
+    let rect: IRect = {
+        xLeft: 10,
+        xRight: 20,
+        yTop: 10,
+        yBot: 20
+    }
+    let assumeRect: IRect = {
+        xLeft: 10,
+        xRight: 20,
+        yTop: 0,
+        yBot: 10
+    }
+    TestHelper.equalRect(expect, SurveyHelper.moveRect(rect, undefined, 0), assumeRect);
+})
