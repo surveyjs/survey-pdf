@@ -278,9 +278,9 @@ export class SurveyHelper {
             yBot: top + height
         }
     }
-    public static scaleRect(rect: IRect, scale: number) {
-        let scaleWidth: number = (rect.xRight - rect.xLeft) * ((1 - scale) / 2);
-        let scaleHeight: number = (rect.yBot - rect.yTop) * ((1 - scale) / 2);
+    public static scaleRect(rect: IRect, scale: number): IRect {
+        let scaleWidth: number = (rect.xRight - rect.xLeft) * (1.0 - scale) / 2.0;
+        let scaleHeight: number = (rect.yBot - rect.yTop) * (1.0 - scale) / 2.0;
         return {
             xLeft: rect.xLeft + scaleWidth,
             yTop: rect.yTop + scaleHeight,
