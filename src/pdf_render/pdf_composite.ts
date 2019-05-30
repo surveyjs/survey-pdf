@@ -54,6 +54,9 @@ export class CompositeBrick implements IPdfBrick {
             await this.bricks[i].render();
         }
     }
+    public get isEmpty(): boolean {
+        return this.bricks.length === 0;
+    }
     public addBrick(...bricks: IPdfBrick[]) {
         if (bricks.length != 0) {
             this.bricks.push(...bricks);

@@ -16,6 +16,7 @@ import { FlatBoolean } from '../src/flat_layout/flat_boolean';
 import { FlatExpression } from '../src/flat_layout/flat_expression';
 import { FlatFile } from '../src/flat_layout/flat_file';
 import { FlatMatrixMultiple } from '../src/flat_layout/flat_matrixmultiple';
+import { FlatMatrixDynamic } from '../src/flat_layout/flat_matrixdynamic';
 import { FlatMultipleText } from '../src/flat_layout/flat_multipletext';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { TextBrick } from '../src/pdf_render/pdf_text';
@@ -35,6 +36,7 @@ let __dummy_bl = new FlatBoolean(null, null);
 let __dummy_ex = new FlatExpression(null, null);
 let __dummy_fl = new FlatFile(null, null);
 let __dummy_mm = new FlatMatrixMultiple(null, null);
+let __dummy_md = new FlatMatrixDynamic(null, null);
 let __dummy_mt = new FlatMultipleText(null, null);
 
 async function calcTitleTop(leftTopPoint: IPoint, controller: DocController,
@@ -1771,7 +1773,6 @@ test('Check checkbox with colCount 4 with small font size 12', async () => {
     assumetFlats.push(rowLineRect, itemRect, textRect);
     TestHelper.equalRects(expect, receivedFlats, assumetFlats);
 });
-
 test('Check checkbox with colCount 4 with big font size 30', async () => {
     let json = {
         questions: [
@@ -1870,7 +1871,7 @@ test('Check checkbox with colCount 0 with small font size 12', async () => {
     }
     TestHelper.equalRects(expect, receivedFlats, assumetFlats);
 });
-test.skip('Check matrix dynamic one column no rows', async () => {
+test('Check matrix dynamic one column no rows', async () => {
     let json = {
         elements: [
             {
@@ -1900,8 +1901,9 @@ test.skip('Check matrix dynamic one column no rows', async () => {
         yBot: survey.controller.leftTopPoint.yTop + size.height
     };
     TestHelper.equalRect(expect, unfoldFlats[0], assumeMatrix);
+    expect(unfoldFlats[1] instanceof RowlineBrick).toBe(true);
 });
-test.skip('Check matrix dynamic no columns one row', async () => {
+test('Check matrix dynamic no columns one row', async () => {
     let json = {
         elements: [
             {

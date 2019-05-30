@@ -1,6 +1,6 @@
 import { IQuestion, QuestionMatrixDropdownModelBase, MatrixDropdownColumn,
     MatrixDropdownRowModel, MatrixDropdownCell, LocalizableString } from 'survey-core';
-import { IPoint, IRect, DocController } from "../doc_controller";
+import { IPoint, DocController } from "../doc_controller";
 import { IFlatQuestion, FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
@@ -21,10 +21,12 @@ export class FlatMatrixMultiple extends FlatQuestion {
         let count: number = isHorizontal
             ? this.question.visibleColumns.length
             : this.question.visibleRows.length;
+        let rowNamesGain: number = this.isMultiple ? 1 : 0;
         let currPoint: IPoint = SurveyHelper.clone(point);
         for (let i: number = 0; i < count; i++) {
             this.controller.pushMargins();
-            SurveyHelper.setColumnMargins(this.controller, count + 1, i + 1);
+            SurveyHelper.setColumnMargins(this.controller,
+                count + rowNamesGain, i + rowNamesGain);
             currPoint.xLeft = this.controller.margins.left;
             let locText: LocalizableString = isHorizontal
                 ? this.question.visibleColumns[i].locTitle
@@ -44,24 +46,25 @@ export class FlatMatrixMultiple extends FlatQuestion {
         let countOuter: number = isHorizontal
             ? this.question.visibleRows.length
             : this.question.visibleColumns.length;
+        let rowNamesGain: number = this.isMultiple ? 1 : 0;
         let currPoint: IPoint = SurveyHelper.clone(point);
         for (let i: number = 0; i < countOuter; i++) {
-            rowsFlats.push(new CompositeBrick());
+            let composite: CompositeBrick = new CompositeBrick();
             if (isWide) {
                 this.controller.pushMargins();
-                SurveyHelper.setColumnMargins(this.controller, countInner + 1, 0);
+                SurveyHelper.setColumnMargins(this.controller, countInner + rowNamesGain, 0);
                 currPoint.xLeft = this.controller.margins.left
             }
             if (isHorizontal) {
                 let row: MatrixDropdownRowModel = <MatrixDropdownRowModel>this.question.visibleRows[i];
-                if (true) {// has row names
-                    rowsFlats[rowsFlats.length - 1].addBrick(await SurveyHelper.createTextFlat(
+                if (this.isMultiple) {
+                    composite.addBrick(await SurveyHelper.createTextFlat(
                         currPoint, this.question, this.controller, row.locText, TextBrick));
                 }
             }
             else {
                 let column: MatrixDropdownColumn = this.question.visibleColumns[i];
-                rowsFlats[rowsFlats.length - 1].addBrick(await SurveyHelper.createBoldTextFlat(
+                composite.addBrick(await SurveyHelper.createBoldTextFlat(
                     currPoint, this.question, this.controller, column.locTitle));
             }
             if (isWide) {
@@ -73,33 +76,35 @@ export class FlatMatrixMultiple extends FlatQuestion {
                 let cell: MatrixDropdownCell = this.question.visibleRows[cellI].cells[cellJ];
                 if (isWide) {
                     this.controller.pushMargins();
-                    SurveyHelper.setColumnMargins(this.controller, countInner + 1, j + 1);
+                    SurveyHelper.setColumnMargins(this.controller,
+                        countInner + rowNamesGain, j + rowNamesGain);
                     currPoint.xLeft = this.controller.margins.left;
                 }
                 else {
-                    currPoint.yTop = rowsFlats[rowsFlats.length - 1].yBot;
+                    currPoint.yTop = composite.yBot;
                     let locText: LocalizableString = isHorizontal
                         ? this.question.visibleColumns[cellJ].locTitle
                         : (<MatrixDropdownRowModel>this.question.visibleRows[cellI]).locText;
-                    rowsFlats[rowsFlats.length - 1].addBrick(await SurveyHelper.createTextFlat(
+                    composite.addBrick(await SurveyHelper.createTextFlat(
                         currPoint, this.question, this.controller, locText, TextBrick));
-                    currPoint.yTop = rowsFlats[rowsFlats.length - 1].yBot;
+                    currPoint.yTop = composite.yBot;
                 }
                 cell.question.titleLocation = 'hidden';
                 let flatQuestion: IFlatQuestion = FlatRepository.getInstance().
                     create(cell.question, this.controller);
-                rowsFlats[rowsFlats.length - 1].addBrick(
-                    ...await flatQuestion.generateFlats(currPoint));
+                composite.addBrick(...await flatQuestion.generateFlats(currPoint));
                 if (isWide) {
                     this.controller.popMargins();
                 }
             }
             currPoint.xLeft = point.xLeft;
-            currPoint.yTop = rowsFlats[rowsFlats.length - 1].yBot;
+            currPoint.yTop = composite.yBot;
             if (i !== countOuter - 1) {
-                rowsFlats[rowsFlats.length - 1].addBrick(
-                    SurveyHelper.createRowlineFlat(currPoint, this.controller));
+                composite.addBrick(SurveyHelper.createRowlineFlat(currPoint, this.controller));
                 currPoint.yTop += SurveyHelper.EPSILON;
+            }
+            if (!composite.isEmpty) {
+                rowsFlats.push(composite);
             }
         }
         return rowsFlats;

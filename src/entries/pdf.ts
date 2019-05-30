@@ -17,6 +17,7 @@ export { FlatExpression } from '../flat_layout/flat_expression';
 export { FlatFile } from '../flat_layout/flat_file';
 export { FlatMatrix } from '../flat_layout/flat_matrix';
 export { FlatMatrixMultiple } from '../flat_layout/flat_matrixmultiple';
+export { FlatMatrixDynamic } from '../flat_layout/flat_matrixdynamic';
 export { FlatMultipleText } from '../flat_layout/flat_multipletext';
 export { FlatPanelDynamic } from '../flat_layout/flat_paneldynamic';
 export { PagePacker } from '../page_layout/page_packer';
