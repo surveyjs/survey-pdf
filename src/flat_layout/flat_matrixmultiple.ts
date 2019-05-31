@@ -82,13 +82,15 @@ export class FlatMatrixMultiple extends FlatQuestion {
                     currPoint.xLeft = this.controller.margins.left;
                 }
                 else {
-                    currPoint.yTop = composite.yBot;
-                    let locText: LocalizableString = isHorizontal
-                        ? this.question.visibleColumns[cellJ].locTitle
-                        : (<MatrixDropdownRowModel>this.question.visibleRows[cellI]).locText; //dynamic
-                    composite.addBrick(await SurveyHelper.createTextFlat(
-                        currPoint, this.question, this.controller, locText, TextBrick));
-                    currPoint.yTop = composite.yBot;
+                    currPoint.yTop = composite.isEmpty ? currPoint.yTop : composite.yBot;
+                    if (!(this.isMultiple && !isHorizontal && !this.question.showHeader)) {
+                        let locText: LocalizableString = isHorizontal || !this.isMultiple
+                            ? this.question.visibleColumns[cellJ].locTitle
+                            : (<MatrixDropdownRowModel>this.question.visibleRows[cellI]).locText;
+                        composite.addBrick(await SurveyHelper.createTextFlat(
+                            currPoint, this.question, this.controller, locText, TextBrick));
+                        currPoint.yTop = composite.yBot;
+                    }
                 }
                 cell.question.titleLocation = 'hidden';
                 let flatQuestion: IFlatQuestion = FlatRepository.getInstance().
@@ -111,23 +113,28 @@ export class FlatMatrixMultiple extends FlatQuestion {
         return rowsFlats;
     }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
+        let isHorizontal: boolean = this.question.isColumnLayoutHorizontal;
+        let rowNamesGain: number = this.isMultiple ||
+            (!isHorizontal && this.question.showHeader) ? 1 : 0;
+        let colCount: number = (isHorizontal
+            ? this.question.visibleColumns.length
+            : this.question.visibleRows.length) || 1;
         let cellWidth: number = SurveyHelper.getColumnWidth(
-            this.controller, this.question.visibleColumns.length + 1);
+            this.controller, colCount + rowNamesGain);
         let isWide: boolean = cellWidth >=
             this.controller.measureText(SurveyHelper.MATRIX_COLUMN_WIDTH).width;
         let currPoint: IPoint = SurveyHelper.clone(point);
         let rowsFlats: CompositeBrick[] = [];
         if (isWide) {
-            let headers: CompositeBrick = await this.generateFlatsHeader(
-                point, this.question.isColumnLayoutHorizontal);
+            let headers: CompositeBrick =
+                await this.generateFlatsHeader(point, isHorizontal);
             currPoint.xLeft = point.xLeft;
             currPoint.yTop = headers.xLeft !== 0 ? headers.yBot : point.yTop;
             headers.addBrick(SurveyHelper.createRowlineFlat(currPoint, this.controller));
             currPoint.yTop += SurveyHelper.EPSILON;
             rowsFlats.push(headers);
         }
-        rowsFlats.push(...await this.generateFlatsRows(currPoint,
-            this.question.isColumnLayoutHorizontal, isWide));
+        rowsFlats.push(...await this.generateFlatsRows(currPoint, isHorizontal, isWide));
         return rowsFlats;
     }
 }

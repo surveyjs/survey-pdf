@@ -270,7 +270,7 @@ test('Matrix rubric check vertically', async () => {
     assumeFlats.push(rowTextFlat);
     let currPoint = TestHelper.defaultPoint;
     currPoint.yTop = rowTextFlat.yBot;
-    for (let i = 1; i < 4; i++) {
+    for (let i: number = 1; i < 4; i++) {
         let itemFlat = SurveyHelper.createRect(currPoint, SurveyHelper.getPageAvailableWidth(survey.controller), survey.controller.measureText(1).height);
         currPoint.yTop = itemFlat.yBot;
         let cellTextFlat = await SurveyHelper.createTextFlat(currPoint,

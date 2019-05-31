@@ -131,7 +131,7 @@ export class SurveyHelper {
                     (controller.paperHeight - controller.margins.bot - controller.margins.top)
                     + result.y - margins.top + SurveyHelper.HTML_TAIL_TEXT * controller.fontSize;
                 controller.helperDoc.addPage();
-                for (let i = 0; i < controller.helperDoc.getNumberOfPages(); i++) {
+                for (let i: number = 0; i < controller.helperDoc.getNumberOfPages(); i++) {
                     controller.helperDoc.deletePage(1);
                 }
                 let rect = SurveyHelper.createRect(point, margins.width, yBot);
@@ -253,7 +253,7 @@ export class SurveyHelper {
     }
 
     public static getColumnWidth(controller: DocController, colCount: number) {
-        return SurveyHelper.getPageAvailableWidth(controller) / (colCount);
+        return SurveyHelper.getPageAvailableWidth(controller) / colCount;
     }
     public static getPageAvailableWidth(controller: DocController): number {
         return controller.paperWidth - controller.margins.left - controller.margins.right;
