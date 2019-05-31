@@ -1,19 +1,19 @@
-import { IPoint, IRect, IDocOptions, DocController } from './doc_controller';
+import { IPoint, IRect, IDocOptions, DocOptions } from './doc_controller';
 import { IPdfBrick, PdfBrick } from './pdf_render/pdf_brick';
 
 export class TestHelper {
     public static get defaultPoint(): IPoint {
         return {
-            xLeft: 10.0 * DocController.MM_TO_PT,
-            yTop: 10.0 * DocController.MM_TO_PT
+            xLeft: 10.0 * DocOptions.MM_TO_PT,
+            yTop: 10.0 * DocOptions.MM_TO_PT
         }
     }
     public static get defaultRect(): IRect {
         return {
-            xLeft: 10.0 * DocController.MM_TO_PT,
-            xRight: 20.0 * DocController.MM_TO_PT,
-            yTop: 10.0 * DocController.MM_TO_PT,
-            yBot: 20.0 * DocController.MM_TO_PT
+            xLeft: 10.0 * DocOptions.MM_TO_PT,
+            xRight: 20.0 * DocOptions.MM_TO_PT,
+            yTop: 10.0 * DocOptions.MM_TO_PT,
+            yBot: 20.0 * DocOptions.MM_TO_PT
         }
     }
     public static get defaultOptions(): IDocOptions {

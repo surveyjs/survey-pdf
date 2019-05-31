@@ -4,7 +4,7 @@
 
 import { Question, QuestionCommentModel, QuestionRatingModel, QuestionExpressionModel } from 'survey-core';
 import { SurveyPDF } from '../src/survey';
-import { IPoint, IRect, ISize, IDocOptions, DocController } from '../src/doc_controller';
+import { IPoint, IRect, ISize, IDocOptions, DocOptions, DocController } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { FlatTextbox } from '../src/flat_layout/flat_textbox';
 import { FlatComment } from '../src/flat_layout/flat_comment';
@@ -1004,7 +1004,7 @@ test('Check rating many elements', async () => {
     };
     let options: IDocOptions = TestHelper.defaultOptions;
     options.format = [options.margins.left + options.margins.right +
-        SurveyHelper.getRatingMinWidth(new SurveyPDF(json, options).controller) * 3 / DocController.MM_TO_PT, 297.0];
+        SurveyHelper.getRatingMinWidth(new SurveyPDF(json, options).controller) * 3 / DocOptions.MM_TO_PT, 297.0];
     let survey: SurveyPDF = new SurveyPDF(json, options);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
@@ -1032,7 +1032,7 @@ test('Check rating two elements with long min rate description', async () => {
     };
     let longRateDesc: number = (new DocController(TestHelper.defaultOptions).measureText(
         json.elements[0].minRateDescription + ' 1', 'bold').width +
-        new DocController(TestHelper.defaultOptions).measureText().height) / DocController.MM_TO_PT;
+        new DocController(TestHelper.defaultOptions).measureText().height) / DocOptions.MM_TO_PT;
     let options: IDocOptions = TestHelper.defaultOptions;
     options.format = [options.margins.left +
         options.margins.right + longRateDesc, 297.0];
@@ -1147,7 +1147,7 @@ test('Check multiple text with colCount and long text', async () => {
     };
     let options: IDocOptions = TestHelper.defaultOptions;
     let signWidth: number = new SurveyPDF(json, TestHelper.defaultOptions).
-        controller.measureText(sign, 'bold').width / DocController.MM_TO_PT;
+        controller.measureText(sign, 'bold').width / DocOptions.MM_TO_PT;
     options.format = [options.margins.left + options.margins.right +
         2.5 * signWidth / SurveyHelper.MULTIPLETEXT_TEXT_PERS, 297.0];
     let survey: SurveyPDF = new SurveyPDF(json, options);

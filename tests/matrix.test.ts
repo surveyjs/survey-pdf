@@ -2,14 +2,13 @@
     return {};
 };
 import { SurveyPDF } from '../src/survey';
-import { IRect, DocController } from '../src/doc_controller';
+import { IRect, DocOptions } from '../src/doc_controller';
 import { FlatMatrix } from '../src/flat_layout/flat_matrix';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 import { TextBrick } from '../src/pdf_render/pdf_text';
-import { createPostfix } from 'typescript';
 let __dummy_mt = new FlatMatrix(null, null);
 
 test('test matrix hasRows true columns', async () => {
@@ -38,7 +37,7 @@ test('test matrix hasRows true columns', async () => {
     let assumeCells: IRect[] = [];
     let header = survey.controller.measureText(json.questions[0].columns[0].text, 'bold');
     let currPoint = TestHelper.defaultPoint;
-    let cellWidth = (210 * DocController.MM_TO_PT - survey.controller.margins.left
+    let cellWidth = (210 * DocOptions.MM_TO_PT - survey.controller.margins.left
         - survey.controller.margins.right) / 2;
     currPoint.xLeft = cellWidth + survey.controller.margins.left;
     let columnRect = SurveyHelper.createRect(currPoint, header.width, header.height);
@@ -155,7 +154,7 @@ test('test hidden header', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     let assumeCells: IRect[] = [];
     let itemWidth = survey.controller.measureText().width;
-    let cellWidth = (210 * DocController.MM_TO_PT - survey.controller.margins.left
+    let cellWidth = (210 * DocOptions.MM_TO_PT - survey.controller.margins.left
         - survey.controller.margins.right) / 3;
     for (let i: number = 0; i < json.questions[0].columns.length; i++) {
         let currPoint = TestHelper.defaultPoint;
@@ -219,7 +218,7 @@ test('Matrix rubric check horisontally', async () => {
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     let assumeFlats: IRect[] = [];
-    let cellWidth = (210 * DocController.MM_TO_PT - survey.controller.margins.left
+    let cellWidth = (210 * DocOptions.MM_TO_PT - survey.controller.margins.left
         - survey.controller.margins.right) / 2;
     let rowTextFlat = await SurveyHelper.createTextFlat(TestHelper.defaultPoint,
         survey.getAllQuestions()[0], survey.controller, json.questions[0].rows[0].text, TextBrick);

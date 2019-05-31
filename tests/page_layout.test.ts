@@ -5,7 +5,7 @@
 import { Question } from 'survey-core';
 import { PagePacker } from '../src/page_layout/page_packer';
 import { SurveyPDF } from '../src/survey';
-import { IPoint, IRect, IDocOptions, DocController } from '../src/doc_controller';
+import { IPoint, IRect, IDocOptions, DocOptions, DocController } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { FlatTextbox } from '../src/flat_layout/flat_textbox';
 import { FlatCheckbox } from '../src/flat_layout/flat_checkbox';
@@ -26,9 +26,9 @@ test('Pack one flat', () => {
 });
 test('Pack two flats on two pages', () => {
     let flats: IRect[] = [TestHelper.defaultRect, TestHelper.defaultRect];
-    flats[1].yTop += 10 * DocController.MM_TO_PT; flats[1].yBot += 10 * DocController.MM_TO_PT;
+    flats[1].yTop += 10 * DocOptions.MM_TO_PT; flats[1].yBot += 10 * DocOptions.MM_TO_PT;
     let options: IDocOptions = TestHelper.defaultOptions;
-    options.format = [210, flats[0].yBot / DocController.MM_TO_PT + options.margins.bot];
+    options.format = [210, flats[0].yBot / DocOptions.MM_TO_PT + options.margins.bot];
     options.orientation = 'l';
     let packs: IPdfBrick[][] = PagePacker.pack(TestHelper.wrapRectsPage(flats),
         new DocController(options));
@@ -56,7 +56,7 @@ test('Long checkbox with indent', async () => {
     let checkGap: number = 1.0 + SurveyHelper.GAP_BETWEEN_ROWS;
     let options: IDocOptions = TestHelper.defaultOptions;
     options.format = [210.0, options.margins.top + new DocController(options).
-        measureText().height * checkGap * 3.5 / DocController.MM_TO_PT + options.margins.bot];
+        measureText().height * checkGap * 3.5 / DocOptions.MM_TO_PT + options.margins.bot];
     options.orientation = 'l';
     let survey: SurveyPDF = new SurveyPDF(json, options);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
@@ -113,42 +113,42 @@ test('Check two textbox flats sort order', async () => {
 });
 test('Pack near flats', () => {
     let flats: IRect[] = [
-        { xLeft: 10 * DocController.MM_TO_PT, xRight: 20 * DocController.MM_TO_PT, yTop: 10 * DocController.MM_TO_PT, yBot: 20 * DocController.MM_TO_PT },
-        { xLeft: 20 * DocController.MM_TO_PT, xRight: 30 * DocController.MM_TO_PT, yTop: 10 * DocController.MM_TO_PT, yBot: 20 * DocController.MM_TO_PT },
-        { xLeft: 10 * DocController.MM_TO_PT, xRight: 20 * DocController.MM_TO_PT, yTop: 20 * DocController.MM_TO_PT, yBot: 30 * DocController.MM_TO_PT },
-        { xLeft: 20 * DocController.MM_TO_PT, xRight: 30 * DocController.MM_TO_PT, yTop: 20 * DocController.MM_TO_PT, yBot: 30 * DocController.MM_TO_PT }
+        { xLeft: 10 * DocOptions.MM_TO_PT, xRight: 20 * DocOptions.MM_TO_PT, yTop: 10 * DocOptions.MM_TO_PT, yBot: 20 * DocOptions.MM_TO_PT },
+        { xLeft: 20 * DocOptions.MM_TO_PT, xRight: 30 * DocOptions.MM_TO_PT, yTop: 10 * DocOptions.MM_TO_PT, yBot: 20 * DocOptions.MM_TO_PT },
+        { xLeft: 10 * DocOptions.MM_TO_PT, xRight: 20 * DocOptions.MM_TO_PT, yTop: 20 * DocOptions.MM_TO_PT, yBot: 30 * DocOptions.MM_TO_PT },
+        { xLeft: 20 * DocOptions.MM_TO_PT, xRight: 30 * DocOptions.MM_TO_PT, yTop: 20 * DocOptions.MM_TO_PT, yBot: 30 * DocOptions.MM_TO_PT }
     ];
     let packs: IPdfBrick[][] = PagePacker.pack(TestHelper.wrapRectsPage(flats),
         new DocController(TestHelper.defaultOptions));
     TestHelper.equalRect(expect, packs[0][0],
-        { xLeft: 10 * DocController.MM_TO_PT, xRight: 20 * DocController.MM_TO_PT, yTop: 10 * DocController.MM_TO_PT, yBot: 20 * DocController.MM_TO_PT });
+        { xLeft: 10 * DocOptions.MM_TO_PT, xRight: 20 * DocOptions.MM_TO_PT, yTop: 10 * DocOptions.MM_TO_PT, yBot: 20 * DocOptions.MM_TO_PT });
     TestHelper.equalRect(expect, packs[0][1],
-        { xLeft: 20 * DocController.MM_TO_PT, xRight: 30 * DocController.MM_TO_PT, yTop: 10 * DocController.MM_TO_PT, yBot: 20 * DocController.MM_TO_PT });
+        { xLeft: 20 * DocOptions.MM_TO_PT, xRight: 30 * DocOptions.MM_TO_PT, yTop: 10 * DocOptions.MM_TO_PT, yBot: 20 * DocOptions.MM_TO_PT });
     TestHelper.equalRect(expect, packs[0][2],
-        { xLeft: 10 * DocController.MM_TO_PT, xRight: 20 * DocController.MM_TO_PT, yTop: 20 * DocController.MM_TO_PT, yBot: 30 * DocController.MM_TO_PT });
+        { xLeft: 10 * DocOptions.MM_TO_PT, xRight: 20 * DocOptions.MM_TO_PT, yTop: 20 * DocOptions.MM_TO_PT, yBot: 30 * DocOptions.MM_TO_PT });
     TestHelper.equalRect(expect, packs[0][3],
-        { xLeft: 20 * DocController.MM_TO_PT, xRight: 30 * DocController.MM_TO_PT, yTop: 20 * DocController.MM_TO_PT, yBot: 30 * DocController.MM_TO_PT });
+        { xLeft: 20 * DocOptions.MM_TO_PT, xRight: 30 * DocOptions.MM_TO_PT, yTop: 20 * DocOptions.MM_TO_PT, yBot: 30 * DocOptions.MM_TO_PT });
 });
 test('Pack near flats new page', () => {
     let flats: IRect[] = [
-        { xLeft: 10 * DocController.MM_TO_PT, xRight: 20 * DocController.MM_TO_PT, yTop: 10 * DocController.MM_TO_PT, yBot: 20 * DocController.MM_TO_PT },
-        { xLeft: 20 * DocController.MM_TO_PT, xRight: 30 * DocController.MM_TO_PT, yTop: 10 * DocController.MM_TO_PT, yBot: 20 * DocController.MM_TO_PT },
-        { xLeft: 10 * DocController.MM_TO_PT, xRight: 20 * DocController.MM_TO_PT, yTop: 20 * DocController.MM_TO_PT, yBot: 30 * DocController.MM_TO_PT },
-        { xLeft: 20 * DocController.MM_TO_PT, xRight: 30 * DocController.MM_TO_PT, yTop: 20 * DocController.MM_TO_PT, yBot: 30 * DocController.MM_TO_PT },
+        { xLeft: 10 * DocOptions.MM_TO_PT, xRight: 20 * DocOptions.MM_TO_PT, yTop: 10 * DocOptions.MM_TO_PT, yBot: 20 * DocOptions.MM_TO_PT },
+        { xLeft: 20 * DocOptions.MM_TO_PT, xRight: 30 * DocOptions.MM_TO_PT, yTop: 10 * DocOptions.MM_TO_PT, yBot: 20 * DocOptions.MM_TO_PT },
+        { xLeft: 10 * DocOptions.MM_TO_PT, xRight: 20 * DocOptions.MM_TO_PT, yTop: 20 * DocOptions.MM_TO_PT, yBot: 30 * DocOptions.MM_TO_PT },
+        { xLeft: 20 * DocOptions.MM_TO_PT, xRight: 30 * DocOptions.MM_TO_PT, yTop: 20 * DocOptions.MM_TO_PT, yBot: 30 * DocOptions.MM_TO_PT },
     ];
     let options: IDocOptions = TestHelper.defaultOptions;
-    options.format = [210, flats[0].yBot / DocController.MM_TO_PT + options.margins.bot];
+    options.format = [210, flats[0].yBot / DocOptions.MM_TO_PT + options.margins.bot];
     options.orientation = 'l';
     let packs: IPdfBrick[][] = PagePacker.pack(TestHelper.wrapRectsPage(flats),
         new DocController(options));
     TestHelper.equalRect(expect, packs[0][0],
-        { xLeft: 10 * DocController.MM_TO_PT, xRight: 20 * DocController.MM_TO_PT, yTop: 10 * DocController.MM_TO_PT, yBot: 20 * DocController.MM_TO_PT });
+        { xLeft: 10 * DocOptions.MM_TO_PT, xRight: 20 * DocOptions.MM_TO_PT, yTop: 10 * DocOptions.MM_TO_PT, yBot: 20 * DocOptions.MM_TO_PT });
     TestHelper.equalRect(expect, packs[0][1],
-        { xLeft: 20 * DocController.MM_TO_PT, xRight: 30 * DocController.MM_TO_PT, yTop: 10 * DocController.MM_TO_PT, yBot: 20 * DocController.MM_TO_PT });
+        { xLeft: 20 * DocOptions.MM_TO_PT, xRight: 30 * DocOptions.MM_TO_PT, yTop: 10 * DocOptions.MM_TO_PT, yBot: 20 * DocOptions.MM_TO_PT });
     TestHelper.equalRect(expect, packs[1][0],
-        { xLeft: 10 * DocController.MM_TO_PT, xRight: 20 * DocController.MM_TO_PT, yTop: 10 * DocController.MM_TO_PT, yBot: 20 * DocController.MM_TO_PT });
+        { xLeft: 10 * DocOptions.MM_TO_PT, xRight: 20 * DocOptions.MM_TO_PT, yTop: 10 * DocOptions.MM_TO_PT, yBot: 20 * DocOptions.MM_TO_PT });
     TestHelper.equalRect(expect, packs[1][1],
-        { xLeft: 20 * DocController.MM_TO_PT, xRight: 30 * DocController.MM_TO_PT, yTop: 10 * DocController.MM_TO_PT, yBot: 20 * DocController.MM_TO_PT });
+        { xLeft: 20 * DocOptions.MM_TO_PT, xRight: 30 * DocOptions.MM_TO_PT, yTop: 10 * DocOptions.MM_TO_PT, yBot: 20 * DocOptions.MM_TO_PT });
 });
 test('Unfold compose brick', async () => {
     let json = {
@@ -162,7 +162,7 @@ test('Unfold compose brick', async () => {
     };
     let options: IDocOptions = TestHelper.defaultOptions;
     options.format = [210, options.margins.top + new DocController(options).
-        measureText().height / DocController.MM_TO_PT + options.margins.bot];
+        measureText().height / DocOptions.MM_TO_PT + options.margins.bot];
     options.orientation = 'l';
     let survey: SurveyPDF = new SurveyPDF(json, options);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
