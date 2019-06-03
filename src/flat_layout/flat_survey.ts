@@ -70,6 +70,7 @@ export class FlatSurvey {
             currPoint.xLeft = controller.margins.left;
             if (rowFlats.length !== 0) {
                 currPoint.yTop = SurveyHelper.mergeRects(...rowFlats).yBot;
+                currPoint.xLeft = point.xLeft;
                 currPoint.yTop += controller.measureText().height;
                 pagePanelFlats.push(...rowFlats);
                 pagePanelFlats.push(SurveyHelper.createRowlineFlat(currPoint, controller));
