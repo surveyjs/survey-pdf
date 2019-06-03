@@ -1,7 +1,7 @@
 (<any>window)['HTMLCanvasElement'].prototype.getContext = () => {
     return {};
 };
-import { DocController } from "../src/doc_controller";
+import { DocController } from '../src/doc_controller';
 test('check font size ', () => {
     let options: any = {
         orientation: 'l',

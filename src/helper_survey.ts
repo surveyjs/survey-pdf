@@ -180,9 +180,9 @@ export class SurveyHelper {
         let height: number = width / SurveyHelper.IMAGEPICKER_RATIO;
         let html: string =
             `<img
-                src="${imagelink}"
-                width="${width}"
-                height="${height}"
+                src='${imagelink}'
+                width='${width}'
+                height='${height}'
             />`;
         return new HTMLBrick(question, controller,
             SurveyHelper.createRect(point, width, height), html);
