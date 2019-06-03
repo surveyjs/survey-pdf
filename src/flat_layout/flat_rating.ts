@@ -1,7 +1,7 @@
 import { IQuestion, ItemValue, QuestionRatingModel, LocalizableString } from 'survey-core';
 import { FlatRadiogroup } from './flat_radiogroup';
 import { FlatRepository } from './flat_repository';
-import { IPoint, DocController } from "../doc_controller";
+import { IPoint, DocController } from '../doc_controller';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';

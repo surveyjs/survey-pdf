@@ -1,7 +1,7 @@
 import { IQuestion, ItemValue, QuestionImagePickerModel } from 'survey-core';
 import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
-import { IPoint, IRect, DocController } from "../doc_controller";
+import { IPoint, IRect, DocController } from '../doc_controller';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { TextBrick } from '../pdf_render/pdf_text';
 import { FlatRadiogroup } from './flat_radiogroup';

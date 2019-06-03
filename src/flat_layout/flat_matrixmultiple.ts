@@ -1,6 +1,8 @@
-import { IQuestion, QuestionMatrixDropdownModelBase, MatrixDropdownColumn,
-    MatrixDropdownRowModel, MatrixDropdownCell, LocalizableString } from 'survey-core';
-import { IPoint, DocController } from "../doc_controller";
+import {
+    IQuestion, QuestionMatrixDropdownModelBase, MatrixDropdownColumn,
+    MatrixDropdownRowModel, MatrixDropdownCell, LocalizableString
+} from 'survey-core';
+import { IPoint, DocController } from '../doc_controller';
 import { IFlatQuestion, FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';

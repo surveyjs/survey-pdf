@@ -1,4 +1,4 @@
-import { IPoint, IRect, DocController } from "../doc_controller";
+import { IPoint, IRect, DocController } from '../doc_controller';
 import { IQuestion, Question, LocalizableString } from 'survey-core';
 import { IPdfBrick } from '../pdf_render/pdf_brick'
 import { CommentBrick } from '../pdf_render/pdf_comment';

@@ -1,5 +1,5 @@
 import { IQuestion, QuestionMatrixModel, MatrixRowModel, QuestionRadiogroupModel } from 'survey-core';
-import { DocController, IPoint, IRect } from "../doc_controller";
+import { DocController, IPoint, IRect } from '../doc_controller';
 import { IPdfBrick } from '../pdf_render/pdf_brick'
 import { FlatRepository } from './flat_repository';
 import { FlatQuestion } from './flat_question';
