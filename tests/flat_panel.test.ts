@@ -173,3 +173,35 @@ test('Check question title location in panel', async () => {
     expect(flats[0][0] instanceof TextBoxBrick).toBe(true);
     expect(flats[0][1].unfold()[0] instanceof TitleBrick).toBe(true);
 });
+test('Check not rendering invisible questions', async () => {
+    let json = {
+        elements: [
+            {
+                type: 'panel',
+                name: 'Simple Panel',
+                title: 'Panel Title',
+                elements: [
+                    {
+                        type: 'text',
+                        name: 'I am in the panel'
+                    },
+                    {
+                        type: 'text',
+                        name: 'I am invisible',
+                        visible: false,
+                        startWithNewLine: false
+                    }
+                ]
+            }
+        ]
+    };
+    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
+    expect(flats.length).toBe(1);
+    expect(flats[0].length).toBe(2);
+    let panelTitleFlat: IPdfBrick = await SurveyHelper.createTitlePanelFlat(
+        survey.controller.leftTopPoint, null, survey.controller, json.elements[0].title);
+    TestHelper.equalRect(expect, flats[0][0], panelTitleFlat);
+    await calcTitleTop(SurveyHelper.createPoint(panelTitleFlat), survey.controller,
+        <Question>survey.getAllQuestions()[0], flats[0][1]);
+});

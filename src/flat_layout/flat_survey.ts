@@ -50,6 +50,7 @@ export class FlatSurvey {
             let currMarginLeft: number = controller.margins.left;
             let rowFlats: IPdfBrick[] = [];
             for (let question of row.elements) {
+                if (!question.isVisible) continue;
                 let persWidth: number = width * FlatSurvey.parseWidth(question.renderWidth);
                 controller.margins.left = currMarginLeft;
                 controller.margins.right = controller.paperWidth -
