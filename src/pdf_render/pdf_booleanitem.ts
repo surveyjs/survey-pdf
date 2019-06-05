@@ -8,7 +8,7 @@ export class BooleanItemBrick extends CheckItemBrick {
         super(question, controller, rect,
             (<QuestionBooleanModel>question).id,
             question.isReadOnly,
-            (<QuestionBooleanModel>question).value === 'true' ||
-            (<QuestionBooleanModel>question).defaultValue === 'true');
+            (<QuestionBooleanModel>question).value === true ||
+            (<QuestionBooleanModel>question).defaultValue == 'true');
     }
 }
