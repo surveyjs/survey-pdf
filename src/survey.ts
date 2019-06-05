@@ -28,4 +28,8 @@ export class SurveyPDF extends SurveyModel {
         await this.render();
         this.controller.doc.save(fileName);
     }
+    public async raw(): Promise<void> {
+        await this.render();
+        return this.controller.doc.__private__.buildDocument();
+    }
 }
