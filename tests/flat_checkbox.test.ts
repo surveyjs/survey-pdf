@@ -30,11 +30,11 @@ test('Check that checkbox has square boundaries', async () => {
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     await survey.render();
-    let assumeCheckbox: IRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(SurveyHelper.createRect(
+    let assumeCheckbox: IRect = SurveyHelper.scaleRect(SurveyHelper.moveRect(SurveyHelper.scaleRect(SurveyHelper.createRect(
         TestHelper.defaultPoint,
         survey.controller.measureText().height, survey.controller.measureText().height),
-        SurveyHelper.SELECT_ITEM_SCALE),
-        TestHelper.defaultPoint.xLeft);
+        SurveyHelper.SELECT_ITEM_FLAT_SCALE),
+        TestHelper.defaultPoint.xLeft), SurveyHelper.BORDER_SCALE);
     let acroFormFields = survey.controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields;
     let internalRect = acroFormFields[0].Rect;
     TestHelper.equalRect(expect, SurveyHelper.createRect(
@@ -63,7 +63,7 @@ test('Check other checkbox place ', async () => {
     let assumeRects: IRect[] = [];
     let itemRect: IRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(
         SurveyHelper.createRect(currPoint, minHeight, minHeight),
-        SurveyHelper.SELECT_ITEM_SCALE), currPoint.xLeft);
+        SurveyHelper.SELECT_ITEM_FLAT_SCALE), currPoint.xLeft);
     assumeRects.push(itemRect);
     currPoint.xLeft = 2 * itemRect.xRight - itemRect.xLeft;
     let textRect =
@@ -81,7 +81,7 @@ test('Check checkbox with colCount 4 with small font size 12', async () => {
                 titleLocation: 'hidden',
                 name: 'checkbox',
                 type: 'checkbox',
-                choices: [ 'item1', 'item2', 'item3', 'item4', 'item5' ],
+                choices: ['item1', 'item2', 'item3', 'item4', 'item5'],
                 colCount: 4
             }
         ]
@@ -98,7 +98,7 @@ test('Check checkbox with colCount 4 with small font size 12', async () => {
     for (let i: number = 0; i < 4; i++) {
         let itemRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(
             SurveyHelper.createRect(currPoint, minHeight, minHeight),
-            SurveyHelper.SELECT_ITEM_SCALE), currPoint.xLeft);
+            SurveyHelper.SELECT_ITEM_FLAT_SCALE), currPoint.xLeft);
         let textPoint = SurveyHelper.clone(currPoint);
         textPoint.xLeft = 2 * itemRect.xRight - itemRect.xLeft;
         let text = survey.controller.measureText(json.questions[0].choices[i]);
@@ -112,7 +112,7 @@ test('Check checkbox with colCount 4 with small font size 12', async () => {
     currPoint.yTop += rowLineRect.yBot + minHeight;
     let itemRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(
         SurveyHelper.createRect(currPoint, minHeight, minHeight),
-        SurveyHelper.SELECT_ITEM_SCALE), currPoint.xLeft);
+        SurveyHelper.SELECT_ITEM_FLAT_SCALE), currPoint.xLeft);
     let textPoint = SurveyHelper.clone(currPoint);
     textPoint.xLeft = 2 * itemRect.xRight - itemRect.xLeft;
     let text = survey.controller.measureText(json.questions[0].choices[5]);
@@ -127,7 +127,7 @@ test('Check checkbox with colCount 4 with big font size 30', async () => {
                 titleLocation: 'hidden',
                 name: 'checkbox',
                 type: 'checkbox',
-                choices: [ 'item1', 'item2', 'item3', 'item4', 'item5' ],
+                choices: ['item1', 'item2', 'item3', 'item4', 'item5'],
                 colCount: 4
             }
         ]
@@ -145,7 +145,7 @@ test('Check checkbox with colCount 4 with big font size 30', async () => {
     for (let i: number = 0; i < 5; i++) {
         let itemRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(
             SurveyHelper.createRect(currPoint, minHeight, minHeight),
-            SurveyHelper.SELECT_ITEM_SCALE), currPoint.xLeft);
+            SurveyHelper.SELECT_ITEM_FLAT_SCALE), currPoint.xLeft);
         let textPoint = SurveyHelper.clone(currPoint);
         textPoint.xLeft = 2 * itemRect.xRight - itemRect.xLeft;
         let text = survey.controller.measureText(json.questions[0].choices[i]);
@@ -162,7 +162,7 @@ test('Check checkbox with colCount 0 with big font size 30', async () => {
                 titleLocation: 'hidden',
                 name: 'checkbox',
                 type: 'checkbox',
-                choices: [ 'item1', 'item2', 'item3', 'item4' ],
+                choices: ['item1', 'item2', 'item3', 'item4'],
                 colCount: 0
             }
         ]
@@ -178,7 +178,7 @@ test('Check checkbox with colCount 0 with big font size 30', async () => {
     for (let i: number = 0; i < 3; i++) {
         let itemRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(
             SurveyHelper.createRect(currPoint, minHeight, minHeight),
-            SurveyHelper.SELECT_ITEM_SCALE), currPoint.xLeft);
+            SurveyHelper.SELECT_ITEM_FLAT_SCALE), currPoint.xLeft);
         let textPoint = SurveyHelper.clone(currPoint);
         textPoint.xLeft = 2 * itemRect.xRight - itemRect.xLeft;
         let text = survey.controller.measureText(json.questions[0].choices[i]);
@@ -193,7 +193,7 @@ test('Check checkbox with colCount 0 with big font size 30', async () => {
     currPoint.yTop += SurveyHelper.GAP_BETWEEN_ROWS * minHeight;
     let itemRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(
         SurveyHelper.createRect(currPoint, minHeight, minHeight),
-        SurveyHelper.SELECT_ITEM_SCALE), currPoint.xLeft);
+        SurveyHelper.SELECT_ITEM_FLAT_SCALE), currPoint.xLeft);
     let textPoint = SurveyHelper.clone(currPoint);
     textPoint.xLeft = 2 * itemRect.xRight - itemRect.xLeft;
     let text = survey.controller.measureText(json.questions[0].choices[3]);
@@ -208,7 +208,7 @@ test('Check checkbox with colCount 0 with small font size 12', async () => {
                 titleLocation: 'hidden',
                 name: 'checkbox',
                 type: 'checkbox',
-                choices: [ 'item1', 'item2', 'item3', 'item4' ],
+                choices: ['item1', 'item2', 'item3', 'item4'],
                 colCount: 0
             }
         ]
@@ -225,7 +225,7 @@ test('Check checkbox with colCount 0 with small font size 12', async () => {
     for (let i: number = 0; i < 4; i++) {
         let itemRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(
             SurveyHelper.createRect(currPoint, minHeight, minHeight),
-            SurveyHelper.SELECT_ITEM_SCALE), currPoint.xLeft);
+            SurveyHelper.SELECT_ITEM_FLAT_SCALE), currPoint.xLeft);
         let text = survey.controller.measureText(json.questions[0].choices[i]);
         let textPoint = SurveyHelper.clone(currPoint);
         textPoint.xLeft = 2 * itemRect.xRight - itemRect.xLeft;

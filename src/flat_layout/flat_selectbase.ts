@@ -20,7 +20,7 @@ export abstract class FlatSelectBase extends FlatQuestion {
         let itemRect: IRect = SurveyHelper.createRect(point, height, height);
 
         let itemFlat: IPdfBrick = this.createItemBrick(SurveyHelper.moveRect(
-            SurveyHelper.scaleRect(itemRect, SurveyHelper.SELECT_ITEM_SCALE),
+            SurveyHelper.scaleRect(itemRect, SurveyHelper.SELECT_ITEM_FLAT_SCALE),
             point.xLeft), item, index);
         compositeFlat.addBrick(itemFlat);
         let textPoint: IPoint = SurveyHelper.clone(point);

@@ -92,7 +92,7 @@ export async function calcIndent(expect: any, leftTopPoint: IPoint, controller: 
     }
     let minHeight = controller.measureText().height;
     let assumeCheckbox: IRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(SurveyHelper.createRect(
-        SurveyHelper.createPoint(assumeTitle), minHeight, minHeight), SurveyHelper.SELECT_ITEM_SCALE));
+        SurveyHelper.createPoint(assumeTitle), minHeight, minHeight), SurveyHelper.SELECT_ITEM_FLAT_SCALE));
     let textPoint = SurveyHelper.createPoint(assumeTitle);
     textPoint.xLeft = 2 * assumeCheckbox.xRight - assumeCheckbox.xLeft;
     let assumeChecktext: IRect = await SurveyHelper.createTextFlat(textPoint,
