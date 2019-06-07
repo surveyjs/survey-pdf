@@ -14,14 +14,14 @@ export class CheckItemBrick extends PdfBrick {
     public async render(): Promise<void> {
         this.controller.doc.setFillColor(255, 255, 255);
         let checkBox = new (<any>this.controller.doc.AcroFormCheckBox)();
-        checkBox.fontSize = this.height * SurveyHelper.FORM_SCALE * CheckItemBrick.FONT_SIZE_SCALE;
-        checkBox.maxFontSize = this.height * SurveyHelper.FORM_SCALE * CheckItemBrick.FONT_SIZE_SCALE;
+        let formScale = SurveyHelper.formScale(this.controller, this);
+        checkBox.maxFontSize = this.height * formScale * CheckItemBrick.FONT_SIZE_SCALE;
         checkBox.caption = '3';
         checkBox.textAlign = 'center';
         checkBox.fieldName = this.fieldName;
         checkBox.readOnly = this.readonly;
         checkBox.AS = this.checked ? '/On' : '/Off';
-        checkBox.Rect = SurveyHelper.createAcroformRect(SurveyHelper.scaleRect(this, SurveyHelper.FORM_SCALE));
+        checkBox.Rect = SurveyHelper.createAcroformRect(SurveyHelper.scaleRect(this, formScale));
         this.controller.doc.addField(checkBox);
         SurveyHelper.wrapInBordersFlat(this.controller, this);
     }

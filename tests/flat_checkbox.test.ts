@@ -14,33 +14,6 @@ import { TestHelper } from '../src/helper_test';
 let __dummy_tx = new FlatTextbox(null, null);
 let __dummy_cb = new FlatCheckbox(null, null);
 
-test('Check that checkbox has square boundaries', async () => {
-    let json = {
-        questions: [
-            {
-                type: 'checkbox',
-                name: 'box',
-                titleLocation: 'hidden',
-                title: 'Square Pants',
-                choices: [
-                    'S'
-                ]
-            }
-        ]
-    };
-    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    await survey.render();
-    let assumeCheckbox: IRect = SurveyHelper.scaleRect(SurveyHelper.moveRect(SurveyHelper.scaleRect(SurveyHelper.createRect(
-        TestHelper.defaultPoint,
-        survey.controller.measureText().height, survey.controller.measureText().height),
-        SurveyHelper.SELECT_ITEM_FLAT_SCALE),
-        TestHelper.defaultPoint.xLeft), SurveyHelper.FORM_SCALE);
-    let acroFormFields = survey.controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields;
-    let internalRect = acroFormFields[0].Rect;
-    TestHelper.equalRect(expect, SurveyHelper.createRect(
-        { xLeft: internalRect[0], yTop: internalRect[1] },
-        internalRect[2], internalRect[3]), assumeCheckbox);
-});
 test('Check other checkbox place ', async () => {
     let json = {
         questions: [

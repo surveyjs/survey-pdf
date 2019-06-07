@@ -3,9 +3,42 @@
 };
 
 import { SurveyPDF } from '../src/survey';
+import { IRect } from '../src/doc_controller';
 import { FlatCheckbox } from '../src/flat_layout/flat_checkbox';
+import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
+import { IPdfBrick, PdfBrick } from '../src/pdf_render/pdf_brick';
 let __dummy_cb = new FlatCheckbox(null, null);
+
+test('Check that checkbox has square boundaries', async () => {
+	let json = {
+		questions: [
+			{
+				type: 'checkbox',
+				name: 'box',
+				titleLocation: 'hidden',
+				title: 'Square Pants',
+				choices: [
+					'S'
+				]
+			}
+		]
+	};
+	let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+	await survey.render();
+	let assumeCheckbox: IRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(SurveyHelper.createRect(
+		TestHelper.defaultPoint,
+		survey.controller.measureText().height, survey.controller.measureText().height),
+		SurveyHelper.SELECT_ITEM_FLAT_SCALE),
+		TestHelper.defaultPoint.xLeft);
+	let checkboxFlat: PdfBrick = new PdfBrick(null, null, assumeCheckbox);
+	assumeCheckbox = SurveyHelper.scaleRect(assumeCheckbox, SurveyHelper.formScale(survey.controller, checkboxFlat));
+	let acroFormFields = survey.controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields;
+	let internalRect = acroFormFields[0].Rect;
+	TestHelper.equalRect(expect, SurveyHelper.createRect(
+		{ xLeft: internalRect[0], yTop: internalRect[1] },
+		internalRect[2], internalRect[3]), assumeCheckbox);
+});
 
 test('Test has other checkbox', async () => {
 	let json = {

@@ -13,12 +13,12 @@ export class TextFieldBrick extends PdfBrick {
         super(question, controller, rect);
         this.question = <QuestionTextModel>question;
     }
+    //TODO check for comment and fontsize 
     public async render(): Promise<void> {
         let inputField = this.isPassword ?
             new (<any>this.controller.doc.AcroFormPasswordField)() :
             new (<any>this.controller.doc.AcroFormTextField)();
         inputField.fieldName = this.fieldName;
-        inputField.Rect = SurveyHelper.createAcroformRect(this);
         if (this.isQuestion && !this.isPassword) {
             inputField.value = this.value;
             inputField.defaultValue = this.placeholder;
@@ -26,7 +26,10 @@ export class TextFieldBrick extends PdfBrick {
         else inputField.value = '';
         inputField.multiline = this.isMultiline;
         inputField.readOnly = this.isReadOnly;
-        inputField.maxFontSize  = this.controller.fontSize;
+        inputField.maxFontSize = this.controller.fontSize;
         this.controller.doc.addField(inputField);
+        let formScale = SurveyHelper.formScale(this.controller, this);
+        inputField.Rect = SurveyHelper.createAcroformRect(SurveyHelper.scaleRect(this, formScale));
+        SurveyHelper.wrapInBordersFlat(this.controller, this);
     }
 }
