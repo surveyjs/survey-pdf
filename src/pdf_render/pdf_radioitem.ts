@@ -34,6 +34,8 @@ export class RadioItemBrick extends PdfBrick {
         if (this.сhecked) {
             radioButton.AS = '/' + name;
         }
+        radioButton.Rect = SurveyHelper.createAcroformRect(SurveyHelper.scaleRect(this, SurveyHelper.FORM_SCALE));
+        SurveyHelper.wrapInBordersFlat(this.controller, this);
         this.radioGroupWrap.radioGroup.setAppearance(this.controller.doc.AcroForm.Appearance.RadioButton.Circle);
     }
 }

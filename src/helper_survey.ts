@@ -1,6 +1,6 @@
 import { IQuestion, Question, QuestionRatingModel, LocalizableString } from 'survey-core';
 import { IPoint, IRect, ISize, DocController, } from './doc_controller';
-import { IPdfBrick } from './pdf_render/pdf_brick';
+import { IPdfBrick, PdfBrick } from './pdf_render/pdf_brick';
 import { TextBrick } from './pdf_render/pdf_text';
 import { TitleBrick } from './pdf_render/pdf_title';
 import { TitlePanelBrick } from './pdf_render/pdf_titlepanel';
@@ -24,10 +24,11 @@ export class SurveyHelper {
     public static readonly MULTIPLETEXT_TEXT_PERS: number = Math.E / 10.0;
     public static readonly HTML_TAIL_TEXT: number = 0.24;
     public static readonly SELECT_ITEM_FLAT_SCALE: number = 0.8;
-    public static readonly BORDER_SCALE: number = 0.7;
+    public static readonly FORM_SCALE: number = 0.7;
     public static readonly GAP_BETWEEN_ROWS: number = 0.25;
     public static readonly BLACK_BORDER_SCALE: number = 0.6;
-    public static readonly WHITE_BORDER_SCALE: number = 0.4
+    public static readonly WHITE_BORDER_SCALE: number = 0.4;
+
     public static readonly RADIUS_SCALE: number = 2;
     public static mergeRects(...rects: IRect[]): IRect {
         let resultRect: IRect = {
@@ -283,14 +284,29 @@ export class SurveyHelper {
         }
     }
     public static scaleRect(rect: IRect, scale: number): IRect {
-        let scaleWidth: number = (rect.xRight - rect.xLeft) * (1.0 - scale) / 2.0;
-        let scaleHeight: number = (rect.yBot - rect.yTop) * (1.0 - scale) / 2.0;
+        let width: number = rect.xRight - rect.xLeft;
+        let height: number = rect.yBot - rect.yTop;
+        let scaleWidth: number = ((width < height) ? width : height) * (1.0 - scale) / 2.0;
         return {
             xLeft: rect.xLeft + scaleWidth,
-            yTop: rect.yTop + scaleHeight,
+            yTop: rect.yTop + scaleWidth,
             xRight: rect.xRight - scaleWidth,
-            yBot: rect.yBot - scaleHeight
+            yBot: rect.yBot - scaleWidth
         }
+    }
+    public static wrapInBordersFlat(controller: DocController, flat: PdfBrick): void {
+        let minSide: number = flat.width < flat.height ? flat.width : flat.height;
+        let blackWidth: number = minSide * SurveyHelper.BLACK_BORDER_SCALE * (1.0 - SurveyHelper.FORM_SCALE) / 2;
+        let blackScale: number = SurveyHelper.FORM_SCALE + blackWidth / minSide;
+        let whiteWidth: number = minSide * SurveyHelper.WHITE_BORDER_SCALE * (1.0 - SurveyHelper.FORM_SCALE) / 2;
+        let whiteScale: number = 1 - whiteWidth / minSide;
+        let whiteRadius: number = SurveyHelper.RADIUS_SCALE * whiteWidth;
+        controller.doc.setDrawColor('black');
+        controller.doc.setLineWidth(blackWidth);
+        controller.doc.rect(...SurveyHelper.createAcroformRect(SurveyHelper.scaleRect(flat, blackScale)));
+        controller.doc.setDrawColor('white');
+        controller.doc.setLineWidth(whiteWidth);
+        controller.doc.roundedRect(...SurveyHelper.createAcroformRect(SurveyHelper.scaleRect(flat, whiteScale)), whiteRadius, whiteRadius);
     }
     public static clone(src: any) {
         let target: any = {};
