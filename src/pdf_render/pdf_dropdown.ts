@@ -15,7 +15,8 @@ export class DropdownBrick extends PdfBrick {
     public async render(): Promise<void> {
         let comboBox = new (<any>this.controller.doc.AcroFormComboBox)();
         comboBox.fieldName = this.question.id;
-        comboBox.Rect = SurveyHelper.createAcroformRect(this);
+        comboBox.Rect = SurveyHelper.createAcroformRect(SurveyHelper.scaleRect(this,
+            SurveyHelper.formScale(this.controller, this)));
         comboBox.edit = false;
         let options: string[] = [];
         if (this.question.showOptionsCaption) {
@@ -33,5 +34,6 @@ export class DropdownBrick extends PdfBrick {
             comboBox.value = this.question.optionsCaption;
         }
         this.controller.doc.addField(comboBox);
+        SurveyHelper.wrapInBordersFlat(this.controller, this);
     }
 }

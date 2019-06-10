@@ -283,3 +283,50 @@ test('Check yTop on new page with panel', async () => {
     expect(packs[2][0].yTop).toBeCloseTo(packs[2][1].yTop -
         survey.controller.measureText().height * (1.0 + SurveyHelper.GAP_BETWEEN_ROWS));
 });
+test('Check adding new page for lack of place before new page', async () => {
+    let json = {
+        pages: [
+            {
+                questions: [
+                    {
+                        titleLocation: 'hidden',
+                        type: 'checkbox',
+                        name: 'check',
+                        choices: ['', '', '']
+                    }
+                ]
+            },
+            {
+                questions: [
+                    {
+                        titleLocation: 'hidden',
+                        type: 'checkbox',
+                        name: 'check',
+                        choices: ['']
+                    }
+                ]
+            }
+        ]
+    };
+    let options = {
+        fontSize: 16,
+        format: [10, 20],
+        margins:
+        {
+            left: 0,
+            right: 0,
+            top: 0,
+            bot: 0
+
+        }
+    };
+    let survey: SurveyPDF = new SurveyPDF(json, options);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
+    let packs: IPdfBrick[][] = PagePacker.pack(flats, survey.controller);
+    expect(packs.length).toBe(3);
+    TestHelper.equalRect(expect, flats[0][0], packs[0][0]);
+    TestHelper.equalRect(expect, flats[0][1], packs[0][1]);
+    TestHelper.equalRect(expect, flats[0][2], SurveyHelper.moveRect(packs[1][0], undefined, 0));
+    TestHelper.equalRect(expect, flats[0][2], SurveyHelper.moveRect(packs[1][0], undefined, 0));
+    TestHelper.equalRect(expect, flats[1][0], packs[2][0]);
+})
