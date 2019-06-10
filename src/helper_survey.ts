@@ -24,12 +24,13 @@ export class SurveyHelper {
     public static readonly MULTIPLETEXT_TEXT_PERS: number = Math.E / 10.0;
     public static readonly HTML_TAIL_TEXT: number = 0.24;
     public static readonly SELECT_ITEM_FLAT_SCALE: number = 0.8;
-    public static readonly BORDER_SCALE: number = 0.1;
     public static readonly GAP_BETWEEN_ROWS: number = 0.25;
-    public static readonly BLACK_BORDER_SCALE: number = 0.6;
-    public static readonly WHITE_BORDER_SCALE: number = 0.4;
-
+    public static readonly BORDER_SCALE: number = 0.1;
+    public static readonly VISIBLE_BORDER_SCALE: number = 0.6;
+    public static readonly UNVISIBLE_BORDER_SCALE: number = 0.4;
     public static readonly RADIUS_SCALE: number = 2.5;
+    public static readonly TEXT_COLOR: string = '#000000';
+    public static readonly BACKGROUND_COLOR: string = '#FFFFFF';
 
     public static parseWidth(width: string, maxWidth: number): number {
         let value: number = parseFloat(width);
@@ -208,7 +209,8 @@ export class SurveyHelper {
         controller: DocController, text: string | LocalizableString) {
         let oldFontSize: number = controller.fontSize;
         controller.fontSize = oldFontSize * SurveyHelper.DESCRIPTION_FONT_SIZE_SCALE_MAGIC;
-        let composite: IPdfBrick = await SurveyHelper.createTextFlat(point, question, controller, text, DescriptionBrick);
+        let composite: IPdfBrick = await SurveyHelper.createTextFlat(
+            point, question, controller, text, DescriptionBrick);
         controller.fontSize = oldFontSize;
         return composite;
     }
@@ -334,22 +336,23 @@ export class SurveyHelper {
     public static formScale(controller: DocController, flat: PdfBrick): number {
         let minSide = flat.width < flat.height ? flat.width : flat.height;
         let fontSize = controller.measureText().height;
-        return (minSide - fontSize * SurveyHelper.BORDER_SCALE * 2) / minSide;
+        return (minSide - fontSize * SurveyHelper.BORDER_SCALE * 2.0) / minSide;
     }
     public static wrapInBordersFlat(controller: DocController, flat: PdfBrick): void {
         let minSide = flat.width < flat.height ? flat.width : flat.height;
-        let fontSize: number = controller.measureText(1).width;
-        let blackWidth: number = fontSize * SurveyHelper.BLACK_BORDER_SCALE * SurveyHelper.BORDER_SCALE;
-        let blackScale: number = SurveyHelper.formScale(controller, flat) + blackWidth / minSide;
-        let whiteWidth: number = fontSize * SurveyHelper.WHITE_BORDER_SCALE * SurveyHelper.BORDER_SCALE;
-        let whiteScale: number = 1 - whiteWidth / minSide;
-        let whiteRadius: number = SurveyHelper.RADIUS_SCALE * whiteWidth;
-        controller.doc.setDrawColor('black');
-        controller.doc.setLineWidth(blackWidth);
-        controller.doc.rect(...SurveyHelper.createAcroformRect(SurveyHelper.scaleRect(flat, blackScale)));
-        controller.doc.setDrawColor('white');
-        controller.doc.setLineWidth(whiteWidth);
-        controller.doc.roundedRect(...SurveyHelper.createAcroformRect(SurveyHelper.scaleRect(flat, whiteScale)), whiteRadius, whiteRadius);
+        let fontSize: number = controller.measureText().width;
+        let visibleWidth: number = fontSize * SurveyHelper.VISIBLE_BORDER_SCALE * SurveyHelper.BORDER_SCALE;
+        let visibleScale: number = SurveyHelper.formScale(controller, flat) + visibleWidth / minSide;
+        let unvisibleWidth: number = fontSize * SurveyHelper.UNVISIBLE_BORDER_SCALE * SurveyHelper.BORDER_SCALE;
+        let unvisibleScale: number = 1.0 - unvisibleWidth / minSide;
+        let unvisibleRadius: number = SurveyHelper.RADIUS_SCALE * unvisibleWidth;
+        controller.doc.setDrawColor(SurveyHelper.TEXT_COLOR);
+        controller.doc.setLineWidth(visibleWidth);
+        controller.doc.rect(...SurveyHelper.createAcroformRect(SurveyHelper.scaleRect(flat, visibleScale)));
+        controller.doc.setDrawColor(SurveyHelper.BACKGROUND_COLOR);
+        controller.doc.setLineWidth(unvisibleWidth);
+        controller.doc.roundedRect(...SurveyHelper.createAcroformRect(
+            SurveyHelper.scaleRect(flat, unvisibleScale)), unvisibleRadius, unvisibleRadius);
     }
     public static clone(src: any) {
         let target: any = {};

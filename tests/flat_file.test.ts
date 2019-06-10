@@ -129,7 +129,8 @@ test('Check one image 16x16px file', async () => {
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.leftTopPoint.xLeft + width,
         yTop: survey.controller.leftTopPoint.yTop,
-        yBot: survey.controller.leftTopPoint.yTop + height + survey.controller.measureText().height
+        yBot: survey.controller.leftTopPoint.yTop + height +
+            survey.controller.measureText().height * (1.0 + FlatFile.IMAGE_GAP_SCALE)
     };
     TestHelper.equalRect(expect, flats[0][0], assumeFile);
 });
