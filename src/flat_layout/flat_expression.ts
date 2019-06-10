@@ -3,8 +3,8 @@ import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
 import { IPoint, IRect, DocController } from '../doc_controller';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
-import { TextBrick } from '../pdf_render/pdf_text';
 import { SurveyHelper } from '../helper_survey';
+import { TextFieldBrick } from '../pdf_render/pdf_textfield';
 
 export class FlatExpression extends FlatQuestion {
     protected question: QuestionExpressionModel;
@@ -14,8 +14,9 @@ export class FlatExpression extends FlatQuestion {
     }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         let rect: IRect = SurveyHelper.createTextFieldRect(point, this.controller);
-        return [await SurveyHelper.createTextFlat(point, this.question, this.controller,
-            this.question.displayValue, TextBrick)];
+        console.log(this.question.displayValue);
+        return [new TextFieldBrick(this.question, this.controller, rect, true,
+            this.question.id, ' ' + this.question.displayValue, '', true, false, false)];
     }
 }
 
