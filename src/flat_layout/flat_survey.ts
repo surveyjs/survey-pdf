@@ -84,7 +84,7 @@ export class FlatSurvey {
     }
     public static async generateFlats(survey: SurveyPDF): Promise<IPdfBrick[][]> {
         let flats: IPdfBrick[][] = [];
-        for (let page of survey.pages) {
+        for (let page of survey.visiblePages) {
             let pageFlats: IPdfBrick[] = [];
             pageFlats.push(...await this.generateFlatsPagePanel(
                 survey.controller.leftTopPoint, page, survey.controller));
