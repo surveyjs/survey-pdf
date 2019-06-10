@@ -13,7 +13,6 @@ export class TextFieldBrick extends PdfBrick {
         super(question, controller, rect);
         this.question = <QuestionTextModel>question;
     }
-    //TODO check for comment and fontsize 
     public async render(): Promise<void> {
         let inputField = this.isPassword ?
             new (<any>this.controller.doc.AcroFormPasswordField)() :
@@ -26,8 +25,8 @@ export class TextFieldBrick extends PdfBrick {
         else inputField.value = '';
         inputField.multiline = this.isMultiline;
         inputField.readOnly = this.isReadOnly;
-        inputField.maxFontSize = this.controller.fontSize;
         let formScale = SurveyHelper.formScale(this.controller, this);
+        inputField.maxFontSize = this.controller.fontSize * formScale;
         inputField.Rect = SurveyHelper.createAcroformRect(SurveyHelper.scaleRect(this, formScale));
         this.controller.doc.addField(inputField);
         SurveyHelper.wrapInBordersFlat(this.controller, this);
