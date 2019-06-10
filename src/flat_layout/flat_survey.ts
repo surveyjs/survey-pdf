@@ -10,7 +10,7 @@ import { SurveyHelper } from '../helper_survey';
 
 export class FlatSurvey {
     private static parseWidth(width: string): number {
-        return parseFloat(width) / 100.0;
+        return Math.min(parseFloat(width), 100.0) / 100.0;
     }
     public static async generateFlatsPanel(point: IPoint,
         question: PanelModel, controller: DocController): Promise<IPdfBrick[]> {
