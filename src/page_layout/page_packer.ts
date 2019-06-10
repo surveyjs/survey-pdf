@@ -11,8 +11,9 @@ interface PackInterval {
     absBot: number;
 }
 export class PagePacker {
-    private static findBotInterval(intervals: PackInterval[],
+    private static findBotInterval(tree: IntervalTree<PackInterval>,
         xLeft: number, xRight: number, options: DocOptions): PackInterval {
+        let intervals: PackInterval[] = tree.search(xLeft, xRight);
         intervals.push({
             pageIndex: 0, xLeft:
                 options.margins.left, xRight: options.margins.left,
@@ -27,7 +28,7 @@ export class PagePacker {
         }, intervals[intervals.length - 1]);
     }
     private static addPack(packs: IPdfBrick[][], index: number, brick: IPdfBrick) {
-        if (index == packs.length) {
+        for (let i: number = packs.length; i <= index; i++) {
             packs.push([]);
         }
         packs[index].push(brick);
@@ -59,16 +60,17 @@ export class PagePacker {
         let pageBot: number = controller.paperHeight - controller.margins.bot;
         unfoldFlats.forEach((unfoldFlatsPage: IPdfBrick[]) => {
             let tree: IntervalTree<PackInterval> = new IntervalTree();
+            let pageIndexShift: number = 0;
             unfoldFlatsPage.forEach((flat: IPdfBrick) => {
-                let intervals: PackInterval[] = tree.search(flat.xLeft, flat.xRight);
                 let { pageIndex, yBot, absBot } = PagePacker.findBotInterval(
-                    intervals, flat.xLeft, flat.xRight, controller);
+                    tree, flat.xLeft, flat.xRight, controller);
                 let height: number = flat.height;
                 flat.yTop = yBot + flat.yTop - absBot;
                 if (Math.abs(flat.yTop - controller.margins.top) > SurveyHelper.EPSILON &&
                     flat.yTop + height > pageBot + SurveyHelper.EPSILON) {
                     flat.yTop = controller.margins.top;
                     pageIndex++;
+                    pageIndexShift = Math.max(pageIndexShift, pageIndex);
                 }
                 tree.insert(flat.xLeft, flat.xRight, {
                     pageIndex: pageIndex,
@@ -78,7 +80,7 @@ export class PagePacker {
                 flat.yBot = flat.yTop + height;
                 PagePacker.addPack(packs, pageIndexModel + pageIndex, flat);
             });
-            pageIndexModel++;
+            pageIndexModel += pageIndexShift + 1;
         });
         return packs;
     }
