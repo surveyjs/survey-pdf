@@ -8,6 +8,7 @@ import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
 
 export class FlatFile extends FlatQuestion {
+    public static readonly IMAGE_GAP_SCALE: number = 0.195; 
     protected question: QuestionFileModel;
     public constructor(question: IQuestion, controller: DocController) {
         super(question, controller);
@@ -20,9 +21,12 @@ export class FlatFile extends FlatQuestion {
         let compositeFlat: CompositeBrick = new CompositeBrick(await SurveyHelper.createLinkFlat(
             point, this.question, this.controller, item.name, item.content));
         if (this.question.canPreviewImage(item)) {
-            compositeFlat.addBrick(SurveyHelper.createImageFlat(SurveyHelper.
-                createPoint(compositeFlat), this.question, this.controller,
-                item.content, SurveyHelper.getPageAvailableWidth(this.controller)));
+            let imagePoint: IPoint = SurveyHelper.createPoint(compositeFlat);
+            imagePoint.yTop += this.controller.measureText().height *
+                FlatFile.IMAGE_GAP_SCALE;
+            compositeFlat.addBrick(SurveyHelper.createImageFlat(
+                imagePoint, this.question, this.controller, item.content,
+                SurveyHelper.getPageAvailableWidth(this.controller)));
         }
         return compositeFlat;
     }

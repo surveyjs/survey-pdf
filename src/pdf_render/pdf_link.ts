@@ -1,7 +1,9 @@
 import { TextBrick } from './pdf_text';
+import { SurveyHelper } from '../helper_survey';
 
 export class LinkBrick extends TextBrick {
-    static COLOR: string = '#0000EE';
+    private static readonly SCALE_FACTOR_MAGIC: number = 0.955;
+    public static readonly COLOR: string = '#0000EE';
     public constructor(textFlat: TextBrick, protected link: string) {
         super((<LinkBrick>textFlat).question,
             (<LinkBrick>textFlat).controller,
@@ -9,14 +11,16 @@ export class LinkBrick extends TextBrick {
     }
     public async render(): Promise<void> {
         let oldTextColor: string = this.controller.doc.getTextColor();
+        this.controller.doc.setTextColor(SurveyHelper.BACKGROUND_COLOR);
+        let descent: number = this.controller.measureText().height *
+            (this.controller.doc.getLineHeightFactor() -
+                LinkBrick.SCALE_FACTOR_MAGIC);
+        let yTopLink: number = this.yTop +
+            (this.yBot - this.yTop) - descent;
+        this.controller.doc.textWithLink(this.text, this.xLeft,
+            yTopLink, { url: this.link });
         this.controller.doc.setTextColor(LinkBrick.COLOR);
-        let alignPoint = this.alignPoint(this);
-        this.controller.doc.textWithLink(this.text, alignPoint.xLeft,
-            alignPoint.yTop, {
-                align: this.align.align,
-                baseline: this.align.baseline,
-                url: this.link
-            });
+        super.render();
         this.controller.doc.setTextColor(oldTextColor);
     }
 }
