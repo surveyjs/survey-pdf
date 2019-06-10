@@ -117,9 +117,7 @@ test('Not visible question', async () => {
   };
   let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
   let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
-  expect(flats.length).toBe(1);
-  expect(typeof flats[0]).not.toBe('undefined');
-  expect(flats[0].length).toBe(0);
+  expect(flats.length).toBe(0);
 });
 test('Check descrition with hidden title', async () => {
   let json = {
