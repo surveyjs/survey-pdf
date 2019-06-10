@@ -220,3 +220,14 @@ test('move rect to (undefined, 0)', async () => {
     }
     TestHelper.equalRect(expect, SurveyHelper.moveRect(rect, undefined, 0), assumeRect);
 })
+test('parse width 10 px', async () => {
+    expect(SurveyHelper.parseWidth('10px', 100)).toBeCloseTo(10 * 72 / 96);
+})
+test('parse width 10', async () => {
+    expect(SurveyHelper.parseWidth('10', 100)).toBe(10);
+
+})
+test('parse width 10%', async () => {
+    expect(SurveyHelper.parseWidth('10%', 100)).toBe(10);
+
+})

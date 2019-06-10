@@ -9,9 +9,6 @@ import { RowlineBrick } from '../pdf_render/pdf_rowline';
 import { SurveyHelper } from '../helper_survey';
 
 export class FlatSurvey {
-    private static parseWidth(width: string): number {
-        return Math.min(parseFloat(width), 100.0) / 100.0;
-    }
     public static async generateFlatsPanel(point: IPoint,
         question: PanelModel, controller: DocController): Promise<IPdfBrick[]> {
         let panelFlats: IPdfBrick[] = [];
@@ -51,7 +48,7 @@ export class FlatSurvey {
             let rowFlats: IPdfBrick[] = [];
             for (let question of row.elements) {
                 if (!question.isVisible) continue;
-                let persWidth: number = width * FlatSurvey.parseWidth(question.renderWidth);
+                let persWidth: number = SurveyHelper.parseWidth(question.renderWidth, width);
                 controller.margins.left = currMarginLeft;
                 controller.margins.right = controller.paperWidth -
                     currMarginLeft - persWidth;

@@ -30,6 +30,43 @@ export class SurveyHelper {
     public static readonly WHITE_BORDER_SCALE: number = 0.4;
 
     public static readonly RADIUS_SCALE: number = 2.5;
+
+    public static parseWidth(width: string, maxWidth: number): number {
+        let value: number = parseFloat(width);
+        let unit: string = width.replace(/[^A-Za-z]/g, '');
+        let k: number;
+        switch (unit) {
+            case 'pt':
+                k = 1;
+                break;
+            case 'mm':
+                k = 72.0 / 25.4;
+                break;
+            case 'cm':
+                k = 72.0 / 2.54;
+                break;
+            case 'in':
+                k = 72;
+                break;
+            case 'px':
+                k = 72 / 96;
+                break;
+            case 'pc':
+                k = 12;
+                break;
+            case 'em':
+                k = 12;
+                break;
+            case 'ex':
+                k = 6;
+                break;
+            default:
+            case '%':
+                k = maxWidth / 100;
+                break;
+        }
+        return Math.min(value * k, maxWidth);
+    }
     public static mergeRects(...rects: IRect[]): IRect {
         let resultRect: IRect = {
             xLeft: rects[0].xLeft,
