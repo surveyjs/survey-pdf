@@ -9,6 +9,7 @@ import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { FlatExpression } from '../src/flat_layout/flat_expression';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { TestHelper } from '../src/helper_test';
+import { SurveyHelper } from '../src/helper_survey';
 let __dummy_ex = new FlatExpression(null, null);
 
 test('Check expression', async () => {
@@ -28,8 +29,7 @@ test('Check expression', async () => {
     expect(flats[0].length).toBe(1);
     let assumeExpression: IRect = {
         xLeft: survey.controller.leftTopPoint.xLeft,
-        xRight: survey.controller.leftTopPoint.xLeft + survey.controller.measureText(
-            (<QuestionExpressionModel>survey.getAllQuestions()[0]).displayValue).width,
+        xRight: survey.controller.leftTopPoint.xLeft + SurveyHelper.getPageAvailableWidth(survey.controller),
         yTop: survey.controller.leftTopPoint.yTop,
         yBot: survey.controller.leftTopPoint.yTop + survey.controller.measureText().height
     };
