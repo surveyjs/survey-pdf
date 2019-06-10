@@ -27,9 +27,9 @@ export class TextFieldBrick extends PdfBrick {
         inputField.multiline = this.isMultiline;
         inputField.readOnly = this.isReadOnly;
         inputField.maxFontSize = this.controller.fontSize;
-        this.controller.doc.addField(inputField);
         let formScale = SurveyHelper.formScale(this.controller, this);
         inputField.Rect = SurveyHelper.createAcroformRect(SurveyHelper.scaleRect(this, formScale));
+        this.controller.doc.addField(inputField);
         SurveyHelper.wrapInBordersFlat(this.controller, this);
     }
 }

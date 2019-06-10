@@ -24,7 +24,7 @@ export class SurveyHelper {
     public static readonly MULTIPLETEXT_TEXT_PERS: number = Math.E / 10.0;
     public static readonly HTML_TAIL_TEXT: number = 0.24;
     public static readonly SELECT_ITEM_FLAT_SCALE: number = 0.8;
-    public static readonly BORDER_SCALE: number = 0.2;
+    public static readonly BORDER_SCALE: number = 0.1;
     public static readonly GAP_BETWEEN_ROWS: number = 0.25;
     public static readonly BLACK_BORDER_SCALE: number = 0.6;
     public static readonly WHITE_BORDER_SCALE: number = 0.4;
@@ -297,14 +297,15 @@ export class SurveyHelper {
     public static formScale(controller: DocController, flat: PdfBrick): number {
         let minSide = flat.width < flat.height ? flat.width : flat.height;
         let fontSize = controller.measureText().height;
-        return (minSide - fontSize * SurveyHelper.BORDER_SCALE) / minSide;
+        return (minSide - fontSize * SurveyHelper.BORDER_SCALE * 2) / minSide;
     }
     public static wrapInBordersFlat(controller: DocController, flat: PdfBrick): void {
+        let minSide = flat.width < flat.height ? flat.width : flat.height;
         let fontSize: number = controller.measureText(1).width;
-        let blackWidth: number = fontSize * SurveyHelper.BLACK_BORDER_SCALE * SurveyHelper.BORDER_SCALE / 2;
-        let blackScale: number = SurveyHelper.formScale(controller, flat) + blackWidth / fontSize;
-        let whiteWidth: number = fontSize * SurveyHelper.WHITE_BORDER_SCALE * SurveyHelper.BORDER_SCALE / 2;
-        let whiteScale: number = 1 - whiteWidth / fontSize;
+        let blackWidth: number = fontSize * SurveyHelper.BLACK_BORDER_SCALE * SurveyHelper.BORDER_SCALE;
+        let blackScale: number = SurveyHelper.formScale(controller, flat) + blackWidth / minSide;
+        let whiteWidth: number = fontSize * SurveyHelper.WHITE_BORDER_SCALE * SurveyHelper.BORDER_SCALE;
+        let whiteScale: number = 1 - whiteWidth / minSide;
         let whiteRadius: number = SurveyHelper.RADIUS_SCALE * whiteWidth;
         controller.doc.setDrawColor('black');
         controller.doc.setLineWidth(blackWidth);
