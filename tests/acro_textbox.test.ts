@@ -17,83 +17,83 @@ async function checkTextboxValue(json: any, tobe: string,
     }
     await survey.render();
     expect(survey.controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields[0].value)
-		.toBe(tobe);
+		.toBe(tobe ? ' ' + tobe : tobe);
 	if (tobeDef != null) {
 		expect(survey.controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields[0].defaultValue)
-        	.toBe(tobeDef);
+        	.toBe(tobeDef ? ' ' + tobeDef : tobeDef);
 	}
 	expect(survey.controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields[0].readOnly)
 		.toBe(readOnly);
 }
-test('Set textbox no value', () => {
-    let json = { questions: [ {
+test('Set textbox no value', async () => {
+    let json: any = { questions: [ {
         name: 'textbox',
         type: 'text',
         title: 'NoValue:'
       }]
     };
-    checkTextboxValue(json, '');
+    await checkTextboxValue(json, '');
 });
-test('Set textbox default value', () => {
-    let json = { questions: [ {
+test('Set textbox default value', async () => {
+    let json: any = { questions: [ {
         name: 'textbox',
         type: 'text',
         title: 'NeedDefValue:',
         defaultValue: 'OhYes'
       }]
     };
-    checkTextboxValue(json, json.questions[0].defaultValue);
+    await checkTextboxValue(json, json.questions[0].defaultValue);
 });
-test('Set textbox data value', () => {
-    let json = { questions: [ {
+test('Set textbox data value', async () => {
+    let json: any = { questions: [ {
         name: 'textbox',
         type: 'text',
         title: 'NeedValue:'
       }]
     };
-    let data = {
+    let data: any = {
       textbox: 'Spider pig'
     };
-    checkTextboxValue(json, data.textbox, data);
+    await checkTextboxValue(json, data.textbox, data);
 });
-test('Set textbox data value with default value', () => {
-    let json = { questions: [ {
+test('Set textbox data value with default value', async () => {
+    let json: any = { questions: [ {
         name: 'textbox',
         type: 'text',
         title: 'NeedValue:',
         defaultValue: 'Only not me'
       }]
     };
-    let data = {
+    let data: any = {
         textbox: 'Invisible black'
 	};
-	checkTextboxValue(json, data.textbox, data);
+	await checkTextboxValue(json, data.textbox, data);
 });
-test('Check textbox password value is empty string', () => {
-	let json = { questions: [ {
+test('Check textbox password value is empty string', async () => {
+	let json: any = { questions: [ {
 		name: 'pass',
 		type: 'text',
 		title: 'I am clean',
 		inputType: 'password'
 		}]
 	};
-	checkTextboxValue(json, '');
+	await checkTextboxValue(json, '');
 });
-test('Check textbox password with data value is empty str', () => {
-	let json = { questions: [ {
+test('Check textbox password with data value is empty str', async () => {
+	let json: any = { questions: [ {
 		name: 'pass',
 		type: 'text',
 		title: 'I am clean',
 		inputType: 'password'
 		}]
 	};
-	let data = {
+	let data: any = {
 		pass: 'Garbage'
 	};
-	checkTextboxValue(json, '', data);
+	await checkTextboxValue(json, '', data);
 });
-test('Check textbox password with default value is empty str', () => {
-  let json = { questions: [ {
+test('Check textbox password with default value is empty str', async () => {
+  let json: any = { questions: [ {
       name: 'pass',
       type: 'text',
       title: 'I am clean',
@@ -101,10 +101,10 @@ test('Check textbox password with default value is empty str', () => {
       inputType: 'password'
     }]
   };
-  checkTextboxValue(json, '');
+  await checkTextboxValue(json, '');
 });
-test('Check textbox password with data and default value is empty str', () => {
-	let json = { questions: [ {
+test('Check textbox password with data and default value is empty str', async () => {
+	let json: any = { questions: [ {
 		name: 'pass',
 		type: 'text',
 		title: 'I am clean',
@@ -112,23 +112,23 @@ test('Check textbox password with data and default value is empty str', () => {
 		inputType: 'password'
 		}]
 	};
-	let data = {
+	let data: any = {
 		pass: 'Ignore'
 	};
-	checkTextboxValue(json, '', data);
+	await checkTextboxValue(json, '', data);
 });
-test('Set textbox placeHolder', () => {
-	let json = { questions: [ {
+test('Set textbox placeHolder', async () => {
+	let json: any = { questions: [ {
 		name: 'holder',
 		type: 'text',
 		title: 'Hearth',
 		placeHolder: 'keeper'
 		}]
 	};
-	checkTextboxValue(json, '', null, json.questions[0].placeHolder);
+	await checkTextboxValue(json, '', null, json.questions[0].placeHolder);
 });
-test('Set textbox defaultValue with placeHolder', () => {
-	let json = { questions: [ {
+test('Set textbox defaultValue with placeHolder', async () => {
+	let json: any = { questions: [ {
 		name: 'holder',
 		type: 'text',
 		title: 'Birds',
@@ -136,10 +136,10 @@ test('Set textbox defaultValue with placeHolder', () => {
 		placeHolder: 'gull'
 		}]
 	};
-	checkTextboxValue(json, json.questions[0].defaultValue, null, json.questions[0].placeHolder);
+	await checkTextboxValue(json, json.questions[0].defaultValue, null, json.questions[0].placeHolder);
 });
-test('Set textbox data with defaultValue and placeHolder', () => {
-	let json = { questions: [ {
+test('Set textbox data with defaultValue and placeHolder', async () => {
+	let json: any = { questions: [ {
 		name: 'holder',
 		type: 'text',
 		title: 'Birds',
@@ -147,37 +147,37 @@ test('Set textbox data with defaultValue and placeHolder', () => {
 		placeHolder: 'gull'
 		}]
 	};
-	let data = {
+	let data: any = {
 		holder: 'phoenix'
 	};
-	checkTextboxValue(json, data.holder, data, json.questions[0].placeHolder);
+	await checkTextboxValue(json, data.holder, data, json.questions[0].placeHolder);
 });
-test('Check not readOnly textbox', () => {
-	let json = { questions: [ {
+test('Check not readOnly textbox', async () => {
+	let json: any = { questions: [ {
 		name: 'readtext',
 		type: 'text',
 		title: 'Write also'
 		}]
 	};
-	checkTextboxValue(json, '', null, '', false);
+	await checkTextboxValue(json, '', null, '', false);
 });
 
-test('Check readOnly textbox', () => {
-	let json = { questions: [ {
+test('Check readOnly textbox', async () => {
+	let json: any = { questions: [ {
 		name: 'readtext',
 		type: 'text',
 		title: 'Read only',
 		readOnly: true
 		}]
 	};
-	checkTextboxValue(json, '', null, '', true);
+	await checkTextboxValue(json, '', null, '', true);
 });
-test('Set comment no value', () => {
-	let json = { questions: [ {
+test('Set comment no value', async () => {
+	let json: any = { questions: [ {
 			name: 'comment',
 			type: 'comment',
 			title: 'NoValue:'
 		}]
 	};
-	checkTextboxValue(json, '');
+	await checkTextboxValue(json, '');
 });

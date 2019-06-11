@@ -38,7 +38,7 @@ export class SurveyHelper {
         let k: number;
         switch (unit) {
             case 'pt':
-                k = 1;
+                k = 1.0;
                 break;
             case 'mm':
                 k = 72.0 / 25.4;
@@ -47,23 +47,23 @@ export class SurveyHelper {
                 k = 72.0 / 2.54;
                 break;
             case 'in':
-                k = 72;
+                k = 72.0;
                 break;
             case 'px':
-                k = 72 / 96;
+                k = 72.0 / 96.0;
                 break;
             case 'pc':
-                k = 12;
+                k = 12.0;
                 break;
             case 'em':
-                k = 12;
+                k = 12.0;
                 break;
             case 'ex':
-                k = 6;
+                k = 6.0;
                 break;
             default:
             case '%':
-                k = maxWidth / 100;
+                k = maxWidth / 100.0;
                 break;
         }
         return Math.min(value * k, maxWidth);

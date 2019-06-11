@@ -1,4 +1,4 @@
-import { IQuestion, PanelModelBase, PanelModel } from 'survey-core';
+import { IElement, IQuestion, PanelModelBase, PanelModel } from 'survey-core';
 import { SurveyPDF } from '../survey';
 import { IPoint, DocController } from '../doc_controller';
 import { FlatRepository } from './flat_repository';
@@ -37,6 +37,7 @@ export class FlatSurvey {
     private static async generateFlatsPagePanel(point: IPoint,
         pagePanel: PanelModelBase, controller: DocController): Promise<IPdfBrick[]> {
         if (!pagePanel.isVisible) return;
+        
         pagePanel.onFirstRendering();
         let pagePanelFlats: IPdfBrick[] = [];
         let currPoint: IPoint = SurveyHelper.clone(point);
@@ -46,20 +47,25 @@ export class FlatSurvey {
             controller.pushMargins();
             let currMarginLeft: number = controller.margins.left;
             let rowFlats: IPdfBrick[] = [];
-            for (let question of row.elements) {
-                if (!question.isVisible) continue;
-                let persWidth: number = SurveyHelper.parseWidth(question.renderWidth, width);
+            let visibleCount: number = (<any>row)['getVisibleCount']();
+            for (let i: number = 0; i < row.elements.length; i++) {
+                let element: IElement = row.elements[i];
+                if (!element.isVisible) continue;
+                let persWidth: number = SurveyHelper.parseWidth(element.renderWidth, width);
                 controller.margins.left = currMarginLeft;
-                controller.margins.right = controller.paperWidth -
-                    currMarginLeft - persWidth;
-                currMarginLeft = controller.paperWidth - controller.margins.right;
+                controller.margins.right = controller.paperWidth - currMarginLeft - persWidth;
+                if (i != visibleCount - 1) {
+                    controller.margins.right += controller.measureText().width / 2.0;
+                }
+                currMarginLeft = controller.paperWidth - controller.margins.right +
+                    controller.measureText().width;
                 currPoint.xLeft = controller.margins.left;
-                if (question instanceof PanelModel) {
-                    rowFlats.push(...await this.generateFlatsPanel(currPoint, question, controller));
+                if (element instanceof PanelModel) {
+                    rowFlats.push(...await this.generateFlatsPanel(currPoint, element, controller));
                 }
                 else {
                     let flatQuestion: IFlatQuestion =
-                        FlatRepository.getInstance().create(<IQuestion>question, controller);
+                        FlatRepository.getInstance().create(<IQuestion>element, controller);
                     rowFlats.push(...await flatQuestion.generateFlats(currPoint));
                 }
 
