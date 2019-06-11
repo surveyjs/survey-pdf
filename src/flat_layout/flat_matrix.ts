@@ -91,14 +91,14 @@ export class FlatMatrixRow extends FlatRadiogroup {
             currPoint.xLeft = this.controller.margins.left;
             if (this.questionMatrix.hasCellText) {
                 let itemRect: IRect = SurveyHelper.createRect(currPoint, columnWidth, itemHeight)
-                let radioFlat: IPdfBrick = this.createItemBrick(itemRect, column, i, this.key, checked);
+                let radioFlat: IPdfBrick = this.createItemFlat(itemRect, column, i, this.key, checked);
                 let textFlat: IPdfBrick = await SurveyHelper.createTextFlat(SurveyHelper.createPoint(radioFlat), this.questionMatrix, this.controller,
                     this.questionMatrix.getCellDisplayLocText(this.row.name, column), TextBrick);
                 cells.push(new CompositeBrick(radioFlat, textFlat));
             }
             else {
                 let itemRect: IRect = SurveyHelper.createRect(currPoint, itemHeight, itemHeight);
-                cells.push(this.createItemBrick(itemRect, column, i, this.key, checked));
+                cells.push(this.createItemFlat(itemRect, column, i, this.key, checked));
             }
             this.controller.popMargins();
         }
@@ -121,7 +121,7 @@ export class FlatMatrixRow extends FlatRadiogroup {
             let checked: boolean = this.row.value == column.value;
             if (this.questionMatrix.hasCellText) {
                 let itemRect = SurveyHelper.createRect(currPoint, SurveyHelper.getPageAvailableWidth(this.controller), itemHeight);
-                let radioFlat = this.createItemBrick(itemRect, column, i, this.key, checked);
+                let radioFlat = this.createItemFlat(itemRect, column, i, this.key, checked);
                 currPoint.yTop = radioFlat.yBot;
                 let cellTextFlat = await SurveyHelper.createTextFlat(currPoint, this.questionMatrix, this.controller,
                     this.questionMatrix.getCellDisplayLocText(this.row.name, column), TextBrick);
@@ -131,7 +131,7 @@ export class FlatMatrixRow extends FlatRadiogroup {
             else {
                 let itemRect: IRect = SurveyHelper.createRect(currPoint, itemHeight, itemHeight);
                 this.controller.pushMargins();
-                let radioItem: IPdfBrick = this.createItemBrick(itemRect, column, i, this.key, checked);
+                let radioItem: IPdfBrick = this.createItemFlat(itemRect, column, i, this.key, checked);
                 currPoint = SurveyHelper.createPoint(radioItem, false, true);
                 this.controller.margins.left = this.controller.margins.left + itemHeight;
                 let radioText: IPdfBrick = await SurveyHelper.createTextFlat(currPoint, this.questionMatrix,

@@ -35,7 +35,7 @@ export class FlatRating extends FlatRadiogroup {
         }
         let radioPoint: IPoint = SurveyHelper.createPoint(compositeFlat);
         radioPoint.xLeft = point.xLeft;
-        compositeFlat.addBrick(this.createItemBrick(SurveyHelper.createRect(
+        compositeFlat.addBrick(this.createItemFlat(SurveyHelper.createRect(
             radioPoint, textWidth, this.controller.measureText().height), item, index));
         return compositeFlat;
     }
