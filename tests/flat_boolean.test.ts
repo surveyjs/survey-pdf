@@ -28,10 +28,10 @@ test('Check boolean without title', async () => {
     expect(flats[0].length).toBe(1);
     TestHelper.equalRect(expect, flats[0][0], {
         xLeft: survey.controller.leftTopPoint.xLeft,
-        xRight: survey.controller.leftTopPoint.xLeft + survey.controller.measureText().height +
+        xRight: survey.controller.leftTopPoint.xLeft + 2.0 * survey.controller.measureText().height * SurveyHelper.SELECT_ITEM_FLAT_SCALE +
             survey.controller.measureText(json.elements[0].title).width,
         yTop: survey.controller.leftTopPoint.yTop,
-        yBot: survey.controller.leftTopPoint.yTop + survey.controller.measureText().height
+        yBot: survey.controller.leftTopPoint.yTop + survey.controller.measureText(json.elements[0].title).height,
     })
 });
 test('Check boolean with title', async () => {
@@ -55,6 +55,6 @@ test('Check boolean with title', async () => {
             <Question>survey.getAllQuestions()[0], survey.controller)).xRight,
         yTop: survey.controller.leftTopPoint.yTop,
         yBot: survey.controller.leftTopPoint.yTop +
-            survey.controller.measureText().height * (2.0 + FlatQuestion.CONTENT_GAP_VERT_SCALE)
+            survey.controller.measureText().height * (1.0 + (1.0 + SurveyHelper.SELECT_ITEM_FLAT_SCALE) / 2.0 + FlatQuestion.CONTENT_GAP_VERT_SCALE)
     })
 });

@@ -13,13 +13,13 @@ export abstract class FlatSelectBase extends FlatQuestion {
         this.question = <QuestionCheckboxBase>question;
     }
 
-    public abstract createItemBrick(rect: IRect, item: ItemValue, index: number): IPdfBrick;
+    public abstract createItemFlat(rect: IRect, item: ItemValue, index: number): IPdfBrick;
     private async generateFlatsItem(point: IPoint, item: ItemValue, index: number): Promise<IPdfBrick> {
         let compositeFlat: CompositeBrick = new CompositeBrick();
         let height: number = this.controller.measureText().height;
         let itemRect: IRect = SurveyHelper.createRect(point, height, height);
 
-        let itemFlat: IPdfBrick = this.createItemBrick(SurveyHelper.moveRect(
+        let itemFlat: IPdfBrick = this.createItemFlat(SurveyHelper.moveRect(
             SurveyHelper.scaleRect(itemRect, SurveyHelper.SELECT_ITEM_FLAT_SCALE),
             point.xLeft), item, index);
         compositeFlat.addBrick(itemFlat);
