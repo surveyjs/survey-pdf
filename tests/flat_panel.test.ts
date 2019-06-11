@@ -122,8 +122,8 @@ test('Check panel with title and description', async () => {
     let panelDescFlat: IPdfBrick = await SurveyHelper.createDescFlat(
         SurveyHelper.createPoint(panelTitleFlat), null, survey.controller, json.elements[0].description);
     TestHelper.equalRect(expect, flats[0][0], SurveyHelper.mergeRects(panelTitleFlat, panelDescFlat));
-    await calcTitleTop(SurveyHelper.createPoint(SurveyHelper.mergeRects(panelTitleFlat, panelDescFlat)), survey.controller,
-        <Question>survey.getAllQuestions()[0], flats[0][1]);
+    await calcTitleTop(SurveyHelper.createPoint(SurveyHelper.mergeRects(panelTitleFlat, panelDescFlat)),
+        survey.controller, <Question>survey.getAllQuestions()[0], flats[0][1]);
 });
 test('Check panel with inner indent', async () => {
     let json = {
