@@ -52,6 +52,7 @@ test('Check dropdown with other', async () => {
     let otherPoint: IPoint = await calcTitleTop(survey.controller.leftTopPoint, survey.controller,
         <Question>survey.getAllQuestions()[0], TestHelper.wrapRect(SurveyHelper.mergeRects(
             flats[0][0].unfold()[0], flats[0][0].unfold()[1])));
+    otherPoint.xLeft += survey.controller.measureText().width;
     TestHelper.equalRect(expect, flats[0][0].unfold()[2], SurveyHelper.createOtherFlat(
         otherPoint, survey.getAllQuestions()[0], survey.controller));
 });

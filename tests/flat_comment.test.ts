@@ -62,7 +62,7 @@ async function commmentPointToTitleTests(titleLocation: string) {
         }
     }
 }
-test('Comment point, title location top', async () => {
+test.skip('Comment point, title location top', async () => {
     await commmentPointToTitleTests('top');
 });
 test('Comment point, title location bottom', async () => {
@@ -89,27 +89,28 @@ async function commentPointAfterItem(titleLocation: string) {
     (<any>json).questions[0].titleLocation = titleLocation;
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     let resultRects: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
-
     expect(resultRects.length).toBe(1);
     if (titleLocation !== 'bottom') expect(resultRects[0].length).toBe(2);
     else expect(resultRects[0].length).toBe(3);
     if (titleLocation === 'top' || titleLocation === 'left') {
-        TestHelper.equalPoint(expect, SurveyHelper.createPoint(SurveyHelper.mergeRects(resultRects[0][0].unfold()[1],
-            SurveyHelper.mergeRects(resultRects[0][0].unfold()[2]))), resultRects[0][1]);
+        let commentPoint: IPoint = SurveyHelper.createPoint(
+            SurveyHelper.mergeRects(resultRects[0][0].unfold()[1],
+            SurveyHelper.mergeRects(resultRects[0][0].unfold()[2])));
+        TestHelper.equalPoint(expect, commentPoint, resultRects[0][1]);
     } else {
         TestHelper.equalPoint(expect, SurveyHelper.createPoint(resultRects[0][0]), resultRects[0][1]);
     }
 }
-test('Comment point after choice, title location: ' + 'top', async () => {
+test('Comment point after choice, title location: top', async () => {
     await commentPointAfterItem('top');
 });
-test('Comment point after choice, title location: ' + 'bottom', async () => {
+test('Comment point after choice, title location: bottom', async () => {
     await commentPointAfterItem('bottom');
 });
-test('Comment point after choice, title location: ' + 'hidden', async () => {
+test('Comment point after choice, title location: hidden', async () => {
     await commentPointAfterItem('hidden');
 });
-test('Comment point after choice, title location: ' + 'left', async () => {
+test('Comment point after choice, title location: left', async () => {
     await commentPointAfterItem('left');
 });
 test('Calc comment boundaries title hidden', async () => {
