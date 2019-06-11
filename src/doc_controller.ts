@@ -1,6 +1,7 @@
 import * as jsPDF from 'jspdf';
 import { SurveyHelper } from './helper_survey';
 import { LocalizableString } from 'survey-core';
+import Fonts from './fonts';
 export interface IPoint {
     xLeft: number;
     yTop: number;
@@ -25,6 +26,9 @@ export interface IDocOptions {
     orientation?: 'p' | 'l';
     format?: string | number[];
     fontSize?: number;
+    fontName?: string;
+    base64Normal?: string;
+    base64Bold?: string;
     margins: IMargin;
 }
 
@@ -34,12 +38,14 @@ export class DocOptions implements IDocOptions {
     protected _margins: IMargin;
     protected _format: string | number[];
     protected _orientation: 'l' | 'p';
+    protected _fontName: string;
     public constructor(options: IDocOptions) {
         this._orientation = options.orientation || 'p';
         this._format = options.format || 'a4';
         if (Array.isArray(this._format)) {
             this._format = this._format.map(f => f * DocOptions.MM_TO_PT);
         }
+        this._fontName = options.fontName || 'segoe';
         this._fontSize = options.fontSize || 12;
         this._margins = SurveyHelper.clone(options.margins);
         Object.keys(this._margins).forEach((name: string) => {
@@ -51,6 +57,9 @@ export class DocOptions implements IDocOptions {
             xLeft: this.margins.left,
             yTop: this.margins.top
         }
+    }
+    get fontName(): string {
+        return this._fontName;
     }
     get fontSize(): number {
         return this._fontSize;
@@ -75,12 +84,26 @@ export class DocController extends DocOptions {
 
     public constructor(options: IDocOptions) {
         super(options);
+        if ((options.fontName && (options.base64Normal || options.base64Bold)) || this.fontName == 'segoe') {
+            this.addFont(this.fontName, options.base64Normal || Fonts.SEGOE_NORMAL, 'normal');
+            this.addFont(this.fontName, options.base64Bold || Fonts.SEGOE_BOLD, 'bold');
+        }
         this._doc = new jsPDF({ orientation: this.orientation, unit: 'pt', format: this.format });
         this._helperDoc = new jsPDF({ orientation: this.orientation, unit: 'pt', format: this.format });
+        this._doc.setFont(this.fontName);
+        this._helperDoc.setFont(this.fontName);
         this._doc.setFontSize(this.fontSize);
-        this._helperDoc.setFontSize(this._fontSize);
+        this._helperDoc.setFontSize(this.fontSize);
         this._fontStyle = 'normal';
         this.marginsStack = [];
+    }
+    private addFont(fontName: string, base: string, fontStyle: string) {
+        var callAddFont = function () {
+            let fontFile: string = `${fontName}-${fontStyle}.ttf`
+            this.addFileToVFS(fontFile, base);
+            this.addFont(fontFile, fontName, fontStyle);
+        };
+        (<any>jsPDF).API.events.push(['addFonts', callAddFont]);
     }
     get doc(): any {
         return this._doc;

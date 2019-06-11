@@ -20,6 +20,7 @@ export class TestHelper {
         return {
             format: [210.0, 297.0],
             fontSize: 30,
+            fontName: 'helvetica',
             margins: {
 
                 left: 10.0,
