@@ -12,6 +12,7 @@ export interface IFlatQuestion {
 }
 
 export class FlatQuestion implements IFlatQuestion {
+    public static readonly CONTENT_GAP_SCALE: number = 0.195;
     protected question: Question;
     public constructor(question: IQuestion, protected controller: DocController) {
         this.question = <Question>question;
@@ -62,6 +63,8 @@ export class FlatQuestion implements IFlatQuestion {
                     compositeFlat.addBrick(descFlat);
                     contentPoint = SurveyHelper.createPoint(descFlat);
                 }
+                contentPoint.yTop += this.controller.measureText().height *
+                    FlatQuestion.CONTENT_GAP_SCALE;
                 let contentFlats = await this.generateFlatsContent(contentPoint);
                 if (contentFlats.length != 0) {
                     compositeFlat.addBrick(contentFlats.shift());
@@ -85,6 +88,8 @@ export class FlatQuestion implements IFlatQuestion {
                     titlePoint = SurveyHelper.createPoint(flats[flats.length - 1]);
                     titlePoint.xLeft = indentPoint.xLeft;
                 }
+                titlePoint.yTop += this.controller.measureText().height *
+                    FlatQuestion.CONTENT_GAP_SCALE;
                 let titleFlat: IPdfBrick = await this.generateFlatTitle(titlePoint);
                 let compositeFlat: CompositeBrick = new CompositeBrick(titleFlat);
                 let descPoint: IPoint = SurveyHelper.createPoint(titleFlat);

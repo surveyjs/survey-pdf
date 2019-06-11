@@ -7,6 +7,7 @@ import { PagePacker } from '../src/page_layout/page_packer';
 import { SurveyPDF } from '../src/survey';
 import { IPoint, IRect, IDocOptions, DocOptions, DocController } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
+import { FlatQuestion } from '../src/flat_layout/flat_question';
 import { FlatTextbox } from '../src/flat_layout/flat_textbox';
 import { FlatCheckbox } from '../src/flat_layout/flat_checkbox';
 import { FlatRadiogroup } from '../src/flat_layout/flat_radiogroup';
@@ -69,7 +70,8 @@ test('Long checkbox with indent', async () => {
     let leftTopPoint: IPoint = survey.controller.leftTopPoint;
     leftTopPoint.xLeft += survey.controller.measureText(json.questions[0].indent).width;
     TestHelper.equalPoint(expect, packs[0][0], leftTopPoint);
-    leftTopPoint.yTop += survey.controller.measureText().height * (1.0 + checkGap);
+    leftTopPoint.yTop += survey.controller.measureText().height * (1.0 + checkGap) +
+        survey.controller.measureText().height * FlatQuestion.CONTENT_GAP_SCALE;
     TestHelper.equalPoint(expect, packs[0][1], leftTopPoint);
     leftTopPoint.yTop = survey.controller.leftTopPoint.yTop;
     for (let i: number = 0; i < 3; i++) {

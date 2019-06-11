@@ -5,6 +5,7 @@
 import { Question } from 'survey-core';
 import { SurveyPDF } from '../src/survey';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
+import { FlatQuestion } from '../src/flat_layout/flat_question';
 import { FlatBoolean } from '../src/flat_layout/flat_boolean';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { SurveyHelper } from '../src/helper_survey';
@@ -53,6 +54,7 @@ test('Check boolean with title', async () => {
         xRight: (await SurveyHelper.createTitleFlat(survey.controller.leftTopPoint,
             <Question>survey.getAllQuestions()[0], survey.controller)).xRight,
         yTop: survey.controller.leftTopPoint.yTop,
-        yBot: survey.controller.leftTopPoint.yTop + survey.controller.measureText().height * 2
+        yBot: survey.controller.leftTopPoint.yTop +
+            survey.controller.measureText().height * (2.0 + FlatQuestion.CONTENT_GAP_SCALE)
     })
 });
