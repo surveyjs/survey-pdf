@@ -55,6 +55,6 @@ test('Check boolean with title', async () => {
             <Question>survey.getAllQuestions()[0], survey.controller)).xRight,
         yTop: survey.controller.leftTopPoint.yTop,
         yBot: survey.controller.leftTopPoint.yTop +
-            survey.controller.measureText().height * (2.0 + FlatQuestion.CONTENT_GAP_SCALE)
+            survey.controller.measureText().height * (2.0 + FlatQuestion.CONTENT_GAP_VERT_SCALE)
     })
 });

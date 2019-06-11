@@ -71,7 +71,7 @@ test('Long checkbox with indent', async () => {
     leftTopPoint.xLeft += survey.controller.measureText(json.questions[0].indent).width;
     TestHelper.equalPoint(expect, packs[0][0], leftTopPoint);
     leftTopPoint.yTop += survey.controller.measureText().height * (1.0 + checkGap) +
-        survey.controller.measureText().height * FlatQuestion.CONTENT_GAP_SCALE;
+        survey.controller.measureText().height * FlatQuestion.CONTENT_GAP_VERT_SCALE;
     TestHelper.equalPoint(expect, packs[0][1], leftTopPoint);
     leftTopPoint.yTop = survey.controller.leftTopPoint.yTop;
     for (let i: number = 0; i < 3; i++) {

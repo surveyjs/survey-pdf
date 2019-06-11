@@ -12,7 +12,8 @@ export interface IFlatQuestion {
 }
 
 export class FlatQuestion implements IFlatQuestion {
-    public static readonly CONTENT_GAP_SCALE: number = 0.195;
+    public static readonly CONTENT_GAP_VERT_SCALE: number = 0.195;
+    public static readonly CONTENT_GAP_HOR_SCALE: number = 1.0;
     protected question: Question;
     public constructor(question: IQuestion, protected controller: DocController) {
         this.question = <Question>question;
@@ -64,7 +65,7 @@ export class FlatQuestion implements IFlatQuestion {
                     contentPoint = SurveyHelper.createPoint(descFlat);
                 }
                 contentPoint.yTop += this.controller.measureText().height *
-                    FlatQuestion.CONTENT_GAP_SCALE;
+                    FlatQuestion.CONTENT_GAP_VERT_SCALE;
                 let contentFlats = await this.generateFlatsContent(contentPoint);
                 if (contentFlats.length != 0) {
                     compositeFlat.addBrick(contentFlats.shift());
@@ -89,7 +90,7 @@ export class FlatQuestion implements IFlatQuestion {
                     titlePoint.xLeft = indentPoint.xLeft;
                 }
                 titlePoint.yTop += this.controller.measureText().height *
-                    FlatQuestion.CONTENT_GAP_SCALE;
+                    FlatQuestion.CONTENT_GAP_VERT_SCALE;
                 let titleFlat: IPdfBrick = await this.generateFlatTitle(titlePoint);
                 let compositeFlat: CompositeBrick = new CompositeBrick(titleFlat);
                 let descPoint: IPoint = SurveyHelper.createPoint(titleFlat);
@@ -113,6 +114,7 @@ export class FlatQuestion implements IFlatQuestion {
                     contentPoint.xLeft = Math.max(contentPoint.xLeft, descFlat.xRight);
                 }
                 commentPoint.xLeft = SurveyHelper.createPoint(compositeFlat, false, true).xLeft;
+                contentPoint.xLeft += this.controller.measureText().width * FlatQuestion.CONTENT_GAP_HOR_SCALE;
                 let contentFlats = await this.generateFlatsContent(contentPoint);
                 if (contentFlats.length != 0) {
                     commentPoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(...contentFlats));

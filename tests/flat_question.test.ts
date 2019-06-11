@@ -32,17 +32,17 @@ export async function calcTitleTop(leftTopPoint: IPoint, controller: DocControll
         assumeTextbox = SurveyHelper.createTextFieldRect(
             SurveyHelper.createPoint(assumeDesc), controller);
         assumeTextbox.yTop += controller.measureText().height *
-            FlatQuestion.CONTENT_GAP_SCALE;
+            FlatQuestion.CONTENT_GAP_VERT_SCALE;
         assumeTextbox.yBot += controller.measureText().height *
-            FlatQuestion.CONTENT_GAP_SCALE;
+            FlatQuestion.CONTENT_GAP_VERT_SCALE;
         TestHelper.equalRect(expect, compositeFlat,
             SurveyHelper.mergeRects(assumeTitle, assumeDesc, assumeTextbox));
     }
     else {
         assumeTextbox.yTop += controller.measureText().height *
-            FlatQuestion.CONTENT_GAP_SCALE;
+            FlatQuestion.CONTENT_GAP_VERT_SCALE;
         assumeTextbox.yBot += controller.measureText().height *
-            FlatQuestion.CONTENT_GAP_SCALE;
+            FlatQuestion.CONTENT_GAP_VERT_SCALE;
         TestHelper.equalRect(expect, compositeFlat,
             SurveyHelper.mergeRects(assumeTitle, assumeTextbox));
     }
@@ -61,20 +61,20 @@ async function calcTitleBottom(controller: DocController, titleQuestion: Questio
             controller, SurveyHelper.getLocString(
                 titleQuestion.locDescription));
         assumeTitle.yTop += controller.measureText().height *
-            FlatQuestion.CONTENT_GAP_SCALE;
+            FlatQuestion.CONTENT_GAP_VERT_SCALE;
         assumeTitle.yBot += controller.measureText().height *
-            FlatQuestion.CONTENT_GAP_SCALE;
+            FlatQuestion.CONTENT_GAP_VERT_SCALE;
         assumeDesc.yTop += controller.measureText().height *
-            FlatQuestion.CONTENT_GAP_SCALE;
+            FlatQuestion.CONTENT_GAP_VERT_SCALE;
         assumeDesc.yBot += controller.measureText().height *
-            FlatQuestion.CONTENT_GAP_SCALE;
+            FlatQuestion.CONTENT_GAP_VERT_SCALE;
         TestHelper.equalRect(expect, compositeFlat,
             SurveyHelper.mergeRects(assumeTitle, assumeDesc));
     } else {
         assumeTitle.yTop += controller.measureText().height *
-            FlatQuestion.CONTENT_GAP_SCALE;
+            FlatQuestion.CONTENT_GAP_VERT_SCALE;
         assumeTitle.yBot += controller.measureText().height *
-            FlatQuestion.CONTENT_GAP_SCALE;
+            FlatQuestion.CONTENT_GAP_VERT_SCALE;
         TestHelper.equalRect(expect, compositeFlat, assumeTitle);
     }
 }
@@ -98,12 +98,15 @@ async function calcTitleLeft(controller: DocController, titleQuestion: Question,
             controller, SurveyHelper.getLocString(
                 titleQuestion.locDescription));
         controller.margins.right = oldRightMargins;
-        TestHelper.equalRect(expect, compositeFlat, SurveyHelper.mergeRects(assumeTitle, assumeDesc));
+        TestHelper.equalRect(expect, compositeFlat,
+            SurveyHelper.mergeRects(assumeTitle, assumeDesc));
         assumeTextbox.xLeft = Math.max(assumeTextbox.xLeft, assumeDesc.xRight);
     }
     else {
         TestHelper.equalRect(expect, compositeFlat, assumeTitle);
     }
+    assumeTextbox.xLeft += controller.measureText().width *
+        FlatQuestion.CONTENT_GAP_HOR_SCALE;
     TestHelper.equalRect(expect, textboxFlat, assumeTextbox);
 }
 export async function calcIndent(expect: any, leftTopPoint: IPoint, controller: DocController,
@@ -120,13 +123,13 @@ export async function calcIndent(expect: any, leftTopPoint: IPoint, controller: 
     let assumeChecktext: IRect = await SurveyHelper.createTextFlat(textPoint,
         null, controller, checktext, TextBrick);
     assumeCheckbox.yTop += controller.measureText().height *
-        FlatQuestion.CONTENT_GAP_SCALE;
+        FlatQuestion.CONTENT_GAP_VERT_SCALE;
     assumeCheckbox.yBot += controller.measureText().height *
-        FlatQuestion.CONTENT_GAP_SCALE;
+        FlatQuestion.CONTENT_GAP_VERT_SCALE;
     assumeChecktext.yTop += controller.measureText().height *
-        FlatQuestion.CONTENT_GAP_SCALE;
+        FlatQuestion.CONTENT_GAP_VERT_SCALE;
     assumeChecktext.yBot += controller.measureText().height *
-        FlatQuestion.CONTENT_GAP_SCALE;
+        FlatQuestion.CONTENT_GAP_VERT_SCALE;
     TestHelper.equalRect(expect, compositeFlat, SurveyHelper.mergeRects(assumeTitle, assumeCheckbox, assumeChecktext));
     let point = SurveyHelper.createPoint(assumeCheckbox);
     point.yTop += minHeight * SurveyHelper.GAP_BETWEEN_ROWS;
