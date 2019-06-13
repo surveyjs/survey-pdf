@@ -128,9 +128,10 @@ test('Calc comment boundaries title hidden', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
-
+    let commentPoint: IPoint = survey.controller.leftTopPoint;
+    commentPoint.xLeft += survey.controller.unitWidth;
     let assumeComment: IRect = SurveyHelper.createTextFieldRect(
-        survey.controller.leftTopPoint, survey.controller,
+        commentPoint, survey.controller,
         (<QuestionCommentModel>survey.getAllQuestions()[0]).rows);
     TestHelper.equalRect(expect, flats[0][0], assumeComment);
 });

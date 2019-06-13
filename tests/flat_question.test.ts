@@ -205,8 +205,10 @@ test('Calc textbox boundaries title hidden', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
+    let contentPoint: IPoint = survey.controller.leftTopPoint;
+    contentPoint.xLeft += survey.controller.unitWidth;
     let assumeTextbox: IRect = SurveyHelper.createTextFieldRect(
-        survey.controller.leftTopPoint, survey.controller);
+        contentPoint, survey.controller);
     TestHelper.equalRect(expect, flats[0][0], assumeTextbox);
 });
 test('Calc boundaries with space between questions', async () => {
@@ -395,8 +397,10 @@ test('Calc boundaries title hidden with description', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
+    let contentPoint: IPoint = survey.controller.leftTopPoint;
+    contentPoint.xLeft += survey.controller.unitWidth;
     let assumeTextbox: IRect = SurveyHelper.createTextFieldRect(
-        survey.controller.leftTopPoint, survey.controller);
+        contentPoint, survey.controller);
     TestHelper.equalRect(expect, flats[0][0], assumeTextbox);
 });
 test('Calc boundaries with indent', async () => {

@@ -28,7 +28,7 @@ test('Check expression', async () => {
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
     let assumeExpression: IRect = {
-        xLeft: survey.controller.leftTopPoint.xLeft,
+        xLeft: survey.controller.leftTopPoint.xLeft + survey.controller.unitWidth,
         xRight: survey.controller.leftTopPoint.xLeft + SurveyHelper.getPageAvailableWidth(survey.controller),
         yTop: survey.controller.leftTopPoint.yTop,
         yBot: survey.controller.leftTopPoint.yTop + survey.controller.unitHeight

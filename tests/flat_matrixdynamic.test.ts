@@ -34,6 +34,7 @@ test('Check matrix dynamic one column no rows', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
+    survey.controller.margins.left += survey.controller.unitWidth;
     let unfoldFlats: IPdfBrick[] = flats[0][0].unfold();
     expect(unfoldFlats.length).toBe(2);
     let size: ISize = survey.controller.measureText(json.elements[0].columns[0].name, 'bold');
@@ -111,6 +112,7 @@ test('Check matrix dynamic one column one row show header off', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(2);
+    survey.controller.margins.left += survey.controller.unitWidth;
     let unfoldHeaderFlats: IPdfBrick[] = flats[0][0].unfold();
     expect(unfoldHeaderFlats.length).toBe(1);
     expect(unfoldHeaderFlats[0] instanceof RowlineBrick).toBe(true);
@@ -145,6 +147,7 @@ test('Check matrix dynamic one column one row', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(2);
+    survey.controller.margins.left += survey.controller.unitWidth;
     let unfoldHeaderFlats: IPdfBrick[] = flats[0][0].unfold();
     expect(unfoldHeaderFlats.length).toBe(2);
     let unfoldRowFlats: IPdfBrick[] = flats[0][1].unfold();
@@ -196,6 +199,7 @@ test('Check matrix dynamic one column one row vertical layout show header off', 
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(2);
+    survey.controller.margins.left += survey.controller.unitWidth;
     let unfoldHeaderFlats: IPdfBrick[] = flats[0][0].unfold();
     expect(unfoldHeaderFlats.length).toBe(1);
     expect(unfoldHeaderFlats[0] instanceof RowlineBrick).toBe(true);
@@ -231,6 +235,7 @@ test('Check matrix dynamic one column one row vertical layout', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(2);
+    survey.controller.margins.left += survey.controller.unitWidth;
     let unfoldHeaderFlats: IPdfBrick[] = flats[0][0].unfold();
     expect(unfoldHeaderFlats.length).toBe(1);
     expect(unfoldHeaderFlats[0] instanceof RowlineBrick).toBe(true);
@@ -287,6 +292,7 @@ test('Check matrix dynamic two columns one row vertical layout show header off',
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(3);
+    survey.controller.margins.left += survey.controller.unitWidth;
     let unfoldHeaderFlats: IPdfBrick[] = flats[0][0].unfold();
     expect(unfoldHeaderFlats.length).toBe(1);
     expect(unfoldHeaderFlats[0] instanceof RowlineBrick).toBe(true);
@@ -365,12 +371,14 @@ test('Check matrix dynamic one column one row verical layout narrow width', asyn
     let options: IDocOptions = TestHelper.defaultOptions;
     let pageWidth: number = options.margins.left + options.margins.right +
         new DocController(options).measureText(
-            SurveyHelper.MATRIX_COLUMN_WIDTH).width / DocOptions.MM_TO_PT;
+            SurveyHelper.MATRIX_COLUMN_WIDTH).width / DocOptions.MM_TO_PT +
+        new DocController(options).unitWidth / DocOptions.MM_TO_PT;
     options.format = [pageWidth, <number>(options.format[1])];
     let survey: SurveyPDF = new SurveyPDF(json, options);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
+    survey.controller.margins.left += survey.controller.unitWidth;
     let unfoldFlats: IPdfBrick[] = flats[0][0].unfold();
     expect(unfoldFlats.length).toBe(3);
     let header: ISize = survey.controller.measureText(json.elements[0].columns[0].name, 'bold');
@@ -428,12 +436,14 @@ test('Check matrix dynamic two columns one row narrow width', async () => {
     let options: IDocOptions = TestHelper.defaultOptions;
     let pageWidth: number = options.margins.left + options.margins.right +
         new DocController(options).measureText(
-            SurveyHelper.MATRIX_COLUMN_WIDTH).width / DocOptions.MM_TO_PT;
+            SurveyHelper.MATRIX_COLUMN_WIDTH).width / DocOptions.MM_TO_PT +
+        new DocController(options).unitWidth / DocOptions.MM_TO_PT;
     options.format = [pageWidth, <number>(options.format[1])];
     let survey: SurveyPDF = new SurveyPDF(json, options);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
+    survey.controller.margins.left += survey.controller.unitWidth;
     let unfoldFlats: IPdfBrick[] = flats[0][0].unfold();
     expect(unfoldFlats.length).toBe(4);
     let text1: ISize = survey.controller.measureText(json.elements[0].columns[0].name);

@@ -27,12 +27,13 @@ test('Check no files', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
+    survey.controller.margins.left += survey.controller.unitWidth;
     let assumeFile: IRect = await SurveyHelper.createTextFlat(survey.controller.leftTopPoint,
         <Question>survey.getAllQuestions()[0], survey.controller, 'No file chosen', TextBrick);
     TestHelper.equalRect(expect, flats[0][0], assumeFile);
 });
 test('Check one text file', async () => {
-    let json = {
+    let json: any = {
         elements: [
             {
                 type: 'file',
@@ -52,13 +53,14 @@ test('Check one text file', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
+    survey.controller.margins.left += survey.controller.unitWidth;
     let assumeFile: IRect = await SurveyHelper.createLinkFlat(survey.controller.leftTopPoint,
         <Question>survey.getAllQuestions()[0], survey.controller,
         json.elements[0].defaultValue[0].name, json.elements[0].defaultValue[0].content);
     TestHelper.equalRect(expect, flats[0][0], assumeFile);
 });
 test('Check two text files', async () => {
-    let json = {
+    let json: any = {
         elements: [
             {
                 type: 'file',
@@ -84,6 +86,7 @@ test('Check two text files', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
+    survey.controller.margins.left += survey.controller.unitWidth;
     let firstFileFlat: IRect = await SurveyHelper.createLinkFlat(survey.controller.leftTopPoint,
         <Question>survey.getAllQuestions()[0], survey.controller,
         json.elements[0].defaultValue[0].name, json.elements[0].defaultValue[0].content);
@@ -122,6 +125,7 @@ test('Check one image 16x16px file', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
+    survey.controller.margins.left += survey.controller.unitWidth;
     let width: number = SurveyHelper.getImagePickerAvailableWidth(
         survey.controller) / SurveyHelper.IMAGEPICKER_COUNT;
     let height: number = width / SurveyHelper.IMAGEPICKER_RATIO;

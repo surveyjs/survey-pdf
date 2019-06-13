@@ -3,7 +3,7 @@
 };
 
 import { SurveyPDF } from '../src/survey';
-import { IRect, DocOptions, IDocOptions } from '../src/doc_controller';
+import { IRect, DocOptions, IDocOptions, DocController } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { FlatMultipleText } from '../src/flat_layout/flat_multipletext';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
@@ -12,7 +12,7 @@ import { TestHelper } from '../src/helper_test';
 let __dummy_mt = new FlatMultipleText(null, null);
 
 test('Check multiple text one item', async () => {
-    let json = {
+    let json: any = {
         elements: [
             {
                 type: 'multipletext',
@@ -30,6 +30,7 @@ test('Check multiple text one item', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
+    survey.controller.margins.left += survey.controller.unitWidth;
     let assumeMultipleText: IRect = {
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.paperWidth - survey.controller.margins.right,
@@ -76,6 +77,7 @@ test('Check multiple text two items', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(2);
+    survey.controller.margins.left += survey.controller.unitWidth;
     let assumeMultipleText: IRect = {
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.paperWidth - survey.controller.margins.right,
@@ -108,19 +110,22 @@ test('Check multiple text with colCount and long text', async () => {
         ]
     };
     let options: IDocOptions = TestHelper.defaultOptions;
-    let signWidth: number = new SurveyPDF(json, TestHelper.defaultOptions).
-        controller.measureText(sign, 'bold').width / DocOptions.MM_TO_PT;
+    let signWidth: number = new DocController(options).measureText(
+        sign, 'bold').width / DocOptions.MM_TO_PT;
     options.format = [options.margins.left + options.margins.right +
-        2.5 * signWidth / SurveyHelper.MULTIPLETEXT_TEXT_PERS, 297.0];
+        2.5 * signWidth / SurveyHelper.MULTIPLETEXT_TEXT_PERS +
+        new DocController(options).unitWidth /
+            SurveyHelper.MULTIPLETEXT_TEXT_PERS, 297.0];
     let survey: SurveyPDF = new SurveyPDF(json, options);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(2);
+    survey.controller.margins.left += survey.controller.unitWidth;
     let assumeMultipleText: IRect = {
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.paperWidth - survey.controller.margins.right,
         yTop: survey.controller.leftTopPoint.yTop,
-        yBot: survey.controller.leftTopPoint.yTop + survey.controller.unitHeight * 3
+        yBot: survey.controller.leftTopPoint.yTop + survey.controller.unitHeight * 2
     };
     TestHelper.equalRect(expect, SurveyHelper.mergeRects(flats[0][0], flats[0][1]), assumeMultipleText);
 });

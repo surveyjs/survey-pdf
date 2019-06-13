@@ -37,7 +37,6 @@ export class FlatSurvey {
     private static async generateFlatsPagePanel(point: IPoint,
         pagePanel: PanelModelBase, controller: DocController): Promise<IPdfBrick[]> {
         if (!pagePanel.isVisible) return;
-        
         pagePanel.onFirstRendering();
         let pagePanelFlats: IPdfBrick[] = [];
         let currPoint: IPoint = SurveyHelper.clone(point);

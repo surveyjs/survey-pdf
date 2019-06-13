@@ -27,6 +27,7 @@ test('Check rating two elements', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
+    survey.controller.margins.left += survey.controller.unitWidth;
     let assumeRating: IRect = {
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.leftTopPoint.xLeft +
@@ -53,6 +54,7 @@ test('Check rating two elements with min rate description', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
+    survey.controller.margins.left += survey.controller.unitWidth;
     let question: QuestionRatingModel = <QuestionRatingModel>survey.getAllQuestions()[0];
     let assumeRating: IRect = {
         xLeft: survey.controller.leftTopPoint.xLeft,
@@ -84,8 +86,8 @@ test('Check rating two elements with max rate description', async () => {
     expect(flats[0].length).toBe(1);
     let question: QuestionRatingModel = <QuestionRatingModel>survey.getAllQuestions()[0];
     let assumeRating: IRect = {
-        xLeft: survey.controller.leftTopPoint.xLeft,
-        xRight: survey.controller.leftTopPoint.xLeft +
+        xLeft: survey.controller.leftTopPoint.xLeft + survey.controller.unitWidth,
+        xRight: survey.controller.leftTopPoint.xLeft + survey.controller.unitWidth +
             SurveyHelper.getRatingMinWidth(survey.controller) + survey.controller.measureText(
                 SurveyHelper.getRatingItemText(question, 1,
                     question.visibleRateValues[0].locText), 'bold').width +
@@ -97,7 +99,7 @@ test('Check rating two elements with max rate description', async () => {
     TestHelper.equalRect(expect, flats[0][0], assumeRating);
 });
 test('Check rating many elements', async () => {
-    let json = {
+    let json: any = {
         elements: [
             {
                 type: 'rating',
@@ -109,23 +111,25 @@ test('Check rating many elements', async () => {
     };
     let options: IDocOptions = TestHelper.defaultOptions;
     options.format = [options.margins.left + options.margins.right +
-        SurveyHelper.getRatingMinWidth(new SurveyPDF(json, options).
-        controller) * 3 / DocOptions.MM_TO_PT, 297.0];
+        SurveyHelper.getRatingMinWidth(new DocController(options)) * 3 /
+            DocOptions.MM_TO_PT + new DocController(options).unitWidth /
+            DocOptions.MM_TO_PT, 297.0];
     let survey: SurveyPDF = new SurveyPDF(json, options);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(2);
+    survey.controller.margins.left += survey.controller.unitWidth;
     let assumeRating: IRect = {
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.paperWidth - survey.controller.margins.right,
         yTop: survey.controller.leftTopPoint.yTop,
         yBot: survey.controller.leftTopPoint.yTop +
-            survey.controller.unitHeight * SurveyHelper.RATING_MIN_HEIGHT * 2
+            survey.controller.unitHeight * SurveyHelper.RATING_MIN_HEIGHT * 2.0
     };
     TestHelper.equalRect(expect, SurveyHelper.mergeRects(flats[0][0], flats[0][1]), assumeRating);
 });
 test('Check rating two elements with long min rate description', async () => {
-    let json = {
+    let json: any = {
         elements: [
             {
                 type: 'rating',
@@ -136,22 +140,24 @@ test('Check rating two elements with long min rate description', async () => {
             }
         ]
     };
-    let longRateDesc: number = (new DocController(TestHelper.defaultOptions).measureText(
+    let dummyController: DocController = new DocController(TestHelper.defaultOptions);
+    let longRateDesc: number = (dummyController.measureText(
         json.elements[0].minRateDescription + ' 1', 'bold').width +
-        new DocController(TestHelper.defaultOptions).unitHeight) / DocOptions.MM_TO_PT;
+        dummyController.unitWidth) / DocOptions.MM_TO_PT;
     let options: IDocOptions = TestHelper.defaultOptions;
-    options.format = [options.margins.left +
+    options.format = [options.margins.left + dummyController.unitWidth / DocOptions.MM_TO_PT +
         options.margins.right + longRateDesc, 297.0];
     let survey: SurveyPDF = new SurveyPDF(json, options);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(2);
+    survey.controller.margins.left += survey.controller.unitWidth;
     let assumeRating: IRect = {
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.paperWidth - survey.controller.margins.right,
         yTop: survey.controller.leftTopPoint.yTop,
         yBot: survey.controller.leftTopPoint.yTop +
-            survey.controller.unitHeight * SurveyHelper.RATING_MIN_HEIGHT * 2
+            survey.controller.unitHeight * SurveyHelper.RATING_MIN_HEIGHT * 2.0
     };
     TestHelper.equalRect(expect, SurveyHelper.mergeRects(flats[0][0], flats[0][1]), assumeRating);
 });

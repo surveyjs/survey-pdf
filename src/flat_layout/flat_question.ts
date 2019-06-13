@@ -1,5 +1,6 @@
 import { IPoint, IRect, DocController } from '../doc_controller';
 import { IQuestion, Question, LocalizableString } from 'survey-core';
+import { FlatMatrixMultiple } from './flat_matrixmultiple';
 import { IPdfBrick } from '../pdf_render/pdf_brick'
 import { CommentBrick } from '../pdf_render/pdf_comment';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
@@ -135,11 +136,14 @@ export class FlatQuestion implements IFlatQuestion {
                 break;
             }
             case 'hidden':
+            case SurveyHelper.TITLE_LOCATION_MATRIX:
             default: {
                 let contentPoint: IPoint = SurveyHelper.clone(indentPoint);
                 this.controller.pushMargins();
-                contentPoint.xLeft += this.controller.unitWidth;
-                this.controller.margins.left += this.controller.unitWidth;
+                if (titleLocation !== SurveyHelper.TITLE_LOCATION_MATRIX) {
+                    contentPoint.xLeft += this.controller.unitWidth;
+                    this.controller.margins.left += this.controller.unitWidth;
+                }
                 flats.push(...await this.generateFlatsContent(contentPoint));
                 this.controller.popMargins();
                 if (flats.length !== 0) {

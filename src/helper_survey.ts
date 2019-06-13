@@ -31,6 +31,7 @@ export class SurveyHelper {
     public static readonly RADIUS_SCALE: number = 2.5;
     public static readonly TEXT_COLOR: string = '#000000';
     public static readonly BACKGROUND_COLOR: string = '#FFFFFF';
+    public static readonly TITLE_LOCATION_MATRIX: string = 'matrix';
 
     public static parseWidth(width: string, maxWidth: number): number {
         let value: number = parseFloat(width);
@@ -284,11 +285,11 @@ export class SurveyHelper {
         index: number, locText: LocalizableString): LocalizableString {
         let ratingItemLocText = new LocalizableString(locText.owner, locText.useMarkdown);
         ratingItemLocText.text = locText.text;
-        if (index == 0 && question.minRateDescription) {
+        if (index === 0 && question.minRateDescription) {
             ratingItemLocText.text =
                 question.locMinRateDescription.text + locText.text;
         }
-        else if (index == question.visibleRateValues.length - 1 &&
+        else if (index === question.visibleRateValues.length - 1 &&
             question.maxRateDescription) {
             ratingItemLocText.text =
                 locText.text + question.locMaxRateDescription.text;
@@ -304,11 +305,11 @@ export class SurveyHelper {
     }
     public static getImagePickerAvailableWidth(controller: DocController): number {
         let width: number = (SurveyHelper.getPageAvailableWidth(
-            controller) - 3 * controller.unitHeight);
+            controller) - (SurveyHelper.IMAGEPICKER_COUNT - 1) * controller.unitHeight);
         return width > 0 ? width : controller.unitHeight;
     }
     public static setColumnMargins(controller: DocController, colCount: number, column: number) {
-        let cellWidth = this.getColumnWidth(controller, colCount);
+        let cellWidth: number = this.getColumnWidth(controller, colCount);
         controller.margins.left = controller.margins.left + column * cellWidth;
         controller.margins.right = controller.paperWidth - controller.margins.left - cellWidth;
     }

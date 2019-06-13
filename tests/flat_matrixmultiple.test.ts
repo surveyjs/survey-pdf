@@ -33,6 +33,7 @@ test('Check matrix multiple one column no rows', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
+    survey.controller.margins.left += survey.controller.unitWidth;
     let size: ISize = survey.controller.measureText(json.elements[0].columns[0].name, 'bold');
     let assumeMatrix: IRect = {
         xLeft: survey.controller.leftTopPoint.xLeft +
@@ -66,6 +67,7 @@ test('Check matrix multiple one column one row', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(2);
+    survey.controller.margins.left += survey.controller.unitWidth;
     let unfoldHeaderFlats: IPdfBrick[] = flats[0][0].unfold();
     expect(unfoldHeaderFlats.length).toBe(2);
     let unfoldRowFlats: IPdfBrick[] = flats[0][1].unfold();
@@ -130,6 +132,7 @@ test('Check matrix multiple two columns one row vertical layout', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(3);
+    survey.controller.margins.left += survey.controller.unitWidth;
     let unfoldHeaderFlats: IPdfBrick[] = flats[0][0].unfold();
     expect(unfoldHeaderFlats.length).toBe(2);
     let unfoldRow1Flats: IPdfBrick[] = flats[0][1].unfold();
@@ -209,12 +212,14 @@ test('Check matrix multiple two columns one row horizontal layout narrow width',
     let options: IDocOptions = TestHelper.defaultOptions;
     let pageWidth: number = options.margins.left + options.margins.right +
         new DocController(options).measureText(
-            SurveyHelper.MATRIX_COLUMN_WIDTH).width * 1.5 / DocOptions.MM_TO_PT;
+            SurveyHelper.MATRIX_COLUMN_WIDTH).width * 1.5 / DocOptions.MM_TO_PT
+        new DocController(options).unitWidth / DocOptions.MM_TO_PT;
     options.format = [pageWidth, <number>(options.format[1])];
     let survey: SurveyPDF = new SurveyPDF(json, options);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
+    survey.controller.margins.left += survey.controller.unitWidth;
     let unfoldFlats: IPdfBrick[] = flats[0][0].unfold();
     expect(unfoldFlats.length).toBe(5);
     let header: ISize = survey.controller.measureText(json.elements[0].rows[0]);
@@ -289,12 +294,14 @@ test('Check matrix multiple two columns one row vertical layout narrow width', a
     let options: IDocOptions = TestHelper.defaultOptions;
     let pageWidth: number = options.margins.left + options.margins.right +
         new DocController(options).measureText(
-            SurveyHelper.MATRIX_COLUMN_WIDTH).width * 1.5 / DocOptions.MM_TO_PT;
+            SurveyHelper.MATRIX_COLUMN_WIDTH).width * 1.5 / DocOptions.MM_TO_PT +
+        new DocController(options).unitWidth / DocOptions.MM_TO_PT;
     options.format = [pageWidth, <number>(options.format[1])];
     let survey: SurveyPDF = new SurveyPDF(json, options);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(2);
+    survey.controller.margins.left += survey.controller.unitWidth;
     let unfoldRow1Flats: IPdfBrick[] = flats[0][0].unfold();
     expect(unfoldRow1Flats.length).toBe(4);
     let unfoldRow2Flats: IPdfBrick[] = flats[0][1].unfold();

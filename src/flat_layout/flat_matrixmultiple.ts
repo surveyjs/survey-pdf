@@ -94,7 +94,7 @@ export class FlatMatrixMultiple extends FlatQuestion {
                         currPoint.yTop = composite.yBot;
                     }
                 }
-                cell.question.titleLocation = 'hidden';
+                cell.question.titleLocation = SurveyHelper.TITLE_LOCATION_MATRIX;
                 let flatQuestion: IFlatQuestion = FlatRepository.getInstance().
                     create(cell.question, this.controller);
                 composite.addBrick(...await flatQuestion.generateFlats(currPoint));

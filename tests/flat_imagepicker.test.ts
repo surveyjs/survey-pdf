@@ -31,6 +31,7 @@ test('Check imagepicker one image 100x100px', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
+    survey.controller.margins.left += survey.controller.unitWidth;
     let width: number = SurveyHelper.getImagePickerAvailableWidth(
         survey.controller) / SurveyHelper.IMAGEPICKER_COUNT;
     let height: number = width / SurveyHelper.IMAGEPICKER_RATIO;
@@ -63,6 +64,7 @@ test('Check imagepicker one image 100x100px with label', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
+    survey.controller.margins.left += survey.controller.unitWidth;
     let width: number = SurveyHelper.getImagePickerAvailableWidth(
         survey.controller) / SurveyHelper.IMAGEPICKER_COUNT;
     let height: number = width / SurveyHelper.IMAGEPICKER_RATIO;
@@ -75,7 +77,7 @@ test('Check imagepicker one image 100x100px with label', async () => {
     TestHelper.equalRect(expect, flats[0][0], assumeimagePicker);
 });
 test('Check imagepicker two images 100x100px', async () => {
-    let json = {
+    let json: any = {
         elements: [
             {
                 type: 'imagepicker',
@@ -98,6 +100,7 @@ test('Check imagepicker two images 100x100px', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
+    survey.controller.margins.left += survey.controller.unitWidth;
     let width: number = SurveyHelper.getImagePickerAvailableWidth(
         survey.controller) / SurveyHelper.IMAGEPICKER_COUNT;
     let height: number = width / SurveyHelper.IMAGEPICKER_RATIO;
