@@ -16,7 +16,7 @@ export abstract class FlatSelectBase extends FlatQuestion {
     public abstract createItemFlat(rect: IRect, item: ItemValue, index: number): IPdfBrick;
     private async generateFlatsItem(point: IPoint, item: ItemValue, index: number): Promise<IPdfBrick> {
         let compositeFlat: CompositeBrick = new CompositeBrick();
-        let height: number = this.controller.measureText().height;
+        let height: number = this.controller.unitHeight;
         let itemRect: IRect = SurveyHelper.createRect(point, height, height);
 
         let itemFlat: IPdfBrick = this.createItemFlat(SurveyHelper.moveRect(
@@ -57,7 +57,7 @@ export abstract class FlatSelectBase extends FlatQuestion {
                 currPoint, this.question.visibleChoices[i], i);
             currPoint.yTop = itemFlat.yBot +
                 SurveyHelper.GAP_BETWEEN_ROWS *
-                this.controller.measureText(1).height;
+                this.controller.unitHeight;
             flats.push(itemFlat);
         }
         return flats;
@@ -78,7 +78,7 @@ export abstract class FlatSelectBase extends FlatQuestion {
                 let rowLineFlat = SurveyHelper.createRowlineFlat(SurveyHelper.createPoint(row), this.controller);
                 currPoint.yTop = rowLineFlat.yBot +
                     SurveyHelper.GAP_BETWEEN_ROWS *
-                    this.controller.measureText(1).height;
+                    this.controller.unitHeight;
                 flats.push(row, rowLineFlat);
                 row = new CompositeBrick();
             }

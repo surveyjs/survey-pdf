@@ -31,7 +31,7 @@ test('Check expression', async () => {
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.leftTopPoint.xLeft + SurveyHelper.getPageAvailableWidth(survey.controller),
         yTop: survey.controller.leftTopPoint.yTop,
-        yBot: survey.controller.leftTopPoint.yTop + survey.controller.measureText().height
+        yBot: survey.controller.leftTopPoint.yTop + survey.controller.unitHeight
     };
     TestHelper.equalRect(expect, flats[0][0], assumeExpression);
 });

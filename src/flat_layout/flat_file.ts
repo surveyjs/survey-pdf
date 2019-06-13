@@ -22,7 +22,7 @@ export class FlatFile extends FlatQuestion {
             point, this.question, this.controller, item.name, item.content));
         if (this.question.canPreviewImage(item)) {
             let imagePoint: IPoint = SurveyHelper.createPoint(compositeFlat);
-            imagePoint.yTop += this.controller.measureText().height *
+            imagePoint.yTop += this.controller.unitHeight *
                 FlatFile.IMAGE_GAP_SCALE;
             compositeFlat.addBrick(SurveyHelper.createImageFlat(
                 imagePoint, this.question, this.controller, item.content,
@@ -67,7 +67,7 @@ export class FlatFile extends FlatQuestion {
                 this.controller.popMargins();
             }
             else {
-                if (availableWidth < this.controller.measureText().width) {
+                if (availableWidth < this.controller.unitWidth) {
                     currPoint.xLeft = point.xLeft;
                     currPoint.yTop = yBot;
                     this.addLine(rowsFlats, currPoint, i);
@@ -77,7 +77,7 @@ export class FlatFile extends FlatQuestion {
                 currPoint.xLeft += itemFlat.xRight - itemFlat.xLeft;
                 yBot = Math.max(yBot, itemFlat.yBot);
             }
-            currPoint.xLeft += this.controller.measureText().width;
+            currPoint.xLeft += this.controller.unitWidth;
         };
         return rowsFlats;
     }

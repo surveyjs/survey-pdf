@@ -88,7 +88,7 @@ test('Check two text files', async () => {
         <Question>survey.getAllQuestions()[0], survey.controller,
         json.elements[0].defaultValue[0].name, json.elements[0].defaultValue[0].content);
     let secondFilePoint: IPoint = SurveyHelper.createPoint(firstFileFlat, false, true);
-    secondFilePoint.xLeft += survey.controller.measureText().width;
+    secondFilePoint.xLeft += survey.controller.unitWidth;
     let secondFileFlat: IRect = await SurveyHelper.createLinkFlat(secondFilePoint,
         <Question>survey.getAllQuestions()[0], survey.controller,
         json.elements[0].defaultValue[1].name, json.elements[0].defaultValue[1].content);
@@ -130,7 +130,7 @@ test('Check one image 16x16px file', async () => {
         xRight: survey.controller.leftTopPoint.xLeft + width,
         yTop: survey.controller.leftTopPoint.yTop,
         yBot: survey.controller.leftTopPoint.yTop + height +
-            survey.controller.measureText().height * (1.0 + FlatFile.IMAGE_GAP_SCALE)
+            survey.controller.unitHeight * (1.0 + FlatFile.IMAGE_GAP_SCALE)
     };
     TestHelper.equalRect(expect, flats[0][0], assumeFile);
 });

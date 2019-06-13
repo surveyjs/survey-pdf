@@ -65,10 +65,10 @@ export class FlatQuestion implements IFlatQuestion {
                     contentPoint = SurveyHelper.createPoint(descFlat);
                 }
                 this.controller.pushMargins();
-                contentPoint.xLeft += this.controller.measureText().width;
-                contentPoint.yTop += this.controller.measureText().height *
+                contentPoint.xLeft += this.controller.unitWidth;
+                contentPoint.yTop += this.controller.unitHeight *
                     FlatQuestion.CONTENT_GAP_VERT_SCALE;
-                this.controller.margins.left += this.controller.measureText().width;
+                this.controller.margins.left += this.controller.unitWidth;
                 let contentFlats = await this.generateFlatsContent(contentPoint);
                 this.controller.popMargins();
                 if (contentFlats.length != 0) {
@@ -83,8 +83,8 @@ export class FlatQuestion implements IFlatQuestion {
             case 'bottom': {
                 let contentPoint: IPoint = SurveyHelper.clone(indentPoint);
                 this.controller.pushMargins();
-                contentPoint.xLeft += this.controller.measureText().width;
-                this.controller.margins.left += this.controller.measureText().width;
+                contentPoint.xLeft += this.controller.unitWidth;
+                this.controller.margins.left += this.controller.unitWidth;
                 let contentFlats: IPdfBrick[] = await this.generateFlatsContent(contentPoint);
                 this.controller.popMargins();
                 flats.push(...contentFlats);
@@ -99,7 +99,7 @@ export class FlatQuestion implements IFlatQuestion {
                     titlePoint = SurveyHelper.createPoint(flats[flats.length - 1]);
                     titlePoint.xLeft = indentPoint.xLeft;
                 }
-                titlePoint.yTop += this.controller.measureText().height *
+                titlePoint.yTop += this.controller.unitHeight *
                     FlatQuestion.CONTENT_GAP_VERT_SCALE;
                 let titleFlat: IPdfBrick = await this.generateFlatTitle(titlePoint);
                 let compositeFlat: CompositeBrick = new CompositeBrick(titleFlat);
@@ -124,7 +124,7 @@ export class FlatQuestion implements IFlatQuestion {
                     contentPoint.xLeft = Math.max(contentPoint.xLeft, descFlat.xRight);
                 }
                 commentPoint.xLeft = SurveyHelper.createPoint(compositeFlat, false, true).xLeft;
-                contentPoint.xLeft += this.controller.measureText().width * FlatQuestion.CONTENT_GAP_HOR_SCALE;
+                contentPoint.xLeft += this.controller.unitWidth * FlatQuestion.CONTENT_GAP_HOR_SCALE;
                 let contentFlats = await this.generateFlatsContent(contentPoint);
                 if (contentFlats.length != 0) {
                     commentPoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(...contentFlats));

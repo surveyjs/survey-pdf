@@ -76,7 +76,7 @@ test('Check matrix multiple one column one row', async () => {
         xRight: survey.controller.paperWidth - survey.controller.margins.right,
         yTop: survey.controller.leftTopPoint.yTop,
         yBot: survey.controller.leftTopPoint.yTop + header.height +
-            SurveyHelper.EPSILON + survey.controller.measureText().height
+            SurveyHelper.EPSILON + survey.controller.unitHeight
     };
     TestHelper.equalRect(expect, SurveyHelper.mergeRects(flats[0][0], flats[0][1]), assumeMatrix);
     let assumeHeader: IRect = {
@@ -100,7 +100,7 @@ test('Check matrix multiple one column one row', async () => {
         xLeft: assumeHeader.xLeft,
         xRight: assumeMatrix.xRight,
         yTop: assumeRowText.yTop,
-        yBot: assumeRowText.yTop + survey.controller.measureText().height
+        yBot: assumeRowText.yTop + survey.controller.unitHeight
     };
     TestHelper.equalRect(expect, unfoldRowFlats[1], assumeRowQuestion);
 });
@@ -142,7 +142,7 @@ test('Check matrix multiple two columns one row vertical layout', async () => {
         xRight: survey.controller.paperWidth - survey.controller.margins.right,
         yTop: survey.controller.leftTopPoint.yTop,
         yBot: survey.controller.leftTopPoint.yTop + header.height +
-            + 2.0 * (survey.controller.measureText().height + SurveyHelper.EPSILON)
+            + 2.0 * (survey.controller.unitHeight + SurveyHelper.EPSILON)
     };
     TestHelper.equalRect(expect, SurveyHelper.mergeRects(...flats[0]), assumeMatrix);
     let assumeHeader: IRect = {
@@ -166,7 +166,7 @@ test('Check matrix multiple two columns one row vertical layout', async () => {
         xLeft: assumeHeader.xLeft,
         xRight: assumeMatrix.xRight,
         yTop: assumeRow1Text.yTop,
-        yBot: assumeRow1Text.yTop + survey.controller.measureText().height
+        yBot: assumeRow1Text.yTop + survey.controller.unitHeight
     };
     TestHelper.equalRect(expect, unfoldRow1Flats[1], assumeRow1Question);
     let row2Text: ISize = survey.controller.measureText(json.elements[0].columns[1].name, 'bold');
@@ -181,7 +181,7 @@ test('Check matrix multiple two columns one row vertical layout', async () => {
         xLeft: assumeHeader.xLeft,
         xRight: assumeMatrix.xRight,
         yTop: assumeRow2Text.yTop,
-        yBot: assumeRow2Text.yTop + survey.controller.measureText().height
+        yBot: assumeRow2Text.yTop + survey.controller.unitHeight
     };
     TestHelper.equalRect(expect, unfoldRow2Flats[1], assumeRow2Question);
 });
@@ -237,7 +237,7 @@ test('Check matrix multiple two columns one row horizontal layout narrow width',
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.paperWidth - survey.controller.margins.right,
         yTop: assumeRow1Text.yBot,
-        yBot: assumeRow1Text.yBot + survey.controller.measureText().height
+        yBot: assumeRow1Text.yBot + survey.controller.unitHeight
     };
     TestHelper.equalRect(expect, unfoldFlats[2], assumeRow1Question);
     let row2Text: ISize = survey.controller.measureText(json.elements[0].columns[1].name);
@@ -252,7 +252,7 @@ test('Check matrix multiple two columns one row horizontal layout narrow width',
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.paperWidth - survey.controller.margins.right,
         yTop: assumeRow2Text.yBot,
-        yBot: assumeRow2Text.yBot + survey.controller.measureText().height
+        yBot: assumeRow2Text.yBot + survey.controller.unitHeight
     };
     TestHelper.equalRect(expect, unfoldFlats[4], assumeRow2Question);
     let assumeMatrix: IRect = {
@@ -260,7 +260,7 @@ test('Check matrix multiple two columns one row horizontal layout narrow width',
         xRight: survey.controller.paperWidth - survey.controller.margins.right,
         yTop: survey.controller.leftTopPoint.yTop,
         yBot: survey.controller.leftTopPoint.yTop + header.height + row1Text.height +
-            row2Text.height + 2.0 * (survey.controller.measureText().height + SurveyHelper.EPSILON)
+            row2Text.height + 2.0 * (survey.controller.unitHeight + SurveyHelper.EPSILON)
     };
     TestHelper.equalRect(expect, SurveyHelper.mergeRects(flats[0][0]), assumeMatrix);
 });
@@ -319,7 +319,7 @@ test('Check matrix multiple two columns one row vertical layout narrow width', a
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.paperWidth - survey.controller.margins.right,
         yTop: assumeRow1Text.yBot,
-        yBot: assumeRow1Text.yBot + survey.controller.measureText().height
+        yBot: assumeRow1Text.yBot + survey.controller.unitHeight
     };
     TestHelper.equalRect(expect, unfoldRow1Flats[2], assumeRow1Question);
     let header2: ISize = survey.controller.measureText(json.elements[0].columns[1].name, 'bold');
@@ -342,7 +342,7 @@ test('Check matrix multiple two columns one row vertical layout narrow width', a
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.paperWidth - survey.controller.margins.right,
         yTop: assumeRow2Text.yBot,
-        yBot: assumeRow2Text.yBot + survey.controller.measureText().height
+        yBot: assumeRow2Text.yBot + survey.controller.unitHeight
     };
     TestHelper.equalRect(expect, unfoldRow2Flats[2], assumeRow2Question);
     let assumeMatrix: IRect = {
@@ -350,7 +350,7 @@ test('Check matrix multiple two columns one row vertical layout narrow width', a
         xRight: survey.controller.paperWidth - survey.controller.margins.right,
         yTop: survey.controller.leftTopPoint.yTop,
         yBot: survey.controller.leftTopPoint.yTop + header1.height + row1Text.height + header2.height +
-            row2Text.height + 2.0 * survey.controller.measureText().height + SurveyHelper.EPSILON
+            row2Text.height + 2.0 * survey.controller.unitHeight + SurveyHelper.EPSILON
     };
     TestHelper.equalRect(expect, SurveyHelper.mergeRects(...flats[0]), assumeMatrix);
 });

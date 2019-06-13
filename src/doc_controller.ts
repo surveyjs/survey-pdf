@@ -105,25 +105,24 @@ export class DocController extends DocOptions {
         };
         (<any>jsPDF).API.events.push(['addFonts', callAddFont]);
     }
-    get doc(): any {
+    public get doc(): any {
         return this._doc;
     }
-
-    get helperDoc(): any {
+    public get helperDoc(): any {
         return this._helperDoc;
     }
-    get fontStyle(): string {
+    public get fontStyle(): string {
         return this._fontStyle;
     }
-    get fontSize(): number {
+    public get fontSize(): number {
         return this._fontSize;
     }
-    set fontSize(fontSize: number) {
+    public set fontSize(fontSize: number) {
         this._fontSize = fontSize;
         this._doc.setFontSize(fontSize);
         this._helperDoc.setFontSize(fontSize);
     }
-    set fontStyle(fontStyle: string) {
+    public set fontStyle(fontStyle: string) {
         this._fontStyle = fontStyle;
         this._doc.setFontStyle(fontStyle);
         this._helperDoc.setFontStyle(fontStyle);
@@ -149,6 +148,12 @@ export class DocController extends DocOptions {
             width: width,
             height: height
         }
+    }
+    public get unitWidth(): number {
+        return this.measureText().width;
+    }
+    public get unitHeight(): number {
+        return this.measureText().height;
     }
     public pushMargins(left?: number, right?: number): void {
         this.marginsStack.push({ left: this.margins.left, right: this.margins.right });

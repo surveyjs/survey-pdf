@@ -38,7 +38,7 @@ test('Check imagepicker one image 100x100px', async () => {
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.leftTopPoint.xLeft + width,
         yTop: survey.controller.leftTopPoint.yTop,
-        yBot: survey.controller.leftTopPoint.yTop + height + survey.controller.measureText().height
+        yBot: survey.controller.leftTopPoint.yTop + height + survey.controller.unitHeight
     };
     TestHelper.equalRect(expect, flats[0][0], assumeimagePicker);
 });
@@ -70,7 +70,7 @@ test('Check imagepicker one image 100x100px with label', async () => {
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.leftTopPoint.xLeft + width,
         yTop: survey.controller.leftTopPoint.yTop,
-        yBot: survey.controller.leftTopPoint.yTop + height + 2.0 * survey.controller.measureText().height
+        yBot: survey.controller.leftTopPoint.yTop + height + 2.0 * survey.controller.unitHeight
     };
     TestHelper.equalRect(expect, flats[0][0], assumeimagePicker);
 });
@@ -103,9 +103,9 @@ test('Check imagepicker two images 100x100px', async () => {
     let height: number = width / SurveyHelper.IMAGEPICKER_RATIO;
     let assumeimagePicker: IRect = {
         xLeft: survey.controller.leftTopPoint.xLeft,
-        xRight: survey.controller.leftTopPoint.xLeft + 2.0 * width + survey.controller.measureText().height,
+        xRight: survey.controller.leftTopPoint.xLeft + 2.0 * width + survey.controller.unitHeight,
         yTop: survey.controller.leftTopPoint.yTop,
-        yBot: survey.controller.leftTopPoint.yTop + height + survey.controller.measureText().height
+        yBot: survey.controller.leftTopPoint.yTop + height + survey.controller.unitHeight
     };
     TestHelper.equalRect(expect, flats[0][0], assumeimagePicker);
 });

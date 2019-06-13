@@ -258,7 +258,7 @@ export class SurveyHelper {
     }
     public static createTextFieldRect(point: IPoint, controller: DocController, lines: number = 1): IRect {
         let width: number = controller.paperWidth - point.xLeft - controller.margins.right;
-        let height: number = controller.measureText().height * lines;
+        let height: number = controller.unitHeight * lines;
         return SurveyHelper.createRect(point, width, height);
     }
     public static createAcroformRect(rect: IRect): number[] {
@@ -304,8 +304,8 @@ export class SurveyHelper {
     }
     public static getImagePickerAvailableWidth(controller: DocController): number {
         let width: number = (SurveyHelper.getPageAvailableWidth(
-            controller) - 3 * controller.measureText().height);
-        return width > 0 ? width : controller.measureText().height;
+            controller) - 3 * controller.unitHeight);
+        return width > 0 ? width : controller.unitHeight;
     }
     public static setColumnMargins(controller: DocController, colCount: number, column: number) {
         let cellWidth = this.getColumnWidth(controller, colCount);
@@ -335,12 +335,12 @@ export class SurveyHelper {
     }
     public static formScale(controller: DocController, flat: PdfBrick): number {
         let minSide = flat.width < flat.height ? flat.width : flat.height;
-        let fontSize = controller.measureText().height;
+        let fontSize = controller.unitHeight;
         return (minSide - fontSize * SurveyHelper.BORDER_SCALE * 2.0) / minSide;
     }
     public static wrapInBordersFlat(controller: DocController, flat: PdfBrick): void {
         let minSide = flat.width < flat.height ? flat.width : flat.height;
-        let fontSize: number = controller.measureText().width;
+        let fontSize: number = controller.unitWidth;
         let visibleWidth: number = fontSize * SurveyHelper.VISIBLE_BORDER_SCALE * SurveyHelper.BORDER_SCALE;
         let visibleScale: number = SurveyHelper.formScale(controller, flat) + visibleWidth / minSide;
         let unvisibleWidth: number = fontSize * SurveyHelper.UNVISIBLE_BORDER_SCALE * SurveyHelper.BORDER_SCALE;

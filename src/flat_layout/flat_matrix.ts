@@ -73,7 +73,7 @@ export class FlatMatrixRow extends FlatRadiogroup {
         let cells: IPdfBrick[] = [];
         let currPoint: IPoint = SurveyHelper.clone(point);
         let columnWidth = SurveyHelper.getColumnWidth(this.controller, this.question.visibleColumns.length + (this.question.hasRows ? 1 : 0));
-        let itemHeight: number = this.controller.measureText().height;
+        let itemHeight: number = this.controller.unitHeight;
         let colCount = this.question.visibleColumns.length + (this.question.hasRows ? 1 : 0)
         if (this.questionMatrix.hasRows) {
             this.controller.pushMargins();
@@ -109,7 +109,7 @@ export class FlatMatrixRow extends FlatRadiogroup {
     private async generateFlatsVerticallyCells(point: IPoint): Promise<IPdfBrick[]> {
         let cells: IPdfBrick[] = [];
         let currPoint: IPoint = SurveyHelper.clone(point);
-        let itemHeight: number = this.controller.measureText().height;
+        let itemHeight: number = this.controller.unitHeight;
         if (this.questionMatrix.hasRows) {
             let rowTextFlat = await SurveyHelper.createTextFlat(currPoint, this.questionMatrix,
                 this.controller, this.row.locText, TextBrick);

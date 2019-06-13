@@ -34,7 +34,7 @@ test('Check multiple text one item', async () => {
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.paperWidth - survey.controller.margins.right,
         yTop: survey.controller.leftTopPoint.yTop,
-        yBot: survey.controller.leftTopPoint.yTop + survey.controller.measureText().height
+        yBot: survey.controller.leftTopPoint.yTop + survey.controller.unitHeight
     };
     TestHelper.equalRect(expect, flats[0][0], assumeMultipleText);
     let assumeText: IRect = {
@@ -42,7 +42,7 @@ test('Check multiple text one item', async () => {
         xRight: survey.controller.leftTopPoint.xLeft +
             survey.controller.measureText(json.elements[0].items[0].name, 'bold').width,
         yTop: survey.controller.leftTopPoint.yTop,
-        yBot: survey.controller.leftTopPoint.yTop + survey.controller.measureText().height
+        yBot: survey.controller.leftTopPoint.yTop + survey.controller.unitHeight
     }
     TestHelper.equalRect(expect, flats[0][0].unfold()[0], assumeText);
     let assumeBox: IRect = {
@@ -50,7 +50,7 @@ test('Check multiple text one item', async () => {
             SurveyHelper.getPageAvailableWidth(survey.controller) * SurveyHelper.MULTIPLETEXT_TEXT_PERS,
         xRight: assumeMultipleText.xRight,
         yTop: survey.controller.leftTopPoint.yTop,
-        yBot: survey.controller.leftTopPoint.yTop + survey.controller.measureText().height
+        yBot: survey.controller.leftTopPoint.yTop + survey.controller.unitHeight
     }
     TestHelper.equalRect(expect, flats[0][0].unfold()[1], assumeBox);
 });
@@ -80,7 +80,7 @@ test('Check multiple text two items', async () => {
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.paperWidth - survey.controller.margins.right,
         yTop: survey.controller.leftTopPoint.yTop,
-        yBot: survey.controller.leftTopPoint.yTop + survey.controller.measureText().height * 2
+        yBot: survey.controller.leftTopPoint.yTop + survey.controller.unitHeight * 2
     };
     TestHelper.equalRect(expect, SurveyHelper.mergeRects(flats[0][0], flats[0][1]), assumeMultipleText);
 });
@@ -120,7 +120,7 @@ test('Check multiple text with colCount and long text', async () => {
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.paperWidth - survey.controller.margins.right,
         yTop: survey.controller.leftTopPoint.yTop,
-        yBot: survey.controller.leftTopPoint.yTop + survey.controller.measureText().height * 3
+        yBot: survey.controller.leftTopPoint.yTop + survey.controller.unitHeight * 3
     };
     TestHelper.equalRect(expect, SurveyHelper.mergeRects(flats[0][0], flats[0][1]), assumeMultipleText);
 });
