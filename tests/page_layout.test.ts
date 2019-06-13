@@ -70,6 +70,7 @@ test('Long checkbox with indent', async () => {
     let leftTopPoint: IPoint = survey.controller.leftTopPoint;
     leftTopPoint.xLeft += survey.controller.measureText(json.questions[0].indent).width;
     TestHelper.equalPoint(expect, packs[0][0], leftTopPoint);
+    leftTopPoint.xLeft += survey.controller.measureText().width;
     leftTopPoint.yTop += survey.controller.measureText().height * (1.0 + checkGap) +
         survey.controller.measureText().height * FlatQuestion.CONTENT_GAP_VERT_SCALE;
     TestHelper.equalPoint(expect, packs[0][1], leftTopPoint);
@@ -176,8 +177,10 @@ test('Unfold compose brick', async () => {
     expect(packs[1].length).toBe(1);
     TestHelper.equalRect(expect, packs[0][0], await SurveyHelper.createTitleFlat(
         survey.controller.leftTopPoint, <Question>survey.getAllQuestions()[0], survey.controller));
+    let textBoxPoint: IPoint = survey.controller.leftTopPoint;
+    textBoxPoint.xLeft += survey.controller.measureText().width;
     TestHelper.equalRect(expect, packs[1][0],
-        SurveyHelper.createTextFieldRect(survey.controller.leftTopPoint, survey.controller));
+        SurveyHelper.createTextFieldRect(textBoxPoint, survey.controller));
 });
 test('Pack to little page', async () => {
     let json = {
@@ -191,7 +194,7 @@ test('Pack to little page', async () => {
     };
     let options: IDocOptions = TestHelper.defaultOptions;
     options.format = [210, options.margins.top + new DocController(options).
-        measureText().height / 2 + options.margins.bot];
+        measureText().height / 2.0 + options.margins.bot];
     options.orientation = 'l';
     let survey: SurveyPDF = new SurveyPDF(json, options);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
@@ -206,8 +209,10 @@ test('Pack to little page', async () => {
         survey.controller.leftTopPoint, null, survey.controller,
         SurveyHelper.getTitleText(<Question>survey.getAllQuestions()[0]), TextBrick));
     survey.controller.fontStyle = 'normal';
+    let textBoxPoint: IPoint = survey.controller.leftTopPoint;
+    textBoxPoint.xLeft += survey.controller.measureText().width;
     TestHelper.equalRect(expect, packs[1][0],
-        SurveyHelper.createTextFieldRect(survey.controller.leftTopPoint, survey.controller));
+        SurveyHelper.createTextFieldRect(textBoxPoint, survey.controller));
 });
 test('Check yTop on new page with panel', async () => {
     let json = {

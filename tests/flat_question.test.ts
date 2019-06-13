@@ -49,12 +49,13 @@ export async function calcTitleTop(leftTopPoint: IPoint, controller: DocControll
     return SurveyHelper.createPoint(assumeTextbox);
 }
 async function calcTitleBottom(controller: DocController, titleQuestion: Question,
-    compositeFlat: IPdfBrick, textboxFlat: IPdfBrick, isDesc: boolean = false) {
+    titleFlat: IPdfBrick, textboxFlat: IPdfBrick, isDesc: boolean = false) {
     let assumeTextbox: IRect = SurveyHelper.createTextFieldRect(
         controller.leftTopPoint, controller);
-    TestHelper.equalRect(expect, textboxFlat, assumeTextbox);
     let assumeTitle: IRect = await SurveyHelper.createTitleFlat(
         SurveyHelper.createPoint(assumeTextbox), titleQuestion, controller);
+    assumeTextbox.xLeft += controller.measureText().width;
+    TestHelper.equalRect(expect, textboxFlat, assumeTextbox);
     if (isDesc) {
         let assumeDesc: IRect = await SurveyHelper.createDescFlat(
             SurveyHelper.createPoint(assumeTitle), null,
@@ -68,14 +69,14 @@ async function calcTitleBottom(controller: DocController, titleQuestion: Questio
             FlatQuestion.CONTENT_GAP_VERT_SCALE;
         assumeDesc.yBot += controller.measureText().height *
             FlatQuestion.CONTENT_GAP_VERT_SCALE;
-        TestHelper.equalRect(expect, compositeFlat,
+        TestHelper.equalRect(expect, titleFlat,
             SurveyHelper.mergeRects(assumeTitle, assumeDesc));
     } else {
         assumeTitle.yTop += controller.measureText().height *
             FlatQuestion.CONTENT_GAP_VERT_SCALE;
         assumeTitle.yBot += controller.measureText().height *
             FlatQuestion.CONTENT_GAP_VERT_SCALE;
-        TestHelper.equalRect(expect, compositeFlat, assumeTitle);
+        TestHelper.equalRect(expect, titleFlat, assumeTitle);
     }
 }
 async function calcTitleLeft(controller: DocController, titleQuestion: Question,
