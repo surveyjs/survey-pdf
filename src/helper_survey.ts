@@ -100,7 +100,7 @@ export class SurveyHelper {
     public static createDivBlock(element: string, controller: DocController) {
         return `<div style= ${this.generateCssTextRule(controller.fontSize,
             controller.fontStyle,
-            controller.doc.internal.getFont().fontName)}>
+            `helvetica`)}>
             ${element}
             </div>`;
     }
