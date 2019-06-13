@@ -136,13 +136,8 @@ export class FlatQuestion implements IFlatQuestion {
             }
             case 'hidden':
             default: {
-                let contentPoint: IPoint = SurveyHelper.clone(indentPoint);
-                this.controller.pushMargins();
-                contentPoint.xLeft += this.controller.unitWidth;
-                this.controller.margins.left += this.controller.unitWidth;
-                flats.push(...await this.generateFlatsContent(contentPoint));
-                this.controller.popMargins();
-                if (flats.length !== 0) {
+                flats.push(...await this.generateFlatsContent(indentPoint));
+                if (flats.length != 0) {
                     commentPoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(...flats));
                 }
                 break;
