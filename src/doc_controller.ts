@@ -85,8 +85,8 @@ export class DocController extends DocOptions {
     public constructor(options: IDocOptions) {
         super(options);
         if ((options.fontName && (options.base64Normal || options.base64Bold)) || this.fontName == 'segoe') {
-            this.addFont(this.fontName, options.base64Normal || Fonts.SEGOE_NORMAL, 'normal');
-            this.addFont(this.fontName, options.base64Bold || Fonts.SEGOE_BOLD, 'bold');
+            this.addFont(this.fontName, Fonts.SEGOE_NORMAL, 'normal');
+            this.addFont(this.fontName, Fonts.SEGOE_BOLD, 'bold');
         }
         this._doc = new jsPDF({ orientation: this.orientation, unit: 'pt', format: this.format });
         this._helperDoc = new jsPDF({ orientation: this.orientation, unit: 'pt', format: this.format });
