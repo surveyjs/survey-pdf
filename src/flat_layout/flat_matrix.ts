@@ -98,7 +98,8 @@ export class FlatMatrixRow extends FlatRadiogroup {
             }
             else {
                 let itemRect: IRect = SurveyHelper.createRect(currPoint, itemHeight, itemHeight);
-                cells.push(this.createItemFlat(itemRect, column, i, this.key, checked));
+                cells.push(this.createItemFlat(SurveyHelper.moveRect(
+                    SurveyHelper.scaleRect(itemRect, SurveyHelper.SELECT_ITEM_FLAT_SCALE), currPoint.xLeft), column, i, this.key, checked));
             }
             this.controller.popMargins();
         }
@@ -130,15 +131,17 @@ export class FlatMatrixRow extends FlatRadiogroup {
             }
             else {
                 let itemRect: IRect = SurveyHelper.createRect(currPoint, itemHeight, itemHeight);
-                this.controller.pushMargins();
-                let radioItem: IPdfBrick = this.createItemFlat(itemRect, column, i, this.key, checked);
-                currPoint = SurveyHelper.createPoint(radioItem, false, true);
-                this.controller.margins.left = this.controller.margins.left + itemHeight;
+                let radioItem: IPdfBrick = this.createItemFlat(SurveyHelper.moveRect(
+                    SurveyHelper.scaleRect(itemRect, SurveyHelper.SELECT_ITEM_FLAT_SCALE), itemRect.xLeft), column, i, this.key, checked);
+                currPoint.xLeft += radioItem.width * 2;
                 let radioText: IPdfBrick = await SurveyHelper.createTextFlat(currPoint, this.questionMatrix,
                     this.controller, column.locText, TextBrick);
                 let compositeBrick: CompositeBrick = new CompositeBrick(radioItem, radioText);
                 currPoint = SurveyHelper.createPoint(compositeBrick);
                 cells.push(compositeBrick);
+                currPoint.yTop = compositeBrick.yBot +
+                    SurveyHelper.GAP_BETWEEN_ROWS *
+                    this.controller.measureText(1).height;
             }
         }
         let compositeBrick: CompositeBrick = new CompositeBrick(...cells);
