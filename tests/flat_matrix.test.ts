@@ -112,7 +112,7 @@ test('test matrix vertical', async () => {
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     let assumeCells: IRect[] = [];
-    let itemWidth = survey.controller.measureText().width;
+    let itemWidth = survey.controller.unitWidth;
     let currPoint = TestHelper.defaultPoint;
     let receivedCells: IRect[] = [];
     flats[0].forEach((flat) => {
@@ -281,7 +281,7 @@ test('Matrix rubric check vertically', async () => {
     let currPoint = TestHelper.defaultPoint;
     currPoint.yTop = rowTextFlat.yBot;
     for (let i: number = 1; i < 4; i++) {
-        let itemFlat = SurveyHelper.createRect(currPoint, SurveyHelper.getPageAvailableWidth(survey.controller), survey.controller.measureText(1).height);
+        let itemFlat = SurveyHelper.createRect(currPoint, SurveyHelper.getPageAvailableWidth(survey.controller), survey.controller.unitHeight);
         currPoint.yTop = itemFlat.yBot;
         let cellTextFlat = await SurveyHelper.createTextFlat(currPoint,
             survey.getAllQuestions()[0], survey.controller, (<any>json.questions[0]).cells['row1']['column' + i], TextBrick);

@@ -16,7 +16,7 @@ export class FlatRating extends FlatRadiogroup {
         let itemText: LocalizableString = SurveyHelper.getRatingItemText(
             this.questionRating, index, item.locText);
         this.controller.pushMargins();
-        let halfWidth: number = this.controller.measureText().width / 2.0;
+        let halfWidth: number = this.controller.unitWidth / 2.0;
         this.controller.margins.left += halfWidth
         this.controller.margins.right += halfWidth;
         let textPoint: IPoint = SurveyHelper.clone(point);
@@ -31,12 +31,12 @@ export class FlatRating extends FlatRadiogroup {
             textWidth = SurveyHelper.getRatingMinWidth(this.controller);
         }
         else {
-            textWidth += this.controller.measureText().width;
+            textWidth += this.controller.unitWidth;
         }
         let radioPoint: IPoint = SurveyHelper.createPoint(compositeFlat);
         radioPoint.xLeft = point.xLeft;
         compositeFlat.addBrick(this.createItemFlat(SurveyHelper.createRect(
-            radioPoint, textWidth, this.controller.measureText().height), item, index));
+            radioPoint, textWidth, this.controller.unitHeight), item, index));
         return compositeFlat;
     }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {

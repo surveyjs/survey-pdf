@@ -27,7 +27,7 @@ export class FlatImagePicker extends FlatQuestion {
             compositeFlat.addBrick(labelFlat);
             buttonPoint = SurveyHelper.createPoint(labelFlat);
         }
-        let height: number = this.controller.measureText().height;
+        let height: number = this.controller.unitHeight;
         let buttonRect: IRect = SurveyHelper.createRect(buttonPoint,
             SurveyHelper.getPageAvailableWidth(this.controller), height);
         if (this.question.multiSelect) {
@@ -63,7 +63,7 @@ export class FlatImagePicker extends FlatQuestion {
                 this.controller.margins.right = this.controller.paperWidth -
                     currMarginLeft - colWidth;
                 currMarginLeft = this.controller.paperWidth -
-                    this.controller.margins.right + this.controller.measureText().width;
+                    this.controller.margins.right + this.controller.unitWidth;
                 currPoint.xLeft = this.controller.margins.left;
                 let itemFlat: IPdfBrick = await this.generateFlatItem(currPoint,
                     this.question.visibleChoices[index], index);

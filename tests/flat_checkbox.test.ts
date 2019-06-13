@@ -32,7 +32,7 @@ test('Check other checkbox place ', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     let receivedRects: IRect[] = flats[0][0].unfold();
     let currPoint = TestHelper.defaultPoint;
-    let minHeight: number = survey.controller.measureText().width;
+    let minHeight: number = survey.controller.unitWidth;
     let assumeRects: IRect[] = [];
     let itemRect: IRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(
         SurveyHelper.createRect(currPoint, minHeight, minHeight),
@@ -65,7 +65,7 @@ test('Check checkbox with colCount 4 with small font size 12', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     let receivedFlats: IRect[] = [];;
     receivedFlats.push(...flats[0][0].unfold(), ...flats[0][1].unfold());
-    let minHeight = survey.controller.measureText(1).height;
+    let minHeight = survey.controller.unitHeight;
     let assumetFlats: IRect[] = [];
     let currPoint = TestHelper.defaultPoint;
     for (let i: number = 0; i < 4; i++) {
@@ -113,7 +113,7 @@ test('Check checkbox with colCount 4 with big font size 30', async () => {
     for (let i: number = 0; i < 5; i++) {
         receivedFlats.push(...flats[0][i].unfold());
     }
-    let minHeight = survey.controller.measureText(1).height;
+    let minHeight = survey.controller.unitHeight;
     let assumetFlats: IRect[] = [];
     let currPoint = TestHelper.defaultPoint;
     for (let i: number = 0; i < 5; i++) {
@@ -146,7 +146,7 @@ test('Check checkbox with colCount 0 with big font size 30', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     let receivedFlats: IRect[] = [];;
     receivedFlats.push(...flats[0][0].unfold(), ...flats[0][1].unfold(), ...flats[0][2].unfold());
-    let minHeight = survey.controller.measureText(1).height;
+    let minHeight = survey.controller.unitHeight;
     let assumetFlats: IRect[] = [];
     let currPoint = TestHelper.defaultPoint;
     for (let i: number = 0; i < 3; i++) {
@@ -194,7 +194,7 @@ test('Check checkbox with colCount 0 with small font size 12', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     let receivedFlats: IRect[] = [];;
     receivedFlats.push(...flats[0][0].unfold());
-    let minHeight = survey.controller.measureText(1).height;
+    let minHeight = survey.controller.unitHeight;
     let assumetFlats: IRect[] = [];
     let currPoint = TestHelper.defaultPoint;
     for (let i: number = 0; i < 4; i++) {

@@ -20,7 +20,7 @@ export class FlatPanelDynamic extends FlatQuestion {
                 currPoint, panel, this.controller);
             if (panelFlats.length !== 0) {
                 currPoint.yTop = SurveyHelper.mergeRects(...panelFlats).yBot;
-                currPoint.yTop += this.controller.measureText().height;
+                currPoint.yTop += this.controller.unitHeight;
                 flats.push(...panelFlats);
             }
         }

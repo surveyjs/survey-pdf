@@ -19,8 +19,8 @@ export class TextFieldBrick extends PdfBrick {
             new (<any>this.controller.doc.AcroFormTextField)();
         inputField.fieldName = this.fieldName;
         if (!this.isPassword) {
-            inputField.value = this.value ? ' ' + this.value : this.value;
-            inputField.defaultValue = this.placeholder ? ' ' + this.placeholder : this.placeholder;
+            inputField.value = ' ' + this.value;
+            inputField.defaultValue = ' ' + this.placeholder;
         }
         else inputField.value = '';
         inputField.multiline = this.isMultiline;

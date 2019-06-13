@@ -33,7 +33,7 @@ test('Check rating two elements', async () => {
             SurveyHelper.getRatingMinWidth(survey.controller) * 2,
         yTop: survey.controller.leftTopPoint.yTop,
         yBot: survey.controller.leftTopPoint.yTop +
-            survey.controller.measureText().height * SurveyHelper.RATING_MIN_HEIGHT
+            survey.controller.unitHeight * SurveyHelper.RATING_MIN_HEIGHT
     };
     TestHelper.equalRect(expect, flats[0][0], assumeRating);
 });
@@ -59,10 +59,10 @@ test('Check rating two elements with min rate description', async () => {
         xRight: survey.controller.leftTopPoint.xLeft +
             SurveyHelper.getRatingMinWidth(survey.controller) + survey.controller.measureText(
                 SurveyHelper.getRatingItemText(question, 0, question.visibleRateValues[0].locText),
-                'bold').width + survey.controller.measureText().height,
+                'bold').width + survey.controller.unitHeight,
         yTop: survey.controller.leftTopPoint.yTop,
         yBot: survey.controller.leftTopPoint.yTop +
-            survey.controller.measureText().height * SurveyHelper.RATING_MIN_HEIGHT
+            survey.controller.unitHeight * SurveyHelper.RATING_MIN_HEIGHT
     };
     TestHelper.equalRect(expect, flats[0][0], assumeRating);
 });
@@ -89,10 +89,10 @@ test('Check rating two elements with max rate description', async () => {
             SurveyHelper.getRatingMinWidth(survey.controller) + survey.controller.measureText(
                 SurveyHelper.getRatingItemText(question, 1,
                     question.visibleRateValues[0].locText), 'bold').width +
-            survey.controller.measureText().height,
+            survey.controller.unitHeight,
         yTop: survey.controller.leftTopPoint.yTop,
         yBot: survey.controller.leftTopPoint.yTop +
-            survey.controller.measureText().height * SurveyHelper.RATING_MIN_HEIGHT
+            survey.controller.unitHeight * SurveyHelper.RATING_MIN_HEIGHT
     };
     TestHelper.equalRect(expect, flats[0][0], assumeRating);
 });
@@ -120,7 +120,7 @@ test('Check rating many elements', async () => {
         xRight: survey.controller.paperWidth - survey.controller.margins.right,
         yTop: survey.controller.leftTopPoint.yTop,
         yBot: survey.controller.leftTopPoint.yTop +
-            survey.controller.measureText().height * SurveyHelper.RATING_MIN_HEIGHT * 2
+            survey.controller.unitHeight * SurveyHelper.RATING_MIN_HEIGHT * 2
     };
     TestHelper.equalRect(expect, SurveyHelper.mergeRects(flats[0][0], flats[0][1]), assumeRating);
 });
@@ -138,7 +138,7 @@ test('Check rating two elements with long min rate description', async () => {
     };
     let longRateDesc: number = (new DocController(TestHelper.defaultOptions).measureText(
         json.elements[0].minRateDescription + ' 1', 'bold').width +
-        new DocController(TestHelper.defaultOptions).measureText().height) / DocOptions.MM_TO_PT;
+        new DocController(TestHelper.defaultOptions).unitHeight) / DocOptions.MM_TO_PT;
     let options: IDocOptions = TestHelper.defaultOptions;
     options.format = [options.margins.left +
         options.margins.right + longRateDesc, 297.0];
@@ -151,7 +151,7 @@ test('Check rating two elements with long min rate description', async () => {
         xRight: survey.controller.paperWidth - survey.controller.margins.right,
         yTop: survey.controller.leftTopPoint.yTop,
         yBot: survey.controller.leftTopPoint.yTop +
-            survey.controller.measureText().height * SurveyHelper.RATING_MIN_HEIGHT * 2
+            survey.controller.unitHeight * SurveyHelper.RATING_MIN_HEIGHT * 2
     };
     TestHelper.equalRect(expect, SurveyHelper.mergeRects(flats[0][0], flats[0][1]), assumeRating);
 });

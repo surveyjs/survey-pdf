@@ -55,10 +55,10 @@ export class FlatSurvey {
                 controller.margins.left = currMarginLeft;
                 controller.margins.right = controller.paperWidth - currMarginLeft - persWidth;
                 if (i != visibleCount - 1) {
-                    controller.margins.right += controller.measureText().width / 2.0;
+                    controller.margins.right += controller.unitWidth / 2.0;
                 }
                 currMarginLeft = controller.paperWidth - controller.margins.right +
-                    controller.measureText().width;
+                    controller.unitWidth;
                 currPoint.xLeft = controller.margins.left;
                 if (element instanceof PanelModel) {
                     rowFlats.push(...await this.generateFlatsPanel(currPoint, element, controller));
@@ -75,7 +75,7 @@ export class FlatSurvey {
             if (rowFlats.length !== 0) {
                 currPoint.yTop = SurveyHelper.mergeRects(...rowFlats).yBot;
                 currPoint.xLeft = point.xLeft;
-                currPoint.yTop += controller.measureText().height;
+                currPoint.yTop += controller.unitHeight;
                 pagePanelFlats.push(...rowFlats);
                 pagePanelFlats.push(SurveyHelper.createRowlineFlat(currPoint, controller));
                 currPoint.yTop += SurveyHelper.EPSILON;

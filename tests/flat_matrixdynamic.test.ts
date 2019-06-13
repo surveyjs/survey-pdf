@@ -121,7 +121,7 @@ test('Check matrix dynamic one column one row show header off', async () => {
         xRight: survey.controller.paperWidth - survey.controller.margins.right,
         yTop: survey.controller.leftTopPoint.yTop,
         yBot: survey.controller.leftTopPoint.yTop +
-            survey.controller.measureText().height
+            survey.controller.unitHeight
     };
     TestHelper.equalRect(expect, unfoldRowFlats[0], assumeQuestion);
 });
@@ -163,7 +163,7 @@ test('Check matrix dynamic one column one row', async () => {
         xRight: survey.controller.paperWidth - survey.controller.margins.right,
         yTop: survey.controller.leftTopPoint.yTop + header.height + SurveyHelper.EPSILON,
         yBot: survey.controller.leftTopPoint.yTop + header.height +
-            SurveyHelper.EPSILON + survey.controller.measureText().height
+            SurveyHelper.EPSILON + survey.controller.unitHeight
     };
     TestHelper.equalRect(expect, unfoldRowFlats[0], assumeQuestion);
     let assumeMatrix: IRect = {
@@ -206,7 +206,7 @@ test('Check matrix dynamic one column one row vertical layout show header off', 
         xRight: survey.controller.paperWidth - survey.controller.margins.right,
         yTop: survey.controller.leftTopPoint.yTop,
         yBot: survey.controller.leftTopPoint.yTop +
-            survey.controller.measureText().height
+            survey.controller.unitHeight
     };
     TestHelper.equalRect(expect, unfoldRowFlats[0], assumeQuestion);
 });
@@ -252,7 +252,7 @@ test('Check matrix dynamic one column one row vertical layout', async () => {
         xRight: survey.controller.paperWidth - survey.controller.margins.right,
         yTop: survey.controller.leftTopPoint.yTop + SurveyHelper.EPSILON,
         yBot: survey.controller.leftTopPoint.yTop + SurveyHelper.EPSILON +
-            survey.controller.measureText().height
+            survey.controller.unitHeight
     };
     TestHelper.equalRect(expect, unfoldRowFlats[1], assumeQuestion);
     let assumeMatrix: IRect = {
@@ -300,7 +300,7 @@ test('Check matrix dynamic two columns one row vertical layout show header off',
         xRight: survey.controller.paperWidth - survey.controller.margins.right,
         yTop: survey.controller.leftTopPoint.yTop + SurveyHelper.EPSILON,
         yBot: survey.controller.leftTopPoint.yTop + SurveyHelper.EPSILON +
-            survey.controller.measureText().height
+            survey.controller.unitHeight
     };
     expect(unfoldRow1Flats[1] instanceof RowlineBrick).toBe(true);
     TestHelper.equalRect(expect, unfoldRow1Flats[0], assumeQuestion1);
@@ -309,7 +309,7 @@ test('Check matrix dynamic two columns one row vertical layout show header off',
         xRight: survey.controller.paperWidth - survey.controller.margins.right,
         yTop: assumeQuestion1.yBot + SurveyHelper.EPSILON,
         yBot: assumeQuestion1.yBot + SurveyHelper.EPSILON +
-            survey.controller.measureText().height
+            survey.controller.unitHeight
     };
     TestHelper.equalRect(expect, unfoldRow2Flats[0], assumeQuestion2);
     let assumeMatrix: IRect = {
@@ -396,7 +396,7 @@ test('Check matrix dynamic one column one row verical layout narrow width', asyn
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.paperWidth - survey.controller.margins.right,
         yTop: assumeText.yBot,
-        yBot: assumeText.yBot + survey.controller.measureText().height
+        yBot: assumeText.yBot + survey.controller.unitHeight
     };
     TestHelper.equalRect(expect, unfoldFlats[2], assumeQuestion);
     let assumeMatrix: IRect = {
@@ -449,7 +449,7 @@ test('Check matrix dynamic two columns one row narrow width', async () => {
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.paperWidth - survey.controller.margins.right,
         yTop: assumeText1.yBot,
-        yBot: assumeText1.yBot + survey.controller.measureText().height
+        yBot: assumeText1.yBot + survey.controller.unitHeight
     };
     TestHelper.equalRect(expect, unfoldFlats[1], assumeQuestion1);
     let text2: ISize = survey.controller.measureText(json.elements[0].columns[1].name);
@@ -464,7 +464,7 @@ test('Check matrix dynamic two columns one row narrow width', async () => {
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.paperWidth - survey.controller.margins.right,
         yTop: assumeText2.yBot,
-        yBot: assumeText2.yBot + survey.controller.measureText().height
+        yBot: assumeText2.yBot + survey.controller.unitHeight
     };
     TestHelper.equalRect(expect, unfoldFlats[3], assumeQuestion2);
     let assumeMatrix: IRect = {

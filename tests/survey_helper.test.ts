@@ -65,7 +65,7 @@ test('Not Carry text', async () => {
         xLeft: controller.leftTopPoint.xLeft,
         xRight: controller.leftTopPoint.xLeft + controller.measureText(text).width,
         yTop: controller.leftTopPoint.yTop,
-        yBot: controller.leftTopPoint.yTop + controller.measureText().height
+        yBot: controller.leftTopPoint.yTop + controller.unitHeight
     };
     TestHelper.equalRect(expect, composite, assumeRect);
 });

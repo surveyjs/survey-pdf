@@ -28,7 +28,7 @@ test('Check that checkbox has square boundaries', async () => {
 	await survey.render();
 	let assumeCheckbox: IRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(SurveyHelper.createRect(
 		TestHelper.defaultPoint,
-		survey.controller.measureText().height, survey.controller.measureText().height),
+		survey.controller.unitHeight, survey.controller.unitHeight),
 		SurveyHelper.SELECT_ITEM_FLAT_SCALE),
 		TestHelper.defaultPoint.xLeft);
 	let checkboxFlat: PdfBrick = new PdfBrick(null, null, assumeCheckbox);

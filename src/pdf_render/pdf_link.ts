@@ -12,7 +12,7 @@ export class LinkBrick extends TextBrick {
     public async render(): Promise<void> {
         let oldTextColor: string = this.controller.doc.getTextColor();
         this.controller.doc.setTextColor(SurveyHelper.BACKGROUND_COLOR);
-        let descent: number = this.controller.measureText().height *
+        let descent: number = this.controller.unitHeight *
             (this.controller.doc.getLineHeightFactor() -
                 LinkBrick.SCALE_FACTOR_MAGIC);
         let yTopLink: number = this.yTop +
