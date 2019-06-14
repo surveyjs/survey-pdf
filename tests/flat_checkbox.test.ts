@@ -79,7 +79,8 @@ test('Check checkbox with colCount 4 with small font size 12', async () => {
         let textSize: ISize = survey.controller.measureText(json.questions[0].choices[i]);
         let textRect: IRect = SurveyHelper.createRect(textPoint, textSize.width, textSize.height)
         assumetFlats.push(itemRect, textRect);
-        currPoint.xLeft += SurveyHelper.getColumnWidth(survey.controller, 4);
+        currPoint.xLeft += SurveyHelper.getColumnWidth(survey.controller, 4) +
+            survey.controller.measureText().width * SurveyHelper.GAP_BETWEEN_COLUMNS;;
     }
     currPoint = survey.controller.leftTopPoint;
     currPoint.yTop += itemHeight;
@@ -162,7 +163,8 @@ test('Check checkbox with colCount 0 with big font size 30', async () => {
         let textSize: ISize = survey.controller.measureText(json.questions[0].choices[i]);
         let textRect: IRect = SurveyHelper.createRect(textPoint, textSize.width, textSize.height)
         assumetFlats.push(itemRect, textRect);
-        currPoint.xLeft += SurveyHelper.getColumnWidth(survey.controller, 3);
+        currPoint.xLeft += SurveyHelper.getColumnWidth(survey.controller, 3) +
+            survey.controller.measureText().width * SurveyHelper.GAP_BETWEEN_COLUMNS;
     }
     currPoint = survey.controller.leftTopPoint;
     currPoint.yTop += itemHeight;
@@ -209,7 +211,8 @@ test('Check checkbox with colCount 0 with small font size 12', async () => {
         textPoint.xLeft = 2.0 * itemRect.xRight - itemRect.xLeft;
         let textRect: IRect = SurveyHelper.createRect(textPoint, text.width, text.height)
         assumetFlats.push(itemRect, textRect);
-        currPoint.xLeft += SurveyHelper.getColumnWidth(survey.controller, 4);
+        currPoint.xLeft += SurveyHelper.getColumnWidth(survey.controller, 4) +
+            survey.controller.measureText().width * SurveyHelper.GAP_BETWEEN_COLUMNS;
     }
     TestHelper.equalRects(expect, unfoldFlats, assumetFlats);
 });

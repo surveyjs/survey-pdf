@@ -37,9 +37,11 @@ test('Check matrix multiple one column no rows', async () => {
     let size: ISize = survey.controller.measureText(json.elements[0].columns[0].name, 'bold');
     let assumeMatrix: IRect = {
         xLeft: survey.controller.leftTopPoint.xLeft +
-            SurveyHelper.getPageAvailableWidth(survey.controller) / 2.0,
+            SurveyHelper.getPageAvailableWidth(survey.controller) / 2.0 +
+            SurveyHelper.GAP_BETWEEN_COLUMNS * survey.controller.measureText().width / 2.0,
         xRight: survey.controller.leftTopPoint.xLeft +
-            SurveyHelper.getPageAvailableWidth(survey.controller) / 2.0 + size.width,
+            SurveyHelper.getPageAvailableWidth(survey.controller) / 2.0 +
+            SurveyHelper.GAP_BETWEEN_COLUMNS * survey.controller.measureText().width / 2.0 + size.width,
         yTop: survey.controller.leftTopPoint.yTop,
         yBot: survey.controller.leftTopPoint.yTop + size.height
     };
@@ -83,9 +85,12 @@ test('Check matrix multiple one column one row', async () => {
     TestHelper.equalRect(expect, SurveyHelper.mergeRects(flats[0][0], flats[0][1]), assumeMatrix);
     let assumeHeader: IRect = {
         xLeft: survey.controller.leftTopPoint.xLeft +
-            SurveyHelper.getPageAvailableWidth(survey.controller) / 2.0,
+            SurveyHelper.getPageAvailableWidth(survey.controller) / 2.0 +
+            SurveyHelper.GAP_BETWEEN_COLUMNS * survey.controller.measureText().width / 2.0,
         xRight: survey.controller.leftTopPoint.xLeft +
-            SurveyHelper.getPageAvailableWidth(survey.controller) / 2.0 + header.width,
+            SurveyHelper.getPageAvailableWidth(survey.controller) / 2.0 +
+            SurveyHelper.GAP_BETWEEN_COLUMNS * survey.controller.measureText().width / 2.0 +
+            header.width,
         yTop: survey.controller.leftTopPoint.yTop,
         yBot: survey.controller.leftTopPoint.yTop + header.height
     };
@@ -150,9 +155,11 @@ test('Check matrix multiple two columns one row vertical layout', async () => {
     TestHelper.equalRect(expect, SurveyHelper.mergeRects(...flats[0]), assumeMatrix);
     let assumeHeader: IRect = {
         xLeft: survey.controller.leftTopPoint.xLeft +
-            SurveyHelper.getPageAvailableWidth(survey.controller) / 2.0,
+            SurveyHelper.getPageAvailableWidth(survey.controller) / 2.0 + SurveyHelper.GAP_BETWEEN_COLUMNS * survey.controller.measureText().width / 2.0,
         xRight: survey.controller.leftTopPoint.xLeft +
-            SurveyHelper.getPageAvailableWidth(survey.controller) / 2.0 + header.width,
+            SurveyHelper.getPageAvailableWidth(survey.controller) / 2.0 +
+            SurveyHelper.GAP_BETWEEN_COLUMNS * survey.controller.measureText().width / 2.0 +
+            header.width,
         yTop: survey.controller.leftTopPoint.yTop,
         yBot: survey.controller.leftTopPoint.yTop + header.height
     };

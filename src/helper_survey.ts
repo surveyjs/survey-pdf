@@ -25,6 +25,7 @@ export class SurveyHelper {
     public static readonly HTML_TAIL_TEXT: number = 0.24;
     public static readonly SELECT_ITEM_FLAT_SCALE: number = 0.8;
     public static readonly GAP_BETWEEN_ROWS: number = 0.25;
+    public static readonly GAP_BETWEEN_COLUMNS: number = 1.5;
     public static readonly BORDER_SCALE: number = 0.1;
     public static readonly VISIBLE_BORDER_SCALE: number = 0.6;
     public static readonly UNVISIBLE_BORDER_SCALE: number = 0.4;
@@ -32,7 +33,6 @@ export class SurveyHelper {
     public static readonly TEXT_COLOR: string = '#000000';
     public static readonly BACKGROUND_COLOR: string = '#FFFFFF';
     public static readonly TITLE_LOCATION_MATRIX: string = 'matrix';
-
     public static parseWidth(width: string, maxWidth: number): number {
         let value: number = parseFloat(width);
         let unit: string = width.replace(/[^A-Za-z]/g, '');
@@ -298,7 +298,9 @@ export class SurveyHelper {
     }
 
     public static getColumnWidth(controller: DocController, colCount: number) {
-        return SurveyHelper.getPageAvailableWidth(controller) / colCount;
+        return (SurveyHelper.getPageAvailableWidth(controller) -
+            (colCount - 1) * controller.measureText().width * SurveyHelper.GAP_BETWEEN_COLUMNS) / colCount;
+
     }
     public static getPageAvailableWidth(controller: DocController): number {
         return controller.paperWidth - controller.margins.left - controller.margins.right;
@@ -310,8 +312,10 @@ export class SurveyHelper {
     }
     public static setColumnMargins(controller: DocController, colCount: number, column: number) {
         let cellWidth: number = this.getColumnWidth(controller, colCount);
-        controller.margins.left = controller.margins.left + column * cellWidth;
-        controller.margins.right = controller.paperWidth - controller.margins.left - cellWidth;
+        controller.margins.left = controller.margins.left + column *
+            (cellWidth + controller.unitWidth * SurveyHelper.GAP_BETWEEN_COLUMNS);
+        controller.margins.right = controller.margins.right + (colCount - column - 1) *
+            (cellWidth + controller.unitWidth * SurveyHelper.GAP_BETWEEN_COLUMNS);
     }
     public static moveRect(rect: IRect, left: number = rect.xLeft, top: number = rect.yTop): IRect {
         let width: number = rect.xRight - rect.xLeft;

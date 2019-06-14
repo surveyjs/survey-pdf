@@ -231,3 +231,30 @@ test('parse width 10%', async () => {
     expect(SurveyHelper.parseWidth('10%', 100)).toBe(10);
 
 })
+test('check set column width', async () => {
+    let options: IDocOptions = {
+        format: [100, 100],
+        margins: {
+            left: 0,
+            right: 0,
+            top: 0,
+            bot: 0
+        }
+    }
+    let controller: DocController = new DocController(options);
+    let columnWidth: number = SurveyHelper.getColumnWidth(controller, 3);
+    let gap: number = controller.measureText().width * SurveyHelper.GAP_BETWEEN_COLUMNS;
+    controller.pushMargins();
+    SurveyHelper.setColumnMargins(controller, 3, 0);
+    expect(controller.margins.left).toBe(0);
+    expect(controller.margins.right).toBe(2 * (columnWidth + gap));
+    controller.popMargins();
+    controller.pushMargins();
+    SurveyHelper.setColumnMargins(controller, 3, 1);
+    expect(controller.margins.left).toBe(columnWidth + gap);
+    expect(controller.margins.right).toBe(columnWidth + gap);
+    controller.popMargins();
+    SurveyHelper.setColumnMargins(controller, 3, 2);
+    expect(controller.margins.left).toBe(2 * (columnWidth + gap));
+    expect(controller.margins.right).toBe(0);
+})
