@@ -30,4 +30,7 @@ export class RowlineBrick implements IPdfBrick {
     public unfold(): IPdfBrick[] {
         return [this];
     }
+    public isAddPage(): boolean {
+        return true;
+    }
 }

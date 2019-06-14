@@ -19,15 +19,15 @@ export class SurveyPDF extends SurveyModel {
         let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(this);
         let packs: IPdfBrick[][] = PagePacker.pack(flats, this.controller);
         EventHandler.process_events(this, packs);
-        let htmlExtraPagesCount: number = 0;
         for (let i: number = 0; i < packs.length; i++) {
+            let pageAdded: boolean = i === 0;
             for (let j: number = 0; j < packs[i].length; j++) {
-                let pagesCount: number = this.controller.doc.getNumberOfPages();
+                if (!pageAdded && packs[i][j].isAddPage()) {
+                    pageAdded = true;
+                    this.controller.addPage();
+                }
                 await packs[i][j].render();
-                htmlExtraPagesCount += this.controller.doc.getNumberOfPages() - pagesCount;
             }
-            if (i !== packs.length - 1 && htmlExtraPagesCount === 0) this.controller.addPage();
-            if (htmlExtraPagesCount > 0) htmlExtraPagesCount--;
         }
     }
     public async save(fileName: string = 'survey_result.pdf'): Promise<void> {

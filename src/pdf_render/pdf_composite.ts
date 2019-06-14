@@ -74,4 +74,7 @@ export class CompositeBrick implements IPdfBrick {
         });
         return unfoldBricks;
     }
+    public isAddPage(): boolean {
+        return true;
+    }
 } 
