@@ -243,7 +243,7 @@ test('check set column width', async () => {
     }
     let controller: DocController = new DocController(options);
     let columnWidth: number = SurveyHelper.getColumnWidth(controller, 3);
-    let gap: number = controller.measureText().width * SurveyHelper.GAP_BETWEEN_COLUMNS;
+    let gap: number = controller.unitWidth * SurveyHelper.GAP_BETWEEN_COLUMNS;
     controller.pushMargins();
     SurveyHelper.setColumnMargins(controller, 3, 0);
     expect(controller.margins.left).toBe(0);

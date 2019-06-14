@@ -141,7 +141,7 @@ export class FlatMatrixRow extends FlatRadiogroup {
                 cells.push(compositeBrick);
                 currPoint.yTop = compositeBrick.yBot +
                     SurveyHelper.GAP_BETWEEN_ROWS *
-                    this.controller.measureText(1).height;
+                    this.controller.unitWidth;
             }
         }
         let compositeBrick: CompositeBrick = new CompositeBrick(...cells);

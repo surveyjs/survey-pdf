@@ -38,10 +38,10 @@ test('Check matrix multiple one column no rows', async () => {
     let assumeMatrix: IRect = {
         xLeft: survey.controller.leftTopPoint.xLeft +
             SurveyHelper.getPageAvailableWidth(survey.controller) / 2.0 +
-            SurveyHelper.GAP_BETWEEN_COLUMNS * survey.controller.measureText().width / 2.0,
+            SurveyHelper.GAP_BETWEEN_COLUMNS * survey.controller.unitWidth / 2.0,
         xRight: survey.controller.leftTopPoint.xLeft +
             SurveyHelper.getPageAvailableWidth(survey.controller) / 2.0 +
-            SurveyHelper.GAP_BETWEEN_COLUMNS * survey.controller.measureText().width / 2.0 + size.width,
+            SurveyHelper.GAP_BETWEEN_COLUMNS * survey.controller.unitWidth / 2.0 + size.width,
         yTop: survey.controller.leftTopPoint.yTop,
         yBot: survey.controller.leftTopPoint.yTop + size.height
     };
@@ -86,10 +86,10 @@ test('Check matrix multiple one column one row', async () => {
     let assumeHeader: IRect = {
         xLeft: survey.controller.leftTopPoint.xLeft +
             SurveyHelper.getPageAvailableWidth(survey.controller) / 2.0 +
-            SurveyHelper.GAP_BETWEEN_COLUMNS * survey.controller.measureText().width / 2.0,
+            SurveyHelper.GAP_BETWEEN_COLUMNS * survey.controller.unitWidth / 2.0,
         xRight: survey.controller.leftTopPoint.xLeft +
             SurveyHelper.getPageAvailableWidth(survey.controller) / 2.0 +
-            SurveyHelper.GAP_BETWEEN_COLUMNS * survey.controller.measureText().width / 2.0 +
+            SurveyHelper.GAP_BETWEEN_COLUMNS * survey.controller.unitWidth / 2.0 +
             header.width,
         yTop: survey.controller.leftTopPoint.yTop,
         yBot: survey.controller.leftTopPoint.yTop + header.height
@@ -155,10 +155,10 @@ test('Check matrix multiple two columns one row vertical layout', async () => {
     TestHelper.equalRect(expect, SurveyHelper.mergeRects(...flats[0]), assumeMatrix);
     let assumeHeader: IRect = {
         xLeft: survey.controller.leftTopPoint.xLeft +
-            SurveyHelper.getPageAvailableWidth(survey.controller) / 2.0 + SurveyHelper.GAP_BETWEEN_COLUMNS * survey.controller.measureText().width / 2.0,
+            SurveyHelper.getPageAvailableWidth(survey.controller) / 2.0 + SurveyHelper.GAP_BETWEEN_COLUMNS * survey.controller.unitWidth / 2.0,
         xRight: survey.controller.leftTopPoint.xLeft +
             SurveyHelper.getPageAvailableWidth(survey.controller) / 2.0 +
-            SurveyHelper.GAP_BETWEEN_COLUMNS * survey.controller.measureText().width / 2.0 +
+            SurveyHelper.GAP_BETWEEN_COLUMNS * survey.controller.unitWidth / 2.0 +
             header.width,
         yTop: survey.controller.leftTopPoint.yTop,
         yBot: survey.controller.leftTopPoint.yTop + header.height
@@ -220,7 +220,7 @@ test('Check matrix multiple two columns one row horizontal layout narrow width',
     let pageWidth: number = options.margins.left + options.margins.right +
         new DocController(options).measureText(
             SurveyHelper.MATRIX_COLUMN_WIDTH).width * 1.5 / DocOptions.MM_TO_PT
-        new DocController(options).unitWidth / DocOptions.MM_TO_PT;
+    new DocController(options).unitWidth / DocOptions.MM_TO_PT;
     options.format = [pageWidth, <number>(options.format[1])];
     let survey: SurveyPDF = new SurveyPDF(json, options);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);

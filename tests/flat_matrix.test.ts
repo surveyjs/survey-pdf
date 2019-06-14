@@ -40,7 +40,7 @@ test('Matrix simple hasRows true columns', async () => {
     let currPoint: IPoint = survey.controller.leftTopPoint;
     let cellWidth: number = SurveyHelper.getColumnWidth(survey.controller, 2);
     currPoint.xLeft = cellWidth + survey.controller.margins.left +
-        survey.controller.measureText().width * SurveyHelper.GAP_BETWEEN_COLUMNS;
+        survey.controller.unitWidth * SurveyHelper.GAP_BETWEEN_COLUMNS;
     let columnRect: IRect = SurveyHelper.createRect(currPoint, headerSize.width, headerSize.height);
     assumeCells.push(columnRect);
     currPoint = SurveyHelper.createPoint(columnRect);
@@ -80,13 +80,13 @@ test('Matrix simple hasRows false columns', async () => {
     let rowLineRect: IPdfBrick = SurveyHelper.createRowlineFlat(SurveyHelper.createPoint(columnRect), survey.controller);
     assumeCells.push(rowLineRect);
     let currPoint: IPoint = SurveyHelper.createPoint(rowLineRect);
-    let itemWidth: number = survey.controller.measureText().width;
+    let itemWidth: number = survey.controller.unitWidth;
     assumeCells.push(SurveyHelper.moveRect(SurveyHelper.scaleRect(
         SurveyHelper.createRect(currPoint, itemWidth, itemWidth),
         SurveyHelper.SELECT_ITEM_FLAT_SCALE), currPoint.xLeft));
     TestHelper.equalRects(expect, flats[0], assumeCells);
 })
-test.skip('Matrix simple vertical', async () => {
+test('Matrix simple vertical', async () => {
     let json: any = {
         questions: [
             {
@@ -132,11 +132,11 @@ test.skip('Matrix simple vertical', async () => {
         assumeCells.push(SurveyHelper.createRect(currPoint, columnTextWidth, columnTextHeight))
         currPoint.xLeft = oldXleft;
         currPoint.yTop += SurveyHelper.GAP_BETWEEN_ROWS *
-            survey.controller.measureText().height + columnTextHeight;
+            survey.controller.unitHeight + columnTextHeight;
     })
     TestHelper.equalRects(expect, unfoldCells, assumeCells);
 });
-test.skip('Matrix rubric hidden header', async () => {
+test('Matrix rubric hidden header', async () => {
     let json: any = {
         questions: [
             {
@@ -160,11 +160,12 @@ test.skip('Matrix rubric hidden header', async () => {
             }]
     };
     let options: IDocOptions = TestHelper.defaultOptions;
-    options.format = [240.0, 297.0];
+    options.format = [260.0, 297.0];
     let survey: SurveyPDF = new SurveyPDF(json, options);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     let assumeCells: IRect[] = [];
     let itemWidth: number = survey.controller.unitHeight;
+    survey.controller.margins.left += survey.controller.unitWidth;
     let cellWidth: number = SurveyHelper.getColumnWidth(survey.controller, 3);
     for (let i: number = 0; i < json.questions[0].columns.length; i++) {
         let currPoint: IPoint = survey.controller.leftTopPoint;
@@ -176,7 +177,7 @@ test.skip('Matrix rubric hidden header', async () => {
     }
     TestHelper.equalRects(expect, flats[0][0].unfold(), assumeCells);
 });
-test.skip('Matrix default value', async () => {
+test('Matrix default value', async () => {
     let json: any = {
         questions: [
             {
@@ -236,7 +237,7 @@ test('Matrix rubric check horisontally', async () => {
     let rowTextFlat: IPdfBrick = await SurveyHelper.createTextFlat(survey.controller.leftTopPoint,
         survey.getAllQuestions()[0], survey.controller, json.questions[0].rows[0].text, TextBrick);
     let currPoint: IPoint = survey.controller.leftTopPoint;
-    currPoint.xLeft += cellWidth + survey.controller.measureText().width * SurveyHelper.GAP_BETWEEN_COLUMNS;
+    currPoint.xLeft += cellWidth + survey.controller.unitWidth * SurveyHelper.GAP_BETWEEN_COLUMNS;
     let itemRect: IRect = SurveyHelper.createRect(currPoint, cellWidth, survey.controller.unitHeight);
     currPoint.yTop = itemRect.yBot;
     let cellTextFlat: IPdfBrick = await SurveyHelper.createTextFlat(currPoint,
