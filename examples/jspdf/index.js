@@ -287,20 +287,6 @@ var json = {
 	]
 };
 
-// json = {
-// 	"pages": [
-// 	 {
-// 	  "name": "page1",
-// 	  "elements": [
-// 	   {
-// 		"type": "text",
-// 		"name": "question1"
-// 	   }
-// 	  ]
-// 	 }
-// 	]
-//    };
-
 let options = {
 	fontSize: 14,
 	margins:
