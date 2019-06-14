@@ -53,7 +53,7 @@ test('Test has other checkbox', async () => {
 	let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
 	await survey.render();
 	let internal: any = survey.controller.doc.internal;
-	let internalOtherText: string = internal.pages[1][20];
+	let internalOtherText: string = internal.pages[1][21];
 	expect(internalOtherText).toBeDefined();
 	let regex: RegExp = /\((.*)\)/;
 	let otherText: string = internalOtherText.match(regex)[1];

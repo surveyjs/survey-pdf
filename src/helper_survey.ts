@@ -353,6 +353,7 @@ export class SurveyHelper {
         let unvisibleWidth: number = fontSize * SurveyHelper.UNVISIBLE_BORDER_SCALE * SurveyHelper.BORDER_SCALE;
         let unvisibleScale: number = 1.0 - unvisibleWidth / minSide;
         let unvisibleRadius: number = SurveyHelper.RADIUS_SCALE * unvisibleWidth;
+        let oldDrawColor: string = controller.doc.getDrawColor();
         controller.doc.setDrawColor(SurveyHelper.FORM_BORDER_COLOR);
         controller.doc.setLineWidth(visibleWidth);
         controller.doc.rect(...SurveyHelper.createAcroformRect(SurveyHelper.scaleRect(flat, visibleScale)));
@@ -360,6 +361,7 @@ export class SurveyHelper {
         controller.doc.setLineWidth(unvisibleWidth);
         controller.doc.roundedRect(...SurveyHelper.createAcroformRect(
             SurveyHelper.scaleRect(flat, unvisibleScale)), unvisibleRadius, unvisibleRadius);
+        controller.doc.setDrawColor(oldDrawColor);
     }
     public static clone(src: any) {
         let target: any = {};
