@@ -299,7 +299,7 @@ export class SurveyHelper {
 
     public static getColumnWidth(controller: DocController, colCount: number) {
         return (SurveyHelper.getPageAvailableWidth(controller) -
-            (colCount - 1) * controller.measureText().width * SurveyHelper.GAP_BETWEEN_COLUMNS) / colCount;
+            (colCount - 1) * controller.unitWidth * SurveyHelper.GAP_BETWEEN_COLUMNS) / colCount;
 
     }
     public static getPageAvailableWidth(controller: DocController): number {

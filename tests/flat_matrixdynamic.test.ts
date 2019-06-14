@@ -253,7 +253,7 @@ test('Check matrix dynamic one column one row vertical layout', async () => {
     let assumeQuestion: IRect = {
         xLeft: survey.controller.leftTopPoint.xLeft +
             (SurveyHelper.getPageAvailableWidth(survey.controller) +
-                survey.controller.measureText().width * SurveyHelper.GAP_BETWEEN_COLUMNS) / 2.0,
+                survey.controller.unitWidth * SurveyHelper.GAP_BETWEEN_COLUMNS) / 2.0,
         xRight: survey.controller.paperWidth - survey.controller.margins.right,
         yTop: survey.controller.leftTopPoint.yTop + SurveyHelper.EPSILON,
         yBot: survey.controller.leftTopPoint.yTop + SurveyHelper.EPSILON +

@@ -16,9 +16,8 @@ export abstract class FlatSelectBase extends FlatQuestion {
     public abstract createItemFlat(rect: IRect, item: ItemValue, index: number): IPdfBrick;
     protected async generateFlatsItem(point: IPoint, item: ItemValue, index: number): Promise<IPdfBrick> {
         let compositeFlat: CompositeBrick = new CompositeBrick();
-        let height: number = this.controller.unitHeight;
-        let itemRect: IRect = SurveyHelper.createRect(point, height, height);
-
+        let itemRect: IRect = SurveyHelper.createRect(point,
+            this.controller.unitHeight, this.controller.unitHeight);
         let itemFlat: IPdfBrick = this.createItemFlat(SurveyHelper.moveRect(
             SurveyHelper.scaleRect(itemRect, SurveyHelper.SELECT_ITEM_FLAT_SCALE),
             point.xLeft), item, index);
