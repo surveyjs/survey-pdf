@@ -98,6 +98,22 @@ export class SurveyHelper {
             yBot: point.yTop + height
         };
     }
+    public static createHeaderRect(controller: DocController): IRect {
+        return {
+            xLeft: 0.0,
+            xRight: controller.paperWidth,
+            yTop: 0.0,
+            yBot: controller.margins.top
+        };
+    }
+    public static createFooterRect(controller: DocController): IRect {
+        return {
+            xLeft: 0.0,
+            xRight: controller.paperWidth,
+            yTop: controller.paperHeight - controller.margins.bot,
+            yBot: controller.paperHeight
+        };
+    }
     public static createDivBlock(element: string, controller: DocController) {
         return `<div style= ${this.generateCssTextRule(controller.fontSize,
             controller.fontStyle,
@@ -156,15 +172,15 @@ export class SurveyHelper {
                 <Question>question, controller, this.createDivBlock(text.html, controller)));
         }
     }
-    static htmlMargins(controller: DocController, point: IPoint): { top: number, bottom: number, width: number } {
+    private static getHtmlMargins(controller: DocController, point: IPoint): { top: number, bottom: number, width: number } {
         return {
             top: controller.margins.top,
             bottom: controller.margins.bot,
             width: controller.paperWidth - point.xLeft - controller.margins.right,
         }
     }
-    static async createHTMLFlat(point: IPoint, question: Question, controller: DocController, html: string): Promise<IPdfBrick> {
-        let margins = this.htmlMargins(controller, point);
+    public static async createHTMLFlat(point: IPoint, question: Question, controller: DocController, html: string): Promise<IPdfBrick> {
+        let margins = this.getHtmlMargins(controller, point);
         return await new Promise((resolve) => {
             controller.helperDoc.fromHTML(html, point.xLeft, margins.top, {
                 'pagesplit': true,

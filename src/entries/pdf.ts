@@ -1,5 +1,6 @@
 export * from './helpers';
 export { SurveyPDF as Survey } from '../survey';
+export { DrawCanvas } from '../draw_canvas';
 export { SurveyHelper } from '../helper_survey';
 export { IDocOptions, DocOptions, DocController } from '../doc_controller';
 export { FlatRepository } from '../flat_layout/flat_repository';
