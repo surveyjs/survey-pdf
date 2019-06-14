@@ -90,14 +90,14 @@ export class FlatMatrixRow extends FlatRadiogroup {
             currPoint.xLeft = this.controller.margins.left;
             if (this.questionMatrix.hasCellText) {
                 let itemRect: IRect = SurveyHelper.createRect(currPoint, columnWidth, this.controller.unitHeight)
-                let radioFlat: IPdfBrick = this.createItemFlat(itemRect, column, i, this.key, checked);
+                let radioFlat: IPdfBrick = this.generateFlatItem(itemRect, column, i, this.key, checked);
                 let textFlat: IPdfBrick = await SurveyHelper.createTextFlat(SurveyHelper.createPoint(radioFlat), this.questionMatrix, this.controller,
                     this.questionMatrix.getCellDisplayLocText(this.row.name, column), TextBrick);
                 cells.push(new CompositeBrick(radioFlat, textFlat));
             }
             else {
                 let itemRect: IRect = SurveyHelper.createRect(currPoint, this.controller.unitHeight, this.controller.unitHeight);
-                cells.push(this.createItemFlat(SurveyHelper.moveRect(
+                cells.push(this.generateFlatItem(SurveyHelper.moveRect(
                     SurveyHelper.scaleRect(itemRect, SurveyHelper.SELECT_ITEM_FLAT_SCALE), currPoint.xLeft), column, i, this.key, checked));
             }
             this.controller.popMargins();
@@ -121,7 +121,7 @@ export class FlatMatrixRow extends FlatRadiogroup {
             if (this.questionMatrix.hasCellText) {
                 let itemRect = SurveyHelper.createRect(currPoint,
                     SurveyHelper.getPageAvailableWidth(this.controller), this.controller.unitHeight);
-                let radioFlat = this.createItemFlat(itemRect, column, i, this.key, checked);
+                let radioFlat = this.generateFlatItem(itemRect, column, i, this.key, checked);
                 currPoint.yTop = radioFlat.yBot;
                 let cellTextFlat = await SurveyHelper.createTextFlat(currPoint, this.questionMatrix, this.controller,
                     this.questionMatrix.getCellDisplayLocText(this.row.name, column), TextBrick);
@@ -131,7 +131,7 @@ export class FlatMatrixRow extends FlatRadiogroup {
             else {
                 let itemRect: IRect = SurveyHelper.createRect(currPoint,
                     this.controller.unitHeight, this.controller.unitHeight);
-                let radioItem: IPdfBrick = this.createItemFlat(SurveyHelper.moveRect(
+                let radioItem: IPdfBrick = this.generateFlatItem(SurveyHelper.moveRect(
                     SurveyHelper.scaleRect(itemRect, SurveyHelper.SELECT_ITEM_FLAT_SCALE), itemRect.xLeft), column, i, this.key, checked);
                 currPoint.xLeft += radioItem.width * 2;
                 let radioText: IPdfBrick = await SurveyHelper.createTextFlat(currPoint, this.questionMatrix,

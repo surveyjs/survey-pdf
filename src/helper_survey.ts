@@ -18,6 +18,7 @@ export class SurveyHelper {
     public static readonly DESCRIPTION_FONT_SIZE_SCALE_MAGIC: number = 2.0 / 3.0;
     public static readonly RATING_MIN_WIDTH: number = 3;
     public static readonly RATING_MIN_HEIGHT: number = 2;
+    public static readonly RATING_COLUMN_WIDTH: number = 5;
     public static readonly MATRIX_COLUMN_WIDTH: number = 5;
     public static readonly IMAGEPICKER_COUNT: number = 4;
     public static readonly IMAGEPICKER_RATIO: number = 4.0 / 3.0;
@@ -283,7 +284,7 @@ export class SurveyHelper {
     }
     public static getRatingItemText(question: QuestionRatingModel,
         index: number, locText: LocalizableString): LocalizableString {
-        let ratingItemLocText = new LocalizableString(locText.owner, locText.useMarkdown);
+        let ratingItemLocText: LocalizableString = new LocalizableString(locText.owner, locText.useMarkdown);
         ratingItemLocText.text = locText.text;
         if (index === 0 && question.minRateDescription) {
             ratingItemLocText.text =
