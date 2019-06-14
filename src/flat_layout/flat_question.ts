@@ -147,7 +147,6 @@ export class FlatQuestion implements IFlatQuestion {
                 flats.push(...await this.generateFlatsContent(contentPoint));
                 this.controller.popMargins();
                 if (flats.length !== 0) {
-
                     commentPoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(...flats));
                 }
                 break;

@@ -272,7 +272,7 @@ export class SurveyHelper {
     }
     public static getTitleText(question: Question): LocalizableString {
         let title = new LocalizableString(question.locTitle.owner, question.locTitle.useMarkdown)
-        title.text = (question.no != '' ? question.no + ' . ' : '') + question.locTitle.renderedHtml;
+        title.text = (question.no != '' ? question.no + '. ' : '') + question.locTitle.renderedHtml;
         return title;
     }
     public static getLocString(locObj: LocalizableString): string {

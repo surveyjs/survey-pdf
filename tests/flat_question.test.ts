@@ -111,15 +111,17 @@ async function calcTitleLeft(controller: DocController, titleQuestion: Question,
     TestHelper.equalRect(expect, textboxFlat, assumeTextbox);
 }
 export async function calcIndent(expect: any, leftTopPoint: IPoint, controller: DocController,
-    compositeFlat: IPdfBrick, checktext: string, titleQuestion: Question = null) {
+    compositeFlat: IPdfBrick, checktext: string, titleQuestion: Question = null): Promise<void> {
     let assumeTitle: IRect = SurveyHelper.createRect(leftTopPoint, 0.0, 0.0);
     if (titleQuestion != null) {
         assumeTitle = await SurveyHelper.createTitleFlat(leftTopPoint, titleQuestion, controller);
     }
-    let minHeight = controller.unitHeight;
-    let assumeCheckbox: IRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(SurveyHelper.createRect(
-        SurveyHelper.createPoint(assumeTitle), minHeight, minHeight), SurveyHelper.SELECT_ITEM_FLAT_SCALE));
-    let textPoint = SurveyHelper.createPoint(assumeTitle);
+    let itemHeight: number = controller.unitHeight;
+    let assumeCheckbox: IRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(
+        SurveyHelper.createRect(SurveyHelper.createPoint(assumeTitle),
+        itemHeight, itemHeight), SurveyHelper.SELECT_ITEM_FLAT_SCALE),
+        leftTopPoint.xLeft + controller.unitWidth);
+    let textPoint: IPoint = SurveyHelper.createPoint(assumeTitle);
     textPoint.xLeft = 2.0 * assumeCheckbox.xRight - assumeCheckbox.xLeft;
     let assumeChecktext: IRect = await SurveyHelper.createTextFlat(textPoint,
         null, controller, checktext, TextBrick);
@@ -131,12 +133,9 @@ export async function calcIndent(expect: any, leftTopPoint: IPoint, controller: 
         FlatQuestion.CONTENT_GAP_VERT_SCALE;
     assumeChecktext.yBot += controller.unitHeight *
         FlatQuestion.CONTENT_GAP_VERT_SCALE;
-    TestHelper.equalRect(expect, compositeFlat, SurveyHelper.mergeRects(assumeTitle, assumeCheckbox, assumeChecktext));
-    let point = SurveyHelper.createPoint(assumeCheckbox);
-    point.yTop += minHeight * SurveyHelper.GAP_BETWEEN_ROWS;
-    return
+    TestHelper.equalRect(expect, compositeFlat,
+        SurveyHelper.mergeRects(assumeTitle, assumeCheckbox, assumeChecktext));
 }
-
 test('Calc textbox boundaries title top', async () => {
     let json = {
         questions: [
@@ -405,11 +404,11 @@ test('Calc boundaries title hidden with description', async () => {
 });
 test('Calc boundaries with indent', async () => {
     for (let i: number = 0; i < 9; i++) {
-        let json = {
+        let json: any = {
             questions: [
                 {
                     type: 'checkbox',
-                    name: 'box',
+                    name: 'checkbox_cycle_indent',
                     title: 'I stand straight',
                     indent: i,
                     choices: [
