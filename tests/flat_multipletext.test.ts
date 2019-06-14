@@ -56,7 +56,7 @@ test('Check multiple text one item', async () => {
     TestHelper.equalRect(expect, flats[0][0].unfold()[1], assumeBox);
 });
 test('Check multiple text two items', async () => {
-    let json = {
+    let json: any = {
         elements: [
             {
                 type: 'multipletext',
@@ -82,7 +82,8 @@ test('Check multiple text two items', async () => {
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.paperWidth - survey.controller.margins.right,
         yTop: survey.controller.leftTopPoint.yTop,
-        yBot: survey.controller.leftTopPoint.yTop + survey.controller.unitHeight * 2
+        yBot: survey.controller.leftTopPoint.yTop + survey.controller.unitHeight * 2.0 +
+            survey.controller.unitHeight * FlatMultipleText.ROWS_GAP_SCALE
     };
     TestHelper.equalRect(expect, SurveyHelper.mergeRects(flats[0][0], flats[0][1]), assumeMultipleText);
 });
@@ -125,7 +126,8 @@ test('Check multiple text with colCount and long text', async () => {
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.paperWidth - survey.controller.margins.right,
         yTop: survey.controller.leftTopPoint.yTop,
-        yBot: survey.controller.leftTopPoint.yTop + survey.controller.unitHeight * 2
+        yBot: survey.controller.leftTopPoint.yTop + survey.controller.unitHeight * 2.0 +
+            survey.controller.unitHeight * FlatMultipleText.ROWS_GAP_SCALE
     };
     TestHelper.equalRect(expect, SurveyHelper.mergeRects(flats[0][0], flats[0][1]), assumeMultipleText);
 });

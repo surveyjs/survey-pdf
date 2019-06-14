@@ -8,6 +8,7 @@ import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
 
 export class FlatMultipleText extends FlatQuestion {
+    public static readonly ROWS_GAP_SCALE: number = 0.195;
     protected question: QuestionMultipleTextModel;
     public constructor(question: IQuestion, protected controller: DocController) {
         super(question, controller);
@@ -58,7 +59,7 @@ export class FlatMultipleText extends FlatQuestion {
             rowsFlats[rowsFlats.length - 1].addBrick(
                 SurveyHelper.createRowlineFlat(currPoint, this.controller));
             currPoint.yTop += SurveyHelper.EPSILON;
-
+            currPoint.yTop += this.controller.unitHeight * FlatMultipleText.ROWS_GAP_SCALE;
         }
         return rowsFlats;
     }
