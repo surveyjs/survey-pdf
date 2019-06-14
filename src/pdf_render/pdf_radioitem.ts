@@ -11,6 +11,7 @@ export class RadioGroupWrap {
         this._radioGroup = new this.controller.doc.AcroFormRadioButton();
         this._radioGroup.value = this.name;
         this._radioGroup.readOnly = this.readOnly;
+        this._radioGroup.color = SurveyHelper.FORM_BORDER_COLOR;
         this.controller.doc.addField(this._radioGroup);
     }
     get radioGroup() {
@@ -36,6 +37,7 @@ export class RadioItemBrick extends PdfBrick {
         }
         let formScale = SurveyHelper.formScale(this.controller, this);
         radioButton.Rect = SurveyHelper.createAcroformRect(SurveyHelper.scaleRect(this, formScale));
+        radioButton.color = SurveyHelper.FORM_BORDER_COLOR;
         SurveyHelper.wrapInBordersFlat(this.controller, this);
         this.radioGroupWrap.radioGroup.setAppearance(this.controller.doc.AcroForm.Appearance.RadioButton.Circle);
     }

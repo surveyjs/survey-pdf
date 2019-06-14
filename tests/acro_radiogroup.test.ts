@@ -21,7 +21,7 @@ test('Test has other radiogroup', async () => {
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     await survey.render();
     let internal: any = survey.controller.doc.internal;
-    let internalOtherText: string = internal.pages[1][19];
+    let internalOtherText: string = internal.pages[1][20];
     expect(internalOtherText).toBeDefined();
     let regex: RegExp = /\((.*)\)/;
     let otherText: string = internalOtherText.match(regex)[1];

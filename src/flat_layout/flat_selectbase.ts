@@ -13,12 +13,12 @@ export abstract class FlatSelectBase extends FlatQuestion {
         this.question = <QuestionCheckboxBase>question;
     }
 
-    public abstract createItemFlat(rect: IRect, item: ItemValue, index: number): IPdfBrick;
-    protected async generateFlatsItem(point: IPoint, item: ItemValue, index: number): Promise<IPdfBrick> {
+    protected abstract generateFlatItem(rect: IRect, item: ItemValue, index: number): IPdfBrick;
+    protected async generateFlatComposite(point: IPoint, item: ItemValue, index: number): Promise<IPdfBrick> {
         let compositeFlat: CompositeBrick = new CompositeBrick();
         let itemRect: IRect = SurveyHelper.createRect(point,
             this.controller.unitHeight, this.controller.unitHeight);
-        let itemFlat: IPdfBrick = this.createItemFlat(SurveyHelper.moveRect(
+        let itemFlat: IPdfBrick = this.generateFlatItem(SurveyHelper.moveRect(
             SurveyHelper.scaleRect(itemRect, SurveyHelper.SELECT_ITEM_FLAT_SCALE),
             point.xLeft), item, index);
         compositeFlat.addBrick(itemFlat);
@@ -45,15 +45,15 @@ export abstract class FlatSelectBase extends FlatQuestion {
             colCount = (SurveyHelper.getColumnWidth(this.controller, this.question.colCount) <
                 this.controller.measureText(SurveyHelper.MATRIX_COLUMN_WIDTH).width) ? 1 : this.question.colCount;
         }
-        return await (colCount == 1) ? this.generateVerticallyItems(point) : this.generateHorisontallyItems(point, colCount);
+        return await (colCount == 1) ? this.generateVerticallyItems(point, this.question.visibleChoices) : this.generateHorisontallyItems(point, colCount);
 
     }
-    public async generateVerticallyItems(point: IPoint): Promise<IPdfBrick[]> {
+    protected async generateVerticallyItems(point: IPoint, itemValues: ItemValue[]): Promise<IPdfBrick[]> {
         let currPoint: IPoint = SurveyHelper.clone(point);
         let flats: IPdfBrick[] = [];
-        for (let i: number = 0; i < this.question.visibleChoices.length; i++) {
-            let itemFlat: IPdfBrick = await this.generateFlatsItem(
-                currPoint, this.question.visibleChoices[i], i);
+        for (let i: number = 0; i < itemValues.length; i++) {
+            let itemFlat: IPdfBrick = await this.generateFlatComposite(
+                currPoint, itemValues[i], i);
             currPoint.yTop = itemFlat.yBot +
                 SurveyHelper.GAP_BETWEEN_ROWS *
                 this.controller.unitHeight;
@@ -61,7 +61,7 @@ export abstract class FlatSelectBase extends FlatQuestion {
         }
         return flats;
     }
-    public async generateHorisontallyItems(point: IPoint, colCount: number): Promise<IPdfBrick[]> {
+    protected async generateHorisontallyItems(point: IPoint, colCount: number): Promise<IPdfBrick[]> {
         let currPoint: IPoint = SurveyHelper.clone(point);
         let flats: IPdfBrick[] = [];
         let row: CompositeBrick = new CompositeBrick();
@@ -69,7 +69,7 @@ export abstract class FlatSelectBase extends FlatQuestion {
             this.controller.pushMargins(this.controller.margins.left, this.controller.margins.right);
             SurveyHelper.setColumnMargins(this.controller, colCount, i % colCount);
             currPoint.xLeft = this.controller.margins.left;
-            let itemFlat: IPdfBrick = await this.generateFlatsItem(
+            let itemFlat: IPdfBrick = await this.generateFlatComposite(
                 currPoint, this.question.visibleChoices[i], i);
             row.addBrick(itemFlat);
             this.controller.popMargins();

@@ -1,6 +1,7 @@
-import { IQuestion, QuestionTextModel } from 'survey-core';
+import { IQuestion, QuestionTextModel, SurveyElement } from 'survey-core';
 import { IPoint, IRect, DocController } from '../doc_controller';
 import { PdfBrick } from './pdf_brick';
+import { SurveyHelper } from '../helper_survey';
 
 export class TextBrick extends PdfBrick {
     protected question: QuestionTextModel;
@@ -16,7 +17,10 @@ export class TextBrick extends PdfBrick {
     }
     public async render(): Promise<void> {
         let alignPoint = this.alignPoint(this);
+        let oldTextColor: string = this.controller.doc.getTextColor();
+        this.controller.doc.setTextColor(SurveyHelper.TEXT_COLOR);
         this.controller.doc.text(this.text, alignPoint.xLeft, alignPoint.yTop, this.align);
+        this.controller.doc.setTextColor(oldTextColor);
     }
     protected alignPoint(rect: IRect): IPoint {
         return {

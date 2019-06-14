@@ -37,7 +37,7 @@ export class FlatImagePicker extends FlatQuestion {
                 this.question.value.indexOf(item.value) !== -1));
         }
         else {
-            compositeFlat.addBrick(this.radio.createItemFlat(buttonRect, item, index));
+            compositeFlat.addBrick(this.radio.generateFlatItem(buttonRect, item, index));
         }
         return compositeFlat;
     }

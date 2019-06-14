@@ -46,7 +46,7 @@ test('Check rating two elements with min rate description', async () => {
                 name: 'rateme',
                 titleLocation: 'hidden',
                 rateMax: 2,
-                minRateDescription: 'I\'m sooooooo little'
+                minRateDescription: 'Littleee'
             }
         ]
     };
@@ -76,7 +76,7 @@ test('Check rating two elements with max rate description', async () => {
                 name: 'rateme',
                 titleLocation: 'hidden',
                 rateMax: 2,
-                maxRateDescription: 'High rate !'
+                maxRateDescription: 'High rate!'
             }
         ]
     };
@@ -112,8 +112,8 @@ test('Check rating many elements', async () => {
     let options: IDocOptions = TestHelper.defaultOptions;
     options.format = [options.margins.left + options.margins.right +
         SurveyHelper.getRatingMinWidth(new DocController(options)) * 3 /
-            DocOptions.MM_TO_PT + new DocController(options).unitWidth /
-            DocOptions.MM_TO_PT, 297.0];
+        DocOptions.MM_TO_PT + new DocController(options).unitWidth /
+        DocOptions.MM_TO_PT, 297.0];
     let survey: SurveyPDF = new SurveyPDF(json, options);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
@@ -136,7 +136,7 @@ test('Check rating two elements with long min rate description', async () => {
                 name: 'rateme',
                 titleLocation: 'hidden',
                 rateMax: 2,
-                minRateDescription: '123456789'
+                minRateDescription: '12345678'
             }
         ]
     };

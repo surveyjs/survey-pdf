@@ -20,6 +20,7 @@ export class CheckItemBrick extends PdfBrick {
         checkBox.textAlign = 'center';
         checkBox.fieldName = this.fieldName;
         checkBox.readOnly = this.readonly;
+        checkBox.color = SurveyHelper.FORM_BORDER_COLOR;
         checkBox.AS = this.checked ? '/On' : '/Off';
         checkBox.Rect = SurveyHelper.createAcroformRect(SurveyHelper.scaleRect(this, formScale));
         this.controller.doc.addField(checkBox);

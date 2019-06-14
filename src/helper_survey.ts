@@ -18,19 +18,21 @@ export class SurveyHelper {
     public static readonly DESCRIPTION_FONT_SIZE_SCALE_MAGIC: number = 2.0 / 3.0;
     public static readonly RATING_MIN_WIDTH: number = 3;
     public static readonly RATING_MIN_HEIGHT: number = 2;
+    public static readonly RATING_COLUMN_WIDTH: number = 5;
     public static readonly MATRIX_COLUMN_WIDTH: number = 5;
     public static readonly IMAGEPICKER_COUNT: number = 4;
     public static readonly IMAGEPICKER_RATIO: number = 4.0 / 3.0;
     public static readonly MULTIPLETEXT_TEXT_PERS: number = Math.E / 10.0;
     public static readonly HTML_TAIL_TEXT: number = 0.24;
-    public static readonly SELECT_ITEM_FLAT_SCALE: number = 0.8;
+    public static readonly SELECT_ITEM_FLAT_SCALE: number = 0.95;
     public static readonly GAP_BETWEEN_ROWS: number = 0.25;
     public static readonly GAP_BETWEEN_COLUMNS: number = 1.5;
     public static readonly BORDER_SCALE: number = 0.1;
-    public static readonly VISIBLE_BORDER_SCALE: number = 0.6;
-    public static readonly UNVISIBLE_BORDER_SCALE: number = 0.4;
-    public static readonly RADIUS_SCALE: number = 2.5;
-    public static readonly TEXT_COLOR: string = '#000000';
+    public static readonly VISIBLE_BORDER_SCALE: number = 0.8;
+    public static readonly UNVISIBLE_BORDER_SCALE: number = 0.2;
+    public static readonly RADIUS_SCALE: number = 3;
+    public static readonly FORM_BORDER_COLOR: string = '#9f9f9f';
+    public static readonly TEXT_COLOR: string = '#404040';
     public static readonly BACKGROUND_COLOR: string = '#FFFFFF';
     public static readonly TITLE_LOCATION_MATRIX: string = 'matrix';
     public static parseWidth(width: string, maxWidth: number): number {
@@ -299,7 +301,7 @@ export class SurveyHelper {
     }
     public static getRatingItemText(question: QuestionRatingModel,
         index: number, locText: LocalizableString): LocalizableString {
-        let ratingItemLocText = new LocalizableString(locText.owner, locText.useMarkdown);
+        let ratingItemLocText: LocalizableString = new LocalizableString(locText.owner, locText.useMarkdown);
         ratingItemLocText.text = locText.text;
         if (index === 0 && question.minRateDescription) {
             ratingItemLocText.text =
@@ -367,13 +369,15 @@ export class SurveyHelper {
         let unvisibleWidth: number = fontSize * SurveyHelper.UNVISIBLE_BORDER_SCALE * SurveyHelper.BORDER_SCALE;
         let unvisibleScale: number = 1.0 - unvisibleWidth / minSide;
         let unvisibleRadius: number = SurveyHelper.RADIUS_SCALE * unvisibleWidth;
-        controller.doc.setDrawColor(SurveyHelper.TEXT_COLOR);
+        let oldDrawColor: string = controller.doc.getDrawColor();
+        controller.doc.setDrawColor(SurveyHelper.FORM_BORDER_COLOR);
         controller.doc.setLineWidth(visibleWidth);
         controller.doc.rect(...SurveyHelper.createAcroformRect(SurveyHelper.scaleRect(flat, visibleScale)));
         controller.doc.setDrawColor(SurveyHelper.BACKGROUND_COLOR);
         controller.doc.setLineWidth(unvisibleWidth);
         controller.doc.roundedRect(...SurveyHelper.createAcroformRect(
             SurveyHelper.scaleRect(flat, unvisibleScale)), unvisibleRadius, unvisibleRadius);
+        controller.doc.setDrawColor(oldDrawColor);
     }
     public static clone(src: any) {
         let target: any = {};
