@@ -4,6 +4,7 @@ import { IQuestion } from 'survey-core';
 export interface IPdfBrick extends IRect, ISize {
     render(): Promise<void>;
     unfold(): IPdfBrick[];
+    isAddPage(): boolean;
 }
 export class PdfBrick implements IPdfBrick {
     xLeft: number;
@@ -26,5 +27,8 @@ export class PdfBrick implements IPdfBrick {
     public async render(): Promise<void> { }
     public unfold(): IPdfBrick[] {
         return [this];
+    }
+    public isAddPage(): boolean {
+        return true;
     }
 }

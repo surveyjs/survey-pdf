@@ -295,11 +295,15 @@ let options = {
 		right: 10,
 		top: 10,
 		bot: 10
-
 	}
 };
 
 let survey = new SurveyPDF.Survey(json, options);
+
+survey.onRenderHeader.add((sender, options) => {
+	options.canvas.drawText();
+});
+
 survey.setValue('car', 'Ford');
 survey.setValue('name', 'SUPER');
 survey.setValue('name2', 'DATA');
