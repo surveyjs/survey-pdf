@@ -1,6 +1,5 @@
 export * from './helpers';
 export { SurveyPDF as Survey } from '../survey';
-export { DrawCanvas } from '../draw_canvas';
 export { SurveyHelper } from '../helper_survey';
 export { IDocOptions, DocOptions, DocController } from '../doc_controller';
 export { FlatRepository } from '../flat_layout/flat_repository';
@@ -22,6 +21,8 @@ export { FlatMatrixDynamic } from '../flat_layout/flat_matrixdynamic';
 export { FlatMultipleText } from '../flat_layout/flat_multipletext';
 export { FlatPanelDynamic } from '../flat_layout/flat_paneldynamic';
 export { PagePacker } from '../page_layout/page_packer';
+export { EventHandler } from '../event_handler/event_handler';
+export { DrawCanvas } from '../event_handler/draw_canvas';
 export { IPdfBrick, PdfBrick } from '../pdf_render/pdf_brick';
 export { TextFieldBrick } from '../pdf_render/pdf_textfield';
 export { TextBoxBrick } from '../pdf_render/pdf_textbox';

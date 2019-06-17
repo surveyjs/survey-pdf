@@ -16,7 +16,7 @@ export class TextBrick extends PdfBrick {
         };
     }
     public async render(): Promise<void> {
-        let alignPoint = this.alignPoint(this);
+        let alignPoint: IPoint = this.alignPoint(this);
         let oldTextColor: string = this.controller.doc.getTextColor();
         this.controller.doc.setTextColor(SurveyHelper.TEXT_COLOR);
         this.controller.doc.text(this.text, alignPoint.xLeft, alignPoint.yTop, this.align);
