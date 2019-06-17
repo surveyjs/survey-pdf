@@ -2,6 +2,7 @@ import * as jsPDF from 'jspdf';
 import { SurveyHelper } from './helper_survey';
 import { LocalizableString } from 'survey-core';
 import Fonts from './fonts';
+import setRadioAppearance from './jspdf_plugins/acroform';
 export interface IPoint {
     xLeft: number;
     yTop: number;
@@ -89,6 +90,7 @@ export class DocController extends DocOptions {
             this.addFont(this.fontName, Fonts.SEGOE_BOLD, 'bold');
         }
         this._doc = new jsPDF({ orientation: this.orientation, unit: 'pt', format: this.format });
+        setRadioAppearance(this._doc);
         this._helperDoc = new jsPDF({ orientation: this.orientation, unit: 'pt', format: this.format });
         this._doc.setFont(this.fontName);
         this._helperDoc.setFont(this.fontName);
