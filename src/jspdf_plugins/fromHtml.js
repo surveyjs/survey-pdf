@@ -28,7 +28,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  * ====================================================================
  */
-
+var jsPDF = window.jsPDF || require('jspdf');
 (function (jsPDFAPI) {
 	var clone,
 		DrillForContent,

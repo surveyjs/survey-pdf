@@ -8,6 +8,7 @@ let __dummy_rg = new FlatRadiogroup(null, null);
 
 test('Test has other radiogroup', async () => {
     let json = {
+        showQuestionNumbers: 'false',
         questions: [
             {
                 readOnly: true,

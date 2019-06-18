@@ -4,7 +4,7 @@
 
 import { Question } from 'survey-core';
 import { SurveyPDF } from '../src/survey';
-import { IPoint, IRect, DocController } from '../src/doc_controller';
+import { IPoint, IRect, DocController, ISize } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { FlatQuestion } from '../src/flat_layout/flat_question';
 import { FlatTextbox } from '../src/flat_layout/flat_textbox';
@@ -61,7 +61,7 @@ async function calcTitleBottom(controller: DocController, titleQuestion: Questio
         let descPoint: IPoint = SurveyHelper.createPoint(assumeTitle);
         descPoint.xLeft += controller.unitWidth;
         let assumeDesc: IRect = await SurveyHelper.createDescFlat(
-            descPoint, null,controller, SurveyHelper.getLocString(
+            descPoint, null, controller, SurveyHelper.getLocString(
                 titleQuestion.locDescription));
         assumeTitle.yTop += controller.unitHeight *
             FlatQuestion.CONTENT_GAP_VERT_SCALE;
@@ -122,7 +122,7 @@ export async function calcIndent(expect: any, leftTopPoint: IPoint, controller: 
     let itemHeight: number = controller.unitHeight;
     let assumeCheckbox: IRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(
         SurveyHelper.createRect(SurveyHelper.createPoint(assumeTitle),
-        itemHeight, itemHeight), SurveyHelper.SELECT_ITEM_FLAT_SCALE),
+            itemHeight, itemHeight), SurveyHelper.SELECT_ITEM_FLAT_SCALE),
         leftTopPoint.xLeft + controller.unitWidth);
     let textPoint: IPoint = SurveyHelper.createPoint(assumeTitle);
     textPoint.xLeft = 2.0 * assumeCheckbox.xRight - assumeCheckbox.xLeft;
@@ -176,6 +176,7 @@ test('Calc textbox boundaries title bottom', async () => {
 });
 test('Calc textbox boundaries title left', async () => {
     let json: any = {
+        showQuestionNumbers: "false",
         questions: [
             {
                 type: 'text',
@@ -345,6 +346,7 @@ test('Calc boundaries title bottom shorter than description', async () => {
 });
 test('Calc boundaries title left longer than description', async () => {
     let json: any = {
+        showQuestionNumbers: 'false',
         questions: [
             {
                 type: 'text',
@@ -365,6 +367,7 @@ test('Calc boundaries title left longer than description', async () => {
 });
 test('Calc boundaries title left shorter than description', async () => {
     let json: any = {
+        showQuestionNumbers: 'false',
         questions: [
             {
                 type: 'text',
@@ -476,3 +479,21 @@ test('VisibleIf row', async () => {
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(3);
 });
+test('check title with number next raw position', async () => {
+    let json = {
+        questions: [
+            {
+                type: 'checkbox',
+                name: 'Eeeeeeeeeemmmmmmmmmmmptttttyyyy chhhheeeckbox',
+                isRequired: false
+            }
+        ]
+    }
+    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
+    expect(flats.length).toBe(1);
+    expect(flats[0].length).toBe(1);
+    let noWidth: number = survey.controller.measureText('1. ').width;
+    let bricks: IPdfBrick[] = flats[0][0].unfold();
+    expect(SurveyHelper.mergeRects(bricks[1], bricks[2]).xLeft).toBeCloseTo(survey.controller.leftTopPoint.xLeft + noWidth);
+})

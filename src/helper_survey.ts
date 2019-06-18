@@ -209,9 +209,34 @@ export class SurveyHelper {
         controller.fontStyle = 'normal';
         return composite;
     }
-    public static async createTitleFlat(point: IPoint, question: Question, controller: DocController) {
-        return await SurveyHelper.createBoldTextFlat(point, question, controller,
-            SurveyHelper.getTitleText(question));
+    public static async createTitleFlat(point: IPoint, question: Question, controller: DocController): Promise<IPdfBrick> {
+        let composite: CompositeBrick = new CompositeBrick();
+        let currPoint: IPoint = SurveyHelper.clone(point);
+        if (question.no) {
+            let noText = question.no + '. ';
+            if (question.locTitle.hasHtml) {
+                controller.fontStyle = 'bold';
+                controller.pushMargins();
+                controller.margins.right = controller.paperWidth -
+                    controller.margins.left - controller.measureText(noText).width;
+                composite.addBrick(await SurveyHelper.createHTMLFlat(currPoint, question, controller,
+                    SurveyHelper.createDivBlock(noText, controller)));
+                controller.popMargins();
+
+                controller.fontStyle = 'normal';
+            }
+            else {
+                composite.addBrick(await SurveyHelper.createBoldTextFlat(currPoint,
+                    question, controller, noText));
+            }
+            currPoint.xLeft += controller.measureText(noText, 'bold').width;
+        }
+        controller.pushMargins();
+        controller.margins.left = currPoint.xLeft;
+        composite.addBrick(await SurveyHelper.createBoldTextFlat(currPoint, question,
+            controller, question.locTitle))
+        controller.popMargins();
+        return composite;
     }
     public static async createTitlePanelFlat(point: IPoint, question: IQuestion,
         controller: DocController, text: string) {
@@ -290,7 +315,7 @@ export class SurveyHelper {
     }
     public static getTitleText(question: Question): LocalizableString {
         let title = new LocalizableString(question.locTitle.owner, question.locTitle.useMarkdown)
-        title.text = (question.no != '' ? question.no + ((question.locTitle.hasHtml) ? '\\. ' : '. ') : '') + question.locTitle.renderedHtml;
+        title.text = (question.no != '' ? question.no + '. ' : '') + question.locTitle.renderedHtml;
         return title;
     }
     public static getLocString(locObj: LocalizableString): string {
