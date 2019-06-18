@@ -3,6 +3,7 @@ import { SurveyHelper } from './helper_survey';
 import { LocalizableString } from 'survey-core';
 import Fonts from './fonts';
 import setRadioAppearance from './jspdf_plugins/acroform';
+import './jspdf_plugins/fromHtml.js';
 export interface IPoint {
     xLeft: number;
     yTop: number;
@@ -103,7 +104,7 @@ export class DocController extends DocOptions {
         var callAddFont = function () {
             let fontFile: string = `${fontName}-${fontStyle}.ttf`
             this.addFileToVFS(fontFile, base);
-            this.addFont(fontFile, fontName, fontStyle);
+            this.addFont(fontFile, fontName, fontStyle, 'WinAnsiEncoding', true);
         };
         (<any>jsPDF).API.events.push(['addFonts', callAddFont]);
     }

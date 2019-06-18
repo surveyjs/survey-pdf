@@ -32,7 +32,7 @@ export class SurveyHelper {
     public static readonly UNVISIBLE_BORDER_SCALE: number = 0.2;
     public static readonly RADIUS_SCALE: number = 3;
     public static readonly FORM_BORDER_COLOR: string = '#9f9f9f';
-    public static readonly TEXT_COLOR: string = '#404040';
+    public static readonly TEXT_COLOR: string = 'black';
     public static readonly BACKGROUND_COLOR: string = '#FFFFFF';
     public static readonly TITLE_LOCATION_MATRIX: string = 'matrix';
     public static parseWidth(width: string, maxWidth: number): number {
@@ -119,7 +119,7 @@ export class SurveyHelper {
     public static createDivBlock(element: string, controller: DocController) {
         return `<div style= ${this.generateCssTextRule(controller.fontSize,
             controller.fontStyle,
-            `helvetica`)}>
+            controller.fontName)}>
             ${element}
             </div>`;
     }
@@ -184,7 +184,7 @@ export class SurveyHelper {
     public static async createHTMLFlat(point: IPoint, question: Question, controller: DocController, html: string): Promise<IPdfBrick> {
         let margins = this.getHtmlMargins(controller, point);
         return await new Promise((resolve) => {
-            controller.helperDoc.fromHTML(html, point.xLeft, margins.top, {
+            controller.helperDoc.fromHtml(html, point.xLeft, margins.top, {
                 'pagesplit': true,
                 width: margins.width
             }, function (result: any) {
@@ -209,9 +209,34 @@ export class SurveyHelper {
         controller.fontStyle = 'normal';
         return composite;
     }
-    public static async createTitleFlat(point: IPoint, question: Question, controller: DocController) {
-        return await SurveyHelper.createBoldTextFlat(point, question, controller,
-            SurveyHelper.getTitleText(question));
+    public static async createTitleFlat(point: IPoint, question: Question, controller: DocController): Promise<IPdfBrick> {
+        let composite: CompositeBrick = new CompositeBrick();
+        let currPoint: IPoint = SurveyHelper.clone(point);
+        if (question.no) {
+            let noText = question.no + '. ';
+            if (question.locTitle.hasHtml) {
+                controller.fontStyle = 'bold';
+                controller.pushMargins();
+                controller.margins.right = controller.paperWidth -
+                    controller.margins.left - controller.measureText(noText).width;
+                composite.addBrick(await SurveyHelper.createHTMLFlat(currPoint, question, controller,
+                    SurveyHelper.createDivBlock(noText, controller)));
+                controller.popMargins();
+
+                controller.fontStyle = 'normal';
+            }
+            else {
+                composite.addBrick(await SurveyHelper.createBoldTextFlat(currPoint,
+                    question, controller, noText));
+            }
+            currPoint.xLeft += controller.measureText(noText, 'bold').width;
+        }
+        controller.pushMargins();
+        controller.margins.left = currPoint.xLeft;
+        composite.addBrick(await SurveyHelper.createBoldTextFlat(currPoint, question,
+            controller, question.locTitle))
+        controller.popMargins();
+        return composite;
     }
     public static async createTitlePanelFlat(point: IPoint, question: IQuestion,
         controller: DocController, text: string) {

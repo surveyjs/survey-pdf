@@ -41,6 +41,7 @@ test('Check that checkbox has square boundaries', async () => {
 
 test('Test has other checkbox', async () => {
 	let json: any = {
+		showQuestionNumbers: 'false',
 		questions: [
 			{
 				name: 'checkbox',

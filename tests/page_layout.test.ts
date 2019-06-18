@@ -155,6 +155,7 @@ test('Pack near flats new page', () => {
 });
 test('Unfold compose brick', async () => {
     let json = {
+        showQuestionNumbers: 'false',
         questions: [
             {
                 type: 'text',
@@ -184,6 +185,7 @@ test('Unfold compose brick', async () => {
 });
 test('Pack to little page', async () => {
     let json = {
+        showQuestionNumbers: 'false',
         questions: [
             {
                 type: 'text',

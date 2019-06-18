@@ -76,6 +76,7 @@ test('Comment point, title location hidden', async () => {
 });
 async function commentPointAfterItem(titleLocation: string) {
     let json = {
+        showQuestionNumbers: 'false',
         questions: [
             {
                 name: 'checkbox',
@@ -95,7 +96,7 @@ async function commentPointAfterItem(titleLocation: string) {
     if (titleLocation === 'top' || titleLocation === 'left') {
         let commentPoint: IPoint = SurveyHelper.createPoint(
             SurveyHelper.mergeRects(resultRects[0][0].unfold()[1],
-            SurveyHelper.mergeRects(resultRects[0][0].unfold()[2])));
+                SurveyHelper.mergeRects(resultRects[0][0].unfold()[2])));
         TestHelper.equalPoint(expect, commentPoint, resultRects[0][1]);
     } else {
         TestHelper.equalPoint(expect, SurveyHelper.createPoint(resultRects[0][0]), resultRects[0][1]);

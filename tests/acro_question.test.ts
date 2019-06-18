@@ -15,6 +15,7 @@ let __dummy_cb = new FlatCheckbox(null, null);
 
 async function checkTitleText(questionStartIndex: string, isRequired: boolean = false) {
   let json = {
+    showQuestionNumbers: 'false',
     questions: [
       {
         name: 'textbox',
@@ -49,6 +50,7 @@ test('Check title required text', async () => {
 });
 test('Check comment', async () => {
   let json = {
+    showQuestionNumbers: 'false',
     questions: [
       {
         titleLocation: 'hidden',
@@ -121,6 +123,7 @@ test('Not visible question', async () => {
 });
 test('Check descrition with hidden title', async () => {
   let json = {
+    showQuestionNumbers: 'false',
     questions: [
       {
         titleLocation: 'top',
@@ -140,6 +143,7 @@ test('Check descrition with hidden title', async () => {
 });
 test('Two pages', async () => {
   let json = {
+    showQuestionNumbers: 'false',
     pages: [
       {
         name: 'First Page',

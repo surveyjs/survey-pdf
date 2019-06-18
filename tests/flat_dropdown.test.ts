@@ -34,6 +34,7 @@ test('Check dropdown', async () => {
 });
 test('Check dropdown with other', async () => {
     let json = {
+        showQuestionNumbers: 'false',
         elements: [
             {
                 type: 'dropdown',
