@@ -32,7 +32,7 @@ export class SurveyHelper {
     public static readonly UNVISIBLE_BORDER_SCALE: number = 0.2;
     public static readonly RADIUS_SCALE: number = 3;
     public static readonly FORM_BORDER_COLOR: string = '#9f9f9f';
-    public static readonly TEXT_COLOR: string = '#404040';
+    public static readonly TEXT_COLOR: string = 'black';
     public static readonly BACKGROUND_COLOR: string = '#FFFFFF';
     public static readonly TITLE_LOCATION_MATRIX: string = 'matrix';
     public static parseWidth(width: string, maxWidth: number): number {
@@ -119,7 +119,7 @@ export class SurveyHelper {
     public static createDivBlock(element: string, controller: DocController) {
         return `<div style= ${this.generateCssTextRule(controller.fontSize,
             controller.fontStyle,
-            `helvetica`)}>
+            controller.fontName)}>
             ${element}
             </div>`;
     }
@@ -184,7 +184,7 @@ export class SurveyHelper {
     public static async createHTMLFlat(point: IPoint, question: Question, controller: DocController, html: string): Promise<IPdfBrick> {
         let margins = this.getHtmlMargins(controller, point);
         return await new Promise((resolve) => {
-            controller.helperDoc.fromHTML(html, point.xLeft, margins.top, {
+            controller.helperDoc.fromHtml(html, point.xLeft, margins.top, {
                 'pagesplit': true,
                 width: margins.width
             }, function (result: any) {
@@ -290,7 +290,7 @@ export class SurveyHelper {
     }
     public static getTitleText(question: Question): LocalizableString {
         let title = new LocalizableString(question.locTitle.owner, question.locTitle.useMarkdown)
-        title.text = (question.no != '' ? question.no + '. ' : '') + question.locTitle.renderedHtml;
+        title.text = (question.no != '' ? question.no + ((question.locTitle.hasHtml) ? '\\. ' : '. ') : '') + question.locTitle.renderedHtml;
         return title;
     }
     public static getLocString(locObj: LocalizableString): string {
