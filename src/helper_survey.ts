@@ -264,8 +264,10 @@ export class SurveyHelper {
         return new CommentBrick(question, controller, otherRect, false, index);
     }
     public static createImageFlat(point: IPoint, question: IQuestion,
-        controller: DocController, imagelink: string, width: number): IPdfBrick {
-        let height: number = width / SurveyHelper.IMAGEPICKER_RATIO;
+        controller: DocController, imagelink: string, width: number, height?: number): IPdfBrick {
+        if (typeof height === 'undefined') {
+            height = width / SurveyHelper.IMAGEPICKER_RATIO;
+        }
         let html: string =
             `<img
                 src='${imagelink}'

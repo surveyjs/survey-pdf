@@ -4,8 +4,8 @@ import { TextBrick } from './pdf_text';
 
 export class TitleBrick extends TextBrick {
     public constructor(question: IQuestion, controller: DocController,
-        rect: IRect, text: string) {
-        super(question, controller, rect, text);
+        rect: IRect, text: string, fontSize?: number) {
+        super(question, controller, rect, text, fontSize);
     }
     public async render(): Promise<void> {
         this.controller.fontStyle = 'bold';
