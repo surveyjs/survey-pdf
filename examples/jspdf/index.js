@@ -300,8 +300,16 @@ let options = {
 
 let survey = new SurveyPDF.Survey(json, options);
 
-survey.onRenderHeader.add((sender, options) => {
-	options.canvas.drawText();
+survey.onRenderHeader.add((_, canvas) => {
+	canvas.drawText({
+		text: 'Page number = ' + canvas.pageNumber,
+		rect: {
+			xLeft: 15,
+			xRight: 100,
+			yTop: 10,
+			yBot: 20
+		}
+	})
 });
 
 survey.setValue('car', 'Ford');

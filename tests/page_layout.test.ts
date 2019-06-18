@@ -3,18 +3,18 @@
 };
 
 import { Question } from 'survey-core';
-import { PagePacker } from '../src/page_layout/page_packer';
 import { SurveyPDF } from '../src/survey';
 import { IPoint, IRect, IDocOptions, DocOptions, DocController } from '../src/doc_controller';
+import { PagePacker } from '../src/page_layout/page_packer';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { FlatQuestion } from '../src/flat_layout/flat_question';
 import { FlatTextbox } from '../src/flat_layout/flat_textbox';
 import { FlatCheckbox } from '../src/flat_layout/flat_checkbox';
 import { FlatRadiogroup } from '../src/flat_layout/flat_radiogroup';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
-import { TestHelper } from '../src/helper_test';
-import { SurveyHelper } from '../src/helper_survey';
 import { TextBrick } from '../src/pdf_render/pdf_text';
+import { SurveyHelper } from '../src/helper_survey';
+import { TestHelper } from '../src/helper_test';
 let __dummy_tx = new FlatTextbox(null, null);
 let __dummy_cb = new FlatCheckbox(null, null);
 let __dummy_rg = new FlatRadiogroup(null, null);
