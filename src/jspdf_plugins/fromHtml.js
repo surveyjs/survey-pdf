@@ -389,7 +389,7 @@ var jsPDF = window.jsPDF || require('jspdf');
 					var cached_image;
 					if (cn.nodeName === "IMG") {
 						var url = cn.getAttribute("src");
-						cached_image = images[renderer.pdf.API.__addimage__.sHashCode(url) || url];
+						cached_image = images[renderer.pdf.sHashCode(url) || url];
 					}
 					if (cached_image) {
 						if ((renderer.pdf.internal.pageSize.getHeight() - renderer.pdf.margins_doc.bottom < renderer.y + cn.height) && (renderer.y > renderer.pdf.margins_doc.top)) {
@@ -553,7 +553,7 @@ var jsPDF = window.jsPDF || require('jspdf');
 					}
 					//if valid image add to known images array
 					if (img.width + img.height) {
-						var hash = renderer.pdf.API.__addimage__.sHashCode(url) || url;
+						var hash = renderer.pdf.sHashCode(url) || url;
 						images[hash] = images[hash] || img;
 					}
 				}
