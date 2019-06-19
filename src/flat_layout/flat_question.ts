@@ -15,7 +15,7 @@ export interface IFlatQuestion {
 export class FlatQuestion implements IFlatQuestion {
     public static readonly CONTENT_GAP_VERT_SCALE: number = 0.5;
     public static readonly CONTENT_GAP_HOR_SCALE: number = 1.0;
-    public static readonly DESC_GAP_SCALE: number = 0.1;
+    public static readonly DESC_GAP_SCALE: number = 0.5;
     protected question: Question;
     public constructor(question: IQuestion, protected controller: DocController) {
         this.question = <Question>question;

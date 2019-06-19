@@ -386,15 +386,13 @@ export class SurveyHelper {
     }
     public static formScale(controller: DocController, flat: PdfBrick): number {
         let minSide = flat.width < flat.height ? flat.width : flat.height;
-        let fontSize = controller.unitHeight;
-        return (minSide - fontSize * SurveyHelper.BORDER_SCALE * 2.0) / minSide;
+        return (minSide - controller.unitHeight * SurveyHelper.BORDER_SCALE * 2.0) / minSide;
     }
     public static wrapInBordersFlat(controller: DocController, flat: PdfBrick): void {
         let minSide = flat.width < flat.height ? flat.width : flat.height;
-        let fontSize: number = controller.unitWidth;
-        let visibleWidth: number = fontSize * SurveyHelper.VISIBLE_BORDER_SCALE * SurveyHelper.BORDER_SCALE;
+        let visibleWidth: number = controller.unitHeight * SurveyHelper.VISIBLE_BORDER_SCALE * SurveyHelper.BORDER_SCALE;
         let visibleScale: number = SurveyHelper.formScale(controller, flat) + visibleWidth / minSide;
-        let unvisibleWidth: number = fontSize * SurveyHelper.UNVISIBLE_BORDER_SCALE * SurveyHelper.BORDER_SCALE;
+        let unvisibleWidth: number = controller.unitHeight * SurveyHelper.UNVISIBLE_BORDER_SCALE * SurveyHelper.BORDER_SCALE;
         let unvisibleScale: number = 1.0 - unvisibleWidth / minSide;
         let unvisibleRadius: number = SurveyHelper.RADIUS_SCALE * unvisibleWidth;
         let oldDrawColor: string = controller.doc.getDrawColor();
