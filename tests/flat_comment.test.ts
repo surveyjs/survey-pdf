@@ -30,6 +30,9 @@ async function commentPointAfterTitle(titleLocation: string, resultRects: IPdfBr
     let commentAssumePoint: IPoint = await SurveyHelper.createPoint(await SurveyHelper.createTitleFlat(
         TestHelper.defaultPoint, <Question>survey.getAllQuestions()[0], controller),
         titleLocation === 'top', titleLocation !== 'top');
+    if (titleLocation === 'top') {
+        commentAssumePoint.xLeft += survey.controller.unitWidth;
+    }
     let commentResultPoint: IPoint = resultRects[0][1];
     TestHelper.equalPoint(expect, commentResultPoint, commentAssumePoint);
     return commentAssumePoint;
@@ -62,7 +65,7 @@ async function commmentPointToTitleTests(titleLocation: string) {
         }
     }
 }
-test.skip('Comment point, title location top', async () => {
+test('Comment point, title location top', async () => {
     await commmentPointToTitleTests('top');
 });
 test('Comment point, title location bottom', async () => {
