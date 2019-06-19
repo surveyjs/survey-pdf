@@ -32,7 +32,7 @@ export class SurveyHelper {
     public static readonly UNVISIBLE_BORDER_SCALE: number = 0.2;
     public static readonly RADIUS_SCALE: number = 3;
     public static readonly FORM_BORDER_COLOR: string = '#9f9f9f';
-    public static readonly TEXT_COLOR: string = 'black';
+    public static readonly TEXT_COLOR: string = '#404040';
     public static readonly BACKGROUND_COLOR: string = '#FFFFFF';
     public static readonly TITLE_LOCATION_MATRIX: string = 'matrix';
     public static parseWidth(width: string, maxWidth: number): number {
@@ -126,7 +126,8 @@ export class SurveyHelper {
     public static generateCssTextRule(fontSize: number, fontStyle: string, fontName: string): string {
         return `'font-size: ${fontSize}pt; 
                  font-weight: ${fontStyle}; 
-                 font-family:${fontName};'`;
+                 font-family: ${fontName};
+                 color: ${SurveyHelper.TEXT_COLOR};'`;
     }
     public static splitHtmlRect(controller: DocController, htmlBrick: IPdfBrick): IPdfBrick {
         let bricks: IPdfBrick[] = [];
