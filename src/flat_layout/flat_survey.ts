@@ -9,6 +9,7 @@ import { RowlineBrick } from '../pdf_render/pdf_rowline';
 import { SurveyHelper } from '../helper_survey';
 
 export class FlatSurvey {
+    public static readonly QUES_GAP_VERT_SCALE: number = 1.0;
     public static async generateFlatsPanel(point: IPoint,
         question: PanelModel, controller: DocController): Promise<IPdfBrick[]> {
         let panelFlats: IPdfBrick[] = [];
@@ -74,7 +75,7 @@ export class FlatSurvey {
             if (rowFlats.length !== 0) {
                 currPoint.yTop = SurveyHelper.mergeRects(...rowFlats).yBot;
                 currPoint.xLeft = point.xLeft;
-                currPoint.yTop += controller.unitHeight;
+                currPoint.yTop += controller.unitHeight * FlatSurvey.QUES_GAP_VERT_SCALE;
                 pagePanelFlats.push(...rowFlats);
                 pagePanelFlats.push(SurveyHelper.createRowlineFlat(currPoint, controller));
                 currPoint.yTop += SurveyHelper.EPSILON;

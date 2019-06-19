@@ -38,6 +38,11 @@ export class SurveyPDF extends SurveyModel {
                     this.controller.addPage();
                 }
                 await packs[i][j].render();
+                // packs[i][j].unfold().forEach((rect: IRect) => {
+                //     this.controller.doc.setDrawColor('green');
+                //     this.controller.doc.rect(...SurveyHelper.createAcroformRect(rect));
+                //     this.controller.doc.setDrawColor('black');
+                // });
             }
         }
     }

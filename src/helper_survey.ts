@@ -27,6 +27,7 @@ export class SurveyHelper {
     public static readonly SELECT_ITEM_FLAT_SCALE: number = 0.95;
     public static readonly GAP_BETWEEN_ROWS: number = 0.25;
     public static readonly GAP_BETWEEN_COLUMNS: number = 1.5;
+    public static readonly GAP_BETWEEN_ITEM_TEXT: number = 0.25;
     public static readonly BORDER_SCALE: number = 0.1;
     public static readonly VISIBLE_BORDER_SCALE: number = 0.8;
     public static readonly UNVISIBLE_BORDER_SCALE: number = 0.2;

@@ -23,7 +23,7 @@ export class FlatBoolean extends FlatQuestion {
                     SurveyHelper.SELECT_ITEM_FLAT_SCALE), point.xLeft));
         composite.addBrick(itemFlat);
         let textPoint: IPoint = SurveyHelper.clone(point);
-        textPoint.xLeft = itemFlat.xRight + itemFlat.width;
+        textPoint.xLeft = itemFlat.xRight + SurveyHelper.GAP_BETWEEN_ITEM_TEXT * this.controller.unitWidth;
         let text: LocalizableString = this.question.locDisplayLabel;
         if (text.renderedHtml) {
             composite.addBrick(await SurveyHelper.createTextFlat(textPoint,
