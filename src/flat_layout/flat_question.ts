@@ -13,8 +13,9 @@ export interface IFlatQuestion {
 }
 
 export class FlatQuestion implements IFlatQuestion {
-    public static readonly CONTENT_GAP_VERT_SCALE: number = 1.0;
+    public static readonly CONTENT_GAP_VERT_SCALE: number = 0.5;
     public static readonly CONTENT_GAP_HOR_SCALE: number = 1.0;
+    public static readonly DESC_GAP_SCALE: number = 0.1;
     protected question: Question;
     public constructor(question: IQuestion, protected controller: DocController) {
         this.question = <Question>question;
@@ -25,10 +26,11 @@ export class FlatQuestion implements IFlatQuestion {
             this.question, this.controller)
     }
     private async generateFlatDescription(point: IPoint): Promise<IPdfBrick> {
+        let descPoint: IPoint = SurveyHelper.clone(point);
+        descPoint.xLeft += this.controller.unitWidth;
+        descPoint.yTop += FlatQuestion.DESC_GAP_SCALE * this.controller.unitHeight;
         let text: LocalizableString = this.question.locDescription;
-
-        if (SurveyHelper.getLocString(text) == '') return null;
-        return await SurveyHelper.createDescFlat(point, this.question, this.controller, text);
+        return await SurveyHelper.createDescFlat(descPoint, this.question, this.controller, text);
     }
     private async generateFlatsComment(point: IPoint): Promise<IPdfBrick> {
         let text: LocalizableString = this.question.locCommentText;
@@ -53,16 +55,15 @@ export class FlatQuestion implements IFlatQuestion {
         let commentPoint: IPoint = indentPoint;
         let titleLocation: string = this.question.getTitleLocation();
         titleLocation = this.question.hasTitle ? titleLocation : 'hidden';
+        let isDecs = SurveyHelper.getLocString(this.question.locDescription) != '';
         switch (titleLocation) {
             case 'top':
             case 'default': {
                 let titleFlat: IPdfBrick = await this.generateFlatTitle(indentPoint);
                 let compositeFlat: CompositeBrick = new CompositeBrick(titleFlat);
-                let descPoint: IPoint = SurveyHelper.createPoint(titleFlat);
-                descPoint.xLeft += this.controller.unitWidth;
                 let contentPoint: IPoint = SurveyHelper.createPoint(titleFlat);
-                let descFlat: IPdfBrick = await this.generateFlatDescription(descPoint);
-                if (descFlat !== null) {
+                if (isDecs) {
+                    let descFlat: IPdfBrick = await this.generateFlatDescription(SurveyHelper.createPoint(titleFlat));
                     compositeFlat.addBrick(descFlat);
                     contentPoint = SurveyHelper.createPoint(descFlat);
                 }
@@ -105,10 +106,10 @@ export class FlatQuestion implements IFlatQuestion {
                     FlatQuestion.CONTENT_GAP_VERT_SCALE;
                 let titleFlat: IPdfBrick = await this.generateFlatTitle(titlePoint);
                 let compositeFlat: CompositeBrick = new CompositeBrick(titleFlat);
-                let descPoint: IPoint = SurveyHelper.createPoint(titleFlat);
-                descPoint.xLeft += this.controller.unitWidth;
-                let descFlat: IPdfBrick = await this.generateFlatDescription(descPoint);
-                if (descFlat !== null) { compositeFlat.addBrick(descFlat); }
+                if (isDecs) {
+                    let descFlat: IPdfBrick = await this.generateFlatDescription(SurveyHelper.createPoint(titleFlat));
+                    compositeFlat.addBrick(descFlat);
+                }
                 flats.push(compositeFlat);
                 break;
             }
@@ -117,13 +118,12 @@ export class FlatQuestion implements IFlatQuestion {
                     this.controller.paperWidth - this.controller.margins.left -
                     SurveyHelper.getPageAvailableWidth(this.controller) * SurveyHelper.MULTIPLETEXT_TEXT_PERS);
                 let titleFlat: IPdfBrick = await this.generateFlatTitle(indentPoint);
-                let descPoint: IPoint = SurveyHelper.createPoint(titleFlat);
-                descPoint.xLeft += this.controller.unitWidth;
-                let descFlat: IPdfBrick = await this.generateFlatDescription(descPoint);
                 this.controller.popMargins();
                 let compositeFlat: CompositeBrick = new CompositeBrick(titleFlat);
                 let contentPoint: IPoint = SurveyHelper.createPoint(titleFlat, false, true);
-                if (descFlat !== null) {
+                if (isDecs) {
+                    let descFlat: IPdfBrick = await this.generateFlatDescription(
+                        SurveyHelper.createPoint(titleFlat));
                     compositeFlat.addBrick(descFlat);
                     contentPoint.xLeft = Math.max(contentPoint.xLeft, descFlat.xRight);
                 }

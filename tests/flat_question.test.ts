@@ -27,6 +27,7 @@ export async function calcTitleTop(leftTopPoint: IPoint, controller: DocControll
     if (isDesc) {
         let descPoint: IPoint = SurveyHelper.createPoint(assumeTitle);
         descPoint.xLeft += controller.unitWidth;
+        descPoint.yTop += FlatQuestion.DESC_GAP_SCALE * controller.unitHeight;
         let assumeDesc: IRect = await SurveyHelper.createDescFlat(
             descPoint, null, controller, SurveyHelper.getLocString(
                 titleQuestion.locDescription));
@@ -60,6 +61,7 @@ async function calcTitleBottom(controller: DocController, titleQuestion: Questio
     if (isDesc) {
         let descPoint: IPoint = SurveyHelper.createPoint(assumeTitle);
         descPoint.xLeft += controller.unitWidth;
+        descPoint.yTop += controller.unitHeight * FlatQuestion.DESC_GAP_SCALE;
         let assumeDesc: IRect = await SurveyHelper.createDescFlat(
             descPoint, null, controller, SurveyHelper.getLocString(
                 titleQuestion.locDescription));
@@ -98,6 +100,7 @@ async function calcTitleLeft(controller: DocController, titleQuestion: Question,
             * SurveyHelper.MULTIPLETEXT_TEXT_PERS;
         let descPoint: IPoint = SurveyHelper.createPoint(assumeTitle);
         descPoint.xLeft += controller.unitWidth;
+        descPoint.yTop += controller.unitHeight * FlatQuestion.DESC_GAP_SCALE;
         let assumeDesc: IRect = await SurveyHelper.createDescFlat(
             descPoint, null, controller, SurveyHelper.getLocString(
                 titleQuestion.locDescription));
