@@ -17,12 +17,12 @@ export interface ISize {
     height: number
 }
 export interface IMarginLR {
-    left: number;
-    right: number;
+    left?: number;
+    right?: number;
 }
 export interface IMargin extends IMarginLR {
-    top: number;
-    bot: number;
+    top?: number;
+    bot?: number;
 }
 export interface IDocOptions {
     orientation?: 'p' | 'l';
