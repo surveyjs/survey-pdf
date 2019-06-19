@@ -39,7 +39,7 @@ test('Check other checkbox place ', async () => {
         SurveyHelper.createRect(currPoint, minHeight, minHeight),
         SurveyHelper.SELECT_ITEM_FLAT_SCALE), currPoint.xLeft);
     assumeRects.push(itemRect);
-    currPoint.xLeft = 2 * itemRect.xRight - itemRect.xLeft;
+    currPoint.xLeft = itemRect.xRight + survey.controller.unitWidth * SurveyHelper.GAP_BETWEEN_ITEM_TEXT;
     let textFlats: IPdfBrick[] = (await SurveyHelper.createTextFlat(currPoint, survey.getAllQuestions()[0],
         survey.controller, json.questions[0].otherText, TextBrick)).unfold();
     currPoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(itemRect, ...textFlats));
@@ -75,7 +75,7 @@ test('Check checkbox with colCount 4 with small font size 12', async () => {
             SurveyHelper.createRect(currPoint, itemHeight, itemHeight),
             SurveyHelper.SELECT_ITEM_FLAT_SCALE), currPoint.xLeft);
         let textPoint: IPoint = SurveyHelper.clone(currPoint);
-        textPoint.xLeft = 2 * itemRect.xRight - itemRect.xLeft;
+        textPoint.xLeft = itemRect.xRight + survey.controller.unitWidth * SurveyHelper.GAP_BETWEEN_ITEM_TEXT;
         let textSize: ISize = survey.controller.measureText(json.questions[0].choices[i]);
         let textRect: IRect = SurveyHelper.createRect(textPoint, textSize.width, textSize.height)
         assumetFlats.push(itemRect, textRect);
@@ -124,7 +124,7 @@ test('Check checkbox with colCount 4 with big font size 30', async () => {
             SurveyHelper.createRect(currPoint, itemHeight, itemHeight),
             SurveyHelper.SELECT_ITEM_FLAT_SCALE), currPoint.xLeft);
         let textPoint: IPoint = SurveyHelper.clone(currPoint);
-        textPoint.xLeft = 2 * itemRect.xRight - itemRect.xLeft;
+        textPoint.xLeft = itemRect.xRight + survey.controller.unitWidth * SurveyHelper.GAP_BETWEEN_ITEM_TEXT;
         let textSize: ISize = survey.controller.measureText(json.questions[0].choices[i]);
         let textRect: IRect = SurveyHelper.createRect(textPoint, textSize.width, textSize.height)
         assumetFlats.push(itemRect, textRect);
@@ -159,7 +159,7 @@ test('Check checkbox with colCount 0 with big font size 30', async () => {
             SurveyHelper.createRect(currPoint, itemHeight, itemHeight),
             SurveyHelper.SELECT_ITEM_FLAT_SCALE), currPoint.xLeft);
         let textPoint: IPoint = SurveyHelper.clone(currPoint);
-        textPoint.xLeft = 2 * itemRect.xRight - itemRect.xLeft;
+        textPoint.xLeft = itemRect.xRight + survey.controller.unitWidth * SurveyHelper.GAP_BETWEEN_ITEM_TEXT;
         let textSize: ISize = survey.controller.measureText(json.questions[0].choices[i]);
         let textRect: IRect = SurveyHelper.createRect(textPoint, textSize.width, textSize.height)
         assumetFlats.push(itemRect, textRect);
@@ -175,7 +175,7 @@ test('Check checkbox with colCount 0 with big font size 30', async () => {
         SurveyHelper.createRect(currPoint, itemHeight, itemHeight),
         SurveyHelper.SELECT_ITEM_FLAT_SCALE), currPoint.xLeft);
     let textPoint: IPoint = SurveyHelper.clone(currPoint);
-    textPoint.xLeft = 2 * itemRect.xRight - itemRect.xLeft;
+    textPoint.xLeft = itemRect.xRight + survey.controller.unitWidth * SurveyHelper.GAP_BETWEEN_ITEM_TEXT;
     let textSize: ISize = survey.controller.measureText(json.questions[0].choices[3]);
     let textRect: IRect = SurveyHelper.createRect(textPoint, textSize.width, textSize.height)
     assumetFlats.push(rowLineRect, itemRect, textRect);
@@ -208,7 +208,7 @@ test('Check checkbox with colCount 0 with small font size 12', async () => {
             SurveyHelper.SELECT_ITEM_FLAT_SCALE), currPoint.xLeft);
         let text: ISize = survey.controller.measureText(json.questions[0].choices[i]);
         let textPoint: IPoint = SurveyHelper.clone(currPoint);
-        textPoint.xLeft = 2.0 * itemRect.xRight - itemRect.xLeft;
+        textPoint.xLeft = itemRect.xRight + survey.controller.unitWidth * SurveyHelper.GAP_BETWEEN_ITEM_TEXT;
         let textRect: IRect = SurveyHelper.createRect(textPoint, text.width, text.height)
         assumetFlats.push(itemRect, textRect);
         currPoint.xLeft += SurveyHelper.getColumnWidth(survey.controller, 4) +

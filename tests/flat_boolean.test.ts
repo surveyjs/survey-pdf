@@ -29,7 +29,7 @@ test('Check boolean without title', async () => {
     TestHelper.equalRect(expect, flats[0][0], {
         xLeft: survey.controller.leftTopPoint.xLeft + survey.controller.unitWidth,
         xRight: survey.controller.leftTopPoint.xLeft + survey.controller.unitWidth +
-            2.0 * survey.controller.unitHeight * SurveyHelper.SELECT_ITEM_FLAT_SCALE +
+            survey.controller.unitHeight * (SurveyHelper.SELECT_ITEM_FLAT_SCALE + SurveyHelper.GAP_BETWEEN_ITEM_TEXT) +
             survey.controller.measureText(json.elements[0].title).width,
         yTop: survey.controller.leftTopPoint.yTop,
         yBot: survey.controller.leftTopPoint.yTop + survey.controller.measureText(json.elements[0].title).height,
