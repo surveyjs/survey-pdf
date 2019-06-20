@@ -34,16 +34,19 @@ export class SurveyPDF extends SurveyModel {
         for (let i: number = 0; i < packs.length; i++) {
             let pageAdded: boolean = i === 0;
             for (let j: number = 0; j < packs[i].length; j++) {
-                if (!pageAdded && packs[i][j].isAddPage()) {
+                if (!pageAdded) {
                     pageAdded = true;
-                    this.controller.addPage();
+                    if (packs[i][j].isAddPage()) {
+                        this.controller.addPage();
+                    }
                 }
-                await packs[i][j].render();
-                // packs[i][j].unfold().forEach((rect: IRect) => {
+                // packs[i][j].unfold().forEach((rect: IPdfBrick) => {
                 //     this.controller.doc.setDrawColor('green');
                 //     this.controller.doc.rect(...SurveyHelper.createAcroformRect(rect));
                 //     this.controller.doc.setDrawColor('black');
-                // });
+                // }
+                // );
+                await packs[i][j].render();
             }
         }
     }
