@@ -93,7 +93,9 @@ test('Check panel with title', async () => {
     let panelTitleFlat: IPdfBrick = await SurveyHelper.createTitlePanelFlat(
         survey.controller.leftTopPoint, null, survey.controller, json.elements[0].title);
     TestHelper.equalRect(expect, flats[0][0], panelTitleFlat);
-    await calcTitleTop(SurveyHelper.createPoint(panelTitleFlat), survey.controller,
+    let contentPoint: IPoint = SurveyHelper.createPoint(panelTitleFlat);
+    contentPoint.yTop += FlatSurvey.PANEL_CONT_GAP_SCALE * survey.controller.unitHeight;
+    await calcTitleTop(contentPoint, survey.controller,
         <Question>survey.getAllQuestions()[0], flats[0][1]);
 });
 test('Check panel with title and description', async () => {
@@ -119,10 +121,14 @@ test('Check panel with title and description', async () => {
     expect(flats[0].length).toBe(2);
     let panelTitleFlat: IPdfBrick = await SurveyHelper.createTitlePanelFlat(
         survey.controller.leftTopPoint, null, survey.controller, json.elements[0].title);
+    let descPoint: IPoint = SurveyHelper.createPoint(panelTitleFlat);
+    descPoint.yTop += FlatSurvey.PANEL_DESC_GAP_SCALE * survey.controller.unitHeight;
     let panelDescFlat: IPdfBrick = await SurveyHelper.createDescFlat(
-        SurveyHelper.createPoint(panelTitleFlat), null, survey.controller, json.elements[0].description);
+        descPoint, null, survey.controller, json.elements[0].description);
     TestHelper.equalRect(expect, flats[0][0], SurveyHelper.mergeRects(panelTitleFlat, panelDescFlat));
-    await calcTitleTop(SurveyHelper.createPoint(SurveyHelper.mergeRects(panelTitleFlat, panelDescFlat)),
+    let contentPoint: IPoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(panelTitleFlat, panelDescFlat));
+    contentPoint.yTop += FlatSurvey.PANEL_CONT_GAP_SCALE * survey.controller.unitHeight;
+    await calcTitleTop(contentPoint,
         survey.controller, <Question>survey.getAllQuestions()[0], flats[0][1]);
 });
 test('Check panel with inner indent', async () => {
@@ -202,6 +208,8 @@ test('Check not rendering invisible questions', async () => {
     let panelTitleFlat: IPdfBrick = await SurveyHelper.createTitlePanelFlat(
         survey.controller.leftTopPoint, null, survey.controller, json.elements[0].title);
     TestHelper.equalRect(expect, flats[0][0], panelTitleFlat);
-    await calcTitleTop(SurveyHelper.createPoint(panelTitleFlat), survey.controller,
+    let contentPoint: IPoint = SurveyHelper.createPoint(panelTitleFlat);
+    contentPoint.yTop += FlatSurvey.PANEL_CONT_GAP_SCALE * survey.controller.unitHeight;
+    await calcTitleTop(contentPoint, survey.controller,
         <Question>survey.getAllQuestions()[0], flats[0][1]);
 });
