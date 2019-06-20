@@ -13,7 +13,7 @@ export class FlatRating extends FlatRadiogroup {
         super(question, controller);
         this.questionRating = <QuestionRatingModel>question;
     }
-    protected async  generateFlatHorisontalItem(point: IPoint, item: ItemValue, index: number, ): Promise<IPdfBrick> {
+    protected async  generateFlatHorisontalComposite(point: IPoint, item: ItemValue, index: number, ): Promise<IPdfBrick> {
         let itemText: LocalizableString = SurveyHelper.getRatingItemText(
             this.questionRating, index, item.locText);
         this.controller.pushMargins();
@@ -59,7 +59,7 @@ export class FlatRating extends FlatRadiogroup {
         let rowsFlats: CompositeBrick[] = [new CompositeBrick()];
         let currPoint: IPoint = SurveyHelper.clone(point);
         for (let i: number = 0; i < this.questionRating.visibleRateValues.length; i++) {
-            let itemFlat: IPdfBrick = await this.generateFlatHorisontalItem(currPoint,
+            let itemFlat: IPdfBrick = await this.generateFlatHorisontalComposite(currPoint,
                 this.questionRating.visibleRateValues[i], i);
             rowsFlats[rowsFlats.length - 1].addBrick(itemFlat);
             let leftWidth: number = this.controller.paperWidth -
