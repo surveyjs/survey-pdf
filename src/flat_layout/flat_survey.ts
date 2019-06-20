@@ -51,14 +51,12 @@ export class FlatSurvey {
             controller.pushMargins();
             let currMarginLeft: number = controller.margins.left;
             let rowFlats: IPdfBrick[] = [];
-            let visibleCount: number = (<any>row)['getVisibleCount']();
-            for (let i: number = 0; i < row.elements.length; i++) {
-                let element: IElement = row.elements[i];
-                if (!element.isVisible) continue;
+            for (let i: number = 0; i < row.visibleElements.length; i++) {
+                let element: IElement = row.visibleElements[i];
                 let persWidth: number = SurveyHelper.parseWidth(element.renderWidth, width);
                 controller.margins.left = currMarginLeft;
                 controller.margins.right = controller.paperWidth - currMarginLeft - persWidth;
-                if (i != visibleCount - 1) {
+                if (i != row.visibleElements.length - 1) {
                     controller.margins.right += controller.unitWidth / 2.0;
                 }
                 currMarginLeft = controller.paperWidth - controller.margins.right +
