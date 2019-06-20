@@ -10,6 +10,8 @@ import { SurveyHelper } from '../helper_survey';
 
 export class FlatSurvey {
     public static readonly QUES_GAP_VERT_SCALE: number = 1.0;
+    public static readonly PANEL_CONT_GAP_SCALE: number = 1.0;
+    public static readonly PANEL_DESC_GAP_SCALE: number = 0.25;
     public static async generateFlatsPanel(point: IPoint,
         question: PanelModel, controller: DocController): Promise<IPdfBrick[]> {
         let panelFlats: IPdfBrick[] = [];
@@ -20,7 +22,7 @@ export class FlatSurvey {
             let compositeFlat: CompositeBrick = new CompositeBrick(panelTitleFlat);
             panelContentPoint = SurveyHelper.createPoint(panelTitleFlat);
             if (question.description) {
-                panelContentPoint.yTop += controller.unitWidth * FlatQuestion.DESC_GAP_SCALE;
+                panelContentPoint.yTop += controller.unitWidth * FlatSurvey.PANEL_DESC_GAP_SCALE;
                 let panelDescFlat: IPdfBrick = await SurveyHelper.createDescFlat(
                     panelContentPoint, null, controller,
                     question.locDescription);
@@ -30,7 +32,7 @@ export class FlatSurvey {
             panelFlats.push(compositeFlat);
         }
         controller.pushMargins();
-        panelContentPoint.yTop += controller.unitHeight * FlatSurvey.QUES_GAP_VERT_SCALE;
+        panelContentPoint.yTop += controller.unitHeight * FlatSurvey.PANEL_CONT_GAP_SCALE;
         panelFlats.push(...await this.generateFlatsPagePanel(panelContentPoint, question, controller));
         controller.popMargins();
         return panelFlats;
