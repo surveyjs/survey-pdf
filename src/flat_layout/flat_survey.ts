@@ -45,24 +45,20 @@ export class FlatSurvey {
         pagePanel.onFirstRendering();
         let pagePanelFlats: IPdfBrick[] = [];
         let currPoint: IPoint = SurveyHelper.clone(point);
+        let oldMarginLeft: number = controller.margins.left;
         for (let row of pagePanel.rows) {
             if (!row.visible) continue;
-            let width: number = SurveyHelper.getPageAvailableWidth(controller);
             controller.pushMargins();
-            let currMarginLeft: number = controller.margins.left;
+            let width: number = SurveyHelper.getPageAvailableWidth(controller);
             let rowFlats: IPdfBrick[] = [];
             let visibleCount: number = (<any>row)['getVisibleCount']();
             for (let i: number = 0; i < row.elements.length; i++) {
                 let element: IElement = row.elements[i];
                 if (!element.isVisible) continue;
-                let persWidth: number = SurveyHelper.parseWidth(element.renderWidth, width);
-                controller.margins.left = currMarginLeft;
-                controller.margins.right = controller.paperWidth - currMarginLeft - persWidth;
-                if (i != visibleCount - 1) {
-                    controller.margins.right += controller.unitWidth / 2.0;
-                }
-                currMarginLeft = controller.paperWidth - controller.margins.right +
-                    controller.unitWidth;
+                let persWidth: number = SurveyHelper.parseWidth(element.renderWidth,
+                    width - (visibleCount - 1) * controller.unitWidth);
+                controller.margins.left = oldMarginLeft + i * (controller.unitWidth + persWidth);
+                controller.margins.right = controller.paperWidth - controller.margins.left - persWidth;
                 currPoint.xLeft = controller.margins.left;
                 if (element instanceof PanelModel) {
                     rowFlats.push(...await this.generateFlatsPanel(currPoint, element, controller));
@@ -72,7 +68,6 @@ export class FlatSurvey {
                         FlatRepository.getInstance().create(<IQuestion>element, controller);
                     rowFlats.push(...await flatQuestion.generateFlats(currPoint));
                 }
-
             }
             controller.popMargins();
             currPoint.xLeft = controller.margins.left;
