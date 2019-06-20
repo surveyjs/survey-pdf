@@ -30,9 +30,9 @@ export class FlatSurvey {
                 panelContentPoint = SurveyHelper.createPoint(panelDescFlat);
             }
             panelFlats.push(compositeFlat);
+            panelContentPoint.yTop += controller.unitHeight * FlatSurvey.PANEL_CONT_GAP_SCALE;
         }
         controller.pushMargins();
-        panelContentPoint.yTop += controller.unitHeight * FlatSurvey.PANEL_CONT_GAP_SCALE;
         panelFlats.push(...await this.generateFlatsPagePanel(panelContentPoint, question, controller));
         controller.popMargins();
         return panelFlats;
