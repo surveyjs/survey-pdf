@@ -2,7 +2,7 @@ import { IElement, IQuestion, PanelModelBase, PanelModel } from 'survey-core';
 import { SurveyPDF } from '../survey';
 import { IPoint, DocController } from '../doc_controller';
 import { FlatRepository } from './flat_repository';
-import { IFlatQuestion } from './flat_question';
+import { IFlatQuestion, FlatQuestion } from './flat_question';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { RowlineBrick } from '../pdf_render/pdf_rowline';
@@ -14,12 +14,13 @@ export class FlatSurvey {
         question: PanelModel, controller: DocController): Promise<IPdfBrick[]> {
         let panelFlats: IPdfBrick[] = [];
         let panelContentPoint: IPoint = { xLeft: point.xLeft, yTop: point.yTop };
-        if (!!question.title) {
+        if (question.title) {
             let panelTitleFlat: IPdfBrick = await SurveyHelper.createTitlePanelFlat(
                 panelContentPoint, null, controller, question.title);
             let compositeFlat: CompositeBrick = new CompositeBrick(panelTitleFlat);
             panelContentPoint = SurveyHelper.createPoint(panelTitleFlat);
-            if (!!question.description) {
+            if (question.description) {
+                panelContentPoint.yTop += controller.unitWidth * FlatQuestion.DESC_GAP_SCALE;
                 let panelDescFlat: IPdfBrick = await SurveyHelper.createDescFlat(
                     panelContentPoint, null, controller,
                     question.locDescription);
@@ -29,8 +30,7 @@ export class FlatSurvey {
             panelFlats.push(compositeFlat);
         }
         controller.pushMargins();
-        controller.margins.left += controller.measureText(question.innerIndent).width;
-        panelContentPoint.xLeft += controller.measureText(question.innerIndent).width;
+        panelContentPoint.yTop += controller.unitHeight * FlatSurvey.QUES_GAP_VERT_SCALE;
         panelFlats.push(...await this.generateFlatsPagePanel(panelContentPoint, question, controller));
         controller.popMargins();
         return panelFlats;

@@ -1,10 +1,11 @@
 import { SurveyModel, Event } from 'survey-core';
-import { IDocOptions, DocController } from './doc_controller';
+import { IDocOptions, DocController, IRect } from './doc_controller';
 import { FlatSurvey } from './flat_layout/flat_survey';
 import { PagePacker } from './page_layout/page_packer';
 import { IPdfBrick } from './pdf_render/pdf_brick';
 import { EventHandler } from './event_handler/event_handler';
 import { DrawCanvas } from './event_handler/draw_canvas';
+import { SurveyHelper } from './helper_survey';
 
 export class SurveyPDF extends SurveyModel {
     public controller: DocController;
