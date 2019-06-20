@@ -33,6 +33,8 @@ export class FlatSurvey {
             panelContentPoint.yTop += controller.unitHeight * FlatSurvey.PANEL_CONT_GAP_SCALE;
         }
         controller.pushMargins();
+        controller.margins.left += controller.measureText(question.innerIndent).width;
+        panelContentPoint.xLeft += controller.measureText(question.innerIndent).width;
         panelFlats.push(...await this.generateFlatsPagePanel(panelContentPoint, question, controller));
         controller.popMargins();
         return panelFlats;
