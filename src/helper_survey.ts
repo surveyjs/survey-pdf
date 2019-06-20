@@ -36,6 +36,7 @@ export class SurveyHelper {
     public static readonly TEXT_COLOR: string = '#404040';
     public static readonly BACKGROUND_COLOR: string = '#FFFFFF';
     public static readonly TITLE_LOCATION_MATRIX: string = 'matrix';
+    
     public static parseWidth(width: string, maxWidth: number): number {
         let value: number = parseFloat(width);
         let unit: string = width.replace(/[^A-Za-z]/g, '');

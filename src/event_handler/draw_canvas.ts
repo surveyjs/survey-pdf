@@ -69,7 +69,14 @@ export class DrawCanvas {
     public constructor(protected packs: IPdfBrick[],
         protected controller: DocController,
         protected _rect: IRect,
+        protected _countPages: number,
         protected _pageNumber: number) {}
+    /**
+     * Count of pages in the document 
+     */
+    public get countPages(): number {
+        return this._countPages;
+    }
     /**
      * Page number from 1
      */
