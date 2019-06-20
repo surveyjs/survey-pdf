@@ -79,8 +79,7 @@ export class FlatMatrixRow extends FlatRadiogroup {
         let itemRect = SurveyHelper.createRect(currPoint,
             SurveyHelper.getPageAvailableWidth(this.controller), this.controller.unitHeight);
         let radioFlat = this.generateFlatItem(itemRect, column, index, this.key, checked);
-        currPoint.yTop = radioFlat.yBot;
-        currPoint.yTop = this.controller.unitHeight * SurveyHelper.GAP_BETWEEN_ITEM_TEXT;
+        currPoint.yTop = radioFlat.yBot + this.controller.unitHeight * SurveyHelper.GAP_BETWEEN_ITEM_TEXT;
         let cellTextFlat = await SurveyHelper.createTextFlat(currPoint, this.questionMatrix, this.controller,
             this.questionMatrix.getCellDisplayLocText(this.row.name, column), TextBrick);
         return new CompositeBrick(radioFlat, cellTextFlat);
@@ -104,7 +103,7 @@ export class FlatMatrixRow extends FlatRadiogroup {
         if (this.questionMatrix.hasRows) {
             this.controller.pushMargins();
             SurveyHelper.setColumnMargins(this.controller, colCount, 0);
-            currPoint.xLeft = this.controller.margins.left
+            currPoint.xLeft = this.controller.margins.left;
             cells.push(await SurveyHelper.createTextFlat(currPoint, this.questionMatrix, this.controller, this.row.locText, TextBrick));
             this.controller.popMargins();
         }
@@ -134,7 +133,7 @@ export class FlatMatrixRow extends FlatRadiogroup {
         if (this.questionMatrix.hasRows) {
             let rowTextFlat = await SurveyHelper.createTextFlat(currPoint, this.questionMatrix,
                 this.controller, this.row.locText, TextBrick);
-            currPoint.yTop = rowTextFlat.yBot += FlatQuestion.CONTENT_GAP_VERT_SCALE * this.controller.unitHeight;
+            currPoint.yTop = rowTextFlat.yBot + FlatQuestion.CONTENT_GAP_VERT_SCALE * this.controller.unitHeight;
             cells.push(rowTextFlat);
         }
         this.generateFlatComposite = (this.questionMatrix.hasCellText) ? this.generateTextComposite : this.generateItemCompoiste;
