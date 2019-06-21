@@ -118,7 +118,6 @@ export class FlatQuestion implements IFlatQuestion {
                     this.controller.paperWidth - this.controller.margins.left -
                     SurveyHelper.getPageAvailableWidth(this.controller) * SurveyHelper.MULTIPLETEXT_TEXT_PERS);
                 let titleFlat: IPdfBrick = await this.generateFlatTitle(indentPoint);
-                this.controller.popMargins();
                 let compositeFlat: CompositeBrick = new CompositeBrick(titleFlat);
                 let contentPoint: IPoint = SurveyHelper.createPoint(titleFlat, false, true);
                 if (isDecs) {
@@ -127,6 +126,7 @@ export class FlatQuestion implements IFlatQuestion {
                     compositeFlat.addBrick(descFlat);
                     contentPoint.xLeft = Math.max(contentPoint.xLeft, descFlat.xRight);
                 }
+                this.controller.popMargins();
                 commentPoint.xLeft = SurveyHelper.createPoint(compositeFlat, false, true).xLeft;
                 contentPoint.xLeft += this.controller.unitWidth * FlatQuestion.CONTENT_GAP_HOR_SCALE;
                 let contentFlats = await this.generateFlatsContent(contentPoint);
