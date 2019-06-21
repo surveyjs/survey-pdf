@@ -45,20 +45,21 @@ export class FlatSurvey {
         pagePanel.onFirstRendering();
         let pagePanelFlats: IPdfBrick[] = [];
         let currPoint: IPoint = SurveyHelper.clone(point);
-        let oldMarginLeft: number = controller.margins.left;
         for (let row of pagePanel.rows) {
             if (!row.visible) continue;
             controller.pushMargins();
             let width: number = SurveyHelper.getPageAvailableWidth(controller);
+            let nextMarginLeft: number = controller.margins.left;
             let rowFlats: IPdfBrick[] = [];
             for (let i: number = 0; i < row.visibleElements.length; i++) {
                 let element: IElement = row.visibleElements[i];
                 if (!element.isVisible) continue;
                 let persWidth: number = SurveyHelper.parseWidth(element.renderWidth,
                     width - (row.visibleElements.length - 1) * controller.unitWidth);
-                controller.margins.left = oldMarginLeft + i * (controller.unitWidth + persWidth);
+                controller.margins.left = nextMarginLeft + ((i != 0) ? controller.unitWidth : 0);
                 controller.margins.right = controller.paperWidth - controller.margins.left - persWidth;
                 currPoint.xLeft = controller.margins.left;
+                nextMarginLeft = controller.margins.left + persWidth;
                 if (element instanceof PanelModel) {
                     rowFlats.push(...await this.generateFlatsPanel(currPoint, element, controller));
                 }
