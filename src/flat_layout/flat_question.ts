@@ -1,5 +1,5 @@
 import { IPoint, IRect, DocController } from '../doc_controller';
-import { IQuestion, Question, LocalizableString } from 'survey-core';
+import { IQuestion, Question, LocalizableString, surveyLocalization } from 'survey-core';
 import { FlatMatrixMultiple } from './flat_matrixmultiple';
 import { IPdfBrick } from '../pdf_render/pdf_brick'
 import { CommentBrick } from '../pdf_render/pdf_comment';
@@ -71,16 +71,16 @@ export class FlatQuestion implements IFlatQuestion {
                 this.controller.pushMargins();
                 contentPoint.yTop += this.controller.unitHeight *
                     FlatQuestion.CONTENT_GAP_VERT_SCALE;
+                commentPoint = contentPoint;
                 this.controller.margins.left += this.controller.unitWidth;
                 let contentFlats = await this.generateFlatsContent(contentPoint);
                 this.controller.popMargins();
                 if (contentFlats.length != 0) {
+                    commentPoint.yTop = SurveyHelper.mergeRects(...contentFlats).yBot + this.controller.unitHeight * SurveyHelper.GAP_BETWEEN_ROWS;
                     compositeFlat.addBrick(contentFlats.shift());
                 }
                 flats.push(compositeFlat);
                 flats.push(...contentFlats);
-                commentPoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(...flats));
-                commentPoint.xLeft = contentPoint.xLeft;
                 break;
             }
             case 'bottom': {
@@ -88,17 +88,19 @@ export class FlatQuestion implements IFlatQuestion {
                 this.controller.pushMargins();
                 contentPoint.xLeft += this.controller.unitWidth;
                 this.controller.margins.left += this.controller.unitWidth;
+                commentPoint = contentPoint;
                 let contentFlats: IPdfBrick[] = await this.generateFlatsContent(contentPoint);
                 this.controller.popMargins();
                 flats.push(...contentFlats);
                 if (contentFlats.length != 0) {
                     commentPoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(...contentFlats));
+                    commentPoint.yTop += this.controller.unitHeight * SurveyHelper.GAP_BETWEEN_ROWS;
                 }
                 if (this.question.hasComment) {
                     flats.push(await this.generateFlatsComment(commentPoint));
                 }
                 let titlePoint: IPoint = indentPoint;
-                if (contentFlats.length != 0) {
+                if (flats.length != 0) {
                     titlePoint = SurveyHelper.createPoint(flats[flats.length - 1]);
                     titlePoint.xLeft = indentPoint.xLeft;
                 }
@@ -127,11 +129,12 @@ export class FlatQuestion implements IFlatQuestion {
                     contentPoint.xLeft = Math.max(contentPoint.xLeft, descFlat.xRight);
                 }
                 this.controller.popMargins();
-                commentPoint.xLeft = SurveyHelper.createPoint(compositeFlat, false, true).xLeft;
                 contentPoint.xLeft += this.controller.unitWidth * FlatQuestion.CONTENT_GAP_HOR_SCALE;
+                commentPoint.xLeft = contentPoint.xLeft;
                 let contentFlats = await this.generateFlatsContent(contentPoint);
                 if (contentFlats.length != 0) {
                     commentPoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(...contentFlats));
+                    commentPoint.yTop += this.controller.unitHeight * SurveyHelper.GAP_BETWEEN_ROWS;
                     compositeFlat.addBrick(contentFlats.shift());
                 }
                 flats.push(compositeFlat);
@@ -147,10 +150,12 @@ export class FlatQuestion implements IFlatQuestion {
                     contentPoint.xLeft += this.controller.unitWidth;
                     this.controller.margins.left += this.controller.unitWidth;
                 }
+                commentPoint = contentPoint;
                 flats.push(...await this.generateFlatsContent(contentPoint));
                 this.controller.popMargins();
                 if (flats.length !== 0) {
                     commentPoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(...flats));
+                    commentPoint.yTop += this.controller.unitHeight * SurveyHelper.GAP_BETWEEN_ROWS;
                 }
                 break;
             }

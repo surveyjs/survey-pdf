@@ -44,7 +44,7 @@ test('Check other checkbox place ', async () => {
         survey.controller, json.questions[0].otherText, TextBrick)).unfold();
     currPoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(itemRect, ...textFlats));
     assumeRects.push(...textFlats);
-    currPoint.yTop += survey.controller.unitHeight * SurveyHelper.GAP_BETWEEN_ROWS
+    currPoint.yTop += survey.controller.unitHeight * SurveyHelper.GAP_BETWEEN_ROWS;
     let textFieldRect: IRect = SurveyHelper.createTextFieldRect(currPoint, survey.controller, 2);
     assumeRects.push(textFieldRect);
     TestHelper.equalRects(expect, receivedRects, assumeRects);

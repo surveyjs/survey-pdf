@@ -12,11 +12,13 @@ import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { TextBrick } from '../src/pdf_render/pdf_text';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
+import { FlatQuestion } from '../src/flat_layout/flat_question';
 let __dummy_cm = new FlatComment(null, null);
 let __dummy_cb = new FlatCheckbox(null, null);
 
-async function commentPointBeforeTitle(resultRects: IPdfBrick[][]) {
-    let commentPoint = TestHelper.defaultPoint;
+async function commentPointBeforeTitle(resultRects: IPdfBrick[][], controller: DocController) {
+    let commentPoint = controller.leftTopPoint;
+    commentPoint.xLeft += controller.unitWidth;
     let resultPoint = resultRects[0][0];
     TestHelper.equalPoint(expect, resultPoint, commentPoint);
     return commentPoint;
@@ -30,8 +32,9 @@ async function commentPointAfterTitle(titleLocation: string, resultRects: IPdfBr
     let commentAssumePoint: IPoint = await SurveyHelper.createPoint(await SurveyHelper.createTitleFlat(
         TestHelper.defaultPoint, <Question>survey.getAllQuestions()[0], controller),
         titleLocation === 'top', titleLocation !== 'top');
-    if (titleLocation === 'top') {
-        commentAssumePoint.xLeft += survey.controller.unitWidth;
+    commentAssumePoint.xLeft += survey.controller.unitWidth;
+    if (titleLocation == 'top') {
+        commentAssumePoint.yTop += controller.unitHeight * FlatQuestion.CONTENT_GAP_VERT_SCALE;
     }
     let commentResultPoint: IPoint = resultRects[0][1];
     TestHelper.equalPoint(expect, commentResultPoint, commentAssumePoint);
@@ -55,7 +58,7 @@ async function commmentPointToTitleTests(titleLocation: string) {
     switch (titleLocation) {
         case 'hidden':
         case 'bottom': {
-            await commentPointBeforeTitle(resultRects)
+            await commentPointBeforeTitle(resultRects, survey.controller)
             break;
         }
         case 'top':
@@ -100,9 +103,12 @@ async function commentPointAfterItem(titleLocation: string) {
         let commentPoint: IPoint = SurveyHelper.createPoint(
             SurveyHelper.mergeRects(resultRects[0][0].unfold()[1],
                 SurveyHelper.mergeRects(resultRects[0][0].unfold()[2])));
-        TestHelper.equalPoint(expect, commentPoint, resultRects[0][1]);
+        commentPoint.yTop += survey.controller.unitHeight * SurveyHelper.GAP_BETWEEN_ROWS;
+        TestHelper.equalPoint(expect, resultRects[0][1], commentPoint);
     } else {
-        TestHelper.equalPoint(expect, SurveyHelper.createPoint(resultRects[0][0]), resultRects[0][1]);
+        let commentPoint: IPoint = SurveyHelper.createPoint(resultRects[0][0]);
+        commentPoint.yTop += survey.controller.unitHeight * SurveyHelper.GAP_BETWEEN_ROWS;
+        TestHelper.equalPoint(expect, resultRects[0][1], commentPoint);
     }
 }
 test('Comment point after choice, title location: top', async () => {
@@ -156,8 +162,10 @@ test('Calc question comment', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
+    let commentPoint = survey.controller.leftTopPoint;
+    commentPoint.xLeft += survey.controller.unitWidth;
     let assumeText: IRect = await SurveyHelper.createTextFlat(
-        survey.controller.leftTopPoint, survey.getAllQuestions()[0],
+        commentPoint, survey.getAllQuestions()[0],
         survey.controller, json.questions[0].commentText, TextBrick);
     let assumeTextField: IRect = SurveyHelper.createTextFieldRect(
         SurveyHelper.createPoint(assumeText), survey.controller, 2);
