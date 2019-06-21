@@ -2,7 +2,7 @@
     return {};
 };
 
-import { Question, IObject } from 'survey-core';
+import { Question } from 'survey-core';
 import { SurveyPDF } from '../src/survey';
 import { IPoint, IRect, IDocOptions, DocOptions, DocController } from '../src/doc_controller';
 import { PagePacker } from '../src/page_layout/page_packer';
