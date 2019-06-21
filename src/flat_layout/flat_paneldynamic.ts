@@ -17,7 +17,7 @@ export class FlatPanelDynamic extends FlatQuestion {
         let currPoint: IPoint = SurveyHelper.clone(point);
         for (let panel of this.question.panels) {
             let panelFlats: IPdfBrick[] = await FlatSurvey.generateFlatsPanel(
-                currPoint, panel, this.controller);
+                this.controller, panel, currPoint);
             if (panelFlats.length !== 0) {
                 currPoint.yTop = SurveyHelper.mergeRects(...panelFlats).yBot;
                 currPoint.yTop += this.controller.unitHeight;

@@ -242,7 +242,7 @@ export class SurveyHelper {
         return composite;
     }
     public static async createTitlePanelFlat(point: IPoint, question: IQuestion,
-        controller: DocController, text: string) {
+        controller: DocController, text: string | LocalizableString) {
         let oldFontSize: number = controller.fontSize;
         controller.fontSize = oldFontSize * SurveyHelper.TITLE_PANEL_FONT_SIZE_SCALE_MAGIC;
         controller.fontStyle = 'bold';
