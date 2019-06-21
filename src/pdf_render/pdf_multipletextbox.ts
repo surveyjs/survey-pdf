@@ -9,6 +9,6 @@ export class MultipleTextBoxBrick extends TextFieldBrick {
         super(question, controller, rect, true,
             (<QuestionMultipleTextModel>question).id + 'row' + row_index + 'col' + col_index,
             item.value || '', SurveyHelper.getLocString(item.locPlaceHolder),
-            question.isReadOnly, false, false);
+            question.isReadOnly, false, 'text');
     }
 }
