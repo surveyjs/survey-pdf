@@ -12,6 +12,6 @@ export class TextBoxBrick extends TextFieldBrick {
             isQuestion ? (question.value || (<QuestionTextModel>question).defaultValue || '') : (<Question>question).comment,
             isQuestion ? SurveyHelper.getLocString((<QuestionTextModel>question).locPlaceHolder) : '',
             question.isReadOnly, isMultiline,
-            (<QuestionTextModel>question).inputType === 'password');
+            (<QuestionTextModel>question).inputType);
     }
 }

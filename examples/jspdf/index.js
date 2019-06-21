@@ -219,6 +219,13 @@ var json = {
 			]
 		},
 		{
+			type: 'text',
+			name: 'colorpicker',
+			title: 'It\'s gray color',
+			inputType: 'color',
+			defaultValue: '#999999'
+		},
+		{
 			name: "name8",
 			type: "text",
 			title: "Rarrararar:",
