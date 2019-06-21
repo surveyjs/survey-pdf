@@ -499,4 +499,25 @@ test('check title with number next raw position', async () => {
     let noWidth: number = survey.controller.measureText('1. ').width;
     let bricks: IPdfBrick[] = flats[0][0].unfold();
     expect(SurveyHelper.mergeRects(bricks[1], bricks[2]).xLeft).toBeCloseTo(survey.controller.leftTopPoint.xLeft + noWidth);
+});
+test('check equality of margins.left and contentPoint.xLeft with titleLocation: left', async () => {
+    var json = {
+        "questions": [
+            {
+                "type": "checkbox",
+                "choices": [
+                    "", ""
+                ],
+                "titleLocation": 'left',
+                "colCount": 0,
+                "title": "Sex"
+            }
+        ]
+    };
+    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
+    let contentAssumePointLeft: number = SurveyHelper.createPoint(await SurveyHelper.createTitleFlat(survey.controller.leftTopPoint,
+        <Question>survey.getAllQuestions()[0], survey.controller), false, true).xLeft;
+    contentAssumePointLeft += survey.controller.unitWidth;
+    expect(flats[0][0].unfold()[2].xLeft).toBe(contentAssumePointLeft);
 })

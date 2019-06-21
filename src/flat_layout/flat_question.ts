@@ -130,6 +130,7 @@ export class FlatQuestion implements IFlatQuestion {
                 }
                 this.controller.popMargins();
                 contentPoint.xLeft += this.controller.unitWidth * FlatQuestion.CONTENT_GAP_HOR_SCALE;
+                this.controller.margins.left = contentPoint.xLeft;
                 commentPoint.xLeft = contentPoint.xLeft;
                 let contentFlats = await this.generateFlatsContent(contentPoint);
                 if (contentFlats.length != 0) {
