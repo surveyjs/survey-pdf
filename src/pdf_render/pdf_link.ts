@@ -7,7 +7,9 @@ export class LinkBrick extends TextBrick {
     public constructor(textFlat: TextBrick, protected link: string) {
         super((<LinkBrick>textFlat).question,
             (<LinkBrick>textFlat).controller,
-            textFlat, (<LinkBrick>textFlat).text);
+            textFlat, (<LinkBrick>textFlat).text,
+            (<LinkBrick>textFlat).controller.fontSize,
+            LinkBrick.COLOR);
     }
     public async render(): Promise<void> {
         let oldTextColor: string = this.controller.doc.getTextColor();
@@ -19,7 +21,6 @@ export class LinkBrick extends TextBrick {
             (this.yBot - this.yTop) - descent;
         this.controller.doc.textWithLink(this.text, this.xLeft,
             yTopLink, { url: this.link });
-        this.controller.doc.setTextColor(LinkBrick.COLOR);
         super.render();
         this.controller.doc.setTextColor(oldTextColor);
     }

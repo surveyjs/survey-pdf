@@ -7,7 +7,8 @@ export class TextBrick extends PdfBrick {
     protected question: QuestionTextModel;
     protected align: { align: string, baseline: string };
     public constructor(question: IQuestion, controller: DocController,
-        rect: IRect, protected text: string, protected fontSize?: number) {
+        rect: IRect, protected text: string, protected fontSize?: number,
+        protected textColor?: string) {
         super(question, controller, rect);
         this.question = <QuestionTextModel>question;
         this.align = {
@@ -17,13 +18,16 @@ export class TextBrick extends PdfBrick {
         if (typeof fontSize === 'undefined') {
             this.fontSize = controller.fontSize;
         }
+        if (typeof textColor === 'undefined') {
+            this.textColor = SurveyHelper.TEXT_COLOR;
+        }
     }
     public async render(): Promise<void> {
         let alignPoint: IPoint = this.alignPoint(this);
         let oldFontSize: number = this.controller.fontSize;
         this.controller.fontSize = this.fontSize;
         let oldTextColor: string = this.controller.doc.getTextColor();
-        this.controller.doc.setTextColor(SurveyHelper.TEXT_COLOR);
+        this.controller.doc.setTextColor(this.textColor);
         this.controller.doc.text(this.text, alignPoint.xLeft, alignPoint.yTop, this.align);
         this.controller.doc.setTextColor(oldTextColor);
         this.controller.fontSize = oldFontSize;
