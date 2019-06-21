@@ -12,39 +12,45 @@ export class FlatSurvey {
     public static readonly QUES_GAP_VERT_SCALE: number = 1.0;
     public static readonly PANEL_CONT_GAP_SCALE: number = 1.0;
     public static readonly PANEL_DESC_GAP_SCALE: number = 0.25;
-    public static async generateFlatsPanel(point: IPoint,
-        question: PanelModel, controller: DocController): Promise<IPdfBrick[]> {
+    public static async generateFlatsPanel(controller: DocController,
+        question: PanelModel, point: IPoint): Promise<IPdfBrick[]> {
         let panelFlats: IPdfBrick[] = [];
-        let panelContentPoint: IPoint = { xLeft: point.xLeft, yTop: point.yTop };
-        if (question.title) {
-            let panelTitleFlat: IPdfBrick = await SurveyHelper.createTitlePanelFlat(
-                panelContentPoint, null, controller, question.title);
-            let compositeFlat: CompositeBrick = new CompositeBrick(panelTitleFlat);
-            panelContentPoint = SurveyHelper.createPoint(panelTitleFlat);
-            if (question.description) {
-                panelContentPoint.yTop += controller.unitWidth * FlatSurvey.PANEL_DESC_GAP_SCALE;
-                let panelDescFlat: IPdfBrick = await SurveyHelper.createDescFlat(
-                    panelContentPoint, null, controller,
-                    question.locDescription);
-                compositeFlat.addBrick(panelDescFlat);
-                panelContentPoint = SurveyHelper.createPoint(panelDescFlat);
-            }
-            panelFlats.push(compositeFlat);
-            panelContentPoint.yTop += controller.unitHeight * FlatSurvey.PANEL_CONT_GAP_SCALE;
-        }
+        let panelContentPoint: IPoint = SurveyHelper.clone(point);
         controller.pushMargins();
         controller.margins.left += controller.measureText(question.innerIndent).width;
         panelContentPoint.xLeft += controller.measureText(question.innerIndent).width;
-        panelFlats.push(...await this.generateFlatsPagePanel(panelContentPoint, question, controller));
+        panelFlats.push(...await this.generateFlatsPagePanel(controller, question, panelContentPoint));
         controller.popMargins();
         return panelFlats;
     }
-    private static async generateFlatsPagePanel(point: IPoint,
-        pagePanel: PanelModelBase, controller: DocController): Promise<IPdfBrick[]> {
+    private static async generateFlatsPagePanel(controller: DocController,
+        pagePanel: PanelModelBase, point: IPoint, showPageTitles: boolean = true): Promise<IPdfBrick[]> {
         if (!pagePanel.isVisible) return;
         pagePanel.onFirstRendering();
         let pagePanelFlats: IPdfBrick[] = [];
         let currPoint: IPoint = SurveyHelper.clone(point);
+        if (showPageTitles) {
+            let compositeFlat: CompositeBrick = new CompositeBrick();
+            if (pagePanel.title) {
+                let pagelPanelTitleFlat: IPdfBrick = await SurveyHelper.createTitlePanelFlat(
+                    currPoint, null, controller, pagePanel.locTitle);
+                compositeFlat.addBrick(pagelPanelTitleFlat);
+                currPoint = SurveyHelper.createPoint(pagelPanelTitleFlat);
+            }
+            if (pagePanel.description) {
+                if (pagePanel.title) {
+                    currPoint.yTop += controller.unitWidth * FlatSurvey.PANEL_DESC_GAP_SCALE;
+                }
+                let pagePanelDescFlat: IPdfBrick = await SurveyHelper.createDescFlat(
+                    currPoint, null, controller, pagePanel.locDescription);
+                compositeFlat.addBrick(pagePanelDescFlat);
+                currPoint = SurveyHelper.createPoint(pagePanelDescFlat);
+            }
+            if (!compositeFlat.isEmpty) {
+                pagePanelFlats.push(compositeFlat);
+                currPoint.yTop += controller.unitHeight * FlatSurvey.PANEL_CONT_GAP_SCALE;
+            }
+        }
         for (let row of pagePanel.rows) {
             if (!row.visible) continue;
             controller.pushMargins();
@@ -61,7 +67,7 @@ export class FlatSurvey {
                 currPoint.xLeft = controller.margins.left;
                 nextMarginLeft = controller.margins.left + persWidth;
                 if (element instanceof PanelModel) {
-                    rowFlats.push(...await this.generateFlatsPanel(currPoint, element, controller));
+                    rowFlats.push(...await this.generateFlatsPanel(controller, element, currPoint));
                 }
                 else {
                     let flatQuestion: IFlatQuestion =
@@ -91,8 +97,8 @@ export class FlatSurvey {
         let flats: IPdfBrick[][] = [];
         for (let page of survey.visiblePages) {
             let pageFlats: IPdfBrick[] = [];
-            pageFlats.push(...await this.generateFlatsPagePanel(
-                survey.controller.leftTopPoint, page, survey.controller));
+            pageFlats.push(...await this.generateFlatsPagePanel(survey.controller,
+                page, survey.controller.leftTopPoint, survey.showPageTitles));
             flats.push(pageFlats);
             this.popRowlines(flats[flats.length - 1]);
         }
