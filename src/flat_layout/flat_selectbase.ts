@@ -27,8 +27,10 @@ export abstract class FlatSelectBase extends FlatQuestion {
         item.locText.renderedHtml == null || compositeFlat.addBrick(await SurveyHelper.createTextFlat(
             textPoint, this.question, this.controller, item.locText, TextBrick));
         if (item.value === this.question.otherItem.value) {
+            let otherPoint: IPoint = SurveyHelper.createPoint(compositeFlat);
+            otherPoint.yTop += this.controller.unitHeight * SurveyHelper.GAP_BETWEEN_ROWS;
             compositeFlat.addBrick(SurveyHelper.createOtherFlat(
-                SurveyHelper.createPoint(compositeFlat), this.question, this.controller, index));
+                otherPoint, this.question, this.controller, index));
         }
         return compositeFlat;
     }
