@@ -34,24 +34,20 @@ export class FlatMultipleText extends FlatQuestion {
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         let rowsFlats: CompositeBrick[] = [];
         let currPoint: IPoint = SurveyHelper.clone(point);
-        let colWidth: number = SurveyHelper.getPageAvailableWidth(
-            this.controller) / this.question.colCount;
         let rows = this.question.getRows();
         for (let i: number = 0; i < rows.length; i++) {
             rowsFlats.push(new CompositeBrick());
             let yBot: number = currPoint.yTop
             this.controller.pushMargins();
-            let currMarginLeft: number = this.controller.margins.left;
             for (let j: number = 0; j < rows[i].length; j++) {
-                this.controller.margins.left = currMarginLeft;
-                this.controller.margins.right = this.controller.paperWidth -
-                    currMarginLeft - colWidth;
-                currMarginLeft = this.controller.paperWidth - this.controller.margins.right;
+                this.controller.pushMargins();
+                SurveyHelper.setColumnMargins(this.controller, rows[i].length, j);
                 currPoint.xLeft = this.controller.margins.left;
                 let itemFlat: IPdfBrick = await this.generateFlatItem(
                     currPoint, i, j, rows[i][j]);
                 rowsFlats[rowsFlats.length - 1].addBrick(itemFlat);
                 yBot = Math.max(yBot, itemFlat.yBot);
+                this.controller.popMargins();
             }
             this.controller.popMargins();
             currPoint.xLeft = point.xLeft;
