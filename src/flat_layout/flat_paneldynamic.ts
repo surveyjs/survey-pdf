@@ -8,6 +8,7 @@ import { SurveyHelper } from '../helper_survey';
 
 export class FlatPanelDynamic extends FlatQuestion {
     protected question: QuestionPanelDynamicModel;
+    public static readonly GAP_BETWEEN_PANELS: number = 0.75;
     public constructor(question: IQuestion, protected controller: DocController) {
         super(question, controller);
         this.question = <QuestionPanelDynamicModel>question;
@@ -20,7 +21,7 @@ export class FlatPanelDynamic extends FlatQuestion {
                 this.controller, panel, currPoint);
             if (panelFlats.length !== 0) {
                 currPoint.yTop = SurveyHelper.mergeRects(...panelFlats).yBot;
-                currPoint.yTop += this.controller.unitHeight;
+                currPoint.yTop += this.controller.unitHeight * FlatPanelDynamic.GAP_BETWEEN_PANELS;
                 flats.push(...panelFlats);
             }
         }
