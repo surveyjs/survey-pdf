@@ -11,6 +11,7 @@ import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
 
 export class FlatMatrixMultiple extends FlatQuestion {
+    public static readonly GAP_BETWEEN_ROWS = 0.5;
     protected question: QuestionMatrixDropdownModelBase;
     public constructor(question: IQuestion, controller: DocController,
         protected isMultiple: boolean = true) {
@@ -84,14 +85,15 @@ export class FlatMatrixMultiple extends FlatQuestion {
                     currPoint.xLeft = this.controller.margins.left;
                 }
                 else {
-                    currPoint.yTop = composite.isEmpty ? currPoint.yTop : composite.yBot;
+                    currPoint.yTop = composite.isEmpty ?
+                        currPoint.yTop : (composite.yBot + FlatMatrixMultiple.GAP_BETWEEN_ROWS * this.controller.unitHeight);
                     if (!(this.isMultiple && !isHorizontal && !this.question.showHeader)) {
                         let locText: LocalizableString = isHorizontal || !this.isMultiple
                             ? this.question.visibleColumns[cellJ].locTitle
                             : (<MatrixDropdownRowModel>this.question.visibleRows[cellI]).locText;
                         composite.addBrick(await SurveyHelper.createTextFlat(
                             currPoint, this.question, this.controller, locText, TextBrick));
-                        currPoint.yTop = composite.yBot;
+                        currPoint.yTop = composite.yBot + FlatMatrixMultiple.GAP_BETWEEN_ROWS * this.controller.unitHeight;
                     }
                 }
                 cell.question.titleLocation = SurveyHelper.TITLE_LOCATION_MATRIX;
@@ -103,7 +105,7 @@ export class FlatMatrixMultiple extends FlatQuestion {
                 }
             }
             currPoint.xLeft = point.xLeft;
-            currPoint.yTop = composite.yBot;
+            currPoint.yTop = composite.yBot + FlatMatrixMultiple.GAP_BETWEEN_ROWS * this.controller.unitHeight;
             if (i !== countOuter - 1) {
                 composite.addBrick(SurveyHelper.createRowlineFlat(currPoint, this.controller));
                 currPoint.yTop += SurveyHelper.EPSILON;
@@ -131,7 +133,7 @@ export class FlatMatrixMultiple extends FlatQuestion {
             let headers: CompositeBrick =
                 await this.generateFlatsHeader(point, isHorizontal);
             currPoint.xLeft = point.xLeft;
-            currPoint.yTop = headers.xLeft !== 0 ? headers.yBot : point.yTop;
+            currPoint.yTop = headers.isEmpty ? point.yTop : (headers.yBot + this.controller.unitHeight * FlatMatrixMultiple.GAP_BETWEEN_ROWS);
             headers.addBrick(SurveyHelper.createRowlineFlat(currPoint, this.controller));
             currPoint.yTop += SurveyHelper.EPSILON;
             rowsFlats.push(headers);

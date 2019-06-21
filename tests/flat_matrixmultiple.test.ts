@@ -10,6 +10,7 @@ import { FlatMatrixMultiple } from '../src/flat_layout/flat_matrixmultiple';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { TestHelper } from '../src/helper_test';
 import { SurveyHelper } from '../src/helper_survey';
+import { FlatMatrixDynamic } from '../src/flat_layout/flat_matrixdynamic';
 let __dummy_dd = new FlatDropdown(null, null);
 let __dummy_mm = new FlatMatrixMultiple(null, null);
 
@@ -80,7 +81,7 @@ test('Check matrix multiple one column one row', async () => {
         xRight: survey.controller.paperWidth - survey.controller.margins.right,
         yTop: survey.controller.leftTopPoint.yTop,
         yBot: survey.controller.leftTopPoint.yTop + header.height +
-            SurveyHelper.EPSILON + survey.controller.unitHeight
+            SurveyHelper.EPSILON + survey.controller.unitHeight * (1 + FlatMatrixMultiple.GAP_BETWEEN_ROWS)
     };
     TestHelper.equalRect(expect, SurveyHelper.mergeRects(flats[0][0], flats[0][1]), assumeMatrix);
     let assumeHeader: IRect = {
@@ -99,8 +100,10 @@ test('Check matrix multiple one column one row', async () => {
     let assumeRowText: IRect = {
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.leftTopPoint.xLeft + rowText.width,
-        yTop: assumeHeader.yBot + SurveyHelper.EPSILON,
-        yBot: assumeHeader.yBot + SurveyHelper.EPSILON + rowText.height
+        yTop: assumeHeader.yBot + SurveyHelper.EPSILON
+            + survey.controller.unitHeight * FlatMatrixMultiple.GAP_BETWEEN_ROWS,
+        yBot: assumeHeader.yBot + SurveyHelper.EPSILON + rowText.height +
+            survey.controller.unitHeight * FlatMatrixMultiple.GAP_BETWEEN_ROWS
     };
     TestHelper.equalRect(expect, unfoldRowFlats[0], assumeRowText);
     let assumeRowQuestion: IRect = {
@@ -150,7 +153,7 @@ test('Check matrix multiple two columns one row vertical layout', async () => {
         xRight: survey.controller.paperWidth - survey.controller.margins.right,
         yTop: survey.controller.leftTopPoint.yTop,
         yBot: survey.controller.leftTopPoint.yTop + header.height +
-            + 2.0 * (survey.controller.unitHeight + SurveyHelper.EPSILON)
+            + 2.0 * ((1 + FlatMatrixDynamic.CONTENT_GAP_VERT_SCALE) * survey.controller.unitHeight + SurveyHelper.EPSILON)
     };
     TestHelper.equalRect(expect, SurveyHelper.mergeRects(...flats[0]), assumeMatrix);
     let assumeHeader: IRect = {
@@ -168,8 +171,10 @@ test('Check matrix multiple two columns one row vertical layout', async () => {
     let assumeRow1Text: IRect = {
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.leftTopPoint.xLeft + row1Text.width,
-        yTop: assumeHeader.yBot + SurveyHelper.EPSILON,
-        yBot: assumeHeader.yBot + SurveyHelper.EPSILON + row1Text.height
+        yTop: assumeHeader.yBot + SurveyHelper.EPSILON
+            + survey.controller.unitHeight * FlatMatrixDynamic.GAP_BETWEEN_ROWS,
+        yBot: assumeHeader.yBot + SurveyHelper.EPSILON + row1Text.height +
+            survey.controller.unitHeight * FlatMatrixDynamic.GAP_BETWEEN_ROWS
     };
     TestHelper.equalRect(expect, unfoldRow1Flats[0], assumeRow1Text);
     let assumeRow1Question: IRect = {
@@ -183,8 +188,10 @@ test('Check matrix multiple two columns one row vertical layout', async () => {
     let assumeRow2Text: IRect = {
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.leftTopPoint.xLeft + row2Text.width,
-        yTop: assumeRow1Question.yBot + SurveyHelper.EPSILON,
+        yTop: assumeRow1Question.yBot + SurveyHelper.EPSILON
+            + survey.controller.unitHeight * FlatMatrixDynamic.GAP_BETWEEN_ROWS,
         yBot: assumeRow1Question.yBot + SurveyHelper.EPSILON + row2Text.height
+            + survey.controller.unitHeight * FlatMatrixDynamic.GAP_BETWEEN_ROWS
     };
     TestHelper.equalRect(expect, unfoldRow2Flats[0], assumeRow2Text);
     let assumeRow2Question: IRect = {
@@ -241,30 +248,36 @@ test('Check matrix multiple two columns one row horizontal layout narrow width',
     let assumeRow1Text: IRect = {
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.leftTopPoint.xLeft + row1Text.width,
-        yTop: assumeHeader.yBot + SurveyHelper.EPSILON,
-        yBot: assumeHeader.yBot + SurveyHelper.EPSILON + row1Text.height
+        yTop: assumeHeader.yBot + SurveyHelper.EPSILON +
+            survey.controller.unitHeight * FlatMatrixDynamic.GAP_BETWEEN_ROWS,
+        yBot: assumeHeader.yBot + SurveyHelper.EPSILON + row1Text.height +
+            survey.controller.unitHeight * FlatMatrixDynamic.GAP_BETWEEN_ROWS
     };
     TestHelper.equalRect(expect, unfoldFlats[1], assumeRow1Text);
     let assumeRow1Question: IRect = {
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.paperWidth - survey.controller.margins.right,
-        yTop: assumeRow1Text.yBot,
-        yBot: assumeRow1Text.yBot + survey.controller.unitHeight
+        yTop: assumeRow1Text.yBot + survey.controller.unitHeight * FlatMatrixDynamic.GAP_BETWEEN_ROWS,
+        yBot: assumeRow1Text.yBot + survey.controller.unitHeight * (1 + FlatMatrixDynamic.GAP_BETWEEN_ROWS)
     };
     TestHelper.equalRect(expect, unfoldFlats[2], assumeRow1Question);
     let row2Text: ISize = survey.controller.measureText(json.elements[0].columns[1].name);
     let assumeRow2Text: IRect = {
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.leftTopPoint.xLeft + row2Text.width,
-        yTop: assumeRow1Question.yBot + SurveyHelper.EPSILON,
+        yTop: assumeRow1Question.yBot + SurveyHelper.EPSILON
+            + survey.controller.unitHeight * FlatMatrixDynamic.GAP_BETWEEN_ROWS,
         yBot: assumeRow1Question.yBot + SurveyHelper.EPSILON + row2Text.height
+            + survey.controller.unitHeight * FlatMatrixDynamic.GAP_BETWEEN_ROWS
     };
     TestHelper.equalRect(expect, unfoldFlats[3], assumeRow2Text);
     let assumeRow2Question: IRect = {
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.paperWidth - survey.controller.margins.right,
-        yTop: assumeRow2Text.yBot,
-        yBot: assumeRow2Text.yBot + survey.controller.unitHeight
+        yTop: assumeRow2Text.yBot +
+            survey.controller.unitHeight * FlatMatrixDynamic.GAP_BETWEEN_ROWS,
+        yBot: assumeRow2Text.yBot + survey.controller.unitHeight +
+            survey.controller.unitHeight * FlatMatrixDynamic.GAP_BETWEEN_ROWS
     };
     TestHelper.equalRect(expect, unfoldFlats[4], assumeRow2Question);
     let assumeMatrix: IRect = {
@@ -272,7 +285,8 @@ test('Check matrix multiple two columns one row horizontal layout narrow width',
         xRight: survey.controller.paperWidth - survey.controller.margins.right,
         yTop: survey.controller.leftTopPoint.yTop,
         yBot: survey.controller.leftTopPoint.yTop + header.height + row1Text.height +
-            row2Text.height + 2.0 * (survey.controller.unitHeight + SurveyHelper.EPSILON)
+            row2Text.height + (2.0 + 4.0 * FlatMatrixDynamic.GAP_BETWEEN_ROWS) *
+            survey.controller.unitHeight + 2 * SurveyHelper.EPSILON
     };
     TestHelper.equalRect(expect, SurveyHelper.mergeRects(flats[0][0]), assumeMatrix);
 });
@@ -325,38 +339,44 @@ test('Check matrix multiple two columns one row vertical layout narrow width', a
     let assumeRow1Text: IRect = {
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.leftTopPoint.xLeft + row1Text.width,
-        yTop: assumeHeader1.yBot + SurveyHelper.EPSILON,
-        yBot: assumeHeader1.yBot + SurveyHelper.EPSILON + row1Text.height
+        yTop: assumeHeader1.yBot + SurveyHelper.EPSILON + survey.controller.unitHeight *
+            FlatMatrixDynamic.GAP_BETWEEN_ROWS,
+        yBot: assumeHeader1.yBot + SurveyHelper.EPSILON + row1Text.height +
+            survey.controller.unitHeight * FlatMatrixDynamic.GAP_BETWEEN_ROWS
     };
     TestHelper.equalRect(expect, unfoldRow1Flats[1], assumeRow1Text);
     let assumeRow1Question: IRect = {
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.paperWidth - survey.controller.margins.right,
-        yTop: assumeRow1Text.yBot,
-        yBot: assumeRow1Text.yBot + survey.controller.unitHeight
+        yTop: assumeRow1Text.yBot + survey.controller.unitHeight * FlatMatrixDynamic.GAP_BETWEEN_ROWS,
+        yBot: assumeRow1Text.yBot + survey.controller.unitHeight * (1 + FlatMatrixDynamic.GAP_BETWEEN_ROWS)
     };
     TestHelper.equalRect(expect, unfoldRow1Flats[2], assumeRow1Question);
     let header2: ISize = survey.controller.measureText(json.elements[0].columns[1].name, 'bold');
     let assumeHeader2: IRect = {
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.leftTopPoint.xLeft + header2.width,
-        yTop: assumeRow1Question.yBot + SurveyHelper.EPSILON,
-        yBot: assumeRow1Question.yBot + SurveyHelper.EPSILON + header2.height
+        yTop: assumeRow1Question.yBot + SurveyHelper.EPSILON +
+            survey.controller.unitHeight * FlatMatrixDynamic.GAP_BETWEEN_ROWS,
+        yBot: assumeRow1Question.yBot + SurveyHelper.EPSILON + header2.height +
+            survey.controller.unitHeight * FlatMatrixDynamic.GAP_BETWEEN_ROWS
     };
     let row2Text: ISize = survey.controller.measureText(json.elements[0].rows[0]);
     TestHelper.equalRect(expect, unfoldRow2Flats[0], assumeHeader2);
     let assumeRow2Text: IRect = {
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.leftTopPoint.xLeft + row2Text.width,
-        yTop: assumeHeader2.yBot + SurveyHelper.EPSILON,
-        yBot: assumeHeader2.yBot + SurveyHelper.EPSILON + row2Text.height
+        yTop: assumeHeader2.yBot + SurveyHelper.EPSILON +
+            survey.controller.unitHeight * FlatMatrixDynamic.GAP_BETWEEN_ROWS,
+        yBot: assumeHeader2.yBot + SurveyHelper.EPSILON + row2Text.height +
+            survey.controller.unitHeight * FlatMatrixDynamic.GAP_BETWEEN_ROWS
     };
     TestHelper.equalRect(expect, unfoldRow2Flats[1], assumeRow2Text);
     let assumeRow2Question: IRect = {
         xLeft: survey.controller.leftTopPoint.xLeft,
         xRight: survey.controller.paperWidth - survey.controller.margins.right,
-        yTop: assumeRow2Text.yBot,
-        yBot: assumeRow2Text.yBot + survey.controller.unitHeight
+        yTop: assumeRow2Text.yBot + survey.controller.unitHeight * FlatMatrixDynamic.GAP_BETWEEN_ROWS,
+        yBot: assumeRow2Text.yBot + survey.controller.unitHeight * (1 + FlatMatrixDynamic.GAP_BETWEEN_ROWS)
     };
     TestHelper.equalRect(expect, unfoldRow2Flats[2], assumeRow2Question);
     let assumeMatrix: IRect = {
@@ -364,7 +384,7 @@ test('Check matrix multiple two columns one row vertical layout narrow width', a
         xRight: survey.controller.paperWidth - survey.controller.margins.right,
         yTop: survey.controller.leftTopPoint.yTop,
         yBot: survey.controller.leftTopPoint.yTop + header1.height + row1Text.height + header2.height +
-            row2Text.height + 2.0 * survey.controller.unitHeight + SurveyHelper.EPSILON
+            row2Text.height + (2.0 + 5 * FlatMatrixDynamic.GAP_BETWEEN_ROWS) * survey.controller.unitHeight + SurveyHelper.EPSILON
     };
     TestHelper.equalRect(expect, SurveyHelper.mergeRects(...flats[0]), assumeMatrix);
 });
