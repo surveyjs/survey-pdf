@@ -10,7 +10,6 @@ export interface IFlatQuestion {
     generateFlatsContent(point: IPoint): Promise<IPdfBrick[]>;
     generateFlats(point: IPoint): Promise<IPdfBrick[]>;
 }
-
 export class FlatQuestion implements IFlatQuestion {
     public static readonly CONTENT_GAP_VERT_SCALE: number = 0.5;
     public static readonly CONTENT_GAP_HOR_SCALE: number = 1.0;
@@ -19,7 +18,6 @@ export class FlatQuestion implements IFlatQuestion {
     public constructor(question: IQuestion, protected controller: DocController) {
         this.question = <Question>question;
     }
-
     private async generateFlatTitle(point: IPoint): Promise<IPdfBrick> {
         return await SurveyHelper.createTitleFlat(point,
             this.question, this.controller)

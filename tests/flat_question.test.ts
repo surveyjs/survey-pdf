@@ -500,17 +500,17 @@ test('check title with number next raw position', async () => {
     let bricks: IPdfBrick[] = flats[0][0].unfold();
     expect(SurveyHelper.mergeRects(bricks[1], bricks[2]).xLeft).toBeCloseTo(survey.controller.leftTopPoint.xLeft + noWidth);
 });
-test('check equality of margins.left and contentPoint.xLeft with titleLocation: left', async () => {
-    var json = {
-        "questions": [
+test('Check equality of margins.left and contentPoint.xLeft with titleLocation: left', async () => {
+    var json: any = {
+        questions: [
             {
-                "type": "checkbox",
-                "choices": [
-                    "", ""
+                type: 'checkbox',
+                choices: [
+                    '', ''
                 ],
-                "titleLocation": 'left',
-                "colCount": 0,
-                "title": "Sex"
+                titleLocation: 'left',
+                colCount: 0,
+                title: 'Sex'
             }
         ]
     };
