@@ -1,6 +1,5 @@
 import { IPoint, IRect, DocController } from '../doc_controller';
-import { IQuestion, Question, LocalizableString, surveyLocalization } from 'survey-core';
-import { FlatMatrixMultiple } from './flat_matrixmultiple';
+import { IQuestion, Question, LocalizableString } from 'survey-core';
 import { IPdfBrick } from '../pdf_render/pdf_brick'
 import { CommentBrick } from '../pdf_render/pdf_comment';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
