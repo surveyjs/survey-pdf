@@ -482,8 +482,8 @@ test('VisibleIf row', async () => {
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(3);
 });
-test('check title with number next raw position', async () => {
-    let json = {
+test('Check title with number next raw position', async () => {
+    let json: any = {
         questions: [
             {
                 type: 'checkbox',
@@ -496,9 +496,11 @@ test('check title with number next raw position', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
-    let noWidth: number = survey.controller.measureText('1. ').width;
+    let noWidth: number = survey.controller.measureText('1. ').width *
+        SurveyHelper.TITLE_FONT_SCALE;
     let bricks: IPdfBrick[] = flats[0][0].unfold();
-    expect(SurveyHelper.mergeRects(bricks[1], bricks[2]).xLeft).toBeCloseTo(survey.controller.leftTopPoint.xLeft + noWidth);
+    expect(SurveyHelper.mergeRects(bricks[1], bricks[2]).xLeft).
+        toBeCloseTo(survey.controller.leftTopPoint.xLeft + noWidth);
 });
 test('Check equality of margins.left and contentPoint.xLeft with titleLocation: left', async () => {
     var json: any = {

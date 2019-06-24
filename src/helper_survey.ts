@@ -32,6 +32,7 @@ export class SurveyHelper {
     public static readonly VISIBLE_BORDER_SCALE: number = 0.8;
     public static readonly UNVISIBLE_BORDER_SCALE: number = 0.2;
     public static readonly RADIUS_SCALE: number = 3;
+    public static readonly TITLE_FONT_SCALE: number = 1.1;
     public static readonly FORM_BORDER_COLOR: string = '#9f9f9f';
     public static readonly TEXT_COLOR: string = '#404040';
     public static readonly BACKGROUND_COLOR: string = '#FFFFFF';
@@ -215,6 +216,8 @@ export class SurveyHelper {
     public static async createTitleFlat(point: IPoint, question: Question, controller: DocController): Promise<IPdfBrick> {
         let composite: CompositeBrick = new CompositeBrick();
         let currPoint: IPoint = SurveyHelper.clone(point);
+        let oldFontSize: number = controller.fontSize;
+        controller.fontSize *= SurveyHelper.TITLE_FONT_SCALE;
         if (question.no) {
             let noText = question.no + '. ';
             if (question.locTitle.hasHtml) {
@@ -239,6 +242,7 @@ export class SurveyHelper {
         composite.addBrick(await SurveyHelper.createBoldTextFlat(currPoint, question,
             controller, question.locTitle))
         controller.popMargins();
+        controller.fontSize = oldFontSize;
         return composite;
     }
     public static async createTitlePanelFlat(point: IPoint, question: IQuestion,
@@ -317,11 +321,6 @@ export class SurveyHelper {
             rect.xRight - rect.xLeft,
             rect.yBot - rect.yTop
         ];
-    }
-    public static getTitleText(question: Question): LocalizableString {
-        let title = new LocalizableString(question.locTitle.owner, question.locTitle.useMarkdown)
-        title.text = (question.no != '' ? question.no + '. ' : '') + question.locTitle.renderedHtml;
-        return title;
     }
     public static getLocString(locObj: LocalizableString): string {
         return locObj.renderedHtml;

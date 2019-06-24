@@ -29,14 +29,16 @@ test('Check boolean without title', async () => {
     TestHelper.equalRect(expect, flats[0][0], {
         xLeft: survey.controller.leftTopPoint.xLeft + survey.controller.unitWidth,
         xRight: survey.controller.leftTopPoint.xLeft + survey.controller.unitWidth +
-            survey.controller.unitHeight * (SurveyHelper.SELECT_ITEM_FLAT_SCALE + SurveyHelper.GAP_BETWEEN_ITEM_TEXT) +
+            survey.controller.unitHeight * (SurveyHelper.SELECT_ITEM_FLAT_SCALE +
+                SurveyHelper.GAP_BETWEEN_ITEM_TEXT) +
             survey.controller.measureText(json.elements[0].title).width,
         yTop: survey.controller.leftTopPoint.yTop,
-        yBot: survey.controller.leftTopPoint.yTop + survey.controller.measureText(json.elements[0].title).height,
+        yBot: survey.controller.leftTopPoint.yTop +
+            survey.controller.measureText(json.elements[0].title).height,
     })
 });
 test('Check boolean with title', async () => {
-    let json = {
+    let json: any = {
         elements: [
             {
                 type: 'boolean',
@@ -56,6 +58,9 @@ test('Check boolean with title', async () => {
             <Question>survey.getAllQuestions()[0], survey.controller)).xRight,
         yTop: survey.controller.leftTopPoint.yTop,
         yBot: survey.controller.leftTopPoint.yTop +
-            survey.controller.unitHeight * (1.0 + (1.0 + SurveyHelper.SELECT_ITEM_FLAT_SCALE) / 2.0 + FlatQuestion.CONTENT_GAP_VERT_SCALE)
+            survey.controller.unitHeight * SurveyHelper.TITLE_FONT_SCALE +
+            survey.controller.unitHeight * FlatQuestion.CONTENT_GAP_VERT_SCALE +
+            survey.controller.unitHeight * SurveyHelper.SELECT_ITEM_FLAT_SCALE +
+            survey.controller.unitHeight * (1.0 - SurveyHelper.SELECT_ITEM_FLAT_SCALE) / 2.0
     })
 });
