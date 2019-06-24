@@ -9,7 +9,7 @@ import { RowlineBrick } from '../pdf_render/pdf_rowline';
 import { SurveyHelper } from '../helper_survey';
 
 export class FlatSurvey {
-    public static readonly QUES_GAP_VERT_SCALE: number = 1.0;
+    public static readonly QUES_GAP_VERT_SCALE: number = 1.5;
     public static readonly PANEL_CONT_GAP_SCALE: number = 1.0;
     public static readonly PANEL_DESC_GAP_SCALE: number = 0.25;
     public static async generateFlatsPanel(controller: DocController,

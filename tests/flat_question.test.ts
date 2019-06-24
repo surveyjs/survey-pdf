@@ -236,7 +236,7 @@ test('Calc boundaries with space between questions', async () => {
     expect(flats[0].length).toBe(3);
     let title2point: IPoint = await calcTitleTop(survey.controller.leftTopPoint,
         survey.controller, <Question>survey.getAllQuestions()[0], flats[0][0]);
-    title2point.yTop += survey.controller.unitHeight;
+    title2point.yTop += survey.controller.unitHeight * FlatSurvey.QUES_GAP_VERT_SCALE;
     expect(flats[0][1] instanceof RowlineBrick).toBe(true);
     await calcTitleTop(title2point, survey.controller,
         <Question>survey.getAllQuestions()[1], flats[0][2]);
