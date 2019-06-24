@@ -73,7 +73,8 @@ export class FlatQuestion implements IFlatQuestion {
                 let contentFlats = await this.generateFlatsContent(contentPoint);
                 this.controller.popMargins();
                 if (contentFlats.length != 0) {
-                    commentPoint.yTop = SurveyHelper.mergeRects(...contentFlats).yBot + this.controller.unitHeight * SurveyHelper.GAP_BETWEEN_ROWS;
+                    commentPoint.yTop = SurveyHelper.mergeRects(...contentFlats).yBot +
+                        this.controller.unitHeight * SurveyHelper.GAP_BETWEEN_ROWS;
                     compositeFlat.addBrick(contentFlats.shift());
                 }
                 flats.push(compositeFlat);
