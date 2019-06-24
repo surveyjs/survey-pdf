@@ -36,7 +36,7 @@ export class SurveyHelper {
     public static readonly TEXT_COLOR: string = '#404040';
     public static readonly BACKGROUND_COLOR: string = '#FFFFFF';
     public static readonly TITLE_LOCATION_MATRIX: string = 'matrix';
-    
+
     public static parseWidth(width: string, maxWidth: number): number {
         let value: number = parseFloat(width);
         let unit: string = width.replace(/[^A-Za-z]/g, '');
@@ -279,6 +279,15 @@ export class SurveyHelper {
             />`;
         return new HTMLBrick(question, controller,
             SurveyHelper.createRect(point, width, height), html);
+    }
+    public static async getImageSize(url: string): Promise<ISize> {
+        return await new Promise((resolve) => {
+            let image: any = new Image();
+            image.src = url;
+            image.onload = function () {
+                return resolve({ width: image.width, height: image.height });
+            }
+        });
     }
     public static createRowlineFlat(point: IPoint, controller: DocController,
         width?: number, color?: string): IPdfBrick {
