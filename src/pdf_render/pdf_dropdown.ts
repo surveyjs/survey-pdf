@@ -24,7 +24,7 @@ export class DropdownBrick extends PdfBrick {
             options.push(this.question.optionsCaption);
         }
         this.question.visibleChoices.forEach((item: ItemValue) => {
-            options.push(item.value);
+            options.push(SurveyHelper.getLocString(item.locText));
         });
         comboBox.setOptions(options);
         comboBox.value = '';
