@@ -123,6 +123,9 @@ var jsPDF = window.jsPDF || require('jspdf');
 		part = parts.shift();
 		while (!name && part) {
 			name = FontNameDB[part.trim().toLowerCase()];
+			if (!name) {
+				name = 'helvetica';
+			}
 			part = parts.shift();
 		}
 		return name;
@@ -1024,7 +1027,6 @@ var jsPDF = window.jsPDF || require('jspdf');
 		return this.paragraph.style.push(css);
 	};
 	FontNameDB = {
-		segoe: "segoe",
 		helvetica: "helvetica",
 		"sans-serif": "helvetica",
 		"times new roman": "times",
