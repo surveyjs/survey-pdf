@@ -12,7 +12,6 @@ import { FlatTextbox } from '../src/flat_layout/flat_textbox';
 import { FlatCheckbox } from '../src/flat_layout/flat_checkbox';
 import { FlatRadiogroup } from '../src/flat_layout/flat_radiogroup';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
-import { TextBrick } from '../src/pdf_render/pdf_text';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 let __dummy_tx = new FlatTextbox(null, null);
@@ -37,7 +36,7 @@ test('Pack two flats on two pages', () => {
     TestHelper.equalRect(expect, packs[1][0], TestHelper.defaultRect);
 });
 test('Long checkbox with indent', async () => {
-    let json = {
+    let json: any = {
         questions: [
             {
                 type: 'checkbox',
@@ -71,7 +70,8 @@ test('Long checkbox with indent', async () => {
     leftTopPoint.xLeft += survey.controller.measureText(json.questions[0].indent).width;
     TestHelper.equalPoint(expect, packs[0][0], leftTopPoint);
     leftTopPoint.xLeft += survey.controller.unitWidth;
-    leftTopPoint.yTop += survey.controller.unitHeight * (1.0 + checkGap) +
+    leftTopPoint.yTop += survey.controller.unitHeight * SurveyHelper.TITLE_FONT_SCALE +
+        survey.controller.unitHeight * checkGap +
         survey.controller.unitHeight * FlatQuestion.CONTENT_GAP_VERT_SCALE;
     TestHelper.equalPoint(expect, packs[0][1], leftTopPoint);
     leftTopPoint.yTop = survey.controller.leftTopPoint.yTop;
@@ -81,7 +81,7 @@ test('Long checkbox with indent', async () => {
     }
 });
 test('Check two textbox flats sort order', async () => {
-    let json = {
+    let json: any = {
         questions: [
             {
                 type: 'checkbox',
@@ -154,7 +154,7 @@ test('Pack near flats new page', () => {
         { xLeft: 20 * DocOptions.MM_TO_PT, xRight: 30 * DocOptions.MM_TO_PT, yTop: 10 * DocOptions.MM_TO_PT, yBot: 20 * DocOptions.MM_TO_PT });
 });
 test('Unfold compose brick', async () => {
-    let json = {
+    let json: any = {
         showQuestionNumbers: 'false',
         questions: [
             {
@@ -184,7 +184,7 @@ test('Unfold compose brick', async () => {
         SurveyHelper.createTextFieldRect(textBoxPoint, survey.controller));
 });
 test('Pack to little page', async () => {
-    let json = {
+    let json: any = {
         showQuestionNumbers: 'false',
         questions: [
             {
@@ -206,18 +206,15 @@ test('Pack to little page', async () => {
     expect(packs.length).toBe(2);
     expect(packs[0].length).toBe(1);
     expect(packs[1].length).toBe(1);
-    survey.controller.fontStyle = 'bold';
-    TestHelper.equalRect(expect, packs[0][0], await SurveyHelper.createTextFlat(
-        survey.controller.leftTopPoint, null, survey.controller,
-        SurveyHelper.getTitleText(<Question>survey.getAllQuestions()[0]), TextBrick));
-    survey.controller.fontStyle = 'normal';
+    TestHelper.equalRect(expect, packs[0][0], await SurveyHelper.createTitleFlat(
+        survey.controller.leftTopPoint, <Question>survey.getAllQuestions()[0], survey.controller));
     let textBoxPoint: IPoint = survey.controller.leftTopPoint;
     textBoxPoint.xLeft += survey.controller.unitWidth;
     TestHelper.equalRect(expect, packs[1][0],
         SurveyHelper.createTextFieldRect(textBoxPoint, survey.controller));
 });
 test('Check yTop on new page with panel', async () => {
-    let json = {
+    let json: any = {
         elements: [
             {
                 type: 'panel',
@@ -293,7 +290,7 @@ test('Check yTop on new page with panel', async () => {
         survey.controller.unitHeight * (1.0 + SurveyHelper.GAP_BETWEEN_ROWS));
 });
 test('Check adding new page for lack of place before new page', async () => {
-    let json = {
+    let json: any = {
         pages: [
             {
                 questions: [
@@ -317,7 +314,7 @@ test('Check adding new page for lack of place before new page', async () => {
             }
         ]
     };
-    let options = {
+    let options: IDocOptions = {
         fontSize: 16,
         format: [10, 20],
         margins:

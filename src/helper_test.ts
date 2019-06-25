@@ -1,5 +1,7 @@
+import { Question } from 'survey-core';
 import { IPoint, IRect, IDocOptions, DocOptions } from './doc_controller';
 import { IPdfBrick, PdfBrick } from './pdf_render/pdf_brick';
+import { SurveyHelper } from './helper_survey';
 
 export class TestHelper {
     public static get defaultPoint(): IPoint {
@@ -57,5 +59,9 @@ export class TestHelper {
     public static equalPoint(expect: any, point1: IPoint, point2: IPoint) {
         expect(point1.xLeft).toBeCloseTo(point2.xLeft);
         expect(point1.yTop).toBeCloseTo(point2.yTop);
+    }
+    public static getTitleText(question: Question): string {
+        return (question.no != '' ? question.no + '. ' : '') +
+            SurveyHelper.getLocString(question.locTitle)
     }
 }

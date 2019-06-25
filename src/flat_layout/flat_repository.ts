@@ -6,7 +6,6 @@ export type FlatConstructor = new (
     question: IQuestion,
     controller: DocController
 ) => IFlatQuestion;
-
 export class FlatRepository {
     private questions: { [index: string]: FlatConstructor } = {};
     private static instance: FlatRepository = new FlatRepository();
@@ -17,7 +16,7 @@ export class FlatRepository {
         this.questions[modelType] = rendererConstructor;
     }
     public create(question: IQuestion, docController: DocController): IFlatQuestion {
-        let rendererConstructor =
+        let rendererConstructor: FlatConstructor =
             this.questions[question.getType()] || FlatQuestion;
         return new rendererConstructor(question, docController);
     }
