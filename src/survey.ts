@@ -9,7 +9,7 @@ import { SurveyHelper } from './helper_survey';
 
 export class SurveyPDF extends SurveyModel {
     public controller: DocController;
-    private isRendered: boolean = false;
+    private isChanged: boolean = true;
     public constructor(jsonObject: any, options: IDocOptions) {
         super(jsonObject);
         this.controller = new DocController(options);
@@ -51,16 +51,17 @@ export class SurveyPDF extends SurveyModel {
             }
         }
     }
-    public async save(fileName: string = 'survey_result.pdf', isChanged: boolean = false): Promise<any> {
-        if (!this.isRendered || isChanged) {
+    public async save(fileName: string = 'survey_result.pdf'): Promise<any> {
+        if (this.isChanged) {
             await this.render();
-            this.isRendered = true;
+            this.isChanged = false;
         }
         return this.controller.doc.save(fileName, { returnPromise: true })
     }
-    public async raw(isChanged: boolean = false): Promise<String> {
-        if (!this.isRendered || isChanged) {
+    public async raw(): Promise<String> {
+        if (this.isChanged) {
             await this.render();
+            this.isChanged = false;
         }
         return this.controller.doc.__private__.buildDocument();
     }
