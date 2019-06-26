@@ -2,9 +2,8 @@
     return {};
 };
 
-import { QuestionExpressionModel } from 'survey-core';
 import { SurveyPDF } from '../src/survey';
-import { IRect } from '../src/doc_controller';
+import { IRect, DocController } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { FlatExpression } from '../src/flat_layout/flat_expression';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
@@ -13,7 +12,7 @@ import { SurveyHelper } from '../src/helper_survey';
 let __dummy_ex = new FlatExpression(null, null);
 
 test('Check expression', async () => {
-    let json = {
+    let json: any = {
         elements: [
             {
                 type: 'expression',
@@ -23,15 +22,17 @@ test('Check expression', async () => {
             }
         ]
     };
+
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
     let assumeExpression: IRect = {
-        xLeft: survey.controller.leftTopPoint.xLeft + survey.controller.unitWidth,
-        xRight: survey.controller.leftTopPoint.xLeft + SurveyHelper.getPageAvailableWidth(survey.controller),
-        yTop: survey.controller.leftTopPoint.yTop,
-        yBot: survey.controller.leftTopPoint.yTop + survey.controller.unitHeight
+        xLeft: controller.leftTopPoint.xLeft + controller.unitWidth,
+        xRight: controller.leftTopPoint.xLeft + SurveyHelper.getPageAvailableWidth(controller),
+        yTop: controller.leftTopPoint.yTop,
+        yBot: controller.leftTopPoint.yTop + controller.unitHeight
     };
     TestHelper.equalRect(expect, flats[0][0], assumeExpression);
 });

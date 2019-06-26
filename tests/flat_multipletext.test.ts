@@ -27,31 +27,32 @@ test('Check multiple text one item', async () => {
         ]
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
-    survey.controller.margins.left += survey.controller.unitWidth;
+    controller.margins.left += controller.unitWidth;
     let assumeMultipleText: IRect = {
-        xLeft: survey.controller.leftTopPoint.xLeft,
-        xRight: survey.controller.paperWidth - survey.controller.margins.right,
-        yTop: survey.controller.leftTopPoint.yTop,
-        yBot: survey.controller.leftTopPoint.yTop + survey.controller.unitHeight
+        xLeft: controller.leftTopPoint.xLeft,
+        xRight: controller.paperWidth - controller.margins.right,
+        yTop: controller.leftTopPoint.yTop,
+        yBot: controller.leftTopPoint.yTop + controller.unitHeight
     };
     TestHelper.equalRect(expect, flats[0][0], assumeMultipleText);
     let assumeText: IRect = {
-        xLeft: survey.controller.leftTopPoint.xLeft,
-        xRight: survey.controller.leftTopPoint.xLeft +
-            survey.controller.measureText(json.elements[0].items[0].name, 'bold').width,
-        yTop: survey.controller.leftTopPoint.yTop,
-        yBot: survey.controller.leftTopPoint.yTop + survey.controller.unitHeight
+        xLeft: controller.leftTopPoint.xLeft,
+        xRight: controller.leftTopPoint.xLeft +
+            controller.measureText(json.elements[0].items[0].name, 'bold').width,
+        yTop: controller.leftTopPoint.yTop,
+        yBot: controller.leftTopPoint.yTop + controller.unitHeight
     }
     TestHelper.equalRect(expect, flats[0][0].unfold()[0], assumeText);
     let assumeBox: IRect = {
-        xLeft: survey.controller.leftTopPoint.xLeft +
-            SurveyHelper.getPageAvailableWidth(survey.controller) * SurveyHelper.MULTIPLETEXT_TEXT_PERS,
+        xLeft: controller.leftTopPoint.xLeft +
+            SurveyHelper.getPageAvailableWidth(controller) * SurveyHelper.MULTIPLETEXT_TEXT_PERS,
         xRight: assumeMultipleText.xRight,
-        yTop: survey.controller.leftTopPoint.yTop,
-        yBot: survey.controller.leftTopPoint.yTop + survey.controller.unitHeight
+        yTop: controller.leftTopPoint.yTop,
+        yBot: controller.leftTopPoint.yTop + controller.unitHeight
     }
     TestHelper.equalRect(expect, flats[0][0].unfold()[1], assumeBox);
 });
@@ -74,16 +75,17 @@ test('Check multiple text two items', async () => {
         ]
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(2);
-    survey.controller.margins.left += survey.controller.unitWidth;
+    controller.margins.left += controller.unitWidth;
     let assumeMultipleText: IRect = {
-        xLeft: survey.controller.leftTopPoint.xLeft,
-        xRight: survey.controller.paperWidth - survey.controller.margins.right,
-        yTop: survey.controller.leftTopPoint.yTop,
-        yBot: survey.controller.leftTopPoint.yTop + survey.controller.unitHeight * 2.0 +
-            survey.controller.unitHeight * FlatMultipleText.ROWS_GAP_SCALE
+        xLeft: controller.leftTopPoint.xLeft,
+        xRight: controller.paperWidth - controller.margins.right,
+        yTop: controller.leftTopPoint.yTop,
+        yBot: controller.leftTopPoint.yTop + controller.unitHeight * 2.0 +
+            controller.unitHeight * FlatMultipleText.ROWS_GAP_SCALE
     };
     TestHelper.equalRect(expect, SurveyHelper.mergeRects(flats[0][0], flats[0][1]), assumeMultipleText);
 });
@@ -118,16 +120,17 @@ test('Check multiple text with colCount and long text', async () => {
         new DocController(options).unitWidth /
             SurveyHelper.MULTIPLETEXT_TEXT_PERS, 297.0];
     let survey: SurveyPDF = new SurveyPDF(json, options);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(2);
-    survey.controller.margins.left += survey.controller.unitWidth;
+    controller.margins.left += controller.unitWidth;
     let assumeMultipleText: IRect = {
-        xLeft: survey.controller.leftTopPoint.xLeft,
-        xRight: survey.controller.paperWidth - survey.controller.margins.right,
-        yTop: survey.controller.leftTopPoint.yTop,
-        yBot: survey.controller.leftTopPoint.yTop + survey.controller.unitHeight * 2.0 +
-            survey.controller.unitHeight * FlatMultipleText.ROWS_GAP_SCALE
+        xLeft: controller.leftTopPoint.xLeft,
+        xRight: controller.paperWidth - controller.margins.right,
+        yTop: controller.leftTopPoint.yTop,
+        yBot: controller.leftTopPoint.yTop + controller.unitHeight * 2.0 +
+            controller.unitHeight * FlatMultipleText.ROWS_GAP_SCALE
     };
     TestHelper.equalRect(expect, SurveyHelper.mergeRects(flats[0][0], flats[0][1]), assumeMultipleText);
 });

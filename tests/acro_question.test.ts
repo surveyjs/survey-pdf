@@ -4,10 +4,10 @@
 
 import { Question } from 'survey-core';
 import { SurveyPDF } from '../src/survey';
+import { DocController } from '../src/doc_controller';
 import { FlatTextbox } from '../src/flat_layout/flat_textbox';
 import { FlatCheckbox } from '../src/flat_layout/flat_checkbox';
 import { TestHelper } from '../src/helper_test';
-import { SurveyHelper } from '../src/helper_survey';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 let __dummy_tx = new FlatTextbox(null, null);
@@ -29,8 +29,9 @@ async function checkTitleText(questionStartIndex: string, isRequired: boolean = 
   if (questionStartIndex !== null) {
     survey.questionStartIndex = questionStartIndex;
   }
-  await survey.render();
-  let internalContent: string = survey.controller.doc.internal.pages[1][2];
+  let controller: DocController = new DocController(TestHelper.defaultOptions);
+  await survey['render'](controller);
+  let internalContent: string = controller.doc.internal.pages[1][2];
   expect(internalContent).toBeDefined();
   let regex: RegExp = /\((.*)\)/;
   let content: string = internalContent.match(regex)[1];
@@ -62,9 +63,10 @@ test('Check comment', async () => {
     ]
   };
   let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-  await survey.render();
-  let internal: any = survey.controller.doc.internal;
-  let internalContent: string = survey.controller.doc.internal.pages[1][2];
+  let controller: DocController = new DocController(TestHelper.defaultOptions);
+  await survey['render'](controller);
+  let internal: any = controller.doc.internal;
+  let internalContent: string = controller.doc.internal.pages[1][2];
   let textField: any = internal.acroformPlugin.acroFormDictionaryRoot.Fields[0]
   expect(internalContent).toBeDefined();
   let regex: RegExp = /\((.*)\)/;
@@ -86,8 +88,9 @@ test('Check comment readonly', async () => {
     ]
   };
   let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-  await survey.render();
-  let internal = survey.controller.doc.internal;
+  let controller: DocController = new DocController(TestHelper.defaultOptions);
+  await survey['render'](controller);
+  let internal = controller.doc.internal;
   let textField = internal.acroformPlugin.acroFormDictionaryRoot.Fields[0]
   expect(textField.readOnly).toBe(true);
 });
@@ -102,7 +105,8 @@ test('Check empty question', async () => {
     ]
   };
   let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-  let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
+  let controller: DocController = new DocController(TestHelper.defaultOptions);
+  let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
   expect(flats.length).toBe(1);
   expect(typeof flats[0]).not.toBe('undefined');
   expect(flats[0].length).toBe(0);
@@ -118,7 +122,8 @@ test('Not visible question', async () => {
     ]
   };
   let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-  let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
+  let controller: DocController = new DocController(TestHelper.defaultOptions);
+  let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
   expect(flats.length).toBe(0);
 });
 test('Check descrition with hidden title', async () => {
@@ -134,8 +139,9 @@ test('Check descrition with hidden title', async () => {
     ]
   };
   let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-  await survey.render();
-  let internalContent: string = survey.controller.doc.internal.pages[1][3];
+  let controller: DocController = new DocController(TestHelper.defaultOptions);
+  await survey['render'](controller);
+  let internalContent: string = controller.doc.internal.pages[1][3];
   expect(internalContent).toBeDefined();
   let regex: RegExp = /\((.*)\)/;
   let content: string = internalContent.match(regex)[1];
@@ -166,7 +172,8 @@ test('Two pages', async () => {
     ]
   };
   let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-  let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
+  let controller: DocController = new DocController(TestHelper.defaultOptions);
+  let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
   expect(flats.length).toBe(2);
   expect(flats[0].length).toBe(1);
   expect(flats[1].length).toBe(1);

@@ -4,7 +4,7 @@
 
 import { Question } from 'survey-core';
 import { SurveyPDF } from '../src/survey';
-import { IPoint } from '../src/doc_controller';
+import { IPoint, DocController } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { FlatDropdown } from '../src/flat_layout/flat_dropdown';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
@@ -26,10 +26,11 @@ test('Check dropdown', async () => {
         ]
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
-    await calcTitleTop(survey.controller.leftTopPoint, survey.controller,
+    await calcTitleTop(controller.leftTopPoint, controller,
         <Question>survey.getAllQuestions()[0], flats[0][0]);
 });
 test('Check dropdown with other', async () => {
@@ -47,13 +48,14 @@ test('Check dropdown with other', async () => {
         ]
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
-    let otherPoint: IPoint = await calcTitleTop(survey.controller.leftTopPoint, survey.controller,
+    let otherPoint: IPoint = await calcTitleTop(controller.leftTopPoint, controller,
         <Question>survey.getAllQuestions()[0], TestHelper.wrapRect(SurveyHelper.mergeRects(
             flats[0][0].unfold()[0], flats[0][0].unfold()[1])));
-    otherPoint.xLeft += survey.controller.unitWidth;
+    otherPoint.xLeft += controller.unitWidth;
     TestHelper.equalRect(expect, flats[0][0].unfold()[2], SurveyHelper.createOtherFlat(
-        otherPoint, survey.getAllQuestions()[0], survey.controller));
+        otherPoint, survey.getAllQuestions()[0], controller));
 });
