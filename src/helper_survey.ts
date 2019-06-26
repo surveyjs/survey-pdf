@@ -175,7 +175,7 @@ export class SurveyHelper {
         }
         else {
             return this.splitHtmlRect(controller, await this.createHTMLFlat(point,
-                <Question>question, controller, this.createDivBlock(text.html, controller)));
+                <Question>question, controller, this.createDivBlock(text.renderedHtml, controller)));
         }
     }
     private static getHtmlMargins(controller: DocController, point: IPoint): { top: number, bottom: number, width: number } {
@@ -228,7 +228,6 @@ export class SurveyHelper {
                 composite.addBrick(await SurveyHelper.createHTMLFlat(currPoint, question, controller,
                     SurveyHelper.createDivBlock(noText, controller)));
                 controller.popMargins();
-
                 controller.fontStyle = 'normal';
             }
             else {
@@ -240,7 +239,7 @@ export class SurveyHelper {
         controller.pushMargins();
         controller.margins.left = currPoint.xLeft;
         composite.addBrick(await SurveyHelper.createBoldTextFlat(currPoint, question,
-            controller, question.locTitle))
+            controller, question.locTitle));
         controller.popMargins();
         controller.fontSize = oldFontSize;
         return composite;

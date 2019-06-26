@@ -86,7 +86,11 @@ export class DocController extends DocOptions {
 
     public constructor(options: IDocOptions) {
         super(options);
-        if ((options.fontName && (options.base64Normal || options.base64Bold)) || this.fontName == 'segoe') {
+        if ((options.fontName && (options.base64Normal || options.base64Bold))) {
+            this.addFont(this.fontName, options.base64Normal, 'normal');
+            this.addFont(this.fontName, options.base64Bold, 'bold');
+        }
+        else if (this.fontName == 'segoe') {
             this.addFont(this.fontName, Fonts.SEGOE_NORMAL, 'normal');
             this.addFont(this.fontName, Fonts.SEGOE_BOLD, 'bold');
         }
@@ -104,7 +108,7 @@ export class DocController extends DocOptions {
         var callAddFont = function () {
             let fontFile: string = `${fontName}-${fontStyle}.ttf`
             this.addFileToVFS(fontFile, base);
-            this.addFont(fontFile, fontName, fontStyle, 'WinAnsiEncoding', true);
+            this.addFont(fontFile, fontName, fontStyle)//, 'WinAnsiEncoding', true);
         };
         (<any>jsPDF).API.events.push(['addFonts', callAddFont]);
     }
