@@ -356,6 +356,4 @@ survey.setValue('name4', 'notdef');
 // 		//set html
 // 		options.html = str;
 // 	});
-survey.save().then(function () {
-	survey.save();
-});
+survey.save();
