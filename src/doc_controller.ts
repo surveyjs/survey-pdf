@@ -90,7 +90,7 @@ export class DocController extends DocOptions {
             this.addFont(this.fontName, options.base64Normal, 'normal');
             this.addFont(this.fontName, options.base64Bold, 'bold');
         }
-        else if (this.fontName == 'segoe') {
+        else if (this.fontName === 'segoe') {
             this.addFont(this.fontName, Fonts.SEGOE_NORMAL, 'normal');
             this.addFont(this.fontName, Fonts.SEGOE_BOLD, 'bold');
         }
