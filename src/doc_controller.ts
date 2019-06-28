@@ -42,7 +42,14 @@ export class DocOptions implements IDocOptions {
     protected _orientation: 'l' | 'p';
     protected _fontName: string;
     public constructor(options: IDocOptions) {
-        this._orientation = options.orientation || 'p';
+        if (typeof options.orientation === 'undefined') {
+            if (typeof options.format === 'undefined' ||
+                options.format[0] < options.format[1]) {
+                this._orientation = 'p';
+            }
+            else this._orientation = 'l';
+        }
+        else this._orientation = options.orientation;
         this._format = options.format || 'a4';
         if (Array.isArray(this._format)) {
             this._format = this._format.map(f => f * DocOptions.MM_TO_PT);
