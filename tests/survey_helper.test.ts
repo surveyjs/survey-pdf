@@ -1,7 +1,7 @@
 (<any>window)['HTMLCanvasElement'].prototype.getContext = () => {
     return {};
 };
-import { IPoint, IRect, IDocOptions, DocOptions, DocController } from '../src/doc_controller';
+import { IPoint, IRect,ISize, IDocOptions, DocOptions, DocController } from '../src/doc_controller';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { TextBrick } from '../src/pdf_render/pdf_text';
 import { SurveyHelper } from '../src/helper_survey';
@@ -9,7 +9,7 @@ import { TestHelper } from '../src/helper_test';
 
 test('Merge rects 2 count', () => {
     let rectKeys: string[] = Object.keys(TestHelper.defaultRect);
-    let lessKeys = ['yTop', 'xLeft'];
+    let lessKeys: any = ['yTop', 'xLeft'];
     rectKeys.forEach((key: string) => {
         let firstRect: IRect = TestHelper.defaultRect;
         let secondRect: IRect = TestHelper.defaultRect;
@@ -21,7 +21,7 @@ test('Merge rects 2 count', () => {
     })
 });
 test('Create rect', () => {
-    let parametres = {
+    let parametres: ISize = {
         width: 0,
         height: 0
     }
@@ -41,10 +41,10 @@ test('Create rect', () => {
 });
 test('Create point', () => {
     let rect: IRect = TestHelper.defaultRect;
-    let isTop = true;
-    let isLeft = true;
-    let x = rect.xLeft;
-    let y = rect.yTop;
+    let isTop: boolean = true;
+    let isLeft: boolean = true;
+    let x: number = rect.xLeft;
+    let y: number = rect.yTop;
     TestHelper.equalPoint(expect, SurveyHelper.createPoint(rect, isLeft, isTop), { xLeft: x, yTop: y });
     isLeft = false;
     x = rect.xRight;
@@ -129,7 +129,7 @@ test('Push pop margins with params', async () => {
     expect(controller.margins.left).toBe(oldMarginLeft_1);
     expect(controller.margins.right).toBe(oldMarginRight_1);
 });
-test('scale squre 0.8', async () => {
+test('Scale squre 0.8', () => {
     let rect: IRect = {
         xLeft: 10,
         xRight: 20,
@@ -144,7 +144,7 @@ test('scale squre 0.8', async () => {
     }
     TestHelper.equalRect(expect, SurveyHelper.scaleRect(rect, 0.8), assumeRect);
 })
-test('scale rect 0.8', async () => {
+test('Scale rect 0.8', () => {
     let rect: IRect = {
         xLeft: 10,
         xRight: 26,
@@ -159,7 +159,7 @@ test('scale rect 0.8', async () => {
     }
     TestHelper.equalRect(expect, SurveyHelper.scaleRect(rect, 0.8), assumeRect);
 })
-test('scale rect 0.2', async () => {
+test('Scale rect 0.2', () => {
     let rect: IRect = {
         xLeft: 10,
         xRight: 20,
@@ -173,8 +173,8 @@ test('scale rect 0.2', async () => {
         yBot: 16
     }
     TestHelper.equalRect(expect, SurveyHelper.scaleRect(rect, 0.2), assumeRect);
-})
-test('move rect to (0,0)', async () => {
+});
+test('Move rect to (0,0)', () => {
     let rect: IRect = {
         xLeft: 10,
         xRight: 20,
@@ -188,9 +188,8 @@ test('move rect to (0,0)', async () => {
         yBot: 10
     }
     TestHelper.equalRect(expect, SurveyHelper.moveRect(rect, 0, 0), assumeRect);
-}
-);
-test('move rect to (0, undefined)', async () => {
+});
+test('Move rect to (0, undefined)', () => {
     let rect: IRect = {
         xLeft: 10,
         xRight: 20,
@@ -204,8 +203,8 @@ test('move rect to (0, undefined)', async () => {
         yBot: 20
     }
     TestHelper.equalRect(expect, SurveyHelper.moveRect(rect, 0), assumeRect);
-})
-test('move rect to (undefined, 0)', async () => {
+});
+test('Move rect to (undefined, 0)', () => {
     let rect: IRect = {
         xLeft: 10,
         xRight: 20,
@@ -219,19 +218,17 @@ test('move rect to (undefined, 0)', async () => {
         yBot: 10
     }
     TestHelper.equalRect(expect, SurveyHelper.moveRect(rect, undefined, 0), assumeRect);
-})
-test('parse width 10 px', async () => {
+});
+test('Parse width 10 px', () => {
     expect(SurveyHelper.parseWidth('10px', 100)).toBeCloseTo(10 * 72 / 96);
-})
-test('parse width 10', async () => {
+});
+test('Parse width 10', () => {
     expect(SurveyHelper.parseWidth('10', 100)).toBe(10);
-
-})
-test('parse width 10%', async () => {
+});
+test('Parse width 10%', () => {
     expect(SurveyHelper.parseWidth('10%', 100)).toBe(10);
-
-})
-test('check set column width', async () => {
+});
+test('Check set column width', () => {
     let options: IDocOptions = {
         format: [100, 100],
         margins: {
@@ -257,4 +254,19 @@ test('check set column width', async () => {
     SurveyHelper.setColumnMargins(controller, 3, 2);
     expect(controller.margins.left).toBe(2 * (columnWidth + gap));
     expect(controller.margins.right).toBe(0);
-})
+});
+test('Check textfield with negative width', () => {
+    let options: IDocOptions = {
+        format: [10, 200]
+    };
+    let controller: DocController = new DocController(options);
+    let resultRect: IRect = SurveyHelper.createTextFieldRect(
+        controller.leftTopPoint, controller);
+    let assumeRect: IRect = {
+        xLeft: controller.leftTopPoint.xLeft,
+        xRight: controller.leftTopPoint.xLeft + controller.unitWidth,
+        yTop: controller.leftTopPoint.yTop,
+        yBot: controller.leftTopPoint.yTop + controller.unitHeight
+    }
+    TestHelper.equalRect(expect, resultRect, assumeRect);
+});

@@ -342,7 +342,7 @@ test('Check adding new page for lack of place before new page', async () => {
     TestHelper.equalRect(expect, flats[0][2], SurveyHelper.moveRect(packs[1][0], undefined, 0));
     TestHelper.equalRect(expect, flats[1][0], packs[2][0]);
 })
-test('check question\'s width with startWitdthNewLine: false property', async () => {
+test('Check questions width with startWitdthNewLine: false property', async () => {
     let json: any = {
         questions: [
             {
@@ -356,7 +356,7 @@ test('check question\'s width with startWitdthNewLine: false property', async ()
                 name: 'test2',
                 titleLocation: 'hidden',
                 startWithNewLine: 'false',
-                width: '10%'
+                width: '15%'
             },
             {
                 type: 'text',
@@ -370,16 +370,16 @@ test('check question\'s width with startWitdthNewLine: false property', async ()
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     let resultFlats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     let currPoint: IPoint = controller.leftTopPoint;
-    let width: number = SurveyHelper.getPageAvailableWidth(controller) - 2 * controller.unitWidth;
+    let width: number = SurveyHelper.getPageAvailableWidth(controller) - 2.0 * controller.unitWidth;
     let assumeFlats: IRect[] = [];
     currPoint.xLeft += controller.unitWidth;
     controller.margins.left = currPoint.xLeft;
-    assumeFlats.push(SurveyHelper.createRect(currPoint, 0.33333333 * width - controller.unitWidth, controller.unitHeight));
-    currPoint.xLeft = assumeFlats[0].xRight + 2 * controller.unitWidth;
+    assumeFlats.push(SurveyHelper.createRect(currPoint, 1.0 / 3.0 * width - controller.unitWidth, controller.unitHeight));
+    currPoint.xLeft = assumeFlats[0].xRight + 2.0 * controller.unitWidth;
     controller.margins.left = currPoint.xLeft;
-    assumeFlats.push(SurveyHelper.createRect(currPoint, 0.1 * width - controller.unitWidth, controller.unitHeight));
-    currPoint.xLeft = assumeFlats[1].xRight + 2 * controller.unitWidth;
+    assumeFlats.push(SurveyHelper.createRect(currPoint, 0.15 * width - controller.unitWidth, controller.unitHeight));
+    currPoint.xLeft = assumeFlats[1].xRight + 2.0 * controller.unitWidth;
     controller.margins.left = currPoint.xLeft;
-    assumeFlats.push(SurveyHelper.createRect(currPoint, 0.33333333 * width - controller.unitWidth, controller.unitHeight));
+    assumeFlats.push(SurveyHelper.createRect(currPoint, 1.0 / 3.0 * width - controller.unitWidth, controller.unitHeight));
     TestHelper.equalRects(expect, resultFlats[0], assumeFlats);
 })

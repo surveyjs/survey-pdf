@@ -1,5 +1,5 @@
 import { IQuestion, Question, QuestionRatingModel, LocalizableString } from 'survey-core';
-import { IPoint, IRect, ISize, DocController, } from './doc_controller';
+import { IPoint, IRect, ISize, DocController, IMargin, } from './doc_controller';
 import { IPdfBrick, PdfBrick } from './pdf_render/pdf_brick';
 import { TextBrick } from './pdf_render/pdf_text';
 import { TitleBrick } from './pdf_render/pdf_title';
@@ -179,14 +179,15 @@ export class SurveyHelper {
         }
     }
     private static getHtmlMargins(controller: DocController, point: IPoint): { top: number, bottom: number, width: number } {
+        let width: number = controller.paperWidth - point.xLeft - controller.margins.right;
         return {
             top: controller.margins.top,
             bottom: controller.margins.bot,
-            width: controller.paperWidth - point.xLeft - controller.margins.right,
+            width: width > controller.unitWidth ? width : controller.unitWidth
         }
     }
     public static async createHTMLFlat(point: IPoint, question: Question, controller: DocController, html: string): Promise<IPdfBrick> {
-        let margins = this.getHtmlMargins(controller, point);
+        let margins: { top: number, bottom: number, width: number } = this.getHtmlMargins(controller, point);
         return await new Promise((resolve) => {
             controller.helperDoc.fromHtml(html, point.xLeft, margins.top, {
                 'pagesplit': true,
@@ -200,7 +201,7 @@ export class SurveyHelper {
                 for (let i: number = 0; i < controller.helperDoc.getNumberOfPages(); i++) {
                     controller.helperDoc.deletePage(1);
                 }
-                let rect = SurveyHelper.createRect(point, margins.width, yBot);
+                let rect: IRect = SurveyHelper.createRect(point, margins.width, yBot);
                 resolve(new HTMLBrick(question, controller, rect, html));
             }, margins)
         });
@@ -297,6 +298,7 @@ export class SurveyHelper {
         let xRight: number = typeof width === 'undefined' ?
             controller.paperWidth - controller.margins.right :
             point.xLeft + width;
+        xRight = xRight > point.xLeft ? xRight : point.xLeft + SurveyHelper.EPSILON;
         return new RowlineBrick(controller, {
             xLeft: point.xLeft,
             xRight: xRight,
@@ -319,6 +321,7 @@ export class SurveyHelper {
     }
     public static createTextFieldRect(point: IPoint, controller: DocController, lines: number = 1): IRect {
         let width: number = controller.paperWidth - point.xLeft - controller.margins.right;
+        width = Math.max(width, controller.unitWidth);
         let height: number = controller.unitHeight * lines;
         return SurveyHelper.createRect(point, width, height);
     }
@@ -394,11 +397,12 @@ export class SurveyHelper {
         }
     }
     public static formScale(controller: DocController, flat: PdfBrick): number {
-        let minSide = flat.width < flat.height ? flat.width : flat.height;
-        return (minSide - controller.unitHeight * SurveyHelper.BORDER_SCALE * 2.0) / minSide;
+        let minSide: number = Math.min(flat.width, flat.height);
+        let borderWidth: number = controller.unitHeight * SurveyHelper.BORDER_SCALE * 2.0;
+        return (minSide - borderWidth) / minSide;
     }
     public static wrapInBordersFlat(controller: DocController, flat: PdfBrick): void {
-        let minSide = flat.width < flat.height ? flat.width : flat.height;
+        let minSide: number = Math.min(flat.width, flat.height);
         let visibleWidth: number = controller.unitHeight * SurveyHelper.VISIBLE_BORDER_SCALE * SurveyHelper.BORDER_SCALE;
         let visibleScale: number = SurveyHelper.formScale(controller, flat) + visibleWidth / minSide;
         let unvisibleWidth: number = controller.unitHeight * SurveyHelper.UNVISIBLE_BORDER_SCALE * SurveyHelper.BORDER_SCALE;
