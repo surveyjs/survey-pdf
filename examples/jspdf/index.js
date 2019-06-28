@@ -296,12 +296,8 @@ var json = {
 
 let options = {
 	fontSize: 14,
-	margins:
-	{
-		left: 10,
-		right: 10,
-		top: 18,
-		bot: 10
+	margins: {
+		top: 18
 	}
 };
 
@@ -337,12 +333,12 @@ survey.onRenderFooter.add((_, canvas) => {
 	});
 });
 
-survey.setValue('car', 'Ford');
-survey.setValue('name', 'SUPER');
-survey.setValue('name2', 'DATA');
-survey.setValue('car2', ['A', 'EEE']);
-survey.setValue('radio', 'Red FM');
-survey.setValue('name4', 'notdef');
+// survey.setValue('car', 'Ford');
+// survey.setValue('name', 'SUPER');
+// survey.setValue('name2', 'DATA');
+// survey.setValue('car2', ['A', 'EEE']);
+// survey.setValue('radio', 'Red FM');
+// survey.setValue('name4', 'notdef');
 
 // let converter = new showdown.Converter();
 // survey
