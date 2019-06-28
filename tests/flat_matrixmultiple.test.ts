@@ -73,7 +73,7 @@ test('Check matrix multiple one column one row', async () => {
     expect(flats[0].length).toBe(2);
     controller.margins.left += controller.unitWidth;
     let unfoldHeaderFlats: IPdfBrick[] = flats[0][0].unfold();
-    expect(unfoldHeaderFlats.length).toBe(2);
+    expect(unfoldHeaderFlats.length).toBe(3);
     let unfoldRowFlats: IPdfBrick[] = flats[0][1].unfold();
     expect(unfoldRowFlats.length).toBe(2);
     let header: ISize = controller.measureText(json.elements[0].columns[0].name, 'bold');
@@ -96,7 +96,7 @@ test('Check matrix multiple one column one row', async () => {
         yTop: controller.leftTopPoint.yTop,
         yBot: controller.leftTopPoint.yTop + header.height
     };
-    TestHelper.equalRect(expect, unfoldHeaderFlats[0], assumeHeader);
+    TestHelper.equalRect(expect, unfoldHeaderFlats[1], assumeHeader);
     let rowText: ISize = controller.measureText(json.elements[0].rows[0]);
     let assumeRowText: IRect = {
         xLeft: controller.leftTopPoint.xLeft,
@@ -144,7 +144,7 @@ test('Check matrix multiple two columns one row vertical layout', async () => {
     expect(flats[0].length).toBe(3);
     controller.margins.left += controller.unitWidth;
     let unfoldHeaderFlats: IPdfBrick[] = flats[0][0].unfold();
-    expect(unfoldHeaderFlats.length).toBe(2);
+    expect(unfoldHeaderFlats.length).toBe(3);
     let unfoldRow1Flats: IPdfBrick[] = flats[0][1].unfold();
     expect(unfoldRow1Flats.length).toBe(3);
     let unfoldRow2Flats: IPdfBrick[] = flats[0][2].unfold();
@@ -168,8 +168,8 @@ test('Check matrix multiple two columns one row vertical layout', async () => {
         yTop: controller.leftTopPoint.yTop,
         yBot: controller.leftTopPoint.yTop + header.height
     };
-    TestHelper.equalRect(expect, unfoldHeaderFlats[0], assumeHeader);
-    let row1Text: ISize = controller.measureText(json.elements[0].columns[0].name, 'bold');
+    TestHelper.equalRect(expect, unfoldHeaderFlats[1], assumeHeader);
+    let row1Text: ISize = controller.measureText(json.elements[0].columns[0].name);
     let assumeRow1Text: IRect = {
         xLeft: controller.leftTopPoint.xLeft,
         xRight: controller.leftTopPoint.xLeft + row1Text.width,
@@ -186,7 +186,7 @@ test('Check matrix multiple two columns one row vertical layout', async () => {
         yBot: assumeRow1Text.yTop + controller.unitHeight
     };
     TestHelper.equalRect(expect, unfoldRow1Flats[1], assumeRow1Question);
-    let row2Text: ISize = controller.measureText(json.elements[0].columns[1].name, 'bold');
+    let row2Text: ISize = controller.measureText(json.elements[0].columns[1].name);
     let assumeRow2Text: IRect = {
         xLeft: controller.leftTopPoint.xLeft,
         xRight: controller.leftTopPoint.xLeft + row2Text.width,
@@ -331,7 +331,7 @@ test('Check matrix multiple two columns one row vertical layout narrow width', a
     expect(unfoldRow1Flats.length).toBe(4);
     let unfoldRow2Flats: IPdfBrick[] = flats[0][1].unfold();
     expect(unfoldRow2Flats.length).toBe(3);
-    let header1: ISize = controller.measureText(json.elements[0].columns[0].name, 'bold');
+    let header1: ISize = controller.measureText(json.elements[0].columns[0].name);
     let assumeHeader1: IRect = {
         xLeft: controller.leftTopPoint.xLeft,
         xRight: controller.leftTopPoint.xLeft + header1.width,
@@ -356,7 +356,7 @@ test('Check matrix multiple two columns one row vertical layout narrow width', a
         yBot: assumeRow1Text.yBot + controller.unitHeight * (1 + FlatMatrixDynamic.GAP_BETWEEN_ROWS)
     };
     TestHelper.equalRect(expect, unfoldRow1Flats[2], assumeRow1Question);
-    let header2: ISize = controller.measureText(json.elements[0].columns[1].name, 'bold');
+    let header2: ISize = controller.measureText(json.elements[0].columns[1].name);
     let assumeHeader2: IRect = {
         xLeft: controller.leftTopPoint.xLeft,
         xRight: controller.leftTopPoint.xLeft + header2.width,

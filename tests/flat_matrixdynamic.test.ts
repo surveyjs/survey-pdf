@@ -249,7 +249,7 @@ test('Check matrix dynamic one column one row vertical layout', async () => {
     expect(unfoldHeaderFlats[0] instanceof RowlineBrick).toBe(true);
     let unfoldRowFlats: IPdfBrick[] = flats[0][1].unfold();
     expect(unfoldRowFlats.length).toBe(2);
-    let header: ISize = controller.measureText(json.elements[0].columns[0].name, 'bold');
+    let header: ISize = controller.measureText(json.elements[0].columns[0].name);
     let assumeText: IRect = {
         xLeft: controller.leftTopPoint.xLeft,
         xRight: controller.leftTopPoint.xLeft + header.width,
