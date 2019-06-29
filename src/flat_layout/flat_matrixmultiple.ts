@@ -1,5 +1,5 @@
 import {
-    IQuestion, QuestionMatrixDropdownModelBase, LocalizableString,
+    IQuestion, QuestionMatrixDropdownModelBase,
     QuestionMatrixDropdownRenderedTable, QuestionMatrixDropdownRenderedRow,
     QuestionMatrixDropdownRenderedCell
 } from 'survey-core';
@@ -10,7 +10,6 @@ import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { TextBrick } from '../pdf_render/pdf_text';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
-import { RowlineBrick } from '../pdf_render/pdf_rowline';
 
 export class FlatMatrixMultiple extends FlatQuestion {
     public static readonly GAP_BETWEEN_ROWS = 0.5;
@@ -56,7 +55,7 @@ export class FlatMatrixMultiple extends FlatQuestion {
         let cells: QuestionMatrixDropdownRenderedCell[] = row.cells;
         let currPoint: IPoint = SurveyHelper.clone(point);
         for (let i: number = 0; i < Math.min(colCount, cells.length); i++) {
-            if (this.question.renderedTable.showHeader && i > 0) {
+            if (this.question.renderedTable.showHeader && (!this.isMultiple || i > 0)) {
                 composite.addBrick(await this.generateFlatsCell(currPoint,
                     this.question.renderedTable.headerRow.cells[i], false));
                 currPoint.yTop = composite.yBot + FlatMatrixMultiple.GAP_BETWEEN_ROWS * this.controller.unitHeight;
@@ -94,8 +93,10 @@ export class FlatMatrixMultiple extends FlatQuestion {
         let rows: QuestionMatrixDropdownRenderedRow[] = [];
         !table.showHeader || rows.push(table.headerRow);
         rows.push(...table.rows);
+        !(!this.isMultiple && this.question.columnLayout == 'vertical') || rows.pop();
         !table.showFooter || rows.push(table.footerRow);
-        let colCount: number = rows[0] ? rows[0].cells.length - (this.isMultiple? 0: 1) : 0;
+        let colCount: number = rows[0] ? rows[0].cells.length - (this.isMultiple 
+            || this.question.columnLayout == 'vertical' || table.rows.length == 0 ? 0: 1) : 0;
         if(colCount < 1){            
             return [new CompositeBrick(SurveyHelper.createRowlineFlat(point, this.controller))];
         }

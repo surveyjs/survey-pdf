@@ -37,7 +37,7 @@ test('Check matrix dynamic one column no rows', async () => {
     expect(flats[0].length).toBe(1);
     controller.margins.left += controller.unitWidth;
     let unfoldFlats: IPdfBrick[] = flats[0][0].unfold();
-    expect(unfoldFlats.length).toBe(2);
+    expect(unfoldFlats.length).toBe(1);
     let size: ISize = controller.measureText(json.elements[0].columns[0].name, 'bold');
     let assumeMatrix: IRect = {
         xLeft: controller.leftTopPoint.xLeft,
@@ -46,7 +46,6 @@ test('Check matrix dynamic one column no rows', async () => {
         yBot: controller.leftTopPoint.yTop + size.height
     };
     TestHelper.equalRect(expect, unfoldFlats[0], assumeMatrix);
-    expect(unfoldFlats[1] instanceof RowlineBrick).toBe(true);
 });
 test('Check matrix dynamic no columns one row', async () => {
     let json: any = {
@@ -115,12 +114,9 @@ test('Check matrix dynamic one column one row show header off', async () => {
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(2);
+    expect(flats[0].length).toBe(1);
     controller.margins.left += controller.unitWidth;
-    let unfoldHeaderFlats: IPdfBrick[] = flats[0][0].unfold();
-    expect(unfoldHeaderFlats.length).toBe(1);
-    expect(unfoldHeaderFlats[0] instanceof RowlineBrick).toBe(true);
-    let unfoldRowFlats: IPdfBrick[] = flats[0][1].unfold();
+    let unfoldRowFlats: IPdfBrick[] = flats[0][0].unfold();
     expect(unfoldRowFlats.length).toBe(1);
     let assumeQuestion: IRect = {
         xLeft: controller.leftTopPoint.xLeft,
@@ -205,12 +201,9 @@ test('Check matrix dynamic one column one row vertical layout show header off', 
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(2);
+    expect(flats[0].length).toBe(1);
     controller.margins.left += controller.unitWidth;
-    let unfoldHeaderFlats: IPdfBrick[] = flats[0][0].unfold();
-    expect(unfoldHeaderFlats.length).toBe(1);
-    expect(unfoldHeaderFlats[0] instanceof RowlineBrick).toBe(true);
-    let unfoldRowFlats: IPdfBrick[] = flats[0][1].unfold();
+    let unfoldRowFlats: IPdfBrick[] = flats[0][0].unfold();
     expect(unfoldRowFlats.length).toBe(1);
     let assumeQuestion: IRect = {
         xLeft: controller.leftTopPoint.xLeft,
@@ -242,12 +235,9 @@ test('Check matrix dynamic one column one row vertical layout', async () => {
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(2);
+    expect(flats[0].length).toBe(1);
     controller.margins.left += controller.unitWidth;
-    let unfoldHeaderFlats: IPdfBrick[] = flats[0][0].unfold();
-    expect(unfoldHeaderFlats.length).toBe(1);
-    expect(unfoldHeaderFlats[0] instanceof RowlineBrick).toBe(true);
-    let unfoldRowFlats: IPdfBrick[] = flats[0][1].unfold();
+    let unfoldRowFlats: IPdfBrick[] = flats[0][0].unfold();
     expect(unfoldRowFlats.length).toBe(2);
     let header: ISize = controller.measureText(json.elements[0].columns[0].name);
     let assumeText: IRect = {
@@ -301,14 +291,11 @@ test('Check matrix dynamic two columns one row vertical layout show header off',
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(3);
+    expect(flats[0].length).toBe(2);
     controller.margins.left += controller.unitWidth;
-    let unfoldHeaderFlats: IPdfBrick[] = flats[0][0].unfold();
-    expect(unfoldHeaderFlats.length).toBe(1);
-    expect(unfoldHeaderFlats[0] instanceof RowlineBrick).toBe(true);
-    let unfoldRow1Flats: IPdfBrick[] = flats[0][1].unfold();
+    let unfoldRow1Flats: IPdfBrick[] = flats[0][0].unfold();
     expect(unfoldRow1Flats.length).toBe(2);
-    let unfoldRow2Flats: IPdfBrick[] = flats[0][2].unfold();
+    let unfoldRow2Flats: IPdfBrick[] = flats[0][1].unfold();
     expect(unfoldRow2Flats.length).toBe(1);
     let assumeQuestion1: IRect = {
         xLeft: controller.leftTopPoint.xLeft,
@@ -392,34 +379,22 @@ test('Check matrix dynamic one column one row verical layout narrow width', asyn
     expect(flats[0].length).toBe(1);
     controller.margins.left += controller.unitWidth;
     let unfoldFlats: IPdfBrick[] = flats[0][0].unfold();
-    expect(unfoldFlats.length).toBe(3);
-    let header: ISize = controller.measureText(json.elements[0].columns[0].name, 'bold');
-    let assumeHeader: IRect = {
-        xLeft: controller.leftTopPoint.xLeft,
-        xRight: controller.leftTopPoint.xLeft + header.width,
-        yTop: controller.leftTopPoint.yTop,
-        yBot: controller.leftTopPoint.yTop + header.height
-    };
-    TestHelper.equalRect(expect, unfoldFlats[0], assumeHeader);
+    expect(unfoldFlats.length).toBe(2);
     let text: ISize = controller.measureText(json.elements[0].columns[0].name);
     let assumeText: IRect = {
         xLeft: controller.leftTopPoint.xLeft,
         xRight: controller.leftTopPoint.xLeft + text.width,
-        yTop: controller.leftTopPoint.yTop +
-            header.height + SurveyHelper.EPSILON +
-            controller.unitHeight * FlatMatrixDynamic.GAP_BETWEEN_ROWS,
-        yBot: controller.leftTopPoint.yTop +
-            header.height + SurveyHelper.EPSILON + text.height +
-            controller.unitHeight * FlatMatrixDynamic.GAP_BETWEEN_ROWS
+        yTop: controller.leftTopPoint.yTop,
+        yBot: controller.leftTopPoint.yTop + text.height 
     };
-    TestHelper.equalRect(expect, unfoldFlats[1], assumeText);
+    TestHelper.equalRect(expect, unfoldFlats[0], assumeText);
     let assumeQuestion: IRect = {
         xLeft: controller.leftTopPoint.xLeft,
         xRight: controller.paperWidth - controller.margins.right,
         yTop: assumeText.yBot + controller.unitHeight * FlatMatrixDynamic.GAP_BETWEEN_ROWS,
         yBot: assumeText.yBot + controller.unitHeight * (1 + FlatMatrixDynamic.GAP_BETWEEN_ROWS),
     };
-    TestHelper.equalRect(expect, unfoldFlats[2], assumeQuestion);
+    TestHelper.equalRect(expect, unfoldFlats[1], assumeQuestion);
     let assumeMatrix: IRect = {
         xLeft: controller.leftTopPoint.xLeft,
         xRight: controller.paperWidth - controller.margins.right,

@@ -46,7 +46,7 @@ test('Check matrix multiple one column no rows', async () => {
         yTop: controller.leftTopPoint.yTop,
         yBot: controller.leftTopPoint.yTop + size.height
     };
-    TestHelper.equalRect(expect, flats[0][0].unfold()[0], assumeMatrix);
+    TestHelper.equalRect(expect, flats[0][0].unfold()[1], assumeMatrix);
 });
 test('Check matrix multiple one column one row', async () => {
     let json: any = {
