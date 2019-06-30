@@ -32,7 +32,6 @@ export class FlatMatrixMultiple extends FlatQuestion {
                     this.question, this.controller, cell.locTitle)) : 
                     composite.addBrick(await SurveyHelper.createTextFlat(point,
                     this.question, this.controller, cell.locTitle, TextBrick));
-                    
         }
         return composite;
     }
@@ -50,7 +49,8 @@ export class FlatMatrixMultiple extends FlatQuestion {
         }
         return composite;
     }
-    private async generateFlatsRowVertical(point: IPoint, row: QuestionMatrixDropdownRenderedRow, colCount: number): Promise<CompositeBrick> {
+    private async generateFlatsRowVertical(point: IPoint, row: QuestionMatrixDropdownRenderedRow, 
+        colCount: number): Promise<CompositeBrick> {
         let composite: CompositeBrick = new CompositeBrick();
         let cells: QuestionMatrixDropdownRenderedCell[] = row.cells;
         let currPoint: IPoint = SurveyHelper.clone(point);
@@ -65,7 +65,8 @@ export class FlatMatrixMultiple extends FlatQuestion {
         }
         return composite;
     }
-    private async generateFlatsRows(point: IPoint, rows:QuestionMatrixDropdownRenderedRow[], colCount: number, isWide: boolean): Promise<CompositeBrick[]> {
+    private async generateFlatsRows(point: IPoint, rows:QuestionMatrixDropdownRenderedRow[], 
+        colCount: number, isWide: boolean): Promise<CompositeBrick[]> {
         let currPoint: IPoint = SurveyHelper.clone(point);
         let rowsFlats: CompositeBrick[] = [];
         !this.question.hasFooter || rows.push(this.question.renderedTable.footerRow);
@@ -93,7 +94,7 @@ export class FlatMatrixMultiple extends FlatQuestion {
         let rows: QuestionMatrixDropdownRenderedRow[] = [];
         !table.showHeader || rows.push(table.headerRow);
         rows.push(...table.rows);
-        !(!this.isMultiple && this.question.columnLayout == 'vertical') || rows.pop();
+        this.isMultiple || this.question.columnLayout != 'vertical' || rows.pop();
         !table.showFooter || rows.push(table.footerRow);
         let colCount: number = rows[0] ? rows[0].cells.length - (this.isMultiple 
             || this.question.columnLayout == 'vertical' || table.rows.length == 0 ? 0: 1) : 0;
