@@ -91,24 +91,22 @@ export class FlatMatrixMultiple extends FlatQuestion {
         let table: QuestionMatrixDropdownRenderedTable = this.question.renderedTable;
         let rowsFlats: CompositeBrick[] = [];
         let currPoint: IPoint = SurveyHelper.clone(point);
-        let rows: QuestionMatrixDropdownRenderedRow[] = [];
-        !table.showHeader || rows.push(table.headerRow);
-        rows.push(...table.rows);
-        this.isMultiple || this.question.columnLayout != 'vertical' || rows.pop();
-        !table.showFooter || rows.push(table.footerRow);
-        let colCount: number = rows[0] ? rows[0].cells.length - (this.isMultiple 
-            || this.question.columnLayout == 'vertical' || table.rows.length == 0 ? 0: 1) : 0;
+        let colCount: number = table.rows[0] ? table.rows[0].cells.length - 
+            (this.isMultiple || this.question.columnLayout == 'vertical' ? 0: 1) : 
+            table.showHeader && table.headerRow ? table.headerRow.cells.length:
+            table.showFooter && table.footerRow ? table.footerRow.cells.length : 0;  
         if(colCount < 1){            
             return [new CompositeBrick(SurveyHelper.createRowlineFlat(point, this.controller))];
         }
+        let rows: QuestionMatrixDropdownRenderedRow[] = [];
         let cellWidth: number = SurveyHelper.getColumnWidth(
             this.controller, colCount);
         let isWide: boolean = cellWidth >=
             this.controller.measureText(SurveyHelper.MATRIX_COLUMN_WIDTH).width;
-        if(!isWide){
-            !table.showHeader || rows.shift();
-            !table.showFooter || rows.pop();
-        }
+        !table.showHeader || !isWide || rows.push(table.headerRow);
+        rows.push(...table.rows);
+        this.isMultiple || this.question.columnLayout != 'vertical' || rows.pop();
+        !table.showFooter || !isWide || rows.push(table.footerRow);
         rowsFlats.push(...await this.generateFlatsRows(currPoint, rows, colCount, isWide));
         return rowsFlats;
     }
