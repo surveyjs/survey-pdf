@@ -7,13 +7,14 @@ import { IRect, ISize, IDocOptions, DocOptions, DocController } from '../src/doc
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { FlatDropdown } from '../src/flat_layout/flat_dropdown';
 import { FlatMatrixDynamic } from '../src/flat_layout/flat_matrixdynamic';
+import { FlatExpression } from '../src/flat_layout/flat_expression';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { RowlineBrick } from '../src/pdf_render/pdf_rowline';
 import { TestHelper } from '../src/helper_test';
 import { SurveyHelper } from '../src/helper_survey';
 let __dummy_dd = new FlatDropdown(null, null);
 let __dummy_md = new FlatMatrixDynamic(null, null);
-
+let __dummy_tx = new FlatExpression(null, null);
 test('Check matrix dynamic one column no rows', async () => {
     let json: any = {
         elements: [
@@ -385,7 +386,7 @@ test('Check matrix dynamic one column one row verical layout narrow width', asyn
         xLeft: controller.leftTopPoint.xLeft,
         xRight: controller.leftTopPoint.xLeft + text.width,
         yTop: controller.leftTopPoint.yTop,
-        yBot: controller.leftTopPoint.yTop + text.height 
+        yBot: controller.leftTopPoint.yTop + text.height
     };
     TestHelper.equalRect(expect, unfoldFlats[0], assumeText);
     let assumeQuestion: IRect = {
@@ -475,4 +476,60 @@ test('Check matrix dynamic two columns one row narrow width', async () => {
         yBot: assumeQuestion2.yBot
     };
     TestHelper.equalRect(expect, flats[0][0], assumeMatrix);
+});
+test('Check matrixdynamic with totals', async () => {
+    let json: any = {
+        showQuestionNumbers: "off",
+        elements: [
+            {
+
+                type: "matrixdynamic",
+                name: "orderList",
+                showHeader: false,
+                rowCount: 1,
+                titleLocation: "hidden",
+                columns: [
+                    {
+                        totalType: "sum",
+                        totalFormat: "test",
+                        name: "id"
+                    }
+                ]
+            }
+        ]
+    }
+    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    expect(flats.length).toBe(1);
+    expect(flats[0].length).toBe(2);
+    controller.margins.left += controller.unitWidth;
+    let unfoldRow1Flats: IPdfBrick[] = await flats[0][0].unfold();
+    expect(unfoldRow1Flats.length).toBe(2);
+    let unfolFooterFlats: IPdfBrick[] = flats[0][1].unfold();
+    expect(unfolFooterFlats.length).toBe(1);
+    let assumeQuestion1: IRect = {
+        xLeft: controller.leftTopPoint.xLeft,
+        xRight: controller.paperWidth - controller.margins.right,
+        yTop: controller.leftTopPoint.yTop + SurveyHelper.EPSILON,
+        yBot: controller.leftTopPoint.yTop + SurveyHelper.EPSILON +
+            controller.unitHeight
+    };
+    expect(unfoldRow1Flats[1] instanceof RowlineBrick).toBe(true);
+    TestHelper.equalRect(expect, unfoldRow1Flats[0], assumeQuestion1);
+    let assumeFooter: IRect = {
+        xLeft: controller.leftTopPoint.xLeft,
+        xRight: controller.paperWidth - controller.margins.right,
+        yTop: assumeQuestion1.yBot + SurveyHelper.EPSILON + FlatMatrixDynamic.GAP_BETWEEN_ROWS * controller.unitHeight,
+        yBot: assumeQuestion1.yBot + SurveyHelper.EPSILON +
+            controller.unitHeight * (1 + FlatMatrixDynamic.GAP_BETWEEN_ROWS)
+    };
+    TestHelper.equalRect(expect, unfolFooterFlats[0], assumeFooter);
+    let assumeMatrix: IRect = {
+        xLeft: controller.leftTopPoint.xLeft,
+        xRight: controller.paperWidth - controller.margins.right,
+        yTop: controller.leftTopPoint.yTop,
+        yBot: assumeFooter.yBot
+    };
+    TestHelper.equalRect(expect, SurveyHelper.mergeRects(...flats[0]), assumeMatrix);
 });
