@@ -220,16 +220,10 @@ var json = {
 	]
 };
 
-
 let options = {
-	fontSize: 30,
+	fontSize: 14,
 	margins: {
-		top: 18,
-
-		left: 10,
-		right: 10,
-		bot: 10
-
+		top: 18
 	}
 };
 
@@ -277,4 +271,5 @@ survey.onRenderFooter.add((_, canvas) => {
 // 		//set html
 // 		options.html = str;
 // 	});
+
 survey.save();
