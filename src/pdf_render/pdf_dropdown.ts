@@ -27,12 +27,15 @@ export class DropdownBrick extends PdfBrick {
             options.push(SurveyHelper.getLocString(item.locText));
         });
         comboBox.setOptions(options);
-        comboBox.value = '';
+        comboBox.fontName = this.controller.fontName;
+        comboBox.isUnicode =
+            this.controller.doc.internal.getFont(comboBox.fontName).encoding === 'Identity-H';
+        comboBox.V = '';
         if (!!this.question.renderedValue) {
-            comboBox.value = this.question.renderedValue;
+            comboBox.V = this.question.renderedValue;
         }
         else if (this.question.showOptionsCaption) {
-            comboBox.value = this.question.optionsCaption;
+            comboBox.V = this.question.optionsCaption;
         }
         this.controller.doc.addField(comboBox);
         SurveyHelper.wrapInBordersFlat(this.controller, this);

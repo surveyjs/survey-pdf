@@ -26,9 +26,12 @@ export class TextFieldBrick extends PdfBrick {
             new (<any>this.controller.doc.AcroFormPasswordField)() :
             new (<any>this.controller.doc.AcroFormTextField)();
         inputField.fieldName = this.fieldName;
+        inputField.fontName = this.controller.fontName;
+        inputField.isUnicode =
+            this.controller.doc.internal.getFont(inputField.fontName).encoding === 'Identity-H';
         if (this.inputType !== 'password') {
-            inputField.value = ' ' + this.value;
-            inputField.defaultValue = ' ' + this.placeholder;
+            inputField.V = ' ' + this.value;
+            inputField.DV = ' ' + this.placeholder;
         }
         else inputField.value = '';
         inputField.multiline = this.isMultiline;

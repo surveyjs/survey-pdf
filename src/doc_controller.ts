@@ -4,6 +4,7 @@ import { LocalizableString } from 'survey-core';
 import Fonts from './fonts';
 import setRadioAppearance from './jspdf_plugins/acroform';
 import './jspdf_plugins/fromHtml.js';
+import './jspdf_plugins/acroform.js';
 export interface IPoint {
     xLeft: number;
     yTop: number;
@@ -94,9 +95,9 @@ export class DocController extends DocOptions {
             this.addFont(this.fontName, Fonts.SEGOE_NORMAL, 'normal');
             this.addFont(this.fontName, Fonts.SEGOE_BOLD, 'bold');
         }
-        this._doc = new jsPDF({ orientation: this.orientation, unit: 'pt', format: this.format });
+        this._doc = new jsPDF({ putOnlyUsedFonts: false, orientation: this.orientation, unit: 'pt', format: this.format });
         setRadioAppearance(this._doc);
-        this._helperDoc = new jsPDF({ orientation: this.orientation, unit: 'pt', format: this.format });
+        this._helperDoc = new jsPDF({ putOnlyUsedFonts: false, orientation: this.orientation, unit: 'pt', format: this.format });
         this._doc.setFont(this.fontName);
         this._helperDoc.setFont(this.fontName);
         this._doc.setFontSize(this.fontSize);
@@ -108,7 +109,7 @@ export class DocController extends DocOptions {
         var callAddFont = function () {
             let fontFile: string = `${fontName}-${fontStyle}.ttf`
             this.addFileToVFS(fontFile, base);
-            this.addFont(fontFile, fontName, fontStyle)//, 'WinAnsiEncoding', true);
+            this.addFont(fontFile, fontName, fontStyle);//, 'WinAnsiEncoding', true);
         };
         (<any>jsPDF).API.events.push(['addFonts', callAddFont]);
     }
