@@ -33,7 +33,7 @@ var jsPDF = window.jsPDF || require('jspdf');
     var pdfUnescape = function (value) { return value.replace(/\\\\/g, '\\').replace(/\\\(/g, '(').replace(/\\\)/g, ')'); };
     function arrayToPdfUnicodeArray(value) {
         var result = '[ ';
-        for (let i = 0; i < value.length; i++) {
+        for (var i = 0; i < value.length; i++) {
             result += toUnicode(value[i]);
         }
         result += ' ]'
@@ -298,7 +298,7 @@ var jsPDF = window.jsPDF || require('jspdf');
                     }
                     text += f2(startX) + ' ' + f2(lastY) + ' Td\n';
                     if (formObject.isUnicode) {
-                        let fontList = {};
+                        var fontList = {};
                         fontList[scope.internal.getFont().id] = scope.internal.getFont();
                         var payload = {
                             text: line,
@@ -314,7 +314,6 @@ var jsPDF = window.jsPDF || require('jspdf');
                                 activeFontSize: formObject.fontSize
                             }
                         };
-                        debugger;
                         scope.internal.events.publish('postProcessText', payload);
                         text += '<' + payload.text + '> Tj\n';
                     }
@@ -1248,7 +1247,6 @@ var jsPDF = window.jsPDF || require('jspdf');
             set: function (value) {
                 value = value.toString();
                 if (this.isUnicode) {
-                    debugger;
                     _V = toUnicode(value);
                     this.trueValue = value;
                 }
