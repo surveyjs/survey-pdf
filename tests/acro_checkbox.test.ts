@@ -3,7 +3,7 @@
 };
 
 import { SurveyPDF } from '../src/survey';
-import { IRect } from '../src/doc_controller';
+import { IRect, DocController } from '../src/doc_controller';
 import { FlatCheckbox } from '../src/flat_layout/flat_checkbox';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
@@ -25,14 +25,15 @@ test('Check that checkbox has square boundaries', async () => {
 		]
 	};
 	let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-	await survey.render();
-	survey.controller.margins.left += survey.controller.unitWidth;
+	let controller: DocController = new DocController(TestHelper.defaultOptions);
+	await survey['render'](controller);
+	controller.margins.left += controller.unitWidth;
 	let assumeCheckbox: IRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(SurveyHelper.createRect(
-		survey.controller.leftTopPoint, survey.controller.unitHeight, survey.controller.unitHeight),
-		SurveyHelper.SELECT_ITEM_FLAT_SCALE), survey.controller.leftTopPoint.xLeft);
+		controller.leftTopPoint, controller.unitHeight, controller.unitHeight),
+		SurveyHelper.SELECT_ITEM_FLAT_SCALE), controller.leftTopPoint.xLeft);
 	let checkboxFlat: PdfBrick = new PdfBrick(null, null, assumeCheckbox);
-	assumeCheckbox = SurveyHelper.scaleRect(assumeCheckbox, SurveyHelper.formScale(survey.controller, checkboxFlat));
-	let acroFormFields = survey.controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields;
+	assumeCheckbox = SurveyHelper.scaleRect(assumeCheckbox, SurveyHelper.formScale(controller, checkboxFlat));
+	let acroFormFields: any = controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields;
 	let internalRect: any = acroFormFields[0].Rect;
 	TestHelper.equalRect(expect, SurveyHelper.createRect(
 		{ xLeft: internalRect[0], yTop: internalRect[1] },
@@ -52,8 +53,9 @@ test('Test has other checkbox', async () => {
 		]
 	};
 	let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-	await survey.render();
-	let internal: any = survey.controller.doc.internal;
+	let controller: DocController = new DocController(TestHelper.defaultOptions);
+	await survey['render'](controller);
+	let internal: any = controller.doc.internal;
 	let internalOtherText: string = internal.pages[1][21];
 	expect(internalOtherText).toBeDefined();
 	let regex: RegExp = /\((.*)\)/;
@@ -65,7 +67,7 @@ test('Test has other checkbox', async () => {
 	expect(internalOtherCheckBox.FT).toBe('/Btn');
 });
 test('Check all items disabled or enabled', async () => {
-	let json = {
+	let json: any = {
 		questions: [
 			{
 				name: 'checkbox',
@@ -77,8 +79,9 @@ test('Check all items disabled or enabled', async () => {
 	for (let readOnly of [false, true]) {
 		(<any>json).questions[0].readOnly = readOnly;
 		let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-		await survey.render();
-		survey.controller.doc.internal.acroformPlugin.
+		let controller: DocController = new DocController(TestHelper.defaultOptions);
+		await survey['render'](controller);
+		controller.doc.internal.acroformPlugin.
 			acroFormDictionaryRoot.Fields.forEach(
 				(acroCheckBox: any) => {
 					expect(acroCheckBox.readOnly).toBe(readOnly);
@@ -87,7 +90,7 @@ test('Check all items disabled or enabled', async () => {
 	}
 });
 test('Test enable one item', async () => {
-	let json = {
+	let json: any = {
 		questions: [
 			{
 				name: 'checkbox',
@@ -97,10 +100,11 @@ test('Test enable one item', async () => {
 			}
 		]
 	};
-	const INDEX_OF_ENABLED_ITEM = 1;
+	const INDEX_OF_ENABLED_ITEM: number = 1;
 	let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-	await survey.render();
-	survey.controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields.forEach(
+	let controller: DocController = new DocController(TestHelper.defaultOptions);
+	await survey['render'](controller);
+	controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields.forEach(
 		(acroCheckBox: any, index: number) => {
 			if (index === INDEX_OF_ENABLED_ITEM)
 				expect(acroCheckBox.readOnly).toBe(false);
@@ -121,8 +125,9 @@ test('Test two equal values checkbox', async () => {
 		]
 	};
 	let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-	await survey.render();
-	survey.controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields.forEach(
+	let controller: DocController = new DocController(TestHelper.defaultOptions);
+	await survey['render'](controller);
+	controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields.forEach(
 		(acroCheckBox: any) => {
 			expect(acroCheckBox.readOnly).toBe(false);
 		}

@@ -3,7 +3,7 @@
 };
 
 import { SurveyPDF } from '../src/survey';
-import { IRect } from '../src/doc_controller';
+import { IRect, DocController } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { FlatImagePicker } from '../src/flat_layout/flat_imagepicker';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
@@ -28,18 +28,19 @@ test('Check imagepicker one image 100x100px', async () => {
         ]
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
-    survey.controller.margins.left += survey.controller.unitWidth;
+    controller.margins.left += controller.unitWidth;
     let width: number = SurveyHelper.getImagePickerAvailableWidth(
-        survey.controller) / SurveyHelper.IMAGEPICKER_COUNT;
+        controller) / SurveyHelper.IMAGEPICKER_COUNT;
     let height: number = width / SurveyHelper.IMAGEPICKER_RATIO;
     let assumeimagePicker: IRect = {
-        xLeft: survey.controller.leftTopPoint.xLeft,
-        xRight: survey.controller.leftTopPoint.xLeft + width,
-        yTop: survey.controller.leftTopPoint.yTop,
-        yBot: survey.controller.leftTopPoint.yTop + height + survey.controller.unitHeight
+        xLeft: controller.leftTopPoint.xLeft,
+        xRight: controller.leftTopPoint.xLeft + width,
+        yTop: controller.leftTopPoint.yTop,
+        yBot: controller.leftTopPoint.yTop + height + controller.unitHeight
     };
     TestHelper.equalRect(expect, flats[0][0], assumeimagePicker);
 });
@@ -61,18 +62,19 @@ test('Check imagepicker one image 100x100px with label', async () => {
         ]
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
-    survey.controller.margins.left += survey.controller.unitWidth;
+    controller.margins.left += controller.unitWidth;
     let width: number = SurveyHelper.getImagePickerAvailableWidth(
-        survey.controller) / SurveyHelper.IMAGEPICKER_COUNT;
+        controller) / SurveyHelper.IMAGEPICKER_COUNT;
     let height: number = width / SurveyHelper.IMAGEPICKER_RATIO;
     let assumeimagePicker: IRect = {
-        xLeft: survey.controller.leftTopPoint.xLeft,
-        xRight: survey.controller.leftTopPoint.xLeft + width,
-        yTop: survey.controller.leftTopPoint.yTop,
-        yBot: survey.controller.leftTopPoint.yTop + height + 2.0 * survey.controller.unitHeight
+        xLeft: controller.leftTopPoint.xLeft,
+        xRight: controller.leftTopPoint.xLeft + width,
+        yTop: controller.leftTopPoint.yTop,
+        yBot: controller.leftTopPoint.yTop + height + 2.0 * controller.unitHeight
     };
     TestHelper.equalRect(expect, flats[0][0], assumeimagePicker);
 });
@@ -97,18 +99,19 @@ test('Check imagepicker two images 100x100px', async () => {
         ]
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
-    survey.controller.margins.left += survey.controller.unitWidth;
+    controller.margins.left += controller.unitWidth;
     let width: number = SurveyHelper.getImagePickerAvailableWidth(
-        survey.controller) / SurveyHelper.IMAGEPICKER_COUNT;
+        controller) / SurveyHelper.IMAGEPICKER_COUNT;
     let height: number = width / SurveyHelper.IMAGEPICKER_RATIO;
     let assumeimagePicker: IRect = {
-        xLeft: survey.controller.leftTopPoint.xLeft,
-        xRight: survey.controller.leftTopPoint.xLeft + 2.0 * width + survey.controller.unitHeight,
-        yTop: survey.controller.leftTopPoint.yTop,
-        yBot: survey.controller.leftTopPoint.yTop + height + survey.controller.unitHeight
+        xLeft: controller.leftTopPoint.xLeft,
+        xRight: controller.leftTopPoint.xLeft + 2.0 * width + controller.unitHeight,
+        yTop: controller.leftTopPoint.yTop,
+        yBot: controller.leftTopPoint.yTop + height + controller.unitHeight
     };
     TestHelper.equalRect(expect, flats[0][0], assumeimagePicker);
 });

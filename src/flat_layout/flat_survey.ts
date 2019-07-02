@@ -2,7 +2,7 @@ import { IElement, IQuestion, PanelModelBase, PanelModel } from 'survey-core';
 import { SurveyPDF } from '../survey';
 import { IPoint, DocController } from '../doc_controller';
 import { FlatRepository } from './flat_repository';
-import { IFlatQuestion, FlatQuestion } from './flat_question';
+import { IFlatQuestion } from './flat_question';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { RowlineBrick } from '../pdf_render/pdf_rowline';
@@ -93,12 +93,12 @@ export class FlatSurvey {
             flats.pop();
         }
     }
-    public static async generateFlats(survey: SurveyPDF): Promise<IPdfBrick[][]> {
+    public static async generateFlats(survey: SurveyPDF, controller: DocController): Promise<IPdfBrick[][]> {
         let flats: IPdfBrick[][] = [];
         for (let page of survey.visiblePages) {
             let pageFlats: IPdfBrick[] = [];
-            pageFlats.push(...await this.generateFlatsPagePanel(survey.controller,
-                page, survey.controller.leftTopPoint, survey.showPageTitles));
+            pageFlats.push(...await this.generateFlatsPagePanel(controller,
+                page, controller.leftTopPoint, survey.showPageTitles));
             flats.push(pageFlats);
             this.popRowlines(flats[flats.length - 1]);
         }

@@ -2,14 +2,13 @@
     return {};
 };
 import { SurveyPDF } from '../src/survey';
-import { IPoint, IRect, DocOptions, ISize, IDocOptions } from '../src/doc_controller';
+import { IPoint, IRect, ISize, IDocOptions, DocController } from '../src/doc_controller';
 import { FlatMatrix } from '../src/flat_layout/flat_matrix';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 import { TextBrick } from '../src/pdf_render/pdf_text';
-import { FlatQuestion } from '../src/flat_layout/flat_question';
 let __dummy_mt = new FlatMatrix(null, null);
 
 test('Matrix simple hasRows true columns', async () => {
@@ -34,22 +33,23 @@ test('Matrix simple hasRows true columns', async () => {
             }]
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
-    survey.controller.margins.left += survey.controller.unitWidth;
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    controller.margins.left += controller.unitWidth;
     let assumeCells: IRect[] = [];
-    let headerSize: ISize = survey.controller.measureText(json.questions[0].columns[0].text, 'bold');
-    let currPoint: IPoint = survey.controller.leftTopPoint;
-    let cellWidth: number = SurveyHelper.getColumnWidth(survey.controller, 2);
-    currPoint.xLeft = cellWidth + survey.controller.margins.left +
-        survey.controller.unitWidth * SurveyHelper.GAP_BETWEEN_COLUMNS;
+    let headerSize: ISize = controller.measureText(json.questions[0].columns[0].text, 'bold');
+    let currPoint: IPoint = controller.leftTopPoint;
+    let cellWidth: number = SurveyHelper.getColumnWidth(controller, 2);
+    currPoint.xLeft = cellWidth + controller.margins.left +
+        controller.unitWidth * SurveyHelper.GAP_BETWEEN_COLUMNS;
     let columnRect: IRect = SurveyHelper.createRect(currPoint, headerSize.width, headerSize.height);
     assumeCells.push(columnRect);
     currPoint = SurveyHelper.createPoint(columnRect);
-    currPoint.yTop += FlatMatrix.GAP_BETWEEN_ROWS * survey.controller.unitHeight;
-    assumeCells.push(SurveyHelper.createRect({ xLeft: survey.controller.leftTopPoint.xLeft, yTop: currPoint.yTop },
-        survey.controller.measureText(json.questions[0].rows[0].text).width,
-        survey.controller.measureText(json.questions[0].rows[0].text).height));
-    let itemWidth: number = survey.controller.unitWidth;
+    currPoint.yTop += FlatMatrix.GAP_BETWEEN_ROWS * controller.unitHeight;
+    assumeCells.push(SurveyHelper.createRect({ xLeft: controller.leftTopPoint.xLeft, yTop: currPoint.yTop },
+        controller.measureText(json.questions[0].rows[0].text).width,
+        controller.measureText(json.questions[0].rows[0].text).height));
+    let itemWidth: number = controller.unitWidth;
     assumeCells.push(SurveyHelper.moveRect(SurveyHelper.scaleRect(
         SurveyHelper.createRect(currPoint, itemWidth, itemWidth),
         SurveyHelper.SELECT_ITEM_FLAT_SCALE), currPoint.xLeft));
@@ -73,17 +73,18 @@ test('Matrix simple hasRows false columns', async () => {
             }]
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
-    survey.controller.margins.left += survey.controller.unitWidth;
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    controller.margins.left += controller.unitWidth;
     let assumeCells: IRect[] = [];
-    let headerSize: ISize = survey.controller.measureText(json.questions[0].columns[0].text, 'bold');
-    let columnRect: IRect = SurveyHelper.createRect(survey.controller.leftTopPoint, headerSize.width, headerSize.height);
+    let headerSize: ISize = controller.measureText(json.questions[0].columns[0].text, 'bold');
+    let columnRect: IRect = SurveyHelper.createRect(controller.leftTopPoint, headerSize.width, headerSize.height);
     assumeCells.push(columnRect);
-    let rowLineRect: IPdfBrick = SurveyHelper.createRowlineFlat(SurveyHelper.createPoint(columnRect), survey.controller);
+    let rowLineRect: IPdfBrick = SurveyHelper.createRowlineFlat(SurveyHelper.createPoint(columnRect), controller);
     assumeCells.push(rowLineRect);
     let currPoint: IPoint = SurveyHelper.createPoint(rowLineRect);
-    currPoint.yTop += survey.controller.unitHeight * FlatMatrix.GAP_BETWEEN_ROWS
-    let itemWidth: number = survey.controller.unitWidth;
+    currPoint.yTop += controller.unitHeight * FlatMatrix.GAP_BETWEEN_ROWS
+    let itemWidth: number = controller.unitWidth;
     assumeCells.push(SurveyHelper.moveRect(SurveyHelper.scaleRect(
         SurveyHelper.createRect(currPoint, itemWidth, itemWidth),
         SurveyHelper.SELECT_ITEM_FLAT_SCALE), currPoint.xLeft));
@@ -115,11 +116,12 @@ test('Matrix simple vertical', async () => {
             }]
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
-    survey.controller.margins.left += survey.controller.unitWidth;
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    controller.margins.left += controller.unitWidth;
     let assumeCells: IRect[] = [];
-    let itemWidth: number = survey.controller.unitWidth;
-    let currPoint: IPoint = survey.controller.leftTopPoint;
+    let itemWidth: number = controller.unitWidth;
+    let currPoint: IPoint = controller.leftTopPoint;
     let unfoldCells: IRect[] = [];
     flats[0].forEach((flat: IPdfBrick) => {
         unfoldCells.push(...flat.unfold());
@@ -130,12 +132,12 @@ test('Matrix simple vertical', async () => {
             SurveyHelper.SELECT_ITEM_FLAT_SCALE), currPoint.xLeft));
         let oldXleft: number = currPoint.xLeft;
         currPoint.xLeft += itemWidth * (SurveyHelper.SELECT_ITEM_FLAT_SCALE + SurveyHelper.GAP_BETWEEN_ITEM_TEXT)
-        let columnTextWidth: number = survey.controller.measureText(column.text).width;
-        let columnTextHeight: number = survey.controller.measureText(column.text).height;
+        let columnTextWidth: number = controller.measureText(column.text).width;
+        let columnTextHeight: number = controller.measureText(column.text).height;
         assumeCells.push(SurveyHelper.createRect(currPoint, columnTextWidth, columnTextHeight))
         currPoint.xLeft = oldXleft;
         currPoint.yTop += SurveyHelper.GAP_BETWEEN_ROWS *
-            survey.controller.unitHeight + columnTextHeight;
+            controller.unitHeight + columnTextHeight;
     })
     TestHelper.equalRects(expect, unfoldCells, assumeCells);
 });
@@ -165,45 +167,22 @@ test('Matrix rubric hidden header', async () => {
     let options: IDocOptions = TestHelper.defaultOptions;
     options.format = [260.0, 297.0];
     let survey: SurveyPDF = new SurveyPDF(json, options);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
+    let controller: DocController = new DocController(options);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     let assumeCells: IRect[] = [];
-    let itemWidth: number = survey.controller.unitHeight;
-    survey.controller.margins.left += survey.controller.unitWidth;
-    let cellWidth: number = SurveyHelper.getColumnWidth(survey.controller, 3);
+    let itemWidth: number = controller.unitHeight;
+    controller.margins.left += controller.unitWidth;
+    let cellWidth: number = SurveyHelper.getColumnWidth(controller, 3);
     for (let i: number = 0; i < json.questions[0].columns.length; i++) {
-        let currPoint: IPoint = survey.controller.leftTopPoint;
-        currPoint.xLeft = i * (cellWidth + survey.controller.unitWidth *
-            SurveyHelper.GAP_BETWEEN_COLUMNS) + survey.controller.margins.left;
+        let currPoint: IPoint = controller.leftTopPoint;
+        currPoint.xLeft = i * (cellWidth + controller.unitWidth *
+            SurveyHelper.GAP_BETWEEN_COLUMNS) + controller.margins.left;
         assumeCells.push(SurveyHelper.moveRect(SurveyHelper.scaleRect(
             SurveyHelper.createRect(currPoint, itemWidth, itemWidth),
             SurveyHelper.SELECT_ITEM_FLAT_SCALE), currPoint.xLeft));
     }
     TestHelper.equalRects(expect, flats[0][0].unfold(), assumeCells);
 });
-test('Matrix default value', async () => {
-    let json: any = {
-        questions: [
-            {
-                titleLocation: 'hidden',
-                showHeader: false,
-                type: 'matrix',
-                name: 'Quality',
-                title: 'Please indicate if you agree or disagree with the following statements',
-                defaultValue: 'Column',
-                columns: [
-                    'Column',
-                    'Column2'
-                ]
-            }]
-    };
-    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    await survey.render();
-    let acroFormFields = survey.controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields;
-    expect(acroFormFields[0].value).toBe('sq_104row0');
-    expect(acroFormFields[1].AS).toBe('/sq_104row0index0');
-    expect(acroFormFields[2].AS).toBe('/Off');
-});
-
 test('Matrix rubric check horisontally', async () => {
     let json: any = {
         questions: [
@@ -233,18 +212,19 @@ test('Matrix rubric check horisontally', async () => {
         ]
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     let assumeFlats: IRect[] = [];
-    survey.controller.margins.left += survey.controller.unitWidth;
-    let cellWidth: number = SurveyHelper.getColumnWidth(survey.controller, 2);
-    let rowTextFlat: IPdfBrick = await SurveyHelper.createTextFlat(survey.controller.leftTopPoint,
-        survey.getAllQuestions()[0], survey.controller, json.questions[0].rows[0].text, TextBrick);
-    let currPoint: IPoint = survey.controller.leftTopPoint;
-    currPoint.xLeft += cellWidth + survey.controller.unitWidth * SurveyHelper.GAP_BETWEEN_COLUMNS;
-    let itemRect: IRect = SurveyHelper.createRect(currPoint, cellWidth, survey.controller.unitHeight);
-    currPoint.yTop = itemRect.yBot + SurveyHelper.GAP_BETWEEN_ITEM_TEXT * survey.controller.unitHeight;
+    controller.margins.left += controller.unitWidth;
+    let cellWidth: number = SurveyHelper.getColumnWidth(controller, 2);
+    let rowTextFlat: IPdfBrick = await SurveyHelper.createTextFlat(controller.leftTopPoint,
+        survey.getAllQuestions()[0], controller, json.questions[0].rows[0].text, TextBrick);
+    let currPoint: IPoint = controller.leftTopPoint;
+    currPoint.xLeft += cellWidth + controller.unitWidth * SurveyHelper.GAP_BETWEEN_COLUMNS;
+    let itemRect: IRect = SurveyHelper.createRect(currPoint, cellWidth, controller.unitHeight);
+    currPoint.yTop = itemRect.yBot + SurveyHelper.GAP_BETWEEN_ITEM_TEXT * controller.unitHeight;
     let cellTextFlat: IPdfBrick = await SurveyHelper.createTextFlat(currPoint,
-        survey.getAllQuestions()[0], survey.controller, json.questions[0].cells['row1']['column1'], TextBrick);
+        survey.getAllQuestions()[0], controller, json.questions[0].cells['row1']['column1'], TextBrick);
     assumeFlats.push(rowTextFlat, itemRect, cellTextFlat);
     TestHelper.equalRects(expect, flats[0][0].unfold(), assumeFlats);
 });
@@ -280,21 +260,22 @@ test('Matrix rubric check vertically', async () => {
         ]
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     let assumeFlats: IRect[] = [];
-    survey.controller.margins.left += survey.controller.unitWidth;
-    let rowTextFlat: IPdfBrick = await SurveyHelper.createTextFlat(survey.controller.leftTopPoint,
-        survey.getAllQuestions()[0], survey.controller, json.questions[0].rows[0].text, TextBrick);
+    controller.margins.left += controller.unitWidth;
+    let rowTextFlat: IPdfBrick = await SurveyHelper.createTextFlat(controller.leftTopPoint,
+        survey.getAllQuestions()[0], controller, json.questions[0].rows[0].text, TextBrick);
     assumeFlats.push(rowTextFlat);
-    let currPoint: IPoint = survey.controller.leftTopPoint;
-    currPoint.yTop = rowTextFlat.yBot + FlatMatrix.GAP_BETWEEN_ROWS * survey.controller.unitHeight;
+    let currPoint: IPoint = controller.leftTopPoint;
+    currPoint.yTop = rowTextFlat.yBot + FlatMatrix.GAP_BETWEEN_ROWS * controller.unitHeight;
     for (let i: number = 1; i < 4; i++) {
         let itemRect: IRect = SurveyHelper.createRect(currPoint,
-            SurveyHelper.getPageAvailableWidth(survey.controller), survey.controller.unitHeight);
-        currPoint.yTop = itemRect.yBot + SurveyHelper.GAP_BETWEEN_ITEM_TEXT * survey.controller.unitHeight;
+            SurveyHelper.getPageAvailableWidth(controller), controller.unitHeight);
+        currPoint.yTop = itemRect.yBot + SurveyHelper.GAP_BETWEEN_ITEM_TEXT * controller.unitHeight;
         let cellTextFlat: IPdfBrick = await SurveyHelper.createTextFlat(currPoint,
-            survey.getAllQuestions()[0], survey.controller, (<any>json.questions[0]).cells['row1']['column' + i], TextBrick);
-        currPoint.yTop = cellTextFlat.yBot + SurveyHelper.GAP_BETWEEN_ROWS * survey.controller.unitHeight;
+            survey.getAllQuestions()[0], controller, (<any>json.questions[0]).cells['row1']['column' + i], TextBrick);
+        currPoint.yTop = cellTextFlat.yBot + SurveyHelper.GAP_BETWEEN_ROWS * controller.unitHeight;
         assumeFlats.push(itemRect, cellTextFlat);
     }
     TestHelper.equalRects(expect, flats[0][0].unfold(), assumeFlats);

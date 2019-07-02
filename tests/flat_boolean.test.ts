@@ -4,6 +4,7 @@
 
 import { Question } from 'survey-core';
 import { SurveyPDF } from '../src/survey';
+import { DocController } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { FlatQuestion } from '../src/flat_layout/flat_question';
 import { FlatBoolean } from '../src/flat_layout/flat_boolean';
@@ -13,7 +14,7 @@ import { TestHelper } from '../src/helper_test';
 let __dummy_bl = new FlatBoolean(null, null);
 
 test('Check boolean without title', async () => {
-    let json = {
+    let json: any = {
         elements: [
             {
                 type: 'boolean',
@@ -23,18 +24,19 @@ test('Check boolean without title', async () => {
         ]
     };
     let survey: SurveyPDF = await new SurveyPDF(json, TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
     TestHelper.equalRect(expect, flats[0][0], {
-        xLeft: survey.controller.leftTopPoint.xLeft + survey.controller.unitWidth,
-        xRight: survey.controller.leftTopPoint.xLeft + survey.controller.unitWidth +
-            survey.controller.unitHeight * (SurveyHelper.SELECT_ITEM_FLAT_SCALE +
+        xLeft: controller.leftTopPoint.xLeft + controller.unitWidth,
+        xRight: controller.leftTopPoint.xLeft + controller.unitWidth +
+            controller.unitHeight * (SurveyHelper.SELECT_ITEM_FLAT_SCALE +
                 SurveyHelper.GAP_BETWEEN_ITEM_TEXT) +
-            survey.controller.measureText(json.elements[0].title).width,
-        yTop: survey.controller.leftTopPoint.yTop,
-        yBot: survey.controller.leftTopPoint.yTop +
-            survey.controller.measureText(json.elements[0].title).height,
+            controller.measureText(json.elements[0].title).width,
+        yTop: controller.leftTopPoint.yTop,
+        yBot: controller.leftTopPoint.yTop +
+            controller.measureText(json.elements[0].title).height,
     })
 });
 test('Check boolean with title', async () => {
@@ -49,18 +51,19 @@ test('Check boolean with title', async () => {
         ]
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
     TestHelper.equalRect(expect, flats[0][0], {
-        xLeft: survey.controller.leftTopPoint.xLeft,
-        xRight: (await SurveyHelper.createTitleFlat(survey.controller.leftTopPoint,
-            <Question>survey.getAllQuestions()[0], survey.controller)).xRight,
-        yTop: survey.controller.leftTopPoint.yTop,
-        yBot: survey.controller.leftTopPoint.yTop +
-            survey.controller.unitHeight * SurveyHelper.TITLE_FONT_SCALE +
-            survey.controller.unitHeight * FlatQuestion.CONTENT_GAP_VERT_SCALE +
-            survey.controller.unitHeight * SurveyHelper.SELECT_ITEM_FLAT_SCALE +
-            survey.controller.unitHeight * (1.0 - SurveyHelper.SELECT_ITEM_FLAT_SCALE) / 2.0
+        xLeft: controller.leftTopPoint.xLeft,
+        xRight: (await SurveyHelper.createTitleFlat(controller.leftTopPoint,
+            <Question>survey.getAllQuestions()[0], controller)).xRight,
+        yTop: controller.leftTopPoint.yTop,
+        yBot: controller.leftTopPoint.yTop +
+            controller.unitHeight * SurveyHelper.TITLE_FONT_SCALE +
+            controller.unitHeight * FlatQuestion.CONTENT_GAP_VERT_SCALE +
+            controller.unitHeight * SurveyHelper.SELECT_ITEM_FLAT_SCALE +
+            controller.unitHeight * (1.0 - SurveyHelper.SELECT_ITEM_FLAT_SCALE) / 2.0
     })
 });

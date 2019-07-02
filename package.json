@@ -8,14 +8,14 @@
     "build_dev": "webpack --env.buildType dev --env.platform pdf",
     "build_prod": "npm run build_dev && webpack --env.buildType prod --env.platform pdf"
   },
-  "version": "1.0.79",
+  "version": "1.0.95",
   "name": "survey-pdf",
   "private": true,
   "license": "Commercial",
   "dependencies": {
-    "jspdf": "1.5.3",
+    "jspdf": "^1.5.3",
     "node-interval-tree": "^1.3.3",
-    "survey-core": "^1.0.93"
+    "survey-core": "^1.0.95"
   },
   "devDependencies": {
     "@types/jest": "^23.3.3",

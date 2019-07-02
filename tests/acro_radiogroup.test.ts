@@ -2,6 +2,7 @@
     return {};
 };
 import { SurveyPDF } from '../src/survey';
+import { DocController } from '../src/doc_controller';
 import { FlatRadiogroup } from '../src/flat_layout/flat_radiogroup';
 import { TestHelper } from '../src/helper_test';
 let __dummy_rg = new FlatRadiogroup(null, null);
@@ -20,8 +21,9 @@ test('Test has other radiogroup', async () => {
         ]
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    await survey.render();
-    let internal: any = survey.controller.doc.internal;
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    await survey['render'](controller);
+    let internal: any = controller.doc.internal;
     let internalOtherText: string = internal.pages[1][20];
     expect(internalOtherText).toBeDefined();
     let regex: RegExp = /\((.*)\)/;
@@ -45,8 +47,9 @@ test('Test all items disabled or enabled', async () => {
     for (let readOnly of [false, true]) {
         (<any>json).questions[0].readOnly = readOnly;
         let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-        await survey.render();
-        expect(survey.controller.doc.internal.acroformPlugin.
+        let controller: DocController = new DocController(TestHelper.defaultOptions);
+        await survey['render'](controller);
+        expect(controller.doc.internal.acroformPlugin.
             acroFormDictionaryRoot.Fields[0].readOnly).toBe(readOnly);
     }
 });

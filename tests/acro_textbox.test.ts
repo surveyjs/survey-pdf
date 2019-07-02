@@ -3,6 +3,7 @@
 };
 
 import { SurveyPDF } from '../src/survey';
+import { DocController } from '../src/doc_controller';
 import { FlatTextbox } from '../src/flat_layout/flat_textbox';
 import { FlatComment } from '../src/flat_layout/flat_comment';
 import { TestHelper } from '../src/helper_test';
@@ -15,14 +16,15 @@ async function checkTextboxValue(json: any, tobe: string,
     if (data !== null) {
       survey.data = data;
     }
-    await survey.render();
-    expect(survey.controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields[0].value)
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+  	await survey['render'](controller);
+    expect(controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields[0].value)
 		.toBe(tobe);
 	if (tobeDef != null) {
-		expect(survey.controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields[0].defaultValue)
+		expect(controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields[0].defaultValue)
         	.toBe(tobeDef);
 	}
-	expect(survey.controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields[0].readOnly)
+	expect(controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields[0].readOnly)
 		.toBe(readOnly);
 }
 test('Set textbox no value', async () => {

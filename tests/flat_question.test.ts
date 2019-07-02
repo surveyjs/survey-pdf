@@ -4,7 +4,7 @@
 
 import { Question } from 'survey-core';
 import { SurveyPDF } from '../src/survey';
-import { IPoint, IRect, DocController, ISize } from '../src/doc_controller';
+import { IPoint, IRect, DocController } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { FlatQuestion } from '../src/flat_layout/flat_question';
 import { FlatTextbox } from '../src/flat_layout/flat_textbox';
@@ -153,10 +153,11 @@ test('Calc textbox boundaries title top', async () => {
         ]
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
-    await calcTitleTop(survey.controller.leftTopPoint, survey.controller,
+    await calcTitleTop(controller.leftTopPoint, controller,
         <Question>survey.getAllQuestions()[0], flats[0][0]);
 });
 test('Calc textbox boundaries title bottom', async () => {
@@ -171,10 +172,11 @@ test('Calc textbox boundaries title bottom', async () => {
         ]
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(2);
-    await calcTitleBottom(survey.controller, <Question>survey.getAllQuestions()[0],
+    await calcTitleBottom(controller, <Question>survey.getAllQuestions()[0],
         flats[0][1], flats[0][0]);
 });
 test('Calc textbox boundaries title left', async () => {
@@ -190,10 +192,11 @@ test('Calc textbox boundaries title left', async () => {
         ]
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
-    await calcTitleLeft(survey.controller, <Question>survey.getAllQuestions()[0],
+    await calcTitleLeft(controller, <Question>survey.getAllQuestions()[0],
         flats[0][0].unfold()[0], flats[0][0].unfold()[1]);
 });
 test('Calc textbox boundaries title hidden', async () => {
@@ -208,13 +211,14 @@ test('Calc textbox boundaries title hidden', async () => {
         ]
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
-    let contentPoint: IPoint = survey.controller.leftTopPoint;
-    contentPoint.xLeft += survey.controller.unitWidth;
+    let contentPoint: IPoint = controller.leftTopPoint;
+    contentPoint.xLeft += controller.unitWidth;
     let assumeTextbox: IRect = SurveyHelper.createTextFieldRect(
-        contentPoint, survey.controller);
+        contentPoint, controller);
     TestHelper.equalRect(expect, flats[0][0], assumeTextbox);
 });
 test('Calc boundaries with space between questions', async () => {
@@ -231,14 +235,15 @@ test('Calc boundaries with space between questions', async () => {
         }]
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(3);
-    let title2point: IPoint = await calcTitleTop(survey.controller.leftTopPoint,
-        survey.controller, <Question>survey.getAllQuestions()[0], flats[0][0]);
-    title2point.yTop += survey.controller.unitHeight * FlatSurvey.QUES_GAP_VERT_SCALE;
+    let title2point: IPoint = await calcTitleTop(controller.leftTopPoint,
+        controller, <Question>survey.getAllQuestions()[0], flats[0][0]);
+    title2point.yTop += controller.unitHeight * FlatSurvey.QUES_GAP_VERT_SCALE;
     expect(flats[0][1] instanceof RowlineBrick).toBe(true);
-    await calcTitleTop(title2point, survey.controller,
+    await calcTitleTop(title2point, controller,
         <Question>survey.getAllQuestions()[1], flats[0][2]);
 });
 test('Calc textbox boundaries title without number', async () => {
@@ -251,10 +256,11 @@ test('Calc textbox boundaries title without number', async () => {
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     survey.showQuestionNumbers = 'off';
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
-    await calcTitleTop(survey.controller.leftTopPoint, survey.controller,
+    await calcTitleTop(controller.leftTopPoint, controller,
         <Question>survey.getAllQuestions()[0], flats[0][0]);
 });
 test('Calc textbox boundaries required', async () => {
@@ -267,10 +273,11 @@ test('Calc textbox boundaries required', async () => {
         }]
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
-    await calcTitleTop(survey.controller.leftTopPoint, survey.controller,
+    await calcTitleTop(controller.leftTopPoint, controller,
         <Question>survey.getAllQuestions()[0], flats[0][0]);
 });
 test('Calc boundaries title top longer than description', async () => {
@@ -285,10 +292,11 @@ test('Calc boundaries title top longer than description', async () => {
         ]
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
-    await calcTitleTop(survey.controller.leftTopPoint, survey.controller,
+    await calcTitleTop(controller.leftTopPoint, controller,
         <Question>survey.getAllQuestions()[0], flats[0][0], true);
 });
 test('Calc boundaries title top shorter than description', async () => {
@@ -303,10 +311,11 @@ test('Calc boundaries title top shorter than description', async () => {
         ]
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
-    await calcTitleTop(survey.controller.leftTopPoint, survey.controller,
+    await calcTitleTop(controller.leftTopPoint, controller,
         <Question>survey.getAllQuestions()[0], flats[0][0], true);
 });
 test('Calc boundaries title bottom longer than description', async () => {
@@ -322,10 +331,11 @@ test('Calc boundaries title bottom longer than description', async () => {
         ]
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(2);
-    await calcTitleBottom(survey.controller, <Question>survey.getAllQuestions()[0],
+    await calcTitleBottom(controller, <Question>survey.getAllQuestions()[0],
         flats[0][1], flats[0][0], true);
 });
 test('Calc boundaries title bottom shorter than description', async () => {
@@ -341,10 +351,11 @@ test('Calc boundaries title bottom shorter than description', async () => {
         ]
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(2);
-    await calcTitleBottom(survey.controller, <Question>survey.getAllQuestions()[0],
+    await calcTitleBottom(controller, <Question>survey.getAllQuestions()[0],
         flats[0][1], flats[0][0], true);
 });
 test('Calc boundaries title left longer than description', async () => {
@@ -361,10 +372,11 @@ test('Calc boundaries title left longer than description', async () => {
         ]
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
-    await calcTitleLeft(survey.controller, <Question>survey.getAllQuestions()[0],
+    await calcTitleLeft(controller, <Question>survey.getAllQuestions()[0],
         new CompositeBrick(flats[0][0].unfold()[0], flats[0][0].unfold()[1]),
         flats[0][0].unfold()[2], true);
 });
@@ -382,10 +394,11 @@ test('Calc boundaries title left shorter than description', async () => {
         ]
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
-    await calcTitleLeft(survey.controller, <Question>survey.getAllQuestions()[0],
+    await calcTitleLeft(controller, <Question>survey.getAllQuestions()[0],
         new CompositeBrick(flats[0][0].unfold()[0], flats[0][0].unfold()[1]),
         flats[0][0].unfold()[2], true);
 });
@@ -402,13 +415,14 @@ test('Calc boundaries title hidden with description', async () => {
         ]
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
-    let contentPoint: IPoint = survey.controller.leftTopPoint;
-    contentPoint.xLeft += survey.controller.unitWidth;
+    let contentPoint: IPoint = controller.leftTopPoint;
+    contentPoint.xLeft += controller.unitWidth;
     let assumeTextbox: IRect = SurveyHelper.createTextFieldRect(
-        contentPoint, survey.controller);
+        contentPoint, controller);
     TestHelper.equalRect(expect, flats[0][0], assumeTextbox);
 });
 test('Calc boundaries with indent', async () => {
@@ -427,12 +441,13 @@ test('Calc boundaries with indent', async () => {
             ]
         };
         let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-        let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
+        let controller: DocController = new DocController(TestHelper.defaultOptions);
+        let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
         expect(flats.length).toBe(1);
         expect(flats[0].length).toBe(1);
-        let leftTopPoint: IPoint = survey.controller.leftTopPoint;
-        leftTopPoint.xLeft += survey.controller.measureText(i).width;
-        await calcIndent(expect, leftTopPoint, survey.controller,
+        let leftTopPoint: IPoint = controller.leftTopPoint;
+        leftTopPoint.xLeft += controller.measureText(i).width;
+        await calcIndent(expect, leftTopPoint, controller,
             flats[0][0], json.questions[0].choices[0],
             <Question>survey.getAllQuestions()[0]);
     }
@@ -453,10 +468,11 @@ test('Not visible question and visible question', async () => {
         ]
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let rects: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let rects: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     let assumeRect = [];
     assumeRect[0] = await SurveyHelper.createTitleFlat(TestHelper.defaultPoint,
-        <Question>survey.getAllQuestions()[1], survey.controller);
+        <Question>survey.getAllQuestions()[1], controller);
     TestHelper.equalRects(expect, rects[0], assumeRect)
 });
 test('VisibleIf row', async () => {
@@ -478,7 +494,8 @@ test('VisibleIf row', async () => {
         ]
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(3);
 });
@@ -493,14 +510,15 @@ test('Check title with number next raw position', async () => {
         ]
     }
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
-    let noWidth: number = survey.controller.measureText('1. ').width *
+    let noWidth: number = controller.measureText('1. ').width *
         SurveyHelper.TITLE_FONT_SCALE;
     let bricks: IPdfBrick[] = flats[0][0].unfold();
     expect(SurveyHelper.mergeRects(bricks[1], bricks[2]).xLeft).
-        toBeCloseTo(survey.controller.leftTopPoint.xLeft + noWidth);
+        toBeCloseTo(controller.leftTopPoint.xLeft + noWidth);
 });
 test('Check equality of margins.left and contentPoint.xLeft with titleLocation: left', async () => {
     var json: any = {
@@ -517,9 +535,11 @@ test('Check equality of margins.left and contentPoint.xLeft with titleLocation: 
         ]
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
-    let contentAssumePointLeft: number = SurveyHelper.createPoint(await SurveyHelper.createTitleFlat(survey.controller.leftTopPoint,
-        <Question>survey.getAllQuestions()[0], survey.controller), false, true).xLeft;
-    contentAssumePointLeft += survey.controller.unitWidth;
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    let contentAssumePointLeft: number = SurveyHelper.createPoint(
+        await SurveyHelper.createTitleFlat(controller.leftTopPoint,
+        <Question>survey.getAllQuestions()[0], controller), false, true).xLeft;
+    contentAssumePointLeft += controller.unitWidth;
     expect(flats[0][0].unfold()[2].xLeft).toBe(contentAssumePointLeft);
 })

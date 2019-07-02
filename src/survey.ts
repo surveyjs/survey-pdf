@@ -1,5 +1,5 @@
 import { SurveyModel, Event } from 'survey-core';
-import { IDocOptions, DocController, IRect } from './doc_controller';
+import { IDocOptions, DocController } from './doc_controller';
 import { FlatSurvey } from './flat_layout/flat_survey';
 import { PagePacker } from './page_layout/page_packer';
 import { IPdfBrick } from './pdf_render/pdf_brick';
@@ -8,11 +8,10 @@ import { DrawCanvas } from './event_handler/draw_canvas';
 import { SurveyHelper } from './helper_survey';
 
 export class SurveyPDF extends SurveyModel {
-    public controller: DocController;
-    private isChanged: boolean = true;
+    public options: IDocOptions;
     public constructor(jsonObject: any, options: IDocOptions) {
         super(jsonObject);
-        this.controller = new DocController(options);
+        this.options = SurveyHelper.clone(options);
     }
     /**
      * The event in fired for every rendered page
@@ -28,23 +27,23 @@ export class SurveyPDF extends SurveyModel {
      */
     public onRenderFooter: Event<(sender: SurveyPDF, canvas: DrawCanvas) => any, any> =
         new Event<(sender: SurveyPDF, canvas: DrawCanvas) => any, any>();
-    public async render(): Promise<void> {
-        let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(this);
-        let packs: IPdfBrick[][] = PagePacker.pack(flats, this.controller);
-        EventHandler.process_events(this, packs);
+    private async render(controller: DocController): Promise<void> {
+        let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(this, controller);
+        let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
+        EventHandler.process_events(this, controller, packs);
         for (let i: number = 0; i < packs.length; i++) {
             let pageAdded: boolean = i === 0;
             for (let j: number = 0; j < packs[i].length; j++) {
                 if (!pageAdded) {
                     pageAdded = true;
                     if (packs[i][j].isAddPage()) {
-                        this.controller.addPage();
+                        controller.addPage();
                     }
                 }
                 // packs[i][j].unfold().forEach((rect: IPdfBrick) => {
-                //     this.controller.doc.setDrawColor('green');
-                //     this.controller.doc.rect(...SurveyHelper.createAcroformRect(rect));
-                //     this.controller.doc.setDrawColor('black');
+                //     controller.doc.setDrawColor('green');
+                //     controller.doc.rect(...SurveyHelper.createAcroformRect(rect));
+                //     controller.doc.setDrawColor('black');
                 // }
                 // );
                 await packs[i][j].render();
@@ -52,17 +51,13 @@ export class SurveyPDF extends SurveyModel {
         }
     }
     public async save(fileName: string = 'survey_result.pdf'): Promise<any> {
-        if (this.isChanged) {
-            await this.render();
-            this.isChanged = false;
-        }
-        return this.controller.doc.save(fileName, { returnPromise: true })
+        let controller: DocController = new DocController(this.options);
+        await this.render(controller);
+        return controller.doc.save(fileName, { returnPromise: true });
     }
     public async raw(): Promise<String> {
-        if (this.isChanged) {
-            await this.render();
-            this.isChanged = false;
-        }
-        return this.controller.doc.__private__.buildDocument();
+        let controller: DocController = new DocController(this.options);
+        await this.render(controller);
+        return controller.doc.__private__.buildDocument();
     }
 }

@@ -3,7 +3,7 @@
 };
 
 import { SurveyPDF } from '../src/survey';
-import { ISize, IRect } from '../src/doc_controller';
+import { ISize, IRect, DocController } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { FlatTextbox } from '../src/flat_layout/flat_textbox';
 import { PagePacker } from '../src/page_layout/page_packer';
@@ -32,14 +32,15 @@ test('Event render header simple text', async () => {
             rect: canvas.rect
         })
     });
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
-    let packs: IPdfBrick[][] = PagePacker.pack(flats, survey.controller);
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(1);
-    EventHandler.process_events(survey, packs);
+    EventHandler.process_events(survey, controller, packs);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(2);
-    TestHelper.equalRect(expect, packs[0][1], SurveyHelper.createHeaderRect(survey.controller));
+    TestHelper.equalRect(expect, packs[0][1], SurveyHelper.createHeaderRect(controller));
 });
 test('Event render header bold text', async () => {
     let json: any = {
@@ -59,14 +60,15 @@ test('Event render header bold text', async () => {
             rect: canvas.rect
         })
     });
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
-    let packs: IPdfBrick[][] = PagePacker.pack(flats, survey.controller);
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(1);
-    EventHandler.process_events(survey, packs);
+    EventHandler.process_events(survey, controller, packs);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(2);
-    TestHelper.equalRect(expect, packs[0][1], SurveyHelper.createHeaderRect(survey.controller));
+    TestHelper.equalRect(expect, packs[0][1], SurveyHelper.createHeaderRect(controller));
     expect(packs[0][1] instanceof TitleBrick).toBe(true);
 });
 test('Event render header left top text', async () => {
@@ -88,14 +90,15 @@ test('Event render header left top text', async () => {
             verticalAlign: VerticalAlign.Top
         })
     });
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
-    let packs: IPdfBrick[][] = PagePacker.pack(flats, survey.controller);
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(1);
-    EventHandler.process_events(survey, packs);
+    EventHandler.process_events(survey, controller, packs);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(2);
-    let textSize: ISize = survey.controller.measureText(text, 'normal', DrawCanvas.DEFAULT_FONT_SIZE);
+    let textSize: ISize = controller.measureText(text, 'normal', DrawCanvas.DEFAULT_FONT_SIZE);
     TestHelper.equalRect(expect, packs[0][1], SurveyHelper.createRect(
         { xLeft: 0, yTop: 0 }, textSize.width, textSize.height));
 });
@@ -118,15 +121,16 @@ test('Event render header center middle text', async () => {
             verticalAlign: VerticalAlign.Middle
         })
     });
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
-    let packs: IPdfBrick[][] = PagePacker.pack(flats, survey.controller);
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(1);
-    EventHandler.process_events(survey, packs);
+    EventHandler.process_events(survey, controller, packs);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(2);
-    let textSize: ISize = survey.controller.measureText(text, 'normal', DrawCanvas.DEFAULT_FONT_SIZE);
-    let headerRect: IRect = SurveyHelper.createHeaderRect(survey.controller);
+    let textSize: ISize = controller.measureText(text, 'normal', DrawCanvas.DEFAULT_FONT_SIZE);
+    let headerRect: IRect = SurveyHelper.createHeaderRect(controller);
     let assumeText: IRect = {
         xLeft: (headerRect.xRight - headerRect.xLeft - textSize.width) / 2.0,
         xRight: (headerRect.xRight - headerRect.xLeft + textSize.width) / 2.0,
@@ -154,15 +158,16 @@ test('Event render footer center middle text', async () => {
             verticalAlign: VerticalAlign.Middle
         })
     });
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey);
-    let packs: IPdfBrick[][] = PagePacker.pack(flats, survey.controller);
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(1);
-    EventHandler.process_events(survey, packs);
+    EventHandler.process_events(survey, controller, packs);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(2);
-    let textSize: ISize = survey.controller.measureText(text, 'normal', DrawCanvas.DEFAULT_FONT_SIZE);
-    let footerRect: IRect = SurveyHelper.createFooterRect(survey.controller);
+    let textSize: ISize = controller.measureText(text, 'normal', DrawCanvas.DEFAULT_FONT_SIZE);
+    let footerRect: IRect = SurveyHelper.createFooterRect(controller);
     let assumeText: IRect = {
         xLeft: (footerRect.xLeft + footerRect.xRight - textSize.width) / 2.0,
         xRight: (footerRect.xLeft + footerRect.xRight + textSize.width) / 2.0,

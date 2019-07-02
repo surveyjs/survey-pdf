@@ -32,7 +32,7 @@ export interface IDocOptions {
     fontName?: string;
     base64Normal?: string;
     base64Bold?: string;
-    margins: IMargin;
+    margins?: IMargin;
 }
 
 export class DocOptions implements IDocOptions {
@@ -43,14 +43,36 @@ export class DocOptions implements IDocOptions {
     protected _orientation: 'l' | 'p';
     protected _fontName: string;
     public constructor(options: IDocOptions) {
-        this._orientation = options.orientation || 'p';
+        if (typeof options.orientation === 'undefined') {
+            if (typeof options.format === 'undefined' ||
+                options.format[0] < options.format[1]) {
+                this._orientation = 'p';
+            }
+            else this._orientation = 'l';
+        }
+        else this._orientation = options.orientation;
         this._format = options.format || 'a4';
         if (Array.isArray(this._format)) {
             this._format = this._format.map(f => f * DocOptions.MM_TO_PT);
         }
         this._fontName = options.fontName || 'segoe';
-        this._fontSize = options.fontSize || 12;
+        this._fontSize = options.fontSize || 14;
         this._margins = SurveyHelper.clone(options.margins);
+        if (typeof this._margins === 'undefined') {
+            this._margins = {};
+        }
+        if (typeof this._margins.top === 'undefined') {
+            this._margins.top = 10.0;
+        }
+        if (typeof this._margins.bot === 'undefined') {
+            this._margins.bot = 10.0;
+        }
+        if (typeof this._margins.left === 'undefined') {
+            this._margins.left = 10.0;
+        }
+        if (typeof this._margins.right === 'undefined') {
+            this._margins.right = 10.0;
+        }
         Object.keys(this._margins).forEach((name: string) => {
             (<any>this._margins)[name] = (<any>this._margins)[name] * DocOptions.MM_TO_PT;
         });
@@ -85,13 +107,13 @@ export class DocController extends DocOptions {
     private _fontStyle: string;
     private marginsStack: IMarginLR[];
 
-    public constructor(options: IDocOptions) {
-        super(options);
+    public constructor(options?: IDocOptions) {
+        super(options || {});
         if ((options.fontName && (options.base64Normal || options.base64Bold))) {
             this.addFont(this.fontName, options.base64Normal, 'normal');
             this.addFont(this.fontName, options.base64Bold, 'bold');
         }
-        else if (this.fontName == 'segoe') {
+        else if (this.fontName === 'segoe') {
             this.addFont(this.fontName, Fonts.SEGOE_NORMAL, 'normal');
             this.addFont(this.fontName, Fonts.SEGOE_BOLD, 'bold');
         }
