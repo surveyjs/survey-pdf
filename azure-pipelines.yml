@@ -27,3 +27,4 @@ steps:
     command: 'publish'
     workingDir: 'packages/survey-pdf'
     publishEndpoint: 'NPM Registry'
+    verbose: true
