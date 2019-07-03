@@ -21,3 +21,8 @@ steps:
     npm run build_prod
     npm test
   displayName: 'npm install and build'
+
+- task: Npm@1
+  inputs:
+    command: 'publish'
+    workingDir: 'packages/survey-pdf'
