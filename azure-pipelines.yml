@@ -8,9 +8,6 @@ trigger:
   branches:
     include:
     - master
-  tags:
-    include:
-    - v*.*.*
 
 pool:
   vmImage: 'Ubuntu-16.04'
@@ -27,9 +24,3 @@ steps:
     npm test
   displayName: 'npm install and build'
 
-- task: Npm@1
-  inputs:
-    command: 'publish'
-    workingDir: 'packages/survey-pdf'
-    publishEndpoint: 'NPM Registry'
-    verbose: true
