@@ -4,8 +4,13 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
-- master
-- tags
+  batch: true
+  branches:
+    include:
+    - master
+  tags:
+    include:
+    - v*.*.*
 
 pool:
   vmImage: 'Ubuntu-16.04'
