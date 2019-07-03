@@ -5,6 +5,7 @@
 
 trigger:
 - master
+- tags
 
 pool:
   vmImage: 'Ubuntu-16.04'
