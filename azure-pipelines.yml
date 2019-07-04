@@ -26,4 +26,6 @@ steps:
 
 - script: |
     npm run doc_update
+  env:
+    GTTOKEN: $(GTTOKEN)
   displayName: 'Update documentation'
