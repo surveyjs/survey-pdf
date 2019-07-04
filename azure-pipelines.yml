@@ -24,3 +24,6 @@ steps:
     npm test
   displayName: 'npm install and build'
 
+- script: |
+    npm run doc_update
+  displayName: 'Update documentation'
