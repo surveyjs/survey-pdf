@@ -1,7 +1,9 @@
 mkdir __update_docs_temp
 cd ./__update_docs_temp
 mkdir service
-git clone https://$GTTOKEN@github.com/surveyjs/service
+REPO_URL="https://github.com/surveyjs/service"
+git -c http.$REPO_URL.extraHeader="Authorization: Basic $GITAUTH" \
+  clone $REPO_URL
 cp ../README.md ./Pdf-Export.md
 mv ./Pdf-Export.md ./service/surveyjs.io/App_Data/Docs
 cd ./service
