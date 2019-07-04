@@ -1,4 +1,3 @@
-#!/bin/bash
 mkdir __update_docs_temp
 cd ./__update_docs_temp
 mkdir service
