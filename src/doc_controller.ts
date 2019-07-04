@@ -3,7 +3,6 @@ import { SurveyHelper } from './helper_survey';
 import { LocalizableString } from 'survey-core';
 import Fonts from './fonts';
 import setRadioAppearance from './jspdf_plugins/acroform';
-import './jspdf_plugins/fromHtml.js';
 import './jspdf_plugins/acroform.js';
 export interface IPoint {
     xLeft: number;
