@@ -44,7 +44,10 @@ Example of export SurveyJS library JSON to PDF
 var options = {
     fontSize: 14,
     margins: {
-        top: 18
+        left: 10,
+        right: 10,	
+        top: 18,	
+        bot: 10
     }
 };
 //json is same as for SurveyJS Library
