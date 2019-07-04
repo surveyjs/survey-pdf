@@ -4,10 +4,9 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
-  batch: true
-  branches:
+  tags:
     include:
-    - master
+    - v*.*.*
 
 pool:
   vmImage: 'Ubuntu-16.04'
@@ -24,8 +23,9 @@ steps:
     npm test
   displayName: 'npm install and build'
 
-- script: |
-    npm run doc_update
-  env:
-    GTTOKEN: $(GTTOKEN)
-  displayName: 'Update documentation'
+- task: Npm@1
+  inputs:
+    command: 'publish'
+    workingDir: 'packages/survey-pdf'
+    publishEndpoint: 'NPM Registry'
+    verbose: true
