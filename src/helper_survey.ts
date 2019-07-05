@@ -122,7 +122,7 @@ export class SurveyHelper {
     public static createDivBlock(element: string, controller: DocController) {
         return `<div style= ${this.generateCssTextRule(controller.fontSize,
             controller.fontStyle,
-            controller.fontName)}>
+            controller.doc.internal.getFont(controller.fontName).encoding == 'Identity-H' ? 'helvetica' : controller.fontName)}>
             ${element}
             </div>`;
     }
@@ -189,7 +189,7 @@ export class SurveyHelper {
     public static async createHTMLFlat(point: IPoint, question: Question, controller: DocController, html: string): Promise<IPdfBrick> {
         let margins: { top: number, bottom: number, width: number } = this.getHtmlMargins(controller, point);
         return await new Promise((resolve) => {
-            controller.helperDoc.fromHtml(html, point.xLeft, margins.top, {
+            controller.helperDoc.fromHTML(html, point.xLeft, margins.top, {
                 'pagesplit': true,
                 width: margins.width
             }, function (result: any) {
