@@ -16,7 +16,10 @@ SurveyJS PDF exporter library is easy way to render [SurveyJS Library](https://s
 ![SurveyJS PDF Exporter example page 1](https://github.com/surveyjs/surveyjs/blob/master/docs/images/survey-pdf-page-1.png?raw=true)
 ![SurveyJS PDF Exporter example page 2](https://github.com/surveyjs/surveyjs/blob/master/docs/images/survey-pdf-page-2.png?raw=true)
 
-### Usage
+### Usage (modern ES, modules)
+import * as SurveyPDF from "survey-pdf";
+
+### Usage (ES5, scripts)
 
 Add these scripts to your web page
 
@@ -70,6 +73,10 @@ surveyPDF.onRenderHeader.add(function (_, canvas) {
 });
 surveyPDF.save();
 ```
+### Examples
+
+* [es5 style example](https://surveyjs.io/Examples/Library/?id=survey-pdf)
+* angular-cli(https://codesandbox.io/s/survey-pdf-angular-example-ucxvp)
 
 ### Constraints
 
