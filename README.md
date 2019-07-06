@@ -76,7 +76,7 @@ surveyPDF.save();
 ### Examples
 
 * [es5 style example](https://surveyjs.io/Examples/Library/?id=survey-pdf)
-* angular-cli(https://codesandbox.io/s/survey-pdf-angular-example-ucxvp)
+* [angular-cli](https://codesandbox.io/s/survey-pdf-angular-example-ucxvp)
 
 ### Constraints
 
