@@ -17,7 +17,9 @@ SurveyJS PDF exporter library is easy way to render [SurveyJS Library](https://s
 ![SurveyJS PDF Exporter example page 2](https://github.com/surveyjs/surveyjs/blob/master/docs/images/survey-pdf-page-2.png?raw=true)
 
 ### Usage (modern ES, modules)
+```javascript
 import * as SurveyPDF from "survey-pdf";
+```
 
 ### Usage (ES5, scripts)
 
