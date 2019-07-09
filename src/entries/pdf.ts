@@ -1,7 +1,7 @@
 export * from './helpers';
 export { SurveyPDF as Survey } from '../survey';
 export { SurveyHelper } from '../helper_survey';
-export { IDocOptions, DocOptions, DocController } from '../doc_controller';
+export { IPoint, IRect, ISize, IMarginLR, IMargin, IDocOptions, DocOptions, DocController } from '../doc_controller';
 export { FlatRepository } from '../flat_layout/flat_repository';
 export { IFlatQuestion, FlatQuestion } from '../flat_layout/flat_question';
 export { FlatTextbox } from '../flat_layout/flat_textbox';
