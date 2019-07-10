@@ -10,7 +10,7 @@ import { TextBrick } from '../pdf_render/pdf_text';
 import { FlatSelectBase } from './flat_selectbase';
 
 export class FlatMatrix extends FlatQuestion {
-    public static readonly GAP_BETWEEN_ROWS = 0.5;
+    public static readonly GAP_BETWEEN_ROWS: number = 0.5;
     protected question: QuestionMatrixModel;
     constructor(question: IQuestion, protected controller: DocController) {
         super(<QuestionRadiogroupModel>question, controller);

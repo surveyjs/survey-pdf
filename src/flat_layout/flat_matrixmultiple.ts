@@ -12,7 +12,7 @@ import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
 
 export class FlatMatrixMultiple extends FlatQuestion {
-    public static readonly GAP_BETWEEN_ROWS = 0.5;
+    public static readonly GAP_BETWEEN_ROWS: number = 0.5;
     protected question: QuestionMatrixDropdownModelBase;
     public constructor(question: IQuestion, controller: DocController,
         protected isMultiple: boolean = true) {
