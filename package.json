@@ -9,7 +9,7 @@
     "build_prod": "npm run build_dev && webpack --env.buildType prod --env.platform pdf",
     "doc_update": "chmod +x ./docupdate_npm.sh && ./docupdate_npm.sh"
   },
-  "version": "1.0.96",
+  "version": "1.0.98",
   "name": "survey-pdf",
   "private": true,
   "license": "Commercial",
