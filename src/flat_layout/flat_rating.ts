@@ -49,7 +49,7 @@ export class FlatRating extends FlatRadiogroup {
             point.xLeft), item, index);
         compositeFlat.addBrick(itemFlat);
         let textPoint: IPoint = SurveyHelper.clone(point);
-        textPoint.xLeft = itemFlat.xRight + itemFlat.width;
+        textPoint.xLeft = itemFlat.xRight + this.controller.unitWidth * SurveyHelper.GAP_BETWEEN_ITEM_TEXT;
         let itemText: LocalizableString = SurveyHelper.getRatingItemText(this.questionRating, index, item.locText);
         itemText == null || compositeFlat.addBrick(await SurveyHelper.createTextFlat(
             textPoint, this.question, this.controller, itemText, TextBrick));
