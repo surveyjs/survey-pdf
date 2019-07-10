@@ -1,9 +1,9 @@
 import { IQuestion, QuestionTextModel } from 'survey-core';
 import { IRect, DocController } from '../doc_controller';
-import { TitleBrick } from './pdf_title';
+import { TextBoldBrick } from './pdf_textbold';
 import { SurveyHelper } from '../helper_survey';
 
-export class TitlePanelBrick extends TitleBrick {
+export class TitlePanelBrick extends TextBoldBrick {
     protected question: QuestionTextModel;
     public constructor(question: IQuestion, controller: DocController,
         rect: IRect, text: string) {

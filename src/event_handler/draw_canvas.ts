@@ -1,7 +1,7 @@
 import { IRect, IMargin, ISize, DocController } from '../doc_controller';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { TextBrick } from '../pdf_render/pdf_text';
-import { TitleBrick } from '../pdf_render/pdf_title';
+import { TextBoldBrick } from '../pdf_render/pdf_textbold';
 import { SurveyHelper } from '../helper_survey';
 
 export enum HorizontalAlign {
@@ -194,7 +194,7 @@ export class DrawCanvas {
                 textRect, textOptions.text, textOptions.fontSize));
         }
         else {
-            this.packs.push(new TitleBrick(null, this.controller,
+            this.packs.push(new TextBoldBrick(null, this.controller,
                 textRect, textOptions.text, textOptions.fontSize));
         }
     }

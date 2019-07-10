@@ -8,7 +8,7 @@ import { IPoint, DocController } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { FlatTextbox } from '../src/flat_layout/flat_textbox';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
-import { TitleBrick } from '../src/pdf_render/pdf_title';
+import { TextBoldBrick } from '../src/pdf_render/pdf_textbold';
 import { TextBoxBrick } from '../src/pdf_render/pdf_textbox';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
@@ -182,7 +182,7 @@ test('Check question title location in panel', async () => {
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(2);
     expect(flats[0][0] instanceof TextBoxBrick).toBe(true);
-    expect(flats[0][1].unfold()[0] instanceof TitleBrick).toBe(true);
+    expect(flats[0][1].unfold()[0] instanceof TextBoldBrick).toBe(true);
 });
 test('Check not rendering invisible questions', async () => {
     let json: any = {

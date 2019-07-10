@@ -2,7 +2,7 @@ import { IQuestion, Question, QuestionRatingModel, LocalizableString } from 'sur
 import { IPoint, IRect, ISize, DocController, IMargin, } from './doc_controller';
 import { IPdfBrick, PdfBrick } from './pdf_render/pdf_brick';
 import { TextBrick } from './pdf_render/pdf_text';
-import { TitleBrick } from './pdf_render/pdf_title';
+import { TextBoldBrick } from './pdf_render/pdf_textbold';
 import { TitlePanelBrick } from './pdf_render/pdf_titlepanel';
 import { DescriptionBrick } from './pdf_render/pdf_description';
 import { CommentBrick } from './pdf_render/pdf_comment';
@@ -210,7 +210,7 @@ export class SurveyHelper {
         controller: DocController, text: string | LocalizableString) {
         controller.fontStyle = 'bold';
         let composite: IPdfBrick = await SurveyHelper.createTextFlat(
-            point, question, controller, text, TitleBrick);
+            point, question, controller, text, TextBoldBrick);
         controller.fontStyle = 'normal';
         return composite;
     }
