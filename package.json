@@ -16,11 +16,11 @@
   "dependencies": {
     "jspdf": "^1.5.3",
     "node-interval-tree": "^1.3.3",
-    "survey-core": "^1.0.98"
+    "survey-core": "^1.1.0"
   },
   "devDependencies": {
     "@types/jest": "^23.3.3",
-    "@types/jspdf": "^1.2.2",
+    "@types/jspdf": "^1.3.1",
     "@types/lodash": "4.14.121",
     "@types/node": "7.0.4",
     "ajv": "4.11.2",
