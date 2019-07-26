@@ -10,14 +10,14 @@ var packageJson = require("./package.json");
 var fs = require("fs");
 
 var banner = [
-  "surveyjs - Survey JavaScript library v" + packageJson.version,
+  "surveyjs - SurveyJS PDF library v" + packageJson.version,
   "Copyright (c) 2015-2019 Devsoft Baltic OÜ  - http://surveyjs.io/",
   "License: MIT (http://www.opensource.org/licenses/mit-license.php)"
 ].join("\n");
 
 // TODO add to dts_bundler
 var dts_banner = [
-  "Type definitions for Survey JavaScript library v" + packageJson.version,
+  "Type definitions for SurveyJS PDF library v" + packageJson.version,
   "Copyright (c) 2015-2019 Devsoft Baltic OÜ  - http://surveyjs.io/",
   "Definitions by: Devsoft Baltic OÜ <https://github.com/surveyjs/>",
   ""
@@ -42,7 +42,7 @@ var platformOptions = {
     keywords: ["pdf"],
     dependencies: {
       jspdf: "^1.5.3",
-      "survey-core": "^1.0.78"
+      "survey-core": "^1.1.1"
     }
   }
 };
@@ -76,7 +76,7 @@ module.exports = function(options) {
     name: "survey-" + options.platform,
     version: packageJson.version,
     description:
-      "survey.js is a JavaScript Survey Library. It is a modern way to add a survey to your website. It uses JSON for survey metadata and results.",
+      "survey.pdf.js is a SurveyJS PDF Library. It is a easy way to export SurveyJS surveys to PDF. It uses JSON for survey metadata.",
     keywords: ["Survey", "JavaScript", "PDF", "Library"].concat(
       platformOptions[options.platform].keywords
     ),
