@@ -6,7 +6,7 @@
     "testDev": "jest --watch",
     "release": "standard-version --message \"Release: %s\" ",
     "build_dev": "webpack --env.buildType dev --env.platform pdf",
-    "build_prod": "npm run build_dev && webpack --env.buildType prod --env.platform pdf",
+    "build_prod": "npm run build_dev && webpack --env.buildType prod --env.platform pdf && npm run dts_clean",
     "doc_update": "chmod +x ./docupdate_npm.sh && ./docupdate_npm.sh",
     "dts_clean": "node dts_cleaner.js"
   },

@@ -20,7 +20,6 @@ steps:
 - script: |
     npm install
     npm run build_prod
-    npm run dts_clean
     npm test
   displayName: 'npm install and build'
 
