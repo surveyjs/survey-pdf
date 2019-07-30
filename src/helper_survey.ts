@@ -343,15 +343,15 @@ export class SurveyHelper {
     public static getRatingItemText(question: QuestionRatingModel,
         index: number, locText: LocalizableString): LocalizableString {
         let ratingItemLocText: LocalizableString = new LocalizableString(locText.owner, locText.useMarkdown);
-        ratingItemLocText.text = locText.text;
+        ratingItemLocText.text = locText.renderedHtml;
         if (index === 0 && question.minRateDescription) {
             ratingItemLocText.text =
-                question.locMinRateDescription.text + locText.text;
+                question.locMinRateDescription.text + ' ' + locText.renderedHtml;
         }
         else if (index === question.visibleRateValues.length - 1 &&
             question.maxRateDescription) {
             ratingItemLocText.text =
-                locText.text + question.locMaxRateDescription.text;
+                locText.renderedHtml + ' ' + question.locMaxRateDescription.text;
         }
         return ratingItemLocText;
     }
