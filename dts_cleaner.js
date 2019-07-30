@@ -1,14 +1,14 @@
 'use strict';
 const fs = require('fs');
-var in_path = 'packages/survey-pdf/survey.pdf.d.ts';
-var out_path = 'packages/survey-pdf/survey.pdf.d.ts_clean';
+var path = 'packages/survey-pdf/survey.pdf.d.ts';
 var modules = new Set();
-var lines = fs.readFileSync(in_path, 'utf-8').split('\n');
+var lines = fs.readFileSync(path, 'utf-8').split('\n');
+fs.unlinkSync(path);
 lines.forEach((line) => {
     var reg = /(import\s*){(.*)}(.*)/;
     var res = line.match(reg);
     if (!res) {
-        fs.appendFileSync(out_path, line + '\n');
+        fs.appendFileSync(path, line + '\n');
         return;
     }
     var sp = res[2].split(/,\s*/);
@@ -21,8 +21,6 @@ lines.forEach((line) => {
         }
     }
     if (imp_part !== '') {
-        fs.appendFileSync(out_path, res[1] + '{ ' + imp_part + ' }' + res[3] + '\n');
+        fs.appendFileSync(path, res[1] + '{ ' + imp_part + ' }' + res[3] + '\n');
     }
 });
-fs.unlinkSync(in_path);
-fs.renameSync(out_path, in_path);
