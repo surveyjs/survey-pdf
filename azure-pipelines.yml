@@ -40,7 +40,7 @@ steps:
     TargetFolder: '$(Build.Repository.LocalPath)/node_modules/survey-core'
     OverWrite: true
 
-  - script: |
+- script: |
     npm run build_prod
     npm test
   displayName: 'npm build and test'
