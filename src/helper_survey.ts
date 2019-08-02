@@ -37,6 +37,8 @@ export class SurveyHelper {
     public static readonly TEXT_COLOR: string = '#404040';
     public static readonly BACKGROUND_COLOR: string = '#FFFFFF';
     public static readonly TITLE_LOCATION_MATRIX: string = 'matrix';
+    public static readonly STANDART_FONT: string = 'helvetica';
+    public static readonly CUSTOM_FONT_ENCODING: string = 'Identity-H';
 
     public static parseWidth(width: string, maxWidth: number): number {
         let value: number = parseFloat(width);
@@ -122,8 +124,7 @@ export class SurveyHelper {
     public static createDivBlock(element: string, controller: DocController) {
         return `<div style= ${this.generateCssTextRule(controller.fontSize,
             controller.fontStyle,
-            controller.doc.internal.getFont(controller.fontName).encoding ===
-                'Identity-H' ? 'helvetica' : controller.fontName)}>
+            SurveyHelper.isCustomFont(controller, controller.fontName) ? SurveyHelper.STANDART_FONT : controller.fontName)}>,
             ${element}
             </div>`;
     }
@@ -418,6 +419,9 @@ export class SurveyHelper {
         controller.doc.roundedRect(...SurveyHelper.createAcroformRect(
             SurveyHelper.scaleRect(flat, unvisibleScale)), unvisibleRadius, unvisibleRadius);
         controller.doc.setDrawColor(oldDrawColor);
+    }
+    public static isCustomFont(controller: DocController, fontName: string) {
+        return controller.doc.internal.getFont(fontName).encoding === SurveyHelper.CUSTOM_FONT_ENCODING;
     }
     public static clone(src: any) {
         let target: any = {};

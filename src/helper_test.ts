@@ -22,7 +22,7 @@ export class TestHelper {
         return {
             format: [210.0, 297.0],
             fontSize: 30,
-            fontName: 'helvetica',
+            fontName: SurveyHelper.STANDART_FONT,
             margins: {
 
                 left: 10.0,
