@@ -28,8 +28,8 @@ export class DropdownBrick extends PdfBrick {
         });
         comboBox.setOptions(options);
         comboBox.fontName = this.controller.fontName;
-        comboBox.isUnicode =
-            this.controller.doc.internal.getFont(comboBox.fontName).encoding === 'Identity-H';
+        comboBox.readOnly = this.question.isReadOnly;
+        comboBox.isUnicode = SurveyHelper.isCustomFont(this.controller, comboBox.fontName);
         comboBox.V = '';
         if (!!this.question.renderedValue) {
             comboBox.V = this.question.renderedValue;

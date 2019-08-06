@@ -6,6 +6,7 @@ import { QuestionRatingModel } from 'survey-core';
 import { SurveyPDF } from '../src/survey';
 import { IRect, DocOptions, IDocOptions, DocController, ISize, IPoint } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
+import { FlatQuestion } from '../src/flat_layout/flat_question';
 import { FlatRating } from '../src/flat_layout/flat_rating';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { SurveyHelper } from '../src/helper_survey';
@@ -167,8 +168,7 @@ test('Check rating two elements with long min rate description', async () => {
     TestHelper.equalRect(expect, SurveyHelper.mergeRects(flats[0][0], flats[0][1]), assumeRating);
 });
 test('Check rating vertical layout composite', async () => {
-    let json: any =
-    {
+    let json: any = {
         questions: [
             {
                 type: 'rating',
@@ -183,8 +183,9 @@ test('Check rating vertical layout composite', async () => {
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     let currPoint: IPoint = controller.leftTopPoint;
-    currPoint.xLeft += controller.unitWidth;
-    let assumeItemRect: IRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(SurveyHelper.createRect(currPoint, controller.unitHeight, controller.unitHeight),
+    currPoint.xLeft += FlatQuestion.CONTENT_GAP_HOR_SCALE * controller.unitWidth;
+    let assumeItemRect: IRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(
+        SurveyHelper.createRect(currPoint, controller.unitHeight, controller.unitHeight),
         SurveyHelper.SELECT_ITEM_FLAT_SCALE), currPoint.xLeft);
     TestHelper.equalRect(expect, flats[0][0].unfold()[0], assumeItemRect);
     let textSize: ISize = controller.measureText(
