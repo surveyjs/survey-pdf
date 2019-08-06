@@ -423,6 +423,13 @@ export class SurveyHelper {
     public static isCustomFont(controller: DocController, fontName: string) {
         return controller.doc.internal.getFont(fontName).encoding === SurveyHelper.CUSTOM_FONT_ENCODING;
     }
+    public static fixFont(controller: DocController) {
+        if (SurveyHelper.isCustomFont(controller, controller.fontName)) {
+            controller.doc.text('Dummy', 0, 0);
+            controller.doc.deletePage(1);
+            controller.addPage();
+        }
+    }
     public static clone(src: any) {
         let target: any = {};
         for (let prop in src) {
