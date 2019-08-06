@@ -103,10 +103,10 @@ export class FlatMatrixMultiple extends FlatQuestion {
             this.controller, colCount);
         let isWide: boolean = cellWidth >=
             this.controller.measureText(SurveyHelper.MATRIX_COLUMN_WIDTH).width;
-        !table.showHeader || !isWide || rows.push(table.headerRow);
+        table.showHeader && isWide && rows.push(table.headerRow);
         rows.push(...table.rows);
-        !table.hasRemoveRow || !isVertical || rows.pop();
-        !table.showFooter || !isWide || rows.push(table.footerRow);
+        table.hasRemoveRow && isVertical && rows.pop();
+        table.showFooter && isWide && rows.push(table.footerRow);
         rowsFlats.push(...await this.generateFlatsRows(currPoint, rows, colCount, isWide));
         return rowsFlats;
     }
