@@ -3,11 +3,9 @@
 };
 
 import { SurveyPDF } from '../src/survey';
-import { IRect, DocController } from '../src/doc_controller';
+import { DocController } from '../src/doc_controller';
 import { FlatDropdown } from '../src/flat_layout/flat_dropdown';
-import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
-import { IPdfBrick, PdfBrick } from '../src/pdf_render/pdf_brick';
 let __dummy_dd = new FlatDropdown(null, null);
 
 test('Check dropdown readonly', async () => {

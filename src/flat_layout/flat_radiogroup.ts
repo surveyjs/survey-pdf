@@ -16,7 +16,7 @@ export class FlatRadiogroup extends FlatSelectBase {
         index: number, key?: string, checked?: boolean): IPdfBrick {
         if (index === 0) {
             this.radioGroupWrap = new RadioGroupWrap(this.question.id + ((typeof key === 'undefined') ? '' : key),
-                this.controller, this.question.readOnly);
+                this.controller, this.question.isReadOnly);
         }
         let isChecked = (typeof checked === 'undefined') ? this.question.value == itemValue.value : checked;
         return new RadioItemBrick(this.question, this.controller, rect,

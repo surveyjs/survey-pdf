@@ -53,3 +53,20 @@ test('Test all items disabled or enabled', async () => {
             acroFormDictionaryRoot.Fields[0].readOnly).toBe(readOnly);
     }
 });
+test('Check radiogroup readonly via display mode', async () => {
+	let json = {
+		questions: [
+			{
+				name: 'readigroup_readonly_display',
+				type: 'radiogroup',
+                choices: ['item']
+			}
+		]
+	};
+    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    survey.mode = 'display';
+	let controller: DocController = new DocController(TestHelper.defaultOptions);
+	await survey['render'](controller);
+    expect(controller.doc.internal.acroformPlugin.
+        acroFormDictionaryRoot.Fields[0].readOnly).toBe(true);
+});
