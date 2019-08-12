@@ -1,11 +1,12 @@
-import { SurveyModel, Event } from "survey-core";
-import { IDocOptions, DocController } from "./doc_controller";
-import { FlatSurvey } from "./flat_layout/flat_survey";
-import { PagePacker } from "./page_layout/page_packer";
-import { IPdfBrick } from "./pdf_render/pdf_brick";
-import { EventHandler } from "./event_handler/event_handler";
-import { DrawCanvas } from "./event_handler/draw_canvas";
-import { SurveyHelper } from "./helper_survey";
+import { SurveyModel, Event } from 'survey-core';
+import { IDocOptions, DocController } from './doc_controller';
+import { FlatSurvey } from './flat_layout/flat_survey';
+import { PagePacker } from './page_layout/page_packer';
+import { IPdfBrick } from './pdf_render/pdf_brick';
+import { EventHandler } from './event_handler/event_handler';
+import { DrawCanvas } from './event_handler/draw_canvas';
+import { AdornersOptions } from './event_handler/adorners';
+import { SurveyHelper } from './helper_survey';
 
 export class SurveyPDF extends SurveyModel {
   public options: IDocOptions;
@@ -31,6 +32,15 @@ export class SurveyPDF extends SurveyModel {
     (sender: SurveyPDF, canvas: DrawCanvas) => any,
     any
   > = new Event<(sender: SurveyPDF, canvas: DrawCanvas) => any, any>();
+  /**
+   * The event in fired for every rendered question
+   * @param sender SurveyPDF object that fires the event
+   * @param canvas AdornersOptions object that have options to custom render the question
+   */
+  public onRenderQuestion: Event<
+    (sender: SurveyPDF, options: AdornersOptions) => any,
+    any
+  > = new Event<(sender: SurveyPDF, options: AdornersOptions) => any, any>();
   private async render(controller: DocController): Promise<void> {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(this, controller);
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
@@ -54,7 +64,7 @@ export class SurveyPDF extends SurveyModel {
       }
     }
   }
-  public async save(fileName: string = "survey_result.pdf"): Promise<any> {
+  public async save(fileName: string = 'survey_result.pdf'): Promise<any> {
     let controller: DocController = new DocController(this.options);
     SurveyHelper.fixFont(controller);
     await this.render(controller);

@@ -6,6 +6,7 @@ import { IFlatQuestion } from './flat_question';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { RowlineBrick } from '../pdf_render/pdf_rowline';
+import { AdornersOptions } from '../event_handler/adorners';
 import { SurveyHelper } from '../helper_survey';
 
 export class FlatSurvey {
