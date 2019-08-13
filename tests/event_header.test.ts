@@ -3,7 +3,7 @@
 };
 
 import { SurveyPDF } from '../src/survey';
-import { ISize, IRect, DocController } from '../src/doc_controller';
+import { IRect, ISize, DocController } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { FlatTextbox } from '../src/flat_layout/flat_textbox';
 import { PagePacker } from '../src/page_layout/page_packer';
@@ -37,7 +37,7 @@ test('Event render header simple text', async () => {
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(1);
-    EventHandler.process_events(survey, controller, packs);
+    EventHandler.process_header_events(survey, controller, packs);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(2);
     TestHelper.equalRect(expect, packs[0][1], SurveyHelper.createHeaderRect(controller));
@@ -65,7 +65,7 @@ test('Event render header bold text', async () => {
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(1);
-    EventHandler.process_events(survey, controller, packs);
+    EventHandler.process_header_events(survey, controller, packs);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(2);
     TestHelper.equalRect(expect, packs[0][1], SurveyHelper.createHeaderRect(controller));
@@ -95,7 +95,7 @@ test('Event render header left top text', async () => {
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(1);
-    EventHandler.process_events(survey, controller, packs);
+    EventHandler.process_header_events(survey, controller, packs);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(2);
     let textSize: ISize = controller.measureText(text, 'normal', DrawCanvas.DEFAULT_FONT_SIZE);
@@ -126,7 +126,7 @@ test('Event render header center middle text', async () => {
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(1);
-    EventHandler.process_events(survey, controller, packs);
+    EventHandler.process_header_events(survey, controller, packs);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(2);
     let textSize: ISize = controller.measureText(text, 'normal', DrawCanvas.DEFAULT_FONT_SIZE);
@@ -163,7 +163,7 @@ test('Event render footer center middle text', async () => {
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(1);
-    EventHandler.process_events(survey, controller, packs);
+    EventHandler.process_header_events(survey, controller, packs);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(2);
     let textSize: ISize = controller.measureText(text, 'normal', DrawCanvas.DEFAULT_FONT_SIZE);

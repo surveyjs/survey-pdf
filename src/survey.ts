@@ -44,7 +44,7 @@ export class SurveyPDF extends SurveyModel {
   private async render(controller: DocController): Promise<void> {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(this, controller);
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
-    EventHandler.process_events(this, controller, packs);
+    EventHandler.process_header_events(this, controller, packs);
     for (let i: number = 0; i < packs.length; i++) {
       let pageAdded: boolean = i === 0;
       for (let j: number = 0; j < packs[i].length; j++) {
