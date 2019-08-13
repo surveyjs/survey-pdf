@@ -124,7 +124,7 @@ export class SurveyHelper {
     public static createDivBlock(element: string, controller: DocController) {
         return `<div style= ${this.generateCssTextRule(controller.fontSize,
             controller.fontStyle,
-            SurveyHelper.isCustomFont(controller, controller.fontName) ? SurveyHelper.STANDART_FONT : controller.fontName)}>,
+            SurveyHelper.isCustomFont(controller, controller.fontName) ? SurveyHelper.STANDART_FONT : controller.fontName)}>
             ${element}
             </div>`;
     }
