@@ -16,31 +16,31 @@ export class SurveyPDF extends SurveyModel {
   }
   /**
    * The event in fired for every rendered page
-   * @param sender SurveyPDF object that fires the event
+   * @param survey SurveyPDF object that fires the event
    * @param canvas DrawCanvas object that you may use it to draw text and images in the page header
    */
   public onRenderHeader: Event<
-    (sender: SurveyPDF, canvas: DrawCanvas) => any,
+    (survey: SurveyPDF, canvas: DrawCanvas) => any,
     any
-  > = new Event<(sender: SurveyPDF, canvas: DrawCanvas) => any, any>();
+  > = new Event<(survey: SurveyPDF, canvas: DrawCanvas) => any, any>();
   /**
    * The event in fired for every rendered page
-   * @param sender SurveyPDF object that fires the event
+   * @param survey SurveyPDF object that fires the event
    * @param canvas DrawCanvas object that you may use it to draw text and images in the page footer
    */
   public onRenderFooter: Event<
-    (sender: SurveyPDF, canvas: DrawCanvas) => any,
+    (survey: SurveyPDF, canvas: DrawCanvas) => any,
     any
-  > = new Event<(sender: SurveyPDF, canvas: DrawCanvas) => any, any>();
+  > = new Event<(survey: SurveyPDF, canvas: DrawCanvas) => any, any>();
   /**
    * The event in fired for every rendered question
-   * @param sender SurveyPDF object that fires the event
+   * @param survey SurveyPDF object that fires the event
    * @param canvas AdornersOptions object that have options to custom render the question
    */
   public onRenderQuestion: Event<
-    (sender: SurveyPDF, options: AdornersOptions) => any,
+    (survey: SurveyPDF, options: AdornersOptions) => any,
     any
-  > = new Event<(sender: SurveyPDF, options: AdornersOptions) => any, any>();
+  > = new Event<(survey: SurveyPDF, options: AdornersOptions) => any, any>();
   private async render(controller: DocController): Promise<void> {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(this, controller);
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);

@@ -15,9 +15,9 @@ export class FlatRepository {
     public register(modelType: string, rendererConstructor: FlatConstructor): void {
         this.questions[modelType] = rendererConstructor;
     }
-    public create(question: IQuestion, docController: DocController): IFlatQuestion {
-        let rendererConstructor: FlatConstructor =
-            this.questions[question.getType()] || FlatQuestion;
+    public create(question: IQuestion, docController: DocController, type?: string): IFlatQuestion {
+        let questionType: string = typeof type === 'undefined' ? question.getType() : type;
+        let rendererConstructor: FlatConstructor = this.questions[questionType] || FlatQuestion;
         return new rendererConstructor(question, docController);
     }
 }
