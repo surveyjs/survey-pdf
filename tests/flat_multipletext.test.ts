@@ -9,7 +9,7 @@ import { FlatMultipleText } from '../src/flat_layout/flat_multipletext';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
-let __dummy_mt = new FlatMultipleText(null, null);
+let __dummy_mt = new FlatMultipleText(null, null, null);
 
 test('Check multiple text one item', async () => {
     let json: any = {

@@ -6,7 +6,7 @@ import { SurveyPDF } from '../src/survey';
 import { DocController } from '../src/doc_controller';
 import { FlatDropdown } from '../src/flat_layout/flat_dropdown';
 import { TestHelper } from '../src/helper_test';
-let __dummy_dd = new FlatDropdown(null, null);
+let __dummy_dd = new FlatDropdown(null, null, null);
 
 test('Check dropdown readonly', async () => {
 	let json = {

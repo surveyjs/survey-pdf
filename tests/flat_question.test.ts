@@ -15,8 +15,8 @@ import { CompositeBrick } from '../src/pdf_render/pdf_composite';
 import { RowlineBrick } from '../src/pdf_render/pdf_rowline';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
-let __dummy_tx = new FlatTextbox(null, null);
-let __dummy_cb = new FlatCheckbox(null, null);
+let __dummy_tx = new FlatTextbox(null, null, null);
+let __dummy_cb = new FlatCheckbox(null, null, null);
 
 export async function calcTitleTop(leftTopPoint: IPoint, controller: DocController,
     titleQuestion: Question, compositeFlat: IPdfBrick, isDesc: boolean = false): Promise<IPoint> {

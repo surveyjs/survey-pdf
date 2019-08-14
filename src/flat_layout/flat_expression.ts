@@ -1,4 +1,5 @@
 import { IQuestion, QuestionExpressionModel } from 'survey-core';
+import { SurveyPDF } from '../survey';
 import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
 import { IPoint, IRect, DocController } from '../doc_controller';
@@ -8,8 +9,9 @@ import { TextFieldBrick } from '../pdf_render/pdf_textfield';
 
 export class FlatExpression extends FlatQuestion {
     protected question: QuestionExpressionModel;
-    public constructor(question: IQuestion, controller: DocController) {
-        super(question, controller);
+    public constructor(protected survey: SurveyPDF,
+        question: IQuestion, controller: DocController) {
+        super(survey, question, controller);
         this.question = <QuestionExpressionModel>question;
     }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {

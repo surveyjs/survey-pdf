@@ -1,4 +1,5 @@
 import { IQuestion, ItemValue, QuestionImagePickerModel } from 'survey-core';
+import { SurveyPDF } from '../survey';
 import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
 import { IPoint, IRect, DocController } from '../doc_controller';
@@ -12,8 +13,9 @@ import { SurveyHelper } from '../helper_survey';
 export class FlatImagePicker extends FlatQuestion {
     protected question: QuestionImagePickerModel;
     protected radio: FlatRadiogroup;
-    public constructor(question: IQuestion, controller: DocController) {
-        super(question, controller);
+    public constructor(protected survey: SurveyPDF,
+        question: IQuestion, controller: DocController) {
+        super(survey, question, controller);
         this.question = <QuestionImagePickerModel>question;
     }
     private async generateFlatItem(point: IPoint, item: ItemValue, index: number): Promise<IPdfBrick> {
@@ -43,7 +45,7 @@ export class FlatImagePicker extends FlatQuestion {
     }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         this.radio = this.question.multiSelect ? null :
-            new FlatRadiogroup(this.question, this.controller);
+            new FlatRadiogroup(this.survey, this.question, this.controller);
         let rowsFlats: CompositeBrick[] = [new CompositeBrick()];
         let colWidth: number = SurveyHelper.getImagePickerAvailableWidth(
             this.controller) / SurveyHelper.IMAGEPICKER_COUNT;

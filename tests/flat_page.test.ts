@@ -9,7 +9,7 @@ import { FlatTextbox } from '../src/flat_layout/flat_textbox';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
-let __dummy_tx = new FlatTextbox(null, null);
+let __dummy_tx = new FlatTextbox(null, null, null);
 
 test('Check no invisible page', async () => {
     let json: any = {

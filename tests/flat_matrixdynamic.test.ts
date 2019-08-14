@@ -12,9 +12,9 @@ import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { RowlineBrick } from '../src/pdf_render/pdf_rowline';
 import { TestHelper } from '../src/helper_test';
 import { SurveyHelper } from '../src/helper_survey';
-let __dummy_dd = new FlatDropdown(null, null);
-let __dummy_md = new FlatMatrixDynamic(null, null);
-let __dummy_tx = new FlatExpression(null, null);
+let __dummy_dd = new FlatDropdown(null, null, null);
+let __dummy_md = new FlatMatrixDynamic(null, null, null);
+let __dummy_tx = new FlatExpression(null, null, null);
 test('Check matrix dynamic one column no rows', async () => {
     let json: any = {
         elements: [

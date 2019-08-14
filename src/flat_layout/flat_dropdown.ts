@@ -1,4 +1,5 @@
 import { IQuestion, QuestionDropdownModel } from 'survey-core';
+import { SurveyPDF } from '../survey';
 import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
 import { IPoint, IRect, DocController } from '../doc_controller';
@@ -9,8 +10,9 @@ import { SurveyHelper } from '../helper_survey';
 
 export class FlatDropdown extends FlatQuestion {
     protected question: QuestionDropdownModel;
-    public constructor(question: IQuestion, protected controller: DocController) {
-        super(question, controller);
+    public constructor(protected survey: SurveyPDF,
+        question: IQuestion, protected controller: DocController) {
+        super(survey, question, controller);
         this.question = <QuestionDropdownModel>question;
     }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {

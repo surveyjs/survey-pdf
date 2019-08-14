@@ -11,8 +11,8 @@ import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { TestHelper } from '../src/helper_test';
 import { SurveyHelper } from '../src/helper_survey';
 import { FlatMatrixDynamic } from '../src/flat_layout/flat_matrixdynamic';
-let __dummy_dd = new FlatDropdown(null, null);
-let __dummy_mm = new FlatMatrixMultiple(null, null);
+let __dummy_dd = new FlatDropdown(null, null, null);
+let __dummy_mm = new FlatMatrixMultiple(null, null, null);
 
 test('Check matrix multiple one column no rows', async () => {
     let json: any = {

@@ -1,4 +1,5 @@
 import { IQuestion, QuestionFileModel, surveyLocalization } from 'survey-core';
+import { SurveyPDF } from '../survey';
 import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
 import { IPoint, ISize, DocController } from '../doc_controller';
@@ -11,8 +12,9 @@ export class FlatFile extends FlatQuestion {
     public static readonly IMAGE_GAP_SCALE: number = 0.195;
     public static readonly TEXT_MIN_SCALE: number = 5;
     protected question: QuestionFileModel;
-    public constructor(question: IQuestion, controller: DocController) {
-        super(question, controller);
+    public constructor(protected survey: SurveyPDF,
+        question: IQuestion, controller: DocController) {
+        super(survey, question, controller);
         this.question = <QuestionFileModel>question;
     }
     private async generateFlatItem(point: IPoint, item: {

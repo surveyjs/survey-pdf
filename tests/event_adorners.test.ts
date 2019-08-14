@@ -18,11 +18,11 @@ import { HTMLBrick } from '../src/pdf_render/pdf_html';
 import { AdornersOptions } from '../src/event_handler/adorners';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
-let __dummy_tx = new FlatTextbox(null, null);
-let __dummy_cb = new FlatCheckbox(null, null);
-let __dummy_rg = new FlatRadiogroup(null, null);
+let __dummy_tx = new FlatTextbox(null, null, null);
+let __dummy_cb = new FlatCheckbox(null, null, null);
+let __dummy_rg = new FlatRadiogroup(null, null, null);
 
-test.skip('Event render questions simple textbox same bricks', async () => {
+test('Event render questions simple textbox same bricks', async () => {
     let json: any = {
         questions: [
             {
@@ -33,7 +33,7 @@ test.skip('Event render questions simple textbox same bricks', async () => {
         ]
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    survey.onRenderQuestion.add((_, options: AdornersOptions) => { });
+    survey.onRenderQuestion.add((_, __) => { });
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
@@ -103,7 +103,7 @@ test.skip('Event render questions checkbox as radiogroup', async () => {
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     survey.onRenderQuestion.add(async (survey: SurveyPDF, options: AdornersOptions) => {
-        let flatQuestion: IFlatQuestion = options.repository.create(
+        let flatQuestion: IFlatQuestion = options.repository.create(survey,
             options.question, options.controller, 'radiogroup');
         options.bricks = await flatQuestion.generateFlats(options.point);
      });

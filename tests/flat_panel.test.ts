@@ -13,7 +13,7 @@ import { TextBoxBrick } from '../src/pdf_render/pdf_textbox';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 import { calcTitleTop } from './flat_question.test';
-let __dummy_tx = new FlatTextbox(null, null);
+let __dummy_tx = new FlatTextbox(null, null, null);
 
 test('Check two pages start point', async () => {
     let json: any = {

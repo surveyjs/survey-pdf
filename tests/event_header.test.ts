@@ -13,7 +13,7 @@ import { DrawCanvas, HorizontalAlign, VerticalAlign } from '../src/event_handler
 import { TextBoldBrick } from '../src/pdf_render/pdf_textbold';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
-let __dummy_tx = new FlatTextbox(null, null);
+let __dummy_tx = new FlatTextbox(null, null, null);
 
 test('Event render header simple text', async () => {
     let json: any = {

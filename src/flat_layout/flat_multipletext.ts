@@ -1,4 +1,5 @@
 import { IQuestion, QuestionMultipleTextModel, MultipleTextItemModel } from 'survey-core';
+import { SurveyPDF } from '../survey';
 import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
 import { IPoint, DocController } from '../doc_controller';
@@ -10,8 +11,9 @@ import { SurveyHelper } from '../helper_survey';
 export class FlatMultipleText extends FlatQuestion {
     public static readonly ROWS_GAP_SCALE: number = 0.195;
     protected question: QuestionMultipleTextModel;
-    public constructor(question: IQuestion, protected controller: DocController) {
-        super(question, controller);
+    public constructor(protected survey: SurveyPDF,
+        question: IQuestion, protected controller: DocController) {
+        super(survey, question, controller);
         this.question = <QuestionMultipleTextModel>question;
     }
     private async generateFlatItem(point: IPoint, row_index: number, col_index: number,

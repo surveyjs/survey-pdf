@@ -1,3 +1,4 @@
+import { SurveyPDF } from '../survey';
 import { IPoint, IRect, DocController } from '../doc_controller';
 import { IQuestion, Question, LocalizableString } from 'survey-core';
 import { IPdfBrick } from '../pdf_render/pdf_brick'
@@ -15,7 +16,8 @@ export class FlatQuestion implements IFlatQuestion {
     public static readonly CONTENT_GAP_HOR_SCALE: number = 1.0;
     public static readonly DESC_GAP_SCALE: number = 0.0625;
     protected question: Question;
-    public constructor(question: IQuestion, protected controller: DocController) {
+    public constructor(protected survey: SurveyPDF,
+        question: IQuestion, protected controller: DocController) {
         this.question = <Question>question;
     }
     private async generateFlatTitle(point: IPoint): Promise<IPdfBrick> {

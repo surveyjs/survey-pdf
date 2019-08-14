@@ -1,4 +1,5 @@
-import { IQuestion, ItemValue, QuestionRadiogroupModel, MatrixRowModel, QuestionMatrixModel } from 'survey-core';
+import { IQuestion, ItemValue, QuestionRadiogroupModel } from 'survey-core';
+import { SurveyPDF } from '../survey';
 import { FlatRepository } from './flat_repository';
 import { IRect, DocController } from '../doc_controller';
 import { IPdfBrick } from '../pdf_render/pdf_brick'
@@ -8,8 +9,9 @@ import { FlatSelectBase } from './flat_selectbase';
 export class FlatRadiogroup extends FlatSelectBase {
     protected question: QuestionRadiogroupModel;
     private radioGroupWrap: RadioGroupWrap;
-    public constructor(question: IQuestion, protected controller: DocController) {
-        super(question, controller);
+    public constructor(protected survey: SurveyPDF,
+        question: IQuestion, protected controller: DocController) {
+        super(survey, question, controller);
         this.question = <QuestionRadiogroupModel>question;
     }
     public generateFlatItem(rect: IRect, itemValue: ItemValue,

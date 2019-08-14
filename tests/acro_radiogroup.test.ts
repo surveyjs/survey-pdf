@@ -5,7 +5,7 @@ import { SurveyPDF } from '../src/survey';
 import { DocController } from '../src/doc_controller';
 import { FlatRadiogroup } from '../src/flat_layout/flat_radiogroup';
 import { TestHelper } from '../src/helper_test';
-let __dummy_rg = new FlatRadiogroup(null, null);
+let __dummy_rg = new FlatRadiogroup(null, null, null);
 
 test('Test has other radiogroup', async () => {
     let json = {

@@ -8,7 +8,7 @@ import { FlatCheckbox } from '../src/flat_layout/flat_checkbox';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 import { IPdfBrick, PdfBrick } from '../src/pdf_render/pdf_brick';
-let __dummy_cb = new FlatCheckbox(null, null);
+let __dummy_cb = new FlatCheckbox(null, null, null);
 
 test('Check that checkbox has square boundaries', async () => {
 	let json: any = {

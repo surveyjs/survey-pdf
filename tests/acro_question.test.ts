@@ -10,8 +10,8 @@ import { FlatCheckbox } from '../src/flat_layout/flat_checkbox';
 import { TestHelper } from '../src/helper_test';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
-let __dummy_tx = new FlatTextbox(null, null);
-let __dummy_cb = new FlatCheckbox(null, null);
+let __dummy_tx = new FlatTextbox(null, null, null);
+let __dummy_cb = new FlatCheckbox(null, null, null);
 
 async function checkTitleText(questionStartIndex: string, isRequired: boolean = false) {
   let json: any = {

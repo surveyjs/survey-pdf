@@ -1,8 +1,6 @@
-import {
-    IQuestion, QuestionMatrixDropdownModelBase,
-    QuestionMatrixDropdownRenderedTable, QuestionMatrixDropdownRenderedRow,
-    QuestionMatrixDropdownRenderedCell
-} from 'survey-core';
+import { IQuestion, QuestionMatrixDropdownModelBase, QuestionMatrixDropdownRenderedTable,
+    QuestionMatrixDropdownRenderedRow, QuestionMatrixDropdownRenderedCell } from 'survey-core';
+import { SurveyPDF } from '../survey';
 import { IPoint, DocController } from '../doc_controller';
 import { IFlatQuestion, FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
@@ -14,9 +12,9 @@ import { SurveyHelper } from '../helper_survey';
 export class FlatMatrixMultiple extends FlatQuestion {
     public static readonly GAP_BETWEEN_ROWS: number = 0.5;
     protected question: QuestionMatrixDropdownModelBase;
-    public constructor(question: IQuestion, controller: DocController,
+    public constructor(protected survey: SurveyPDF, question: IQuestion, controller: DocController,
         protected isMultiple: boolean = true) {
-        super(question, controller);
+        super(survey, question, controller);
         this.question = <QuestionMatrixDropdownModelBase>question;
     }
     private async generateFlatsCell(point: IPoint, cell: QuestionMatrixDropdownRenderedCell, isHeader: boolean): Promise<CompositeBrick> {
@@ -24,7 +22,7 @@ export class FlatMatrixMultiple extends FlatQuestion {
         if (cell.hasQuestion) {
             cell.question.titleLocation = SurveyHelper.TITLE_LOCATION_MATRIX;
             let flatQuestion: IFlatQuestion = FlatRepository.getInstance().
-                create(cell.question, this.controller);
+                create(this.survey, cell.question, this.controller);
             composite.addBrick(...await flatQuestion.generateFlats(point));
         }
         else if (cell.hasTitle) {

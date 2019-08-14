@@ -11,7 +11,7 @@ import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { TextBrick } from '../src/pdf_render/pdf_text';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
-let __dummy_fl = new FlatFile(null, null);
+let __dummy_fl = new FlatFile(null, null, null);
 
 test('Check no files', async () => {
     let json = {

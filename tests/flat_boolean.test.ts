@@ -11,7 +11,7 @@ import { FlatBoolean } from '../src/flat_layout/flat_boolean';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
-let __dummy_bl = new FlatBoolean(null, null);
+let __dummy_bl = new FlatBoolean(null, null, null);
 
 test('Check boolean without title', async () => {
     let json: any = {

@@ -14,9 +14,9 @@ import { FlatRadiogroup } from '../src/flat_layout/flat_radiogroup';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
-let __dummy_tx = new FlatTextbox(null, null);
-let __dummy_cb = new FlatCheckbox(null, null);
-let __dummy_rg = new FlatRadiogroup(null, null);
+let __dummy_tx = new FlatTextbox(null, null, null);
+let __dummy_cb = new FlatCheckbox(null, null, null);
+let __dummy_rg = new FlatRadiogroup(null, null, null);
 
 test('Pack one flat', () => {
     let flats: IRect[] = [TestHelper.defaultRect];

@@ -1,4 +1,5 @@
 import { IQuestion, QuestionMatrixModel, MatrixRowModel, QuestionRadiogroupModel, ItemValue } from 'survey-core';
+import { SurveyPDF } from '../survey';
 import { DocController, IPoint, IRect } from '../doc_controller';
 import { IPdfBrick } from '../pdf_render/pdf_brick'
 import { FlatRepository } from './flat_repository';
@@ -7,13 +8,13 @@ import { SurveyHelper } from '../helper_survey';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { FlatRadiogroup } from './flat_radiogroup';
 import { TextBrick } from '../pdf_render/pdf_text';
-import { FlatSelectBase } from './flat_selectbase';
 
 export class FlatMatrix extends FlatQuestion {
     public static readonly GAP_BETWEEN_ROWS: number = 0.5;
     protected question: QuestionMatrixModel;
-    constructor(question: IQuestion, protected controller: DocController) {
-        super(<QuestionRadiogroupModel>question, controller);
+    constructor(protected survey: SurveyPDF,
+        question: IQuestion, protected controller: DocController) {
+        super(survey, <QuestionRadiogroupModel>question, controller);
         this.question = <QuestionMatrixModel>question;
     }
     protected async generateFlatsHeader(point: IPoint): Promise<IPdfBrick[]> {
@@ -37,7 +38,7 @@ export class FlatMatrix extends FlatQuestion {
         let currPoint: IPoint = SurveyHelper.clone(point);
         for (let i: number = 0; i < this.question.visibleRows.length; i++) {
             let key: string = 'row' + i;
-            let flatsRow: IPdfBrick[] = await new FlatMatrixRow(this.question, this.controller,
+            let flatsRow: IPdfBrick[] = await new FlatMatrixRow(this.survey, this.question, this.controller,
                 this.question.visibleRows[i], key, i == 0, isVertical).generateFlatsContent(currPoint);
             currPoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(...flatsRow));
             currPoint.yTop += this.controller.unitHeight * FlatMatrix.GAP_BETWEEN_ROWS;
@@ -63,9 +64,10 @@ export class FlatMatrix extends FlatQuestion {
 
 export class FlatMatrixRow extends FlatRadiogroup {
     protected questionMatrix: QuestionMatrixModel;
-    public constructor(question: IQuestion, protected controller: DocController, private row: MatrixRowModel,
+    public constructor(protected survey: SurveyPDF,
+        question: IQuestion, protected controller: DocController, private row: MatrixRowModel,
         private key: string, protected isFirst: boolean = false, protected isVertical: boolean = false) {
-        super(question, controller);
+        super(survey, question, controller);
         this.questionMatrix = <QuestionMatrixModel>question;
     }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {

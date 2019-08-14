@@ -7,9 +7,9 @@ import { SurveyHelper } from '../helper_survey';
 export class EventHandler {
     public static process_header_events(survey: SurveyPDF, controller: DocController, packs: IPdfBrick[][]): void {
         for (let i: number = 0; i < packs.length; i++) {
-            survey.onRenderHeader.fire(this, new DrawCanvas(packs[i], controller,
+            survey.onRenderHeader.fire(survey, new DrawCanvas(packs[i], controller,
                     SurveyHelper.createHeaderRect(controller), packs.length, i + 1));
-            survey.onRenderFooter.fire(this, new DrawCanvas(packs[i], controller,
+            survey.onRenderFooter.fire(survey, new DrawCanvas(packs[i], controller,
                     SurveyHelper.createFooterRect(controller), packs.length, i + 1));
         }
     }

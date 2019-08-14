@@ -9,7 +9,7 @@ import { FlatImagePicker } from '../src/flat_layout/flat_imagepicker';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
-let __dummy_ip = new FlatImagePicker(null, null);
+let __dummy_ip = new FlatImagePicker(null, null, null);
 
 test('Check imagepicker one image 100x100px', async () => {
     let json = {

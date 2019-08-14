@@ -8,5 +8,14 @@ export class AdornersOptions {
     public bricks: IPdfBrick[];
     public question: IQuestion; 
     public controller: DocController;
-    public repository: FlatRepository
+    public repository: FlatRepository;
+
+    public constructor(point: IPoint, bricks: IPdfBrick[],
+        question: IQuestion, controller: DocController, repository: FlatRepository) {
+        this.point = point;
+        this.bricks = bricks;
+        this.question = question;
+        this.controller = controller;
+        this.repository = repository;
+    }
 }

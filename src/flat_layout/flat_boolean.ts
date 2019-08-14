@@ -1,4 +1,5 @@
 import { IQuestion, QuestionBooleanModel, LocalizableString } from 'survey-core';
+import { SurveyPDF } from '../survey';
 import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
 import { IPoint, DocController, IRect } from '../doc_controller';
@@ -10,8 +11,9 @@ import { TextBrick } from '../pdf_render/pdf_text';
 
 export class FlatBoolean extends FlatQuestion {
     protected question: QuestionBooleanModel;
-    constructor(question: IQuestion, protected controller: DocController) {
-        super(question, controller);
+    constructor(protected survey: SurveyPDF,
+        question: IQuestion, protected controller: DocController) {
+        super(survey, question, controller);
         this.question = <QuestionBooleanModel>question;
     }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {

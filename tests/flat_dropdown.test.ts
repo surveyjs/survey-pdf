@@ -11,7 +11,7 @@ import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 import { calcTitleTop } from './flat_question.test';
-let __dummy_dd = new FlatDropdown(null, null);
+let __dummy_dd = new FlatDropdown(null, null, null);
 
 test('Check dropdown', async () => {
     let json = {

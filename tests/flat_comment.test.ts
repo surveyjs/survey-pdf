@@ -13,8 +13,8 @@ import { TextBrick } from '../src/pdf_render/pdf_text';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 import { FlatQuestion } from '../src/flat_layout/flat_question';
-let __dummy_cm = new FlatComment(null, null);
-let __dummy_cb = new FlatCheckbox(null, null);
+let __dummy_cm = new FlatComment(null, null, null);
+let __dummy_cb = new FlatCheckbox(null, null, null);
 
 async function commentPointBeforeTitle(resultRects: IPdfBrick[][], controller: DocController) {
     let commentPoint = controller.leftTopPoint;
