@@ -41,7 +41,24 @@ export class SurveyPDF extends SurveyModel {
     (survey: SurveyPDF, options: AdornersOptions) => any,
     any
   > = new EventPDF<(survey: SurveyPDF, options: AdornersOptions) => any, any>();
+  private wairForCoreIsReady(): Promise<void> {
+    let countChoicesByUrl = 0;
+    this.getAllQuestions().forEach((value: any) => {
+      if (typeof value.choicesByUrl !== 'undefined' && !value.choicesByUrl.isEmpty) {
+        countChoicesByUrl++;
+      }
+    });
+    let result: Promise<void> = new Promise<void>((resolve: any) => {
+      this.onLoadChoicesFromServer.add(() => {
+        if (--countChoicesByUrl === 0) {
+          resolve();
+        }
+      });
+    });
+    return result;
+  }
   private async render(controller: DocController): Promise<void> {
+    await this.wairForCoreIsReady();
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(this, controller);
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
     EventHandler.process_header_events(this, controller, packs);
