@@ -77,7 +77,7 @@ export class FlatSurvey {
                     let questionFlats: IPdfBrick[] = await flatQuestion.generateFlats(currPoint);
                     let adornersOptions: AdornersOptions = new AdornersOptions(currPoint,
                         questionFlats, <IQuestion>element, controller, FlatRepository.getInstance())
-                    await survey.onRenderQuestion.fire(survey, adornersOptions);
+                    await survey.onRenderQuestion.fireSync(survey, adornersOptions);
                     rowFlats.push(...adornersOptions.bricks);
                 }
             }

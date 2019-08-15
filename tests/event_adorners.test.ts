@@ -11,9 +11,8 @@ import { FlatCheckbox } from '../src/flat_layout/flat_checkbox';
 import { FlatRadiogroup } from '../src/flat_layout/flat_radiogroup';
 import { PagePacker } from '../src/page_layout/page_packer';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
-import { DescriptionBrick } from '../src/pdf_render/pdf_description';
 import { TextBoxBrick } from '../src/pdf_render/pdf_textbox';
-import { RadioItemBrick } from '../src/pdf_render/pdf_radioitem';
+import { CompositeBrick } from '../src/pdf_render/pdf_composite';
 import { HTMLBrick } from '../src/pdf_render/pdf_html';
 import { AdornersOptions } from '../src/event_handler/adorners';
 import { SurveyHelper } from '../src/helper_survey';
@@ -41,7 +40,7 @@ test('Event render questions simple textbox same bricks', async () => {
     expect(packs[0].length).toBe(1);
     expect(packs[0][0] instanceof TextBoxBrick).toBe(true);
 });
-test.skip('Event render questions simple textbox add bottom description', async () => {
+test('Event render questions simple textbox add bottom description', async () => {
     let json: any = {
         questions: [
             {
@@ -64,33 +63,9 @@ test.skip('Event render questions simple textbox add bottom description', async 
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(2);
     expect(packs[0][0] instanceof TextBoxBrick).toBe(true);
-    expect(packs[0][1] instanceof DescriptionBrick).toBe(true);
+    expect(packs[0][1] instanceof CompositeBrick).toBe(true);
 });
-test.skip('Event render questions signature pad', async () => {
-    let json: any = {
-        questions: [
-            {
-                type: 'signaturepad',
-                name: 'event_questionsignaturepad',
-                titleLocation: 'hidden'
-            }
-        ]
-    };
-    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    survey.onRenderQuestion.add(async (survey: SurveyPDF, options: AdornersOptions) => {
-        let imageBrick: IPdfBrick = await SurveyHelper.createImageFlat(options.point,
-            options.question, options.controller, survey.data[options.question.name],
-            parseInt(options.question.width));
-        options.bricks.push(imageBrick);
-     });
-    let controller: DocController = new DocController(TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
-    expect(packs.length).toBe(1);
-    expect(packs[0].length).toBe(1);
-    expect(packs[0][0] instanceof HTMLBrick).toBe(true);
-});
-test.skip('Event render questions checkbox as radiogroup', async () => {
+test('Event render questions checkbox as radiogroup', async () => {
     let json: any = {
         questions: [
             {
@@ -112,6 +87,6 @@ test.skip('Event render questions checkbox as radiogroup', async () => {
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(2);
-    expect(packs[0][0] instanceof RadioItemBrick).toBe(true);
-    expect(packs[0][1] instanceof RadioItemBrick).toBe(true);
+    expect(packs[0][0] instanceof CompositeBrick).toBe(true);
+    expect(packs[0][1] instanceof CompositeBrick).toBe(true);
 });
