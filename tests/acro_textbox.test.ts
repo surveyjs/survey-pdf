@@ -177,7 +177,7 @@ test('Check readOnly textbox', async () => {
 });
 test('Set comment no value', async () => {
 	let json: any = { questions: [ {
-			name: 'comment',
+			name: 'comment_novalue',
 			type: 'comment',
 			title: 'NoValue:'
 		}]

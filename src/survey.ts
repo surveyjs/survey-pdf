@@ -42,13 +42,16 @@ export class SurveyPDF extends SurveyModel {
     any
   > = new EventPDF<(survey: SurveyPDF, options: AdornersOptions) => any, any>();
   private wairForCoreIsReady(): Promise<void> {
-    let countChoicesByUrl = 0;
+    let countChoicesByUrl: number = 0;
     this.getAllQuestions().forEach((value: any) => {
       if (typeof value.choicesByUrl !== 'undefined' && !value.choicesByUrl.isEmpty) {
         countChoicesByUrl++;
       }
     });
     let result: Promise<void> = new Promise<void>((resolve: any) => {
+      if (countChoicesByUrl === 0) {
+        resolve();
+      }
       this.onLoadChoicesFromServer.add(() => {
         if (--countChoicesByUrl === 0) {
           resolve();

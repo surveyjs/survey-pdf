@@ -7,13 +7,13 @@ import { FlatRadiogroup } from '../src/flat_layout/flat_radiogroup';
 import { TestHelper } from '../src/helper_test';
 let __dummy_rg = new FlatRadiogroup(null, null, null);
 
-test('Test has other radiogroup', async () => {
+test('Has other radiogroup', async () => {
     let json = {
         showQuestionNumbers: 'false',
         questions: [
             {
                 readOnly: true,
-                name: 'radiogroup',
+                name: 'radiogroup_hasother',
                 type: 'radiogroup',
                 hasOther: true,
                 otherText: 'Other test'
