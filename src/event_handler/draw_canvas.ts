@@ -8,15 +8,13 @@ export enum HorizontalAlign {
     NotSet = 'notset',
     Left = 'left',
     Center = 'center',
-    Right = 'right',
-    Justify = 'justify'
+    Right = 'right'
 }
 export enum VerticalAlign {
     NotSet = 'notset',
     Top = 'top',
     Middle = 'middle',
-    Bottom = 'bottom',
-    Justify = 'justify'
+    Bottom = 'bottom'
 }
 export interface IDrawRectOptions {
     /**
