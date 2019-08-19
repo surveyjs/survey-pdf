@@ -1,9 +1,9 @@
-import { SurveyModel } from 'survey-core';
+import { SurveyModel, Event } from 'survey-core';
 import { IDocOptions, DocController } from './doc_controller';
 import { FlatSurvey } from './flat_layout/flat_survey';
 import { PagePacker } from './page_layout/page_packer';
 import { IPdfBrick } from './pdf_render/pdf_brick';
-import { EventPDF, EventHandler } from './event_handler/event_handler';
+import { EventAsync, EventHandler } from './event_handler/event_handler';
 import { DrawCanvas } from './event_handler/draw_canvas';
 import { AdornersOptions } from './event_handler/adorners';
 import { SurveyHelper } from './helper_survey';
@@ -19,28 +19,28 @@ export class SurveyPDF extends SurveyModel {
    * @param survey SurveyPDF object that fires the event
    * @param canvas DrawCanvas object that you may use it to draw text and images in the page header
    */
-  public onRenderHeader: EventPDF<
+  public onRenderHeader: Event<
     (survey: SurveyPDF, canvas: DrawCanvas) => any,
     any
-  > = new EventPDF<(survey: SurveyPDF, canvas: DrawCanvas) => any, any>();
+  > = new Event<(survey: SurveyPDF, canvas: DrawCanvas) => any, any>();
   /**
    * The event in fired for every rendered page
    * @param survey SurveyPDF object that fires the event
    * @param canvas DrawCanvas object that you may use it to draw text and images in the page footer
    */
-  public onRenderFooter: EventPDF<
+  public onRenderFooter: EventAsync<
     (survey: SurveyPDF, canvas: DrawCanvas) => any,
     any
-  > = new EventPDF<(survey: SurveyPDF, canvas: DrawCanvas) => any, any>();
+  > = new EventAsync<(survey: SurveyPDF, canvas: DrawCanvas) => any, any>();
   /**
    * The event in fired for every rendered question
    * @param survey SurveyPDF object that fires the event
    * @param canvas AdornersOptions object that have options to custom render the question
    */
-  public onRenderQuestion: EventPDF<
+  public onRenderQuestion: EventAsync<
     (survey: SurveyPDF, options: AdornersOptions) => any,
     any
-  > = new EventPDF<(survey: SurveyPDF, options: AdornersOptions) => any, any>();
+  > = new EventAsync<(survey: SurveyPDF, options: AdornersOptions) => any, any>();
   private wairForCoreIsReady(): Promise<void> {
     let countChoicesByUrl: number = 0;
     this.getAllQuestions().forEach((value: any) => {

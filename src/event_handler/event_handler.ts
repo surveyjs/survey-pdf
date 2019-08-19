@@ -5,11 +5,16 @@ import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { DrawCanvas } from './draw_canvas';
 import { SurveyHelper } from '../helper_survey';
 
-export class EventPDF<T extends Function, Options> extends Event<T, Options> {
-    public async fireSync(sender: any, options: Options) {
+export class EventAsync<T extends Function, Options> extends Event<T, Options> {
+    public async fire(sender: any, options: Options) {
         if ((<any>this)['callbacks'] == null) return;
         for (var i = 0; i < (<any>this)['callbacks'].length; i++) {
-          var callResult = await (<any>this)['callbacks'][i](sender, options);
+            if ((<any>this)['callbacks'][i].constructor.name === 'AsyncFunction') {
+                await (<any>this)['callbacks'][i](sender, options);
+            }
+            else {
+                (<any>this)['callbacks'][i](sender, options);
+            }
         }
     }
 }
