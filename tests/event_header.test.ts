@@ -176,3 +176,45 @@ test('Event render footer center middle text', async () => {
     }
     TestHelper.equalRect(expect, packs[0][1], assumeText);
 });
+test('Have commercial license: true', async () => {
+    let json: any = {
+        questions: [
+            {
+                type: 'text',
+                name: 'event_commercialtrue',
+                titleLocation: 'hidden'
+            }
+        ]
+    };
+    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    survey.haveCommercialLicense = true;
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
+    expect(packs.length).toBe(1);
+    expect(packs[0].length).toBe(1);
+    EventHandler.process_header_events(survey, controller, packs);
+    expect(packs.length).toBe(1);
+    expect(packs[0].length).toBe(1);
+});
+test('Have commercial license: false', async () => {
+    let json: any = {
+        questions: [
+            {
+                type: 'text',
+                name: 'event_commercialfalse',
+                titleLocation: 'hidden'
+            }
+        ]
+    };
+    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    survey.haveCommercialLicense = false;
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
+    expect(packs.length).toBe(1);
+    expect(packs[0].length).toBe(1);
+    EventHandler.process_header_events(survey, controller, packs);
+    expect(packs.length).toBe(1);
+    expect(packs[0].length).toBe(2);
+});

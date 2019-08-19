@@ -9,10 +9,26 @@ import { AdornersOptions } from './event_handler/adorners';
 import { SurveyHelper } from './helper_survey';
 
 export class SurveyPDF extends SurveyModel {
+  private _haveCommercialLicense: boolean;
   public options: IDocOptions;
-  public constructor(jsonObject: any, options: IDocOptions) {
+  public constructor(jsonObject: any, options?: IDocOptions) {
     super(jsonObject);
+    if (typeof options === 'undefined') {
+      options = {};
+    }
     this.options = SurveyHelper.clone(options);
+    this._haveCommercialLicense = options.commercial;
+  }
+  /**
+   * You have right to set this property to true if you have bought the commercial licence only.
+   * It will remove the text about non-commerical usage on the top of the document.
+   * Setting this property true without having a commercial licence is illegal
+   */
+  public get haveCommercialLicense(): boolean {
+    return this._haveCommercialLicense;
+  }
+  public set haveCommercialLicense(val: boolean) {
+    this._haveCommercialLicense = val;
   }
   /**
    * The event in fired for every rendered page

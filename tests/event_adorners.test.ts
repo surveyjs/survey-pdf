@@ -13,7 +13,6 @@ import { PagePacker } from '../src/page_layout/page_packer';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { TextBoxBrick } from '../src/pdf_render/pdf_textbox';
 import { CompositeBrick } from '../src/pdf_render/pdf_composite';
-import { HTMLBrick } from '../src/pdf_render/pdf_html';
 import { AdornersOptions } from '../src/event_handler/adorners';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';

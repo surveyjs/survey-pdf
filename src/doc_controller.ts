@@ -32,8 +32,8 @@ export interface IDocOptions {
     base64Normal?: string;
     base64Bold?: string;
     margins?: IMargin;
+    commercial?: boolean;
 }
-
 export class DocOptions implements IDocOptions {
     public static readonly MM_TO_PT = 72 / 25.4;
     protected _fontSize: number;
@@ -41,6 +41,7 @@ export class DocOptions implements IDocOptions {
     protected _format: string | number[];
     protected _orientation: 'l' | 'p';
     protected _fontName: string;
+    protected _commercial: boolean;
     public constructor(options: IDocOptions) {
         if (typeof options.orientation === 'undefined') {
             if (typeof options.format === 'undefined' ||
@@ -75,6 +76,7 @@ export class DocOptions implements IDocOptions {
         Object.keys(this._margins).forEach((name: string) => {
             (<any>this._margins)[name] = (<any>this._margins)[name] * DocOptions.MM_TO_PT;
         });
+        this._commercial = options.commercial;
     }
     get leftTopPoint(): IPoint {
         return {
@@ -105,7 +107,6 @@ export class DocController extends DocOptions {
     private _helperDoc: any;
     private _fontStyle: string;
     private marginsStack: IMarginLR[];
-
     public constructor(options?: IDocOptions) {
         super(options || {});
         if ((options.fontName && (options.base64Normal || options.base64Bold))) {

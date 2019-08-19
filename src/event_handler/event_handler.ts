@@ -15,6 +15,14 @@ export class EventAsync<T extends Function, Options> extends Event<T, Options> {
 }
 export class EventHandler {
     public static process_header_events(survey: SurveyPDF, controller: DocController, packs: IPdfBrick[][]): void {
+        if (!survey.haveCommercialLicense) {
+            survey.onRenderHeader.add((_, canvas) => {
+            	canvas.drawText({
+            		text: 'SurveyJS PDF | For non-commercial use only | https://surveyjs.io/Home/Licenses',
+            		fontSize: 10
+            	});
+            });
+        }
         for (let i: number = 0; i < packs.length; i++) {
             survey.onRenderHeader.fire(survey, new DrawCanvas(packs[i], controller,
                     SurveyHelper.createHeaderRect(controller), packs.length, i + 1));
