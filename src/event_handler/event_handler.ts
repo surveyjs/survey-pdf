@@ -9,12 +9,7 @@ export class EventAsync<T extends Function, Options> extends Event<T, Options> {
     public async fire(sender: any, options: Options) {
         if ((<any>this)['callbacks'] == null) return;
         for (var i = 0; i < (<any>this)['callbacks'].length; i++) {
-            if ((<any>this)['callbacks'][i].constructor.name === 'AsyncFunction') {
-                await (<any>this)['callbacks'][i](sender, options);
-            }
-            else {
-                (<any>this)['callbacks'][i](sender, options);
-            }
+           await (<any>this)['callbacks'][i](sender, options);
         }
     }
 }

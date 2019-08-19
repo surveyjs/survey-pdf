@@ -28,10 +28,10 @@ export class SurveyPDF extends SurveyModel {
    * @param survey SurveyPDF object that fires the event
    * @param canvas DrawCanvas object that you may use it to draw text and images in the page footer
    */
-  public onRenderFooter: EventAsync<
+  public onRenderFooter: Event<
     (survey: SurveyPDF, canvas: DrawCanvas) => any,
     any
-  > = new EventAsync<(survey: SurveyPDF, canvas: DrawCanvas) => any, any>();
+  > = new Event<(survey: SurveyPDF, canvas: DrawCanvas) => any, any>();
   /**
    * The event in fired for every rendered question
    * @param survey SurveyPDF object that fires the event
