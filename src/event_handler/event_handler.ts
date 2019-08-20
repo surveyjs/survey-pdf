@@ -7,9 +7,9 @@ import { SurveyHelper } from '../helper_survey';
 
 export class EventAsync<T extends Function, Options> extends Event<T, Options> {
     public async fire(sender: any, options: Options) {
-        if ((<any>this)['callbacks'] == null) return;
-        for (var i = 0; i < (<any>this)['callbacks'].length; i++) {
-           await (<any>this)['callbacks'][i](sender, options);
+        if (this.callbacks == null) return;
+        for (var i = 0; i < this.callbacks.length; i++) {
+           await this.callbacks[i](sender, options);
         }
     }
 }
