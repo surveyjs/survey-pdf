@@ -112,5 +112,3 @@ export class SurveyPDF extends SurveyModel {
     return controller.doc.__private__.buildDocument();
   }
 }
-
-export { SurveyPDF as Survey };

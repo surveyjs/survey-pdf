@@ -1,5 +1,4 @@
 export * from './helpers';
-export { Survey } from '../survey';
 export { SurveyPDF } from '../survey';
 export { SurveyHelper } from '../helper_survey';
 export { IPoint, IRect, ISize, IMarginLR, IMargin, IDocOptions, DocOptions, DocController } from '../doc_controller';
