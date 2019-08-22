@@ -1,4 +1,4 @@
-import { IElement, IQuestion, PanelModelBase, PanelModel } from 'survey-core';
+import { IElement, Question, PanelModelBase, PanelModel } from 'survey-core';
 import { SurveyPDF } from '../survey';
 import { IPoint, DocController } from '../doc_controller';
 import { FlatRepository } from './flat_repository';
@@ -72,11 +72,18 @@ export class FlatSurvey {
                     rowFlats.push(...await this.generateFlatsPanel(survey, controller, element, currPoint));
                 }
                 else {
+                    let question: Question = <Question>element;
+                    let questionType: string = question.customWidget ?
+                        question.customWidget['pdfQuestionType'] : question.getType();
                     let flatQuestion: IFlatQuestion =
-                        FlatRepository.getInstance().create(survey, <IQuestion>element, controller);
+                        FlatRepository.getInstance().create(survey, question, controller, questionType);
                     let questionFlats: IPdfBrick[] = await flatQuestion.generateFlats(currPoint);
                     let adornersOptions: AdornersOptions = new AdornersOptions(currPoint,
-                        questionFlats, <IQuestion>element, controller, FlatRepository.getInstance())
+                        questionFlats, question, controller, FlatRepository.getInstance())
+                    if (question.customWidget && question.customWidget.isFit(question) &&
+                        question.customWidget['pdfRender']) {
+                        survey.onRenderQuestion.unshift(question.customWidget['pdfRender']);
+                    }
                     await survey.onRenderQuestion.fire(survey, adornersOptions);
                     rowFlats.push(...adornersOptions.bricks);
                 }

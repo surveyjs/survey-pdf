@@ -1,5 +1,5 @@
 import { IQuestion, Question, QuestionRatingModel, LocalizableString } from 'survey-core';
-import { IPoint, IRect, ISize, DocController, IMargin, } from './doc_controller';
+import { IPoint, IRect, ISize, DocController } from './doc_controller';
 import { IPdfBrick, PdfBrick } from './pdf_render/pdf_brick';
 import { TextBrick } from './pdf_render/pdf_text';
 import { TextBoldBrick } from './pdf_render/pdf_textbold';
@@ -121,7 +121,7 @@ export class SurveyHelper {
             yBot: controller.paperHeight
         };
     }
-    public static createDivBlock(element: string, controller: DocController) {
+    public static createDivBlock(element: string, controller: DocController): string {
         return `<div style= ${this.generateCssTextRule(controller.fontSize,
             controller.fontStyle,
             SurveyHelper.isCustomFont(controller, controller.fontName) ? SurveyHelper.STANDART_FONT : controller.fontName)}>
@@ -136,18 +136,17 @@ export class SurveyHelper {
     }
     public static splitHtmlRect(controller: DocController, htmlBrick: IPdfBrick): IPdfBrick {
         let bricks: IPdfBrick[] = [];
-        let htmlHeight = htmlBrick.height;
-        let minHeight = controller.measureText(1, 'normal', controller.doc.fontSize).height;
-        let emptyBrickCount = Math.floor(htmlHeight / minHeight) - 1;
+        let htmlHeight: number = htmlBrick.height;
+        let minHeight: number = controller.measureText(1, 'normal', controller.doc.fontSize).height;
+        let emptyBrickCount: number = Math.floor(htmlHeight / minHeight) - 1;
         htmlBrick.yBot = htmlBrick.yTop + minHeight;
         bricks.push(htmlBrick);
-        let currPoint = SurveyHelper.createPoint(htmlBrick);
+        let currPoint: IPoint = SurveyHelper.createPoint(htmlBrick);
         for (let i: number = 0; i < emptyBrickCount; i++) {
-            let emptyBrick = new EmptyBrick(SurveyHelper.createRect(currPoint, htmlBrick.width, minHeight))
-            bricks.push(emptyBrick);
+            bricks.push(new EmptyBrick(SurveyHelper.createRect(currPoint, htmlBrick.width, minHeight)));
             currPoint.yTop += minHeight;
         }
-        let remainingHeight = htmlHeight - (emptyBrickCount + 1) * minHeight;
+        let remainingHeight: number = htmlHeight - (emptyBrickCount + 1) * minHeight;
         if (remainingHeight > 0) {
             bricks.push(new EmptyBrick(SurveyHelper.createRect(currPoint, htmlBrick.width, remainingHeight)));
         }

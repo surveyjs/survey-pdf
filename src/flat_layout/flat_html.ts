@@ -15,8 +15,9 @@ export class FlatHTML extends FlatQuestion {
         this.question = <QuestionHtmlModel>question;
     }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
-        let html = SurveyHelper.createDivBlock(this.question.locHtml.renderedHtml, this.controller);
-        return [await SurveyHelper.splitHtmlRect(this.controller, await SurveyHelper.createHTMLFlat(point, this.question, this.controller, html))];
+        let html: string = SurveyHelper.createDivBlock(this.question.locHtml.renderedHtml, this.controller);
+        return [SurveyHelper.splitHtmlRect(this.controller, await SurveyHelper.createHTMLFlat(
+            point, this.question, this.controller, html))];
     }
 }
 

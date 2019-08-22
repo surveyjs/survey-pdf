@@ -6,6 +6,13 @@ import { DrawCanvas } from './draw_canvas';
 import { SurveyHelper } from '../helper_survey';
 
 export class EventAsync<T extends Function, Options> extends Event<T, Options> {
+    public unshift(func: T) {
+        if (this.hasFunc(func)) return;
+        if (this.callbacks == null) {
+          this.callbacks = new Array<T>();
+        }
+        this.callbacks.unshift(func);
+      } 
     public async fire(sender: any, options: Options) {
         if (this.callbacks == null) return;
         for (var i = 0; i < this.callbacks.length; i++) {
