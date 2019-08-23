@@ -1,10 +1,10 @@
 import { IQuestion } from 'survey-core';
+import { QuestionHtmlModel } from 'survey-core'
 import { SurveyPDF } from '../survey';
+import { IPoint, DocController } from '../doc_controller';
 import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
-import { IPoint, DocController } from '../doc_controller';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
-import { QuestionHtmlModel } from 'survey-core'
 import { SurveyHelper } from '../helper_survey';
 
 export class FlatHTML extends FlatQuestion {
