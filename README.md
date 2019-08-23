@@ -1,4 +1,4 @@
-## PDF Export for SurveyJS (BETA)
+## PDF Export for SurveyJS
 
 SurveyJS PDF exporter library is easy way to render [SurveyJS Library](https://surveyjs.io/Overview/Library/) surveys to PDF which can be emailed or printed
 
@@ -29,9 +29,9 @@ Add these scripts to your web page
 <!-- jsPDF library -->
 <script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"></script>
 <!-- SurveyJS Core library -->
-<script src="https://surveyjs.azureedge.net/1.1.5/survey.core.min.js"></script>
+<script src="https://surveyjs.azureedge.net/1.1.6/survey.core.min.js"></script>
 <!-- SurveyPDF Exporter library -->
-<script src="https://surveyjs.azureedge.net/1.1.5/survey.pdf.min.js"></script>
+<script src="https://surveyjs.azureedge.net/1.1.6/survey.pdf.min.js"></script>
 
 <!-- Uncomment next line to add html and markdown text support -->
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.6.4/showdown.min.js"></script> -->
