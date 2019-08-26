@@ -106,9 +106,10 @@ export class SurveyPDF extends SurveyModel {
     await this.render(controller);
     return controller.doc.save(fileName, { returnPromise: true });
   }
-  public async raw(): Promise<String> {
+  public async raw(type?: string): Promise<String> {
     let controller: DocController = new DocController(this.options);
+    SurveyHelper.fixFont(controller);
     await this.render(controller);
-    return controller.doc.__private__.buildDocument();
+    return controller.doc.output(type);
   }
 }
