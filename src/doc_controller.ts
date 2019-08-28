@@ -110,8 +110,8 @@ export class DocController extends DocOptions {
     public constructor(options?: IDocOptions) {
         super(options || {});
         if ((options.fontName && (options.base64Normal || options.base64Bold))) {
-            this.addFont(this.fontName, options.base64Normal, 'normal');
-            this.addFont(this.fontName, options.base64Bold, 'bold');
+            this.addFont(this.fontName, options.base64Normal || options.base64Bold, 'normal');
+            this.addFont(this.fontName, options.base64Bold || options.base64Normal, 'bold');
         }
         else if (this.fontName === 'segoe') {
             this.addFont(this.fontName, Fonts.SEGOE_NORMAL, 'normal');
