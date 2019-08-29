@@ -77,7 +77,7 @@ surveyPDF.save();
 ```
 ### Examples
 
-* [es5 style example](https://surveyjs.io/Examples/Library/?id=survey-pdf)
+* [es5 style example](https://surveyjs.io/Examples/Library/?id=survey-pdf-export)
 * [angular-cli](https://codesandbox.io/s/survey-pdf-angular-example-xpev7)
 
 ### Constraints
