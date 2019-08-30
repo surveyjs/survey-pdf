@@ -1,4 +1,4 @@
-import { SurveyModel, Event } from 'survey-core';
+import { SurveyModel, Event, Question } from 'survey-core';
 import { IDocOptions, DocController } from './doc_controller';
 import { FlatSurvey } from './flat_layout/flat_survey';
 import { PagePacker } from './page_layout/page_packer';
@@ -57,24 +57,33 @@ export class SurveyPDF extends SurveyModel {
     (survey: SurveyPDF, options: AdornersOptions) => any,
     any
   > = new EventAsync<(survey: SurveyPDF, options: AdornersOptions) => any, any>();
-  private wairForCoreIsReady(): Promise<void> {
-    let countChoicesByUrl: number = 0;
-    this.getAllQuestions().forEach((value: any) => {
-      if (typeof value.choicesByUrl !== 'undefined' && !value.choicesByUrl.isEmpty) {
-        countChoicesByUrl++;
+  private waitForQuestionIsReady(question: Question): Promise<void> {
+    return new Promise((resolve: any) => {
+      //TOREMOVE
+      if (typeof question['isReady'] === 'undefined') {
+        resolve();
+        return;
       }
-    });
-    let result: Promise<void> = new Promise<void>((resolve: any) => {
-      if (countChoicesByUrl === 0) {
+      
+      if (question['isReady']) {
         resolve();
       }
-      this.onLoadChoicesFromServer.add(() => {
-        if (--countChoicesByUrl === 0) {
-          resolve();
-        }
-      });
+      else {
+        let readyCallback: (sender: Question, options: any) => void =
+          (_, options: any) => {
+            if (options.isReady) {
+              question['onReadyChanged'].remove(readyCallback);
+              resolve();
+            }
+          }
+        question['onReadyChanged'].add(readyCallback);
+      }
     });
-    return result;
+  }
+  private async wairForCoreIsReady(): Promise<void> {
+    for (let question of this.getAllQuestions()) {
+      await this.waitForQuestionIsReady(<Question>question);
+    }
   }
   private async render(controller: DocController): Promise<void> {
     await this.wairForCoreIsReady();
