@@ -55,7 +55,7 @@ test('Event render questions simple textbox add bottom description', async () =>
         let descBrick: IPdfBrick = await SurveyHelper.createDescFlat(point,
             options.question, options.controller, 'Some description');
         options.bricks.push(descBrick);
-     });
+    });
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
