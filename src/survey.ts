@@ -80,13 +80,13 @@ export class SurveyPDF extends SurveyModel {
       }
     });
   }
-  private async wairForCoreIsReady(): Promise<void> {
+  private async waitForCoreIsReady(): Promise<void> {
     for (let question of this.getAllQuestions()) {
       await this.waitForQuestionIsReady(<Question>question);
     }
   }
   private async render(controller: DocController): Promise<void> {
-    await this.wairForCoreIsReady();
+    await this.waitForCoreIsReady();
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(this, controller);
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
     EventHandler.process_header_events(this, controller, packs);
