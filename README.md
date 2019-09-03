@@ -30,9 +30,9 @@ Add these scripts to your web page
 <!-- jsPDF library -->
 <script src="https://unpkg.com/jspdf@latest/dist/jspdf.min.js"></script>
 <!-- SurveyJS Core library -->
-<script src="https://surveyjs.azureedge.net/1.1.7/survey.core.min.js"></script>
+<script src="https://surveyjs.azureedge.net/1.1.8/survey.core.min.js"></script>
 <!-- SurveyPDF Exporter library -->
-<script src="https://surveyjs.azureedge.net/1.1.7/survey.pdf.min.js"></script>
+<script src="https://surveyjs.azureedge.net/1.1.8/survey.pdf.min.js"></script>
 
 <!-- Uncomment next line to add html and markdown text support -->
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.6.4/showdown.min.js"></script> -->
