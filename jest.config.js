@@ -11,7 +11,6 @@ module.exports = {
   moduleNameMapper: {
     "\\.(scss|html)$": "<rootDir>/tests/empty-module.js"
   },
-  // testRegex: "tests/checkbox.test.ts",
   testRegex: "(/tests/.*|(\\.|/)(test|spec))\\.(ts|tsx)?$",
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"]
 };
