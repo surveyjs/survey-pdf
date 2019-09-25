@@ -14,14 +14,14 @@ export class FlatSurvey {
     public static readonly PANEL_CONT_GAP_SCALE: number = 1.0;
     public static readonly PANEL_DESC_GAP_SCALE: number = 0.25;
     public static async generateFlatsPanel(survey: SurveyPDF, controller: DocController,
-        question: PanelModel, point: IPoint): Promise<IPdfBrick[]> {
+        panel: PanelModel, point: IPoint): Promise<IPdfBrick[]> {
         let panelFlats: IPdfBrick[] = [];
         let panelContentPoint: IPoint = SurveyHelper.clone(point);
         controller.pushMargins();
-        controller.margins.left += controller.measureText(question.innerIndent).width;
-        panelContentPoint.xLeft += controller.measureText(question.innerIndent).width;
+        controller.margins.left += controller.measureText(panel.innerIndent).width;
+        panelContentPoint.xLeft += controller.measureText(panel.innerIndent).width;
         panelFlats.push(...await this.generateFlatsPagePanel(survey,
-            controller, question, panelContentPoint));
+            controller, panel, panelContentPoint));
         controller.popMargins();
         return panelFlats;
     }
