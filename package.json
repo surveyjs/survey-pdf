@@ -10,7 +10,7 @@
     "doc_update": "chmod +x ./docupdate_npm.sh && ./docupdate_npm.sh",
     "dts_clean": "node dts_cleaner.js"
   },
-  "version": "1.1.12",
+  "version": "1.1.13",
   "name": "survey-pdf",
   "private": true,
   "license": "Commercial",
