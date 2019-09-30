@@ -25,3 +25,20 @@ test('Check dropdown readonly', async () => {
     expect(controller.doc.internal.acroformPlugin.
         acroFormDictionaryRoot.Fields[0].readOnly).toBe(true);
 });
+
+test('Dropdown MK appearence fix', async () => {
+	let json = {
+		questions: [
+			{
+				name: 'dropdown_mkfix',
+				type: 'dropdown',
+                choices: ['item']
+			}
+		]
+	};
+	let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+	let controller: DocController = new DocController(TestHelper.defaultOptions);
+	await survey['render'](controller);
+    expect(controller.doc.internal.acroformPlugin.
+	    acroFormDictionaryRoot.Fields[0].MK).toBe('<< /BG [ 0.975 0.975 0.975 ]  >>');
+});

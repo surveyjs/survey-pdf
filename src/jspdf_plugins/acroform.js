@@ -1526,6 +1526,19 @@ var jsPDF = window.jsPDF || require('jspdf');
             }
         });
 
+        // MK fix for Acrobat
+        var _MK = '<< /BG [ 0.975 0.975 0.975 ]  >>';
+        Object.defineProperty(this, 'MK', {
+            enumerable: true,
+            configurable: false,
+            get: function () {
+                return _MK;
+            },
+            set: function (value) {
+                _MK = value;
+            }
+        });
+
         /**
         * (Optional) For scrollable list boxes, the top index (the index in the Opt array of the first option visible in the list). Default value: 0.
         * 
