@@ -58,25 +58,19 @@ export class SurveyPDF extends SurveyModel {
     any
   > = new EventAsync<(survey: SurveyPDF, options: AdornersOptions) => any, any>();
   private waitForQuestionIsReady(question: Question): Promise<void> {
-    return new Promise((resolve: any) => {
-      //TOREMOVE
-      if (typeof question['isReady'] === 'undefined') {
-        resolve();
-        return;
-      }
-      
-      if (question['isReady']) {
+    return new Promise((resolve: any) => {     
+      if (question.isReady) {
         resolve();
       }
       else {
         let readyCallback: (sender: Question, options: any) => void =
           (_, options: any) => {
             if (options.isReady) {
-              question['onReadyChanged'].remove(readyCallback);
+              question.onReadyChanged.remove(readyCallback);
               resolve();
             }
           }
-        question['onReadyChanged'].add(readyCallback);
+        question.onReadyChanged.add(readyCallback);
       }
     });
   }
