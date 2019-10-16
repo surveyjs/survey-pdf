@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.1.16"></a>
+## [1.1.16](https://github.com/surveyjs/survey-pdf/compare/v1.1.15...v1.1.16) (2019-10-16)
+
+
+
+<a name="1.1.15"></a>
+## [1.1.15](https://github.com/surveyjs/survey-pdf/compare/v1.1.14...v1.1.15) (2019-10-08)
+
+
+
+<a name="1.1.14"></a>
+## [1.1.14](https://github.com/surveyjs/survey-pdf/compare/v1.1.13...v1.1.14) (2019-10-01)
+
+
+
 <a name="1.1.13"></a>
 ## [1.1.13](https://github.com/surveyjs/survey-pdf/compare/v1.1.12...v1.1.13) (2019-09-24)
 

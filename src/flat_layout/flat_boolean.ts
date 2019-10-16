@@ -24,13 +24,6 @@ export class FlatBoolean extends FlatQuestion {
                 SurveyHelper.scaleRect(SurveyHelper.createRect(point, height, height),
                     SurveyHelper.SELECT_ITEM_FLAT_SCALE), point.xLeft));
         composite.addBrick(itemFlat);
-        let textPoint: IPoint = SurveyHelper.clone(point);
-        textPoint.xLeft = itemFlat.xRight + SurveyHelper.GAP_BETWEEN_ITEM_TEXT * this.controller.unitWidth;
-        let text: LocalizableString = this.question.locDisplayLabel;
-        if (text.renderedHtml) {
-            composite.addBrick(await SurveyHelper.createTextFlat(textPoint,
-                this.question, this.controller, text, TextBrick));
-        }
         return [composite];
     }
 }
