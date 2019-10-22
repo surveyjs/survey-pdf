@@ -7,9 +7,9 @@ export class TextBoldBrick extends TextBrick {
         rect: IRect, text: string, fontSize?: number) {
         super(question, controller, rect, text, fontSize);
     }
-    public async render(): Promise<void> {
+    public async renderInteractive(): Promise<void> {
         this.controller.fontStyle = 'bold';
-        super.render();
+        await super.renderInteractive();
         this.controller.fontStyle = 'normal';
     }
 }

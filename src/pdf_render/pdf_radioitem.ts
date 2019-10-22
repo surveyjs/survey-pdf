@@ -25,7 +25,7 @@ export class RadioItemBrick extends PdfBrick {
         private radioGroupWrap: RadioGroupWrap) {
         super(question, controller, rect);
     }
-    public async render(): Promise<void> {
+    public async renderInteractive(): Promise<void> {
         if (this.index == 0) {
             this.radioGroupWrap.addToPdf();
         }
@@ -38,7 +38,7 @@ export class RadioItemBrick extends PdfBrick {
         let formScale = SurveyHelper.formScale(this.controller, this);
         radioButton.Rect = SurveyHelper.createAcroformRect(SurveyHelper.scaleRect(this, formScale));
         radioButton.color = SurveyHelper.FORM_BORDER_COLOR;
-        SurveyHelper.wrapInBordersFlat(this.controller, this);
+        SurveyHelper.wrapFlatInBorders(this.controller, this);
         this.radioGroupWrap.radioGroup.setAppearance(this.controller.doc.AcroForm.Appearance.RadioButton.Circle);
     }
 }

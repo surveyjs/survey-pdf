@@ -13,7 +13,7 @@ export class TextFieldBrick extends PdfBrick {
         super(question, controller, rect);
         this.question = <QuestionTextModel>question;
     }
-    public async render(): Promise<void> {
+    public async renderInteractive(): Promise<void> {
         if (this.inputType === 'color') {
             let oldFillColor: string = this.controller.doc.getFillColor();
             this.controller.doc.setFillColor(this.question.value || 'black');
@@ -41,6 +41,6 @@ export class TextFieldBrick extends PdfBrick {
         inputField.Rect = SurveyHelper.createAcroformRect(
             SurveyHelper.scaleRect(this, formScale));
         this.controller.doc.addField(inputField);
-        SurveyHelper.wrapInBordersFlat(this.controller, this);
+        SurveyHelper.wrapFlatInBorders(this.controller, this);
     }
 }

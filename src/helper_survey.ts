@@ -154,7 +154,7 @@ export class SurveyHelper {
     }
     public static createPlainTextFlat<T extends IPdfBrick>(point: IPoint, question: IQuestion,
         controller: DocController, text: string, fabric: new (question: IQuestion,
-            controller: DocController, rect: IRect, text: string) => T): IPdfBrick {
+            controller: DocController, rect: IRect, text: string) => T): CompositeBrick {
         let lines: string[] = controller.doc.splitTextToSize(text,
             controller.paperWidth - controller.margins.right - point.xLeft);
         let currPoint: IPoint = SurveyHelper.clone(point);
@@ -355,7 +355,6 @@ export class SurveyHelper {
         }
         return ratingItemLocText;
     }
-
     public static getColumnWidth(controller: DocController, colCount: number) {
         return (SurveyHelper.getPageAvailableWidth(controller) -
             (colCount - 1) * controller.unitWidth * SurveyHelper.GAP_BETWEEN_COLUMNS) / colCount;
@@ -402,7 +401,7 @@ export class SurveyHelper {
         let borderWidth: number = controller.unitHeight * SurveyHelper.BORDER_SCALE * 2.0;
         return (minSide - borderWidth) / minSide;
     }
-    public static wrapInBordersFlat(controller: DocController, flat: PdfBrick): void {
+    public static wrapFlatInBorders(controller: DocController, flat: PdfBrick): void {
         let minSide: number = Math.min(flat.width, flat.height);
         let visibleWidth: number = controller.unitHeight * SurveyHelper.VISIBLE_BORDER_SCALE * SurveyHelper.BORDER_SCALE;
         let visibleScale: number = SurveyHelper.formScale(controller, flat) + visibleWidth / minSide;

@@ -11,7 +11,7 @@ export class LinkBrick extends TextBrick {
             (<LinkBrick>textFlat).controller.fontSize,
             LinkBrick.COLOR);
     }
-    public async render(): Promise<void> {
+    public async renderInteractive(): Promise<void> {
         let oldTextColor: string = this.controller.doc.getTextColor();
         this.controller.doc.setTextColor(SurveyHelper.BACKGROUND_COLOR);
         let descent: number = this.controller.unitHeight *
@@ -21,7 +21,7 @@ export class LinkBrick extends TextBrick {
             (this.yBot - this.yTop) - descent;
         this.controller.doc.textWithLink(this.text, this.xLeft,
             yTopLink, { url: this.link });
-        super.render();
+        await super.renderInteractive();
         this.controller.doc.setTextColor(oldTextColor);
     }
 }

@@ -20,10 +20,15 @@ test('Check dropdown readonly', async () => {
 		]
 	};
 	let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+	let data: any = {};
+	data[json.questions[0].name] = json.questions[0].choices[0];
+	survey.data = data;
 	let controller: DocController = new DocController(TestHelper.defaultOptions);
 	await survey['render'](controller);
-    expect(controller.doc.internal.acroformPlugin.
-        acroFormDictionaryRoot.Fields[0].readOnly).toBe(true);
+	expect(typeof controller.doc.internal.acroformPlugin).toBe('undefined');
+	let lastPage: any = controller.doc.internal.pages[
+		controller.doc.internal.pages.length -1];
+    expect(lastPage[lastPage.length - 1].includes(json.questions[0].choices[0])).toBe(true);
 });
 
 test('Dropdown MK appearence fix', async () => {

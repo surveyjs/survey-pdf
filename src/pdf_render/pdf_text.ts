@@ -1,16 +1,14 @@
-import { IQuestion, QuestionTextModel, SurveyElement } from 'survey-core';
+import { IQuestion, } from 'survey-core';
 import { IPoint, IRect, DocController } from '../doc_controller';
 import { PdfBrick } from './pdf_brick';
 import { SurveyHelper } from '../helper_survey';
 
 export class TextBrick extends PdfBrick {
-    protected question: QuestionTextModel;
     protected align: { align: string, baseline: string };
     public constructor(question: IQuestion, controller: DocController,
         rect: IRect, protected text: string, protected fontSize?: number,
         protected textColor?: string) {
         super(question, controller, rect);
-        this.question = <QuestionTextModel>question;
         this.align = {
             align: 'left',
             baseline: 'middle'
@@ -22,7 +20,7 @@ export class TextBrick extends PdfBrick {
             this.textColor = SurveyHelper.TEXT_COLOR;
         }
     }
-    public async render(): Promise<void> {
+    public async renderInteractive(): Promise<void> {
         let alignPoint: IPoint = this.alignPoint(this);
         let oldFontSize: number = this.controller.fontSize;
         this.controller.fontSize = this.fontSize;

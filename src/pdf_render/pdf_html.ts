@@ -12,7 +12,7 @@ export class HTMLBrick extends PdfBrick {
             bottom: controller.margins.bot
         };
     }
-    public async render(): Promise<void> {
+    public async renderInteractive(): Promise<void> {
         await new Promise((resolve) => {
             this.controller.doc.fromHTML(this.html, this.xLeft, this.yTop, {
                 width: this.width,
