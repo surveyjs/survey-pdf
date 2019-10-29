@@ -17,8 +17,8 @@ export class DropdownBrick extends PdfBrick {
         this.question = <QuestionDropdownModel>question;
     }
     private getValue(): string {
-        if (!!this.question.renderedValue) {
-            return this.question.renderedValue;
+        if (!!this.question.displayValue) {
+            return this.question.displayValue;
         }
         else if (this.question.showOptionsCaption) {
             return this.question.optionsCaption;
