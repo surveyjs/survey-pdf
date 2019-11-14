@@ -17,7 +17,7 @@ export class HTMLBrick extends PdfBrick {
             this.controller.doc.fromHTML(this.html, this.xLeft, this.yTop, {
                 width: this.width,
                 'pagesplit': true,
-            }, () => resolve(), this.margins)
+            }, () => resolve(), this.margins);
         });
     }
 }
