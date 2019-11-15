@@ -89,6 +89,7 @@ surveyPDF.save();
 * Question Radiogroup not able to set readOnly for separate items
 * Question Imagepicker imagefit is always fill
 * Question Boolean values only true and false
+* Question Html support restricted subset of html markup
 * Question File save files via RMB in Chrome only
 * Question Panel state is always expanded
 * Question Panel Dynamic mode is only list and state default
