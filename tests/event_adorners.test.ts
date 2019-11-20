@@ -51,8 +51,9 @@ test('Event render questions simple textbox add bottom description', async () =>
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     survey.onRenderQuestion.add(async (_, options: AdornersOptions) => {
-        let point: IPoint = SurveyHelper.createPoint(options.bricks[options.bricks.length - 1]);
-        let descBrick: IPdfBrick = await SurveyHelper.createDescFlat(point,
+        let point: IPoint = options.module.SurveyHelper.createPoint(
+            options.bricks[options.bricks.length - 1]);
+        let descBrick: IPdfBrick = await options.module.SurveyHelper.createDescFlat(point,
             options.question, options.controller, 'Some description');
         options.bricks.push(descBrick);
     });

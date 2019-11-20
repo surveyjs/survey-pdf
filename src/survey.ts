@@ -51,7 +51,7 @@ export class SurveyPDF extends SurveyModel {
   /**
    * The event in fired for every rendered question
    * @param survey SurveyPDF object that fires the event
-   * @param canvas AdornersOptions object that have options to custom render the question
+   * @param options AdornersOptions object that have options to custom render the question
    */
   public onRenderQuestion: EventAsync<
     (survey: SurveyPDF, options: AdornersOptions) => any,
