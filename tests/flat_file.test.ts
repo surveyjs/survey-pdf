@@ -14,7 +14,7 @@ import { TestHelper } from '../src/helper_test';
 let __dummy_fl = new FlatFile(null, null, null);
 
 test('Check no files', async () => {
-    let json = {
+    let json: any = {
         elements: [
             {
                 type: 'file',

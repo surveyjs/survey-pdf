@@ -33,6 +33,7 @@ export interface IDocOptions {
     base64Bold?: string;
     margins?: IMargin;
     commercial?: boolean;
+    htmlRenderAs?: 'auto' | 'standart' | 'image';
 }
 export class DocOptions implements IDocOptions {
     public static readonly MM_TO_PT = 72 / 25.4;
@@ -42,6 +43,7 @@ export class DocOptions implements IDocOptions {
     protected _orientation: 'l' | 'p';
     protected _fontName: string;
     protected _commercial: boolean;
+    protected _htmlRenderAs: 'auto' | 'standart' | 'image';
     public constructor(options: IDocOptions) {
         if (typeof options.orientation === 'undefined') {
             if (typeof options.format === 'undefined' ||
@@ -76,33 +78,36 @@ export class DocOptions implements IDocOptions {
         Object.keys(this._margins).forEach((name: string) => {
             (<any>this._margins)[name] = (<any>this._margins)[name] * DocOptions.MM_TO_PT;
         });
-        this._commercial = options.commercial;
+        this._commercial = options.commercial || false;
+        this._htmlRenderAs = options.htmlRenderAs || 'auto';
     }
-    get leftTopPoint(): IPoint {
+    public get leftTopPoint(): IPoint {
         return {
             xLeft: this.margins.left,
             yTop: this.margins.top
         }
     }
-    get fontName(): string {
+    public get fontName(): string {
         return this._fontName;
     }
-    get fontSize(): number {
+    public get fontSize(): number {
         return this._fontSize;
     }
-    get margins(): IMargin {
+    public get margins(): IMargin {
         return this._margins;
     }
-    get format(): string | number[] {
+    public get format(): string | number[] {
         return this._format;
     }
-    get orientation(): 'l' | 'p' {
+    public get orientation(): 'l' | 'p' {
         return this._orientation;
+    }
+    public get htmlRenderAs(): 'auto' | 'standart' | 'image' {
+        return this._htmlRenderAs;
     }
 }
 
 export class DocController extends DocOptions {
-    protected static readonly PAPER_TO_LOGIC_SCALE_MAGIC: number = 595.28 / 210.0;
     private _doc: any;
     private _helperDoc: any;
     private _fontStyle: string;
@@ -195,10 +200,10 @@ export class DocController extends DocOptions {
         this.margins.left = margins.left;
         this.margins.right = margins.right;
     }
-    get paperWidth(): number {
+    public get paperWidth(): number {
         return this.doc.internal.pageSize.width;
     }
-    get paperHeight(): number {
+    public get paperHeight(): number {
         return this.doc.internal.pageSize.height;
     }
     public addPage(): void {

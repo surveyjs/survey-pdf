@@ -93,11 +93,12 @@ export class SurveyPDF extends SurveyModel {
             controller.addPage();
           }
         }
+        //gizmos bricks borders for debug
         // packs[i][j].unfold().forEach((rect: IPdfBrick) => {
         //     controller.doc.setDrawColor('green');
         //     controller.doc.rect(...SurveyHelper.createAcroformRect(rect));
         //     controller.doc.setDrawColor('black');
-        // }
+        //   }
         // );
         await packs[i][j].render();
       }

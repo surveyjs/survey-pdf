@@ -207,6 +207,50 @@ export class SurveyHelper {
             }, margins)
         });
     }
+    public static htmlToXml(html: string): string {
+        let htmlDoc: Document = document.implementation.createHTMLDocument('');
+        htmlDoc.write(html.replace(/\#/g, '%23'));
+        htmlDoc.documentElement.setAttribute('xmlns', htmlDoc.documentElement.namespaceURI);
+        return (new XMLSerializer()).serializeToString(htmlDoc.body);
+    }
+    public static htmlToImage(html: string, width: number, controller: DocController):
+        Promise<{ url: string, aspect: number }> {  
+        let div: HTMLDivElement = document.createElement('div');
+        div.style.display = 'block';
+        div.style.position = 'fixed';
+        div.style.top = '-10000px';
+        div.style.left = '-10000px';
+        div.style.width = (width / 72.0 * 96.0) + 'px';
+        div.insertAdjacentHTML('beforeend', html);
+        document.body.appendChild(div);
+        let divWidth: number = div.offsetWidth;
+        let divHeight: number = div.offsetHeight;
+        div.remove();
+        let fakePadding: number = controller.unitHeight / 2.0;
+        let data: string = 'data:image/svg+xml;charset=utf-8,' +
+            '<svg xmlns="http://www.w3.org/2000/svg" ' +
+            `width="${divWidth}px" ` +
+            `height="${divHeight}px" ` +
+            `viewBox="0 ${fakePadding} ${divWidth} ${divHeight + fakePadding}">` +
+            '<foreignObject width="100%" height="100%">' +
+            SurveyHelper.htmlToXml(html) + '</foreignObject></svg>';
+        let img: HTMLImageElement = new Image();
+        img.src = data;
+        return new Promise((resolve) => {
+                img.onload = function() {
+                        let canvas: HTMLCanvasElement = document.createElement('canvas');
+                        canvas.width = divWidth;
+                        canvas.height = divHeight;
+                        canvas.getContext('2d').drawImage(img, 0, 0);
+                        let url: string = canvas.toDataURL('image/png');
+                        canvas.remove();
+                        resolve({ url: url, aspect: divWidth / divHeight });
+                    };
+                img.onerror = function() {
+                        resolve({ url: 'data:,', aspect: width / SurveyHelper.EPSILON });
+                    }
+            });
+    }
     public static async createBoldTextFlat(point: IPoint, question: Question,
         controller: DocController, text: string | LocalizableString) {
         controller.fontStyle = 'bold';
