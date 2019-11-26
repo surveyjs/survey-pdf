@@ -213,7 +213,7 @@ export class SurveyHelper {
         htmlDoc.documentElement.setAttribute('xmlns', htmlDoc.documentElement.namespaceURI);
         return (new XMLSerializer()).serializeToString(htmlDoc.body);
     }
-    public static htmlToImage(html: string, width: number, controller: DocController):
+    public static async htmlToImage(html: string, width: number, controller: DocController):
         Promise<{ url: string, aspect: number }> {  
         let div: HTMLDivElement = document.createElement('div');
         div.style.display = 'block';
@@ -236,7 +236,7 @@ export class SurveyHelper {
             SurveyHelper.htmlToXml(html) + '</foreignObject></svg>';
         let img: HTMLImageElement = new Image();
         img.src = data;
-        return new Promise((resolve) => {
+        return await new Promise((resolve) => {
                 img.onload = function() {
                         let canvas: HTMLCanvasElement = document.createElement('canvas');
                         canvas.width = divWidth;
