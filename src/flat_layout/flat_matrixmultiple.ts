@@ -88,9 +88,9 @@ export class FlatMatrixMultiple extends FlatQuestion {
         let table: QuestionMatrixDropdownRenderedTable = this.question.renderedTable;
         let rowsFlats: CompositeBrick[] = [];
         let currPoint: IPoint = SurveyHelper.clone(point);
-        let isVertical: boolean = this.question.columnLayout === 'vertical';
+        let isVertical: boolean = this.question.columnLayout == 'vertical';
         let colCount: number = table.rows[0] ? table.rows[0].cells.length -
-            (table['hasRemoveRows'] && !isVertical ? 1 : 0) :
+            (table.hasRemoveRow && !isVertical ? 1 : 0) :
             table.showHeader && table.headerRow ? table.headerRow.cells.length :
                 table.showFooter && table.footerRow ? table.footerRow.cells.length : 0;
         if (colCount < 1) {
@@ -103,7 +103,7 @@ export class FlatMatrixMultiple extends FlatQuestion {
             this.controller.measureText(SurveyHelper.MATRIX_COLUMN_WIDTH).width;
         table.showHeader && isWide && rows.push(table.headerRow);
         rows.push(...table.rows);
-        table['hasRemoveRows'] && isVertical && rows.pop();
+        table.hasRemoveRow && isVertical && rows.pop();
         table.showFooter && isWide && rows.push(table.footerRow);
         rowsFlats.push(...await this.generateFlatsRows(currPoint, rows, colCount, isWide));
         return rowsFlats;
