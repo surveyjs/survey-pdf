@@ -4,4 +4,24 @@ SurveyPDF supports export html to pdf via SurveyJS [Html Question](https://surve
 
 You may set preferred render directly to fit your needs more accurately. Pass _htmlRenderAs_ parameter with "standard" value to render all html questions as interactive text or with "image" value to render all html questions as an image. Default value is "auto"
 
+```javascript
+var options = {
+    htmlRenderAs: "image"
+};
+var surveyPDF = new SurveyPDF.SurveyPDF(json, options);
+```
+
 Also, you may override the behavior of particular html question via setting _renderAs_ property with values "standard" or "image" correspondingly. Default value is "auto"
+
+```javascript
+var json = {
+    elements: [
+        {
+            type: "html",
+            name: "html_as_image",
+            html: "<i>Cheeese!</i>",
+            renderAs: "image"
+        }
+    ]
+};
+```
