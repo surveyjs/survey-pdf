@@ -8,6 +8,9 @@ import { DrawCanvas } from './event_handler/draw_canvas';
 import { AdornersOptions } from './event_handler/adorners';
 import { SurveyHelper } from './helper_survey';
 
+/**
+ * SurveyPDF object contains options, events and methods to export PDF
+ */
 export class SurveyPDF extends SurveyModel {
   private _haveCommercialLicense: boolean;
   public options: IDocOptions;

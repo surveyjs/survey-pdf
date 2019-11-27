@@ -4,18 +4,27 @@ import { TextBrick } from '../pdf_render/pdf_text';
 import { TextBoldBrick } from '../pdf_render/pdf_textbold';
 import { SurveyHelper } from '../helper_survey';
 
+/**
+ * Horizontal alignment types in onRenderHeader and onRenderFooter events
+ */
 export enum HorizontalAlign {
     NotSet = 'notset',
     Left = 'left',
     Center = 'center',
     Right = 'right'
 }
+/**
+ * Vertical alignment types in onRenderHeader and onRenderFooter events
+ */
 export enum VerticalAlign {
     NotSet = 'notset',
     Top = 'top',
     Middle = 'middle',
     Bottom = 'bottom'
 }
+/**
+ * Common options of rendering text and images in onRenderHeader and onRenderFooter events
+ */
 export interface IDrawRectOptions {
     /**
      * Specifies horizontal alignment of item, if set (center by default)
@@ -34,6 +43,9 @@ export interface IDrawRectOptions {
      */
     rect?: IRect;
 }
+/**
+ * Options of rendering text in onRenderHeader and onRenderFooter events
+ */
 export interface IDrawTextOptions extends IDrawRectOptions {
     /**
      * String that will be drawn
@@ -48,6 +60,9 @@ export interface IDrawTextOptions extends IDrawRectOptions {
      */
     isBold?: boolean;
 }
+/**
+ * Options of rendering images in onRenderHeader and onRenderFooter events
+ */
 export interface IDrawImageOptions extends IDrawRectOptions {
     /**
      * Specifies image width (used if alignment set, canvas.rect's width by default)
@@ -62,6 +77,10 @@ export interface IDrawImageOptions extends IDrawRectOptions {
      */
     base64: string;
 }
+
+/**
+ * DrawCanvas object passed to onRenderHeader and onRenderFooter events
+ */
 export class DrawCanvas {
     public static readonly DEFAULT_FONT_SIZE: number = 14;
     public constructor(protected packs: IPdfBrick[],
