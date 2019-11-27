@@ -107,12 +107,20 @@ export class SurveyPDF extends SurveyModel {
       }
     }
   }
+  /**
+   * Call save method of surveyPDF object to download file in browser. This is asynchronous method
+   * @param fileName optional filename parameter
+   */
   public async save(fileName: string = 'survey_result.pdf'): Promise<any> {
     let controller: DocController = new DocController(this.options);
     SurveyHelper.fixFont(controller);
     await this.render(controller);
     return controller.doc.save(fileName, { returnPromise: true });
   }
+  /**
+   * Call raw method of surveyPDF to get PDF document as string object. This is asynchronous method
+   * @param type omit to get raw string, or pass "blob", "bloburl" or "dataurlstring"
+   */
   public async raw(type?: string): Promise<string> {
     let controller: DocController = new DocController(this.options);
     SurveyHelper.fixFont(controller);
