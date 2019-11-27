@@ -37,7 +37,7 @@ export class SurveyHelper {
     public static readonly TEXT_COLOR: string = '#404040';
     public static readonly BACKGROUND_COLOR: string = '#FFFFFF';
     public static readonly TITLE_LOCATION_MATRIX: string = 'matrix';
-    public static readonly STANDART_FONT: string = 'helvetica';
+    public static readonly STANDARD_FONT: string = 'helvetica';
     public static readonly CUSTOM_FONT_ENCODING: string = 'Identity-H';
 
     public static parseWidth(width: string, maxWidth: number): number {
@@ -124,7 +124,7 @@ export class SurveyHelper {
     public static createDivBlock(element: string, controller: DocController): string {
         return `<div style= ${this.generateCssTextRule(controller.fontSize,
             controller.fontStyle,
-            SurveyHelper.isCustomFont(controller, controller.fontName) ? SurveyHelper.STANDART_FONT : controller.fontName)}>
+            SurveyHelper.isCustomFont(controller, controller.fontName) ? SurveyHelper.STANDARD_FONT : controller.fontName)}>
             ${element}
             </div>`;
     }

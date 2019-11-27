@@ -12,15 +12,15 @@ export class FlatHTML extends FlatQuestion {
         question: IQuestion, controller: DocController) {
         super(survey, question, controller);
     }
-    private chooseRender(html: string): 'standart' | 'image' {
+    private chooseRender(html: string): 'standard' | 'image' {
         if (/<[^>]*style[^<]*>/.test(html) ||
             /<[^>]*table[^<]*>/.test(html)) {
             return 'image';
         }
-        return 'standart';
+        return 'standard';
     }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
-        let renderAs: 'auto' | 'standart' | 'image' = this.question.renderAs;
+        let renderAs: 'auto' | 'standard' | 'image' = this.question.renderAs;
         if (renderAs === 'auto') renderAs = this.controller.htmlRenderAs;
         if (renderAs === 'auto') renderAs = this.chooseRender(this.question.locHtml.renderedHtml);
         if (renderAs === 'image') {

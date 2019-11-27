@@ -35,7 +35,7 @@ test('Check choose auto render', async () => {
         elements: [
             {
                 type: 'html',
-                name: 'html_chooserender_standart',
+                name: 'html_chooserender_standard',
                 html: '<b>STRONG POWER</b>'
             },
             {

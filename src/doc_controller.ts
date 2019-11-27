@@ -33,7 +33,7 @@ export interface IDocOptions {
     base64Bold?: string;
     margins?: IMargin;
     commercial?: boolean;
-    htmlRenderAs?: 'auto' | 'standart' | 'image';
+    htmlRenderAs?: 'auto' | 'standard' | 'image';
 }
 export class DocOptions implements IDocOptions {
     public static readonly MM_TO_PT = 72 / 25.4;
@@ -43,7 +43,7 @@ export class DocOptions implements IDocOptions {
     protected _orientation: 'l' | 'p';
     protected _fontName: string;
     protected _commercial: boolean;
-    protected _htmlRenderAs: 'auto' | 'standart' | 'image';
+    protected _htmlRenderAs: 'auto' | 'standard' | 'image';
     public constructor(options: IDocOptions) {
         if (typeof options.orientation === 'undefined') {
             if (typeof options.format === 'undefined' ||
@@ -102,7 +102,7 @@ export class DocOptions implements IDocOptions {
     public get orientation(): 'l' | 'p' {
         return this._orientation;
     }
-    public get htmlRenderAs(): 'auto' | 'standart' | 'image' {
+    public get htmlRenderAs(): 'auto' | 'standard' | 'image' {
         return this._htmlRenderAs;
     }
 }
