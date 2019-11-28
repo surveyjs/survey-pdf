@@ -14,7 +14,8 @@ export class FlatHTML extends FlatQuestion {
     }
     private chooseRender(html: string): 'standard' | 'image' {
         if (/<[^>]*style[^<]*>/.test(html) ||
-            /<[^>]*table[^<]*>/.test(html)) {
+            /<[^>]*table[^<]*>/.test(html) ||
+            /&\w+;/.test(html)) {
             return 'image';
         }
         return 'standard';
