@@ -2,6 +2,8 @@
     return {};
 };
 
+import * as SurveyPDFModule_dummy from '../src/entries/pdf';
+let __dummy_sh = SurveyPDFModule_dummy.SurveyHelper;
 import { SurveyPDF } from '../src/survey';
 import { DocController, IPoint } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
@@ -14,7 +16,6 @@ import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { TextBoxBrick } from '../src/pdf_render/pdf_textbox';
 import { CompositeBrick } from '../src/pdf_render/pdf_composite';
 import { AdornersOptions } from '../src/event_handler/adorners';
-import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 let __dummy_tx = new FlatTextbox(null, null, null);
 let __dummy_cb = new FlatCheckbox(null, null, null);
