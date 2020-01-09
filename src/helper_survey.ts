@@ -1,5 +1,9 @@
 import { IQuestion, Question, QuestionRatingModel, LocalizableString } from 'survey-core';
+import * as SurveyPDFModule from './entries/pdf';
+import { SurveyPDF } from './survey';
 import { IPoint, IRect, ISize, DocController } from './doc_controller';
+import { FlatRepository } from './flat_layout/flat_repository';
+import { IFlatQuestion } from './flat_layout/flat_question';
 import { IPdfBrick, PdfBrick } from './pdf_render/pdf_brick';
 import { TextBrick } from './pdf_render/pdf_text';
 import { TextBoldBrick } from './pdf_render/pdf_textbold';
@@ -11,6 +15,7 @@ import { HTMLBrick } from './pdf_render/pdf_html';
 import { EmptyBrick } from './pdf_render/pdf_empty';
 import { RowlineBrick } from './pdf_render/pdf_rowline';
 import { CompositeBrick } from './pdf_render/pdf_composite';
+import { AdornersOptions } from './event_handler/adorners';
 
 export class SurveyHelper {
     public static readonly EPSILON: number = 2.2204460492503130808472633361816e-15;
@@ -461,6 +466,22 @@ export class SurveyHelper {
         controller.doc.roundedRect(...SurveyHelper.createAcroformRect(
             SurveyHelper.scaleRect(flat, unvisibleScale)), unvisibleRadius, unvisibleRadius);
         controller.doc.setDrawColor(oldDrawColor);
+    }
+    public static async generateQuestionFlats(survey: SurveyPDF,
+        controller: DocController, question: Question, point: IPoint): Promise<IPdfBrick[]> {
+        let questionType: string = question.customWidget ?
+            question.customWidget.pdfQuestionType : question.getType();
+        let flatQuestion: IFlatQuestion =
+            FlatRepository.getInstance().create(survey, question, controller, questionType);
+        let questionFlats: IPdfBrick[] = await flatQuestion.generateFlats(point);
+        let adornersOptions: AdornersOptions = new AdornersOptions(point,
+            questionFlats, question, controller, FlatRepository.getInstance(), SurveyPDFModule);
+        if (question.customWidget && question.customWidget.isFit(question) &&
+            question.customWidget.pdfRender) {
+            survey.onRenderQuestion.unshift(question.customWidget.pdfRender);
+        }
+        await survey.onRenderQuestion.fire(survey, adornersOptions);
+        return [...adornersOptions.bricks];
     }
     public static isCustomFont(controller: DocController, fontName: string) {
         return controller.doc.internal.getFont(fontName).encoding === SurveyHelper.CUSTOM_FONT_ENCODING;

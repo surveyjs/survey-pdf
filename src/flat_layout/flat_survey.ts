@@ -1,13 +1,9 @@
 import { IElement, Question, PanelModelBase, PanelModel } from 'survey-core';
-import * as SurveyPDFModule from '../entries/pdf';
 import { SurveyPDF } from '../survey';
 import { IPoint, DocController } from '../doc_controller';
-import { FlatRepository } from './flat_repository';
-import { IFlatQuestion } from './flat_question';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { RowlineBrick } from '../pdf_render/pdf_rowline';
-import { AdornersOptions } from '../event_handler/adorners';
 import { SurveyHelper } from '../helper_survey';
 
 export class FlatSurvey {
@@ -73,20 +69,8 @@ export class FlatSurvey {
                     rowFlats.push(...await this.generateFlatsPanel(survey, controller, element, currPoint));
                 }
                 else {
-                    let question: Question = <Question>element;
-                    let questionType: string = question.customWidget ?
-                        question.customWidget.pdfQuestionType : question.getType();
-                    let flatQuestion: IFlatQuestion =
-                        FlatRepository.getInstance().create(survey, question, controller, questionType);
-                    let questionFlats: IPdfBrick[] = await flatQuestion.generateFlats(currPoint);
-                    let adornersOptions: AdornersOptions = new AdornersOptions(currPoint,
-                        questionFlats, question, controller, FlatRepository.getInstance(), SurveyPDFModule);
-                    if (question.customWidget && question.customWidget.isFit(question) &&
-                        question.customWidget.pdfRender) {
-                        survey.onRenderQuestion.unshift(question.customWidget.pdfRender);
-                    }
-                    await survey.onRenderQuestion.fire(survey, adornersOptions);
-                    rowFlats.push(...adornersOptions.bricks);
+                    rowFlats.push(...await SurveyHelper.generateQuestionFlats(survey,
+                        controller, <Question>element, currPoint));
                 }
             }
             controller.popMargins();

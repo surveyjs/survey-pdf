@@ -2,7 +2,7 @@ import { IQuestion, QuestionMatrixDropdownModelBase, QuestionMatrixDropdownRende
     QuestionMatrixDropdownRenderedRow, QuestionMatrixDropdownRenderedCell } from 'survey-core';
 import { SurveyPDF } from '../survey';
 import { IPoint, DocController } from '../doc_controller';
-import { IFlatQuestion, FlatQuestion } from './flat_question';
+import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { TextBrick } from '../pdf_render/pdf_text';
@@ -21,9 +21,8 @@ export class FlatMatrixMultiple extends FlatQuestion {
         let composite: CompositeBrick = new CompositeBrick();
         if (cell.hasQuestion) {
             cell.question.titleLocation = SurveyHelper.TITLE_LOCATION_MATRIX;
-            let flatQuestion: IFlatQuestion = FlatRepository.getInstance().
-                create(this.survey, cell.question, this.controller);
-            composite.addBrick(...await flatQuestion.generateFlats(point));
+            composite.addBrick(...await SurveyHelper.generateQuestionFlats(
+                this.survey, this.controller, cell.question, point));
         }
         else if (cell.hasTitle) {
             isHeader ? composite.addBrick(await SurveyHelper.createBoldTextFlat(point,
