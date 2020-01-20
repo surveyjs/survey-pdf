@@ -9,7 +9,7 @@ export class TextBoxBrick extends TextFieldBrick {
         protected isMultiline: boolean = false, index: number = 0) {
         super(question, controller, rect, isQuestion,
             (<QuestionTextModel>question).id + (isQuestion ? '' : '_comment' + index),
-            isQuestion ? (question.value || '') : (<Question>question).comment,
+            (isQuestion ? question.value : (<Question>question).comment) || '',
             isQuestion ? SurveyHelper.getLocString((<QuestionTextModel>question).locPlaceHolder) : '',
             question.isReadOnly, isMultiline,
             (<QuestionTextModel>question).inputType);
