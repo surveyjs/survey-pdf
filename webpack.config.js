@@ -2,7 +2,6 @@
 
 var webpack = require("webpack");
 var path = require("path");
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var dts = require("dts-bundle");
 var rimraf = require("rimraf");
 var GenerateJsonPlugin = require("generate-json-webpack-plugin");
@@ -11,14 +10,14 @@ var fs = require("fs");
 
 var banner = [
   "surveyjs - SurveyJS PDF library v" + packageJson.version,
-  "Copyright (c) 2015-2019 Devsoft Baltic OÜ  - http://surveyjs.io/",
+  "Copyright (c) 2015-2020 Devsoft Baltic OÜ  - http://surveyjs.io/",
   "License: MIT (http://www.opensource.org/licenses/mit-license.php)"
 ].join("\n");
 
 // TODO add to dts_bundler
 var dts_banner = [
   "Type definitions for SurveyJS PDF library v" + packageJson.version,
-  "Copyright (c) 2015-2019 Devsoft Baltic OÜ  - http://surveyjs.io/",
+  "Copyright (c) 2015-2020 Devsoft Baltic OÜ  - http://surveyjs.io/",
   "Definitions by: Devsoft Baltic OÜ <https://github.com/surveyjs/>",
   ""
 ].join("\n");
