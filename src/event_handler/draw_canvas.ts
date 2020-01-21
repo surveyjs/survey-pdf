@@ -162,8 +162,8 @@ export class DrawCanvas {
             }
         }
         else {
-            rect.xLeft = rectOptions.rect.xLeft;
-            rect.xRight = rectOptions.rect.xRight;
+            rect.xLeft = rectOptions.rect.xLeft || this.rect.xLeft;
+            rect.xRight = rectOptions.rect.xRight || this.rect.xRight;
         }
         if (typeof rectOptions.verticalAlign !== 'undefined') {
             switch (rectOptions.verticalAlign) {
@@ -186,8 +186,8 @@ export class DrawCanvas {
             }
         }
         else {
-            rect.yTop = rectOptions.rect.yTop;
-            rect.yBot = rectOptions.rect.yBot;
+            rect.yTop = rectOptions.rect.yTop || this.rect.yTop;
+            rect.yBot = rectOptions.rect.yBot || this.rect.yBot;
         }
         return rect;
     }

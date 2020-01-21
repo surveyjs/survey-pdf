@@ -5,12 +5,20 @@ import { IRect, DocController } from '../doc_controller';
 export class HTMLBrick extends PdfBrick {
     private margins: { top: number, bottom: number };
     public constructor(question: IQuestion, controller: DocController,
-        rect: IRect, protected html: string) {
+        rect: IRect, protected html: string, isImage: boolean = false) {
         super(question, controller, rect);
-        this.margins = {
-            top: controller.margins.top,
-            bottom: controller.margins.bot
-        };
+        if (isImage) {
+            this.margins = {
+                top: 0.0,
+                bottom: 0.0
+            };
+        }
+        else {
+            this.margins = {
+                top: controller.margins.top,
+                bottom: controller.margins.bot
+            };
+        }
     }
     public async renderInteractive(): Promise<void> {
         await new Promise((resolve) => {

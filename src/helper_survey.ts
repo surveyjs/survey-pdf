@@ -332,7 +332,7 @@ export class SurveyHelper {
                 height='${height}'
             />`;
         return new HTMLBrick(question, controller,
-            SurveyHelper.createRect(point, width, height), html);
+            SurveyHelper.createRect(point, width, height), html, true);
     }
     public static async getImageSize(url: string): Promise<ISize> {
         return await new Promise((resolve) => {
