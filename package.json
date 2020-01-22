@@ -26,6 +26,7 @@
     "@types/node": "7.0.4",
     "dotenv": "4.0.0",
     "dts-bundle": "0.7.2",
+    "generate-json-webpack-plugin": "0.2.1",
     "husky": "^2.7.0",
     "jest": "^23.6.0",
     "live-server": "1.2.0",
