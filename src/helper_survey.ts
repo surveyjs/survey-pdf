@@ -257,7 +257,7 @@ export class SurveyHelper {
             });
     }
     public static async createBoldTextFlat(point: IPoint, question: Question,
-        controller: DocController, text: string | LocalizableString) {
+        controller: DocController, text: string | LocalizableString): Promise<IPdfBrick> {
         controller.fontStyle = 'bold';
         let composite: IPdfBrick = await SurveyHelper.createTextFlat(
             point, question, controller, text, TextBoldBrick);
@@ -296,7 +296,7 @@ export class SurveyHelper {
         return composite;
     }
     public static async createTitlePanelFlat(point: IPoint, question: IQuestion,
-        controller: DocController, text: string | LocalizableString) {
+        controller: DocController, text: string | LocalizableString): Promise<IPdfBrick> {
         let oldFontSize: number = controller.fontSize;
         controller.fontSize = oldFontSize * SurveyHelper.TITLE_PANEL_FONT_SIZE_SCALE_MAGIC;
         controller.fontStyle = 'bold';
@@ -307,7 +307,7 @@ export class SurveyHelper {
         return composite;
     }
     public static async createDescFlat(point: IPoint, question: IQuestion,
-        controller: DocController, text: string | LocalizableString) {
+        controller: DocController, text: string | LocalizableString): Promise<IPdfBrick> {
         let oldFontSize: number = controller.fontSize;
         controller.fontSize = oldFontSize * SurveyHelper.DESCRIPTION_FONT_SIZE_SCALE_MAGIC;
         let composite: IPdfBrick = await SurveyHelper.createTextFlat(
