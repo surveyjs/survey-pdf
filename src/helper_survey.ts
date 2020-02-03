@@ -291,14 +291,14 @@ export class SurveyHelper {
         }
         controller.pushMargins();
         controller.margins.left = currPoint.xLeft;
-        let textFlat: IPdfBrick = await SurveyHelper.createBoldTextFlat(currPoint, question,
-            controller, question.locTitle);
+        let textFlat: CompositeBrick = <CompositeBrick>await SurveyHelper.createBoldTextFlat(
+            currPoint, question, controller, question.locTitle);
         composite.addBrick(textFlat);
         controller.popMargins();
-        currPoint.xLeft = textFlat.xRight;
         if (question.isRequired) {
             let requiredText: string = question.requiredText;
             if (question.locTitle.hasHtml) {
+                currPoint = SurveyHelper.createPoint(textFlat.unfold()[0], false, false);
                 controller.fontStyle = 'bold';
                 controller.pushMargins();
                 controller.margins.right = controller.paperWidth -
@@ -309,6 +309,7 @@ export class SurveyHelper {
                 controller.fontStyle = 'normal';
             }
             else {
+                currPoint = SurveyHelper.createPoint(textFlat.unfold().pop(), false, true);
                 composite.addBrick(await SurveyHelper.createBoldTextFlat(currPoint,
                     question, controller, requiredText));
             }
