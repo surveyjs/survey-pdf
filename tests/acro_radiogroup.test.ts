@@ -8,7 +8,7 @@ import { TestHelper } from '../src/helper_test';
 let __dummy_rg = new FlatRadiogroup(null, null, null);
 
 test('Has other radiogroup', async () => {
-    let json = {
+    let json: any = {
         showQuestionNumbers: 'false',
         questions: [
             {
@@ -21,6 +21,9 @@ test('Has other radiogroup', async () => {
         ]
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    survey.data = {
+        radiogroup_hasother: 'other'
+    };
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     await survey['render'](controller);
     let internal: any = controller.doc.internal;
@@ -35,7 +38,7 @@ test('Has other radiogroup', async () => {
     expect(internalRadioGroup.FT).toBe('/Btn');
 });
 test('Test all items disabled or enabled', async () => {
-    let json = {
+    let json: any = {
         questions: [
             {
                 name: 'radiogroup',
@@ -54,7 +57,7 @@ test('Test all items disabled or enabled', async () => {
     }
 });
 test('Check radiogroup readonly via display mode', async () => {
-	let json = {
+	let json: any = {
 		questions: [
 			{
 				name: 'readigroup_readonly_display',

@@ -45,7 +45,7 @@ test('Test has other checkbox', async () => {
 		showQuestionNumbers: 'false',
 		questions: [
 			{
-				name: 'checkbox',
+				name: 'checkbox_hasother',
 				type: 'checkbox',
 				hasOther: true,
 				otherText: 'Other test'
@@ -53,6 +53,9 @@ test('Test has other checkbox', async () => {
 		]
 	};
 	let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    survey.data = {
+        checkbox_hasother: 'other'
+    };
 	let controller: DocController = new DocController(TestHelper.defaultOptions);
 	await survey['render'](controller);
 	let internal: any = controller.doc.internal;
@@ -114,7 +117,7 @@ test('Test enable one item', async () => {
 });
 
 test('Test two equal values checkbox', async () => {
-	let json = {
+	let json: any = {
 		questions: [
 			{
 				name: 'checkbox',
