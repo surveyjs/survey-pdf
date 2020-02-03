@@ -270,28 +270,49 @@ export class SurveyHelper {
         let oldFontSize: number = controller.fontSize;
         controller.fontSize *= SurveyHelper.TITLE_FONT_SCALE;
         if (question.no) {
-            let noText = question.no + '. ';
+            let noText: string = question.no + '. ';
+            let noFlat: IPdfBrick;
             if (question.locTitle.hasHtml) {
                 controller.fontStyle = 'bold';
                 controller.pushMargins();
                 controller.margins.right = controller.paperWidth -
-                    controller.margins.left - controller.measureText(noText).width;
+                    controller.margins.left - controller.measureText(noText, 'bold').width;
+                noFlat = await SurveyHelper.createHTMLFlat(currPoint, question, controller,
+                    SurveyHelper.createDivBlock(noText, controller));
+                controller.popMargins();
+                controller.fontStyle = 'normal';
+            }
+            else {
+                noFlat = await SurveyHelper.createBoldTextFlat(currPoint,
+                    question, controller, noText);
+            }
+            composite.addBrick(noFlat);
+            currPoint.xLeft = noFlat.xRight;
+        }
+        controller.pushMargins();
+        controller.margins.left = currPoint.xLeft;
+        let textFlat: IPdfBrick = await SurveyHelper.createBoldTextFlat(currPoint, question,
+            controller, question.locTitle);
+        composite.addBrick(textFlat);
+        controller.popMargins();
+        currPoint.xLeft = textFlat.xRight;
+        if (question.isRequired) {
+            let requiredText: string = question.requiredText;
+            if (question.locTitle.hasHtml) {
+                controller.fontStyle = 'bold';
+                controller.pushMargins();
+                controller.margins.right = controller.paperWidth -
+                    controller.margins.left - controller.measureText(requiredText, 'bold').width;
                 composite.addBrick(await SurveyHelper.createHTMLFlat(currPoint, question, controller,
-                    SurveyHelper.createDivBlock(noText, controller)));
+                    SurveyHelper.createDivBlock(requiredText, controller)));
                 controller.popMargins();
                 controller.fontStyle = 'normal';
             }
             else {
                 composite.addBrick(await SurveyHelper.createBoldTextFlat(currPoint,
-                    question, controller, noText));
+                    question, controller, requiredText));
             }
-            currPoint.xLeft += controller.measureText(noText, 'bold').width;
         }
-        controller.pushMargins();
-        controller.margins.left = currPoint.xLeft;
-        composite.addBrick(await SurveyHelper.createBoldTextFlat(currPoint, question,
-            controller, question.locTitle));
-        controller.popMargins();
         controller.fontSize = oldFontSize;
         return composite;
     }

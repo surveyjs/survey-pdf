@@ -15,10 +15,10 @@ let __dummy_cb = new FlatCheckbox(null, null, null);
 
 async function checkTitleText(questionStartIndex: string, isRequired: boolean = false) {
   let json: any = {
-    showQuestionNumbers: 'false',
+    showQuestionNumbers: questionStartIndex !== null ? 'on' : 'off', 
     questions: [
       {
-        name: 'textbox',
+        name: 'textbox_checktitle',
         type: 'text',
         title: 'Check my title',
         isRequired: isRequired
@@ -31,13 +31,19 @@ async function checkTitleText(questionStartIndex: string, isRequired: boolean = 
   }
   let controller: DocController = new DocController(TestHelper.defaultOptions);
   await survey['render'](controller);
+  let content: string = '';
+  let regex: RegExp = /\((.*)\)/;
   let internalContent: string = controller.doc.internal.pages[1][2];
   expect(internalContent).toBeDefined();
-  let regex: RegExp = /\((.*)\)/;
-  let content: string = internalContent.match(regex)[1];
+  content += internalContent.match(regex)[1];
+  if (questionStartIndex !== null || isRequired) {
+    internalContent = controller.doc.internal.pages[1][3];
+    expect(internalContent).toBeDefined();
+    content += internalContent.match(regex)[1];
+  }
   expect(content).toBe(TestHelper.getTitleText(<Question>survey.getAllQuestions()[0]));
 }
-test('Check title number', async () => {
+test('Check title without number', async () => {
   await checkTitleText(null);
 });
 test('Check title number with custom questionStartIndex', async () => {

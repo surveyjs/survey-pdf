@@ -63,6 +63,7 @@ export class TestHelper {
     }
     public static getTitleText(question: Question): string {
         return (question.no != '' ? question.no + '. ' : '') +
-            SurveyHelper.getLocString(question.locTitle)
+            SurveyHelper.getLocString(question.locTitle) +
+            (question.isRequired ? question.requiredText : '');
     }
 }
