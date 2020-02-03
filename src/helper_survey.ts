@@ -181,7 +181,7 @@ export class SurveyHelper {
         }
         else {
             return this.splitHtmlRect(controller, await this.createHTMLFlat(point,
-                <Question>question, controller, this.createDivBlock(text.text, controller)));
+                <Question>question, controller, this.createDivBlock(text.renderedHtml, controller)));
         }
     }
     private static getHtmlMargins(controller: DocController, point: IPoint): { top: number, bottom: number, width: number } {
