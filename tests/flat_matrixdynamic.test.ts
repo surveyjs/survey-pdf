@@ -36,9 +36,9 @@ test('Check matrix dynamic one column no rows', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
-    controller.margins.left += controller.unitWidth;
     let unfoldFlats: IPdfBrick[] = flats[0][0].unfold();
     expect(unfoldFlats.length).toBe(1);
+    controller.margins.left += controller.unitWidth;
     let size: ISize = controller.measureText(json.elements[0].columns[0].name, 'bold');
     let assumeMatrix: IRect = {
         xLeft: controller.leftTopPoint.xLeft,
@@ -479,20 +479,20 @@ test('Check matrix dynamic two columns one row narrow width', async () => {
 });
 test('Check matrixdynamic with totals', async () => {
     let json: any = {
-        showQuestionNumbers: "off",
+        showQuestionNumbers: 'off',
         elements: [
             {
 
-                type: "matrixdynamic",
-                name: "orderList",
+                type: 'matrixdynamic',
+                name: 'orderList',
                 showHeader: false,
                 rowCount: 1,
-                titleLocation: "hidden",
+                titleLocation: 'hidden',
                 columns: [
                     {
-                        totalType: "sum",
-                        totalFormat: "test",
-                        name: "id"
+                        totalType: 'sum',
+                        totalFormat: 'test',
+                        name: 'id'
                     }
                 ]
             }
@@ -532,4 +532,46 @@ test('Check matrixdynamic with totals', async () => {
         yBot: assumeFooter.yBot
     };
     TestHelper.equalRect(expect, SurveyHelper.mergeRects(...flats[0]), assumeMatrix);
+});
+test.skip('Check matrix dynamic column width', async () => {
+    let json: any = {
+        elements: [
+            {
+                type: 'matrixdynamic',
+                name: 'madincolwidth',
+                titleLocation: 'hidden',
+                width: '50%',
+                columns: [
+                    {
+                        name: 'One',
+                        width: '300pt'
+                    },
+                    {
+                        name: 'Two'
+                    },
+                    {
+                        name: 'Three'
+                    }
+                ],
+                columnMinWidth: '200pt',
+                rowCount: 0
+            }
+        ]
+    };
+    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    //expect(flats.length).toBe(1);
+    //expect(flats[0].length).toBe(1);
+    let unfoldFlats: IPdfBrick[] = flats[0][0].unfold();
+    //expect(unfoldFlats.length).toBe(1);
+    controller.margins.left += controller.unitWidth;
+    let size: ISize = controller.measureText(json.elements[0].columns[0].name, 'bold');
+    let assumeMatrix: IRect = {
+        xLeft: controller.leftTopPoint.xLeft,
+        xRight: controller.leftTopPoint.xLeft + size.width,
+        yTop: controller.leftTopPoint.yTop,
+        yBot: controller.leftTopPoint.yTop + size.height
+    };
+    TestHelper.equalRect(expect, unfoldFlats[0], assumeMatrix);
 });

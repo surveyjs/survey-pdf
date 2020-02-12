@@ -426,11 +426,6 @@ export class SurveyHelper {
         }
         return ratingItemLocText;
     }
-    public static getColumnWidth(controller: DocController, colCount: number) {
-        return (SurveyHelper.getPageAvailableWidth(controller) -
-            (colCount - 1) * controller.unitWidth * SurveyHelper.GAP_BETWEEN_COLUMNS) / colCount;
-
-    }
     public static getPageAvailableWidth(controller: DocController): number {
         return controller.paperWidth - controller.margins.left - controller.margins.right;
     }
@@ -438,6 +433,10 @@ export class SurveyHelper {
         let width: number = (SurveyHelper.getPageAvailableWidth(
             controller) - (SurveyHelper.IMAGEPICKER_COUNT - 1) * controller.unitHeight);
         return width > 0 ? width : controller.unitHeight;
+    }
+    public static getColumnWidth(controller: DocController, colCount: number) {
+        return (SurveyHelper.getPageAvailableWidth(controller) -
+            (colCount - 1) * controller.unitWidth * SurveyHelper.GAP_BETWEEN_COLUMNS) / colCount;
     }
     public static setColumnMargins(controller: DocController, colCount: number, column: number) {
         let cellWidth: number = this.getColumnWidth(controller, colCount);
