@@ -62,7 +62,8 @@ export class FlatQuestion implements IFlatQuestion {
                 let compositeFlat: CompositeBrick = new CompositeBrick(titleFlat);
                 let contentPoint: IPoint = SurveyHelper.createPoint(titleFlat);
                 if (isDecs) {
-                    let descFlat: IPdfBrick = await this.generateFlatDescription(SurveyHelper.createPoint(titleFlat));
+                    let descFlat: IPdfBrick = await this.generateFlatDescription(
+                        SurveyHelper.createPoint(titleFlat));
                     compositeFlat.addBrick(descFlat);
                     contentPoint = SurveyHelper.createPoint(descFlat);
                 }
@@ -109,7 +110,8 @@ export class FlatQuestion implements IFlatQuestion {
                 let titleFlat: IPdfBrick = await this.generateFlatTitle(titlePoint);
                 let compositeFlat: CompositeBrick = new CompositeBrick(titleFlat);
                 if (isDecs) {
-                    let descFlat: IPdfBrick = await this.generateFlatDescription(SurveyHelper.createPoint(titleFlat));
+                    let descFlat: IPdfBrick = await this.generateFlatDescription(
+                        SurveyHelper.createPoint(titleFlat));
                     compositeFlat.addBrick(descFlat);
                 }
                 flats.push(compositeFlat);
@@ -118,7 +120,8 @@ export class FlatQuestion implements IFlatQuestion {
             case 'left': {
                 this.controller.pushMargins(this.controller.margins.left,
                     this.controller.paperWidth - this.controller.margins.left -
-                    SurveyHelper.getPageAvailableWidth(this.controller) * SurveyHelper.MULTIPLETEXT_TEXT_PERS);
+                        SurveyHelper.getPageAvailableWidth(this.controller) *
+                            SurveyHelper.MULTIPLETEXT_TEXT_PERS);
                 let titleFlat: IPdfBrick = await this.generateFlatTitle(indentPoint);
                 let compositeFlat: CompositeBrick = new CompositeBrick(titleFlat);
                 let contentPoint: IPoint = SurveyHelper.createPoint(titleFlat, false, true);

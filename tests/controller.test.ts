@@ -1,8 +1,9 @@
 (<any>window)['HTMLCanvasElement'].prototype.getContext = () => {
     return {};
 };
+
 import { DocController } from '../src/doc_controller';
-test('check font size ', () => {
+test('Check font size ', () => {
     let options: any = {
         orientation: 'l',
         fontSize: 12,
@@ -18,7 +19,7 @@ test('check font size ', () => {
     const controller = new DocController(options);
     expect(controller.fontSize).toBe(12);
 });
-test('test doc width and heght with orinetaition \'l\' and \'a4\' format', () => {
+test('Check doc width and heght with orinetaition \'l\' and \'a4\' format', () => {
     let options: any = {
         orientation: 'l',
         fontSize: 12,
@@ -35,7 +36,7 @@ test('test doc width and heght with orinetaition \'l\' and \'a4\' format', () =>
     expect(controller.paperWidth).toBeCloseTo(297 * DocController.MM_TO_PT);
     expect(controller.paperHeight).toBeCloseTo(210 * DocController.MM_TO_PT);
 });
-test('test doc width and heght with orinetaition \'l\' and array format', () => {
+test('Check doc width and heght with orinetaition \'l\' and array format', () => {
     let options: any = {
         fontSize: 12,
         orientation: 'l',
@@ -55,7 +56,7 @@ test('test doc width and heght with orinetaition \'l\' and array format', () => 
     expect(controller.paperWidth).toBeCloseTo(297 * DocController.MM_TO_PT);
     expect(controller.orientation).toBe('l');
 });
-test('test doc width and heght change with orinetaition \'p\'', () => {
+test('Check doc width and heght change with orinetaition \'p\'', () => {
     let options: any = {
         fontSize: 12,
         paperHeight: 210,
@@ -73,7 +74,7 @@ test('test doc width and heght change with orinetaition \'p\'', () => {
     expect(controller.paperHeight).toBeCloseTo(297 * DocController.MM_TO_PT);
     expect(controller.paperWidth).toBeCloseTo(210 * DocController.MM_TO_PT);
 });
-test('test doc width and heght change with orinetaition \'l\'', () => {
+test('Check doc width and heght change with orinetaition \'l\'', () => {
     let options: any = {
         fontSize: 12,
         orientation: 'l',

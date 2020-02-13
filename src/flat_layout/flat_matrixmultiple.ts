@@ -73,22 +73,21 @@ export class FlatMatrixMultiple extends FlatQuestion {
         return composite;
     }
     private calculateColumnWidth(rows: QuestionMatrixDropdownRenderedRow[], colCount: number): number[] {
-        let availableWidth: number = SurveyHelper.getPageAvailableWidth(this.controller);
+        let availableWidth: number = SurveyHelper.getPageAvailableWidth(this.controller) -
+            (colCount - 1) * this.controller.unitWidth * SurveyHelper.GAP_BETWEEN_COLUMNS;
         let remainWidth: number = availableWidth;
         let remainColCount: number = colCount;
         let columnWidth: number[] = [];
-        for (let i: number = 0; i < rows[0].cells.length; i++) {
-            let width: number = SurveyHelper.parseWidth(rows[0].cells[0].width, availableWidth) || 0.0;
+        for (let i: number = 0; i < colCount; i++) {
+            let width: number = SurveyHelper.parseWidth(rows[0].cells[i].width, availableWidth) || 0.0;
             remainWidth -= width;
             if (width !== 0.0) remainColCount--;
             columnWidth.push(width);
         }
         if (remainColCount === 0) return columnWidth;
         let heuristicWidth: number = this.controller.measureText(SurveyHelper.MATRIX_COLUMN_WIDTH).width;
-        let remainAvalableWidth: number = remainWidth - (remainColCount - 1) *
-            this.controller.unitWidth * SurveyHelper.GAP_BETWEEN_COLUMNS;
-        let columnMinWidth: number = SurveyHelper.parseWidth(rows[0].cells[0].minWidth, remainAvalableWidth) || 0.0;
-        let equalWidth: number = remainAvalableWidth / remainColCount;
+        let columnMinWidth: number = SurveyHelper.parseWidth(rows[0].cells[0].minWidth, remainWidth) || 0.0;
+        let equalWidth: number = remainWidth / remainColCount;
         let width: number = Math.max(heuristicWidth, columnMinWidth, equalWidth);
         for (let i: number = 0; i < columnWidth.length; i++) {
             if (columnWidth[i] === 0.0) columnWidth[i] = width;

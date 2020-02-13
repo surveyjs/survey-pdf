@@ -6,6 +6,7 @@ import { SurveyPDF } from '../src/survey';
 import { IRect, ISize, IDocOptions, DocOptions, DocController } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { FlatDropdown } from '../src/flat_layout/flat_dropdown';
+import { FlatMatrixMultiple} from '../src/flat_layout/flat_matrixmultiple';
 import { FlatMatrixDynamic } from '../src/flat_layout/flat_matrixdynamic';
 import { FlatExpression } from '../src/flat_layout/flat_expression';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
@@ -533,45 +534,71 @@ test('Check matrixdynamic with totals', async () => {
     };
     TestHelper.equalRect(expect, SurveyHelper.mergeRects(...flats[0]), assumeMatrix);
 });
-test.skip('Check matrix dynamic column width', async () => {
+test('Check matrix dynamic column width', async () => {
     let json: any = {
         elements: [
             {
                 type: 'matrixdynamic',
                 name: 'madincolwidth',
                 titleLocation: 'hidden',
-                width: '50%',
                 columns: [
                     {
                         name: 'One',
-                        width: '300pt'
+                        width: '25%'
                     },
                     {
                         name: 'Two'
-                    },
-                    {
-                        name: 'Three'
                     }
                 ],
-                columnMinWidth: '200pt',
-                rowCount: 0
+                rowCount: 1
             }
         ]
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    //expect(flats.length).toBe(1);
-    //expect(flats[0].length).toBe(1);
-    let unfoldFlats: IPdfBrick[] = flats[0][0].unfold();
-    //expect(unfoldFlats.length).toBe(1);
+    expect(flats.length).toBe(1);
+    expect(flats[0].length).toBe(2);
+    let headerFlats: IPdfBrick[] = flats[0][0].unfold();
+    expect(headerFlats.length).toBe(3);
     controller.margins.left += controller.unitWidth;
-    let size: ISize = controller.measureText(json.elements[0].columns[0].name, 'bold');
-    let assumeMatrix: IRect = {
+    let textSize1: ISize = controller.measureText(json.elements[0].columns[0].name, 'bold');
+    let assumeText1: IRect = {
         xLeft: controller.leftTopPoint.xLeft,
-        xRight: controller.leftTopPoint.xLeft + size.width,
+        xRight: controller.leftTopPoint.xLeft + textSize1.width,
         yTop: controller.leftTopPoint.yTop,
-        yBot: controller.leftTopPoint.yTop + size.height
+        yBot: controller.leftTopPoint.yTop + textSize1.height
     };
-    TestHelper.equalRect(expect, unfoldFlats[0], assumeMatrix);
+    TestHelper.equalRect(expect, headerFlats[0], assumeText1);
+    let colTextSize2: ISize = controller.measureText(json.elements[0].columns[1].name, 'bold');
+    let availableWidth: number = controller.paperWidth - controller.margins.left -
+        controller.margins.right - SurveyHelper.GAP_BETWEEN_COLUMNS * controller.unitWidth;
+    let assumeText2: IRect = {
+        xLeft: controller.leftTopPoint.xLeft + availableWidth * 0.25 +
+            SurveyHelper.GAP_BETWEEN_COLUMNS * controller.unitWidth,
+        xRight: controller.leftTopPoint.xLeft + availableWidth * 0.25 + colTextSize2.width +
+        SurveyHelper.GAP_BETWEEN_COLUMNS * controller.unitWidth,
+        yTop: controller.leftTopPoint.yTop,
+        yBot: controller.leftTopPoint.yTop + colTextSize2.height
+    };
+    TestHelper.equalRect(expect, headerFlats[1], assumeText2);
+    let rowFlats: IPdfBrick[] = flats[0][1].unfold();
+    expect(rowFlats.length).toBe(2);
+    let assumeDrop1: IRect = {
+        xLeft: controller.leftTopPoint.xLeft,
+        xRight: controller.leftTopPoint.xLeft + availableWidth * 0.25,
+        yTop: headerFlats[2].yBot +
+            FlatMatrixMultiple.GAP_BETWEEN_ROWS * controller.unitHeight,
+        yBot: controller.unitHeight + headerFlats[2].yBot +
+            FlatMatrixMultiple.GAP_BETWEEN_ROWS * controller.unitHeight
+    };
+    TestHelper.equalRect(expect, rowFlats[0], assumeDrop1);
+    let assumeDrop2: IRect = {
+        xLeft: assumeDrop1.xRight + SurveyHelper.GAP_BETWEEN_COLUMNS * controller.unitWidth,
+        xRight: assumeDrop1.xRight + SurveyHelper.GAP_BETWEEN_COLUMNS *
+            controller.unitWidth + availableWidth * 0.75,
+        yTop: assumeDrop1.yTop,
+        yBot: assumeDrop1.yBot
+    };
+    TestHelper.equalRect(expect, rowFlats[1], assumeDrop2);
 });
