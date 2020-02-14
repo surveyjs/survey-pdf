@@ -4,13 +4,13 @@ SurveyJS PDF exporter library is easy way to render [SurveyJS Library](https://s
 
 ### Features
 
-* Render all SurveyJS questions (textboxes, checkboxes, dropdowns, etc.) with results
-* Support of SurveyJS widgets and your own custom adorners
-* Generate PDF interactive forms which can be filled inside the PDF document
-* Automatic splitting into separate pages without cuts inside the questions
-* Customizable font and sizes of page and markdown text
-* Ability to draw header and footer with logo and company information
-* API to save PDF on disk or get PDF file via raw string
+- Render all SurveyJS questions (textboxes, checkboxes, dropdowns, etc.) with results
+- Support of SurveyJS widgets and your own custom adorners
+- Generate PDF interactive forms which can be filled inside the PDF document
+- Automatic splitting into separate pages without cuts inside the questions
+- Customizable font and sizes of page and markdown text
+- Ability to draw header and footer with logo and company information
+- API to save PDF on disk or get PDF file via raw string
 
 ### Screenshots
 
@@ -18,8 +18,9 @@ SurveyJS PDF exporter library is easy way to render [SurveyJS Library](https://s
 ![SurveyJS PDF Exporter example page 2](https://github.com/surveyjs/surveyjs/blob/master/docs/images/survey-pdf-page-2.png?raw=true)
 
 ### Usage (modern ES, modules)
+
 ```javascript
-import * as SurveyPDF from 'survey-pdf';
+import * as SurveyPDF from "survey-pdf";
 ```
 
 ### Usage (ES5, scripts)
@@ -48,13 +49,13 @@ Example of export SurveyJS library JSON to PDF
 
 ```javascript
 var options = {
-    fontSize: 14,
-    margins: {
-        left: 10,
-        right: 10,	
-        top: 18,	
-        bot: 10
-    }
+  fontSize: 14,
+  margins: {
+    left: 10,
+    right: 10,
+    top: 18,
+    bot: 10
+  }
 };
 //json is same as for SurveyJS Library
 var surveyPDF = new SurveyPDF.SurveyPDF(json, options);
@@ -68,31 +69,33 @@ surveyPDF.onTextMarkdown.add(function(survey, options) {
     options.html = str;
 });*/
 
-surveyPDF.onRenderHeader.add(function (_, canvas) {
-    canvas.drawText({
-        text: 'SurveyJS PDF | For non-commercial use only | https://surveyjs.io/Home/Licenses#PdfExport',
-        fontSize: 10
-    });
+surveyPDF.onRenderHeader.add(function(_, canvas) {
+  canvas.drawText({
+    text:
+      "SurveyJS PDF | Please purchase a SurveyJS PDF developer license to use it in your app | https://surveyjs.io/Buy",
+    fontSize: 10
+  });
 });
 surveyPDF.save();
 ```
+
 ### Examples
 
-* [es5 style example](https://surveyjs.io/Examples/Pdf-Export)
-* [angular-cli](https://codesandbox.io/s/survey-pdf-angular-example-xpev7)
+- [es5 style example](https://surveyjs.io/Examples/Pdf-Export)
+- [angular-cli](https://codesandbox.io/s/survey-pdf-angular-example-xpev7)
 
 ### Constraints
 
-* No support of dynamic elements (visibleIf, buttons, validators, etc.)
-* Implied DPI 72 when set questions width 
-* Question Text input types supported: text, password, color
-* Question Radiogroup not able to set readOnly for separate items
-* Question Imagepicker imagefit is always fill
-* Question Boolean values only true and false
-* Question Html support restricted subset of html markup
-* Question File save files via RMB in Chrome only
-* Question Panel state is always expanded
-* Question Panel Dynamic mode is only list and state default
+- No support of dynamic elements (visibleIf, buttons, validators, etc.)
+- Implied DPI 72 when set questions width
+- Question Text input types supported: text, password, color
+- Question Radiogroup not able to set readOnly for separate items
+- Question Imagepicker imagefit is always fill
+- Question Boolean values only true and false
+- Question Html support restricted subset of html markup
+- Question File save files via RMB in Chrome only
+- Question Panel state is always expanded
+- Question Panel Dynamic mode is only list and state default
 
 ### License
 
