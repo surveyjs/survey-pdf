@@ -705,7 +705,12 @@ var jsPDF = window.jsPDF || require('jspdf');
             });
 
             for (var i in keys) {
-                if (Object.getOwnPropertyDescriptor(fieldObject, keys[i]).configurable === false) {
+                var propertyDescriptor = Object.getOwnPropertyDescriptor(fieldObject, keys[i]);
+                if (!propertyDescriptor) {
+                    console.warn("Property descriptor error:\nfieldObject: " +  JSON.stringify(fieldObject) + "\nkeys: " + keys + "\nindex: " + i);
+                    continue;
+                }
+                if (propertyDescriptor.configurable === false) {
                     var key = keys[i];
                     var value = fieldObject[key];
 
