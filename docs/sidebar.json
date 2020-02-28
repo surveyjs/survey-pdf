@@ -5,9 +5,22 @@
       "Title": "PDF Export Overview"
     },
     {
+      "Name": "HtmlToPdf",
+      "Title": "HTML to PDF"
+    },
+    {
       "Name": "api",
       "Title": "PDF Export API",
-      "Items": [      ]
+      "Items": [
+        {
+          "Name": "surveypdf",
+          "Title": "Survey PDF"
+        },
+        {
+          "Name": "drawcanvas",
+          "Title": "Draw Canvas"
+        }
+      ]
     }
   ]
 }
