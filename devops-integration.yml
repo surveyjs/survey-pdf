@@ -50,3 +50,14 @@ steps:
   env:
     GTTOKEN: $(GTTOKEN)
   displayName: 'Update documentation'
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(Build.Repository.LocalPath)/packages/survey-pdf'
+    targetFolder: $(Build.ArtifactStagingDirectory)/packages/survey-pdf
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'SurveyjsPDFbuild'
+    publishLocation: 'Container'
