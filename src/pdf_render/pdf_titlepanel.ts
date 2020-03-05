@@ -11,7 +11,7 @@ export class TitlePanelBrick extends TextBoldBrick {
     }
     public async renderInteractive(): Promise<void> {
         let oldFontSize = this.controller.fontSize;
-        this.controller.fontSize = oldFontSize * SurveyHelper.TITLE_PANEL_FONT_SIZE_SCALE_MAGIC;
+        this.controller.fontSize = oldFontSize * SurveyHelper.TITLE_PANEL_FONT_SIZE_SCALE;
         await super.renderInteractive();
         this.controller.fontSize = oldFontSize;
     }

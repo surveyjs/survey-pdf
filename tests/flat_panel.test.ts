@@ -94,7 +94,7 @@ test('Check panel with title', async () => {
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(2);
     let panelTitleFlat: IPdfBrick = await SurveyHelper.createTitlePanelFlat(
-        controller.leftTopPoint, null, controller, json.elements[0].title);
+        controller.leftTopPoint, controller, json.elements[0].title);
     TestHelper.equalRect(expect, flats[0][0], panelTitleFlat);
     let contentPoint: IPoint = SurveyHelper.createPoint(panelTitleFlat);
     contentPoint.yTop += FlatSurvey.PANEL_CONT_GAP_SCALE * controller.unitHeight;
@@ -124,7 +124,7 @@ test('Check panel with title and description', async () => {
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(2);
     let panelTitleFlat: IPdfBrick = await SurveyHelper.createTitlePanelFlat(
-        controller.leftTopPoint, null, controller, json.elements[0].title);
+        controller.leftTopPoint, controller, json.elements[0].title);
     let descPoint: IPoint = SurveyHelper.createPoint(panelTitleFlat);
     descPoint.yTop += FlatSurvey.PANEL_DESC_GAP_SCALE * controller.unitHeight;
     let panelDescFlat: IPdfBrick = await SurveyHelper.createDescFlat(
@@ -212,7 +212,7 @@ test('Check not rendering invisible questions', async () => {
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(2);
     let panelTitleFlat: IPdfBrick = await SurveyHelper.createTitlePanelFlat(
-        controller.leftTopPoint, null, controller, json.elements[0].title);
+        controller.leftTopPoint, controller, json.elements[0].title);
     TestHelper.equalRect(expect, flats[0][0], panelTitleFlat);
     let contentPoint: IPoint = SurveyHelper.createPoint(panelTitleFlat);
     contentPoint.yTop += FlatSurvey.PANEL_CONT_GAP_SCALE * controller.unitHeight;

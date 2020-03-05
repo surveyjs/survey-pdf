@@ -32,7 +32,7 @@ export class FlatSurvey {
             let compositeFlat: CompositeBrick = new CompositeBrick();
             if (pagePanel.title) {
                 let pagelPanelTitleFlat: IPdfBrick = await SurveyHelper.createTitlePanelFlat(
-                    currPoint, null, controller, pagePanel.locTitle);
+                    currPoint, controller, pagePanel.locTitle);
                 compositeFlat.addBrick(pagelPanelTitleFlat);
                 currPoint = SurveyHelper.createPoint(pagelPanelTitleFlat);
             }
@@ -93,11 +93,38 @@ export class FlatSurvey {
     }
     public static async generateFlats(survey: SurveyPDF, controller: DocController): Promise<IPdfBrick[][]> {
         let flats: IPdfBrick[][] = [];
-        for (let page of survey.visiblePages) {
+        if (survey.showTitle) {
+            let compositeFlat: CompositeBrick = new CompositeBrick();
+            let point: IPoint = controller.leftTopPoint;
+            if (survey.title) {
+                let surveyTitleFlat: IPdfBrick = await SurveyHelper.createTitleSurveyFlat(
+                    point, controller, survey.locTitle);
+                compositeFlat.addBrick(surveyTitleFlat);
+                point = SurveyHelper.createPoint(surveyTitleFlat);
+            }
+            if (survey.description) {
+                if (survey.title) {
+                    point.yTop += controller.unitWidth * FlatSurvey.PANEL_DESC_GAP_SCALE;
+                }
+                compositeFlat.addBrick(await SurveyHelper.createDescFlat(
+                    point, null, controller, survey.locDescription));
+            }
+            if (!compositeFlat.isEmpty) flats.push([compositeFlat]);
+        }
+        for (let i: number = 0; i < survey.visiblePages.length; i++) {
             let pageFlats: IPdfBrick[] = [];
+            let point: IPoint = controller.leftTopPoint;
+            if (i == 0 && flats.length != 0) {
+                point = SurveyHelper.createPoint(
+                    SurveyHelper.mergeRects(...flats[0]));
+                point.yTop += controller.unitHeight * FlatSurvey.PANEL_CONT_GAP_SCALE;
+            }
             pageFlats.push(...await this.generateFlatsPagePanel(
-                survey, controller, page, controller.leftTopPoint));
-            flats.push(pageFlats);
+                survey, controller, survey.visiblePages[i], point));
+            if (i == 0 && flats.length != 0) {
+                flats[0].push(...pageFlats);
+            }
+            else flats.push(pageFlats);
             this.popRowlines(flats[flats.length - 1]);
         }
         return flats;

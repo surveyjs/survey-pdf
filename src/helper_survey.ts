@@ -19,8 +19,9 @@ import { AdornersOptions } from './event_handler/adorners';
 
 export class SurveyHelper {
     public static readonly EPSILON: number = 2.2204460492503130808472633361816e-15;
-    public static readonly TITLE_PANEL_FONT_SIZE_SCALE_MAGIC: number = 1.3;
-    public static readonly DESCRIPTION_FONT_SIZE_SCALE_MAGIC: number = 2.0 / 3.0;
+    public static readonly TITLE_SURVEY_FONT_SIZE_SCALE: number = 1.7;
+    public static readonly TITLE_PANEL_FONT_SIZE_SCALE: number = 1.3;
+    public static readonly DESCRIPTION_FONT_SIZE_SCALE: number = 2.0 / 3.0;
     public static readonly RATING_MIN_WIDTH: number = 3;
     public static readonly RATING_MIN_HEIGHT: number = 2;
     public static readonly RATING_COLUMN_WIDTH: number = 5;
@@ -317,13 +318,24 @@ export class SurveyHelper {
         controller.fontSize = oldFontSize;
         return composite;
     }
-    public static async createTitlePanelFlat(point: IPoint, question: IQuestion,
-        controller: DocController, text: string | LocalizableString): Promise<IPdfBrick> {
+    public static async createTitleSurveyFlat(point: IPoint, controller: DocController,
+        text: string | LocalizableString): Promise<IPdfBrick> {
         let oldFontSize: number = controller.fontSize;
-        controller.fontSize = oldFontSize * SurveyHelper.TITLE_PANEL_FONT_SIZE_SCALE_MAGIC;
+        controller.fontSize = oldFontSize * SurveyHelper.TITLE_SURVEY_FONT_SIZE_SCALE;
         controller.fontStyle = 'bold';
         let composite: IPdfBrick = await SurveyHelper.createTextFlat(point,
-            question, controller, text, TitlePanelBrick);
+            null, controller, text, TitlePanelBrick);
+        controller.fontStyle = 'normal';
+        controller.fontSize = oldFontSize;
+        return composite;
+    }
+    public static async createTitlePanelFlat(point: IPoint, controller: DocController,
+        text: string | LocalizableString): Promise<IPdfBrick> {
+        let oldFontSize: number = controller.fontSize;
+        controller.fontSize = oldFontSize * SurveyHelper.TITLE_PANEL_FONT_SIZE_SCALE;
+        controller.fontStyle = 'bold';
+        let composite: IPdfBrick = await SurveyHelper.createTextFlat(point,
+            null, controller, text, TitlePanelBrick);
         controller.fontStyle = 'normal';
         controller.fontSize = oldFontSize;
         return composite;
@@ -331,7 +343,7 @@ export class SurveyHelper {
     public static async createDescFlat(point: IPoint, question: IQuestion,
         controller: DocController, text: string | LocalizableString): Promise<IPdfBrick> {
         let oldFontSize: number = controller.fontSize;
-        controller.fontSize = oldFontSize * SurveyHelper.DESCRIPTION_FONT_SIZE_SCALE_MAGIC;
+        controller.fontSize = oldFontSize * SurveyHelper.DESCRIPTION_FONT_SIZE_SCALE;
         let composite: IPdfBrick = await SurveyHelper.createTextFlat(
             point, question, controller, text, DescriptionBrick);
         controller.fontSize = oldFontSize;

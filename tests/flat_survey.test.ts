@@ -11,49 +11,14 @@ import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 let __dummy_tx = new FlatTextbox(null, null, null);
 
-test('Check no invisible page', async () => {
+test('Survey with title', async () => {
     let json: any = {
-        pages: [
-        {
-            name: 'VisiblePage',
-            elements: [
-                {
-                    type: 'text',
-                    name: 'VisibleQuestion'
-                }
-            ]
-        },
-        {
-            name: 'InvisiblePage',
-            elements: [
-                {
-                    type: 'text',
-                    name: 'InvisibleQuestion'
-                }
-            ],
-            visibleIf: 'false'
-         }
-        ]
-    };
-    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let controller: DocController = new DocController(TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(1);
-});
-test('Page with title', async () => {
-    let json: any = {
-        pages: [
+        title: 'One small step for man',
+        elements: [
             {
-                name: 'namedpage',
-                elements: [
-                    {
-                        type: 'text',
-                        name: 'HiddenText',
-                        titleLocation: 'hidden'
-                    }
-                ],
-                title: 'So Page'
+                type: 'text',
+                name: 'MissText',
+                titleLocation: 'hidden'
             }
         ]
     };
@@ -62,8 +27,8 @@ test('Page with title', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(2);
-    let assumeTitle: IRect = await SurveyHelper.createTitlePanelFlat(
-        controller.leftTopPoint, controller, json.pages[0].title);
+    let assumeTitle: IRect = await SurveyHelper.createTitleSurveyFlat(
+        controller.leftTopPoint, controller, json.title);
     TestHelper.equalRect(expect, flats[0][0], assumeTitle);
     let textBoxPoint: IPoint = SurveyHelper.createPoint(assumeTitle);
     textBoxPoint.yTop += controller.unitHeight * FlatSurvey.PANEL_CONT_GAP_SCALE;
@@ -71,19 +36,14 @@ test('Page with title', async () => {
     let assumeTextBox: IRect = SurveyHelper.createTextFieldRect(textBoxPoint, controller);
     TestHelper.equalRect(expect, flats[0][1], assumeTextBox);    
 });
-test('Page with description', async () => {
+test('Survey with description', async () => {
     let json: any = {
-        pages: [
+        description: 'One giant leap for mankind',
+        elements: [
             {
-                name: 'describedpage',
-                elements: [
-                    {
-                        type: 'text',
-                        name: 'HiddenText',
-                        titleLocation: 'hidden'
-                    }
-                ],
-                description: 'So few words'
+                type: 'text',
+                name: 'MissText',
+                titleLocation: 'hidden'
             }
         ]
     };
@@ -93,7 +53,7 @@ test('Page with description', async () => {
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(2);
     let assumeDescription: IRect = await SurveyHelper.createDescFlat(
-        controller.leftTopPoint, null, controller, json.pages[0].description);
+        controller.leftTopPoint, null, controller, json.description);
     TestHelper.equalRect(expect, flats[0][0], assumeDescription);
     let textBoxPoint: IPoint = SurveyHelper.createPoint(assumeDescription);
     textBoxPoint.yTop += controller.unitHeight * FlatSurvey.PANEL_CONT_GAP_SCALE;
@@ -101,20 +61,15 @@ test('Page with description', async () => {
     let assumeTextBox: IRect = SurveyHelper.createTextFieldRect(textBoxPoint, controller);
     TestHelper.equalRect(expect, flats[0][1], assumeTextBox);    
 });
-test('Page with title and description', async () => {
+test('Survey with title and description', async () => {
     let json: any = {
-        pages: [
+        title: 'One small step for man',
+        description: 'One giant leap for mankind',
+        elements: [
             {
-                name: 'songedpage',
-                elements: [
-                    {
-                        type: 'text',
-                        name: 'HiddenText',
-                        titleLocation: 'hidden'
-                    }
-                ],
-                title: 'The sun rises',
-                description: 'Over the Huanghe river'
+                type: 'text',
+                name: 'MissText',
+                titleLocation: 'hidden'
             }
         ]
     };
@@ -123,12 +78,12 @@ test('Page with title and description', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(2);
-    let assumeTitle: IRect = await SurveyHelper.createTitlePanelFlat(
-        controller.leftTopPoint, controller, json.pages[0].title);
+    let assumeTitle: IRect = await SurveyHelper.createTitleSurveyFlat(
+        controller.leftTopPoint, controller, json.title);
     let descriptionPoint: IPoint = SurveyHelper.createPoint(assumeTitle);
     descriptionPoint.yTop += controller.unitHeight * FlatSurvey.PANEL_DESC_GAP_SCALE;
     let assumeDescription: IRect = await SurveyHelper.createDescFlat(
-        descriptionPoint, null, controller, json.pages[0].description);
+        descriptionPoint, null, controller, json.description);
     TestHelper.equalRect(expect, flats[0][0], SurveyHelper.mergeRects(assumeTitle, assumeDescription));
     let textBoxPoint: IPoint = SurveyHelper.createPoint(assumeDescription);
     textBoxPoint.yTop += controller.unitHeight * FlatSurvey.PANEL_CONT_GAP_SCALE;
