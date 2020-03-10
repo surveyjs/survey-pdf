@@ -5,7 +5,7 @@ import { PagePacker } from './page_layout/page_packer';
 import { IPdfBrick } from './pdf_render/pdf_brick';
 import { EventAsync, EventHandler } from './event_handler/event_handler';
 import { DrawCanvas } from './event_handler/draw_canvas';
-import { AdornersOptions } from './event_handler/adorners';
+import { AdornersOptions, AdornersPanelOptions, AdornersPageOptions } from './event_handler/adorners';
 import { SurveyHelper } from './helper_survey';
 
 /**
@@ -60,6 +60,27 @@ export class SurveyPDF extends SurveyModel {
     (survey: SurveyPDF, options: AdornersOptions) => any,
     any
   > = new EventAsync<(survey: SurveyPDF, options: AdornersOptions) => any, any>();
+  /**
+   * The event in fired for every rendered question
+   * @param survey SurveyPDF object that fires the event
+   * @param options AdornersPanelOptions object that have options to custom render the panel
+   */
+  public onRenderPanel: EventAsync<
+    (survey: SurveyPDF, options: AdornersPanelOptions) => any,
+    any
+  > = new EventAsync<(survey: SurveyPDF, options: AdornersPanelOptions) => any, any>();
+  /**
+   * The event in fired for every rendered question
+   * @param survey SurveyPDF object that fires the event
+   * @param options AdornersPageOptions object that have options to custom render the page
+   */
+  public onRenderPage: EventAsync<
+    (survey: SurveyPDF, options: AdornersPageOptions) => any,
+    any
+  > = new EventAsync<(survey: SurveyPDF, options: AdornersPageOptions) => any, any>();
+
+
+
   private waitForQuestionIsReady(question: Question): Promise<void> {
     return new Promise((resolve: any) => {     
       if (question.isReady) {

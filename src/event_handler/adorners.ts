@@ -1,25 +1,57 @@
-import { IQuestion } from 'survey-core';
+import { IQuestion, IElement, PanelModel, PageModel } from 'survey-core';
 import { IPoint, DocController } from '../doc_controller';
 import { FlatRepository } from '../flat_layout/flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 
-export class AdornersOptions {
+export class AdornersBaseOptions {
     public point: IPoint;
     public bricks: IPdfBrick[];
-    public question: IQuestion; 
     public controller: DocController;
     public repository: FlatRepository;
     public module: any;
 
-    public constructor(point: IPoint, bricks: IPdfBrick[],
-        question: IQuestion, controller: DocController,
+    public constructor(point: IPoint, bricks: IPdfBrick[], controller: DocController,
         repository: FlatRepository,
         module: any) {
         this.point = point;
         this.bricks = bricks;
-        this.question = question;
         this.controller = controller;
         this.repository = repository;
         this.module = module;
     }
 }
+export class AdornersOptions extends AdornersBaseOptions {
+    public question: IQuestion; 
+
+    public constructor(point: IPoint, bricks: IPdfBrick[],
+        question: IQuestion, controller: DocController,
+        repository: FlatRepository,
+        module: any) {
+            super(point, bricks, controller, repository, module);
+            this.question = question;
+    }
+}
+export class AdornersPanelOptions extends AdornersBaseOptions {
+    public panel: PanelModel; 
+
+    public constructor(point: IPoint, bricks: IPdfBrick[],
+        panel: PanelModel, controller: DocController,
+        repository: FlatRepository,
+        module: any) {
+            super(point, bricks, controller, repository, module);
+            this.panel = panel;
+    }
+}
+
+export class AdornersPageOptions extends AdornersBaseOptions {
+    public page: PageModel; 
+
+    public constructor(point: IPoint, bricks: IPdfBrick[],
+        page: PageModel, controller: DocController,
+        repository: FlatRepository,
+        module: any) {
+            super(point, bricks, controller, repository, module);
+            this.page = page;
+    }
+}
+

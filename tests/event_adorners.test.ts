@@ -15,8 +15,9 @@ import { PagePacker } from '../src/page_layout/page_packer';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { TextBoxBrick } from '../src/pdf_render/pdf_textbox';
 import { CompositeBrick } from '../src/pdf_render/pdf_composite';
-import { AdornersOptions } from '../src/event_handler/adorners';
+import { AdornersOptions, AdornersPanelOptions, AdornersPageOptions } from '../src/event_handler/adorners';
 import { TestHelper } from '../src/helper_test';
+import { RowlineBrick } from '../src/entries/pdf';
 let __dummy_tx = new FlatTextbox(null, null, null);
 let __dummy_cb = new FlatCheckbox(null, null, null);
 let __dummy_rg = new FlatRadiogroup(null, null, null);
@@ -90,4 +91,175 @@ test('Event render questions checkbox as radiogroup', async () => {
     expect(packs[0].length).toBe(2);
     expect(packs[0][0] instanceof CompositeBrick).toBe(true);
     expect(packs[0][1] instanceof CompositeBrick).toBe(true);
+});
+test('Event render panel simple panel same bricks', async () => {
+    var json = {
+        elements: [
+            {
+                type: 'panel',
+                name: 'event_simplepanel',
+                titleLocation: "hidden",
+                elements: [ 
+                    { 
+                        type: 'text', 
+                        name: 'event_simplepaneltext',  
+                        titleLocation: "hidden" 
+                    }
+                ]
+            }
+        ]
+    };
+    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    survey.onRenderPanel.add((_, __) => { });
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
+    expect(packs.length).toBe(1);
+    expect(packs[0].length).toBe(1);
+});
+test('Event render panel simple panel add bottom description', async () => {
+    var json = {
+        elements: [
+            {
+                type: 'panel',
+                name: 'event_simplepanel',
+                titleLocation: "hidden",
+                elements: [ 
+                    { 
+                        type: 'text', 
+                        name: 'event_simplepaneltext',  
+                        titleLocation: "hidden" 
+                    }
+                ]
+            }
+        ]
+    };
+    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    survey.onRenderPanel.add(async (_, options: AdornersPanelOptions) => {
+        let point: IPoint = options.module.SurveyHelper.createPoint(
+            options.bricks[options.bricks.length - 1]);
+        let descBrick: IPdfBrick = await options.module.SurveyHelper.createDescFlat(point,
+            options.panel, options.controller, 'Some description');
+        options.bricks.push(descBrick);
+    });
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
+    expect(packs.length).toBe(1);
+    expect(packs[0].length).toBe(3);
+    expect(packs[0][0] instanceof TextBoxBrick).toBe(true);
+    expect(packs[0][1] instanceof RowlineBrick).toBe(true);
+    expect(packs[0][2] instanceof CompositeBrick).toBe(true);
+});
+test('Event render panel simple panel same bricks', async () => {
+    var json = {
+        elements: [
+            {
+                type: 'panel',
+                name: 'event_simplepanel',
+                titleLocation: "hidden",
+                elements: [ 
+                    { 
+                        type: 'text', 
+                        name: 'event_simplepaneltext',  
+                        titleLocation: "hidden" 
+                    }
+                ]
+            }
+        ]
+    };
+    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    survey.onRenderPanel.add((_, __) => { });
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
+    expect(packs.length).toBe(1);
+    expect(packs[0].length).toBe(1);
+});
+test('Event render panel simple panel add bottom description', async () => {
+    var json = {
+        elements: [
+            {
+                type: 'panel',
+                name: 'event_simplepanel',
+                titleLocation: "hidden",
+                elements: [ 
+                    { 
+                        type: 'text', 
+                        name: 'event_simplepaneltext',  
+                        titleLocation: "hidden" 
+                    }
+                ]
+            }
+        ]
+    };
+    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    survey.onRenderPanel.add(async (_, options: AdornersPanelOptions) => {
+        let point: IPoint = options.module.SurveyHelper.createPoint(
+            options.bricks[options.bricks.length - 1]);
+        let descBrick: IPdfBrick = await options.module.SurveyHelper.createDescFlat(point,
+            options.panel, options.controller, 'Some description');
+        options.bricks.push(descBrick);
+    });
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
+    expect(packs.length).toBe(1);
+    expect(packs[0].length).toBe(3);
+    expect(packs[0][0] instanceof TextBoxBrick).toBe(true);
+    expect(packs[0][1] instanceof RowlineBrick).toBe(true);
+    expect(packs[0][2] instanceof CompositeBrick).toBe(true);
+});
+test('Event render page simple page same bricks', async () => {
+    var json = {
+        pages: [
+            {
+                elements: [ 
+                    { 
+                        type: 'text', 
+                        name: 'event_simplepagetext',  
+                        titleLocation: "hidden" 
+                    }
+                ]
+            }
+        ]
+    };
+    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    survey.onRenderPage.add((_, __) => { });
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
+    expect(packs.length).toBe(1);
+    expect(packs[0].length).toBe(1);
+});
+test('Event render page simple page add bottom description', async () => {
+    var json = {
+        pages: [
+            {
+                elements: [ 
+                    { 
+                        type: 'text', 
+                        name: 'event_simplepagetext',  
+                        titleLocation: "hidden" 
+                    }
+                ]
+            }
+        ]
+    };
+    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    survey.onRenderPage.add(async (_, options: AdornersPageOptions) => {
+        let point: IPoint = options.module.SurveyHelper.createPoint(
+            options.bricks[options.bricks.length - 1]);
+        let descBrick: IPdfBrick = await options.module.SurveyHelper.createDescFlat(point,
+            options.page, options.controller, 'Some description');
+        options.bricks.push(descBrick);
+    });
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
+    expect(packs.length).toBe(1);
+    expect(packs[0].length).toBe(3);
+    expect(packs[0][0] instanceof TextBoxBrick).toBe(true);
+    expect(packs[0][1] instanceof RowlineBrick).toBe(true);
+    expect(packs[0][2] instanceof CompositeBrick).toBe(true);
 });
