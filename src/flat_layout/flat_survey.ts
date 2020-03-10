@@ -6,8 +6,8 @@ import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { RowlineBrick } from '../pdf_render/pdf_rowline';
 import { SurveyHelper } from '../helper_survey';
 import { AdornersPanelOptions, AdornersPageOptions } from '../event_handler/adorners';
-import  { FlatRepository }  from '../entries/pdf';
-import  * as SurveyPDFModule from '../entries/pdf';
+import { FlatRepository } from '../entries/pdf';
+import * as SurveyPDFModule from '../entries/pdf';
 
 export class FlatSurvey {
     public static readonly QUES_GAP_VERT_SCALE: number = 1.5;

@@ -61,7 +61,7 @@ export class SurveyPDF extends SurveyModel {
     any
   > = new EventAsync<(survey: SurveyPDF, options: AdornersOptions) => any, any>();
   /**
-   * The event in fired for every rendered question
+   * The event in fired for every rendered panel
    * @param survey SurveyPDF object that fires the event
    * @param options AdornersPanelOptions object that have options to custom render the panel
    */
@@ -70,7 +70,7 @@ export class SurveyPDF extends SurveyModel {
     any
   > = new EventAsync<(survey: SurveyPDF, options: AdornersPanelOptions) => any, any>();
   /**
-   * The event in fired for every rendered question
+   * The event in fired for every rendered page
    * @param survey SurveyPDF object that fires the event
    * @param options AdornersPageOptions object that have options to custom render the page
    */
