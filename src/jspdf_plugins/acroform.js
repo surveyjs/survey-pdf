@@ -222,7 +222,8 @@ var jsPDF = window.jsPDF || require('jspdf');
             fontSize--;
             var textHeight = calculateFontSpace("3", formObject, fontSize).height;
             var startY = (formObject.multiline) ? height - fontSize : (height - textHeight) / 2;
-            startY += lineSpacing;
+            var topPadding = 0.27;
+            startY += lineSpacing * topPadding;
             var startX;
 
             var lastY = startY;
