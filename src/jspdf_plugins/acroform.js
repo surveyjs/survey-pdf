@@ -707,14 +707,9 @@ var jsPDF = window.jsPDF || require('jspdf');
 
             for (var i in keys) {
                 var propertyDescriptor = Object.getOwnPropertyDescriptor(fieldObject, keys[i]);
-                if (!propertyDescriptor) {
-                    console.warn("Property descriptor error:\nfieldObject: " +  JSON.stringify(fieldObject) + "\nkeys: " + keys + "\nindex: " + i);
-                    continue;
-                }
-                if (propertyDescriptor.configurable === false) {
+                if (propertyDescriptor && propertyDescriptor.configurable === false) {
                     var key = keys[i];
                     var value = fieldObject[key];
-
                     if (value) {
                         if (Array.isArray(value)) {
                             keyValueList.push({ key: key, value: arrayToPdfArray(value) });
