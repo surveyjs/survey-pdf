@@ -38,7 +38,7 @@ Add these scripts to your web page
 <!-- Uncomment next line to add html and markdown text support -->
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/showdown/1.6.4/showdown.min.js"></script> -->
 <!-- Uncomment next line to add IE11 support -->
-<!-- <script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script> -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/promise-polyfill@8/dist/polyfill.min.js"></script> -->
 ```
 
 Also you may load any of SurveyJS with framework scripts without loading SurveyJS Core. Look at simple package dependency diagram
