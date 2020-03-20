@@ -25,6 +25,14 @@ export class FlatFile extends FlatQuestion {
             point, this.question, this.controller, item.name, item.content));
         if (this.question.canPreviewImage(item)) {
             let imageSize: ISize = await SurveyHelper.getImageSize(item.content);
+            if (this.question.imageWidth) {
+                imageSize.width = SurveyHelper.parseWidth(this.question.imageWidth,
+                    SurveyHelper.getPageAvailableWidth(this.controller));
+            }
+            if (this.question.imageHeight) {
+                imageSize.height = SurveyHelper.parseWidth(this.question.imageHeight,
+                    SurveyHelper.getPageAvailableWidth(this.controller));
+            }
             let imagePoint: IPoint = SurveyHelper.createPoint(compositeFlat);
             imagePoint.yTop += this.controller.unitHeight *
                 FlatFile.IMAGE_GAP_SCALE;
