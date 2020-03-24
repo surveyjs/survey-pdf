@@ -271,7 +271,7 @@ export class SurveyHelper {
         let oldFontSize: number = controller.fontSize;
         controller.fontSize *= SurveyHelper.TITLE_FONT_SCALE;
         if (question.no) {
-            let noText: string = question.no + '. ';
+            let noText: string = question.no + ' ';
             let noFlat: IPdfBrick;
             if (question.locTitle.hasHtml) {
                 controller.fontStyle = 'bold';
