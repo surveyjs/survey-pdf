@@ -59,8 +59,12 @@ steps:
 - script: |
     cd $(Build.SourcesDirectory)/survey-pdf
     npm run build_prod
+  displayName: 'build'
+
+- script: |
+    cd $(Build.SourcesDirectory)/survey-pdf
     npm test
-  displayName: 'npm build and test'
+  displayName: 'unit tests'
 
 - script: |
     cd $(Build.SourcesDirectory)/survey-pdf
@@ -87,6 +91,7 @@ steps:
     git fetch --tags --force
     git add surveyjs.io/App_Data/DocsPdf
     git commit -m "[skip ci] Updated survey-pdf docs"
+    git pull origin master
     git push origin master
   displayName: 'git surveyjs/service push updated docs'
 
