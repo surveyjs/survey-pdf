@@ -9,7 +9,7 @@ import { TestHelper } from '../src/helper_test';
 let __dummy_dd = new FlatDropdown(null, null, null);
 
 test('Check dropdown readonly', async () => {
-	let json = {
+	let json: any = {
 		questions: [
 			{
 				name: 'dropdown_readonly',
@@ -31,7 +31,7 @@ test('Check dropdown readonly', async () => {
     expect(lastPage[lastPage.length - 1].includes(json.questions[0].choices[0])).toBe(true);
 });
 test('Dropdown MK appearence fix', async () => {
-	let json = {
+	let json: any = {
 		questions: [
 			{
 				name: 'dropdown_mkfix',
@@ -47,7 +47,7 @@ test('Dropdown MK appearence fix', async () => {
 	    acroFormDictionaryRoot.Fields[0].MK).toBe('<< /BG [ 0.975 0.975 0.975 ]  >>');
 });
 test('Dropdown display value', async () => {
-	let json = {
+	let json: any = {
 		questions: [
 			{
 				name: 'dropdown_displayvalue',

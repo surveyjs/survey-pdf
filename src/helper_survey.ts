@@ -39,6 +39,8 @@ export class SurveyHelper {
     public static readonly UNVISIBLE_BORDER_SCALE: number = 0.2;
     public static readonly RADIUS_SCALE: number = 3;
     public static readonly TITLE_FONT_SCALE: number = 1.1;
+    public static readonly VALUE_READONLY_VERT_SCALE: number = 0.63;
+    public static readonly VALUE_READONLY_HOR_SCALE: number = 0.3;
     public static readonly FORM_BORDER_COLOR: string = '#9f9f9f';
     public static readonly TEXT_COLOR: string = '#404040';
     public static readonly BACKGROUND_COLOR: string = '#FFFFFF';
@@ -515,6 +517,27 @@ export class SurveyHelper {
         }
         await survey.onRenderQuestion.fire(survey, adornersOptions);
         return [...adornersOptions.bricks];
+    }
+    public static async renderReadOnlyTextField(controller: DocController,
+        question: Question, flat: PdfBrick, value: string) {
+        SurveyHelper.wrapFlatInBorders(controller, flat);
+        let oldFontSize = controller.fontSize;
+        controller.fontSize = oldFontSize *
+            SurveyHelper.VALUE_READONLY_VERT_SCALE;
+        let point: IPoint = SurveyHelper.createPoint(flat, true, true);
+        point.yTop += flat.height *
+            (1.0 - SurveyHelper.VALUE_READONLY_VERT_SCALE) / 2.0;
+        let horIndent: number = controller.unitWidth *
+            SurveyHelper.VALUE_READONLY_HOR_SCALE;
+        controller.pushMargins(flat.xLeft + horIndent,
+            controller.margins.right + horIndent);
+        point.xLeft += horIndent;
+        let composite: CompositeBrick = SurveyHelper.createPlainTextFlat(
+            point, question, controller, value, TextBrick);
+        let firstLine: IPdfBrick = composite.unfold()[0];
+        await firstLine.render();
+        controller.popMargins();
+        controller.fontSize = oldFontSize;
     }
     public static isCustomFont(controller: DocController, fontName: string) {
         return controller.doc.internal.getFont(fontName).encoding === SurveyHelper.CUSTOM_FONT_ENCODING;

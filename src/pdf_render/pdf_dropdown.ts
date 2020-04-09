@@ -1,13 +1,9 @@
 import { IQuestion, QuestionDropdownModel, ItemValue } from 'survey-core';
-import { IPoint, IRect, DocController } from '../doc_controller';
-import { PdfBrick, IPdfBrick } from './pdf_brick';
-import { TextBrick } from './pdf_text';
-import { CompositeBrick } from './pdf_composite';
+import { IRect, DocController } from '../doc_controller';
+import { PdfBrick,  } from './pdf_brick';
 import { SurveyHelper } from '../helper_survey';
 
 export class DropdownBrick extends PdfBrick {
-    private static readonly VALUE_READONLY_VERT_SCALE: number = 0.63;
-    private static readonly VALUE_READONLY_HOR_SCALE: number = 0.3;
     protected question: QuestionDropdownModel;
     protected isQuestion: boolean;
     protected isMultiline: boolean;
@@ -53,23 +49,7 @@ export class DropdownBrick extends PdfBrick {
         SurveyHelper.wrapFlatInBorders(this.controller, this);
     }
     public async renderReadOnly(): Promise<void> {
-        SurveyHelper.wrapFlatInBorders(this.controller, this);
-        let oldFontSize = this.controller.fontSize;
-        this.controller.fontSize = oldFontSize *
-            DropdownBrick.VALUE_READONLY_VERT_SCALE;
-        let point: IPoint = SurveyHelper.createPoint(this, true, true);
-        point.yTop += this.height *
-            (1.0 - DropdownBrick.VALUE_READONLY_VERT_SCALE) / 2.0;
-        let horIndent: number = this.controller.unitWidth *
-            DropdownBrick.VALUE_READONLY_HOR_SCALE;
-        this.controller.pushMargins(this.xLeft + horIndent,
-            this.controller.margins.right + horIndent);
-        point.xLeft += horIndent;
-        let composite: CompositeBrick = SurveyHelper.createPlainTextFlat(
-            point, this.question, this.controller, this.getValue(), TextBrick);
-        let firstLine: IPdfBrick = composite.unfold()[0];
-        await firstLine.render();
-        this.controller.popMargins();
-        this.controller.fontSize = oldFontSize;
+        SurveyHelper.renderReadOnlyTextField(this.controller,
+            this.question, this, this.getValue());
     }
 }

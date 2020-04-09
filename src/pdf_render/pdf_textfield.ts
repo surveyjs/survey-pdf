@@ -43,4 +43,8 @@ export class TextFieldBrick extends PdfBrick {
         this.controller.doc.addField(inputField);
         SurveyHelper.wrapFlatInBorders(this.controller, this);
     }
+    public async renderReadOnly(): Promise<void> {
+        SurveyHelper.renderReadOnlyTextField(this.controller,
+            this.question, this, this.value);
+    }
 }
