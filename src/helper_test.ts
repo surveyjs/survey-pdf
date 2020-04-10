@@ -62,7 +62,7 @@ export class TestHelper {
         expect(point1.yTop).toBeCloseTo(point2.yTop);
     }
     public static getTitleText(question: Question): string {
-        return (question.no != '' ? question.no + '. ' : '') +
+        return (question.no != '' ? question.no + ' ' : '') +
             SurveyHelper.getLocString(question.locTitle) +
             (question.isRequired ? question.requiredText : '');
     }
