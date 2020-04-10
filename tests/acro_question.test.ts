@@ -97,8 +97,7 @@ test('Check comment readonly', async () => {
   let controller: DocController = new DocController(TestHelper.defaultOptions);
   await survey['render'](controller);
   let internal = controller.doc.internal;
-  let textField = internal.acroformPlugin.acroFormDictionaryRoot.Fields[0]
-  expect(textField.readOnly).toBe(true);
+  expect(internal.acroformPlugin).toBe(undefined);
 });
 test('Check empty question', async () => {
   let json: any = {

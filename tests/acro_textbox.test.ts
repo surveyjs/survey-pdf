@@ -17,15 +17,20 @@ async function checkTextboxValue(json: any, tobe: string,
       survey.data = data;
     }
     let controller: DocController = new DocController(TestHelper.defaultOptions);
-  	await survey['render'](controller);
-    expect(controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields[0].value)
-		.toBe(tobe);
-	if (tobeDef != null) {
-		expect(controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields[0].defaultValue)
-        	.toBe(tobeDef);
+	await survey['render'](controller);
+	if (readOnly) {
+		expect(controller.doc.internal.acroformPlugin).toBe(undefined);
+	}  
+	else {
+		expect(controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields[0].value)
+			.toBe(tobe);
+		if (tobeDef != null) {
+			expect(controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields[0].defaultValue)
+				.toBe(tobeDef);
+		}
+		expect(controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields[0].readOnly)
+			.toBe(readOnly);
 	}
-	expect(controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields[0].readOnly)
-		.toBe(readOnly);
 }
 test('Set textbox no value', async () => {
     let json: any = { questions: [ {
@@ -157,14 +162,13 @@ test('Set textbox data with defaultValue and placeHolder', async () => {
 });
 test('Check not readOnly textbox', async () => {
 	let json: any = { questions: [ {
-		name: 'readtext',
+		name: 'readnottext',
 		type: 'text',
 		title: 'Write also'
 		}]
 	};
 	await checkTextboxValue(json, ' ', null, ' ', false);
 });
-
 test('Check readOnly textbox', async () => {
 	let json: any = { questions: [ {
 		name: 'readtext',

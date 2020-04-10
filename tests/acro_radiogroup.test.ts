@@ -12,7 +12,6 @@ test('Has other radiogroup', async () => {
         showQuestionNumbers: 'false',
         questions: [
             {
-                readOnly: true,
                 name: 'radiogroup_hasother',
                 type: 'radiogroup',
                 hasOther: true,

@@ -508,7 +508,7 @@ test('Check title with number next raw position', async () => {
                 isRequired: false
             }
         ]
-    }
+    };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
