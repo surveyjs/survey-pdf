@@ -61,6 +61,7 @@ export class FlatImagePicker extends FlatQuestion {
             let currMarginLeft: number = this.controller.margins.left;
             for (let j: number = 0; j < cols; j++) {
                 let index: number = i * cols + j;
+                if (index == count) break;
                 this.controller.margins.left = currMarginLeft;
                 this.controller.margins.right = this.controller.paperWidth -
                     currMarginLeft - colWidth;
