@@ -9,6 +9,7 @@ export { FlatRadiogroup } from '../flat_layout/flat_radiogroup';
 export { FlatDropdown } from '../flat_layout/flat_dropdown';
 export { FlatComment } from '../flat_layout/flat_comment';
 export { FlatRating } from '../flat_layout/flat_rating';
+export { FlatImage } from '../flat_layout/flat_image';
 export { FlatImagePicker } from '../flat_layout/flat_imagepicker';
 export { FlatBoolean } from '../flat_layout/flat_boolean';
 export { FlatHTML } from '../flat_layout/flat_html';

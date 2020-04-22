@@ -12,7 +12,7 @@ import { TestHelper } from '../src/helper_test';
 let __dummy_ip = new FlatImagePicker(null, null, null);
 
 test('Check imagepicker one image 100x100px', async () => {
-    let json = {
+    let json: any = {
         elements: [
             {
                 type: 'imagepicker',
@@ -45,7 +45,7 @@ test('Check imagepicker one image 100x100px', async () => {
     TestHelper.equalRect(expect, flats[0][0], assumeimagePicker);
 });
 test('Check imagepicker one image 100x100px with label', async () => {
-    let json = {
+    let json: any = {
         elements: [
             {
                 type: 'imagepicker',
