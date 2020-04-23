@@ -369,6 +369,8 @@ test('Check questions width with startWithNewLine: false property', async () => 
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     let resultFlats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    expect(resultFlats.length).toBe(1);
+    expect(resultFlats[0].length).toBe(3);
     let currPoint: IPoint = controller.leftTopPoint;
     let width: number = SurveyHelper.getPageAvailableWidth(controller) - 2.0 * controller.unitWidth;
     let assumeFlats: IRect[] = [];
