@@ -341,8 +341,8 @@ test('Check adding new page for lack of place before new page', async () => {
     TestHelper.equalRect(expect, flats[0][2], SurveyHelper.moveRect(packs[1][0], undefined, 0));
     TestHelper.equalRect(expect, flats[0][2], SurveyHelper.moveRect(packs[1][0], undefined, 0));
     TestHelper.equalRect(expect, flats[1][0], packs[2][0]);
-})
-test('Check questions width with startWitdthNewLine: false property', async () => {
+});
+test('Check questions width with startWithNewLine: false property', async () => {
     let json: any = {
         questions: [
             {
@@ -382,4 +382,4 @@ test('Check questions width with startWitdthNewLine: false property', async () =
     controller.margins.left = currPoint.xLeft;
     assumeFlats.push(SurveyHelper.createRect(currPoint, 1.0 / 3.0 * width - controller.unitWidth, controller.unitHeight));
     TestHelper.equalRects(expect, resultFlats[0], assumeFlats);
-})
+});
