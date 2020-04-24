@@ -66,7 +66,8 @@ export class FlatSurvey {
                 let element: IElement = row.visibleElements[i];
                 if (!element.isVisible) continue;
                 let persWidth: number = SurveyHelper.parseWidth(element.renderWidth,
-                    width - (row.visibleElements.length - 1) * controller.unitWidth);
+                    width - (row.visibleElements.length - 1) * controller.unitWidth,
+                    row.visibleElements.length);
                 controller.margins.left = nextMarginLeft + ((i !== 0) ? controller.unitWidth : 0);
                 controller.margins.right = controller.paperWidth - controller.margins.left - persWidth;
                 currPoint.xLeft = controller.margins.left;

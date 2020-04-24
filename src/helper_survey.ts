@@ -48,7 +48,11 @@ export class SurveyHelper {
     public static readonly STANDARD_FONT: string = 'helvetica';
     public static readonly CUSTOM_FONT_ENCODING: string = 'Identity-H';
 
-    public static parseWidth(width: string, maxWidth: number): number {
+    public static parseWidth(width: string, maxWidth: number,
+        columnsCount: number = 1): number {
+        if (width.indexOf('calc') === 0) {
+            return maxWidth / columnsCount;
+        }
         let value: number = parseFloat(width);
         let unit: string = width.replace(/[^A-Za-z]/g, '');
         let k: number;

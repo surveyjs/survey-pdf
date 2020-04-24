@@ -79,14 +79,16 @@ export class FlatMatrixMultiple extends FlatQuestion {
         let remainColCount: number = colCount;
         let columnWidth: number[] = [];
         for (let i: number = 0; i < colCount; i++) {
-            let width: number = SurveyHelper.parseWidth(rows[0].cells[i].width, availableWidth) || 0.0;
+            let width: number = SurveyHelper.parseWidth(rows[0].cells[i].width,
+                availableWidth, colCount) || 0.0;
             remainWidth -= width;
             if (width !== 0.0) remainColCount--;
             columnWidth.push(width);
         }
         if (remainColCount === 0) return columnWidth;
         let heuristicWidth: number = this.controller.measureText(SurveyHelper.MATRIX_COLUMN_WIDTH).width;
-        let columnMinWidth: number = SurveyHelper.parseWidth(rows[0].cells[0].minWidth, remainWidth) || 0.0;
+        let columnMinWidth: number = SurveyHelper.parseWidth(
+            rows[0].cells[0].minWidth, remainWidth, colCount) || 0.0;
         let equalWidth: number = remainWidth / remainColCount;
         let width: number = Math.max(heuristicWidth, columnMinWidth, equalWidth);
         for (let i: number = 0; i < columnWidth.length; i++) {
