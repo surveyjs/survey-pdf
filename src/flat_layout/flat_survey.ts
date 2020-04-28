@@ -98,11 +98,10 @@ export class FlatSurvey {
             flats.pop();
         }
     }
-    public static async generateFlats(survey: SurveyPDF, controller: DocController): Promise<IPdfBrick[][]> {
-        let flats: IPdfBrick[][] = [];
+    private static async generateFlatTitle(survey: SurveyPDF, controller: DocController,
+        point: IPoint): Promise<CompositeBrick> {
+        let compositeFlat: CompositeBrick = new CompositeBrick();
         if (survey.showTitle) {
-            let compositeFlat: CompositeBrick = new CompositeBrick();
-            let point: IPoint = controller.leftTopPoint;
             if (survey.title) {
                 let surveyTitleFlat: IPdfBrick = await SurveyHelper.createTitleSurveyFlat(
                     point, controller, survey.locTitle);
@@ -116,7 +115,60 @@ export class FlatSurvey {
                 compositeFlat.addBrick(await SurveyHelper.createDescFlat(
                     point, null, controller, survey.locDescription));
             }
-            if (!compositeFlat.isEmpty) flats.push([compositeFlat]);
+        }
+        return compositeFlat;
+    }
+    private static async generateFlatLogoImage(point: IPoint): Promise<IPdfBrick> {
+        return null;
+    }
+    public static async generateFlats(survey: SurveyPDF, controller: DocController): Promise<IPdfBrick[][]> {
+        let flats: IPdfBrick[][] = [];
+        if (!survey.hasLogo) {
+            let titleFlat: CompositeBrick = await this.generateFlatTitle(
+                survey, controller, controller.leftTopPoint);
+            if (!titleFlat.isEmpty) flats.push([titleFlat]);
+        }
+        else if (survey.isLogoBefore) {
+            let logoFlat: IPdfBrick = await this.
+                generateFlatLogoImage(controller.leftTopPoint);
+            flats.push([logoFlat]);
+            let titlePoint: IPoint = SurveyHelper.createPoint(logoFlat,
+                survey.logoPosition == 'top', survey.logoPosition != 'top');
+            if (survey.logoPosition != 'top') {
+                controller.pushMargins();
+                controller.margins.left += logoFlat.width;
+            }
+            let titleFlat: CompositeBrick = await this.generateFlatTitle(
+                survey, controller, titlePoint);
+            if (survey.logoPosition != 'top') controller.popMargins();
+            if (!titleFlat.isEmpty) flats[0].push(titleFlat);
+        }
+        else {
+            if (survey.logoPosition == 'right') {
+                let logoFlat: IPdfBrick = await this.
+                    generateFlatLogoImage(controller.leftTopPoint);
+                logoFlat.xLeft += SurveyHelper.getPageAvailableWidth(
+                    controller) - logoFlat.width;
+                flats.push([logoFlat]);
+                controller.pushMargins();
+                controller.margins.right += logoFlat.width;
+                let titleFlat: CompositeBrick = await this.generateFlatTitle(
+                    survey, controller, controller.leftTopPoint);
+                if (!titleFlat.isEmpty) flats[0].unshift(titleFlat);
+                controller.popMargins();
+            }
+            else {
+                let titleFlat: CompositeBrick = await this.generateFlatTitle(
+                    survey, controller, controller.leftTopPoint);
+                let logoPoint: IPoint = controller.leftTopPoint;
+                if (!titleFlat.isEmpty) {
+                    flats.push([titleFlat]);
+                    logoPoint = SurveyHelper.createPoint(titleFlat);
+                }
+                let logoFlat: IPdfBrick = await this.
+                    generateFlatLogoImage(controller.leftTopPoint);
+                flats[0].push(logoFlat);
+            }
         }
         for (let i: number = 0; i < survey.visiblePages.length; i++) {
             let pageFlats: IPdfBrick[] = [];
