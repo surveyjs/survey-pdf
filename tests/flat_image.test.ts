@@ -7,6 +7,7 @@ import { IRect, DocController } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { FlatImage } from '../src/flat_layout/flat_image';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
+import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 let __dummy_im = new FlatImage(null, null, null);
 
@@ -29,11 +30,15 @@ test('Check image question 100x100px', async () => {
     controller.margins.left += controller.unitWidth;
     let width: number = (<any>survey.getAllQuestions()[0]).imageWidth;
     let height: number = (<any>survey.getAllQuestions()[0]).imageHeight;
+    let widthPt: number = SurveyHelper.parseWidth(width + 'px',
+        SurveyHelper.getPageAvailableWidth(controller));
+    let heightPt: number = SurveyHelper.parseWidth(height + 'px',
+        SurveyHelper.getPageAvailableWidth(controller));
     let assumeImage: IRect = {
         xLeft: controller.leftTopPoint.xLeft,
-        xRight: controller.leftTopPoint.xLeft + width,
+        xRight: controller.leftTopPoint.xLeft + widthPt,
         yTop: controller.leftTopPoint.yTop,
-        yBot: controller.leftTopPoint.yTop + height
+        yBot: controller.leftTopPoint.yTop + heightPt
     };
     TestHelper.equalRect(expect, flats[0][0], assumeImage);
 });
