@@ -2,6 +2,7 @@ import { IElement, Question, PanelModelBase, PanelModel } from 'survey-core';
 import { SurveyPDF } from '../survey';
 import { IPoint, DocController } from '../doc_controller';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
+import { EmptyBrick } from '../pdf_render/pdf_empty';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { RowlineBrick } from '../pdf_render/pdf_rowline';
 import { SurveyHelper } from '../helper_survey';
@@ -119,7 +120,7 @@ export class FlatSurvey {
         return compositeFlat;
     }
     private static async generateFlatLogoImage(point: IPoint): Promise<IPdfBrick> {
-        return null;
+        return new EmptyBrick(SurveyHelper.createRect(point, SurveyHelper.EPSILON, SurveyHelper.EPSILON));
     }
     public static async generateFlats(survey: SurveyPDF, controller: DocController): Promise<IPdfBrick[][]> {
         let flats: IPdfBrick[][] = [];
