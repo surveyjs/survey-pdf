@@ -1,4 +1,4 @@
-import { IQuestion, Question, QuestionRatingModel, LocalizableString } from 'survey-core';
+import { IQuestion, Question, QuestionRatingModel, QuestionFileModel, LocalizableString } from 'survey-core';
 import * as SurveyPDFModule from './entries/pdf';
 import { SurveyPDF } from './survey';
 import { IPoint, IRect, ISize, DocController } from './doc_controller';
@@ -374,13 +374,20 @@ export class SurveyHelper {
         return new HTMLBrick(question, controller,
             SurveyHelper.createRect(point, width, height), html, true);
     }
+    public static async canPreviewImage(question: QuestionFileModel,
+        item: { name: string, type: string, content: string },
+        url: string): Promise<boolean> {
+        return question.canPreviewImage(item) &&
+            await SurveyHelper.getImageSize(url) !== null; 
+    }
     public static async getImageSize(url: string): Promise<ISize> {
         return await new Promise((resolve) => {
             let image: any = new Image();
             image.src = url;
-            image.onload = function () {
+            image.onload = function() {
                 return resolve({ width: image.width, height: image.height });
             }
+            image.onerror = function() { return resolve(null); }
         });
     }
     public static createRowlineFlat(point: IPoint, controller: DocController,

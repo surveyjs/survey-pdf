@@ -22,7 +22,7 @@ export class FlatFile extends FlatQuestion {
     }): Promise<IPdfBrick> {
         let compositeFlat: CompositeBrick = new CompositeBrick(await SurveyHelper.createLinkFlat(
             point, this.question, this.controller, item.name, item.content));
-        if (this.question.canPreviewImage(item)) {
+        if (await SurveyHelper.canPreviewImage(this.question, item, item.content)) {
             let imageSize: ISize = await SurveyHelper.getImageSize(item.content);
             if (this.question.imageWidth) {
                 imageSize.width = SurveyHelper.parseWidth(this.question.imageWidth,
@@ -61,7 +61,7 @@ export class FlatFile extends FlatQuestion {
             let item: { name: string, type: string, content: string } = this.question.previewValue[i];
             let availableWidth: number = this.controller.paperWidth -
                 this.controller.margins.right - currPoint.xLeft;
-            if (this.question.canPreviewImage(item)) {
+            if (await SurveyHelper.canPreviewImage(this.question, item, item.content)) {
                 let compositeWidth: number = Math.max((
                     await SurveyHelper.getImageSize(item.content)).width,
                     FlatFile.TEXT_MIN_SCALE * this.controller.unitWidth);
