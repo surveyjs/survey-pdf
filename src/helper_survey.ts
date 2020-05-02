@@ -88,6 +88,9 @@ export class SurveyHelper {
         }
         return Math.min(value * k, maxWidth);
     }
+    public static pxToPt(value: number) {
+        return value * 72.0 / 96.0;
+    }
     public static mergeRects(...rects: IRect[]): IRect {
         let resultRect: IRect = {
             xLeft: rects[0].xLeft,
