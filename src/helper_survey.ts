@@ -406,7 +406,7 @@ export class SurveyHelper {
             yBot: point.yTop + SurveyHelper.EPSILON
         }, typeof color === 'undefined' ? null : color);
     }
-    public static async  createLinkFlat(point: IPoint, question: Question,
+    public static async createLinkFlat(point: IPoint, question: Question,
         controller: DocController, text: string, link: string) {
         let compositeText: CompositeBrick = <CompositeBrick>await SurveyHelper.
             createTextFlat(point, question, controller, text, TextBrick);

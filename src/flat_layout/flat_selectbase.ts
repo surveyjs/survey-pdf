@@ -14,7 +14,6 @@ export abstract class FlatSelectBase extends FlatQuestion {
         super(survey, question, controller);
         this.question = <QuestionCheckboxBase>question;
     }
-
     protected abstract generateFlatItem(rect: IRect, item: ItemValue, index: number): IPdfBrick;
     protected async generateFlatComposite(point: IPoint, item: ItemValue, index: number): Promise<IPdfBrick> {
         let compositeFlat: CompositeBrick = new CompositeBrick();
@@ -26,7 +25,7 @@ export abstract class FlatSelectBase extends FlatQuestion {
         compositeFlat.addBrick(itemFlat);
         let textPoint: IPoint = SurveyHelper.clone(point);
         textPoint.xLeft = itemFlat.xRight + this.controller.unitWidth * SurveyHelper.GAP_BETWEEN_ITEM_TEXT;
-        if (item.locText.renderedHtml != null) {
+        if (item.locText.renderedHtml !== null) {
             compositeFlat.addBrick(await SurveyHelper.createTextFlat(
                 textPoint, this.question, this.controller, item.locText, TextBrick));
         }

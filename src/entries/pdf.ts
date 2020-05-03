@@ -24,6 +24,8 @@ export { PagePacker } from '../page_layout/page_packer';
 export { EventHandler } from '../event_handler/event_handler';
 export { DrawCanvas } from '../event_handler/draw_canvas';
 export { IPdfBrick, PdfBrick } from '../pdf_render/pdf_brick';
+export { TextBrick } from '../pdf_render/pdf_text';
+export { TextBoldBrick } from '../pdf_render/pdf_textbold';
 export { TextFieldBrick } from '../pdf_render/pdf_textfield';
 export { TextBoxBrick } from '../pdf_render/pdf_textbox';
 export { CommentBrick } from '../pdf_render/pdf_comment';
