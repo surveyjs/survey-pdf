@@ -27,7 +27,11 @@ export class HTMLBrick extends PdfBrick {
                 'pagesplit': true,
             }, function() {
                 document.querySelectorAll('iframe').forEach(
-                    function(el) { el.parentNode.removeChild(el); }
+                    function(el) {
+                        if (el.name.lastIndexOf('jsPDFhtmlText', 0) === 0) {
+                            el.parentNode.removeChild(el);
+                        }
+                    }
                 );
                 resolve();
             }, this.margins);
