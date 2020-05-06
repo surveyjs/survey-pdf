@@ -25,7 +25,12 @@ export class HTMLBrick extends PdfBrick {
             this.controller.doc.fromHTML(this.html, this.xLeft, this.yTop, {
                 width: this.width,
                 'pagesplit': true,
-            }, () => resolve(), this.margins);
+            }, function() {
+                document.querySelectorAll('iframe').forEach(
+                    function(el) { el.parentNode.removeChild(el); }
+                );
+                resolve();
+            }, this.margins);
         });
     }
 }
