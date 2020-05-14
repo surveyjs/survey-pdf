@@ -185,14 +185,17 @@ export class SurveyHelper {
     public static async createTextFlat<T extends IPdfBrick>(point: IPoint, question: IQuestion,
         controller: DocController, text: string | LocalizableString, fabric: new (question: IQuestion,
             controller: DocController, rect: IRect, text: string) => T): Promise<IPdfBrick> {
-        if (typeof text === 'string' || !text.hasHtml) {
+        if (typeof text === 'string' || !SurveyHelper.hasHtml(text)) {
             return this.createPlainTextFlat(point, question, controller, typeof text === 'string' ?
                 text : SurveyHelper.getLocString(<LocalizableString>text), fabric);
         }
         else {
             return this.splitHtmlRect(controller, await this.createHTMLFlat(point,
-                <Question>question, controller, this.createDivBlock(text.renderedHtml, controller)));
+                <Question>question, controller, this.createDivBlock(SurveyHelper.getLocString(text), controller)));
         }
+    }
+    private static hasHtml(text: LocalizableString): boolean {
+        return text.hasHtml && /<\/?[a-z][\s\S]*>/i.test(text.renderedHtml);
     }
     private static getHtmlMargins(controller: DocController, point: IPoint): { top: number, bottom: number, width: number } {
         let width: number = controller.paperWidth - point.xLeft - controller.margins.right;
@@ -282,7 +285,7 @@ export class SurveyHelper {
         if (question.no) {
             let noText: string = question.no + ' ';
             let noFlat: IPdfBrick;
-            if (question.locTitle.hasHtml) {
+            if (SurveyHelper.hasHtml(question.locTitle)) {
                 controller.fontStyle = 'bold';
                 controller.pushMargins();
                 controller.margins.right = controller.paperWidth -
@@ -307,7 +310,7 @@ export class SurveyHelper {
         controller.popMargins();
         if (question.isRequired) {
             let requiredText: string = question.requiredText;
-            if (question.locTitle.hasHtml) {
+            if (SurveyHelper.hasHtml(question.locTitle)) {
                 currPoint = SurveyHelper.createPoint(textFlat.unfold()[0], false, false);
                 controller.fontStyle = 'bold';
                 controller.pushMargins();
@@ -368,12 +371,7 @@ export class SurveyHelper {
         if (typeof height === 'undefined') {
             height = width / SurveyHelper.IMAGEPICKER_RATIO;
         }
-        let html: string =
-            `<img
-                src='${imagelink}'
-                width='${width}'
-                height='${height}'
-            />`;
+        let html: string = `<img src='${imagelink}' width='${width}' height='${height}' />`;
         return new HTMLBrick(question, controller,
             SurveyHelper.createRect(point, width, height), html, true);
     }
@@ -433,8 +431,9 @@ export class SurveyHelper {
             rect.yBot - rect.yTop
         ];
     }
-    public static getLocString(locObj: LocalizableString): string {
-        return locObj.renderedHtml;
+    public static getLocString(text: LocalizableString): string {
+        if (SurveyHelper.hasHtml(text)) return text.renderedHtml;
+        return (<any>text).renderedText || text.renderedHtml;
     }
     public static getRatingMinWidth(controller: DocController): number {
         return controller.measureText(SurveyHelper.RATING_MIN_WIDTH).width;
@@ -442,15 +441,15 @@ export class SurveyHelper {
     public static getRatingItemText(question: QuestionRatingModel,
         index: number, locText: LocalizableString): LocalizableString {
         let ratingItemLocText: LocalizableString = new LocalizableString(locText.owner, locText.useMarkdown);
-        ratingItemLocText.text = locText.renderedHtml;
+        ratingItemLocText.text = SurveyHelper.getLocString(locText);
         if (index === 0 && question.minRateDescription) {
             ratingItemLocText.text =
-                question.locMinRateDescription.text + ' ' + locText.renderedHtml;
+                question.locMinRateDescription.text + ' ' + SurveyHelper.getLocString(locText);
         }
         else if (index === question.visibleRateValues.length - 1 &&
             question.maxRateDescription) {
             ratingItemLocText.text =
-                locText.renderedHtml + ' ' + question.locMaxRateDescription.text;
+            SurveyHelper.getLocString(locText) + ' ' + question.locMaxRateDescription.text;
         }
         return ratingItemLocText;
     }

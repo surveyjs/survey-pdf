@@ -23,16 +23,16 @@ export class FlatHTML extends FlatQuestion {
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         let renderAs: 'auto' | 'standard' | 'image' = this.question.renderAs;
         if (renderAs === 'auto') renderAs = this.controller.htmlRenderAs;
-        if (renderAs === 'auto') renderAs = this.chooseRender(this.question.locHtml.renderedHtml);
+        if (renderAs === 'auto') renderAs = this.chooseRender(SurveyHelper.getLocString(this.question.locHtml));
         if (renderAs === 'image') {
             let width: number = SurveyHelper.getPageAvailableWidth(this.controller);
             let { url, aspect } = await SurveyHelper.htmlToImage(
-                this.question.locHtml.renderedHtml, width, this.controller);
+                SurveyHelper.getLocString(this.question.locHtml), width, this.controller);
             let height: number = width / aspect;
             return [SurveyHelper.createImageFlat(point, this.question,
                 this.controller, url, width, height)];
         }
-        let html: string = SurveyHelper.createDivBlock(this.question.locHtml.renderedHtml, this.controller);
+        let html: string = SurveyHelper.createDivBlock(SurveyHelper.getLocString(this.question.locHtml), this.controller);
         return [SurveyHelper.splitHtmlRect(this.controller, await SurveyHelper.createHTMLFlat(
             point, this.question, this.controller, html))];
     }

@@ -51,7 +51,7 @@ test('Check choose auto render', async () => {
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(3);
     expect(flats[0][0].unfold()[0] instanceof HTMLBrick).toBe(true);
-    expect((<any>flats[0][0].unfold()[0])['html'].startsWith('<img')).toBe(false);
-    expect(flats[0][2] instanceof HTMLBrick).toBe(true);
+    expect((<any>flats[0][0].unfold())[0]['html'].startsWith('<img')).toBe(false);
+    expect(flats[0][2].unfold()[0] instanceof HTMLBrick).toBe(true);
     expect((<any>flats[0][2])['html'].startsWith('<img')).toBe(true);
 });

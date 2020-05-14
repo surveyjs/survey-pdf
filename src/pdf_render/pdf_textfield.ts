@@ -22,7 +22,7 @@ export class TextFieldBrick extends PdfBrick {
             this.controller.doc.setFillColor(oldFillColor);
             return;
         }
-        let inputField = this.inputType === 'password' ?
+        let inputField: any = this.inputType === 'password' ?
             new (<any>this.controller.doc.AcroFormPasswordField)() :
             new (<any>this.controller.doc.AcroFormTextField)();
         inputField.fieldName = this.fieldName;

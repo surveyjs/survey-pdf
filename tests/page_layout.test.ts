@@ -302,7 +302,7 @@ test('Check adding new page for lack of place before new page', async () => {
                     {
                         titleLocation: 'hidden',
                         type: 'checkbox',
-                        name: 'check',
+                        name: 'check_page_lack1',
                         choices: ['', '', '']
                     }
                 ]
@@ -312,7 +312,7 @@ test('Check adding new page for lack of place before new page', async () => {
                     {
                         titleLocation: 'hidden',
                         type: 'checkbox',
-                        name: 'check',
+                        name: 'check_page_lack2',
                         choices: ['']
                     }
                 ]

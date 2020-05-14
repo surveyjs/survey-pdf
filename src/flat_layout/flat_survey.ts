@@ -121,7 +121,7 @@ export class FlatSurvey {
     private static generateFlatLogoImage(survey: SurveyPDF, controller: DocController,
         point: IPoint): IPdfBrick {
         let logoFlat: IPdfBrick = SurveyHelper.createImageFlat(
-            point, null, controller, survey.locLogo.renderedHtml,
+            point, null, controller, SurveyHelper.getLocString(survey.locLogo),
             SurveyHelper.pxToPt(survey.logoWidth), SurveyHelper.pxToPt(survey.logoHeight));
         let shift: number = 0;
         if (survey.logoPosition === 'right') {

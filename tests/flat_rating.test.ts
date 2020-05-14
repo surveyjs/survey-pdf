@@ -14,7 +14,7 @@ import { TestHelper } from '../src/helper_test';
 let __dummy_rt = new FlatRating(null, null, null);
 
 test('Check rating two elements', async () => {
-    let json = {
+    let json: any = {
         elements: [
             {
                 type: 'rating',
@@ -41,11 +41,11 @@ test('Check rating two elements', async () => {
     TestHelper.equalRect(expect, flats[0][0], assumeRating);
 });
 test('Check rating two elements with min rate description', async () => {
-    let json = {
+    let json: any = {
         elements: [
             {
                 type: 'rating',
-                name: 'rateme',
+                name: 'rating_min_desc',
                 titleLocation: 'hidden',
                 rateMax: 2,
                 minRateDescription: 'Littleee'
@@ -72,7 +72,7 @@ test('Check rating two elements with min rate description', async () => {
     TestHelper.equalRect(expect, flats[0][0], assumeRating);
 });
 test('Check rating two elements with max rate description', async () => {
-    let json = {
+    let json: any = {
         elements: [
             {
                 type: 'rating',

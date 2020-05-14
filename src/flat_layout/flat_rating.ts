@@ -4,9 +4,9 @@ import { FlatRadiogroup } from './flat_radiogroup';
 import { FlatRepository } from './flat_repository';
 import { IPoint, DocController, IRect } from '../doc_controller';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
+import { TextBrick } from '../pdf_render/pdf_text';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
-import { TextBrick } from '../pdf_render/pdf_text';
 
 export class FlatRating extends FlatRadiogroup {
     protected questionRating: QuestionRatingModel;
@@ -15,7 +15,7 @@ export class FlatRating extends FlatRadiogroup {
         super(survey, question, controller);
         this.questionRating = <QuestionRatingModel>question;
     }
-    protected async  generateFlatHorisontalComposite(point: IPoint, item: ItemValue, index: number, ): Promise<IPdfBrick> {
+    protected async generateFlatHorisontalComposite(point: IPoint, item: ItemValue, index: number): Promise<IPdfBrick> {
         let itemText: LocalizableString = SurveyHelper.getRatingItemText(
             this.questionRating, index, item.locText);
         this.controller.pushMargins();
