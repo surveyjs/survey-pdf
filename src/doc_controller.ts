@@ -34,6 +34,7 @@ export interface IDocOptions {
     margins?: IMargin;
     commercial?: boolean;
     htmlRenderAs?: 'auto' | 'standard' | 'image';
+    compress?: boolean;
 }
 export class DocOptions implements IDocOptions {
     public static readonly MM_TO_PT = 72 / 25.4;
@@ -44,6 +45,7 @@ export class DocOptions implements IDocOptions {
     protected _fontName: string;
     protected _commercial: boolean;
     protected _htmlRenderAs: 'auto' | 'standard' | 'image';
+    protected _compress: boolean;
     public constructor(options: IDocOptions) {
         if (typeof options.orientation === 'undefined') {
             if (typeof options.format === 'undefined' ||
@@ -80,6 +82,7 @@ export class DocOptions implements IDocOptions {
         });
         this._commercial = options.commercial || false;
         this._htmlRenderAs = options.htmlRenderAs || 'auto';
+        this._compress = options.compress || false;
     }
     public get leftTopPoint(): IPoint {
         return {
@@ -105,6 +108,9 @@ export class DocOptions implements IDocOptions {
     public get htmlRenderAs(): 'auto' | 'standard' | 'image' {
         return this._htmlRenderAs;
     }
+    public get compress(): boolean {
+        return this._compress;
+    }
 }
 
 export class DocController extends DocOptions {
@@ -122,9 +128,11 @@ export class DocController extends DocOptions {
             this.addFont(this.fontName, Fonts.SEGOE_NORMAL, 'normal');
             this.addFont(this.fontName, Fonts.SEGOE_BOLD, 'bold');
         }
-        this._doc = new jsPDF({ putOnlyUsedFonts: false, orientation: this.orientation, unit: 'pt', format: this.format });
+        this._doc = new jsPDF({ putOnlyUsedFonts: false, orientation: this.orientation,
+            unit: 'pt', format: this.format, compress: this.compress });
         setRadioAppearance(this._doc);
-        this._helperDoc = new jsPDF({ putOnlyUsedFonts: false, orientation: this.orientation, unit: 'pt', format: this.format });
+        this._helperDoc = new jsPDF({ putOnlyUsedFonts: false,
+            orientation: this.orientation, unit: 'pt', format: this.format });
         this._doc.setFont(this.fontName);
         this._helperDoc.setFont(this.fontName);
         this._doc.setFontSize(this.fontSize);
