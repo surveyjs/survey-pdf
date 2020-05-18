@@ -4,6 +4,7 @@ export { IPoint, IRect, ISize, IMarginLR, IMargin, IDocOptions, DocOptions, DocC
 export { FlatRepository } from '../flat_layout/flat_repository';
 export { IFlatQuestion, FlatQuestion } from '../flat_layout/flat_question';
 export { FlatTextbox } from '../flat_layout/flat_textbox';
+export { FlatSelectBase } from '../flat_layout/flat_selectbase';
 export { FlatCheckbox } from '../flat_layout/flat_checkbox';
 export { FlatRadiogroup } from '../flat_layout/flat_radiogroup';
 export { FlatDropdown } from '../flat_layout/flat_dropdown';
@@ -20,6 +21,7 @@ export { FlatMatrixMultiple } from '../flat_layout/flat_matrixmultiple';
 export { FlatMatrixDynamic } from '../flat_layout/flat_matrixdynamic';
 export { FlatMultipleText } from '../flat_layout/flat_multipletext';
 export { FlatPanelDynamic } from '../flat_layout/flat_paneldynamic';
+export { FlatSignaturePad } from '../flat_layout/flat_signaturepad';
 export { PagePacker } from '../page_layout/page_packer';
 export { EventHandler } from '../event_handler/event_handler';
 export { DrawCanvas } from '../event_handler/draw_canvas';
