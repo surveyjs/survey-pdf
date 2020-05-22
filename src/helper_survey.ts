@@ -1,4 +1,5 @@
-import { IQuestion, Question, QuestionRatingModel, QuestionFileModel, LocalizableString } from 'survey-core';
+import { IQuestion, Question, QuestionRatingModel,
+    QuestionFileModel, LocalizableString } from 'survey-core';
 import * as SurveyPDFModule from './entries/pdf';
 import { SurveyPDF } from './survey';
 import { IPoint, IRect, ISize, DocController } from './doc_controller';
@@ -435,6 +436,9 @@ export class SurveyHelper {
         if (SurveyHelper.hasHtml(text)) return text.renderedHtml;
         return (<any>text).renderedText || text.renderedHtml;
     }
+    public static getContentQuestion(question: Question): Question {
+        return !!question.contentQuestion ? question.contentQuestion : question;
+    }
     public static getRatingMinWidth(controller: DocController): number {
         return controller.measureText(SurveyHelper.RATING_MIN_WIDTH).width;
     }
@@ -517,8 +521,9 @@ export class SurveyHelper {
     }
     public static async generateQuestionFlats(survey: SurveyPDF,
         controller: DocController, question: Question, point: IPoint): Promise<IPdfBrick[]> {
+        let questionComposite: Question = SurveyHelper.getContentQuestion(question);
         let questionType: string = question.customWidget ?
-            question.customWidget.pdfQuestionType : question.getType();
+            question.customWidget.pdfQuestionType : questionComposite.getType();
         let flatQuestion: IFlatQuestion =
             FlatRepository.getInstance().create(survey, question, controller, questionType);
         let questionFlats: IPdfBrick[] = await flatQuestion.generateFlats(point);

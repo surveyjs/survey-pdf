@@ -73,7 +73,8 @@ export class FlatSurvey {
                 currPoint.xLeft = controller.margins.left;
                 nextMarginLeft = controller.margins.left + persWidth;
                 if (element instanceof PanelModel) {
-                    rowFlats.push(...await this.generateFlatsPanel(survey, controller, element, currPoint));
+                    rowFlats.push(...await this.generateFlatsPanel(
+                        survey, controller, element, currPoint));
                 }
                 else {
                     rowFlats.push(...await SurveyHelper.generateQuestionFlats(survey,

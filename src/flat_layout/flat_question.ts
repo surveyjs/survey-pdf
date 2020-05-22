@@ -1,6 +1,7 @@
 import { SurveyPDF } from '../survey';
 import { IPoint, IRect, DocController } from '../doc_controller';
 import { IQuestion, Question, LocalizableString } from 'survey-core';
+import { FlatSurvey } from './flat_survey';
 import { IPdfBrick } from '../pdf_render/pdf_brick'
 import { TextBrick } from '../pdf_render/pdf_text';
 import { CommentBrick } from '../pdf_render/pdf_comment';
@@ -40,6 +41,14 @@ export class FlatQuestion implements IFlatQuestion {
         return new CompositeBrick(compositeText,
             new CommentBrick(this.question, this.controller, rectTextField, false));
     }
+    public async generateFlatsComposite(point: IPoint): Promise<IPdfBrick[]> {
+        if (!!this.question.contentPanel) {
+            return await FlatSurvey.generateFlatsPanel(this.survey,
+                this.controller, this.question.contentPanel, point);
+        }
+        this.question = SurveyHelper.getContentQuestion(this.question);
+        return await this.generateFlatsContent(point);
+    }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         return null;
     }
@@ -73,7 +82,7 @@ export class FlatQuestion implements IFlatQuestion {
                     FlatQuestion.CONTENT_GAP_VERT_SCALE;
                 commentPoint = contentPoint;
                 this.controller.margins.left += this.controller.unitWidth;
-                let contentFlats = await this.generateFlatsContent(contentPoint);
+                let contentFlats: IPdfBrick[] = await this.generateFlatsComposite(contentPoint);
                 this.controller.popMargins();
                 if (contentFlats !== null && contentFlats.length !== 0) {
                     commentPoint.yTop = SurveyHelper.mergeRects(...contentFlats).yBot +
@@ -90,7 +99,7 @@ export class FlatQuestion implements IFlatQuestion {
                 contentPoint.xLeft += this.controller.unitWidth;
                 this.controller.margins.left += this.controller.unitWidth;
                 commentPoint = contentPoint;
-                let contentFlats: IPdfBrick[] = await this.generateFlatsContent(contentPoint);
+                let contentFlats: IPdfBrick[] = await this.generateFlatsComposite(contentPoint);
                 this.controller.popMargins();
                 flats.push(...contentFlats);
                 if (contentFlats !== null && contentFlats.length != 0) {
@@ -135,7 +144,7 @@ export class FlatQuestion implements IFlatQuestion {
                 contentPoint.xLeft += this.controller.unitWidth * FlatQuestion.CONTENT_GAP_HOR_SCALE;
                 this.controller.margins.left = contentPoint.xLeft;
                 commentPoint.xLeft = contentPoint.xLeft;
-                let contentFlats = await this.generateFlatsContent(contentPoint);
+                let contentFlats = await this.generateFlatsComposite(contentPoint);
                 if (contentFlats !== null && contentFlats.length != 0) {
                     commentPoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(...contentFlats));
                     commentPoint.yTop += this.controller.unitHeight * SurveyHelper.GAP_BETWEEN_ROWS;
@@ -155,7 +164,7 @@ export class FlatQuestion implements IFlatQuestion {
                     this.controller.margins.left += this.controller.unitWidth;
                 }
                 commentPoint = contentPoint;
-                flats.push(...await this.generateFlatsContent(contentPoint));
+                flats.push(...await this.generateFlatsComposite(contentPoint));
                 this.controller.popMargins();
                 if (flats !== null && flats.length !== 0) {
                     commentPoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(...flats));

@@ -78,9 +78,6 @@ export class SurveyPDF extends SurveyModel {
     (survey: SurveyPDF, options: AdornersPageOptions) => any,
     any
   > = new EventAsync<(survey: SurveyPDF, options: AdornersPageOptions) => any, any>();
-
-
-
   private waitForQuestionIsReady(question: Question): Promise<void> {
     return new Promise((resolve: any) => {     
       if (question.isReady) {
@@ -100,7 +97,16 @@ export class SurveyPDF extends SurveyModel {
   }
   private async waitForCoreIsReady(): Promise<void> {
     for (let question of this.getAllQuestions()) {
-      await this.waitForQuestionIsReady(<Question>question);
+      if (!!(<any>question).contentPanel) {
+        let list: Question[] = [];
+        (<any>question).contentPanel.addQuestionsToList(list);
+        for (let innerQuestion of list) {
+          await this.waitForQuestionIsReady(innerQuestion);
+        }
+        continue;
+      }
+      else await this.waitForQuestionIsReady(
+        SurveyHelper.getContentQuestion(<Question>question));
     }
   }
   private async render(controller: DocController): Promise<void> {
