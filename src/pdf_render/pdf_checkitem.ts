@@ -24,6 +24,6 @@ export class CheckItemBrick extends PdfBrick {
         checkBox.AS = this.checked ? '/On' : '/Off';
         checkBox.Rect = SurveyHelper.createAcroformRect(SurveyHelper.scaleRect(this, formScale));
         this.controller.doc.addField(checkBox);
-        SurveyHelper.wrapFlatInBorders(this.controller, this);
+        SurveyHelper.renderFlatBorders(this.controller, this);
     }
 }

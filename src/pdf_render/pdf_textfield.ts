@@ -42,10 +42,11 @@ export class TextFieldBrick extends PdfBrick {
         inputField.Rect = SurveyHelper.createAcroformRect(
             SurveyHelper.scaleRect(this, formScale));
         this.controller.doc.addField(inputField);
-        SurveyHelper.wrapFlatInBorders(this.controller, this);
+        SurveyHelper.renderFlatBorders(this.controller, this);
     }
     public async renderReadOnly(): Promise<void> {
-        SurveyHelper.renderReadOnlyTextField(this.controller,
-            this.question, this, this.value);
+        await SurveyHelper.renderReadOnlyTextField(this.controller,
+            this.question, this, this.value,
+            this.question.getType() !== 'comment');
     }
 }

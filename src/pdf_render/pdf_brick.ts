@@ -28,9 +28,7 @@ export class PdfBrick implements IPdfBrick {
         if (!!this.question && this.question.isReadOnly) {
             await this.renderReadOnly();
         }
-        else {
-            await this.renderInteractive();
-        }
+        else await this.renderInteractive();
     }
     public async renderInteractive(): Promise<void> { }
     public async renderReadOnly(): Promise<void> {

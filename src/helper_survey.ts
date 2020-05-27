@@ -40,8 +40,8 @@ export class SurveyHelper {
     public static readonly UNVISIBLE_BORDER_SCALE: number = 0.2;
     public static readonly RADIUS_SCALE: number = 3;
     public static readonly TITLE_FONT_SCALE: number = 1.1;
-    public static readonly VALUE_READONLY_VERT_SCALE: number = 0.63;
-    public static readonly VALUE_READONLY_HOR_SCALE: number = 0.3;
+    public static readonly VALUE_READONLY_FONT_SCALE: number = 0.63;
+    public static readonly VALUE_READONLY_PADDING_SCALE: number = 0.3;
     public static readonly FORM_BORDER_COLOR: string = '#9f9f9f';
     public static readonly TEXT_COLOR: string = '#404040';
     public static readonly BACKGROUND_COLOR: string = '#FFFFFF';
@@ -406,7 +406,7 @@ export class SurveyHelper {
         }, typeof color === 'undefined' ? null : color);
     }
     public static async createLinkFlat(point: IPoint, question: Question,
-        controller: DocController, text: string, link: string) {
+        controller: DocController, text: string, link: string): Promise<IPdfBrick> {
         let compositeText: CompositeBrick = <CompositeBrick>await SurveyHelper.
             createTextFlat(point, question, controller, text, TextBrick);
         let compositeLink: CompositeBrick = new CompositeBrick();
@@ -418,12 +418,6 @@ export class SurveyHelper {
         });
         return compositeLink;
     }
-    public static createTextFieldRect(point: IPoint, controller: DocController, lines: number = 1): IRect {
-        let width: number = controller.paperWidth - point.xLeft - controller.margins.right;
-        width = Math.max(width, controller.unitWidth);
-        let height: number = controller.unitHeight * lines;
-        return SurveyHelper.createRect(point, width, height);
-    }
     public static createAcroformRect(rect: IRect): number[] {
         return [
             rect.xLeft,
@@ -431,6 +425,53 @@ export class SurveyHelper {
             rect.xRight - rect.xLeft,
             rect.yBot - rect.yTop
         ];
+    }
+    public static createTextFieldRect(point: IPoint, controller: DocController, lines: number = 1): IRect {
+        let width: number = controller.paperWidth - point.xLeft - controller.margins.right;
+        width = Math.max(width, controller.unitWidth);
+        let height: number = controller.unitHeight * lines;
+        return SurveyHelper.createRect(point, width, height);
+    }
+    public static async createReadOnlyTextFieldTextFlat(point: IPoint,
+        controller: DocController, question: Question, value: string): Promise<IPdfBrick> {
+        let oldFontSize = controller.fontSize;
+        controller.fontSize = oldFontSize * SurveyHelper.VALUE_READONLY_FONT_SCALE;
+        let padding: number = controller.unitWidth * SurveyHelper.VALUE_READONLY_PADDING_SCALE;
+        point.yTop += padding;
+        point.xLeft += padding;
+        controller.pushMargins(point.xLeft, controller.margins.right + padding);
+        let textFlat: IPdfBrick = await SurveyHelper.createTextFlat(
+            point, question, controller, value, TextBrick);
+        controller.popMargins();
+        controller.fontSize = oldFontSize;
+        return textFlat;
+    }
+    public static renderFlatBorders(controller: DocController, flat: PdfBrick): void {
+        let minSide: number = Math.min(flat.width, flat.height);
+        let visibleWidth: number = controller.unitHeight * SurveyHelper.VISIBLE_BORDER_SCALE * SurveyHelper.BORDER_SCALE;
+        let visibleScale: number = SurveyHelper.formScale(controller, flat) + visibleWidth / minSide;
+        let unvisibleWidth: number = controller.unitHeight * SurveyHelper.UNVISIBLE_BORDER_SCALE * SurveyHelper.BORDER_SCALE;
+        let unvisibleScale: number = 1.0 - unvisibleWidth / minSide;
+        let unvisibleRadius: number = SurveyHelper.RADIUS_SCALE * unvisibleWidth;
+        let oldDrawColor: string = controller.doc.getDrawColor();
+        controller.doc.setDrawColor(SurveyHelper.FORM_BORDER_COLOR);
+        controller.doc.setLineWidth(visibleWidth);
+        controller.doc.rect(...SurveyHelper.createAcroformRect(SurveyHelper.scaleRect(flat, visibleScale)));
+        controller.doc.setDrawColor(SurveyHelper.BACKGROUND_COLOR);
+        controller.doc.setLineWidth(unvisibleWidth);
+        controller.doc.roundedRect(...SurveyHelper.createAcroformRect(
+            SurveyHelper.scaleRect(flat, unvisibleScale)), unvisibleRadius, unvisibleRadius);
+        controller.doc.setDrawColor(oldDrawColor);
+    }
+    public static async renderReadOnlyTextField(controller: DocController,
+        question: Question, flat: PdfBrick, value: string,
+        onlyFirstLine: boolean = true): Promise<void> {
+        let point: IPoint = SurveyHelper.createPoint(flat, true, true);
+        let textFlat: IPdfBrick = await SurveyHelper.
+            createReadOnlyTextFieldTextFlat(point, controller, question, value);
+        if (onlyFirstLine) await textFlat.unfold()[0].render();
+        else await textFlat.render();
+        SurveyHelper.renderFlatBorders(controller, flat);
     }
     public static getLocString(text: LocalizableString): string {
         if (SurveyHelper.hasHtml(text)) return text.renderedHtml;
@@ -502,23 +543,6 @@ export class SurveyHelper {
         let borderWidth: number = controller.unitHeight * SurveyHelper.BORDER_SCALE * 2.0;
         return (minSide - borderWidth) / minSide;
     }
-    public static wrapFlatInBorders(controller: DocController, flat: PdfBrick): void {
-        let minSide: number = Math.min(flat.width, flat.height);
-        let visibleWidth: number = controller.unitHeight * SurveyHelper.VISIBLE_BORDER_SCALE * SurveyHelper.BORDER_SCALE;
-        let visibleScale: number = SurveyHelper.formScale(controller, flat) + visibleWidth / minSide;
-        let unvisibleWidth: number = controller.unitHeight * SurveyHelper.UNVISIBLE_BORDER_SCALE * SurveyHelper.BORDER_SCALE;
-        let unvisibleScale: number = 1.0 - unvisibleWidth / minSide;
-        let unvisibleRadius: number = SurveyHelper.RADIUS_SCALE * unvisibleWidth;
-        let oldDrawColor: string = controller.doc.getDrawColor();
-        controller.doc.setDrawColor(SurveyHelper.FORM_BORDER_COLOR);
-        controller.doc.setLineWidth(visibleWidth);
-        controller.doc.rect(...SurveyHelper.createAcroformRect(SurveyHelper.scaleRect(flat, visibleScale)));
-        controller.doc.setDrawColor(SurveyHelper.BACKGROUND_COLOR);
-        controller.doc.setLineWidth(unvisibleWidth);
-        controller.doc.roundedRect(...SurveyHelper.createAcroformRect(
-            SurveyHelper.scaleRect(flat, unvisibleScale)), unvisibleRadius, unvisibleRadius);
-        controller.doc.setDrawColor(oldDrawColor);
-    }
     public static async generateQuestionFlats(survey: SurveyPDF,
         controller: DocController, question: Question, point: IPoint): Promise<IPdfBrick[]> {
         let questionComposite: Question = SurveyHelper.getContentQuestion(question);
@@ -535,27 +559,6 @@ export class SurveyHelper {
         }
         await survey.onRenderQuestion.fire(survey, adornersOptions);
         return [...adornersOptions.bricks];
-    }
-    public static async renderReadOnlyTextField(controller: DocController,
-        question: Question, flat: PdfBrick, value: string) {
-        SurveyHelper.wrapFlatInBorders(controller, flat);
-        let oldFontSize = controller.fontSize;
-        controller.fontSize = oldFontSize *
-            SurveyHelper.VALUE_READONLY_VERT_SCALE;
-        let point: IPoint = SurveyHelper.createPoint(flat, true, true);
-        point.yTop += flat.height *
-            (1.0 - SurveyHelper.VALUE_READONLY_VERT_SCALE) / 2.0;
-        let horIndent: number = controller.unitWidth *
-            SurveyHelper.VALUE_READONLY_HOR_SCALE;
-        controller.pushMargins(flat.xLeft + horIndent,
-            controller.margins.right + horIndent);
-        point.xLeft += horIndent;
-        let composite: CompositeBrick = SurveyHelper.createPlainTextFlat(
-            point, question, controller, value, TextBrick);
-        let firstLine: IPdfBrick = composite.unfold()[0];
-        await firstLine.render();
-        controller.popMargins();
-        controller.fontSize = oldFontSize;
     }
     public static isCustomFont(controller: DocController, fontName: string) {
         return controller.doc.internal.getFont(fontName).encoding === SurveyHelper.CUSTOM_FONT_ENCODING;

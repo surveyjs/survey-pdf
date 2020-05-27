@@ -46,10 +46,10 @@ export class DropdownBrick extends PdfBrick {
             this.controller, comboBox.fontName);
         comboBox.V = this.getValue();
         this.controller.doc.addField(comboBox);
-        SurveyHelper.wrapFlatInBorders(this.controller, this);
+        SurveyHelper.renderFlatBorders(this.controller, this);
     }
     public async renderReadOnly(): Promise<void> {
-        SurveyHelper.renderReadOnlyTextField(this.controller,
+        await SurveyHelper.renderReadOnlyTextField(this.controller,
             this.question, this, this.getValue());
     }
 }
