@@ -21,7 +21,7 @@ export class RadioGroupWrap {
 
 export class RadioItemBrick extends PdfBrick {
     public constructor(question: IQuestion, controller: DocController,
-        rect: IRect, private index: number, private сhecked: Boolean,
+        rect: IRect, private index: number, private checked: Boolean,
         private radioGroupWrap: RadioGroupWrap) {
         super(question, controller, rect);
     }
@@ -32,7 +32,7 @@ export class RadioItemBrick extends PdfBrick {
         let name = this.radioGroupWrap.radioGroup.value + 'index' + this.index;
         let radioButton = this.radioGroupWrap.radioGroup.createOption(name);
         radioButton.Rect = SurveyHelper.createAcroformRect(this);
-        if (this.сhecked) {
+        if (this.checked) {
             radioButton.AS = '/' + name;
         }
         let formScale = SurveyHelper.formScale(this.controller, this);
