@@ -14,7 +14,7 @@ import { calcTitleTop } from './flat_question.test';
 let __dummy_dd = new FlatDropdown(null, null, null);
 
 test('Check dropdown', async () => {
-    let json = {
+    let json: any = {
         elements: [
             {
                 type: 'dropdown',
@@ -34,7 +34,7 @@ test('Check dropdown', async () => {
         <Question>survey.getAllQuestions()[0], flats[0][0]);
 });
 test('Check dropdown with other', async () => {
-    let json = {
+    let json: any = {
         showQuestionNumbers: 'false',
         elements: [
             {
