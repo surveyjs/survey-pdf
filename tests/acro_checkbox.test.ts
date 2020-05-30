@@ -40,7 +40,7 @@ test('Check that checkbox has square boundaries', async () => {
 		internalRect[2], internalRect[3]), assumeCheckbox);
 });
 
-test('Test has other checkbox', async () => {
+test('Check has other checkbox', async () => {
 	let json: any = {
 		showQuestionNumbers: 'false',
 		questions: [
@@ -59,7 +59,7 @@ test('Test has other checkbox', async () => {
 	let controller: DocController = new DocController(TestHelper.defaultOptions);
 	await survey['render'](controller);
 	let internal: any = controller.doc.internal;
-	let internalOtherText: string = internal.pages[1][21];
+	let internalOtherText: string = internal.pages[1][20];
 	expect(internalOtherText).toBeDefined();
 	let regex: RegExp = /\((.*)\)/;
 	let otherText: string = internalOtherText.match(regex)[1];
@@ -84,15 +84,18 @@ test('Check all items disabled or enabled', async () => {
 		let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
 		let controller: DocController = new DocController(TestHelper.defaultOptions);
 		await survey['render'](controller);
-		controller.doc.internal.acroformPlugin.
-			acroFormDictionaryRoot.Fields.forEach(
-				(acroCheckBox: any) => {
-					expect(acroCheckBox.readOnly).toBe(readOnly);
-				}
-			);
+		if (!readOnly) {
+			controller.doc.internal.acroformPlugin.
+				acroFormDictionaryRoot.Fields.forEach(
+					(acroCheckBox: any) => {
+						expect(acroCheckBox.readOnly).toBe(readOnly);
+					}
+				);
+		}
+		else expect(controller.doc.internal.acroformPlugin).toBe(undefined);
 	}
 });
-test('Test enable one item', async () => {
+test('Check enable one item', async () => {
 	let json: any = {
 		questions: [
 			{
@@ -103,20 +106,16 @@ test('Test enable one item', async () => {
 			}
 		]
 	};
-	const INDEX_OF_ENABLED_ITEM: number = 1;
 	let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
 	let controller: DocController = new DocController(TestHelper.defaultOptions);
 	await survey['render'](controller);
-	controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields.forEach(
-		(acroCheckBox: any, index: number) => {
-			if (index === INDEX_OF_ENABLED_ITEM)
-				expect(acroCheckBox.readOnly).toBe(false);
-			else expect(acroCheckBox.readOnly).toBe(true);
-		}
-	);
+	expect(controller.doc.internal.acroformPlugin.
+		acroFormDictionaryRoot.Fields.length).toBe(1);
+	expect(controller.doc.internal.acroformPlugin.
+		acroFormDictionaryRoot.Fields[0].readOnly).toBe(false);
 });
 
-test('Test two equal values checkbox', async () => {
+test('Check two equal values checkbox', async () => {
 	let json: any = {
 		questions: [
 			{

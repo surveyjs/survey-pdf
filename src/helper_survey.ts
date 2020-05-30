@@ -540,7 +540,7 @@ export class SurveyHelper {
     }
     public static formScale(controller: DocController, flat: PdfBrick): number {
         let minSide: number = Math.min(flat.width, flat.height);
-        let borderWidth: number = controller.unitHeight * SurveyHelper.BORDER_SCALE * 2.0;
+        let borderWidth: number = 2.0 * controller.unitWidth * SurveyHelper.BORDER_SCALE;
         return (minSide - borderWidth) / minSide;
     }
     public static async generateQuestionFlats(survey: SurveyPDF,
