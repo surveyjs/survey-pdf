@@ -26,8 +26,8 @@ export class HTMLBrick extends PdfBrick {
                 width: this.width,
                 'pagesplit': true,
             }, function() {
-                document.querySelectorAll('iframe').forEach(
-                    function(el) {
+                [].slice.call(document.querySelectorAll('iframe')).forEach(
+                    function(el: HTMLIFrameElement) {
                         if (el.name.lastIndexOf('jsPDFhtmlText', 0) === 0) {
                             el.parentNode.removeChild(el);
                         }
