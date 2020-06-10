@@ -441,7 +441,7 @@ export class SurveyHelper {
         point.xLeft += padding;
         controller.pushMargins(point.xLeft, controller.margins.right + padding);
         let textFlat: IPdfBrick = await SurveyHelper.createTextFlat(
-            point, question, controller, value, TextBrick);
+            point, question, controller, value.toString(), TextBrick);
         controller.popMargins();
         controller.fontSize = oldFontSize;
         return textFlat;
