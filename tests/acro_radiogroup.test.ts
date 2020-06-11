@@ -36,7 +36,7 @@ test('Has other radiogroup', async () => {
     let internalRadioGroup: any = internal.acroformPlugin.acroFormDictionaryRoot.Fields[0];
     expect(internalRadioGroup.FT).toBe('/Btn');
 });
-test('Test all items disabled or enabled', async () => {
+test('Check all items disabled or enabled', async () => {
     let json: any = {
         questions: [
             {
@@ -51,24 +51,10 @@ test('Test all items disabled or enabled', async () => {
         let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
         let controller: DocController = new DocController(TestHelper.defaultOptions);
         await survey['render'](controller);
-        expect(controller.doc.internal.acroformPlugin.
-            acroFormDictionaryRoot.Fields[0].readOnly).toBe(readOnly);
+        if (!readOnly) {
+            expect(controller.doc.internal.acroformPlugin.
+                acroFormDictionaryRoot.Fields[0].readOnly).toBe(readOnly);
+        }
+        else expect(controller.doc.internal.acroformPlugin).toBe(undefined);
     }
-});
-test('Check radiogroup readonly via display mode', async () => {
-	let json: any = {
-		questions: [
-			{
-				name: 'readigroup_readonly_display',
-				type: 'radiogroup',
-                choices: ['item']
-			}
-		]
-	};
-    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    survey.mode = 'display';
-	let controller: DocController = new DocController(TestHelper.defaultOptions);
-	await survey['render'](controller);
-    expect(controller.doc.internal.acroformPlugin.
-        acroFormDictionaryRoot.Fields[0].readOnly).toBe(true);
 });
