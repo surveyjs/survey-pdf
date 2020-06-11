@@ -42,6 +42,7 @@ export class SurveyHelper {
     public static readonly TITLE_FONT_SCALE: number = 1.1;
     public static readonly VALUE_READONLY_FONT_SCALE: number = 0.63;
     public static readonly VALUE_READONLY_PADDING_SCALE: number = 0.3;
+    public static readonly HTML_TO_IMAGE_QUALITY: number = 1.0;
     public static readonly FORM_BORDER_COLOR: string = '#9f9f9f';
     public static readonly TEXT_COLOR: string = '#404040';
     public static readonly BACKGROUND_COLOR: string = '#FFFFFF';
@@ -256,19 +257,22 @@ export class SurveyHelper {
         let img: HTMLImageElement = new Image();
         img.src = data;
         return await new Promise((resolve) => {
-                img.onload = function() {
-                        let canvas: HTMLCanvasElement = document.createElement('canvas');
-                        canvas.width = divWidth;
-                        canvas.height = divHeight;
-                        canvas.getContext('2d').drawImage(img, 0, 0);
-                        let url: string = canvas.toDataURL('image/png');
-                        canvas.remove();
-                        resolve({ url: url, aspect: divWidth / divHeight });
-                    };
-                img.onerror = function() {
-                        resolve({ url: 'data:,', aspect: width / SurveyHelper.EPSILON });
-                    }
-            });
+            img.onload = function() {
+                let canvas: HTMLCanvasElement = document.createElement('canvas');
+                canvas.width = divWidth;
+                canvas.height = divHeight;
+                let context: CanvasRenderingContext2D = canvas.getContext('2d');
+                context.fillStyle = SurveyHelper.BACKGROUND_COLOR;
+                context.fillRect(0, 0, divWidth, divHeight);
+                context.drawImage(img, 0, 0);
+                let url: string = canvas.toDataURL('image/jpeg', SurveyHelper.HTML_TO_IMAGE_QUALITY);
+                canvas.remove();
+                resolve({ url: url, aspect: divWidth / divHeight });
+            };
+            img.onerror = function() {
+                resolve({ url: 'data:,', aspect: width / SurveyHelper.EPSILON });
+            };
+        });
     }
     public static async createBoldTextFlat(point: IPoint, question: Question,
         controller: DocController, text: string | LocalizableString): Promise<IPdfBrick> {
