@@ -41,3 +41,4 @@ export { TextFieldBrick } from '../pdf_render/pdf_textfield';
 export { TextBoldBrick } from '../pdf_render/pdf_textbold';
 export { TextBoxBrick } from '../pdf_render/pdf_textbox';
 export { TextBrick } from '../pdf_render/pdf_text';
+export { TitlePanelBrick } from '../pdf_render/pdf_titlepanel';
