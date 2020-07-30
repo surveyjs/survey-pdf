@@ -31,6 +31,7 @@ export { BooleanItemBrick } from '../pdf_render/pdf_booleanitem';
 export { CheckboxItemBrick } from '../pdf_render/pdf_checkboxitem';
 export { CheckItemBrick } from '../pdf_render/pdf_checkitem';
 export { CommentBrick } from '../pdf_render/pdf_comment';
+export { CompositeBrick } from '../pdf_render/pdf_composite';
 export { DropdownBrick } from '../pdf_render/pdf_dropdown';
 export { HTMLBrick } from '../pdf_render/pdf_html';
 export { LinkBrick } from '../pdf_render/pdf_link';

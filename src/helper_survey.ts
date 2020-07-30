@@ -376,7 +376,7 @@ export class SurveyHelper {
         if (typeof height === 'undefined') {
             height = width / SurveyHelper.IMAGEPICKER_RATIO;
         }
-        let html: string = `<img src='${imagelink}' width='${width}' height='${height}' />`;
+        let html: string = `<img src='${imagelink}' width='${width}' height='${height}'/>`;
         return new HTMLBrick(question, controller,
             SurveyHelper.createRect(point, width, height), html, true);
     }
