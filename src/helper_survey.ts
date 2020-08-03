@@ -458,7 +458,7 @@ export class SurveyHelper {
         let unvisibleScale: number = 1.0 - unvisibleWidth / minSide;
         let unvisibleRadius: number = SurveyHelper.RADIUS_SCALE * unvisibleWidth;
         let oldDrawColor: string = controller.doc.getDrawColor();
-        controller.doc.setDrawColor(SurveyHelper.FORM_BORDER_COLOR);
+        controller.doc.setDrawColor(flat.formBorderColor);
         controller.doc.setLineWidth(visibleWidth);
         controller.doc.rect(...SurveyHelper.createAcroformRect(SurveyHelper.scaleRect(flat, visibleScale)));
         controller.doc.setDrawColor(SurveyHelper.BACKGROUND_COLOR);

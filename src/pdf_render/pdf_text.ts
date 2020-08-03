@@ -1,13 +1,11 @@
 import { IQuestion, } from 'survey-core';
 import { IPoint, IRect, DocController } from '../doc_controller';
 import { PdfBrick } from './pdf_brick';
-import { SurveyHelper } from '../helper_survey';
 
 export class TextBrick extends PdfBrick {
     protected align: { align: string, baseline: string };
     public constructor(question: IQuestion, controller: DocController,
-        rect: IRect, protected text: string, protected fontSize?: number,
-        protected textColor?: string) {
+        rect: IRect, protected text: string, protected fontSize?: number) {
         super(question, controller, rect);
         this.align = {
             align: 'left',
@@ -15,9 +13,6 @@ export class TextBrick extends PdfBrick {
         };
         if (typeof fontSize === 'undefined') {
             this.fontSize = controller.fontSize;
-        }
-        if (typeof textColor === 'undefined') {
-            this.textColor = SurveyHelper.TEXT_COLOR;
         }
     }
     public async renderInteractive(): Promise<void> {

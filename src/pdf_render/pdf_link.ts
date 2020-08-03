@@ -8,8 +8,8 @@ export class LinkBrick extends TextBrick {
         super((<LinkBrick>textFlat).question,
             (<LinkBrick>textFlat).controller,
             textFlat, (<LinkBrick>textFlat).text,
-            (<LinkBrick>textFlat).controller.fontSize,
-            LinkBrick.COLOR);
+            (<LinkBrick>textFlat).controller.fontSize);
+        this.textColor = LinkBrick.COLOR;
     }
     public async renderInteractive(): Promise<void> {
         let oldTextColor: string = this.controller.doc.getTextColor();

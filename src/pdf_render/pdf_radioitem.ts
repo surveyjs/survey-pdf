@@ -8,13 +8,12 @@ export class RadioGroupWrap {
     private _radioGroup: any;
     public constructor(private name: string,
         private controller: DocController,
-        private _readOnly: boolean = false) {
+        private _readOnly: boolean) {
     }
     public addToPdf() {
         this._radioGroup = new this.controller.doc.AcroFormRadioButton();
         this._radioGroup.value = this.name;
         this._radioGroup.readOnly = this.readOnly;
-        this._radioGroup.color = SurveyHelper.FORM_BORDER_COLOR;
         this.controller.doc.addField(this._radioGroup);
     }
     get radioGroup(): any {
@@ -32,6 +31,7 @@ export class RadioItemBrick extends PdfBrick {
         rect: IRect, private index: number, private checked: Boolean,
         private radioGroupWrap: RadioGroupWrap) {
         super(question, controller, rect);
+        this.textColor = this.formBorderColor;
     }
     public async renderInteractive(): Promise<void> {
         if (this.radioGroupWrap.readOnly) {
@@ -40,6 +40,7 @@ export class RadioItemBrick extends PdfBrick {
         }
         if (this.index == 0) {
             this.radioGroupWrap.addToPdf();
+            this.radioGroupWrap.radioGroup.color = this.formBorderColor;
         }
         let name = this.radioGroupWrap.radioGroup.value + 'index' + this.index;
         let radioButton = this.radioGroupWrap.radioGroup.createOption(name);
@@ -50,7 +51,7 @@ export class RadioItemBrick extends PdfBrick {
         let formScale = SurveyHelper.formScale(this.controller, this);
         radioButton.Rect = SurveyHelper.createAcroformRect(
             SurveyHelper.scaleRect(this, formScale));
-        radioButton.color = SurveyHelper.FORM_BORDER_COLOR;
+        radioButton.color = this.formBorderColor;
         SurveyHelper.renderFlatBorders(this.controller, this);
         this.radioGroupWrap.radioGroup.setAppearance(
             this.controller.doc.AcroForm.Appearance.RadioButton.Circle);
@@ -69,7 +70,7 @@ export class RadioItemBrick extends PdfBrick {
             let radiomarkerFlat: IPdfBrick = await SurveyHelper.createTextFlat(
                 radiomarkerPoint, this.question, this.controller,
                 RadioItemBrick.RADIOMARKER_READONLY_SYMBOL, TextBrick);
-            (<any>radiomarkerFlat.unfold()[0]).textColor = SurveyHelper.FORM_BORDER_COLOR;
+            (<any>radiomarkerFlat.unfold()[0]).textColor = this.textColor;
             this.controller.fontSize = oldFontSize;
             await radiomarkerFlat.render();
         }

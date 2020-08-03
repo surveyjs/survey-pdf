@@ -31,7 +31,7 @@ export class DropdownBrick extends PdfBrick {
             SurveyHelper.scaleRect(this,
             SurveyHelper.formScale(this.controller, this)));
         comboBox.edit = false;
-        comboBox.color = SurveyHelper.TEXT_COLOR;
+        comboBox.color = this.textColor;
         let options: string[] = [];
         if (this.question.showOptionsCaption) {
             options.push(this.question.optionsCaption);

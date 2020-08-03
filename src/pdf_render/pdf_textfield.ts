@@ -36,7 +36,7 @@ export class TextFieldBrick extends PdfBrick {
         else inputField.value = '';
         inputField.multiline = this.isMultiline;
         inputField.readOnly = this.isReadOnly;
-        inputField.color = SurveyHelper.TEXT_COLOR;
+        inputField.color = this.textColor;
         let formScale: number = SurveyHelper.formScale(this.controller, this);
         inputField.maxFontSize = this.controller.fontSize * formScale;
         inputField.Rect = SurveyHelper.createAcroformRect(

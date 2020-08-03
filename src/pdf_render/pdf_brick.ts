@@ -1,5 +1,6 @@
 import { IRect, ISize, DocController } from '../doc_controller';
 import { IQuestion } from 'survey-core';
+import { SurveyHelper } from '../helper_survey';
 
 export interface IPdfBrick extends IRect, ISize {
     render(): Promise<void>;
@@ -7,10 +8,12 @@ export interface IPdfBrick extends IRect, ISize {
     isAddPage(): boolean;
 }
 export class PdfBrick implements IPdfBrick {
-    xLeft: number;
-    xRight: number;
-    yTop: number;
-    yBot: number;
+    public xLeft: number;
+    public xRight: number;
+    public yTop: number;
+    public yBot: number;
+    public textColor: string = SurveyHelper.TEXT_COLOR;
+    public formBorderColor: string = SurveyHelper.FORM_BORDER_COLOR;
     public constructor(protected question: IQuestion,
         protected controller: DocController, rect: IRect) {
         this.xLeft = rect.xLeft;
