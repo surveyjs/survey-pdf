@@ -11,7 +11,7 @@
 * jsPDF AcroForm Plugin
 * @module AcroForm
 */
-import * as jspdf from "jspdf";
+var jspdf = require("jspdf");
 (function (jsPDF, globalObj) {
     'use strict';
 

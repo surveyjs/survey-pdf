@@ -11,7 +11,7 @@
    * 
    * ====================================================================
    */
-  import * as jspdf from "jspdf";
+  var jspdf = require("jspdf");
 
   (function (jsPDFAPI) {
     var clone, _DrillForContent, FontNameDB, FontStyleMap, TextAlignMap, FontWeightMap, FloatMap, ClearMap, GetCSS, PurgeWhiteSpace, Renderer, ResolveFont, ResolveUnitedNumber, UnitedNumberMap, elementHandledElsewhere, images, loadImgs, checkForFooter, process, tableToJson;
