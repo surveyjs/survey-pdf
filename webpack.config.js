@@ -26,7 +26,7 @@ var platformOptions = {
   pdf: {
     externals: {
       jspdf: {
-        root: "jsPDF",
+        root: "jspdf",
         commonjs2: "jspdf",
         commonjs: "jspdf",
         amd: "jspdf"

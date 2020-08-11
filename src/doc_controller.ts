@@ -1,9 +1,11 @@
-import * as jsPDF from 'jspdf';
+import { jsPDF, jsPDFOptions } from 'jspdf';
 import { SurveyHelper } from './helper_survey';
 import { LocalizableString } from 'survey-core';
 import Fonts from './fonts';
 import setRadioAppearance from './jspdf_plugins/acroform';
 import './jspdf_plugins/acroform.js';
+import './jspdf_plugins/from_html.js';
+
 export interface IPoint {
     xLeft: number;
     yTop: number;
@@ -114,8 +116,8 @@ export class DocOptions implements IDocOptions {
 }
 
 export class DocController extends DocOptions {
-    private _doc: any;
-    private _helperDoc: any;
+    private _doc: jsPDF;
+    private _helperDoc: jsPDF;
     private _fontStyle: string;
     private marginsStack: IMarginLR[];
     public constructor(options?: IDocOptions) {
@@ -128,11 +130,12 @@ export class DocController extends DocOptions {
             this.addFont(this.fontName, Fonts.SEGOE_NORMAL, 'normal');
             this.addFont(this.fontName, Fonts.SEGOE_BOLD, 'bold');
         }
-        this._doc = new jsPDF({ putOnlyUsedFonts: false, orientation: this.orientation,
-            unit: 'pt', format: this.format, compress: this.compress });
+        var jspdfOptions: jsPDFOptions = { orientation: this.orientation,
+        unit: 'pt', format: this.format, compress: this.compress }
+        
+        this._doc = new jsPDF(jspdfOptions);
         setRadioAppearance(this._doc);
-        this._helperDoc = new jsPDF({ putOnlyUsedFonts: false,
-            orientation: this.orientation, unit: 'pt', format: this.format });
+        this._helperDoc = new jsPDF(jspdfOptions);
         this._doc.setFont(this.fontName);
         this._helperDoc.setFont(this.fontName);
         this._doc.setFontSize(this.fontSize);
@@ -167,14 +170,14 @@ export class DocController extends DocOptions {
     }
     public set fontStyle(fontStyle: string) {
         this._fontStyle = fontStyle;
-        this._doc.setFontStyle(fontStyle);
-        this._helperDoc.setFontStyle(fontStyle);
+        this._doc.setFont(this._fontName, fontStyle);
+        this._helperDoc.setFont(this._fontName, fontStyle);
     }
     public measureText(text: string | LocalizableString | number = 1, fontStyle: string = this._fontStyle,
         fontSize: number = this._fontSize): ISize {
         let oldFontSize = this._helperDoc.getFontSize();
         this._helperDoc.setFontSize(fontSize);
-        this._helperDoc.setFontStyle(fontStyle);
+        this._helperDoc.setFont(this._fontName, fontStyle);
         let height: number = this._helperDoc.getLineHeight() / this._helperDoc.internal.scaleFactor;;
         let width: number = 0.0;
         if (typeof text === 'number') {
@@ -186,7 +189,7 @@ export class DocController extends DocOptions {
                 sm + this._helperDoc.getTextWidth(cr), 0.0);
         }
         this._helperDoc.setFontSize(oldFontSize);
-        this._helperDoc.setFontStyle('normal');
+        this._helperDoc.setFont(this._fontName, 'normal');
         return {
             width: width,
             height: height
