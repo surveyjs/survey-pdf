@@ -34,7 +34,7 @@ export class FlatSurvey {
         pagePanel.onFirstRendering();
         let pagePanelFlats: IPdfBrick[] = [];
         let currPoint: IPoint = SurveyHelper.clone(point);
-        if (survey.showPageTitles) {
+        if (pagePanel.getType() !== "page" || survey.showPageTitles) {
             let compositeFlat: CompositeBrick = new CompositeBrick();
             if (pagePanel.title) {
                 let pagelPanelTitleFlat: IPdfBrick = await SurveyHelper.createTitlePanelFlat(
