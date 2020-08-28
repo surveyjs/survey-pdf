@@ -247,13 +247,13 @@ export class SurveyHelper {
         let divHeight: number = div.offsetHeight;
         div.remove();
         let fakePadding: number = controller.unitHeight / 2.0;
-        let data: string = 'data:image/svg+xml;charset=utf-8,' +
-            '<svg xmlns="http://www.w3.org/2000/svg" ' +
+        let svg: string = '<svg xmlns="http://www.w3.org/2000/svg" ' +
             `width="${divWidth}px" ` +
             `height="${divHeight}px" ` +
             `viewBox="0 ${fakePadding} ${divWidth} ${divHeight + fakePadding}">` +
             '<foreignObject width="100%" height="100%">' +
             SurveyHelper.htmlToXml(html) + '</foreignObject></svg>';
+        let data: string = 'data:image/svg+xml;base64,' + btoa(svg);
         let img: HTMLImageElement = new Image();
         img.src = data;
         return await new Promise((resolve) => {
