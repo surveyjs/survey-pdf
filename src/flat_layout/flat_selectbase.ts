@@ -14,7 +14,7 @@ export abstract class FlatSelectBase extends FlatQuestion {
         super(survey, question, controller);
         this.question = <QuestionCheckboxBase>question;
     }
-    protected abstract generateFlatItem(rect: IRect, item: ItemValue, index: number): IPdfBrick;
+    public abstract generateFlatItem(rect: IRect, item: ItemValue, index: number): IPdfBrick;
     protected async generateFlatComposite(point: IPoint, item: ItemValue, index: number): Promise<IPdfBrick> {
         let compositeFlat: CompositeBrick = new CompositeBrick();
         let itemRect: IRect = SurveyHelper.createRect(point,

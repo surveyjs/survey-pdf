@@ -486,7 +486,7 @@ test('Check matrixdynamic with totals', async () => {
             {
 
                 type: 'matrixdynamic',
-                name: 'orderList',
+                name: 'madintotals',
                 showHeader: false,
                 rowCount: 1,
                 titleLocation: 'hidden',
@@ -499,7 +499,7 @@ test('Check matrixdynamic with totals', async () => {
                 ]
             }
         ]
-    }
+    };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
@@ -602,4 +602,44 @@ test('Check matrix dynamic column width', async () => {
         yBot: assumeDrop1.yBot
     };
     TestHelper.equalRect(expect, rowFlats[1], assumeDrop2);
+});
+test('Check matrixdynamic with showInMultipleColumns', async () => {
+    let json: any = {
+        showQuestionNumbers: 'off',
+        elements: [
+            {
+                type: 'matrixdynamic',
+                name: 'madintotalsshowmulcol',
+                titleLocation: 'hidden',
+                hideNumber: true,
+                columns: [
+                    {
+                        cellType: 'checkbox',
+                        showInMultipleColumns: true,
+                        choices: ['MulCol1', 'MulCol2']
+                    }
+                ],
+                rowCount: 1
+            }
+        ]
+    }
+    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    expect(flats.length).toBe(1);
+    expect(flats[0].length).toBe(2);
+    controller.margins.left += controller.unitWidth;
+    let unfoldHeaderFlats: IPdfBrick[] = flats[0][0].unfold();
+    expect(unfoldHeaderFlats.length).toBe(3);
+    let unfolRowFlats: IPdfBrick[] = flats[0][1].unfold();
+    expect(unfolRowFlats.length).toBe(2);
+    let assumeCheck1: IRect = {
+        xLeft: controller.leftTopPoint.xLeft,
+        xRight: controller.leftTopPoint.xLeft + controller.unitWidth,
+        yTop: unfolRowFlats[0].yTop,
+        yBot: unfolRowFlats[0].yTop + controller.unitHeight
+    };
+    assumeCheck1 = SurveyHelper.moveRect(SurveyHelper.scaleRect(assumeCheck1,
+        SurveyHelper.SELECT_ITEM_FLAT_SCALE), controller.leftTopPoint.xLeft, unfolRowFlats[0].yTop);
+    TestHelper.equalRect(expect, unfolRowFlats[0], assumeCheck1);
 });

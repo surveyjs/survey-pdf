@@ -1,8 +1,9 @@
 import { IQuestion, QuestionMatrixDropdownModelBase, QuestionMatrixDropdownRenderedTable,
     QuestionMatrixDropdownRenderedRow, QuestionMatrixDropdownRenderedCell } from 'survey-core';
 import { SurveyPDF } from '../survey';
-import { IPoint, DocController } from '../doc_controller';
-import { FlatQuestion } from './flat_question';
+import { IPoint, IRect, DocController } from '../doc_controller';
+import { IFlatQuestion, FlatQuestion } from './flat_question';
+import { FlatSelectBase } from './flat_selectbase';
 import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { TextBrick } from '../pdf_render/pdf_text';
@@ -21,9 +22,20 @@ export class FlatMatrixMultiple extends FlatQuestion {
         isHeader: boolean): Promise<CompositeBrick> {
         let composite: CompositeBrick = new CompositeBrick();
         if (cell.hasQuestion) {
-            cell.question.titleLocation = SurveyHelper.TITLE_LOCATION_MATRIX;
-            composite.addBrick(...await SurveyHelper.generateQuestionFlats(
-                this.survey, this.controller, cell.question, point));
+            if (cell.cell.column.isShowInMultipleColumns) {
+                let flatMultipleColumnsQuestion: IFlatQuestion = FlatRepository.getInstance().create(
+                    this.survey, cell.question, this.controller, cell.question.getType());
+                let itemRect: IRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(
+                    SurveyHelper.createRect(point, this.controller.unitHeight, this.controller.unitHeight),
+                    SurveyHelper.SELECT_ITEM_FLAT_SCALE), point.xLeft);
+                composite.addBrick((<FlatSelectBase>flatMultipleColumnsQuestion)
+                    .generateFlatItem(itemRect, cell.question.choices[cell.choiceIndex], cell.choiceIndex));
+            }
+            else {
+                cell.question.titleLocation = SurveyHelper.TITLE_LOCATION_MATRIX;
+                composite.addBrick(...await SurveyHelper.generateQuestionFlats(
+                    this.survey, this.controller, cell.question, point));
+            }
         }
         else if (cell.hasTitle) {
             if (isHeader) {
