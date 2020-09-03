@@ -40,7 +40,6 @@ export class SurveyHelper {
     public static readonly UNVISIBLE_BORDER_SCALE: number = 0.2;
     public static readonly RADIUS_SCALE: number = 3;
     public static readonly TITLE_FONT_SCALE: number = 1.1;
-    public static readonly VALUE_READONLY_FONT_SCALE: number = 0.63;
     public static readonly VALUE_READONLY_PADDING_SCALE: number = 0.3;
     public static readonly HTML_TO_IMAGE_QUALITY: number = 1.0;
     public static readonly FORM_BORDER_COLOR: string = '#9f9f9f';
@@ -437,17 +436,14 @@ export class SurveyHelper {
         return SurveyHelper.createRect(point, width, height);
     }
     public static async createReadOnlyTextFieldTextFlat(point: IPoint,
-        controller: DocController, question: Question, value: string): Promise<IPdfBrick> {
-        let oldFontSize = controller.fontSize;
-        controller.fontSize = oldFontSize * SurveyHelper.VALUE_READONLY_FONT_SCALE;
+        controller: DocController, question: Question, value: string, onlyFirstLine: boolean): Promise<IPdfBrick> {
         let padding: number = controller.unitWidth * SurveyHelper.VALUE_READONLY_PADDING_SCALE;
-        point.yTop += padding;
+        if (!onlyFirstLine) point.yTop += padding;
         point.xLeft += padding;
         controller.pushMargins(point.xLeft, controller.margins.right + padding);
         let textFlat: IPdfBrick = await SurveyHelper.createTextFlat(
             point, question, controller, value.toString(), TextBrick);
         controller.popMargins();
-        controller.fontSize = oldFontSize;
         return textFlat;
     }
     public static renderFlatBorders(controller: DocController, flat: PdfBrick): void {
@@ -471,8 +467,11 @@ export class SurveyHelper {
         question: Question, flat: PdfBrick, value: string,
         onlyFirstLine: boolean = true): Promise<void> {
         let point: IPoint = SurveyHelper.createPoint(flat, true, true);
+        let oldFontSize = controller.fontSize;
+        controller.fontSize = flat.fontSize;
         let textFlat: IPdfBrick = await SurveyHelper.
-            createReadOnlyTextFieldTextFlat(point, controller, question, value);
+            createReadOnlyTextFieldTextFlat(point, controller, question, value, onlyFirstLine);
+        controller.fontSize = oldFontSize;
         if (onlyFirstLine) await textFlat.unfold()[0].render();
         else await textFlat.render();
         SurveyHelper.renderFlatBorders(controller, flat);

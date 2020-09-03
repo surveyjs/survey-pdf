@@ -1,5 +1,5 @@
 import { IRect, IMargin, ISize, DocController } from '../doc_controller';
-import { IPdfBrick } from '../pdf_render/pdf_brick';
+import { IPdfBrick, PdfBrick } from '../pdf_render/pdf_brick';
 import { TextBrick } from '../pdf_render/pdf_text';
 import { TextBoldBrick } from '../pdf_render/pdf_textbold';
 import { SurveyHelper } from '../helper_survey';
@@ -208,12 +208,13 @@ export class DrawCanvas {
         let textRect: IRect = this.alignRect(textOptions, textSize);
         if (!textOptions.isBold) {
             this.packs.push(new TextBrick(null, this.controller,
-                textRect, textOptions.text, textOptions.fontSize));
+                textRect, textOptions.text));
         }
         else {
             this.packs.push(new TextBoldBrick(null, this.controller,
-                textRect, textOptions.text, textOptions.fontSize));
+                textRect, textOptions.text));
         }
+        (<PdfBrick>this.packs[this.packs.length - 1]).fontSize = textOptions.fontSize;
     }
     /**
      * Call this method to draw image

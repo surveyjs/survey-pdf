@@ -5,15 +5,12 @@ import { PdfBrick } from './pdf_brick';
 export class TextBrick extends PdfBrick {
     protected align: { align: string, baseline: string };
     public constructor(question: IQuestion, controller: DocController,
-        rect: IRect, protected text: string, protected fontSize?: number) {
+        rect: IRect, protected text: string) {
         super(question, controller, rect);
         this.align = {
             align: 'left',
             baseline: 'middle'
         };
-        if (typeof fontSize === 'undefined') {
-            this.fontSize = controller.fontSize;
-        }
     }
     public async renderInteractive(): Promise<void> {
         let alignPoint: IPoint = this.alignPoint(this);

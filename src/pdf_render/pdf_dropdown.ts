@@ -41,6 +41,7 @@ export class DropdownBrick extends PdfBrick {
         });
         comboBox.setOptions(options);
         comboBox.fontName = this.controller.fontName;
+        comboBox.fontSize = this.fontSize;
         comboBox.readOnly = this.question.isReadOnly;
         comboBox.isUnicode = SurveyHelper.isCustomFont(
             this.controller, comboBox.fontName);

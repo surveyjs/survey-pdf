@@ -20,7 +20,7 @@ export class FlatComment extends FlatQuestion {
         if (this.question.isReadOnly) {
             let textFlat: IPdfBrick = await SurveyHelper.
                 createReadOnlyTextFieldTextFlat(point,
-                    this.controller, this.question, this.question.value || '');
+                    this.controller, this.question, this.question.value || '', false);
             let padding: number = this.controller.unitWidth *
                 SurveyHelper.VALUE_READONLY_PADDING_SCALE;
             if (textFlat.yBot + padding > rect.yBot) {

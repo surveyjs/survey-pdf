@@ -27,6 +27,7 @@ export class TextFieldBrick extends PdfBrick {
             new (<any>this.controller.doc.AcroFormTextField)();
         inputField.fieldName = this.fieldName;
         inputField.fontName = this.controller.fontName;
+        inputField.fontSize = this.fontSize;
         inputField.isUnicode = SurveyHelper.isCustomFont(
             this.controller, inputField.fontName);
         if (this.inputType !== 'password') {

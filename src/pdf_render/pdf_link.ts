@@ -7,8 +7,7 @@ export class LinkBrick extends TextBrick {
     public constructor(textFlat: TextBrick, protected link: string) {
         super((<LinkBrick>textFlat).question,
             (<LinkBrick>textFlat).controller,
-            textFlat, (<LinkBrick>textFlat).text,
-            (<LinkBrick>textFlat).controller.fontSize);
+            textFlat, (<LinkBrick>textFlat).text);
         this.textColor = LinkBrick.COLOR;
     }
     public async renderInteractive(): Promise<void> {

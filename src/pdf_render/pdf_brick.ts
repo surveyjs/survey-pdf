@@ -12,6 +12,10 @@ export class PdfBrick implements IPdfBrick {
     public xRight: number;
     public yTop: number;
     public yBot: number;
+    /**
+     * Size of text. Set 0 for auto size
+     */
+    public fontSize: number;
     public textColor: string = SurveyHelper.TEXT_COLOR;
     public formBorderColor: string = SurveyHelper.FORM_BORDER_COLOR;
     public constructor(protected question: IQuestion,
@@ -20,6 +24,8 @@ export class PdfBrick implements IPdfBrick {
         this.xRight = rect.xRight;
         this.yTop = rect.yTop;
         this.yBot = rect.yBot;
+        this.fontSize = !!controller ?
+            controller.fontSize : DocController.FONT_SIZE;
     }
     public get width(): number {
         return this.xRight - this.xLeft;

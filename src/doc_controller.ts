@@ -38,6 +38,7 @@ export interface IDocOptions {
 }
 export class DocOptions implements IDocOptions {
     public static readonly MM_TO_PT = 72 / 25.4;
+    public static readonly FONT_SIZE = 14;
     protected _fontSize: number;
     protected _margins: IMargin;
     protected _format: string | number[];
@@ -60,7 +61,7 @@ export class DocOptions implements IDocOptions {
             this._format = this._format.map(f => f * DocOptions.MM_TO_PT);
         }
         this._fontName = options.fontName || 'segoe';
-        this._fontSize = options.fontSize || 14;
+        this._fontSize = options.fontSize || DocOptions.FONT_SIZE;
         this._margins = SurveyHelper.clone(options.margins);
         if (typeof this._margins === 'undefined') {
             this._margins = {};
