@@ -233,7 +233,7 @@ test('Check readonly comment with long text', async () => {
         commentPoint, controller, survey.getAllQuestions()[0].rows);
     let textFlat: IPdfBrick = await SurveyHelper.
         createReadOnlyTextFieldTextFlat(commentPoint, controller,
-            survey.getAllQuestions()[0], survey.getAllQuestions()[0].value);
+            survey.getAllQuestions()[0], survey.getAllQuestions()[0].value, false);
     let padding: number = controller.unitWidth *
         SurveyHelper.VALUE_READONLY_PADDING_SCALE;
     assumeTextField.yBot = textFlat.yBot + padding;
