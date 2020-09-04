@@ -252,7 +252,8 @@ export class SurveyHelper {
             `viewBox="0 ${fakePadding} ${divWidth} ${divHeight + fakePadding}">` +
             '<foreignObject width="100%" height="100%">' +
             SurveyHelper.htmlToXml(html) + '</foreignObject></svg>';
-        let data: string = 'data:image/svg+xml;base64,' + btoa(svg);
+        let data: string = 'data:image/svg+xml;base64,' +
+            btoa(unescape(encodeURIComponent(svg.replace(/%23/g, '#'))));
         let img: HTMLImageElement = new Image();
         img.src = data;
         return await new Promise((resolve) => {
