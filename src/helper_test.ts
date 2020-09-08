@@ -24,7 +24,6 @@ export class TestHelper {
             fontSize: 30,
             fontName: SurveyHelper.STANDARD_FONT,
             margins: {
-
                 left: 10.0,
                 right: 10.0,
                 top: 10.0,

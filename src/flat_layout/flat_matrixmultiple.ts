@@ -142,8 +142,8 @@ export class FlatMatrixMultiple extends FlatQuestion {
         }
         let rows: QuestionMatrixDropdownRenderedRow[] = [];
         let cellWidth: number = SurveyHelper.getColumnWidth(this.controller, colCount);
-        let isWide: boolean = cellWidth >=
-            this.controller.measureText(SurveyHelper.MATRIX_COLUMN_WIDTH).width;
+        let isWide: boolean = this.controller.matrixRenderAs !== 'list' &&
+            cellWidth >= this.controller.measureText(SurveyHelper.MATRIX_COLUMN_WIDTH).width;
         if (table.showHeader && isWide) rows.push(table.headerRow);
         rows.push(...table.rows);
         if (table.hasRemoveRows && isVertical) rows.pop();

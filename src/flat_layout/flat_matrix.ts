@@ -48,7 +48,8 @@ export class FlatMatrix extends FlatQuestion {
     }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         let cellWidth: number = SurveyHelper.getColumnWidth(this.controller, this.question.visibleColumns.length + (this.question.hasRows ? 1 : 0));
-        let isVertical: boolean = cellWidth < this.controller.measureText(SurveyHelper.MATRIX_COLUMN_WIDTH).width;
+        let isVertical: boolean = this.controller.matrixRenderAs === 'list' ||
+            cellWidth < this.controller.measureText(SurveyHelper.MATRIX_COLUMN_WIDTH).width;
         let currPoint: IPoint = SurveyHelper.clone(point);
         let cells: IPdfBrick[] = [];
         if (!isVertical && this.question.showHeader && this.question.visibleColumns.length != 0) {
@@ -80,7 +81,7 @@ export class FlatMatrixRow extends FlatRadiogroup {
         let checked: boolean = this.row.value == column.value;
         let itemRect = SurveyHelper.createRect(currPoint,
             SurveyHelper.getPageAvailableWidth(this.controller), this.controller.unitHeight);
-        let radioFlat = this.generateFlatItem(itemRect, column, index, this.key, checked);
+        let radioFlat: IPdfBrick = this.generateFlatItem(itemRect, column, index, this.key, checked);
         currPoint.yTop = radioFlat.yBot + this.controller.unitHeight * SurveyHelper.GAP_BETWEEN_ITEM_TEXT;
         let cellTextFlat = await SurveyHelper.createTextFlat(currPoint, this.questionMatrix, this.controller,
             this.questionMatrix.getCellDisplayLocText(this.row.name, column), TextBrick);
@@ -91,12 +92,12 @@ export class FlatMatrixRow extends FlatRadiogroup {
         let checked: boolean = this.row.value == column.value;
         let itemRect: IRect = SurveyHelper.createRect(currPoint,
             this.controller.unitHeight, this.controller.unitHeight);
-        let radioItem: IPdfBrick = this.generateFlatItem(SurveyHelper.moveRect(
+        let radioFlat: IPdfBrick = this.generateFlatItem(SurveyHelper.moveRect(
             SurveyHelper.scaleRect(itemRect, SurveyHelper.SELECT_ITEM_FLAT_SCALE), itemRect.xLeft), column, index, this.key, checked);
-        currPoint.xLeft = radioItem.xRight + this.controller.unitWidth * SurveyHelper.GAP_BETWEEN_ITEM_TEXT;
+        currPoint.xLeft = radioFlat.xRight + this.controller.unitWidth * SurveyHelper.GAP_BETWEEN_ITEM_TEXT;
         let radioText: IPdfBrick = await SurveyHelper.createTextFlat(currPoint, this.questionMatrix,
             this.controller, column.locText, TextBrick);
-        return new CompositeBrick(radioItem, radioText);
+        return new CompositeBrick(radioFlat, radioText);
     }
     protected async generateFlatsHorizontallyCells(point: IPoint) {
         let cells: IPdfBrick[] = [];

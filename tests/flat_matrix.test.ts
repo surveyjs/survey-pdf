@@ -17,7 +17,7 @@ test('Matrix simple hasRows true columns', async () => {
             {
                 titleLocation: 'hidden',
                 type: 'matrix',
-                name: 'test',
+                name: 'matsimp_hasrowstrue',
                 columns: [
                     {
                         value: 1,
@@ -56,14 +56,14 @@ test('Matrix simple hasRows true columns', async () => {
     let receivedCells = [];
     receivedCells.push(...flats[0][0].unfold(), ...flats[0][2].unfold());
     TestHelper.equalRects(expect, receivedCells, assumeCells);
-})
+});
 test('Matrix simple hasRows false columns', async () => {
-    let json = {
+    let json: any = {
         questions: [
             {
                 titleLocation: 'hidden',
                 type: 'matrix',
-                name: 'test',
+                name: 'matsimp_hasrowsfalse',
                 columns: [
                     {
                         value: 1,
@@ -89,14 +89,14 @@ test('Matrix simple hasRows false columns', async () => {
         SurveyHelper.createRect(currPoint, itemWidth, itemWidth),
         SurveyHelper.SELECT_ITEM_FLAT_SCALE), currPoint.xLeft));
     TestHelper.equalRects(expect, flats[0], assumeCells);
-})
+});
 test('Matrix simple vertical', async () => {
     let json: any = {
         questions: [
             {
                 titleLocation: 'hidden',
                 type: 'matrix',
-                name: 'test',
+                name: 'matsimp_vertical',
                 columns: [
                     {
                         value: 1,
@@ -107,8 +107,7 @@ test('Matrix simple vertical', async () => {
                     }, {
                         value: 3,
                         text: 'test3'
-                    },
-                    {
+                    }, {
                         value: 4,
                         text: 'test4'
                     }
@@ -125,7 +124,7 @@ test('Matrix simple vertical', async () => {
     let unfoldCells: IRect[] = [];
     flats[0].forEach((flat: IPdfBrick) => {
         unfoldCells.push(...flat.unfold());
-    })
+    });
     json.questions[0].columns.forEach((column: any) => {
         let itemRect: IRect = SurveyHelper.createRect(currPoint, itemWidth, itemWidth);
         assumeCells.push(SurveyHelper.moveRect(SurveyHelper.scaleRect(itemRect,
@@ -138,17 +137,17 @@ test('Matrix simple vertical', async () => {
         currPoint.xLeft = oldXleft;
         currPoint.yTop += SurveyHelper.GAP_BETWEEN_ROWS *
             controller.unitHeight + columnTextHeight;
-    })
+    });
     TestHelper.equalRects(expect, unfoldCells, assumeCells);
 });
-test('Matrix rubric hidden header', async () => {
+test('Matrix simple hidden header', async () => {
     let json: any = {
         questions: [
             {
                 titleLocation: 'hidden',
                 showHeader: false,
                 type: 'matrix',
-                name: 'matrix_rubric_title_hidden',
+                name: 'matsimp_hiddenheader',
                 title: 'Please indicate if you agree or disagree with the following statements',
                 columns: [
                     {
@@ -183,14 +182,13 @@ test('Matrix rubric hidden header', async () => {
     }
     TestHelper.equalRects(expect, flats[0][0].unfold(), assumeCells);
 });
-test('Matrix rubric check horisontally', async () => {
+test('Matrix simple check horisontally', async () => {
     let json: any = {
         questions: [
             {
-
                 type: 'matrix',
                 titleLocation: 'hidden',
-                name: 'test',
+                name: 'matsimp_horisontal',
                 showHeader: false,
                 columns: [
                     'column1'
@@ -228,15 +226,13 @@ test('Matrix rubric check horisontally', async () => {
     assumeFlats.push(rowTextFlat, itemRect, cellTextFlat);
     TestHelper.equalRects(expect, flats[0][0].unfold(), assumeFlats);
 });
-
-test('Matrix rubric check vertically', async () => {
-    let json = {
+test('Matrix simple check vertical rows', async () => {
+    let json: any = {
         questions: [
             {
-
                 type: 'matrix',
                 titleLocation: 'hidden',
-                name: 'test',
+                name: 'matsimp_verticalrows',
                 showHeader: false,
                 columns: [
                     'column1', 'column2', 'column3'
@@ -279,4 +275,30 @@ test('Matrix rubric check vertically', async () => {
         assumeFlats.push(itemRect, cellTextFlat);
     }
     TestHelper.equalRects(expect, flats[0][0].unfold(), assumeFlats);
+});
+test('Matrix simple check matrixRenderAs list', async () => {
+    let json: any = {
+        questions: [
+            {
+                type: 'matrix',
+                name: 'matsimp_renderaslist',
+                titleLocation: 'hidden',
+                showHeader: false,
+                columns: [
+                    'Column 1',
+                    'Column 2'
+                ]
+            }
+        ]
+    };
+    let options: IDocOptions = TestHelper.defaultOptions;
+    options.matrixRenderAs = 'list';
+    let survey: SurveyPDF = new SurveyPDF(json, options);
+    let controller: DocController = new DocController(options);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    let unfoldFlats: IPdfBrick[] = flats[0][0].unfold();
+    expect(unfoldFlats[0].xLeft).toBeCloseTo(unfoldFlats[2].xLeft);
+    expect(unfoldFlats[0].yTop).toBeLessThan(unfoldFlats[2].yTop);
+    expect(unfoldFlats[0].xRight).toBeCloseTo(unfoldFlats[2].xRight)
+    expect(unfoldFlats[0].yBot).not.toBeCloseTo(unfoldFlats[2].yBot);
 });
