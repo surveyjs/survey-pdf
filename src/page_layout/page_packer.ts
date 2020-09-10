@@ -67,7 +67,7 @@ export class PagePacker {
                 let height: number = flat.height;
                 flat.yTop = yBot + flat.yTop - absBot;
                 if (Math.abs(flat.yTop - controller.margins.top) > SurveyHelper.EPSILON &&
-                    flat.yTop + height > pageBot + SurveyHelper.EPSILON) {
+                    flat.yTop + height > pageBot + SurveyHelper.EPSILON || flat.isPageBreak) {
                     flat.yTop = controller.margins.top;
                     pageIndex++;
                     pageIndexShift = Math.max(pageIndexShift, pageIndex);

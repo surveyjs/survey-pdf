@@ -342,3 +342,27 @@ test('Check adding new page for lack of place before new page', async () => {
     TestHelper.equalRect(expect, flats[0][2], SurveyHelper.moveRect(packs[1][0], undefined, 0));
     TestHelper.equalRect(expect, flats[1][0], packs[2][0]);
 });
+test('Check isPageBreak property of IPdfBrick', async () => {
+    let json: any = {
+        questions: [
+            {
+                type: 'text',
+                titleLocation: 'hidden'
+            },
+            {
+                type: 'text',
+                titleLocation: 'hidden'
+            }
+        ]
+    };
+    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    expect(flats.length).toBe(1);
+    expect(flats[0].length).toBe(3);
+    flats[0][1].isPageBreak = true; 
+    let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
+    expect(packs.length).toBe(2);
+    expect(packs[0].length).toBe(1);
+    expect(packs[1].length).toBe(2);
+});

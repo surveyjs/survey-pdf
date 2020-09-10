@@ -5,7 +5,8 @@ import { SurveyHelper } from '../helper_survey';
 export interface IPdfBrick extends IRect, ISize {
     render(): Promise<void>;
     unfold(): IPdfBrick[];
-    isAddPage(): boolean;
+    isPageBreak: boolean;
+    isAddPageAllowed(): boolean;
 }
 export class PdfBrick implements IPdfBrick {
     public xLeft: number;
@@ -18,6 +19,7 @@ export class PdfBrick implements IPdfBrick {
     public fontSize: number;
     public textColor: string = SurveyHelper.TEXT_COLOR;
     public formBorderColor: string = SurveyHelper.FORM_BORDER_COLOR;
+    public isPageBreak: boolean = false;
     public constructor(protected question: IQuestion,
         protected controller: DocController, rect: IRect) {
         this.xLeft = rect.xLeft;
@@ -46,7 +48,7 @@ export class PdfBrick implements IPdfBrick {
     public unfold(): IPdfBrick[] {
         return [this];
     }
-    public isAddPage(): boolean {
+    public isAddPageAllowed(): boolean {
         return true;
     }
 }

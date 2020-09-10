@@ -119,7 +119,7 @@ export class SurveyPDF extends SurveyModel {
       for (let j: number = 0; j < packs[i].length; j++) {
         if (!pageAdded) {
           pageAdded = true;
-          if (packs[i][j].isAddPage()) {
+          if (packs[i][j].isAddPageAllowed()) {
             controller.addPage();
           }
         }

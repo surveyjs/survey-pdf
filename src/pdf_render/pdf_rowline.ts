@@ -6,6 +6,7 @@ export class RowlineBrick implements IPdfBrick {
     xRight: number;
     yTop: number;
     yBot: number;
+    public isPageBreak: boolean = false;
     public constructor(protected controller: DocController,
         rect: IRect, protected color: string) {
         this.xLeft = rect.xLeft;
@@ -30,7 +31,7 @@ export class RowlineBrick implements IPdfBrick {
     public unfold(): IPdfBrick[] {
         return [this];
     }
-    public isAddPage(): boolean {
+    public isAddPageAllowed(): boolean {
         return true;
     }
 }

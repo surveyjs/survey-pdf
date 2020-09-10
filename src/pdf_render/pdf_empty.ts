@@ -5,7 +5,7 @@ export class EmptyBrick extends PdfBrick {
     constructor(rect: IRect) {
         super(null, null, rect);
     }
-    public isAddPage(): boolean {
+    public isAddPageAllowed(): boolean {
         return false;
     }
 }

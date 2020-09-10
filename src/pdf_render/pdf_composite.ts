@@ -7,6 +7,7 @@ export class CompositeBrick implements IPdfBrick {
     private _xRight: number;
     private _yTop: number;
     private _yBot: number;
+    public isPageBreak: boolean = false;
     public constructor(...bricks: IPdfBrick[]) {
         this._xLeft = 0.0;
         this._xRight = 0.0;
@@ -74,7 +75,7 @@ export class CompositeBrick implements IPdfBrick {
         });
         return unfoldBricks;
     }
-    public isAddPage(): boolean {
+    public isAddPageAllowed(): boolean {
         return true;
     }
 } 
