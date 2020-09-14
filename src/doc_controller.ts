@@ -45,7 +45,6 @@ export class DocOptions implements IDocOptions {
     protected _format: string | number[];
     protected _orientation: 'l' | 'p';
     protected _fontName: string;
-    protected _commercial: boolean;
     protected _htmlRenderAs: 'auto' | 'standard' | 'image';
     protected _matrixRenderAs: 'auto' | 'list';
     protected _compress: boolean;
@@ -83,7 +82,6 @@ export class DocOptions implements IDocOptions {
         Object.keys(this._margins).forEach((name: string) => {
             (<any>this._margins)[name] = (<any>this._margins)[name] * DocOptions.MM_TO_PT;
         });
-        this._commercial = options.commercial || false;
         this._htmlRenderAs = options.htmlRenderAs || 'auto';
         this._matrixRenderAs = options.matrixRenderAs || 'auto';
         this._compress = options.compress || false;
