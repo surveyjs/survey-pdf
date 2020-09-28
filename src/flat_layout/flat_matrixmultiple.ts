@@ -1,5 +1,5 @@
 import { IQuestion, QuestionMatrixDropdownModelBase, QuestionMatrixDropdownRenderedTable,
-    QuestionMatrixDropdownRenderedRow, QuestionMatrixDropdownRenderedCell } from 'survey-core';
+    QuestionMatrixDropdownRenderedRow, QuestionMatrixDropdownRenderedCell, JsonObject } from 'survey-core';
 import { SurveyPDF } from '../survey';
 import { IPoint, IRect, DocController } from '../doc_controller';
 import { IFlatQuestion, FlatQuestion } from './flat_question';
@@ -142,8 +142,10 @@ export class FlatMatrixMultiple extends FlatQuestion {
         }
         let rows: QuestionMatrixDropdownRenderedRow[] = [];
         let cellWidth: number = SurveyHelper.getColumnWidth(this.controller, colCount);
-        let isWide: boolean = this.controller.matrixRenderAs !== 'list' &&
-            cellWidth >= this.controller.measureText(SurveyHelper.MATRIX_COLUMN_WIDTH).width;
+        let isWide: boolean = this.question.renderAs !== 'list' &&
+            this.controller.matrixRenderAs !== 'list' &&
+            cellWidth >= this.controller.measureText(
+                SurveyHelper.MATRIX_COLUMN_WIDTH).width;
         if (table.showHeader && isWide) rows.push(table.headerRow);
         rows.push(...table.rows);
         if (table.hasRemoveRows && isVertical) rows.pop();
@@ -152,4 +154,9 @@ export class FlatMatrixMultiple extends FlatQuestion {
     }
 }
 
+JsonObject.metaData.addProperty('matrixdropdown', {
+    name: 'renderAs',
+    default: 'auto',
+    choices: ['auto', 'list']
+});
 FlatRepository.getInstance().register('matrixdropdown', FlatMatrixMultiple);

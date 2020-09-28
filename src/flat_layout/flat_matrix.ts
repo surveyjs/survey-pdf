@@ -1,4 +1,5 @@
-import { IQuestion, QuestionMatrixModel, MatrixRowModel, QuestionRadiogroupModel, ItemValue } from 'survey-core';
+import { IQuestion, QuestionMatrixModel, MatrixRowModel,
+    QuestionRadiogroupModel, ItemValue, JsonObject } from 'survey-core';
 import { SurveyPDF } from '../survey';
 import { DocController, IPoint, IRect } from '../doc_controller';
 import { IPdfBrick } from '../pdf_render/pdf_brick'
@@ -48,7 +49,7 @@ export class FlatMatrix extends FlatQuestion {
     }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         let cellWidth: number = SurveyHelper.getColumnWidth(this.controller, this.question.visibleColumns.length + (this.question.hasRows ? 1 : 0));
-        let isVertical: boolean = this.controller.matrixRenderAs === 'list' ||
+        let isVertical: boolean = this.question.renderAs === 'list' || this.controller.matrixRenderAs === 'list' ||
             cellWidth < this.controller.measureText(SurveyHelper.MATRIX_COLUMN_WIDTH).width;
         let currPoint: IPoint = SurveyHelper.clone(point);
         let cells: IPdfBrick[] = [];
@@ -146,4 +147,9 @@ export class FlatMatrixRow extends FlatRadiogroup {
     }
 }
 
+JsonObject.metaData.addProperty('matrix', {
+    name: 'renderAs',
+    default: 'auto',
+    choices: ['auto', 'list']
+});
 FlatRepository.getInstance().register('matrix', FlatMatrix);
