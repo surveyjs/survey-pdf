@@ -9,8 +9,9 @@ export class TextBoxBrick extends TextFieldBrick {
         protected isMultiline: boolean = false, index: number = 0) {
         super(question, controller, rect, isQuestion,
             (<QuestionTextModel>question).id + (isQuestion ? '' : '_comment' + index),
-            isQuestion ? (question.value !== undefined ? question.value : '') :
-                ((<Question>question).comment !== undefined ? (<Question>question).comment : ''),
+            isQuestion ? (question.value !== undefined && question.value !== null ? question.value : '') :
+                ((<Question>question).comment !== undefined &&
+                    (<Question>question).comment !== null ? (<Question>question).comment : ''),
             isQuestion ? SurveyHelper.getLocString((<QuestionTextModel>question).locPlaceHolder) : '',
             question.isReadOnly, isMultiline,
             (<QuestionTextModel>question).inputType);
