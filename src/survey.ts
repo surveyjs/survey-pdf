@@ -20,7 +20,7 @@ export class SurveyPDF extends SurveyModel {
       options = {};
     }
     this.options = SurveyHelper.clone(options);
-    this._haveCommercialLicense = options.commercial;
+    this._haveCommercialLicense = options.commercial || options.haveCommercialLicense;
   }
   /**
    * You have right to set this property to true if you have bought the commercial licence only.

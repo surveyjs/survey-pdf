@@ -33,6 +33,7 @@ export interface IDocOptions {
     base64Bold?: string;
     margins?: IMargin;
     commercial?: boolean;
+    haveCommercialLicense?: boolean;
     htmlRenderAs?: 'auto' | 'standard' | 'image';
     matrixRenderAs?: 'auto' | 'list';
     compress?: boolean;
