@@ -21,14 +21,15 @@ export class CheckItemBrick extends PdfBrick {
             await this.renderReadOnly();
             return;
         }
-        let checkBox = new (<any>this.controller.doc.AcroFormCheckBox)();
-        let formScale = SurveyHelper.formScale(this.controller, this);
+        let checkBox: any = new (<any>this.controller.doc.AcroFormCheckBox)();
+        let formScale: number = SurveyHelper.formScale(this.controller, this);
         checkBox.maxFontSize = this.height * formScale * CheckItemBrick.FONT_SIZE_SCALE;
         checkBox.caption = '3';
         checkBox.textAlign = 'center';
         checkBox.fieldName = this.fieldName;
         checkBox.readOnly = false;
         checkBox.color = this.formBorderColor;
+        checkBox.value = this.checked ? 'On' : false;
         checkBox.AS = this.checked ? '/On' : '/Off';
         checkBox.Rect = SurveyHelper.createAcroformRect(
             SurveyHelper.scaleRect(this, formScale));
@@ -39,7 +40,7 @@ export class CheckItemBrick extends PdfBrick {
         SurveyHelper.renderFlatBorders(this.controller, this);
         if (this.checked) {
             let checkmarkPoint: IPoint = SurveyHelper.createPoint(this, true, true);
-            let oldFontSize = this.controller.fontSize;
+            let oldFontSize: number = this.controller.fontSize;
             this.controller.fontSize = oldFontSize *
                 CheckItemBrick.CHECKMARK_READONLY_FONT_SIZE_SCALE;
             let checkmarkSize: ISize = this.controller.measureText(

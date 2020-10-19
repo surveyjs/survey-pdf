@@ -28,7 +28,7 @@ test('Matrix default value', async () => {
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     await survey['render'](controller);
     let acroFormFields = controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields;
-    expect(acroFormFields[0].value).toBe('sq_100row0');
+    expect(acroFormFields[0].value).toBe('sq_100row0index0');
     expect(acroFormFields[1].AS).toBe('/sq_100row0index0');
     expect(acroFormFields[2].AS).toBe('/Off');
 });

@@ -6,14 +6,16 @@ import { SurveyHelper } from '../helper_survey';
 
 export class RadioGroupWrap {
     private _radioGroup: any;
-    public constructor(private name: string,
+    public constructor(public name: string,
         private controller: DocController,
         private _readOnly: boolean) {
     }
-    public addToPdf() {
+    public addToPdf(color: string) {
         this._radioGroup = new this.controller.doc.AcroFormRadioButton();
-        this._radioGroup.value = this.name;
+        this._radioGroup.fieldName = this.name;
+        this._radioGroup.value = '';
         this._radioGroup.readOnly = this.readOnly;
+        this._radioGroup.color = color;
         this.controller.doc.addField(this._radioGroup);
     }
     get radioGroup(): any {
@@ -28,7 +30,7 @@ export class RadioItemBrick extends PdfBrick {
     private static readonly RADIOMARKER_READONLY_SYMBOL: string = '•';
     private static readonly RADIOMARKER_READONLY_FONT_SIZE_SCALE: number = 1.575;
     public constructor(question: IQuestion, controller: DocController,
-        rect: IRect, private index: number, private checked: Boolean,
+        rect: IRect, private index: number, private checked: boolean,
         private radioGroupWrap: RadioGroupWrap) {
         super(question, controller, rect);
         this.textColor = this.formBorderColor;
@@ -39,16 +41,19 @@ export class RadioItemBrick extends PdfBrick {
             return;
         }
         if (this.index == 0) {
-            this.radioGroupWrap.addToPdf();
-            this.radioGroupWrap.radioGroup.color = this.formBorderColor;
+            this.radioGroupWrap.addToPdf(this.formBorderColor);
         }
-        let name = this.radioGroupWrap.radioGroup.value + 'index' + this.index;
-        let radioButton = this.radioGroupWrap.radioGroup.createOption(name);
+        let name: string = this.radioGroupWrap.name + 'index' + this.index;
+        let radioButton: any = this.radioGroupWrap.radioGroup.createOption(name);
         radioButton.Rect = SurveyHelper.createAcroformRect(this);
         if (this.checked) {
             radioButton.AS = '/' + name;
+            this.radioGroupWrap.radioGroup.value = name;
         }
-        let formScale = SurveyHelper.formScale(this.controller, this);
+        else {
+            radioButton.AS = '/Off';
+        }
+        let formScale: number = SurveyHelper.formScale(this.controller, this);
         radioButton.Rect = SurveyHelper.createAcroformRect(
             SurveyHelper.scaleRect(this, formScale));
         radioButton.color = this.formBorderColor;
@@ -60,7 +65,7 @@ export class RadioItemBrick extends PdfBrick {
         SurveyHelper.renderFlatBorders(this.controller, this);
         if (this.checked) {
             let radiomarkerPoint: IPoint = SurveyHelper.createPoint(this, true, true);
-            let oldFontSize = this.controller.fontSize;
+            let oldFontSize: number = this.controller.fontSize;
             this.controller.fontSize = oldFontSize *
                 RadioItemBrick.RADIOMARKER_READONLY_FONT_SIZE_SCALE;
             let radiomarkerSize: ISize = this.controller.measureText(
