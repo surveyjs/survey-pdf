@@ -34,7 +34,7 @@ export class FlatImagePicker extends FlatQuestion {
             SurveyHelper.getPageAvailableWidth(this.controller), height);
         if (this.question.multiSelect) {
             compositeFlat.addBrick(new CheckItemBrick(this.question, this.controller,
-                buttonRect, this.question.id + 'index' + index,
+                buttonRect, this.question.name + 'index' + index,
                 this.question.isReadOnly || !item.isEnabled,
                 this.question.value.indexOf(item.value) !== -1));
         }
