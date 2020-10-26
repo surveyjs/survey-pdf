@@ -15,7 +15,8 @@ test('Matrix default value', async () => {
                 titleLocation: 'hidden',
                 showHeader: false,
                 type: 'matrix',
-                name: 'matdefval',
+                name: 'Quality',
+                title: 'Please indicate if you agree or disagree with the following statements',
                 defaultValue: 'Column',
                 columns: [
                     'Column',
@@ -27,7 +28,7 @@ test('Matrix default value', async () => {
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     await survey['render'](controller);
     let acroFormFields = controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields;
-    expect(acroFormFields[0].value).toBe('matdefvalrow0index0');
-    expect(acroFormFields[1].AS).toBe('/matdefvalrow0index0');
+    expect(acroFormFields[0].value).toBe('sq_100row0index0');
+    expect(acroFormFields[1].AS).toBe('/sq_100row0index0');
     expect(acroFormFields[2].AS).toBe('/Off');
 });
