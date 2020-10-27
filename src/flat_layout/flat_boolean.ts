@@ -1,10 +1,11 @@
-import { IQuestion, QuestionBooleanModel } from 'survey-core';
+import { IQuestion, LocalizableString, QuestionBooleanModel } from 'survey-core';
 import { SurveyPDF } from '../survey';
 import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
 import { IPoint, DocController } from '../doc_controller';
-import { IPdfBrick } from '../pdf_render/pdf_brick'
-import { BooleanItemBrick } from '../pdf_render/pdf_booleanitem'; ''
+import { IPdfBrick } from '../pdf_render/pdf_brick';
+import { TextBrick } from '../pdf_render/pdf_text';
+import { BooleanItemBrick } from '../pdf_render/pdf_booleanitem';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
 
@@ -16,14 +17,23 @@ export class FlatBoolean extends FlatQuestion {
         this.question = <QuestionBooleanModel>question;
     }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
+        let compositeFlat: CompositeBrick = new CompositeBrick();
         let height: number = this.controller.unitHeight;
-        let composite: CompositeBrick = new CompositeBrick();
         let itemFlat: IPdfBrick = new BooleanItemBrick(this.question, this.controller,
             SurveyHelper.moveRect(
                 SurveyHelper.scaleRect(SurveyHelper.createRect(point, height, height),
                     SurveyHelper.SELECT_ITEM_FLAT_SCALE), point.xLeft));
-        composite.addBrick(itemFlat);
-        return [composite];
+        compositeFlat.addBrick(itemFlat);
+        let textPoint: IPoint = SurveyHelper.clone(point);
+        textPoint.xLeft = itemFlat.xRight + this.controller.unitWidth * SurveyHelper.GAP_BETWEEN_ITEM_TEXT;
+        let locLabelText: LocalizableString = this.question.value === true ?
+            this.question.locLabelTrue : this.question.value === false ?
+            this.question.locLabelFalse : null;
+        if (locLabelText !== null && locLabelText.renderedHtml !== null) {
+            compositeFlat.addBrick(await SurveyHelper.createTextFlat(
+                textPoint, this.question, this.controller, locLabelText, TextBrick));
+        }
+        return [compositeFlat];
     }
 }
 
