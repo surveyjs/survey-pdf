@@ -6,7 +6,8 @@ import { SurveyHelper } from '../helper_survey';
 
 export class CheckItemBrick extends PdfBrick {
     private static readonly FONT_SIZE_SCALE: number = 0.7;
-    private static readonly CHECKMARK_READONLY_SYMBOL: string = 'X';
+    private static readonly CHECKMARK_READONLY_SYMBOL: string = '3';
+    private static readonly CHECKMARK_READONLY_FONT: string = 'zapfdingbats';
     private static readonly CHECKMARK_READONLY_FONT_SIZE_SCALE: number = 1.0 - Math.E / 10.0;
     protected question: QuestionCheckboxModel;
     public constructor(question: IQuestion, controller: DocController,
@@ -24,7 +25,7 @@ export class CheckItemBrick extends PdfBrick {
         let checkBox: any = new (<any>this.controller.doc.AcroFormCheckBox)();
         let formScale: number = SurveyHelper.formScale(this.controller, this);
         checkBox.maxFontSize = this.height * formScale * CheckItemBrick.FONT_SIZE_SCALE;
-        checkBox.caption = '3';
+        checkBox.caption = CheckItemBrick.CHECKMARK_READONLY_SYMBOL;
         checkBox.textAlign = 'center';
         checkBox.fieldName = this.fieldName;
         checkBox.readOnly = false;
@@ -40,6 +41,8 @@ export class CheckItemBrick extends PdfBrick {
         SurveyHelper.renderFlatBorders(this.controller, this);
         if (this.checked) {
             let checkmarkPoint: IPoint = SurveyHelper.createPoint(this, true, true);
+            let oldFontName: string = this.controller.fontName;
+            this.controller.fontName = CheckItemBrick.CHECKMARK_READONLY_FONT;
             let oldFontSize: number = this.controller.fontSize;
             this.controller.fontSize = oldFontSize *
                 CheckItemBrick.CHECKMARK_READONLY_FONT_SIZE_SCALE;
@@ -53,6 +56,7 @@ export class CheckItemBrick extends PdfBrick {
             (<any>checkmarkFlat.unfold()[0]).textColor = this.textColor;
             this.controller.fontSize = oldFontSize;
             await checkmarkFlat.render();
+            this.controller.fontName = oldFontName;
         }
     }
 }

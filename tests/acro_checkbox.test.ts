@@ -8,6 +8,7 @@ import { FlatCheckbox } from '../src/flat_layout/flat_checkbox';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 import { PdfBrick } from '../src/pdf_render/pdf_brick';
+import { CheckItemBrick } from '../src/pdf_render/pdf_checkitem';
 let __dummy_cb = new FlatCheckbox(null, null, null);
 
 test('Check that checkbox has square boundaries', async () => {
@@ -15,7 +16,7 @@ test('Check that checkbox has square boundaries', async () => {
 		questions: [
 			{
 				type: 'checkbox',
-				name: 'box',
+				name: 'checkbox_square_boundaries',
 				titleLocation: 'hidden',
 				title: 'Square Pants',
 				choices: [
@@ -39,7 +40,6 @@ test('Check that checkbox has square boundaries', async () => {
 		{ xLeft: internalRect[0], yTop: internalRect[1] },
 		internalRect[2], internalRect[3]), assumeCheckbox);
 });
-
 test('Check has other checkbox', async () => {
 	let json: any = {
 		showQuestionNumbers: 'false',
@@ -73,7 +73,7 @@ test('Check all items disabled or enabled', async () => {
 	let json: any = {
 		questions: [
 			{
-				name: 'checkbox',
+				name: 'checkbox_disabled_enabled',
 				type: 'checkbox',
 				choices: ['item1', 'item2', 'item3'],
 			}
@@ -99,7 +99,7 @@ test('Check enable one item', async () => {
 	let json: any = {
 		questions: [
 			{
-				name: 'checkbox',
+				name: 'checkbox_enable_one',
 				type: 'checkbox',
 				choices: ['item1', 'item2', 'item3'],
 				choicesEnableIf: '{item} == item2'
@@ -114,12 +114,11 @@ test('Check enable one item', async () => {
 	expect(controller.doc.internal.acroformPlugin.
 		acroFormDictionaryRoot.Fields[0].readOnly).toBe(false);
 });
-
 test('Check two equal values checkbox', async () => {
 	let json: any = {
 		questions: [
 			{
-				name: 'checkbox',
+				name: 'checkbox_two_equal',
 				type: 'checkbox',
 				choices: ['item', 'item'],
 				choicesEnableIf: '{item} == item'
@@ -134,4 +133,22 @@ test('Check two equal values checkbox', async () => {
 			expect(acroCheckBox.readOnly).toBe(false);
 		}
 	);
+});
+test('Check readonly checkbox symbol', async () => {
+	let json: any = {
+		questions: [
+			{
+				name: 'checkbox_readonly_symbol',
+				type: 'checkbox',
+				readOnly: true,
+				choices: ['item'],
+				defaultValue: ['item']
+			}
+		]
+	};
+	let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+	let controller: DocController = new DocController(TestHelper.defaultOptions);
+	await survey['render'](controller);
+	expect(controller.doc.internal.pages[1][21]).toContain(
+		'(' + CheckItemBrick['CHECKMARK_READONLY_SYMBOL'] + ')');
 });

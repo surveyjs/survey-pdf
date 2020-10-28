@@ -4,6 +4,7 @@ import { LocalizableString } from 'survey-core';
 import Fonts from './fonts';
 import setRadioAppearance from './jspdf_plugins/acroform';
 import './jspdf_plugins/acroform.js';
+
 export interface IPoint {
     xLeft: number;
     yTop: number;
@@ -160,11 +161,19 @@ export class DocController extends DocOptions {
     public get helperDoc(): any {
         return this._helperDoc;
     }
-    public get fontStyle(): string {
-        return this._fontStyle;
+    public get fontName(): string {
+        return this._fontName;
     }
     public get fontSize(): number {
         return this._fontSize;
+    }
+    public get fontStyle(): string {
+        return this._fontStyle;
+    }
+    public set fontName(fontName: string) {
+        this._fontName = fontName;
+        this._doc.setFont(fontName);
+        this._helperDoc.setFont(fontName);
     }
     public set fontSize(fontSize: number) {
         this._fontSize = fontSize;
