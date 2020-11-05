@@ -1,5 +1,5 @@
 import { IQuestion, QuestionMatrixDropdownModelBase, QuestionMatrixDropdownRenderedTable,
-    QuestionMatrixDropdownRenderedRow, QuestionMatrixDropdownRenderedCell, JsonObject } from 'survey-core';
+    QuestionMatrixDropdownRenderedRow, QuestionMatrixDropdownRenderedCell, Serializer } from 'survey-core';
 import { SurveyPDF } from '../survey';
 import { IPoint, IRect, DocController } from '../doc_controller';
 import { IFlatQuestion, FlatQuestion } from './flat_question';
@@ -154,7 +154,8 @@ export class FlatMatrixMultiple extends FlatQuestion {
     }
 }
 
-JsonObject.metaData.addProperty('matrixdropdown', {
+Serializer.removeProperty('matrixdropdown', 'renderAs');
+Serializer.addProperty('matrixdropdown', {
     name: 'renderAs',
     default: 'auto',
     choices: ['auto', 'list']

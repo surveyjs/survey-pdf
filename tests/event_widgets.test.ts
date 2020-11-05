@@ -2,7 +2,7 @@
     return {};
 };
 
-import { Question, JsonObject, CustomWidgetCollection } from 'survey-core';
+import { Question, Serializer, CustomWidgetCollection } from 'survey-core';
 import { SurveyPDF } from '../src/survey';
 import { DocController } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
@@ -24,7 +24,7 @@ test('Render checkbox base widget as radiogroup', async () => {
           return question.getType() === 'checkradio';
         },
         activatedByChanged: () => {
-            JsonObject.metaData.addClass(
+            Serializer.addClass(
               'checkradio',
               [],
               null,
@@ -51,7 +51,7 @@ test('Render checkbox base widget as radiogroup', async () => {
     expect(packs[0].length).toBe(2);
     expect(packs[0][0].unfold()[0] instanceof RadioItemBrick).toBe(true);
     expect(packs[0][1].unfold()[0] instanceof RadioItemBrick).toBe(true);
-    JsonObject.metaData.removeClass('checkradio');
+    Serializer.removeClass('checkradio');
 });
 test('Render custom widget via callback', async () => {
     CustomWidgetCollection.Instance.clear();
@@ -61,7 +61,7 @@ test('Render custom widget via callback', async () => {
           return question.getType() === 'customquestion';
         },
         activatedByChanged: () => {
-            JsonObject.metaData.addClass(
+            Serializer.addClass(
               'customquestion',
               [],
               null,
@@ -92,5 +92,5 @@ test('Render custom widget via callback', async () => {
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(1);
     expect(packs[0][0].unfold()[0] instanceof TextBrick).toBe(true);
-    JsonObject.metaData.removeClass('customquestion');
+    Serializer.removeClass('customquestion');
 });

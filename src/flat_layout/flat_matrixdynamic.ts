@@ -1,4 +1,4 @@
-import { IQuestion, JsonObject } from 'survey-core';
+import { IQuestion, Serializer } from 'survey-core';
 import { SurveyPDF } from '../survey';
 import { FlatRepository } from './flat_repository';
 import { DocController } from '../doc_controller';
@@ -11,7 +11,8 @@ export class FlatMatrixDynamic extends FlatMatrixMultiple {
     }
 }
 
-JsonObject.metaData.addProperty('matrixdynamic', {
+Serializer.removeProperty('matrixdynamic', 'renderAs');
+Serializer.addProperty('matrixdynamic', {
     name: 'renderAs',
     default: 'auto',
     choices: ['auto', 'list']

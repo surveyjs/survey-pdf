@@ -1,5 +1,5 @@
 import { IQuestion, QuestionMatrixModel, MatrixRowModel,
-    QuestionRadiogroupModel, ItemValue, JsonObject } from 'survey-core';
+    QuestionRadiogroupModel, ItemValue, Serializer } from 'survey-core';
 import { SurveyPDF } from '../survey';
 import { DocController, IPoint, IRect } from '../doc_controller';
 import { IPdfBrick } from '../pdf_render/pdf_brick'
@@ -147,7 +147,8 @@ export class FlatMatrixRow extends FlatRadiogroup {
     }
 }
 
-JsonObject.metaData.addProperty('matrix', {
+Serializer.removeProperty('matrix', 'renderAs');
+Serializer.addProperty('matrix', {
     name: 'renderAs',
     default: 'auto',
     choices: ['auto', 'list']

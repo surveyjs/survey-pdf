@@ -1,4 +1,4 @@
-import { IQuestion, QuestionHtmlModel, JsonObject } from 'survey-core';
+import { IQuestion, QuestionHtmlModel, Serializer } from 'survey-core';
 import { SurveyPDF } from '../survey';
 import { IPoint, DocController } from '../doc_controller';
 import { FlatQuestion } from './flat_question';
@@ -38,7 +38,8 @@ export class FlatHTML extends FlatQuestion {
     }
 }
 
-JsonObject.metaData.addProperty('html', {
+Serializer.removeProperty('html', 'renderAs');
+Serializer.addProperty('html', {
     name: 'renderAs',
     default: 'auto',
     choices: ['auto', 'standard', 'image']
