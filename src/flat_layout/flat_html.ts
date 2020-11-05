@@ -21,7 +21,7 @@ export class FlatHTML extends FlatQuestion {
         return 'standard';
     }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
-        let renderAs: 'auto' | 'standard' | 'image' = this.question.renderAs;
+        let renderAs: 'auto' | 'standard' | 'image' = <'auto' | 'standard' | 'image'>this.question.renderAs;
         if (renderAs === 'auto') renderAs = this.controller.htmlRenderAs;
         if (renderAs === 'auto') renderAs = this.chooseRender(SurveyHelper.getLocString(this.question.locHtml));
         if (renderAs === 'image') {
