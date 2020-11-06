@@ -12,7 +12,7 @@ export class FlatHTML extends FlatQuestion {
         question: IQuestion, controller: DocController) {
         super(survey, question, controller);
     }
-    private chooseRender(html: string): 'auto' | 'standard' | 'image' {
+    private chooseRender(html: string): 'standard' | 'image' {
         if (/<[^>]*style[^<]*>/.test(html) ||
             /<[^>]*table[^<]*>/.test(html) ||
             /&\w+;/.test(html)) {
