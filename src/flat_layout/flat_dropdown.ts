@@ -20,8 +20,10 @@ export class FlatDropdown extends FlatQuestion {
         let compositeFlat: CompositeBrick = new CompositeBrick(
             new DropdownBrick(this.question, this.controller, rect));
         if (this.question.hasOther) {
-            compositeFlat.addBrick(SurveyHelper.createOtherFlat(
-                SurveyHelper.createPoint(compositeFlat), this.question, this.controller));
+            let otherPoint: IPoint = SurveyHelper.createPoint(compositeFlat);
+            otherPoint.yTop += this.controller.unitHeight * SurveyHelper.GAP_BETWEEN_ROWS;
+            compositeFlat.addBrick(await SurveyHelper.createCommentFlat(
+                otherPoint, this.question, this.controller, SurveyHelper.OTHER_ROWS_COUNT, false));
         }
         return [compositeFlat];
     }

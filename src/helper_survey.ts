@@ -23,6 +23,7 @@ export class SurveyHelper {
     public static readonly TITLE_SURVEY_FONT_SIZE_SCALE: number = 1.7;
     public static readonly TITLE_PANEL_FONT_SIZE_SCALE: number = 1.3;
     public static readonly DESCRIPTION_FONT_SIZE_SCALE: number = 2.0 / 3.0;
+    public static readonly OTHER_ROWS_COUNT: number = 2;
     public static readonly RATING_MIN_WIDTH: number = 3;
     public static readonly RATING_MIN_HEIGHT: number = 2;
     public static readonly RATING_COLUMN_WIDTH: number = 5;
@@ -366,10 +367,17 @@ export class SurveyHelper {
         controller.fontSize = oldFontSize;
         return composite;
     }
-    public static createOtherFlat(point: IPoint, question: IQuestion,
-        controller: DocController, index: number = 0): IPdfBrick {
-        let otherRect: IRect = SurveyHelper.createTextFieldRect(point, controller, 2);
-        return new CommentBrick(question, controller, otherRect, false, index);
+    public static async createCommentFlat(point: IPoint, question: IQuestion,
+        controller: DocController, rows: number, isQuestion: boolean, index: number = 0): Promise<IPdfBrick> {
+        let rect: IRect = SurveyHelper.createTextFieldRect(point, controller, rows);
+        if (question.isReadOnly) {
+            let textFlat: IPdfBrick = await SurveyHelper.createReadOnlyTextFieldTextFlat(
+                point, controller, <Question>question, question.value || '', false);
+            let padding: number = controller.unitWidth *
+                SurveyHelper.VALUE_READONLY_PADDING_SCALE;
+            if (textFlat.yBot + padding > rect.yBot) rect.yBot = textFlat.yBot + padding;
+        }
+        return new CommentBrick(question, controller, rect, isQuestion, index);
     }
     public static createImageFlat(point: IPoint, question: IQuestion,
         controller: DocController, imagelink: string, width: number, height?: number): IPdfBrick {
