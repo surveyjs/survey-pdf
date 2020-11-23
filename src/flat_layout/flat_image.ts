@@ -16,7 +16,7 @@ export class FlatImage extends FlatQuestion {
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         let widthPt: number = SurveyHelper.pxToPt(<any>this.question.imageWidth);
         let heightPt: number = SurveyHelper.pxToPt(<any>this.question.imageHeight);
-        return [await SurveyHelper.createImageFlat(point, this.question,
+        return [SurveyHelper.createImageFlat(point, this.question,
             this.controller, this.question.imageLink, widthPt, heightPt)];
     }
 }

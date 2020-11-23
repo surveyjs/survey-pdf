@@ -26,9 +26,8 @@ export class FlatBoolean extends FlatQuestion {
         compositeFlat.addBrick(itemFlat);
         let textPoint: IPoint = SurveyHelper.clone(point);
         textPoint.xLeft = itemFlat.xRight + this.controller.unitWidth * SurveyHelper.GAP_BETWEEN_ITEM_TEXT;
-        let locLabelText: LocalizableString = this.question.value === true ?
-            this.question.locLabelTrue : this.question.value === false ?
-            this.question.locLabelFalse : null;
+        let locLabelText: LocalizableString = this.question.isIndeterminate ? null :
+            this.question.checkedValue ? this.question.locLabelTrue : this.question.locLabelFalse;
         if (locLabelText !== null && locLabelText.renderedHtml !== null) {
             compositeFlat.addBrick(await SurveyHelper.createTextFlat(
                 textPoint, this.question, this.controller, locLabelText, TextBrick));
