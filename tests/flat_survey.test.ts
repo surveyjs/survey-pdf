@@ -221,9 +221,9 @@ test('Survey with right logo and title', async () => {
     let assumeTextBox: IRect = SurveyHelper.createTextFieldRect(textBoxPoint, controller);
     TestHelper.equalRect(expect, flats[0][2], assumeTextBox);
 });
-test('Survey with top logo and title', async () => {
+test('Survey with bottom logo and title', async () => {
     let json: any = {
-        title: 'TitleLogoTop',
+        title: 'TitleLogoBottom',
         logo: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAA3NCSVQICAjb4U/gAAAAt1BMVEVHcExTXGROYmJIT1ZPXmVJV11ES1JYZ24+SE5JU1s+R0xVYmtYZW1ETlRRXWVUYWpKV1xZZ25YZW5YanNrfIdTYWlaZ29nd4JUYmhIU1lHUVtRXWQ+SlA6QkouNzpFT1ZCS1JSXWVxhI98kp53iZZSXmVcaXE5QkdCTFNndn9WY2tZZm5canJfbXVbZ29hcHlXZGxtfYVNWmFRXWVCTFNKVl04QEdoeINnZGxrc3uAk6Fzb3dxg43scHiMAAAAKnRSTlMALwQXZU4MImyJQbCrPOPZRdOHx4X4t2fR0SfsoHhYseyioqbHwOy+59gMe1UiAAAAuElEQVQYlU2P5xKCQAyEI1gABVSKUu3tOgL2938u74Ybx/2xk3yT2SQAPw2Yb8KfRp6VzAxVDDVwYej1ZbHbG9tQTy030sJP+1po4MfSZs+qsrp+KubSg8e7Wq8mk/E44LinwqJr22IskCA4UgBiUqueUUqJ2gLzO0MCC8Ypx1MFXEIEqhFGjB/0zTXNbPvcXOkx7YjFbYDydsq7DIAeKyS9mSYadGBR51A0JVwy/dcyScFxwLAdgC+IFhIbrHyDqAAAAABJRU5ErkJggg==',
         logoPosition: 'bottom',
         pages: []
@@ -250,4 +250,30 @@ test('Survey with top logo and title', async () => {
             SurveyHelper.pxToPt(survey.logoHeight)
     };
     TestHelper.equalRect(expect, flats[0][1], assumeLogo);
+});
+test('Survey with botton logo without title', async () => {
+    let json: any = {
+        logo: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAA3NCSVQICAjb4U/gAAAAt1BMVEVHcExTXGROYmJIT1ZPXmVJV11ES1JYZ24+SE5JU1s+R0xVYmtYZW1ETlRRXWVUYWpKV1xZZ25YZW5YanNrfIdTYWlaZ29nd4JUYmhIU1lHUVtRXWQ+SlA6QkouNzpFT1ZCS1JSXWVxhI98kp53iZZSXmVcaXE5QkdCTFNndn9WY2tZZm5canJfbXVbZ29hcHlXZGxtfYVNWmFRXWVCTFNKVl04QEdoeINnZGxrc3uAk6Fzb3dxg43scHiMAAAAKnRSTlMALwQXZU4MImyJQbCrPOPZRdOHx4X4t2fR0SfsoHhYseyioqbHwOy+59gMe1UiAAAAuElEQVQYlU2P5xKCQAyEI1gABVSKUu3tOgL2938u74Ybx/2xk3yT2SQAPw2Yb8KfRp6VzAxVDDVwYej1ZbHbG9tQTy030sJP+1po4MfSZs+qsrp+KubSg8e7Wq8mk/E44LinwqJr22IskCA4UgBiUqueUUqJ2gLzO0MCC8Ypx1MFXEIEqhFGjB/0zTXNbPvcXOkx7YjFbYDydsq7DIAeKyS9mSYadGBR51A0JVwy/dcyScFxwLAdgC+IFhIbrHyDqAAAAABJRU5ErkJggg==',
+        logoPosition: 'bottom',
+        pages: []
+    };
+    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    expect(flats.length).toBe(1);
+    expect(flats[0].length).toBe(1);
+    expect(flats[0][0] instanceof HTMLBrick);
+    let assumeLogo: IRect = {
+        xLeft: controller.leftTopPoint.xLeft +
+            SurveyHelper.getPageAvailableWidth(controller) / 2.0 -
+            SurveyHelper.pxToPt(survey.logoWidth) / 2.0,
+        xRight: controller.leftTopPoint.xLeft +
+            SurveyHelper.getPageAvailableWidth(controller) / 2.0 -
+            SurveyHelper.pxToPt(survey.logoWidth) / 2.0 +
+            SurveyHelper.pxToPt(survey.logoWidth),
+        yTop: controller.leftTopPoint.yTop,
+        yBot: controller.leftTopPoint.yTop +
+            SurveyHelper.pxToPt(survey.logoHeight)
+    };
+    TestHelper.equalRect(expect, flats[0][0], assumeLogo);
 });

@@ -185,7 +185,8 @@ export class FlatSurvey {
                 }
                 let logoFlat: IPdfBrick = this.generateFlatLogoImage(
                     survey, controller, logoPoint);
-                flats[0].push(logoFlat);
+                if (flats.length !== 0) flats[0].push(logoFlat);
+                else flats.push([logoFlat]);
             }
         }
         for (let i: number = 0; i < survey.visiblePages.length; i++) {
