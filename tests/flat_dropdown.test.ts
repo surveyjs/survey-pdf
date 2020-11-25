@@ -39,7 +39,7 @@ test('Check dropdown with other', async () => {
         elements: [
             {
                 type: 'dropdown',
-                name: 'expand me',
+                name: 'dropdownWithOther',
                 choices: [
                     'right choice'
                 ],

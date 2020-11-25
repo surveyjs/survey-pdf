@@ -372,12 +372,17 @@ export class SurveyHelper {
         let rect: IRect = SurveyHelper.createTextFieldRect(point, controller, rows);
         if (question.isReadOnly) {
             let textFlat: IPdfBrick = await SurveyHelper.createReadOnlyTextFieldTextFlat(
-                point, controller, <Question>question, question.value || '', false);
+                point, controller, <Question>question,
+                    SurveyHelper.getQuestionOrCommentValue(<Question>question, isQuestion), false);
             let padding: number = controller.unitWidth *
                 SurveyHelper.VALUE_READONLY_PADDING_SCALE;
             if (textFlat.yBot + padding > rect.yBot) rect.yBot = textFlat.yBot + padding;
         }
         return new CommentBrick(question, controller, rect, isQuestion, index);
+    }
+    public static getQuestionOrCommentValue(question: Question, isQuestion: boolean = true): string {
+        return isQuestion ? (question.value !== undefined && question.value !== null ? question.value : '') :
+            (question.comment !== undefined && question.comment !== null ? question.comment : '');
     }
     public static createImageFlat(point: IPoint, question: IQuestion,
         controller: DocController, imagelink: string, width: number, height?: number): IPdfBrick {
