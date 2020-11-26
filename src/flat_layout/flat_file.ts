@@ -10,7 +10,7 @@ import { SurveyHelper } from '../helper_survey';
 
 export class FlatFile extends FlatQuestion {
     public static readonly IMAGE_GAP_SCALE: number = 0.195;
-    public static readonly TEXT_MIN_SCALE: number = 5;
+    public static readonly TEXT_MIN_SCALE: number = 5.0;
     protected question: QuestionFileModel;
     public constructor(protected survey: SurveyPDF,
         question: IQuestion, controller: DocController) {

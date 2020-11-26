@@ -37,6 +37,7 @@ export interface IDocOptions {
     haveCommercialLicense?: boolean;
     htmlRenderAs?: 'auto' | 'standard' | 'image';
     matrixRenderAs?: 'auto' | 'list';
+    readonlyRenderAs?: 'auto' | 'text' | 'acroform';
     compress?: boolean;
 }
 export class DocOptions implements IDocOptions {
@@ -49,6 +50,7 @@ export class DocOptions implements IDocOptions {
     protected _fontName: string;
     protected _htmlRenderAs: 'auto' | 'standard' | 'image';
     protected _matrixRenderAs: 'auto' | 'list';
+    protected _readonlyRenderAs: 'auto' | 'text' | 'acroform';
     protected _compress: boolean;
     public constructor(options: IDocOptions) {
         if (typeof options.orientation === 'undefined') {
@@ -86,6 +88,7 @@ export class DocOptions implements IDocOptions {
         });
         this._htmlRenderAs = options.htmlRenderAs || 'auto';
         this._matrixRenderAs = options.matrixRenderAs || 'auto';
+        this._readonlyRenderAs = options.readonlyRenderAs || 'auto';
         this._compress = options.compress || false;
     }
     public get leftTopPoint(): IPoint {
@@ -114,6 +117,9 @@ export class DocOptions implements IDocOptions {
     }
     public get matrixRenderAs(): 'auto' | 'list' {
         return this._matrixRenderAs;
+    }
+    public get readonlyRenderAs(): 'auto' | 'text' | 'acroform' {
+        return this._readonlyRenderAs;
     }
     public get compress(): boolean {
         return this._compress;

@@ -18,9 +18,9 @@ export class CheckItemBrick extends PdfBrick {
         this.textColor = this.formBorderColor;
     }
     public async renderInteractive(): Promise<void> {
-        if (this.readonly) {
-            await this.renderReadOnly();
-            return;
+        if (this.readonly && SurveyHelper.getReadonlyRenderAs(
+            this.question, this.controller) !== 'acroform') {
+            return await this.renderReadOnly();
         }
         let checkBox: any = new (<any>this.controller.doc.AcroFormCheckBox)();
         let formScale: number = SurveyHelper.formScale(this.controller, this);
@@ -28,7 +28,7 @@ export class CheckItemBrick extends PdfBrick {
         checkBox.caption = CheckItemBrick.CHECKMARK_READONLY_SYMBOL;
         checkBox.textAlign = 'center';
         checkBox.fieldName = this.fieldName;
-        checkBox.readOnly = false;
+        checkBox.readOnly = this.readonly;
         checkBox.color = this.formBorderColor;
         checkBox.value = this.checked ? 'On' : false;
         checkBox.AS = this.checked ? '/On' : '/Off';

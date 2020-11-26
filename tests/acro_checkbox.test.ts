@@ -69,13 +69,14 @@ test('Check has other checkbox', async () => {
 	let internalOtherCheckBox: any = internal.acroformPlugin.acroFormDictionaryRoot.Fields[0];
 	expect(internalOtherCheckBox.FT).toBe('/Btn');
 });
-test('Check all items disabled or enabled', async () => {
+test('Check all acroform checkbox items disabled or enabled', async () => {
 	let json: any = {
 		questions: [
 			{
 				name: 'checkbox_disabled_enabled',
 				type: 'checkbox',
 				choices: ['item1', 'item2', 'item3'],
+				readonlyRenderAs: 'acroform'
 			}
 		]
 	};
@@ -84,15 +85,11 @@ test('Check all items disabled or enabled', async () => {
 		let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
 		let controller: DocController = new DocController(TestHelper.defaultOptions);
 		await survey['render'](controller);
-		if (!readOnly) {
-			controller.doc.internal.acroformPlugin.
-				acroFormDictionaryRoot.Fields.forEach(
-					(acroCheckBox: any) => {
-						expect(acroCheckBox.readOnly).toBe(readOnly);
-					}
-				);
-		}
-		else expect(controller.doc.internal.acroformPlugin).toBe(undefined);
+		controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields.
+			forEach((acroCheckBox: any) => {
+					expect(acroCheckBox.readOnly).toBe(readOnly);
+				}
+			);
 	}
 });
 test('Check enable one item', async () => {

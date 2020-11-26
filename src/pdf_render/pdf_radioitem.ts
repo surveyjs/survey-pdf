@@ -1,4 +1,4 @@
-import { IQuestion } from 'survey-core';
+import { IQuestion, Question } from 'survey-core';
 import { IPoint, IRect, ISize, DocController } from '../doc_controller';
 import { IPdfBrick, PdfBrick } from './pdf_brick';
 import { TextBrick } from './pdf_text';
@@ -36,9 +36,9 @@ export class RadioItemBrick extends PdfBrick {
         this.textColor = this.formBorderColor;
     }
     public async renderInteractive(): Promise<void> {
-        if (this.radioGroupWrap.readOnly) {
-            await this.renderReadOnly();
-            return;
+        if (this.radioGroupWrap.readOnly && SurveyHelper.getReadonlyRenderAs(
+            <Question>this.question, this.controller) !== 'acroform') {
+            return await this.renderReadOnly();
         }
         if (this.index == 0) {
             this.radioGroupWrap.addToPdf(this.formBorderColor);

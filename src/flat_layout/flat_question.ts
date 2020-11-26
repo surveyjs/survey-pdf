@@ -1,6 +1,6 @@
+import { IQuestion, Question, LocalizableString, Serializer } from 'survey-core';
 import { SurveyPDF } from '../survey';
 import { IPoint, IRect, DocController } from '../doc_controller';
-import { IQuestion, Question, LocalizableString } from 'survey-core';
 import { FlatSurvey } from './flat_survey';
 import { IPdfBrick } from '../pdf_render/pdf_brick'
 import { TextBrick } from '../pdf_render/pdf_text';
@@ -180,3 +180,9 @@ export class FlatQuestion implements IFlatQuestion {
         return flats;
     }
 }
+
+Serializer.addProperty('question', {
+    name: 'readonlyRenderAs',
+    default: 'auto',
+    choices: ['auto', 'text', 'acroform']
+});

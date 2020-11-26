@@ -1,5 +1,5 @@
 import { IRect, ISize, DocController } from '../doc_controller';
-import { IQuestion } from 'survey-core';
+import { IQuestion, Question } from 'survey-core';
 import { SurveyHelper } from '../helper_survey';
 
 export interface IPdfBrick extends IRect, ISize {
@@ -36,7 +36,8 @@ export class PdfBrick implements IPdfBrick {
         return this.yBot - this.yTop;
     }
     public async render(): Promise<void> {
-        if (!!this.question && this.question.isReadOnly) {
+        if (!!this.question && this.question.isReadOnly && SurveyHelper.getReadonlyRenderAs(
+            <Question>this.question, this.controller) !== 'acroform') {
             await this.renderReadOnly();
         }
         else await this.renderInteractive();

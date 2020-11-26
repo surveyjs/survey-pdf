@@ -3,7 +3,7 @@
 };
 
 import { SurveyPDF } from '../src/survey';
-import { IRect, ISize, DocController } from '../src/doc_controller';
+import { IRect, ISize, DocOptions, DocController } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { FlatTextbox } from '../src/flat_layout/flat_textbox';
 import { PagePacker } from '../src/page_layout/page_packer';
@@ -98,7 +98,7 @@ test('Event render header left top text', async () => {
     EventHandler.process_header_events(survey, controller, packs);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(2);
-    let textSize: ISize = controller.measureText(text, 'normal', DrawCanvas.DEFAULT_FONT_SIZE);
+    let textSize: ISize = controller.measureText(text, 'normal', DocOptions.FONT_SIZE);
     TestHelper.equalRect(expect, packs[0][1], SurveyHelper.createRect(
         { xLeft: 0, yTop: 0 }, textSize.width, textSize.height));
 });
@@ -129,7 +129,7 @@ test('Event render header center middle text', async () => {
     EventHandler.process_header_events(survey, controller, packs);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(2);
-    let textSize: ISize = controller.measureText(text, 'normal', DrawCanvas.DEFAULT_FONT_SIZE);
+    let textSize: ISize = controller.measureText(text, 'normal', DocOptions.FONT_SIZE);
     let headerRect: IRect = SurveyHelper.createHeaderRect(controller);
     let assumeText: IRect = {
         xLeft: (headerRect.xRight - headerRect.xLeft - textSize.width) / 2.0,
@@ -166,7 +166,7 @@ test('Event render footer center middle text', async () => {
     EventHandler.process_header_events(survey, controller, packs);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(2);
-    let textSize: ISize = controller.measureText(text, 'normal', DrawCanvas.DEFAULT_FONT_SIZE);
+    let textSize: ISize = controller.measureText(text, 'normal', DocOptions.FONT_SIZE);
     let footerRect: IRect = SurveyHelper.createFooterRect(controller);
     let assumeText: IRect = {
         xLeft: (footerRect.xLeft + footerRect.xRight - textSize.width) / 2.0,

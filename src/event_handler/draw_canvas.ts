@@ -1,4 +1,4 @@
-import { IRect, IMargin, ISize, DocController } from '../doc_controller';
+import { IRect, IMargin, ISize, DocOptions, DocController } from '../doc_controller';
 import { IPdfBrick, PdfBrick } from '../pdf_render/pdf_brick';
 import { TextBrick } from '../pdf_render/pdf_text';
 import { TextBoldBrick } from '../pdf_render/pdf_textbold';
@@ -82,7 +82,6 @@ export interface IDrawImageOptions extends IDrawRectOptions {
  * DrawCanvas object passed to onRenderHeader and onRenderFooter events
  */
 export class DrawCanvas {
-    public static readonly DEFAULT_FONT_SIZE: number = 14;
     public constructor(protected packs: IPdfBrick[],
         protected controller: DocController,
         protected _rect: IRect,
@@ -198,7 +197,7 @@ export class DrawCanvas {
     public drawText(textOptions: IDrawTextOptions): void {
         textOptions = SurveyHelper.clone(textOptions);
         if (typeof textOptions.fontSize === 'undefined') {
-            textOptions.fontSize = DrawCanvas.DEFAULT_FONT_SIZE;
+            textOptions.fontSize = DocOptions.FONT_SIZE;
         }
         if (typeof textOptions.isBold === 'undefined') {
             textOptions.isBold = false;
