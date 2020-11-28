@@ -31,7 +31,7 @@ export class SurveyHelper {
     public static readonly IMAGEPICKER_COUNT: number = 4;
     public static readonly IMAGEPICKER_RATIO: number = 4.0 / 3.0;
     public static readonly MULTIPLETEXT_TEXT_PERS: number = Math.E / 10.0;
-    public static readonly HTML_TAIL_TEXT: number = 0.24;
+    public static readonly HTML_TAIL_TEXT_SCALE: number = 0.24;
     public static readonly SELECT_ITEM_FLAT_SCALE: number = 0.95;
     public static readonly GAP_BETWEEN_ROWS: number = 0.25;
     public static readonly GAP_BETWEEN_COLUMNS: number = 1.5;
@@ -217,12 +217,12 @@ export class SurveyHelper {
                 let yBot: number;
                 yBot = (controller.helperDoc.getNumberOfPages() - 1) *
                     (controller.paperHeight - controller.margins.bot - controller.margins.top)
-                    + result.y - margins.top + this.HTML_TAIL_TEXT * controller.fontSize;
+                    + result.y - margins.top + SurveyHelper.HTML_TAIL_TEXT_SCALE * controller.fontSize;
                 controller.helperDoc.addPage();
                 for (let i: number = 0; i < controller.helperDoc.getNumberOfPages(); i++) {
                     controller.helperDoc.deletePage(1);
                 }
-                let rect: IRect = this.createRect(point, margins.width, yBot);
+                let rect: IRect = SurveyHelper.createRect(point, margins.width, yBot);
                 resolve(new HTMLBrick(question, controller, rect, html));
             }, margins)
         });
