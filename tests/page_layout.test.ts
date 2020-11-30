@@ -5,12 +5,12 @@
 import { Question } from 'survey-core';
 import { SurveyPDF } from '../src/survey';
 import { IPoint, IRect, IDocOptions, DocOptions, DocController } from '../src/doc_controller';
-import { PagePacker } from '../src/page_layout/page_packer';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { FlatQuestion } from '../src/flat_layout/flat_question';
 import { FlatTextbox } from '../src/flat_layout/flat_textbox';
 import { FlatCheckbox } from '../src/flat_layout/flat_checkbox';
 import { FlatRadiogroup } from '../src/flat_layout/flat_radiogroup';
+import { PagePacker } from '../src/page_layout/page_packer';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';

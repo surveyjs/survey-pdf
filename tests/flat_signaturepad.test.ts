@@ -5,11 +5,11 @@
 import { SurveyPDF } from '../src/survey';
 import { IRect, DocController } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
+import { FlatHTML } from '../src/entries/pdf';
 import { FlatSignaturePad } from '../src/flat_layout/flat_signaturepad';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
-import { FlatHTML } from '../src/entries/pdf';
 let __dummy_sp = new FlatSignaturePad(null, null, null);
 
 test('Check signaturepad', async () => {

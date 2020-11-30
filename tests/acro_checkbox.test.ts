@@ -5,10 +5,10 @@
 import { SurveyPDF } from '../src/survey';
 import { IRect, DocController } from '../src/doc_controller';
 import { FlatCheckbox } from '../src/flat_layout/flat_checkbox';
-import { SurveyHelper } from '../src/helper_survey';
-import { TestHelper } from '../src/helper_test';
 import { PdfBrick } from '../src/pdf_render/pdf_brick';
 import { CheckItemBrick } from '../src/pdf_render/pdf_checkitem';
+import { SurveyHelper } from '../src/helper_survey';
+import { TestHelper } from '../src/helper_test';
 let __dummy_cb = new FlatCheckbox(null, null, null);
 
 test('Check that checkbox has square boundaries', async () => {
@@ -18,7 +18,6 @@ test('Check that checkbox has square boundaries', async () => {
 				type: 'checkbox',
 				name: 'checkbox_square_boundaries',
 				titleLocation: 'hidden',
-				title: 'Square Pants',
 				choices: [
 					'S'
 				]

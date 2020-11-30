@@ -7,8 +7,8 @@ import { IRect, DocController } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { FlatExpression } from '../src/flat_layout/flat_expression';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
-import { TestHelper } from '../src/helper_test';
 import { SurveyHelper } from '../src/helper_survey';
+import { TestHelper } from '../src/helper_test';
 let __dummy_ex = new FlatExpression(null, null, null);
 
 test('Check expression', async () => {

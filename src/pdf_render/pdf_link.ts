@@ -1,3 +1,4 @@
+import { Question } from 'survey-core';
 import { TextBrick } from './pdf_text';
 import { SurveyHelper } from '../helper_survey';
 
@@ -22,5 +23,12 @@ export class LinkBrick extends TextBrick {
             yTopLink, { url: this.link });
         await super.renderInteractive();
         this.controller.doc.setTextColor(oldTextColor);
+    }
+    public async renderReadOnly(): Promise<void> {
+        if (SurveyHelper.getReadonlyRenderAs(<Question>this.question,
+            this.controller) !== "text") {
+            return this.renderInteractive();
+        }
+        await super.renderInteractive();
     }
 }

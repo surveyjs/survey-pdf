@@ -6,13 +6,13 @@ import { Question } from 'survey-core';
 import { SurveyPDF } from '../src/survey';
 import { IPoint, IRect, DocController } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
+import { FlatQuestion } from '../src/flat_layout/flat_question';
 import { FlatComment } from '../src/flat_layout/flat_comment';
 import { FlatCheckbox } from '../src/flat_layout/flat_checkbox';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { TextBrick } from '../src/pdf_render/pdf_text';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
-import { FlatQuestion } from '../src/flat_layout/flat_question';
 let __dummy_cm = new FlatComment(null, null, null);
 let __dummy_cb = new FlatCheckbox(null, null, null);
 

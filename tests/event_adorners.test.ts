@@ -3,9 +3,9 @@
 };
 
 import * as SurveyPDFModule_dummy from '../src/entries/pdf';
-let __dummy_sh = SurveyPDFModule_dummy.SurveyHelper;
 import { SurveyPDF } from '../src/survey';
 import { DocController, IPoint } from '../src/doc_controller';
+import { AdornersOptions, AdornersPanelOptions, AdornersPageOptions } from '../src/event_handler/adorners';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { IFlatQuestion } from '../src/flat_layout/flat_question';
 import { FlatTextbox } from '../src/flat_layout/flat_textbox';
@@ -15,9 +15,9 @@ import { PagePacker } from '../src/page_layout/page_packer';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { TextBoxBrick } from '../src/pdf_render/pdf_textbox';
 import { CompositeBrick } from '../src/pdf_render/pdf_composite';
-import { AdornersOptions, AdornersPanelOptions, AdornersPageOptions } from '../src/event_handler/adorners';
-import { TestHelper } from '../src/helper_test';
 import { RowlineBrick } from '../src/entries/pdf';
+import { TestHelper } from '../src/helper_test';
+let __dummy_sh = SurveyPDFModule_dummy.SurveyHelper;
 let __dummy_tx = new FlatTextbox(null, null, null);
 let __dummy_cb = new FlatCheckbox(null, null, null);
 let __dummy_rg = new FlatRadiogroup(null, null, null);

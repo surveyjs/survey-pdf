@@ -4,12 +4,12 @@
 
 import { SurveyPDF } from '../src/survey';
 import { IRect, ISize, DocOptions, DocController } from '../src/doc_controller';
+import { EventHandler } from '../src/event_handler/event_handler';
+import { DrawCanvas, HorizontalAlign, VerticalAlign } from '../src/event_handler/draw_canvas';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { FlatTextbox } from '../src/flat_layout/flat_textbox';
 import { PagePacker } from '../src/page_layout/page_packer';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
-import { EventHandler } from '../src/event_handler/event_handler';
-import { DrawCanvas, HorizontalAlign, VerticalAlign } from '../src/event_handler/draw_canvas';
 import { TextBoldBrick } from '../src/pdf_render/pdf_textbold';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';

@@ -5,11 +5,11 @@
 import { Question } from 'survey-core';
 import { SurveyPDF } from '../src/survey';
 import { DocController } from '../src/doc_controller';
+import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { FlatTextbox } from '../src/flat_layout/flat_textbox';
 import { FlatCheckbox } from '../src/flat_layout/flat_checkbox';
-import { TestHelper } from '../src/helper_test';
-import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
+import { TestHelper } from '../src/helper_test';
 let __dummy_tx = new FlatTextbox(null, null, null);
 let __dummy_cb = new FlatCheckbox(null, null, null);
 

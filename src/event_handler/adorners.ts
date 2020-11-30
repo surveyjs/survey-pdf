@@ -10,9 +10,8 @@ export class AdornersBaseOptions {
     public repository: FlatRepository;
     public module: any;
 
-    public constructor(point: IPoint, bricks: IPdfBrick[], controller: DocController,
-        repository: FlatRepository,
-        module: any) {
+    public constructor(point: IPoint, bricks: IPdfBrick[],
+        controller: DocController, repository: FlatRepository, module: any) {
         this.point = point;
         this.bricks = bricks;
         this.controller = controller;
@@ -22,36 +21,30 @@ export class AdornersBaseOptions {
 }
 export class AdornersOptions extends AdornersBaseOptions {
     public question: IQuestion; 
-
     public constructor(point: IPoint, bricks: IPdfBrick[],
         question: IQuestion, controller: DocController,
-        repository: FlatRepository,
-        module: any) {
-            super(point, bricks, controller, repository, module);
-            this.question = question;
+        repository: FlatRepository, module: any) {
+        super(point, bricks, controller, repository, module);
+        this.question = question;
     }
 }
 export class AdornersPanelOptions extends AdornersBaseOptions {
     public panel: PanelModel; 
-
     public constructor(point: IPoint, bricks: IPdfBrick[],
         panel: PanelModel, controller: DocController,
-        repository: FlatRepository,
-        module: any) {
-            super(point, bricks, controller, repository, module);
-            this.panel = panel;
+        repository: FlatRepository, module: any) {
+        super(point, bricks, controller, repository, module);
+        this.panel = panel;
     }
 }
 
 export class AdornersPageOptions extends AdornersBaseOptions {
     public page: PageModel; 
-
     public constructor(point: IPoint, bricks: IPdfBrick[],
         page: PageModel, controller: DocController,
-        repository: FlatRepository,
-        module: any) {
-            super(point, bricks, controller, repository, module);
-            this.page = page;
+        repository: FlatRepository, module: any) {
+        super(point, bricks, controller, repository, module);
+        this.page = page;
     }
 }
 

@@ -6,9 +6,9 @@ import { IPoint, IRect, ISize, IDocOptions, DocController } from '../src/doc_con
 import { FlatMatrix } from '../src/flat_layout/flat_matrix';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
+import { TextBrick } from '../src/pdf_render/pdf_text';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
-import { TextBrick } from '../src/pdf_render/pdf_text';
 let __dummy_mt = new FlatMatrix(null, null, null);
 
 test('Matrix simple hasRows true columns', async () => {
