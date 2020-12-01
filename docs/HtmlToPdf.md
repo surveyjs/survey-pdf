@@ -11,7 +11,7 @@ var options = {
 var surveyPDF = new SurveyPDF.SurveyPDF(json, options);
 ```
 
-Also, you may override the behavior of particular html question via setting _renderAs_ property with values "standard" or "image" correspondingly. Default value is "auto"
+Also, you can override the render of particular html question via setting _renderAs_ property with values "standard" or "image" correspondingly. Default value is "auto"
 
 ```javascript
 var json = {

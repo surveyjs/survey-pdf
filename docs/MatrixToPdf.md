@@ -10,3 +10,19 @@ var options = {
 };
 var surveyPDF = new SurveyPDF.SurveyPDF(json, options);
 ```
+
+Also, you can override the render of particular matrix question via setting _renderAs_ property with "list" value. Default value is "auto"
+
+```javascript
+var json = {
+    type: "matrix",
+    name: "matrix_as_list",
+    columns: [
+        "Column 1"
+    ],
+    rows: [
+        "Row 1"
+    ],
+    renderAs: "list"
+}
+```
