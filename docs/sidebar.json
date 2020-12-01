@@ -9,6 +9,10 @@
       "Title": "HTML to PDF"
     },
     {
+      "Name": "MatrixToPdf",
+      "Title": "Matrix to PDF"
+    },
+    {
       "Name": "api",
       "Title": "PDF Export API",
       "Items": [
