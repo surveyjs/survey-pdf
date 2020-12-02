@@ -14,8 +14,8 @@ SurveyJS PDF exporter library is easy way to render [SurveyJS Library](https://s
 
 ### Screenshots
 
-![SurveyJS PDF Exporter example page 1](https://github.com/surveyjs/surveyjs/blob/master/docs/images/survey-pdf-page-1.png?raw=true)
-![SurveyJS PDF Exporter example page 2](https://github.com/surveyjs/surveyjs/blob/master/docs/images/survey-pdf-page-2.png?raw=true)
+![SurveyJS PDF Exporter example page 1](https://raw.githubusercontent.com/surveyjs/survey-pdf/master/docs/images/survey-pdf-page-1.png)
+![SurveyJS PDF Exporter example page 2](https://raw.githubusercontent.com/surveyjs/survey-pdf/master/docs/images/survey-pdf-page-2.png)
 
 ### Usage (modern ES, modules)
 
@@ -43,7 +43,7 @@ Add these scripts to your web page
 
 Also you may load any of SurveyJS with framework scripts without loading SurveyJS Core. Look at simple package dependency diagram
 
-<img src="https://github.com/surveyjs/surveyjs/blob/master/docs/images/package-dependency.png?raw=true" alt="SurveyJS package dependency" width="50%"/>
+<img src="https://raw.githubusercontent.com/surveyjs/survey-pdf/master/docs/images/package-dependency.png" alt="SurveyJS package dependency" width="50%"/>
 
 Example of export SurveyJS library JSON to PDF
 
