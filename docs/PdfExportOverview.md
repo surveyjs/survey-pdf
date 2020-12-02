@@ -1,8 +1,10 @@
 # PDF Export for SurveyJS
 
-SurveyJS PDF exporter library is easy way to render [SurveyJS Library](https://surveyjs.io/Overview/Library/) surveys to PDF which can be emailed or printed
+SurveyJS PDF exporter library is an easy way to render [SurveyJS Library](https://surveyjs.io/Overview/Library/) surveys to PDF which can be emailed or printed.
 
 ## Features
+
+SurveyJS PDF exporter is represented by [SurveyPDF](https://surveyjs.io/Documentation/Pdf-Export?id=surveypdf) object which is a [SurveyModel](https://surveyjs.io/Documentation/Library?id=surveymodel) descendant. It inherits all the functionality of SurveyJS Model and adds PDF export specific features.
 
 - Render all SurveyJS questions (textboxes, checkboxes, dropdowns, etc.) with results
 - Support of SurveyJS widgets and your own custom adorners
