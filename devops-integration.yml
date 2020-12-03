@@ -134,6 +134,7 @@ steps:
 # https://stackoverflow.com/questions/58485585/azure-pipeline-powershell-and-git-on-windows-server-2019-gives-error-in-output
 - powershell: |
     cd $(Build.SourcesDirectory)/service
+    Remove-Item -Path "$(Build.SourcesDirectory)/service/surveyjs.io/App_Data/DocsPdf/PdfExportOverview.md" -Force
     Rename-Item -Path "$(Build.SourcesDirectory)/service/surveyjs.io/App_Data/DocsPdf/README.md" -NewName "PdfExportOverview.md"
     git checkout master
     git pull origin master
