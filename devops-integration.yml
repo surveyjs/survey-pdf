@@ -131,6 +131,7 @@ steps:
     git pull origin master
     git fetch --tags --force
     git add surveyjs.io/App_Data/DocsPdf
+    git reset -- surveyjs.io/App_Data/DocsPdf/images
     git commit -m "[skip ci] Updated survey-pdf docs"
     git pull origin master
     git push origin master
