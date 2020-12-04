@@ -196,7 +196,7 @@ export class DocController extends DocOptions {
         let oldFontSize = this._helperDoc.getFontSize();
         this._helperDoc.setFontSize(fontSize);
         this._helperDoc.setFontStyle(fontStyle);
-        let height: number = this._helperDoc.getLineHeight() / this._helperDoc.internal.scaleFactor;;
+        let height: number = this._helperDoc.getLineHeight() / this._helperDoc.internal.scaleFactor;
         let width: number = 0.0;
         if (typeof text === 'number') {
             width = height * text;
@@ -235,7 +235,13 @@ export class DocController extends DocOptions {
     public get paperHeight(): number {
         return this.doc.internal.pageSize.height;
     }
+    public getNumberOfPages(): number {
+        return this.doc.getNumberOfPages();
+    }
     public addPage(): void {
         this.doc.addPage();
+    }
+    public setPage(index: number): void {
+        this.doc.setPage(index + 1);
     }
 }

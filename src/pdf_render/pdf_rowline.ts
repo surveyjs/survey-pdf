@@ -31,7 +31,4 @@ export class RowlineBrick implements IPdfBrick {
     public unfold(): IPdfBrick[] {
         return [this];
     }
-    public isAddPageAllowed(): boolean {
-        return true;
-    }
 }

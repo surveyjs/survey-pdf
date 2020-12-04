@@ -6,7 +6,6 @@ export interface IPdfBrick extends IRect, ISize {
     render(): Promise<void>;
     unfold(): IPdfBrick[];
     isPageBreak: boolean;
-    isAddPageAllowed(): boolean;
 }
 export class PdfBrick implements IPdfBrick {
     public xLeft: number;
@@ -48,8 +47,5 @@ export class PdfBrick implements IPdfBrick {
     }
     public unfold(): IPdfBrick[] {
         return [this];
-    }
-    public isAddPageAllowed(): boolean {
-        return true;
     }
 }

@@ -115,14 +115,11 @@ export class SurveyPDF extends SurveyModel {
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
     EventHandler.process_header_events(this, controller, packs);
     for (let i: number = 0; i < packs.length; i++) {
-      let pageAdded: boolean = i === 0;
       for (let j: number = 0; j < packs[i].length; j++) {
-        if (!pageAdded) {
-          pageAdded = true;
-          if (packs[i][j].isAddPageAllowed()) {
+        if (controller.getNumberOfPages() === i) {
             controller.addPage();
-          }
         }
+        controller.setPage(i);
         //gizmos bricks borders for debug
         // packs[i][j].unfold().forEach((rect: IPdfBrick) => {
         //     controller.doc.setDrawColor('green');

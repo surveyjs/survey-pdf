@@ -214,15 +214,15 @@ export class SurveyHelper {
                 'pagesplit': true,
                 width: margins.width
             }, function (result: any) {
-                let yBot: number;
-                yBot = (controller.helperDoc.getNumberOfPages() - 1) *
+                let height: number = (controller.helperDoc.getNumberOfPages() - 1) *
                     (controller.paperHeight - controller.margins.bot - controller.margins.top)
                     + result.y - margins.top + SurveyHelper.HTML_TAIL_TEXT_SCALE * controller.fontSize;
+                let numberOfPages: number = controller.helperDoc.getNumberOfPages();
                 controller.helperDoc.addPage();
-                for (let i: number = 0; i < controller.helperDoc.getNumberOfPages(); i++) {
+                for (let i: number = 0; i < numberOfPages; i++) {
                     controller.helperDoc.deletePage(1);
                 }
-                let rect: IRect = SurveyHelper.createRect(point, margins.width, yBot);
+                let rect: IRect = SurveyHelper.createRect(point, margins.width, height);
                 resolve(new HTMLBrick(question, controller, rect, html));
             }, margins)
         });
