@@ -14,3 +14,5 @@ A typical use case of editable PDF documents:
 4. Obtain filled data from PDF documents (for instance, automatically using the thrid-party libraries)
 
 Editable PDF documents are implemented via Adobe Acroforms. They contain form fields in which respondents can enter data (type text, check boxes or radiobuttons, and select items from lists).
+
+![SurveyJS PDF Exporter example page 1](https://raw.githubusercontent.com/surveyjs/survey-pdf/master/docs/images/editable-pdf.gif)
