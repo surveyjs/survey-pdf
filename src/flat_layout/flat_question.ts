@@ -144,7 +144,7 @@ export class FlatQuestion implements IFlatQuestion {
                 contentPoint.xLeft += this.controller.unitWidth * FlatQuestion.CONTENT_GAP_HOR_SCALE;
                 this.controller.margins.left = contentPoint.xLeft;
                 commentPoint.xLeft = contentPoint.xLeft;
-                let contentFlats = await this.generateFlatsComposite(contentPoint);
+                let contentFlats: IPdfBrick[] = await this.generateFlatsComposite(contentPoint);
                 if (contentFlats !== null && contentFlats.length != 0) {
                     commentPoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(...contentFlats));
                     commentPoint.yTop += this.controller.unitHeight * SurveyHelper.GAP_BETWEEN_ROWS;
