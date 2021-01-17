@@ -36,6 +36,25 @@ test('Has other radiogroup', async () => {
     let internalRadioGroup: any = internal.acroformPlugin.acroFormDictionaryRoot.Fields[0];
     expect(internalRadioGroup.FT).toBe('/Btn');
 });
+test('Other selected with value radiogroup', async () => {
+    let json: any = {
+        showQuestionNumbers: 'false',
+        questions: [
+            {
+                type: 'radiogroup',
+                name: 'radiogroup_otherselected',
+                defaultValue: 'Value',
+                hasOther: true
+            }
+        ]
+    };
+    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    await survey['render'](controller);
+    let fields: any = controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields;
+    expect(fields[1].AS).toBe('/' + survey.getAllQuestions()[0].id + 'index0');
+    expect(fields[2].V).toBe('( ' + json.questions[0].defaultValue + ')');
+});
 test('Check all items disabled or enabled', async () => {
     let json: any = {
         questions: [

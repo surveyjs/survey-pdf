@@ -14,13 +14,17 @@ export class FlatRadiogroup extends FlatSelectBase {
         super(survey, question, controller);
         this.question = <QuestionRadiogroupModel>question;
     }
-    public generateFlatItem(rect: IRect, itemValue: ItemValue,
+    public generateFlatItem(rect: IRect, item: ItemValue,
         index: number, key?: string, checked?: boolean): IPdfBrick {
         if (index === 0) {
             this.radioGroupWrap = new RadioGroupWrap(this.question.id + ((typeof key === 'undefined') ? '' : key),
                 this.controller, this.question.isReadOnly);
         }
-        let isChecked = (typeof checked === 'undefined') ? this.question.value == itemValue.value : checked;
+        let isChecked: boolean = (typeof checked === 'undefined') ? 
+            (item === this.question.otherItem ? this.question.isOtherSelected :
+                (item.value === this.question.value ||
+                    (typeof this.question.isItemSelected !== 'undefined' &&
+                        this.question.isItemSelected(item)))) : checked;
         return new RadioItemBrick(this.question, this.controller, rect,
             index, isChecked, this.radioGroupWrap);
     }
