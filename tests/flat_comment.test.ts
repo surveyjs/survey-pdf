@@ -156,7 +156,6 @@ test('Check question comment', async () => {
                 type: 'checkbox',
                 hasComment: true,
                 name: 'comment',
-                title: 'No comments',
                 titleLocation: 'hidden'
             }
         ]
@@ -171,8 +170,9 @@ test('Check question comment', async () => {
     let assumeText: IRect = await SurveyHelper.createTextFlat(
         commentPoint, survey.getAllQuestions()[0],
         controller, json.questions[0].commentText, TextBrick);
-    let assumeTextField: IRect = SurveyHelper.createTextFieldRect(
-        SurveyHelper.createPoint(assumeText), controller, 2);
+    let otherPount: IPoint = SurveyHelper.createPoint(assumeText);
+    otherPount.yTop += controller.unitHeight * SurveyHelper.GAP_BETWEEN_ROWS;
+    let assumeTextField: IRect = SurveyHelper.createTextFieldRect(otherPount, controller, 2);
     TestHelper.equalRect(expect, flats[0][0].unfold()[0].unfold()[0], assumeText);
     TestHelper.equalRect(expect, flats[0][0].unfold()[1], assumeTextField);
 });

@@ -51,7 +51,8 @@ export abstract class FlatSelectBase extends FlatQuestion {
             colCount = (SurveyHelper.getColumnWidth(this.controller, this.question.colCount) <
                 this.controller.measureText(SurveyHelper.MATRIX_COLUMN_WIDTH).width) ? 1 : this.question.colCount;
         }
-        return await (colCount == 1) ? this.generateVerticallyItems(point, this.question.visibleChoices) : this.generateHorisontallyItems(point, colCount);
+        return (colCount == 1) ? await this.generateVerticallyItems(point, this.question.visibleChoices) :
+            await this.generateHorisontallyItems(point, colCount);
 
     }
     protected async generateVerticallyItems(point: IPoint, itemValues: ItemValue[]): Promise<IPdfBrick[]> {
@@ -79,11 +80,11 @@ export abstract class FlatSelectBase extends FlatQuestion {
                 currPoint, this.question.visibleChoices[i], i);
             row.addBrick(itemFlat);
             this.controller.popMargins();
-            if (i % colCount == colCount - 1 || i == this.question.visibleChoices.length - 1) {
-                let rowLineFlat = SurveyHelper.createRowlineFlat(SurveyHelper.createPoint(row), this.controller);
+            if (i % colCount === colCount - 1 || i === this.question.visibleChoices.length - 1) {
+                let rowLineFlat: IPdfBrick = SurveyHelper.createRowlineFlat(
+                    SurveyHelper.createPoint(row), this.controller);
                 currPoint.yTop = rowLineFlat.yBot +
-                    SurveyHelper.GAP_BETWEEN_ROWS *
-                    this.controller.unitHeight;
+                    SurveyHelper.GAP_BETWEEN_ROWS * this.controller.unitHeight;
                 flats.push(row, rowLineFlat);
                 row = new CompositeBrick();
             }

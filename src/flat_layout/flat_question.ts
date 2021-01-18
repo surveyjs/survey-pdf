@@ -34,12 +34,12 @@ export class FlatQuestion implements IFlatQuestion {
     }
     private async generateFlatsComment(point: IPoint): Promise<IPdfBrick> {
         let text: LocalizableString = this.question.locCommentText;
-        let compositeText: IPdfBrick = await SurveyHelper.createTextFlat(
+        let otherTextFlat: IPdfBrick = await SurveyHelper.createTextFlat(
             point, this.question, this.controller, text, TextBrick);
-        let rectTextField: IRect = SurveyHelper.createTextFieldRect(
-            SurveyHelper.createPoint(compositeText), this.controller, 2);
-        return new CompositeBrick(compositeText,
-            new CommentBrick(this.question, this.controller, rectTextField, false));
+        let otherPoint: IPoint = SurveyHelper.createPoint(otherTextFlat);
+        otherPoint.yTop += this.controller.unitHeight * SurveyHelper.GAP_BETWEEN_ROWS;
+        return new CompositeBrick(otherTextFlat, await SurveyHelper.createCommentFlat(
+            otherPoint, this.question, this.controller, SurveyHelper.OTHER_ROWS_COUNT, false));
     }
     public async generateFlatsComposite(point: IPoint): Promise<IPdfBrick[]> {
         if (!!this.question.contentPanel) {
@@ -173,7 +173,7 @@ export class FlatQuestion implements IFlatQuestion {
                 break;
             }
         }
-        if (this.question.hasComment && this.question.titleLocation != 'bottom') {
+        if (this.question.hasComment && this.question.titleLocation !== 'bottom') {
             flats.push(await this.generateFlatsComment(commentPoint));
         }
         this.controller.popMargins();
