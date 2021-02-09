@@ -10,14 +10,14 @@ var fs = require("fs");
 
 var banner = [
   "surveyjs - SurveyJS PDF library v" + packageJson.version,
-  "Copyright (c) 2015-2020 Devsoft Baltic OÜ  - http://surveyjs.io/",
+  "Copyright (c) 2015-2021 Devsoft Baltic OÜ  - http://surveyjs.io/",
   "License: MIT (http://www.opensource.org/licenses/mit-license.php)"
 ].join("\n");
 
 // TODO add to dts_bundler
 var dts_banner = [
   "Type definitions for SurveyJS PDF library v" + packageJson.version,
-  "Copyright (c) 2015-2020 Devsoft Baltic OÜ  - http://surveyjs.io/",
+  "Copyright (c) 2015-2021 Devsoft Baltic OÜ  - http://surveyjs.io/",
   "Definitions by: Devsoft Baltic OÜ <https://github.com/surveyjs/>",
   ""
 ].join("\n");
@@ -26,7 +26,7 @@ var platformOptions = {
   pdf: {
     externals: {
       jspdf: {
-        root: "jsPDF",
+        root: "jspdf",
         commonjs2: "jspdf",
         commonjs: "jspdf",
         amd: "jspdf"
@@ -40,8 +40,8 @@ var platformOptions = {
     },
     keywords: ["pdf"],
     dependencies: {
-      jspdf: "^1.5.3",
-      "survey-core": "^1.1.1"
+      jspdf: "^2.3.0",
+      "survey-core": "^1.8.29"
     }
   }
 };

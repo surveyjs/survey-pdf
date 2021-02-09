@@ -39,7 +39,7 @@ Add these scripts to your web page
 
 ```html
 <!-- jsPDF library -->
-<script src="https://unpkg.com/jspdf@1.5.3/dist/jspdf.min.js"></script>
+<script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
 <!-- SurveyJS Core library -->
 <script src="https://unpkg.com/survey-core@latest/survey.core.min.js"></script>
 <!-- SurveyPDF Exporter library -->

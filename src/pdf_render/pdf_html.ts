@@ -23,8 +23,7 @@ export class HTMLBrick extends PdfBrick {
     public async renderInteractive(): Promise<void> {
         await new Promise((resolve) => {
             this.controller.doc.fromHTML(this.html, this.xLeft, this.yTop, {
-                width: this.width,
-                'pagesplit': true,
+                width: this.width, pagesplit: true,
             }, function() {
                 [].slice.call(document.querySelectorAll('iframe')).forEach(
                     function(el: HTMLIFrameElement) {

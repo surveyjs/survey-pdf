@@ -11,7 +11,7 @@
 * jsPDF AcroForm Plugin
 * @module AcroForm
 */
-var jsPDF = window.jsPDF || require('jspdf');
+var jspdf = require('jspdf');
 (function (jsPDF, globalObj) {
     'use strict';
 
@@ -2862,4 +2862,4 @@ var jsPDF = window.jsPDF || require('jspdf');
         PasswordField: AcroFormPasswordField,
         Appearance: AcroFormAppearance
     };
-})(jsPDF, (typeof window !== "undefined" && window || typeof global !== "undefined" && global));
+})(jspdf.jsPDF, (typeof window !== 'undefined' && window || typeof global !== 'undefined' && global));

@@ -211,8 +211,7 @@ export class SurveyHelper {
         let margins: { top: number, bottom: number, width: number } = this.getHtmlMargins(controller, point);
         return await new Promise((resolve) => {
             controller.helperDoc.fromHTML(html, point.xLeft, margins.top, {
-                'pagesplit': true,
-                width: margins.width
+                pagesplit: true, width: margins.width
             }, function (result: any) {
                 let height: number = (controller.helperDoc.getNumberOfPages() - 1) *
                     (controller.paperHeight - controller.margins.bot - controller.margins.top)
