@@ -21,7 +21,7 @@ export class HTMLBrick extends PdfBrick {
         }
     }
     public async renderInteractive(): Promise<void> {
-        await new Promise((resolve) => {
+        await new Promise<void>((resolve) => {
             this.controller.doc.fromHTML(this.html, this.xLeft, this.yTop, {
                 width: this.width, pagesplit: true,
             }, function() {
