@@ -1,9 +1,9 @@
-import { Event } from "survey-core";
-import { SurveyPDF } from "../survey";
-import { DocController } from "../doc_controller";
-import { IPdfBrick } from "../pdf_render/pdf_brick";
-import { DrawCanvas } from "./draw_canvas";
-import { SurveyHelper } from "../helper_survey";
+import { Event } from 'survey-core';
+import { SurveyPDF } from '../survey';
+import { DocController } from '../doc_controller';
+import { IPdfBrick } from '../pdf_render/pdf_brick';
+import { DrawCanvas } from './draw_canvas';
+import { SurveyHelper } from '../helper_survey';
 
 export class EventAsync<T extends Function, Options> extends Event<T, Options> {
   public unshift(func: T) {
@@ -30,7 +30,7 @@ export class EventHandler {
       survey.onRenderHeader.add((_, canvas) => {
         canvas.drawText({
           text:
-            "SurveyJS PDF | Please purchase a SurveyJS PDF developer license to use it in your app | https://surveyjs.io/Buy",
+            'SurveyJS PDF | Please purchase a SurveyJS PDF developer license to use it in your app | https://surveyjs.io/Buy',
           fontSize: 10
         });
       });
