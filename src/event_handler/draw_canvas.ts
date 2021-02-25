@@ -108,12 +108,7 @@ export class DrawCanvas {
     }
     private alignRect(rectOptions: IDrawRectOptions, itemSize: ISize): IRect {
         if (typeof rectOptions.margins === 'undefined') {
-            rectOptions.margins = {
-                left: 0.0,
-                right: 0.0,
-                top: 0.0,
-                bot: 0.0
-            }
+            rectOptions.margins = { left: 0.0, right: 0.0, top: 0.0, bot: 0.0 };
         }
         else {
             if (typeof rectOptions.margins.left === 'undefined') {

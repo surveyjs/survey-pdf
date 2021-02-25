@@ -21,41 +21,21 @@ export class EventAsync<T extends Function, Options> extends Event<T, Options> {
   }
 }
 export class EventHandler {
-  public static process_header_events(
-    survey: SurveyPDF,
-    controller: DocController,
-    packs: IPdfBrick[][]
-  ): void {
+  public static process_header_events(survey: SurveyPDF,
+    controller: DocController, packs: IPdfBrick[][]): void {
     if (!survey.haveCommercialLicense) {
       survey.onRenderHeader.add((_, canvas) => {
         canvas.drawText({
-          text:
-            'SurveyJS PDF | Please purchase a SurveyJS PDF developer license to use it in your app | https://surveyjs.io/Buy',
+          text: 'SurveyJS PDF | Please purchase a SurveyJS PDF developer license to use it in your app | https://surveyjs.io/Buy',
           fontSize: 10
         });
       });
     }
     for (let i: number = 0; i < packs.length; i++) {
-      survey.onRenderHeader.fire(
-        survey,
-        new DrawCanvas(
-          packs[i],
-          controller,
-          SurveyHelper.createHeaderRect(controller),
-          packs.length,
-          i + 1
-        )
-      );
-      survey.onRenderFooter.fire(
-        survey,
-        new DrawCanvas(
-          packs[i],
-          controller,
-          SurveyHelper.createFooterRect(controller),
-          packs.length,
-          i + 1
-        )
-      );
+      survey.onRenderHeader.fire(survey, new DrawCanvas(packs[i], controller,
+          SurveyHelper.createHeaderRect(controller), packs.length, i + 1));
+      survey.onRenderFooter.fire(survey,new DrawCanvas(packs[i], controller,
+          SurveyHelper.createFooterRect(controller), packs.length, i + 1));
     }
   }
 }
