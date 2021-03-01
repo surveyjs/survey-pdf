@@ -63,14 +63,14 @@ export class FlatQuestion implements IFlatQuestion {
         let commentPoint: IPoint = indentPoint;
         let titleLocation: string = this.question.getTitleLocation();
         titleLocation = this.question.hasTitle ? titleLocation : 'hidden';
-        let isDecs = SurveyHelper.getLocString(this.question.locDescription) != '';
+        let isDesc = !!SurveyHelper.getLocString(this.question.locDescription);
         switch (titleLocation) {
             case 'top':
             case 'default': {
                 let titleFlat: IPdfBrick = await this.generateFlatTitle(indentPoint);
                 let compositeFlat: CompositeBrick = new CompositeBrick(titleFlat);
                 let contentPoint: IPoint = SurveyHelper.createPoint(titleFlat);
-                if (isDecs) {
+                if (isDesc) {
                     let descFlat: IPdfBrick = await this.generateFlatDescription(
                         SurveyHelper.createPoint(titleFlat));
                     compositeFlat.addBrick(descFlat);
@@ -118,7 +118,7 @@ export class FlatQuestion implements IFlatQuestion {
                     FlatQuestion.CONTENT_GAP_VERT_SCALE;
                 let titleFlat: IPdfBrick = await this.generateFlatTitle(titlePoint);
                 let compositeFlat: CompositeBrick = new CompositeBrick(titleFlat);
-                if (isDecs) {
+                if (isDesc) {
                     let descFlat: IPdfBrick = await this.generateFlatDescription(
                         SurveyHelper.createPoint(titleFlat));
                     compositeFlat.addBrick(descFlat);
@@ -134,7 +134,7 @@ export class FlatQuestion implements IFlatQuestion {
                 let titleFlat: IPdfBrick = await this.generateFlatTitle(indentPoint);
                 let compositeFlat: CompositeBrick = new CompositeBrick(titleFlat);
                 let contentPoint: IPoint = SurveyHelper.createPoint(titleFlat, false, true);
-                if (isDecs) {
+                if (isDesc) {
                     let descFlat: IPdfBrick = await this.generateFlatDescription(
                         SurveyHelper.createPoint(titleFlat));
                     compositeFlat.addBrick(descFlat);

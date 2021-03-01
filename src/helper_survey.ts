@@ -197,7 +197,8 @@ export class SurveyHelper {
         }
     }
     private static hasHtml(text: LocalizableString): boolean {
-        return text.hasHtml && /<\/?[a-z][\s\S]*>/i.test(text.renderedHtml);
+        let pattern: RegExp = /<\/?[a-z][\s\S]*>/i;
+        return text.hasHtml && (pattern.test((<any>text).renderedText) || pattern.test(text.renderedHtml));
     }
     private static getHtmlMargins(controller: DocController, point: IPoint): { top: number, bottom: number, width: number } {
         let width: number = controller.paperWidth - point.xLeft - controller.margins.right;
