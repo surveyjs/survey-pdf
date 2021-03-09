@@ -25,7 +25,7 @@ export { FlatMatrixDynamic } from '../flat_layout/flat_matrixdynamic';
 export { FlatMultipleText } from '../flat_layout/flat_multipletext';
 export { PagePacker } from '../page_layout/page_packer';
 export { EventHandler } from '../event_handler/event_handler';
-export { DrawCanvas } from '../event_handler/draw_canvas';
+export { HorizontalAlign, VerticalAlign, IDrawRectOptions, IDrawTextOptions, IDrawImageOptions, DrawCanvas } from '../event_handler/draw_canvas';
 export { IPdfBrick, PdfBrick } from '../pdf_render/pdf_brick';
 export { BooleanItemBrick } from '../pdf_render/pdf_booleanitem';
 export { CheckboxItemBrick } from '../pdf_render/pdf_checkboxitem';
