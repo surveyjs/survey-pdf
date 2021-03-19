@@ -16,10 +16,10 @@ export class FlatPanelDynamic extends FlatQuestion {
         this.question = <QuestionPanelDynamicModel>question;
     }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
-        let flats: IPdfBrick[] = [];
-        let currPoint: IPoint = SurveyHelper.clone(point);
-        for (let panel of this.question.panels) {
-            let panelFlats: IPdfBrick[] = await FlatSurvey.generateFlatsPanel(
+        const flats: IPdfBrick[] = [];
+        const currPoint: IPoint = SurveyHelper.clone(point);
+        for (const panel of this.question.panels) {
+            const panelFlats: IPdfBrick[] = await FlatSurvey.generateFlatsPanel(
                 this.survey, this.controller, panel, currPoint);
             if (panelFlats.length !== 0) {
                 currPoint.yTop = SurveyHelper.mergeRects(...panelFlats).yBot;

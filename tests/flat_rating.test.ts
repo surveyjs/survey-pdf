@@ -11,10 +11,10 @@ import { FlatRating } from '../src/flat_layout/flat_rating';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
-let __dummy_rt = new FlatRating(null, null, null);
+const __dummy_rt = new FlatRating(null, null, null);
 
 test('Check rating two elements', async () => {
-    let json: any = {
+    const json: any = {
         elements: [
             {
                 type: 'rating',
