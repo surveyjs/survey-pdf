@@ -1,8 +1,8 @@
 import { IQuestion, QuestionMultipleTextModel, MultipleTextItemModel } from 'survey-core';
 import { SurveyPDF } from '../survey';
+import { IPoint, DocController } from '../doc_controller';
 import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
-import { IPoint, DocController } from '../doc_controller';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { MultipleTextBoxBrick } from '../pdf_render/pdf_multipletextbox';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
@@ -18,11 +18,11 @@ export class FlatMultipleText extends FlatQuestion {
     }
     private async generateFlatItem(point: IPoint, row_index: number, col_index: number,
         item: MultipleTextItemModel): Promise<IPdfBrick> {
-        let colWidth: number = SurveyHelper.getPageAvailableWidth(this.controller);
+        const colWidth: number = SurveyHelper.getPageAvailableWidth(this.controller);
         this.controller.pushMargins();
         this.controller.margins.right = this.controller.paperWidth -
             this.controller.margins.left - colWidth * SurveyHelper.MULTIPLETEXT_TEXT_PERS;
-        let compositeFlat: CompositeBrick = new CompositeBrick(await SurveyHelper.
+        const compositeFlat: CompositeBrick = new CompositeBrick(await SurveyHelper.
             createBoldTextFlat(point, this.question, this.controller, item.locTitle));
         this.controller.popMargins();
         compositeFlat.addBrick(new MultipleTextBoxBrick(this.question, this.controller,
@@ -34,9 +34,9 @@ export class FlatMultipleText extends FlatQuestion {
         return compositeFlat;
     }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
-        let rowsFlats: CompositeBrick[] = [];
-        let currPoint: IPoint = SurveyHelper.clone(point);
-        let rows = this.question.getRows();
+        const rowsFlats: CompositeBrick[] = [];
+        const currPoint: IPoint = SurveyHelper.clone(point);
+        const rows = this.question.getRows();
         for (let i: number = 0; i < rows.length; i++) {
             rowsFlats.push(new CompositeBrick());
             let yBot: number = currPoint.yTop
@@ -45,7 +45,7 @@ export class FlatMultipleText extends FlatQuestion {
                 this.controller.pushMargins();
                 SurveyHelper.setColumnMargins(this.controller, rows[i].length, j);
                 currPoint.xLeft = this.controller.margins.left;
-                let itemFlat: IPdfBrick = await this.generateFlatItem(
+                const itemFlat: IPdfBrick = await this.generateFlatItem(
                     currPoint, i, j, rows[i][j]);
                 rowsFlats[rowsFlats.length - 1].addBrick(itemFlat);
                 yBot = Math.max(yBot, itemFlat.yBot);

@@ -132,8 +132,8 @@ export class DocController extends DocOptions {
     private _helperDoc: jsPDF;
     private _fontStyle: string;
     private marginsStack: IMarginLR[];
-    public constructor(options?: IDocOptions) {
-        super(options || {});
+    public constructor(options: IDocOptions = {}) {
+        super(options);
         if ((options.fontName && (options.base64Normal || options.base64Bold))) {
             this.addFont(this.fontName, options.base64Normal || options.base64Bold, 'normal');
             this.addFont(this.fontName, options.base64Bold || options.base64Normal, 'bold');
@@ -142,7 +142,7 @@ export class DocController extends DocOptions {
             this.addFont(this.fontName, Fonts.SEGOE_NORMAL, 'normal');
             this.addFont(this.fontName, Fonts.SEGOE_BOLD, 'bold');
         }
-        let jspdfOptions: jsPDFOptions = { orientation: this.orientation,
+        const jspdfOptions: jsPDFOptions = { orientation: this.orientation,
             unit: 'pt', format: this.format, compress: this.compress };
         this._doc = new jsPDF(jspdfOptions);
         setRadioAppearance(this._doc);
@@ -155,12 +155,12 @@ export class DocController extends DocOptions {
         this.marginsStack = [];
     }
     private addFont(fontName: string, base: string, fontStyle: string) {
-        var callAddFont = function () {
-            let fontFile: string = `${fontName}-${fontStyle}.ttf`
+        const addFontCallback: () => void = function() {
+            const fontFile: string = `${fontName}-${fontStyle}.ttf`
             this.addFileToVFS(fontFile, base);
-            this.addFont(fontFile, fontName, fontStyle);//, 'WinAnsiEncoding', true);
+            this.addFont(fontFile, fontName, fontStyle);
         };
-        (<any>jsPDF).API.events.push(['addFonts', callAddFont]);
+        (<any>jsPDF).API.events.push(['addFonts', addFontCallback]);
     }
     public get doc(): any {
         return this._doc;
@@ -194,10 +194,10 @@ export class DocController extends DocOptions {
     }
     public measureText(text: string | LocalizableString | number = 1, fontStyle: string = this._fontStyle,
         fontSize: number = this._fontSize): ISize {
-        let oldFontSize = this._helperDoc.getFontSize();
+        const oldFontSize: number = this._helperDoc.getFontSize();
         this._helperDoc.setFontSize(fontSize);
         this._helperDoc.setFont(this._fontName, fontStyle);
-        let height: number = this._helperDoc.getLineHeight() / this._helperDoc.internal.scaleFactor;
+        const height: number = this._helperDoc.getLineHeight() / this._helperDoc.internal.scaleFactor;
         let width: number = 0.0;
         if (typeof text === 'number') {
             width = height * text;
@@ -226,7 +226,7 @@ export class DocController extends DocOptions {
         if (typeof right !== 'undefined') this.margins.right = right;
     }
     public popMargins(): void {
-        let margins: IMarginLR = this.marginsStack.pop();
+        const margins: IMarginLR = this.marginsStack.pop();
         this.margins.left = margins.left;
         this.margins.right = margins.right;
     }

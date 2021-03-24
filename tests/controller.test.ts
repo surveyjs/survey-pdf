@@ -3,8 +3,12 @@
 };
 
 import { DocController } from '../src/doc_controller';
+
+test('Check doc controller without options', () => {
+    new DocController();
+});
 test('Check font size ', () => {
-    let options: any = {
+    const options: any = {
         orientation: 'l',
         fontSize: 12,
         margins:
@@ -20,7 +24,7 @@ test('Check font size ', () => {
     expect(controller.fontSize).toBe(12);
 });
 test('Check doc width and heght with orinetaition \'l\' and \'a4\' format', () => {
-    let options: any = {
+    const options: any = {
         orientation: 'l',
         fontSize: 12,
         margins:
@@ -37,7 +41,7 @@ test('Check doc width and heght with orinetaition \'l\' and \'a4\' format', () =
     expect(controller.paperHeight).toBeCloseTo(210 * DocController.MM_TO_PT);
 });
 test('Check doc width and heght with orinetaition \'l\' and array format', () => {
-    let options: any = {
+    const options: any = {
         fontSize: 12,
         orientation: 'l',
         paperHeight: 210,
@@ -57,7 +61,7 @@ test('Check doc width and heght with orinetaition \'l\' and array format', () =>
     expect(controller.orientation).toBe('l');
 });
 test('Check doc width and heght change with orinetaition \'p\'', () => {
-    let options: any = {
+    const options: any = {
         fontSize: 12,
         paperHeight: 210,
         paperWidth: 297,
@@ -75,7 +79,7 @@ test('Check doc width and heght change with orinetaition \'p\'', () => {
     expect(controller.paperWidth).toBeCloseTo(210 * DocController.MM_TO_PT);
 });
 test('Check doc width and heght change with orinetaition \'l\'', () => {
-    let options: any = {
+    const options: any = {
         fontSize: 12,
         orientation: 'l',
         paperHeight: 297,

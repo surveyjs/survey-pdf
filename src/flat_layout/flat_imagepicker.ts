@@ -19,7 +19,7 @@ export class FlatImagePicker extends FlatQuestion {
         this.question = <QuestionImagePickerModel>question;
     }
     private async generateFlatItem(point: IPoint, item: ItemValue, index: number): Promise<IPdfBrick> {
-        let compositeFlat: CompositeBrick = new CompositeBrick(SurveyHelper.
+        const compositeFlat: CompositeBrick = new CompositeBrick(SurveyHelper.
             createImageFlat(point, this.question, this.controller, item['imageLink'],
                 SurveyHelper.getPageAvailableWidth(this.controller)));
         let buttonPoint: IPoint = SurveyHelper.createPoint(compositeFlat);
@@ -29,8 +29,8 @@ export class FlatImagePicker extends FlatQuestion {
             compositeFlat.addBrick(labelFlat);
             buttonPoint = SurveyHelper.createPoint(labelFlat);
         }
-        let height: number = this.controller.unitHeight;
-        let buttonRect: IRect = SurveyHelper.createRect(buttonPoint,
+        const height: number = this.controller.unitHeight;
+        const buttonRect: IRect = SurveyHelper.createRect(buttonPoint,
             SurveyHelper.getPageAvailableWidth(this.controller), height);
         if (this.question.multiSelect) {
             compositeFlat.addBrick(new CheckItemBrick(this.question, this.controller,
@@ -46,21 +46,21 @@ export class FlatImagePicker extends FlatQuestion {
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         this.radio = this.question.multiSelect ? null :
             new FlatRadiogroup(this.survey, this.question, this.controller);
-        let rowsFlats: CompositeBrick[] = [new CompositeBrick()];
-        let colWidth: number = SurveyHelper.getImagePickerAvailableWidth(
+        const rowsFlats: CompositeBrick[] = [new CompositeBrick()];
+        const colWidth: number = SurveyHelper.getImagePickerAvailableWidth(
             this.controller) / SurveyHelper.IMAGEPICKER_COUNT;
         let cols: number = ~~(SurveyHelper.
             getPageAvailableWidth(this.controller) / colWidth) || 1;
-        let count: number = this.question.visibleChoices.length;
+        const count: number = this.question.visibleChoices.length;
         cols = cols <= count ? cols : count;
-        let rows: number = ~~(Math.ceil(count / cols));
-        let currPoint: IPoint = SurveyHelper.clone(point);
+        const rows: number = ~~(Math.ceil(count / cols));
+        const currPoint: IPoint = SurveyHelper.clone(point);
         for (let i: number = 0; i < rows; i++) {
             let yBot: number = currPoint.yTop;
             this.controller.pushMargins();
             let currMarginLeft: number = this.controller.margins.left;
             for (let j: number = 0; j < cols; j++) {
-                let index: number = i * cols + j;
+                const index: number = i * cols + j;
                 if (index == count) break;
                 this.controller.margins.left = currMarginLeft;
                 this.controller.margins.right = this.controller.paperWidth -
@@ -68,7 +68,7 @@ export class FlatImagePicker extends FlatQuestion {
                 currMarginLeft = this.controller.paperWidth -
                     this.controller.margins.right + this.controller.unitWidth;
                 currPoint.xLeft = this.controller.margins.left;
-                let itemFlat: IPdfBrick = await this.generateFlatItem(currPoint,
+                const itemFlat: IPdfBrick = await this.generateFlatItem(currPoint,
                     this.question.visibleChoices[index], index);
                 rowsFlats[rowsFlats.length - 1].addBrick(itemFlat);
                 yBot = Math.max(yBot, itemFlat.yBot);

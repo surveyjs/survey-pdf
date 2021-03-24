@@ -1,6 +1,6 @@
 import { IQuestion, QuestionDropdownModel, ItemValue } from 'survey-core';
 import { IRect, DocController } from '../doc_controller';
-import { PdfBrick,  } from './pdf_brick';
+import { PdfBrick } from './pdf_brick';
 import { SurveyHelper } from '../helper_survey';
 
 export class DropdownBrick extends PdfBrick {
@@ -25,14 +25,14 @@ export class DropdownBrick extends PdfBrick {
         return '';
     }
     public async renderInteractive(): Promise<void> {
-        let comboBox = new (<any>this.controller.doc.AcroFormComboBox)();
+        const comboBox = new (<any>this.controller.doc.AcroFormComboBox)();
         comboBox.fieldName = this.question.id;
         comboBox.Rect = SurveyHelper.createAcroformRect(
             SurveyHelper.scaleRect(this,
             SurveyHelper.formScale(this.controller, this)));
         comboBox.edit = false;
         comboBox.color = this.textColor;
-        let options: string[] = [];
+        const options: string[] = [];
         if (this.question.showOptionsCaption) {
             options.push(this.question.optionsCaption);
         }

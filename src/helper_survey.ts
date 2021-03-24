@@ -39,7 +39,7 @@ export class SurveyHelper {
     public static readonly BORDER_SCALE: number = 0.1;
     public static readonly VISIBLE_BORDER_SCALE: number = 0.8;
     public static readonly UNVISIBLE_BORDER_SCALE: number = 0.2;
-    public static readonly RADIUS_SCALE: number = 3;
+    public static readonly RADIUS_SCALE: number = 3.0;
     public static readonly TITLE_FONT_SCALE: number = 1.1;
     public static readonly VALUE_READONLY_PADDING_SCALE: number = 0.3;
     public static readonly HTML_TO_IMAGE_QUALITY: number = 1.0;

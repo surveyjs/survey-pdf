@@ -1,11 +1,11 @@
 import { IQuestion, QuestionExpressionModel } from 'survey-core';
 import { SurveyPDF } from '../survey';
+import { IPoint, IRect, DocController } from '../doc_controller';
 import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
-import { IPoint, IRect, DocController } from '../doc_controller';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
-import { SurveyHelper } from '../helper_survey';
 import { TextFieldBrick } from '../pdf_render/pdf_textfield';
+import { SurveyHelper } from '../helper_survey';
 
 export class FlatExpression extends FlatQuestion {
     protected question: QuestionExpressionModel;
@@ -15,7 +15,7 @@ export class FlatExpression extends FlatQuestion {
         this.question = <QuestionExpressionModel>question;
     }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
-        let rect: IRect = SurveyHelper.createTextFieldRect(point, this.controller);
+        const rect: IRect = SurveyHelper.createTextFieldRect(point, this.controller);
         return [new TextFieldBrick(this.question, this.controller, rect, true,
             this.question.id, this.question.displayValue, '', true, false, 'text')];
     }

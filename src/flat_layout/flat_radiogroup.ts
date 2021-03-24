@@ -1,7 +1,7 @@
 import { IQuestion, ItemValue, QuestionRadiogroupModel } from 'survey-core';
 import { SurveyPDF } from '../survey';
-import { FlatRepository } from './flat_repository';
 import { IRect, DocController } from '../doc_controller';
+import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick'
 import { RadioGroupWrap, RadioItemBrick } from '../pdf_render/pdf_radioitem';
 import { FlatSelectBase } from './flat_selectbase';
@@ -20,7 +20,7 @@ export class FlatRadiogroup extends FlatSelectBase {
             this.radioGroupWrap = new RadioGroupWrap(this.question.id + ((typeof key === 'undefined') ? '' : key),
                 this.controller, this.question.isReadOnly);
         }
-        let isChecked: boolean = (typeof checked === 'undefined') ? 
+        const isChecked: boolean = (typeof checked === 'undefined') ? 
             (item === this.question.otherItem ? this.question.isOtherSelected :
                 (item.value === this.question.value ||
                     (typeof this.question.isItemSelected !== 'undefined' &&
