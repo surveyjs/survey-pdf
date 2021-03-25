@@ -8,16 +8,19 @@ var GenerateJsonPlugin = require("generate-json-webpack-plugin");
 var packageJson = require("./package.json");
 var fs = require("fs");
 
+const today = new Date();
+const year = today.getFullYear();
+
 var banner = [
   "surveyjs - SurveyJS PDF library v" + packageJson.version,
-  "Copyright (c) 2015-2021 Devsoft Baltic OÜ  - http://surveyjs.io/",
+  "Copyright (c) 2015-" + year + " Devsoft Baltic OÜ  - http://surveyjs.io/",
   "License: MIT (http://www.opensource.org/licenses/mit-license.php)"
 ].join("\n");
 
 // TODO add to dts_bundler
 var dts_banner = [
   "Type definitions for SurveyJS PDF library v" + packageJson.version,
-  "Copyright (c) 2015-2021 Devsoft Baltic OÜ  - http://surveyjs.io/",
+  "Copyright (c) 2015-" + year + " Devsoft Baltic OÜ  - http://surveyjs.io/",
   "Definitions by: Devsoft Baltic OÜ <https://github.com/surveyjs/>",
   ""
 ].join("\n");
