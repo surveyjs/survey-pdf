@@ -31,3 +31,4 @@ export class FlatRadiogroup extends FlatSelectBase {
 }
 
 FlatRepository.getInstance().register('radiogroup', FlatRadiogroup);
+FlatRepository.getInstance().register('buttongroup', FlatRadiogroup);
