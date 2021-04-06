@@ -241,6 +241,11 @@ export class SurveyHelper {
         div.style.top = '-10000px';
         div.style.left = '-10000px';
         div.style.width = (width / 72.0 * 96.0) + 'px';
+        div.style.boxSizing = 'initial';
+        div.style.color = 'initial';
+        div.style.fontFamily = 'initial';
+        div.style.font = 'initial';
+        div.style.lineHeight = 'initial';
         div.insertAdjacentHTML('beforeend', html);
         document.body.appendChild(div);
         const divWidth: number = div.offsetWidth;
