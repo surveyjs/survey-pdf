@@ -139,17 +139,11 @@ export class SurveyHelper {
         };
     }
     public static createDivBlock(element: string, controller: DocController): string {
-        return `<div style= ${this.generateCssTextRule(controller.fontSize,
-            controller.fontStyle,
-            this.isCustomFont(controller, controller.fontName) ? this.STANDARD_FONT : controller.fontName)}>
-            ${element}
-            </div>`;
+        return `<div style=${this.generateCssTextRule(controller.fontSize, controller.fontStyle,
+            this.isCustomFont(controller, controller.fontName) ? this.STANDARD_FONT : controller.fontName)}>${element}</div>`;
     }
     public static generateCssTextRule(fontSize: number, fontStyle: string, fontName: string): string {
-        return `'font-size: ${fontSize}pt; 
-                 font-weight: ${fontStyle}; 
-                 font-family: ${fontName};
-                 color: ${this.TEXT_COLOR};'`;
+        return `"font-size: ${fontSize}pt; font-weight: ${fontStyle}; font-family: ${fontName}; color: ${this.TEXT_COLOR};"`;
     }
     public static splitHtmlRect(controller: DocController, htmlBrick: IPdfBrick): IPdfBrick {
         const bricks: IPdfBrick[] = [];
@@ -231,6 +225,7 @@ export class SurveyHelper {
         const htmlDoc: Document = document.implementation.createHTMLDocument('');
         htmlDoc.write(html.replace(/\#/g, '%23'));
         htmlDoc.documentElement.setAttribute('xmlns', htmlDoc.documentElement.namespaceURI);
+        htmlDoc.body.style.margin = "unset";
         return (new XMLSerializer()).serializeToString(htmlDoc.body);
     }
     public static async htmlToImage(html: string, width: number, controller: DocController):
@@ -251,12 +246,8 @@ export class SurveyHelper {
         const divWidth: number = div.offsetWidth;
         const divHeight: number = div.offsetHeight;
         div.remove();
-        const fakePadding: number = controller.unitHeight / 2.0;
-        const svg: string = '<svg xmlns="http://www.w3.org/2000/svg" ' +
-            `width="${divWidth}px" ` +
-            `height="${divHeight}px" ` +
-            `viewBox="0 ${fakePadding} ${divWidth} ${divHeight + fakePadding}">` +
-            '<foreignObject width="100%" height="100%">' +
+        const svg: string = '<svg xmlns="http://www.w3.org/2000/svg">' +
+            `<foreignObject width="${divWidth}px" height="${divHeight}px">` +
             this.htmlToXml(html) + '</foreignObject></svg>';
         const data: string = 'data:image/svg+xml;base64,' +
             btoa(unescape(encodeURIComponent(svg.replace(/%23/g, '#'))));

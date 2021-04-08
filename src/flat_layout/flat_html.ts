@@ -26,8 +26,10 @@ export class FlatHTML extends FlatQuestion {
         if (renderAs === 'auto') renderAs = this.chooseRender(SurveyHelper.getLocString(this.question.locHtml));
         if (renderAs === 'image') {
             const width: number = SurveyHelper.getPageAvailableWidth(this.controller);
-            const { url, aspect }: { url: string, aspect: number } = await SurveyHelper.htmlToImage(
-                SurveyHelper.getLocString(this.question.locHtml), width, this.controller);
+            const html: string = SurveyHelper.createDivBlock(
+                SurveyHelper.getLocString(this.question.locHtml), this.controller);
+            const { url, aspect }: { url: string, aspect: number } =
+                await SurveyHelper.htmlToImage(html, width, this.controller);
             const height: number = width / aspect;
             return [SurveyHelper.createImageFlat(point, this.question, this.controller, url, width, height)];
         }
