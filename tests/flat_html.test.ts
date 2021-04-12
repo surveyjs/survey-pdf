@@ -22,8 +22,7 @@ SurveyHelper.createHTMLFlat = async function(
         resolve(new HTMLBrick(question, controller, rect, html));
     });
 };
-SurveyHelper.htmlToImage = async function(
-    _: string, width: number, __: DocController):
+SurveyHelper.htmlToImage = async function(_: string, width: number):
         Promise<{ url: string, aspect: number }> {
     return await new Promise((resolve) => {
         resolve({ url: 'data:,', aspect: width / SurveyHelper.EPSILON });

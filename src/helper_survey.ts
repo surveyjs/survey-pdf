@@ -225,11 +225,9 @@ export class SurveyHelper {
         const htmlDoc: Document = document.implementation.createHTMLDocument('');
         htmlDoc.write(html.replace(/\#/g, '%23'));
         htmlDoc.documentElement.setAttribute('xmlns', htmlDoc.documentElement.namespaceURI);
-        htmlDoc.body.style.margin = "unset";
         return (new XMLSerializer()).serializeToString(htmlDoc.body);
     }
-    public static async htmlToImage(html: string, width: number, controller: DocController):
-        Promise<{ url: string, aspect: number }> {  
+    public static async htmlToImage(html: string, width: number): Promise<{ url: string, aspect: number }> {  
         const div: HTMLDivElement = document.createElement('div');
         div.style.display = 'block';
         div.style.position = 'fixed';
@@ -247,6 +245,7 @@ export class SurveyHelper {
         const divHeight: number = div.offsetHeight;
         div.remove();
         const svg: string = '<svg xmlns="http://www.w3.org/2000/svg">' +
+            '<style>body, p { margin: unset; } </style>' +
             `<foreignObject width="${divWidth}px" height="${divHeight}px">` +
             this.htmlToXml(html) + '</foreignObject></svg>';
         const data: string = 'data:image/svg+xml;base64,' +

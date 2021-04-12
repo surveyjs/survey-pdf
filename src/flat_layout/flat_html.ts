@@ -28,8 +28,7 @@ export class FlatHTML extends FlatQuestion {
             const width: number = SurveyHelper.getPageAvailableWidth(this.controller);
             const html: string = SurveyHelper.createDivBlock(
                 SurveyHelper.getLocString(this.question.locHtml), this.controller);
-            const { url, aspect }: { url: string, aspect: number } =
-                await SurveyHelper.htmlToImage(html, width, this.controller);
+            const { url, aspect }: { url: string, aspect: number } = await SurveyHelper.htmlToImage(html, width);
             const height: number = width / aspect;
             return [SurveyHelper.createImageFlat(point, this.question, this.controller, url, width, height)];
         }
