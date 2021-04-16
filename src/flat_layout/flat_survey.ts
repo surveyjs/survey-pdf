@@ -15,15 +15,15 @@ export class FlatSurvey {
     public static readonly PANEL_DESC_GAP_SCALE: number = 0.25;
     public static async generateFlatsPanel(survey: SurveyPDF, controller: DocController,
         panel: PanelModel, point: IPoint): Promise<IPdfBrick[]> {
-        let panelFlats: IPdfBrick[] = [];
-        let panelContentPoint: IPoint = SurveyHelper.clone(point);
+        const panelFlats: IPdfBrick[] = [];
+        const panelContentPoint: IPoint = SurveyHelper.clone(point);
         controller.pushMargins();
         controller.margins.left += controller.measureText(panel.innerIndent).width;
         panelContentPoint.xLeft += controller.measureText(panel.innerIndent).width;
         panelFlats.push(...await this.generateFlatsPagePanel(survey,
             controller, panel, panelContentPoint));
         controller.popMargins();
-        let adornersOptions: AdornersPanelOptions = new AdornersPanelOptions(point,
+        const adornersOptions: AdornersPanelOptions = new AdornersPanelOptions(point,
             panelFlats, panel, controller, FlatRepository.getInstance(), SurveyPDFModule);
         await survey.onRenderPanel.fire(survey, adornersOptions);
         return [...adornersOptions.bricks];
@@ -32,12 +32,12 @@ export class FlatSurvey {
         pagePanel: PanelModelBase, point: IPoint): Promise<IPdfBrick[]> {
         if (!pagePanel.isVisible) return;
         pagePanel.onFirstRendering();
-        let pagePanelFlats: IPdfBrick[] = [];
+        const pagePanelFlats: IPdfBrick[] = [];
         let currPoint: IPoint = SurveyHelper.clone(point);
         if (pagePanel.getType() !== "page" || survey.showPageTitles) {
-            let compositeFlat: CompositeBrick = new CompositeBrick();
+            const compositeFlat: CompositeBrick = new CompositeBrick();
             if (pagePanel.title) {
-                let pagelPanelTitleFlat: IPdfBrick = await SurveyHelper.createTitlePanelFlat(
+                const pagelPanelTitleFlat: IPdfBrick = await SurveyHelper.createTitlePanelFlat(
                     currPoint, controller, pagePanel.locTitle);
                 compositeFlat.addBrick(pagelPanelTitleFlat);
                 currPoint = SurveyHelper.createPoint(pagelPanelTitleFlat);
@@ -46,7 +46,7 @@ export class FlatSurvey {
                 if (pagePanel.title) {
                     currPoint.yTop += controller.unitWidth * FlatSurvey.PANEL_DESC_GAP_SCALE;
                 }
-                let pagePanelDescFlat: IPdfBrick = await SurveyHelper.createDescFlat(
+                const pagePanelDescFlat: IPdfBrick = await SurveyHelper.createDescFlat(
                     currPoint, null, controller, pagePanel.locDescription);
                 compositeFlat.addBrick(pagePanelDescFlat);
                 currPoint = SurveyHelper.createPoint(pagePanelDescFlat);
@@ -56,16 +56,16 @@ export class FlatSurvey {
                 currPoint.yTop += controller.unitHeight * FlatSurvey.PANEL_CONT_GAP_SCALE;
             }
         }
-        for (let row of pagePanel.rows) {
+        for (const row of pagePanel.rows) {
             if (!row.visible) continue;
             controller.pushMargins();
-            let width: number = SurveyHelper.getPageAvailableWidth(controller);
+            const width: number = SurveyHelper.getPageAvailableWidth(controller);
             let nextMarginLeft: number = controller.margins.left;
-            let rowFlats: IPdfBrick[] = [];
+            const rowFlats: IPdfBrick[] = [];
             for (let i: number = 0; i < row.visibleElements.length; i++) {
                 let element: IElement = row.visibleElements[i];
                 if (!element.isVisible) continue;
-                let persWidth: number = SurveyHelper.parseWidth(element.renderWidth,
+                const persWidth: number = SurveyHelper.parseWidth(element.renderWidth,
                     width - (row.visibleElements.length - 1) * controller.unitWidth,
                     row.visibleElements.length);
                 controller.margins.left = nextMarginLeft + ((i !== 0) ? controller.unitWidth : 0);
@@ -101,10 +101,10 @@ export class FlatSurvey {
     }
     private static async generateFlatTitle(survey: SurveyPDF, controller: DocController,
         point: IPoint): Promise<CompositeBrick> {
-        let compositeFlat: CompositeBrick = new CompositeBrick();
+        const compositeFlat: CompositeBrick = new CompositeBrick();
         if (survey.showTitle) {
             if (survey.title) {
-                let surveyTitleFlat: IPdfBrick = await SurveyHelper.createTitleSurveyFlat(
+                const surveyTitleFlat: IPdfBrick = await SurveyHelper.createTitleSurveyFlat(
                     point, controller, survey.locTitle);
                 compositeFlat.addBrick(surveyTitleFlat);
                 point = SurveyHelper.createPoint(surveyTitleFlat);
@@ -121,7 +121,7 @@ export class FlatSurvey {
     }
     private static generateFlatLogoImage(survey: SurveyPDF, controller: DocController,
         point: IPoint): IPdfBrick {
-        let logoFlat: IPdfBrick = SurveyHelper.createImageFlat(
+        const logoFlat: IPdfBrick = SurveyHelper.createImageFlat(
             point, null, controller, SurveyHelper.getLocString(survey.locLogo),
             SurveyHelper.pxToPt(survey.logoWidth), SurveyHelper.pxToPt(survey.logoHeight));
         let shift: number = 0;
@@ -136,17 +136,17 @@ export class FlatSurvey {
         return logoFlat;
     }
     public static async generateFlats(survey: SurveyPDF, controller: DocController): Promise<IPdfBrick[][]> {
-        let flats: IPdfBrick[][] = [];
+        const flats: IPdfBrick[][] = [];
         if (!survey.hasLogo) {
-            let titleFlat: CompositeBrick = await this.generateFlatTitle(
+            const titleFlat: CompositeBrick = await this.generateFlatTitle(
                 survey, controller, controller.leftTopPoint);
             if (!titleFlat.isEmpty) flats.push([titleFlat]);
         }
         else if (survey.isLogoBefore) {
-            let logoFlat: IPdfBrick = this.generateFlatLogoImage(
+            const logoFlat: IPdfBrick = this.generateFlatLogoImage(
                 survey, controller, controller.leftTopPoint);
             flats.push([logoFlat]);
-            let titlePoint: IPoint = SurveyHelper.createPoint(logoFlat,
+            const titlePoint: IPoint = SurveyHelper.createPoint(logoFlat,
                 survey.logoPosition === 'top', survey.logoPosition !== 'top');
             if (survey.logoPosition !== 'top') {
                 controller.pushMargins();
@@ -157,25 +157,25 @@ export class FlatSurvey {
                 titlePoint.xLeft = controller.leftTopPoint.xLeft;
                 titlePoint.yTop += controller.unitHeight / 2.0;
             }
-            let titleFlat: CompositeBrick = await this.generateFlatTitle(
+            const titleFlat: CompositeBrick = await this.generateFlatTitle(
                 survey, controller, titlePoint);
             if (survey.logoPosition !== 'top') controller.popMargins();
             if (!titleFlat.isEmpty) flats[0].push(titleFlat);
         }
         else {
             if (survey.logoPosition === 'right') {
-                let logoFlat: IPdfBrick = this.generateFlatLogoImage(
+                const logoFlat: IPdfBrick = this.generateFlatLogoImage(
                     survey, controller, controller.leftTopPoint);
                 flats.push([logoFlat]);
                 controller.pushMargins();
                 controller.margins.right += logoFlat.width + controller.unitWidth;
-                let titleFlat: CompositeBrick = await this.generateFlatTitle(
+                const titleFlat: CompositeBrick = await this.generateFlatTitle(
                     survey, controller, controller.leftTopPoint);
                 if (!titleFlat.isEmpty) flats[0].unshift(titleFlat);
                 controller.popMargins();
             }
             else {
-                let titleFlat: CompositeBrick = await this.generateFlatTitle(
+                const titleFlat: CompositeBrick = await this.generateFlatTitle(
                     survey, controller, controller.leftTopPoint);
                 let logoPoint: IPoint = controller.leftTopPoint;
                 if (!titleFlat.isEmpty) {
@@ -183,7 +183,7 @@ export class FlatSurvey {
                     logoPoint = SurveyHelper.createPoint(titleFlat);
                     logoPoint.yTop += controller.unitHeight / 2.0;
                 }
-                let logoFlat: IPdfBrick = this.generateFlatLogoImage(
+                const logoFlat: IPdfBrick = this.generateFlatLogoImage(
                     survey, controller, logoPoint);
                 if (flats.length !== 0) flats[0].push(logoFlat);
                 else flats.push([logoFlat]);
@@ -199,7 +199,7 @@ export class FlatSurvey {
             }
             pageFlats.push(...await this.generateFlatsPagePanel(
                 survey, controller, survey.visiblePages[i], point));
-            let adornersOptions: AdornersPageOptions = new AdornersPageOptions(point,
+            const adornersOptions: AdornersPageOptions = new AdornersPageOptions(point,
                 pageFlats, survey.visiblePages[i], controller, FlatRepository.getInstance(), SurveyPDFModule);
             await survey.onRenderPage.fire(survey, adornersOptions);
             pageFlats = [...adornersOptions.bricks];

@@ -6,13 +6,14 @@ import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { SurveyHelper } from '../helper_survey';
 
+export type IHTMLRenderType = 'auto' | 'standard' | 'image';
 export class FlatHTML extends FlatQuestion {
     protected question: QuestionHtmlModel;
     public constructor(protected survey: SurveyPDF,
         question: IQuestion, controller: DocController) {
         super(survey, question, controller);
     }
-    private chooseRender(html: string): 'standard' | 'image' {
+    private chooseRender(html: string): IHTMLRenderType {
         if (/<[^>]*style[^<]*>/.test(html) ||
             /<[^>]*table[^<]*>/.test(html) ||
             /&\w+;/.test(html)) {
@@ -21,7 +22,7 @@ export class FlatHTML extends FlatQuestion {
         return 'standard';
     }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
-        let renderAs: 'auto' | 'standard' | 'image' = <'auto' | 'standard' | 'image'>this.question.renderAs;
+        let renderAs: IHTMLRenderType = <IHTMLRenderType>this.question.renderAs;
         if (renderAs === 'auto') renderAs = this.controller.htmlRenderAs;
         if (renderAs === 'auto') renderAs = this.chooseRender(SurveyHelper.getLocString(this.question.locHtml));
         if (renderAs === 'image') {

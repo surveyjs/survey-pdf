@@ -19,8 +19,8 @@ export class FlatRepository {
     }
     public create(survey: SurveyPDF, question: IQuestion,
         docController: DocController, type?: string): IFlatQuestion {
-        let questionType: string = typeof type === 'undefined' ? question.getType() : type;
-        let rendererConstructor: FlatConstructor = this.questions[questionType] || FlatQuestion;
+        const questionType: string = typeof type === 'undefined' ? question.getType() : type;
+        const rendererConstructor: FlatConstructor = this.questions[questionType] || FlatQuestion;
         return new rendererConstructor(survey, question, docController);
     }
 }

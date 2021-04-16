@@ -1,4 +1,5 @@
 import { jsPDF, jsPDFOptions } from 'jspdf';
+import { IHTMLRenderType } from './flat_layout/flat_html';
 import { SurveyHelper } from './helper_survey';
 import { LocalizableString } from 'survey-core';
 import Fonts from './fonts';
@@ -36,7 +37,7 @@ export interface IDocOptions {
     margins?: IMargin;
     commercial?: boolean;
     haveCommercialLicense?: boolean;
-    htmlRenderAs?: 'auto' | 'standard' | 'image';
+    htmlRenderAs?: IHTMLRenderType;
     matrixRenderAs?: 'auto' | 'list';
     readonlyRenderAs?: 'auto' | 'text' | 'acroform';
     compress?: boolean;
@@ -49,7 +50,7 @@ export class DocOptions implements IDocOptions {
     protected _format: string | number[];
     protected _orientation: 'l' | 'p';
     protected _fontName: string;
-    protected _htmlRenderAs: 'auto' | 'standard' | 'image';
+    protected _htmlRenderAs: IHTMLRenderType;
     protected _matrixRenderAs: 'auto' | 'list';
     protected _readonlyRenderAs: 'auto' | 'text' | 'acroform';
     protected _compress: boolean;
@@ -113,7 +114,7 @@ export class DocOptions implements IDocOptions {
     public get orientation(): 'l' | 'p' {
         return this._orientation;
     }
-    public get htmlRenderAs(): 'auto' | 'standard' | 'image' {
+    public get htmlRenderAs(): IHTMLRenderType {
         return this._htmlRenderAs;
     }
     public get matrixRenderAs(): 'auto' | 'list' {
