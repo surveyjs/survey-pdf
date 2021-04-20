@@ -66,6 +66,9 @@ module.exports = function(options) {
           headerText: dts_banner
         });
         rimraf.sync(packagePath + "typings");
+        fs.createReadStream("./LICENSE").pipe(
+          fs.createWriteStream(packagePath + "LICENSE")
+        );
         fs.createReadStream("./README.md").pipe(
           fs.createWriteStream(packagePath + "README.md")
         );
@@ -83,7 +86,7 @@ module.exports = function(options) {
       platformOptions[options.platform].keywords
     ),
     homepage: "https://surveyjs.io/",
-    license: "Commercial",
+    license: "SEE LICENSE IN LICENSE",
     files: [
       "survey." + options.platformPrefix + ".d.ts",
       "survey." + options.platformPrefix + ".js",
