@@ -232,7 +232,14 @@ export class SurveyHelper {
         htmlDoc.body.style.margin = 'unset';
         return (new XMLSerializer()).serializeToString(htmlDoc.body);
     }
-    public static async htmlToImage(html: string, width: number): Promise<{ url: string, aspect: number }> {  
+    public static generateFontFace(fontName: string, fontBase64: string, fontWeight: string) {
+        return `@font-face { 
+            font-family: ${fontName}; 
+            src: url(data:application/font-woff;charset=utf-8;base64,${fontBase64}) format('woff');
+            font-weight: ${fontWeight};
+        }`
+    }
+    public static async htmlToImage(html: string, width: number, controller: DocController): Promise<{ url: string, aspect: number }> {  
         const style: HTMLStyleElement = document.createElement('style');
         style.innerHTML = '.__surveypdf_html p { margin: unset; line-height: 22px; } body { margin: unset; }';
         document.body.appendChild(style);
@@ -255,6 +262,12 @@ export class SurveyHelper {
         div.remove();
         style.remove();
         const svg: string = '<svg xmlns="http://www.w3.org/2000/svg">' +
+            `<defs>
+                <style type="text/css"> 
+                  ${SurveyHelper.generateFontFace(controller.fontName, controller.fontBase64Normal, 'normal')}
+                  ${SurveyHelper.generateFontFace(controller.fontName, controller.fontBase64Bold, 'bold')}
+                </style>
+            </defs>` +
             '<style>.__surveypdf_html p { margin: unset; line-height: 22px; }</style>' +
             `<foreignObject width="${divWidth}px" height="${divHeight}px">` +
             this.htmlToXml(html) + '</foreignObject></svg>';

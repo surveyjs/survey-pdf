@@ -133,15 +133,23 @@ export class DocController extends DocOptions {
     private _helperDoc: jsPDF;
     private _fontStyle: string;
     private marginsStack: IMarginLR[];
+    //For html to image rendering
+    public fontBase64Normal: string;
+    public fontBase64Bold: string;
+    //
     public constructor(options: IDocOptions = {}) {
         super(options);
         if ((options.fontName && (options.base64Normal || options.base64Bold))) {
             this.addFont(this.fontName, options.base64Normal || options.base64Bold, 'normal');
             this.addFont(this.fontName, options.base64Bold || options.base64Normal, 'bold');
+            this.fontBase64Normal = options.base64Normal;
+            this.fontBase64Bold = options.base64Bold
         }
         else if (this.fontName === 'segoe') {
             this.addFont(this.fontName, Fonts.SEGOE_NORMAL, 'normal');
             this.addFont(this.fontName, Fonts.SEGOE_BOLD, 'bold');
+            this.fontBase64Normal = Fonts.SEGOE_NORMAL;
+            this.fontBase64Bold = Fonts.SEGOE_NORMAL;
         }
         const jspdfOptions: jsPDFOptions = { orientation: this.orientation,
             unit: 'pt', format: this.format, compress: this.compress };
