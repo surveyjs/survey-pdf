@@ -381,7 +381,7 @@ export class SurveyHelper {
         if (question.isReadOnly && this.getReadonlyRenderAs(question, controller) !== 'acroform') {
             const textFlat: IPdfBrick = await this.createReadOnlyTextFieldTextFlat(
                 point, controller, question, this.getQuestionOrCommentValue(question, isQuestion), false);
-            const padding: number = controller.unitWidth * this.VALUE_READONLY_PADDING_SCALE;
+            const padding: number = controller.unitHeight * this.VALUE_READONLY_PADDING_SCALE;
             if (textFlat.yBot + padding > rect.yBot) rect.yBot = textFlat.yBot + padding;
         }
         return new CommentBrick(question, controller, rect, isQuestion, index);
