@@ -1,6 +1,6 @@
 export var __assign =
   (<any>Object)["assign"] ||
-  function (target: any) {
+  function(target: any) {
     for (var s, i = 1, n = arguments.length; i < n; i++) {
       s = arguments[i];
       for (var p in s)
@@ -21,7 +21,7 @@ export function __extends(thisClass: any, baseClass: any) {
       : ((__.prototype = baseClass.prototype), new (<any>__)());
 }
 
-export var __rest = function (source: any, e: any) {
+export var __rest = function(source: any, e: any) {
   var result: any = {};
   for (var propertyName in source) if (Object.prototype.hasOwnProperty.call(source, propertyName) && e.indexOf(propertyName) < 0)
     result[propertyName] = source[propertyName];
@@ -33,7 +33,7 @@ export var __rest = function (source: any, e: any) {
 
 declare var Reflect: any;
 
-export var __decorate = function (
+export var __decorate = function(
   decorators: any,
   target: any,
   key: any,
@@ -56,19 +56,19 @@ export var __decorate = function (
   return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 
-export var __awaiter = function (thisArg: any, _arguments: any, P: any, generator: any) {
-  return new (P || (P = Promise))(function (resolve: any, reject: any) {
+export var __awaiter = function(thisArg: any, _arguments: any, P: any, generator: any) {
+  return new (P || (P = Promise))(function(resolve: any, reject: any) {
       function fulfilled(value: any) { try { step(generator.next(value)); } catch (e) { reject(e); } }
       function rejected(value: any) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-      function step(result: any) { result.done ? resolve(result.value) : new P(function (resolve: any) { resolve(result.value); }).then(fulfilled, rejected); }
+      function step(result: any) { result.done ? resolve(result.value) : new P(function(resolve: any) { resolve(result.value); }).then(fulfilled, rejected); }
       step((generator = generator.apply(thisArg, _arguments || [])).next());
   });
 };
 
-export var __generator = function (thisArg: any, body: any) {
+export var __generator = function(thisArg: any, body: any) {
   var _ = { label: 0, sent: function() { if (<any>t[0] & 1) throw t[1]; return t[1]; }, trys: <any[]>[], ops: <any[]>[] }, f: any, y: any, t: any, g: any;
   return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-  function verb(n: any) { return function (v: any) { return step([n, v]); }; }
+  function verb(n: any) { return function(v: any) { return step([n, v]); }; }
   function step(op: any) {
       if (f) throw new TypeError("Generator is already executing.");
       while (_) try {

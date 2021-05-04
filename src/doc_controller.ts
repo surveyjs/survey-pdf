@@ -34,6 +34,7 @@ export interface IDocOptions {
     fontName?: string;
     base64Normal?: string;
     base64Bold?: string;
+    useCustomFontInHtml?: boolean;
     margins?: IMargin;
     commercial?: boolean;
     haveCommercialLicense?: boolean;
@@ -45,11 +46,14 @@ export interface IDocOptions {
 export class DocOptions implements IDocOptions {
     public static readonly MM_TO_PT = 72 / 25.4;
     public static readonly FONT_SIZE = 14;
-    protected _fontSize: number;
-    protected _margins: IMargin;
-    protected _format: string | number[];
     protected _orientation: 'l' | 'p';
+    protected _format: string | number[];
+    protected _fontSize: number;
     protected _fontName: string;
+    protected _base64Normal: string = undefined;
+    protected _base64Bold: string = undefined;
+    protected _useCustomFontInHtml: boolean;
+    protected _margins: IMargin;
     protected _htmlRenderAs: IHTMLRenderType;
     protected _matrixRenderAs: 'auto' | 'list';
     protected _readonlyRenderAs: 'auto' | 'text' | 'acroform';
@@ -67,8 +71,20 @@ export class DocOptions implements IDocOptions {
         if (Array.isArray(this._format)) {
             this._format = this._format.map(f => f * DocOptions.MM_TO_PT);
         }
-        this._fontName = options.fontName || 'segoe';
         this._fontSize = options.fontSize || DocOptions.FONT_SIZE;
+        this._fontName = options.fontName || 'segoe';
+        if ((typeof options.fontName !== 'undefined' &&
+            (typeof options.base64Normal !== 'undefined' ||
+            typeof options.base64Bold !== 'undefined'))) {
+            this._base64Normal = options.base64Normal || options.base64Bold;
+            this._base64Bold = options.base64Bold || options.base64Normal;
+        }
+        else if (this.fontName === 'segoe') {
+            this._base64Normal = Fonts.SEGOE_NORMAL;
+            this._base64Bold = Fonts.SEGOE_BOLD;
+        }
+        this._useCustomFontInHtml = options.useCustomFontInHtml &&
+            typeof this.base64Normal !== 'undefined';
         this._margins = SurveyHelper.clone(options.margins);
         if (typeof this._margins === 'undefined') {
             this._margins = {};
@@ -99,11 +115,20 @@ export class DocOptions implements IDocOptions {
             yTop: this.margins.top
         }
     }
+    public get fontSize(): number {
+        return this._fontSize;
+    }
     public get fontName(): string {
         return this._fontName;
     }
-    public get fontSize(): number {
-        return this._fontSize;
+    public get base64Normal(): string {
+        return this._base64Normal;
+    }
+    public get base64Bold(): string {
+        return this._base64Bold;
+    }
+    public get useCustomFontInHtml(): boolean {
+        return this._useCustomFontInHtml;
     }
     public get margins(): IMargin {
         return this._margins;
@@ -135,13 +160,9 @@ export class DocController extends DocOptions {
     private marginsStack: IMarginLR[];
     public constructor(options: IDocOptions = {}) {
         super(options);
-        if ((options.fontName && (options.base64Normal || options.base64Bold))) {
-            this.addFont(this.fontName, options.base64Normal || options.base64Bold, 'normal');
-            this.addFont(this.fontName, options.base64Bold || options.base64Normal, 'bold');
-        }
-        else if (this.fontName === 'segoe') {
-            this.addFont(this.fontName, Fonts.SEGOE_NORMAL, 'normal');
-            this.addFont(this.fontName, Fonts.SEGOE_BOLD, 'bold');
+        if (typeof this.base64Normal !== 'undefined') {
+            this.addFont(this.fontName, this.base64Normal, 'normal');
+            this.addFont(this.fontName, this.base64Bold, 'bold');
         }
         const jspdfOptions: jsPDFOptions = { orientation: this.orientation,
             unit: 'pt', format: this.format, compress: this.compress };
@@ -155,10 +176,10 @@ export class DocController extends DocOptions {
         this._fontStyle = 'normal';
         this.marginsStack = [];
     }
-    private addFont(fontName: string, base: string, fontStyle: string) {
+    private addFont(fontName: string, base64: string, fontStyle: string) {
         const addFontCallback: () => void = function() {
             const fontFile: string = `${fontName}-${fontStyle}.ttf`
-            this.addFileToVFS(fontFile, base);
+            this.addFileToVFS(fontFile, base64);
             this.addFont(fontFile, fontName, fontStyle);
         };
         (<any>jsPDF).API.events.push(['addFonts', addFontCallback]);

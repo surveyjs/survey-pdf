@@ -5,6 +5,7 @@ import { SurveyPDF } from './survey';
 import { IPoint, IRect, ISize, DocController } from './doc_controller';
 import { FlatRepository } from './flat_layout/flat_repository';
 import { IFlatQuestion } from './flat_layout/flat_question';
+import { IHTMLRenderType } from './flat_layout/flat_html';
 import { IPdfBrick, PdfBrick } from './pdf_render/pdf_brick';
 import { TextBrick } from './pdf_render/pdf_text';
 import { TextBoldBrick } from './pdf_render/pdf_textbold';
@@ -141,13 +142,19 @@ export class SurveyHelper {
             yBot: controller.paperHeight
         };
     }
-    public static createDivBlock(element: string, controller: DocController): string {
-        return `<div class="__surveypdf_html" style=${this.generateCssTextRule(controller.fontSize, controller.fontStyle,
-            this.isCustomFont(controller, controller.fontName) ? this.STANDARD_FONT : controller.fontName)}>` +
-            `<style>.__surveypdf_html p { margin: unset; line-height: 22px; } body { margin: unset; }</style>${element}</div>`;
+    public static chooseHtmlFont(controller: DocController, renderAs: IHTMLRenderType): string {
+        if (renderAs === 'standard') {
+            return this.isCustomFont(controller, controller.fontName) ? this.STANDARD_FONT : controller.fontName;
+        }
+        return controller.useCustomFontInHtml ? controller.fontName : this.STANDARD_FONT;
     }
     public static generateCssTextRule(fontSize: number, fontStyle: string, fontName: string): string {
         return `"font-size: ${fontSize}pt; font-weight: ${fontStyle}; font-family: ${fontName}; color: ${this.TEXT_COLOR};"`;
+    }
+    public static createHtmlContainerBlock(html: string, controller: DocController, renderAs: IHTMLRenderType): string {
+        return `<div class="__surveypdf_html" style=${this.generateCssTextRule(
+            controller.fontSize, controller.fontStyle, this.chooseHtmlFont(controller, renderAs))}>` +
+            `<style>.__surveypdf_html p { margin: unset; line-height: 22px; } body { margin: unset; }</style>${html}</div>`;
     }
     public static splitHtmlRect(controller: DocController, htmlBrick: IPdfBrick): IPdfBrick {
         const bricks: IPdfBrick[] = [];
@@ -190,8 +197,8 @@ export class SurveyHelper {
                 text : this.getLocString(<LocalizableString>text), fabric);
         }
         else {
-            return this.splitHtmlRect(controller, await this.createHTMLFlat(point,
-                <Question>question, controller, this.createDivBlock(this.getLocString(text), controller)));
+            return this.splitHtmlRect(controller, await this.createHTMLFlat(point, <Question>question, controller,
+                this.createHtmlContainerBlock(this.getLocString(text), controller, 'standard')));
         }
     }
     private static hasHtml(text: LocalizableString): boolean {
@@ -211,7 +218,7 @@ export class SurveyHelper {
         return await new Promise<IPdfBrick>((resolve) => {
             controller.helperDoc.fromHTML(html, point.xLeft, margins.top, {
                 pagesplit: true, width: margins.width
-            }, function (result: any) {
+            }, function(result: any) {
                 const height: number = (controller.helperDoc.getNumberOfPages() - 1) *
                     (controller.paperHeight - controller.margins.bot - controller.margins.top)
                     + result.y - margins.top + SurveyHelper.HTML_TAIL_TEXT_SCALE * controller.fontSize;
@@ -225,14 +232,19 @@ export class SurveyHelper {
             }, margins)
         });
     }
+    public static generateFontFace(fontName: string, fontBase64: string, fontWeight: string) {
+        return `@font-face { font-family: ${fontName}; ` + 
+            `src: url(data:application/font-woff;charset=utf-8;base64,${fontBase64}) format('woff'); ` +
+            `font-weight: ${fontWeight}; }`;
+    }
     public static htmlToXml(html: string): string {
         const htmlDoc: Document = document.implementation.createHTMLDocument('');
         htmlDoc.write(html.replace(/\#/g, '%23'));
         htmlDoc.documentElement.setAttribute('xmlns', htmlDoc.documentElement.namespaceURI);
         htmlDoc.body.style.margin = 'unset';
-        return (new XMLSerializer()).serializeToString(htmlDoc.body);
+        return (new XMLSerializer()).serializeToString(htmlDoc.body).replace(/%23/g, '#');
     }
-    public static async htmlToImage(html: string, width: number): Promise<{ url: string, aspect: number }> {  
+    public static async htmlToImage(html: string, width: number, controller: DocController): Promise<{ url: string, aspect: number }> {  
         const style: HTMLStyleElement = document.createElement('style');
         style.innerHTML = '.__surveypdf_html p { margin: unset; line-height: 22px; } body { margin: unset; }';
         document.body.appendChild(style);
@@ -254,12 +266,16 @@ export class SurveyHelper {
         const divHeight: number = div.offsetHeight;
         div.remove();
         style.remove();
-        const svg: string = '<svg xmlns="http://www.w3.org/2000/svg">' +
+        let defs: string = '';
+        if (controller.useCustomFontInHtml) {
+            defs = `<defs><style>${this.generateFontFace(controller.fontName, controller.base64Normal, 'normal')}` +
+                ` ${this.generateFontFace(controller.fontName, controller.base64Bold, 'bold')}</style></defs>`;
+        }
+        const svg: string = '<svg xmlns="http://www.w3.org/2000/svg">' + defs +
             '<style>.__surveypdf_html p { margin: unset; line-height: 22px; }</style>' +
             `<foreignObject width="${divWidth}px" height="${divHeight}px">` +
             this.htmlToXml(html) + '</foreignObject></svg>';
-        const data: string = 'data:image/svg+xml;base64,' +
-            btoa(unescape(encodeURIComponent(svg.replace(/%23/g, '#'))));
+        const data: string = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svg)));
         const img: HTMLImageElement = new Image();
         img.src = data;
         return await new Promise((resolve) => {
@@ -302,7 +318,7 @@ export class SurveyHelper {
                 controller.margins.right = controller.paperWidth -
                     controller.margins.left - controller.measureText(noText, 'bold').width;
                 noFlat = await this.createHTMLFlat(currPoint, question, controller,
-                    this.createDivBlock(noText, controller));
+                    this.createHtmlContainerBlock(noText, controller, 'standard'));
                 controller.popMargins();
                 controller.fontStyle = 'normal';
             }
@@ -328,7 +344,7 @@ export class SurveyHelper {
                 controller.margins.right = controller.paperWidth -
                     controller.margins.left - controller.measureText(requiredText, 'bold').width;
                 composite.addBrick(await this.createHTMLFlat(currPoint, question, controller,
-                    this.createDivBlock(requiredText, controller)));
+                    this.createHtmlContainerBlock(requiredText, controller, 'standard')));
                 controller.popMargins();
                 controller.fontStyle = 'normal';
             }
@@ -583,7 +599,7 @@ export class SurveyHelper {
     }
     public static fixFont(controller: DocController) {
         if (this.isCustomFont(controller, controller.fontName)) {
-            controller.doc.text('Dummy', 0, 0);
+            controller.doc.text('load font', 0, 0);
             controller.doc.deletePage(1);
             controller.addPage();
         }
