@@ -5,24 +5,24 @@ SurveyPDF supports export all types of SurveyJS [matrix questions](https://surve
 You can set preferred render directly to fit your needs more accurately. Pass _matrixRenderAs_ parameter with "list" value to render all matrix questions as list. Omit this parameter or pass "auto" value to allow SurveyPDF automatically choose renders matrix as a table or as a list
 
 ```javascript
-var options = {
-    matrixRenderAs: "list"
+const options = {
+    matrixRenderAs: 'list'
 };
-var surveyPDF = new SurveyPDF.SurveyPDF(json, options);
+const surveyPDF = new SurveyPDF.SurveyPDF(json, options);
 ```
 
 Also, you can override the render of particular matrix question via setting _renderAs_ property with "list" value. Default value is "auto"
 
 ```javascript
-var json = {
-    type: "matrix",
-    name: "matrix_as_list",
+const json = {
+    type: 'matrix',
+    name: 'matrix_as_list',
     columns: [
-        "Column 1"
+        'Column 1'
     ],
     rows: [
-        "Row 1"
+        'Row 1'
     ],
-    renderAs: "list"
+    renderAs: 'list'
 }
 ```
