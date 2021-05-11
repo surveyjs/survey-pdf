@@ -39,4 +39,4 @@ const options = {
 const surveyPDF = new SurveyPDF.SurveyPDF(json, options);
 ```
 
-Standard render of html is not supports of using custom font at this moment.
+Standard render of html is not supports of using custom font at this moment
