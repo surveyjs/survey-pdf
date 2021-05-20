@@ -25,17 +25,14 @@ export class FlatHTML extends FlatQuestion {
         let renderAs: IHTMLRenderType = <IHTMLRenderType>this.question.renderAs;
         if (renderAs === 'auto') renderAs = this.controller.htmlRenderAs;
         if (renderAs === 'auto') renderAs = this.chooseRender(SurveyHelper.getLocString(this.question.locHtml));
+        const html: string = SurveyHelper.createHtmlContainerBlock(SurveyHelper.getLocString(this.question.locHtml), this.controller, renderAs);
         if (renderAs === 'image') {
             const width: number = SurveyHelper.getPageAvailableWidth(this.controller);
-            const html: string = SurveyHelper.createHtmlContainerBlock(
-                SurveyHelper.getLocString(this.question.locHtml), this.controller, renderAs);
             const { url, aspect }: { url: string, aspect: number } =
                 await SurveyHelper.htmlToImage(html, width, this.controller);
             const height: number = width / aspect;
             return [SurveyHelper.createImageFlat(point, this.question, this.controller, url, width, height)];
         }
-        const html: string = SurveyHelper.createHtmlContainerBlock(SurveyHelper.getLocString(
-            this.question.locHtml), this.controller, renderAs);
         return [SurveyHelper.splitHtmlRect(this.controller, await SurveyHelper.createHTMLFlat(
             point, this.question, this.controller, html))];
     }

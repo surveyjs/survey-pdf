@@ -152,8 +152,9 @@ export class SurveyHelper {
         return `"font-size: ${fontSize}pt; font-weight: ${fontStyle}; font-family: ${fontName}; color: ${this.TEXT_COLOR};"`;
     }
     public static createHtmlContainerBlock(html: string, controller: DocController, renderAs: IHTMLRenderType): string {
+        const font = this.chooseHtmlFont(controller, renderAs);
         return `<div class="__surveypdf_html" style=${this.generateCssTextRule(
-            controller.fontSize, controller.fontStyle, this.chooseHtmlFont(controller, renderAs))}>` +
+            controller.fontSize, controller.fontStyle, font)}>` +
             `<style>.__surveypdf_html p { margin: unset; line-height: 22px; } body { margin: unset; }</style>${html}</div>`;
     }
     public static splitHtmlRect(controller: DocController, htmlBrick: IPdfBrick): IPdfBrick {
