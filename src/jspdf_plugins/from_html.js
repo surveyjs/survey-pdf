@@ -664,6 +664,15 @@
         }(element.replace(/<\/?script[^>]*?>/gi, ''));
       }
 
+      var availableFonts = Object.keys(pdf.getFontList());
+      for(i = 0; i < availableFonts.length; ++i) {
+        var fontName = availableFonts[i];
+        var fontFamily = fontName.toLowerCase();
+        if(!FontNameDB[fontFamily]) {
+          FontNameDB[fontFamily] = fontName;
+        }
+      }
+
       var r = new Renderer(pdf, x, y, settings),
           out; // 1. load images
       // 2. prepare optional footer elements
@@ -841,7 +850,92 @@
         this.pdf.internal.write(style['word-spacing'].toFixed(2), "Tw");
       }
 
-      this.pdf.internal.write("/" + font.id, (defaultFontSize * style["font-size"]).toFixed(2), "Tf", "(" + this.pdf.internal.pdfEscape(text) + ") Tj"); //set the word spacing back to neutral => 0
+
+      var pdfEscape16 = function(text, font) {
+        var widths = font.metadata.Unicode.widths;
+        var padz = ["", "0", "00", "000", "0000"];
+        var ar = [""];
+        for (var i = 0, l = text.length, t; i < l; ++i) {
+          t = font.metadata.characterToGlyph(text.charCodeAt(i));
+          font.metadata.glyIdsUsed.push(t);
+          font.metadata.toUnicode[t] = text.charCodeAt(i);
+          if (widths.indexOf(t) == -1) {
+            widths.push(t);
+            widths.push([parseInt(font.metadata.widthOfGlyph(t), 10)]);
+          }
+          if (t == "0") {
+            //Spaces are not allowed in cmap.
+            return ar.join("");
+          } else {
+            t = t.toString(16);
+            ar.push(padz[4 - t.length], t);
+          }
+        }
+        return ar.join("");
+      };
+
+      var utf8TextFunction = function(text, font) {
+        var text = text || "";
+    
+        var str = "",
+          s = 0,
+          cmapConfirm;
+        var strText = "";
+        var encoding = font.encoding;
+    
+        if (font.encoding !== "Identity-H") {
+          return text;
+        }
+        strText = text;
+    
+        for (s = 0; s < strText.length; s += 1) {
+          if (font.metadata.hasOwnProperty("cmap")) {
+            cmapConfirm = font.metadata.cmap.unicode.codeMap[strText[s].charCodeAt(0)];
+          }
+          if (!cmapConfirm) {
+            if (
+              strText[s].charCodeAt(0) < 256 &&
+              font.metadata.hasOwnProperty("Unicode")
+            ) {
+              str += strText[s];
+            } else {
+              str += "";
+            }
+          } else {
+            str += strText[s];
+          }
+        }
+        var result = "";
+        if (parseInt(font.id.slice(1)) < 14 || encoding === "WinAnsiEncoding") {
+          result = this.pdf.internal.pdfEscape(str, key)
+            .split("")
+            .map(function(cv) {
+              return cv.charCodeAt(0).toString(16);
+            })
+            .join("");
+        } else if (encoding === "Identity-H") {
+          result = pdfEscape16(str, font);
+        }
+    
+        return result;
+      };      
+
+      // var escapedText = this.pdf.internal.pdfEscape(text);
+      // var escapedText = utf8TextFunction(text, font);
+      // if(escapedText != text) {
+      //   escapedText = "<" + escapedText + ">";
+      // } else {
+      //   escapedText = "(" + escapedText + ")";
+      // }
+
+      var escapedText = "";
+      if(font.encoding !== "Identity-H") {
+        escapedText = "(" + this.pdf.internal.pdfEscape(text) + ")";
+      } else {
+        escapedText = "<" + utf8TextFunction(text, font) + ">";
+      }
+
+      this.pdf.internal.write("/" + font.id, (defaultFontSize * style["font-size"]).toFixed(2), "Tf", escapedText + " Tj"); //set the word spacing back to neutral => 0
 
       if (style['word-spacing'] !== undefined) {
         this.pdf.internal.write(0, "Tw");
