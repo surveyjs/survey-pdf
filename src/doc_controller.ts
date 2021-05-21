@@ -161,8 +161,8 @@ export class DocController extends DocOptions {
     public constructor(options: IDocOptions = {}) {
         super(options);
         if (typeof this.base64Normal !== 'undefined') {
-            this.addFont(this.fontName, this.base64Normal, 'normal');
-            this.addFont(this.fontName, this.base64Bold, 'bold');
+            DocController.addFont(this.fontName, this.base64Normal, 'normal');
+            DocController.addFont(this.fontName, this.base64Bold, 'bold');
         }
         const jspdfOptions: jsPDFOptions = { orientation: this.orientation,
             unit: 'pt', format: this.format, compress: this.compress };
@@ -176,9 +176,9 @@ export class DocController extends DocOptions {
         this._fontStyle = 'normal';
         this.marginsStack = [];
     }
-    private addFont(fontName: string, base64: string, fontStyle: string) {
+    public static addFont(fontName: string, base64: string, fontStyle: string) {
         const addFontCallback: () => void = function() {
-            const fontFile: string = `${fontName}-${fontStyle}.ttf`
+            const fontFile: string = `${fontName}-${fontStyle}.ttf`;
             this.addFileToVFS(fontFile, base64);
             this.addFont(fontFile, fontName, fontStyle);
         };
