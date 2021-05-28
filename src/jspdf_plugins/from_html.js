@@ -665,7 +665,7 @@
       }
 
       var availableFonts = Object.keys(pdf.getFontList());
-      for(i = 0; i < availableFonts.length; ++i) {
+      for(var i = 0; i < availableFonts.length; ++i) {
         var fontName = availableFonts[i];
         var fontFamily = fontName.toLowerCase();
         if(!FontNameDB[fontFamily]) {
