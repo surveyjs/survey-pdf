@@ -160,13 +160,14 @@ export class DocController extends DocOptions {
     private marginsStack: IMarginLR[];
     public constructor(options: IDocOptions = {}) {
         super(options);
-        if (typeof this.base64Normal !== 'undefined') {
-            DocController.addFont(this.fontName, this.base64Normal, 'normal');
-            DocController.addFont(this.fontName, this.base64Bold, 'bold');
-        }
         const jspdfOptions: jsPDFOptions = { orientation: this.orientation,
             unit: 'pt', format: this.format, compress: this.compress };
         this._doc = new jsPDF(jspdfOptions);
+        if (typeof this.base64Normal !== 'undefined' && !SurveyHelper.isFontExist(this, this.fontName)) {
+            DocController.addFont(this.fontName, this.base64Normal, 'normal');
+            DocController.addFont(this.fontName, this.base64Bold, 'bold');
+            this._doc = new jsPDF(jspdfOptions);
+        }
         setRadioAppearance(this._doc);
         this._helperDoc = new jsPDF(jspdfOptions);
         this._doc.setFont(this.fontName);

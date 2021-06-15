@@ -595,17 +595,20 @@ export class SurveyHelper {
         await survey.onRenderQuestion.fire(survey, adornersOptions);
         return [...adornersOptions.bricks];
     }
-    public static isCustomFont(controller: DocController, fontName: string) {
+    public static isFontExist(controller: DocController, fontName: string): boolean {
+        return controller.doc.internal.getFont(fontName).fontName === fontName;
+    }
+    public static isCustomFont(controller: DocController, fontName: string): boolean {
         return controller.doc.internal.getFont(fontName).encoding === this.CUSTOM_FONT_ENCODING;
     }
-    public static fixFont(controller: DocController) {
+    public static fixFont(controller: DocController): void {
         if (this.isCustomFont(controller, controller.fontName)) {
             controller.doc.text('load font', 0, 0);
             controller.doc.deletePage(1);
             controller.addPage();
         }
     }
-    public static clone(src: any) {
+    public static clone(src: any): any {
         const target: any = {};
         for (const prop in src) {
             if (src.hasOwnProperty(prop)) {
