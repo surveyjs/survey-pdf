@@ -134,7 +134,7 @@ export class DrawCanvas {
                 rectOptions.verticalAlign = VerticalAlign.Middle;
             }
         }
-        let rect: IRect = SurveyHelper.clone(this.rect);
+        const rect: IRect = SurveyHelper.clone(this.rect);
         if (typeof rectOptions.horizontalAlign !== 'undefined') {
             switch (rectOptions.horizontalAlign) {
                 case HorizontalAlign.Left:
@@ -197,9 +197,9 @@ export class DrawCanvas {
         if (typeof textOptions.isBold === 'undefined') {
             textOptions.isBold = false;
         }
-        let textSize: ISize = this.controller.measureText(textOptions.text,
+        const textSize: ISize = this.controller.measureText(textOptions.text,
             textOptions.isBold ? 'bold' : 'normal', textOptions.fontSize);
-        let textRect: IRect = this.alignRect(textOptions, textSize);
+        const textRect: IRect = this.alignRect(textOptions, textSize);
         if (!textOptions.isBold) {
             this.packs.push(new TextBrick(null, this.controller,
                 textRect, textOptions.text));
@@ -216,17 +216,17 @@ export class DrawCanvas {
      */
     public drawImage(imageOptions: IDrawImageOptions): void {
         imageOptions = SurveyHelper.clone(imageOptions);
-        if (typeof imageOptions.width == 'undefined') {
+        if (typeof imageOptions.width === 'undefined') {
             imageOptions.width = this.rect.xRight - this.rect.xLeft;
         }
-        if (typeof imageOptions.height == 'undefined') {
+        if (typeof imageOptions.height === 'undefined') {
             imageOptions.height = this.rect.yBot - this.rect.yTop;
         }
-        let imageSize: ISize = {
+        const imageSize: ISize = {
             width: imageOptions.width,
             height: imageOptions.height
         };
-        let imageRect: IRect = this.alignRect(imageOptions, imageSize);
+        const imageRect: IRect = this.alignRect(imageOptions, imageSize);
         this.packs.push(SurveyHelper.createImageFlat(
             SurveyHelper.createPoint(imageRect, true, true),
             null, this.controller, imageOptions.base64,
