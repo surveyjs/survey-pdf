@@ -5,6 +5,20 @@
       "Title": "PDF Export Overview"
     },
     {
+      "Name": "Customization-Options",
+      "Title": "Customization Options",
+      "Items": [
+        {
+          "Name": "Customization-Options",
+          "Title": "Customization Options"
+        },
+        {
+          "Name": "Customization-CustomRender-HeaderFooter",
+          "Title": "Custom Render - Header/Footer"
+        }
+      ]
+    },    
+    {
       "Name": "HtmlToPdf",
       "Title": "HTML to PDF"
     },
@@ -13,7 +27,7 @@
       "Title": "Matrix to PDF"
     },
     {
-      "Name": "api",
+      "Name": "PDF-Export-API",
       "Title": "PDF Export API",
       "Items": [
         {
