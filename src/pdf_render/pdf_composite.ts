@@ -69,7 +69,7 @@ export class CompositeBrick implements IPdfBrick {
         }
     }
     public unfold(): IPdfBrick[] {
-        let unfoldBricks: IPdfBrick[] = [];
+        const unfoldBricks: IPdfBrick[] = [];
         this.bricks.forEach((brick: IPdfBrick) => {
             unfoldBricks.push(...brick.unfold());
         });
