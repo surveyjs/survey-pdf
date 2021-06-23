@@ -144,7 +144,7 @@ test('Check matrix multiple two columns one row vertical layout', async () => {
     expect(flats[0].length).toBe(3);
     controller.margins.left += controller.unitWidth;
     const unfoldHeaderFlats: IPdfBrick[] = flats[0][0].unfold();
-    expect(unfoldHeaderFlats.length).toBe(3);
+    expect(unfoldHeaderFlats.length).toBe(2);
     const unfoldRow1Flats: IPdfBrick[] = flats[0][1].unfold();
     expect(unfoldRow1Flats.length).toBe(3);
     const unfoldRow2Flats: IPdfBrick[] = flats[0][2].unfold();
@@ -168,7 +168,7 @@ test('Check matrix multiple two columns one row vertical layout', async () => {
         yTop: controller.leftTopPoint.yTop,
         yBot: controller.leftTopPoint.yTop + header.height
     };
-    TestHelper.equalRect(expect, unfoldHeaderFlats[1], assumeHeader);
+    TestHelper.equalRect(expect, unfoldHeaderFlats[0], assumeHeader);
     const row1Text: ISize = controller.measureText(json.elements[0].columns[0].name);
     const assumeRow1Text: IRect = {
         xLeft: controller.leftTopPoint.xLeft,

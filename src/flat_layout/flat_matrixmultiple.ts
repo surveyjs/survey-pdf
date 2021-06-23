@@ -63,8 +63,9 @@ export class FlatMatrixMultiple extends FlatQuestion {
                 this.controller.margins.left - columnWidth[i];
             lastRightMargin = this.controller.margins.right;
             currPoint.xLeft = this.controller.margins.left;
-            composite.addBrick(await this.generateFlatsCell(currPoint, row.cells[i],
-                row === this.question.renderedTable.headerRow));
+            const cellContent: CompositeBrick = await this.generateFlatsCell(
+                currPoint, row.cells[i], row === this.question.renderedTable.headerRow);
+            if (!cellContent.isEmpty) composite.addBrick(cellContent);
         }
         this.controller.popMargins();
         return composite;
