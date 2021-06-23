@@ -46,7 +46,7 @@ test('Check matrix multiple one column no rows', async () => {
         yTop: controller.leftTopPoint.yTop,
         yBot: controller.leftTopPoint.yTop + size.height
     };
-    TestHelper.equalRect(expect, flats[0][0].unfold()[1], assumeMatrix);
+    TestHelper.equalRect(expect, flats[0][0].unfold()[0], assumeMatrix);
 });
 test('Check matrix multiple one column one row', async () => {
     let json: any = {
@@ -73,7 +73,7 @@ test('Check matrix multiple one column one row', async () => {
     expect(flats[0].length).toBe(2);
     controller.margins.left += controller.unitWidth;
     let unfoldHeaderFlats: IPdfBrick[] = flats[0][0].unfold();
-    expect(unfoldHeaderFlats.length).toBe(3);
+    expect(unfoldHeaderFlats.length).toBe(2);
     let unfoldRowFlats: IPdfBrick[] = flats[0][1].unfold();
     expect(unfoldRowFlats.length).toBe(2);
     let header: ISize = controller.measureText(json.elements[0].columns[0].name, 'bold');
@@ -96,7 +96,7 @@ test('Check matrix multiple one column one row', async () => {
         yTop: controller.leftTopPoint.yTop,
         yBot: controller.leftTopPoint.yTop + header.height
     };
-    TestHelper.equalRect(expect, unfoldHeaderFlats[1], assumeHeader);
+    TestHelper.equalRect(expect, unfoldHeaderFlats[0], assumeHeader);
     let rowText: ISize = controller.measureText(json.elements[0].rows[0]);
     let assumeRowText: IRect = {
         xLeft: controller.leftTopPoint.xLeft,
@@ -144,7 +144,7 @@ test('Check matrix multiple two columns one row vertical layout', async () => {
     expect(flats[0].length).toBe(3);
     controller.margins.left += controller.unitWidth;
     let unfoldHeaderFlats: IPdfBrick[] = flats[0][0].unfold();
-    expect(unfoldHeaderFlats.length).toBe(3);
+    expect(unfoldHeaderFlats.length).toBe(2);
     let unfoldRow1Flats: IPdfBrick[] = flats[0][1].unfold();
     expect(unfoldRow1Flats.length).toBe(3);
     let unfoldRow2Flats: IPdfBrick[] = flats[0][2].unfold();
@@ -168,7 +168,7 @@ test('Check matrix multiple two columns one row vertical layout', async () => {
         yTop: controller.leftTopPoint.yTop,
         yBot: controller.leftTopPoint.yTop + header.height
     };
-    TestHelper.equalRect(expect, unfoldHeaderFlats[1], assumeHeader);
+    TestHelper.equalRect(expect, unfoldHeaderFlats[0], assumeHeader);
     let row1Text: ISize = controller.measureText(json.elements[0].columns[0].name);
     let assumeRow1Text: IRect = {
         xLeft: controller.leftTopPoint.xLeft,
