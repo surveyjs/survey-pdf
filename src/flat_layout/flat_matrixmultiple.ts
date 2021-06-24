@@ -122,6 +122,7 @@ export class FlatMatrixMultiple extends FlatQuestion {
             else {
                 rowFlat = await this.generateFlatsRowVertical(currPoint, rows[i], colCount);
             }
+            if (rowFlat.isEmpty) continue;
             if (i !== rows.length - 1) {
                 currPoint.yTop = rowFlat.yBot;
                 rowFlat.addBrick(SurveyHelper.createRowlineFlat(currPoint, this.controller));

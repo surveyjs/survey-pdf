@@ -19,7 +19,7 @@ test('Check matrix multiple one column no rows', async () => {
         elements: [
             {
                 type: 'matrixdropdown',
-                name: 'matri drop',
+                name: 'matrixmultiple_onecolumnnorows',
                 titleLocation: 'hidden',
                 columns: [
                     {
@@ -48,12 +48,43 @@ test('Check matrix multiple one column no rows', async () => {
     };
     TestHelper.equalRect(expect, flats[0][0].unfold()[0], assumeMatrix);
 });
+test('Check matrix multiple one column no rows vertical layout', async () => {
+    const json: any = {
+        elements: [
+            {
+                type: 'matrixdropdown',
+                name: 'matrixmultiple_onecolumnnorows_vertical',
+                titleLocation: 'hidden',
+                columns: [
+                    {
+                        name: 'First power'
+                    }
+                ],
+                columnLayout: 'vertical'
+            }
+        ]
+    };
+    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    const controller: DocController = new DocController(TestHelper.defaultOptions);
+    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    expect(flats.length).toBe(1);
+    expect(flats[0].length).toBe(1);
+    controller.margins.left += controller.unitWidth;
+    const size: ISize = controller.measureText(json.elements[0].columns[0].name, 'normal');
+    const assumeMatrix: IRect = {
+        xLeft: controller.leftTopPoint.xLeft,
+        xRight: controller.leftTopPoint.xLeft + size.width,
+        yTop: controller.leftTopPoint.yTop,
+        yBot: controller.leftTopPoint.yTop + size.height
+    };
+    TestHelper.equalRect(expect, flats[0][0].unfold()[0], assumeMatrix);
+});
 test('Check matrix multiple one column one row', async () => {
     const json: any = {
         elements: [
             {
                 type: 'matrixdropdown',
-                name: 'simplimat',
+                name: 'matrixmultiple_onecolumnonerow',
                 titleLocation: 'hidden',
                 columns: [
                     {
@@ -120,7 +151,7 @@ test('Check matrix multiple two columns one row vertical layout', async () => {
         elements: [
             {
                 type: 'matrixdropdown',
-                name: 'vermat',
+                name: 'matrixmultiple_onecolumnonerow_vertical',
                 titleLocation: 'hidden',
                 columns: [
                     {
@@ -209,7 +240,7 @@ test('Check matrix multiple two columns one row horizontal layout narrow width',
         elements: [
             {
                 type: 'matrixdropdown',
-                name: 'horonelinemat',
+                name: 'matrixmultiple_twocolumnsonerow_horizontal_narrow',
                 titleLocation: 'hidden',
                 columns: [
                     {
@@ -298,7 +329,7 @@ test('Check matrix multiple two columns one row vertical layout narrow width', a
         elements: [
             {
                 type: 'matrixdropdown',
-                name: 'veronelinemat',
+                name: 'matrixmultiple_twocolumnsonerow_vertical_narrow',
                 titleLocation: 'hidden',
                 columns: [
                     {
