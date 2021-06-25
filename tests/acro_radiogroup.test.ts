@@ -8,7 +8,7 @@ import { TestHelper } from '../src/helper_test';
 let __dummy_rg = new FlatRadiogroup(null, null, null);
 
 test('Has other radiogroup', async () => {
-    let json: any = {
+    const json: any = {
         showQuestionNumbers: 'false',
         questions: [
             {
@@ -19,25 +19,25 @@ test('Has other radiogroup', async () => {
             }
         ]
     };
-    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     survey.data = {
         radiogroup_hasother: 'other'
     };
-    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    const controller: DocController = new DocController(TestHelper.defaultOptions);
     await survey['render'](controller);
-    let internal: any = controller.doc.internal;
-    let internalOtherText: string = internal.pages[1][21];
+    const internal: any = controller.doc.internal;
+    const internalOtherText: string = internal.pages[1][21];
     expect(internalOtherText).toBeDefined();
-    let regex: RegExp = /\((.*)\)/;
-    let otherText: string = internalOtherText.match(regex)[1];
+    const regex: RegExp = /\((.*)\)/;
+    const otherText: string = internalOtherText.match(regex)[1];
     expect(otherText).toBe(json.questions[0].otherText);
-    let internalOtherTextField: any = internal.acroformPlugin.acroFormDictionaryRoot.Fields[2];
+    const internalOtherTextField: any = internal.acroformPlugin.acroFormDictionaryRoot.Fields[2];
     expect(internalOtherTextField.FT).toBe('/Tx');
-    let internalRadioGroup: any = internal.acroformPlugin.acroFormDictionaryRoot.Fields[0];
+    const internalRadioGroup: any = internal.acroformPlugin.acroFormDictionaryRoot.Fields[0];
     expect(internalRadioGroup.FT).toBe('/Btn');
 });
 test('Other selected with value radiogroup', async () => {
-    let json: any = {
+    const json: any = {
         showQuestionNumbers: 'false',
         questions: [
             {
@@ -48,15 +48,15 @@ test('Other selected with value radiogroup', async () => {
             }
         ]
     };
-    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    const controller: DocController = new DocController(TestHelper.defaultOptions);
     await survey['render'](controller);
-    let fields: any = controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields;
+    const fields: any = controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields;
     expect(fields[1].AS).toBe('/' + survey.getAllQuestions()[0].id + 'index0');
     expect(fields[2].V).toBe('( ' + json.questions[0].defaultValue + ')');
 });
 test('Check all items disabled or enabled', async () => {
-    let json: any = {
+    const json: any = {
         questions: [
             {
                 name: 'radiogroup',
@@ -65,10 +65,10 @@ test('Check all items disabled or enabled', async () => {
             }
         ]
     };
-    for (let readOnly of [false, true]) {
+    for (const readOnly of [false, true]) {
         (<any>json).questions[0].readOnly = readOnly;
-        let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-        let controller: DocController = new DocController(TestHelper.defaultOptions);
+        const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+        const controller: DocController = new DocController(TestHelper.defaultOptions);
         await survey['render'](controller);
         if (!readOnly) {
             expect(controller.doc.internal.acroformPlugin.
