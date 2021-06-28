@@ -12,5 +12,5 @@ This section describes the available API in the following topics:
 <!-- * [SurveyPDF Options](Customization-SurveyPDF-Options) -->
 <!-- * [Change Fonts](Customization-Change-Fonts) -->
 * [Custom Render - Header/Footer](Pdf-Export?id=Customization-CustomRender-HeaderFooter)
-<!-- * [Custom Render - Question Elements](Customization-CustomRender-QuestionElements) -->
+* [Custom Render - Question Elements](Pdf-Export?id=Customization-CustomRender-QuestionElements)
 

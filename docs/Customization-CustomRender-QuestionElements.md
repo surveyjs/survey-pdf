@@ -5,8 +5,8 @@ Sections in this topic:
 * [Handle event ― onRenderQuestion](#handle-event)
 * [Use event parameter options ― AdornerOptions object](#adorneroptions-object)
   * [Bricks](#bricks)
-* [How to Customize Question Titles](#customize-question-titles)
-* [How to Customize Question Choices](#customize-question-choices)
+* [How to customize question titles](#customize-question-titles)
+* [How to customize question choices](#customize-question-choices)
 
 **API to use:**  
 _Event:_  
@@ -21,7 +21,7 @@ _Event parameter's popular options:_
 <a id="handle-event"></a>
 ## Handle event ― onRenderQuestion
 
-When exporting a survey to a PDF file, you can handle the [SurveyPDF](Pdf-Export?id=surveypdf) object's [onRenderQuestion](https://surveyjs.io/Documentation/Pdf-Export?id=surveypdf#onRenderQuestion) event to access and customize structural elements of any rendered survey question. 
+When exporting a survey to a PDF file, you can handle the [SurveyPDF](Pdf-Export?id=surveypdf) object's [onRenderQuestion](Pdf-Export?id=surveypdf#onRenderQuestion) event to access and customize structural elements of any rendered survey question. 
 
 The event signature is as follows. 
 
@@ -29,21 +29,21 @@ The event signature is as follows.
 
 Two parameters are passed to event handlers: 
 
- - `survey` ― The event sender. A [SurveyPDF](https://surveyjs.io/Documentation/Pdf-Export?id=surveypdf) object instance, 
+ - `survey` ― The event sender. A [SurveyPDF](Pdf-Export?id=surveypdf) object instance, 
  - `options` ― An [AdornerOptions](https://github.com/surveyjs/survey-pdf/blob/9d3ee98fadddd1712e96ef0499449ad786b90ee5/src/event_handler/adorners.ts#L22) object that contains the processed question's render information.
 
 
 View the event sources: [declaration](https://github.com/surveyjs/survey-pdf/blob/9d3ee98fadddd1712e96ef0499449ad786b90ee5/src/survey.ts#L55), [invocation](https://github.com/surveyjs/survey-pdf/blob/9d3ee98fadddd1712e96ef0499449ad786b90ee5/src/helper_survey.ts#L564).
 
 > **See also:**  
-> `SurveyPDF.onRenderPage` ([docs](https://surveyjs.io/Documentation/Pdf-Export?id=surveypdf#onRenderPage), [sources](https://github.com/surveyjs/survey-pdf/blob/0046cb374e9a6ea9980176557085e4896190ef7f/src/survey.ts#L69))  
-> `SurveyPDF.onRenderPanel` ([docs](https://surveyjs.io/Documentation/Pdf-Export?id=surveypdf#onRenderPanel), [sources](https://github.com/surveyjs/survey-pdf/blob/0046cb374e9a6ea9980176557085e4896190ef7f/src/survey.ts#L62)) 
+> `SurveyPDF.onRenderPage` ([docs](Pdf-Export?id=surveypdf#onRenderPage), [sources](https://github.com/surveyjs/survey-pdf/blob/0046cb374e9a6ea9980176557085e4896190ef7f/src/survey.ts#L69))  
+> `SurveyPDF.onRenderPanel` ([docs](Pdf-Export?id=surveypdf#onRenderPanel), [sources](https://github.com/surveyjs/survey-pdf/blob/0046cb374e9a6ea9980176557085e4896190ef7f/src/survey.ts#L62)) 
 
 
 <a id="adorneroptions-object"></a>
 ## Use event parameter options ― AdornerOptions object
 
-An `AdornerOptions` object instance is passed to [onRenderQuestion](https://surveyjs.io/Documentation/Pdf-Export?id=surveypdf#onRenderQuestion) event handlers as the `options` parameter. This parameter exposes the following set of properties to help you access and customize the rendered question's composite elements.
+An `AdornerOptions` object instance is passed to [onRenderQuestion](Pdf-Export?id=surveypdf#onRenderQuestion) event handlers as the `options` parameter. This parameter exposes the following set of properties to help you access and customize the rendered question's composite elements.
 
 - [question](https://github.com/surveyjs/survey-pdf/blob/8d8da63d5588f6406ccefbc0699549486a4efa3b/src/event_handler/adorners.ts#L23)  
 `question: IQuestion;`  
@@ -135,9 +135,9 @@ surveyPDF
 
 
 <a id="customize-question-titles"></a>
-## How to Customize Question Titles
+## How to customize question titles
 
-The code below shows how to handle the `onRenderQuestion` event to change question title colors (to highlight correct and incorrect answers) for questions of the [Radiogroup](https://surveyjs.io/Documentation/Library/?id=questionradiogroupmodel) type.   
+The code below shows how to handle the `onRenderQuestion` event to change question title colors (to highlight correct and incorrect answers) for questions of the [Radiogroup](Library/?id=questionradiogroupmodel) type.   
 To modify the text color of title bricks, a brick's [textColor](https://github.com/surveyjs/survey-pdf/blob/37700b1cadd051504271d0348447e3458aa8ecb8/src/pdf_render/pdf_brick.ts#L19) property is used.
 
 ```javascript
@@ -162,7 +162,7 @@ surveyPDF
 ```
 
 Links to the related API used in the code:  
-`onRenderQuestion` ― [sources](https://github.com/surveyjs/survey-pdf/blob/9d3ee98fadddd1712e96ef0499449ad786b90ee5/src/survey.ts#L55), [docs](https://surveyjs.io/Documentation/Pdf-Export?id=surveypdf#onRenderQuestion)  
+`onRenderQuestion` ― [sources](https://github.com/surveyjs/survey-pdf/blob/9d3ee98fadddd1712e96ef0499449ad786b90ee5/src/survey.ts#L55), [docs](Pdf-Export?id=surveypdf#onRenderQuestion)  
 `options` ― [sources](https://github.com/surveyjs/survey-pdf/blob/9d3ee98fadddd1712e96ef0499449ad786b90ee5/src/event_handler/adorners.ts#L22)  
 `options.bricks` ― [sources](https://github.com/surveyjs/survey-pdf/blob/9d3ee98fadddd1712e96ef0499449ad786b90ee5/src/event_handler/adorners.ts#L8)  
 `options.question` ― [sources](https://github.com/surveyjs/survey-pdf/blob/9d3ee98fadddd1712e96ef0499449ad786b90ee5/src/event_handler/adorners.ts#L23)  
@@ -186,9 +186,9 @@ There is more info about the `onRenderQuestion` event in our **Adorners** exampl
 
 
 <a id="customize-question-choices"></a>
-## How to Customize Question Choices
+## How to customize question choices
 
-The code below shows how to handle the `onRenderQuestion` event to change the color of choices (to highlight correct choices) for questions of the [Radiogroup](https://surveyjs.io/Documentation/Library/?id=questionradiogroupmodel) type.   
+The code below shows how to handle the `onRenderQuestion` event to change the color of choices (to highlight correct choices) for questions of the [Radiogroup](Library/?id=questionradiogroupmodel) type.   
 To modify the text color of choice bricks, a brick's [textColor](https://github.com/surveyjs/survey-pdf/blob/37700b1cadd051504271d0348447e3458aa8ecb8/src/pdf_render/pdf_brick.ts#L19) property is used.
 
 This example is based on the previous example's code and extends it with the functionality of finding and highlighting the correct choice in the rendered question. 
@@ -229,14 +229,14 @@ surveyPDF
 ```
 
 Links to the related API used in the code:  
-`onRenderQuestion` ― [sources](https://github.com/surveyjs/survey-pdf/blob/9d3ee98fadddd1712e96ef0499449ad786b90ee5/src/survey.ts#L55), [docs](https://surveyjs.io/Documentation/Pdf-Export?id=surveypdf#onRenderQuestion)  
+`onRenderQuestion` ― [sources](https://github.com/surveyjs/survey-pdf/blob/9d3ee98fadddd1712e96ef0499449ad786b90ee5/src/survey.ts#L55), [docs](Pdf-Export?id=surveypdf#onRenderQuestion)  
 `options` ― [sources](https://github.com/surveyjs/survey-pdf/blob/9d3ee98fadddd1712e96ef0499449ad786b90ee5/src/event_handler/adorners.ts#L22)  
 `options.bricks` ― [sources](https://github.com/surveyjs/survey-pdf/blob/9d3ee98fadddd1712e96ef0499449ad786b90ee5/src/event_handler/adorners.ts#L8)  
 `options.question` ― [sources](https://github.com/surveyjs/survey-pdf/blob/9d3ee98fadddd1712e96ef0499449ad786b90ee5/src/event_handler/adorners.ts#L23)  
 `options.question.isAnswerCorrect()` ― [sources](https://github.com/surveyjs/survey-library/blob/198f05347ab673ab8b9d14ff5c7efebff5505330/src/question.ts#L1333)  
 `Survey.ItemValue` - [sources](https://github.com/surveyjs/survey-library/blob/e5a87a0d4c57b8cb46c5b2b16fb488868a44cdb6/src/itemvalue.ts#L18)  
 `Survey.ItemValue.getItemByValue()` - [sources](https://github.com/surveyjs/survey-library/blob/e5a87a0d4c57b8cb46c5b2b16fb488868a44cdb6/src/itemvalue.ts#L87)  
-`options.question.choices` - [sources](https://github.com/surveyjs/survey-library/blob/36f41f6ab6403044dd0bfe475ffda81cdc68cacc/src/question_baseselect.ts#L450), [docs](https://surveyjs.io/Documentation/Library?id=QuestionSelectBase#choices)  
+`options.question.choices` - [sources](https://github.com/surveyjs/survey-library/blob/36f41f6ab6403044dd0bfe475ffda81cdc68cacc/src/question_baseselect.ts#L450), [docs](Library?id=QuestionSelectBase#choices)  
 `options.question.choices.indexOf()` ― [docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf)  
 `PdfBrick.textColor` ― [sources](https://github.com/surveyjs/survey-pdf/blob/37700b1cadd051504271d0348447e3458aa8ecb8/src/pdf_render/pdf_brick.ts#L19)
 
