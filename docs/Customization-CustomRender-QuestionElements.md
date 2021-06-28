@@ -11,12 +11,12 @@ Sections in this topic:
 **API to use:**  
 _Event:_  
 `SurveyPDF.onRenderQuestion`  
-_Event parameter main options:_  
+_Event parameter's popular options:_  
 `options.question`  
 `options.bricks`  
 `PdfBrick.unfold()`  
 `PdfBrick.textColor`  
-`PdfBrick.fontSize`  
+
 
 <a id="handle-event"></a>
 ## Handle event - onRenderQuestion
@@ -33,7 +33,7 @@ Two parameters are passed to event handlers:
  - `options` - An [AdornerOptions](https://github.com/surveyjs/survey-pdf/blob/9d3ee98fadddd1712e96ef0499449ad786b90ee5/src/event_handler/adorners.ts#L22) object that contains the processed question's render information.
 
 
-View the event implementation in [sources](https://github.com/surveyjs/survey-pdf/blob/9d3ee98fadddd1712e96ef0499449ad786b90ee5/src/survey.ts#L55).
+View the event sources: [declaration](https://github.com/surveyjs/survey-pdf/blob/9d3ee98fadddd1712e96ef0499449ad786b90ee5/src/survey.ts#L55), [invocation](https://github.com/surveyjs/survey-pdf/blob/9d3ee98fadddd1712e96ef0499449ad786b90ee5/src/helper_survey.ts#L564).
 
 > **See also:**  
 > `SurveyPDF.onRenderPage` ([docs](https://surveyjs.io/Documentation/Pdf-Export?id=surveypdf#onRenderPage), [sources](https://github.com/surveyjs/survey-pdf/blob/0046cb374e9a6ea9980176557085e4896190ef7f/src/survey.ts#L69))  
@@ -132,7 +132,7 @@ surveyPDF
 
 <!-- [!image to insert]() -->
 
-...
+
 
 <a id="customize-question-titles"></a>
 ## How to Customize Question Titles
@@ -202,7 +202,7 @@ surveyPDF
         var plainBricks = options
             .bricks[0]
             .unfold();
-        // #Region:Titles 
+        // #region Titles 
         // Change the title color for correct/incorrect answers:
         if(options.question.isAnswerCorrect()) {
             plainBricks[0].textColor = "#00ff00"; 
@@ -211,18 +211,19 @@ surveyPDF
             plainBricks[0].textColor = "#ff0000"; 
             plainBricks[1].textColor = "#ff0000";
         }
-        // #Endregion
+        // #endregion
 
 
         // Find a correct choice and access its text brick:
         var correctChoice = Survey.ItemValue.getItemByValue(options.question.choices, options.question.correctAnswer);
         var correctChoiceIndex = options.question.choices.indexOf(correctChoice);
         var correctChoiceRootBrick = options.bricks[correctChoiceIndex];
-        var correctChoiceTextBrick = correctChoiceRootBrick.bricks[1].bricks[0];
+        //debugger // <-- Discover the brick structure in Developer Tools
+        var correctChoiceTextBrick = correctChoiceRootBrick.unfold()[1];
         if(correctChoiceIndex === 0) {
-            correctChoiceTextBrick = correctChoiceRootBrick.bricks[1].bricks[1].bricks[0];
+            correctChoiceTextBrick = correctChoiceRootBrick.unfold()[3];
         }
-        // Change the text color to green for correct choices:
+        // Change the correct choice's text color to green:
         correctChoiceTextBrick.textColor = "#00ff00";
 
         return new Promise(function (resolve) {
@@ -237,15 +238,15 @@ Links to the related API used in the code:
 `options.bricks` - [sources](https://github.com/surveyjs/survey-pdf/blob/9d3ee98fadddd1712e96ef0499449ad786b90ee5/src/event_handler/adorners.ts#L8)  
 `options.question` - [sources](https://github.com/surveyjs/survey-pdf/blob/9d3ee98fadddd1712e96ef0499449ad786b90ee5/src/event_handler/adorners.ts#L23)  
 `options.question.isAnswerCorrect()` - [sources](https://github.com/surveyjs/survey-library/blob/198f05347ab673ab8b9d14ff5c7efebff5505330/src/question.ts#L1333)  
-Survey.ItemValue  
-Survey.ItemValue.getItemByValue()  
-`options.question.choices` - [s](), [docs](https://surveyjs.io/Documentation/Library?id=QuestionSelectBase#choices)  
+`Survey.ItemValue` - [sources](https://github.com/surveyjs/survey-library/blob/e5a87a0d4c57b8cb46c5b2b16fb488868a44cdb6/src/itemvalue.ts#L18)  
+`Survey.ItemValue.getItemByValue()` - [sources](https://github.com/surveyjs/survey-library/blob/e5a87a0d4c57b8cb46c5b2b16fb488868a44cdb6/src/itemvalue.ts#L87)  
+`options.question.choices` - [sources](https://github.com/surveyjs/survey-library/blob/36f41f6ab6403044dd0bfe475ffda81cdc68cacc/src/question_baseselect.ts#L450), [docs](https://surveyjs.io/Documentation/Library?id=QuestionSelectBase#choices)  
 `options.question.choices.indexOf()` - [docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf)  
 `PdfBrick.textColor` - [sources](https://github.com/surveyjs/survey-pdf/blob/37700b1cadd051504271d0348447e3458aa8ecb8/src/pdf_render/pdf_brick.ts#L19)
 
 
 You can see the complete sample code and test it in action in the Plunker example:  
-[ SurveyPDF - How to highlight incorrect choices in a PDF file](https://plnkr.co/edit/VRy392YezPPxPbtM)  
+[SurveyPDF - How to highlight correct/incorrect answers together with correct choices in a PDF file](https://plnkr.co/edit/a4l42JoeNbaPH22m)  
 
 ![Customized question choices](images/pdf-customize-question-choices.png)
 
