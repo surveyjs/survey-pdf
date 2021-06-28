@@ -1,9 +1,9 @@
 
-# Custom Render - Question Elements
+# Custom Render ― Question Elements
 
 Sections in this topic:  
-* [Handle event - onRenderQuestion](#handle-event)
-* [Use event parameter options - AdornerOptions object](#adorneroptions-object)
+* [Handle event ― onRenderQuestion](#handle-event)
+* [Use event parameter options ― AdornerOptions object](#adorneroptions-object)
   * [Bricks](#bricks)
 * [How to Customize Question Titles](#customize-question-titles)
 * [How to Customize Question Choices](#customize-question-choices)
@@ -19,7 +19,7 @@ _Event parameter main options:_
 `PdfBrick.fontSize`  
 
 <a id="handle-event"></a>
-## Handle event - onRenderQuestion
+## Handle event ― onRenderQuestion
 
 When exporting a survey to a PDF file, you can handle the [SurveyPDF](Pdf-Export?id=surveypdf) object's [onRenderQuestion](https://surveyjs.io/Documentation/Pdf-Export?id=surveypdf#onRenderQuestion) event to access and customize structural elements of any rendered survey question. 
 
@@ -29,8 +29,8 @@ The event signature is as follows.
 
 Two parameters are passed to event handlers: 
 
- - `survey` - The event sender. A [SurveyPDF](https://surveyjs.io/Documentation/Pdf-Export?id=surveypdf) object instance, 
- - `options` - An [AdornerOptions](https://github.com/surveyjs/survey-pdf/blob/9d3ee98fadddd1712e96ef0499449ad786b90ee5/src/event_handler/adorners.ts#L22) object that contains the processed question's render information.
+ - `survey` ― The event sender. A [SurveyPDF](https://surveyjs.io/Documentation/Pdf-Export?id=surveypdf) object instance, 
+ - `options` ― An [AdornerOptions](https://github.com/surveyjs/survey-pdf/blob/9d3ee98fadddd1712e96ef0499449ad786b90ee5/src/event_handler/adorners.ts#L22) object that contains the processed question's render information.
 
 
 View the event implementation in [sources](https://github.com/surveyjs/survey-pdf/blob/9d3ee98fadddd1712e96ef0499449ad786b90ee5/src/survey.ts#L55).
@@ -41,7 +41,7 @@ View the event implementation in [sources](https://github.com/surveyjs/survey-pd
 
 
 <a id="adorneroptions-object"></a>
-## Use event parameter options - AdornerOptions object
+## Use event parameter options ― AdornerOptions object
 
 An `AdornerOptions` object instance is passed to [onRenderQuestion](https://surveyjs.io/Documentation/Pdf-Export?id=surveypdf#onRenderQuestion) event handlers as the `options` parameter. This parameter exposes the following set of properties to help you access and customize the rendered question's composite elements.
 
@@ -123,7 +123,7 @@ surveyPDF
         debugger;
         // Your customization logic here...
         /*
-        var plainBricks = options
+        const plainBricks = options
             .bricks[0]
             .unfold();
         */        
@@ -144,10 +144,8 @@ To modify the text color of title bricks, a brick's [textColor](https://github.c
 surveyPDF
     .onRenderQuestion
     .add(function (survey, options) {
-        var plainBricks = options
-            .bricks[0]
-            .unfold();
-        if(options.question.isAnswerCorrect()) {
+        const plainBricks = options.bricks[0].unfold();
+        if (options.question.isAnswerCorrect()) {
             // Change the title color to green for correct answers:
             plainBricks[0].textColor = "#00ff00"; // A brick for number in a question title.
             plainBricks[1].textColor = "#00ff00"; // A brick for text in a question title.
@@ -156,7 +154,6 @@ surveyPDF
             plainBricks[0].textColor = "#ff0000"; // A brick for number in a question title.
             plainBricks[1].textColor = "#ff0000"; // A brick for text in a question title.
         }
-
         return new Promise(function (resolve) {
             resolve();
         });
@@ -164,16 +161,16 @@ surveyPDF
 ```
 
 Links to the related API used in the code:  
-`onRenderQuestion` - [sources](https://github.com/surveyjs/survey-pdf/blob/9d3ee98fadddd1712e96ef0499449ad786b90ee5/src/survey.ts#L55), [docs](https://surveyjs.io/Documentation/Pdf-Export?id=surveypdf#onRenderQuestion)  
-`options` - [sources](https://github.com/surveyjs/survey-pdf/blob/9d3ee98fadddd1712e96ef0499449ad786b90ee5/src/event_handler/adorners.ts#L22)  
-`options.bricks` - [sources](https://github.com/surveyjs/survey-pdf/blob/9d3ee98fadddd1712e96ef0499449ad786b90ee5/src/event_handler/adorners.ts#L8)  
-`options.question` - [sources](https://github.com/surveyjs/survey-pdf/blob/9d3ee98fadddd1712e96ef0499449ad786b90ee5/src/event_handler/adorners.ts#L23)  
-`options.question.isAnswerCorrect()` - [sources](https://github.com/surveyjs/survey-library/blob/198f05347ab673ab8b9d14ff5c7efebff5505330/src/question.ts#L1333)  
-`PdfBrick.textColor` - [sources](https://github.com/surveyjs/survey-pdf/blob/37700b1cadd051504271d0348447e3458aa8ecb8/src/pdf_render/pdf_brick.ts#L19)
+`onRenderQuestion` ― [sources](https://github.com/surveyjs/survey-pdf/blob/9d3ee98fadddd1712e96ef0499449ad786b90ee5/src/survey.ts#L55), [docs](https://surveyjs.io/Documentation/Pdf-Export?id=surveypdf#onRenderQuestion)  
+`options` ― [sources](https://github.com/surveyjs/survey-pdf/blob/9d3ee98fadddd1712e96ef0499449ad786b90ee5/src/event_handler/adorners.ts#L22)  
+`options.bricks` ― [sources](https://github.com/surveyjs/survey-pdf/blob/9d3ee98fadddd1712e96ef0499449ad786b90ee5/src/event_handler/adorners.ts#L8)  
+`options.question` ― [sources](https://github.com/surveyjs/survey-pdf/blob/9d3ee98fadddd1712e96ef0499449ad786b90ee5/src/event_handler/adorners.ts#L23)  
+`options.question.isAnswerCorrect()` ― [sources](https://github.com/surveyjs/survey-library/blob/198f05347ab673ab8b9d14ff5c7efebff5505330/src/question.ts#L1333)  
+`PdfBrick.textColor` ― [sources](https://github.com/surveyjs/survey-pdf/blob/37700b1cadd051504271d0348447e3458aa8ecb8/src/pdf_render/pdf_brick.ts#L19)
 
 
 You can see the complete sample code and test it in action in the Plunker example:  
-[ SurveyPDF - How to highlight incorrect answers in a PDF file](https://plnkr.co/edit/2QFRBxyKya1AbINR)  
+[ SurveyPDF ― How to highlight incorrect answers in a PDF file](https://plnkr.co/edit/2QFRBxyKya1AbINR)  
 
 ![Customized question titles](images/pdf-customize-question-titles.png)
 
@@ -199,12 +196,10 @@ This example is based on the previous example's code and extends it with the fun
 surveyPDF
     .onRenderQuestion
     .add(function (survey, options) {
-        var plainBricks = options
-            .bricks[0]
-            .unfold();
+        const plainBricks = options.bricks[0].unfold();
         // #Region:Titles 
         // Change the title color for correct/incorrect answers:
-        if(options.question.isAnswerCorrect()) {
+        if (options.question.isAnswerCorrect()) {
             plainBricks[0].textColor = "#00ff00"; 
             plainBricks[1].textColor = "#00ff00"; 
         } else {
@@ -215,11 +210,11 @@ surveyPDF
 
 
         // Find a correct choice and access its text brick:
-        var correctChoice = Survey.ItemValue.getItemByValue(options.question.choices, options.question.correctAnswer);
-        var correctChoiceIndex = options.question.choices.indexOf(correctChoice);
-        var correctChoiceRootBrick = options.bricks[correctChoiceIndex];
-        var correctChoiceTextBrick = correctChoiceRootBrick.bricks[1].bricks[0];
-        if(correctChoiceIndex === 0) {
+        const correctChoice = Survey.ItemValue.getItemByValue(options.question.choices, options.question.correctAnswer);
+        const correctChoiceIndex = options.question.choices.indexOf(correctChoice);
+        const correctChoiceRootBrick = options.bricks[correctChoiceIndex];
+        const correctChoiceTextBrick = correctChoiceRootBrick.bricks[1].bricks[0];
+        if (correctChoiceIndex === 0) {
             correctChoiceTextBrick = correctChoiceRootBrick.bricks[1].bricks[1].bricks[0];
         }
         // Change the text color to green for correct choices:
@@ -232,20 +227,20 @@ surveyPDF
 ```
 
 Links to the related API used in the code:  
-`onRenderQuestion` - [sources](https://github.com/surveyjs/survey-pdf/blob/9d3ee98fadddd1712e96ef0499449ad786b90ee5/src/survey.ts#L55), [docs](https://surveyjs.io/Documentation/Pdf-Export?id=surveypdf#onRenderQuestion)  
-`options` - [sources](https://github.com/surveyjs/survey-pdf/blob/9d3ee98fadddd1712e96ef0499449ad786b90ee5/src/event_handler/adorners.ts#L22)  
-`options.bricks` - [sources](https://github.com/surveyjs/survey-pdf/blob/9d3ee98fadddd1712e96ef0499449ad786b90ee5/src/event_handler/adorners.ts#L8)  
-`options.question` - [sources](https://github.com/surveyjs/survey-pdf/blob/9d3ee98fadddd1712e96ef0499449ad786b90ee5/src/event_handler/adorners.ts#L23)  
-`options.question.isAnswerCorrect()` - [sources](https://github.com/surveyjs/survey-library/blob/198f05347ab673ab8b9d14ff5c7efebff5505330/src/question.ts#L1333)  
+`onRenderQuestion` ― [sources](https://github.com/surveyjs/survey-pdf/blob/9d3ee98fadddd1712e96ef0499449ad786b90ee5/src/survey.ts#L55), [docs](https://surveyjs.io/Documentation/Pdf-Export?id=surveypdf#onRenderQuestion)  
+`options` ― [sources](https://github.com/surveyjs/survey-pdf/blob/9d3ee98fadddd1712e96ef0499449ad786b90ee5/src/event_handler/adorners.ts#L22)  
+`options.bricks` ― [sources](https://github.com/surveyjs/survey-pdf/blob/9d3ee98fadddd1712e96ef0499449ad786b90ee5/src/event_handler/adorners.ts#L8)  
+`options.question` ― [sources](https://github.com/surveyjs/survey-pdf/blob/9d3ee98fadddd1712e96ef0499449ad786b90ee5/src/event_handler/adorners.ts#L23)  
+`options.question.isAnswerCorrect()` ― [sources](https://github.com/surveyjs/survey-library/blob/198f05347ab673ab8b9d14ff5c7efebff5505330/src/question.ts#L1333)  
 Survey.ItemValue  
 Survey.ItemValue.getItemByValue()  
-`options.question.choices` - [s](), [docs](https://surveyjs.io/Documentation/Library?id=QuestionSelectBase#choices)  
-`options.question.choices.indexOf()` - [docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf)  
-`PdfBrick.textColor` - [sources](https://github.com/surveyjs/survey-pdf/blob/37700b1cadd051504271d0348447e3458aa8ecb8/src/pdf_render/pdf_brick.ts#L19)
+`options.question.choices` ― [s](), [docs](https://surveyjs.io/Documentation/Library?id=QuestionSelectBase#choices)  
+`options.question.choices.indexOf()` ― [docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf)  
+`PdfBrick.textColor` ― [sources](https://github.com/surveyjs/survey-pdf/blob/37700b1cadd051504271d0348447e3458aa8ecb8/src/pdf_render/pdf_brick.ts#L19)
 
 
 You can see the complete sample code and test it in action in the Plunker example:  
-[ SurveyPDF - How to highlight incorrect choices in a PDF file](https://plnkr.co/edit/VRy392YezPPxPbtM)  
+[ SurveyPDF ― How to highlight incorrect choices in a PDF file](https://plnkr.co/edit/VRy392YezPPxPbtM)  
 
 ![Customized question choices](images/pdf-customize-question-choices.png)
 
