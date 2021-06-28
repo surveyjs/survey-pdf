@@ -114,7 +114,7 @@ When working with bricks, the main challenges facing you as a developer are as f
 Our documentation does not currently provide detail information about the precise brick structure used to render survey questions of different types. We consider the rendering process to be an internal logic which might change in future releases.  
 However, we have an open suggestion issue - [#49](https://github.com/surveyjs/survey-pdf/issues/49) - which you can track and add to if you feel a need for such a description and you can provide illustrative use cases of question element customization required.
 
-It appears that the fastest way to **understand how a question is rendered** within a PDF file is to insert the `debugger` statement into an `onRenderQuestion` event handler and to investigate the rendered question's structure in a browser's DevTools' Console.
+It appears that the fastest way to **understand how a question is rendered** within a PDF file is to insert the `debugger` statement into an `onRenderQuestion` event handler and to investigate the rendered question's structure in a browser's DevTools Console.
 
 ```javascript
 surveyPDF
@@ -144,7 +144,7 @@ To modify the text color of title bricks, a brick's [textColor](https://github.c
 surveyPDF
     .onRenderQuestion
     .add(function (survey, options) {
-        //debugger // <-- Discover the brick structure in Developer Tools        
+        //debugger // <-- Discover the brick structure in DevTools        
         const plainBricks = options.bricks[0].unfold();
         if (options.question.isAnswerCorrect()) {
             // Change the title color to green for correct answers:
@@ -214,7 +214,7 @@ surveyPDF
         const correctChoice = Survey.ItemValue.getItemByValue(options.question.choices, options.question.correctAnswer);
         const correctChoiceIndex = options.question.choices.indexOf(correctChoice);
         const correctChoiceRootBrick = options.bricks[correctChoiceIndex];
-        //debugger // <-- Discover the brick structure in Developer Tools        
+        //debugger // <-- Discover the brick structure in DevTools        
         const correctChoiceTextBrick = correctChoiceRootBrick.bricks[1].bricks[0];
         if (correctChoiceIndex === 0) {
             correctChoiceTextBrick = correctChoiceRootBrick.bricks[1].bricks[1].bricks[0];
