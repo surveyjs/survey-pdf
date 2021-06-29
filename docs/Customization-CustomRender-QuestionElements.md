@@ -209,7 +209,6 @@ surveyPDF
         }
         // #endregion
 
-
         // Find a correct choice and access its text brick:
         const correctChoice = Survey.ItemValue.getItemByValue(options.question.choices, options.question.correctAnswer);
         const correctChoiceIndex = options.question.choices.indexOf(correctChoice);
@@ -234,9 +233,9 @@ Links to the related API used in the code:
 `options.bricks` ― [sources](https://github.com/surveyjs/survey-pdf/blob/9d3ee98fadddd1712e96ef0499449ad786b90ee5/src/event_handler/adorners.ts#L8)  
 `options.question` ― [sources](https://github.com/surveyjs/survey-pdf/blob/9d3ee98fadddd1712e96ef0499449ad786b90ee5/src/event_handler/adorners.ts#L23)  
 `options.question.isAnswerCorrect()` ― [sources](https://github.com/surveyjs/survey-library/blob/198f05347ab673ab8b9d14ff5c7efebff5505330/src/question.ts#L1333)  
-`Survey.ItemValue` - [sources](https://github.com/surveyjs/survey-library/blob/e5a87a0d4c57b8cb46c5b2b16fb488868a44cdb6/src/itemvalue.ts#L18)  
-`Survey.ItemValue.getItemByValue()` - [sources](https://github.com/surveyjs/survey-library/blob/e5a87a0d4c57b8cb46c5b2b16fb488868a44cdb6/src/itemvalue.ts#L87)  
-`options.question.choices` - [sources](https://github.com/surveyjs/survey-library/blob/36f41f6ab6403044dd0bfe475ffda81cdc68cacc/src/question_baseselect.ts#L450), [docs](Library?id=QuestionSelectBase#choices)  
+`Survey.ItemValue` ― [sources](https://github.com/surveyjs/survey-library/blob/e5a87a0d4c57b8cb46c5b2b16fb488868a44cdb6/src/itemvalue.ts#L18)  
+`Survey.ItemValue.getItemByValue()` ― [sources](https://github.com/surveyjs/survey-library/blob/e5a87a0d4c57b8cb46c5b2b16fb488868a44cdb6/src/itemvalue.ts#L87)  
+`options.question.choices` ― [sources](https://github.com/surveyjs/survey-library/blob/36f41f6ab6403044dd0bfe475ffda81cdc68cacc/src/question_baseselect.ts#L450), [docs](Library?id=QuestionSelectBase#choices)  
 `options.question.choices.indexOf()` ― [docs](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf)  
 `PdfBrick.textColor` ― [sources](https://github.com/surveyjs/survey-pdf/blob/37700b1cadd051504271d0348447e3458aa8ecb8/src/pdf_render/pdf_brick.ts#L19)
 
