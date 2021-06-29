@@ -15,7 +15,11 @@
         {
           "Name": "Customization-CustomRender-HeaderFooter",
           "Title": "Custom Render - Header/Footer"
-        }
+        },
+        {
+          "Name": "Customization-CustomRender-QuestionElements",
+          "Title": "Custom Render - Question Elements"
+        }        
       ]
     },    
     {
