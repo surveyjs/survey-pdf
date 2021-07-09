@@ -13,7 +13,7 @@ interface PackInterval {
 export class PagePacker {
     private static findBotInterval(tree: IntervalTree<PackInterval>,
         xLeft: number, xRight: number, options: DocOptions): PackInterval {
-        let intervals: PackInterval[] = tree.search(xLeft, xRight);
+        const intervals: PackInterval[] = tree.search(xLeft, xRight);
         intervals.push({
             pageIndex: 0, xLeft:
                 options.margins.left, xRight: options.margins.left,
@@ -34,9 +34,9 @@ export class PagePacker {
         packs[index].push(brick);
     }
     public static pack(flats: IPdfBrick[][], controller: DocController): IPdfBrick[][] {
-        let pageHeight: number = controller.paperHeight -
+        const pageHeight: number = controller.paperHeight -
             controller.margins.top - controller.margins.bot;
-        let unfoldFlats: IPdfBrick[][] = [];
+        const unfoldFlats: IPdfBrick[][] = [];
         flats.forEach((flatsPage: IPdfBrick[]) => {
             unfoldFlats.push([]);
             flatsPage.forEach((flat: IPdfBrick) => {
@@ -56,15 +56,15 @@ export class PagePacker {
             });
         });
         let pageIndexModel: number = 0;
-        let packs: IPdfBrick[][] = [];
-        let pageBot: number = controller.paperHeight - controller.margins.bot;
+        const packs: IPdfBrick[][] = [];
+        const pageBot: number = controller.paperHeight - controller.margins.bot;
         unfoldFlats.forEach((unfoldFlatsPage: IPdfBrick[]) => {
-            let tree: IntervalTree<PackInterval> = new IntervalTree();
+            const tree: IntervalTree<PackInterval> = new IntervalTree();
             let pageIndexShift: number = 0;
             unfoldFlatsPage.forEach((flat: IPdfBrick) => {
                 let { pageIndex, yBot, absBot } = PagePacker.findBotInterval(
                     tree, flat.xLeft, flat.xRight, controller);
-                let height: number = flat.height;
+                const height: number = flat.height;
                 flat.yTop = yBot + flat.yTop - absBot;
                 if (Math.abs(flat.yTop - controller.margins.top) > SurveyHelper.EPSILON &&
                     flat.yTop + height > pageBot + SurveyHelper.EPSILON || flat.isPageBreak) {
