@@ -6,6 +6,8 @@ Sections in this topic:
   * [Default font](#default-font)
 * [Change the document font](#change-the-document-font)
 * [Use a custom font](#use-a-custom-font)
+  * [Add a custom font](#Add-a-custom-font)
+  * [Set the document font](#Set-the-document-font)
 * [Where to find a font for a certain language](#where-to-find-a-font-for-a-certain-language)
 * [How to convert .ttf file to a base64 string](#how-to-convert-a-ttf-file-to-a-base64-string)
 
