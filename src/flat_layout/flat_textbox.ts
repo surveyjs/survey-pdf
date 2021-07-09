@@ -8,6 +8,7 @@ import { TextBoxBrick } from '../pdf_render/pdf_textbox';
 import { SurveyHelper } from '../helper_survey';
 
 export class FlatTextbox extends FlatQuestion {
+    public static readonly MULTILINE_TEXT_ROWS_COUNT: number = 1;
     protected question: QuestionTextModel;
     public constructor(protected survey: SurveyPDF,
         question: IQuestion, controller: DocController) {
@@ -15,8 +16,12 @@ export class FlatTextbox extends FlatQuestion {
         this.question = <QuestionTextModel>question;
     }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
-        const rect: IRect = SurveyHelper.createTextFieldRect(point, this.controller);
-        return [new TextBoxBrick(this.question, this.controller, rect)];
+        if (this.controller.textFieldRenderAs === 'singleLine') {
+            const rect: IRect = SurveyHelper.createTextFieldRect(point, this.controller);
+            return [new TextBoxBrick(this.question, this.controller, rect)];
+        }
+        return [await SurveyHelper.createCommentFlat(point, this.question,
+            this.controller, FlatTextbox.MULTILINE_TEXT_ROWS_COUNT, true)];
     }
 }
 

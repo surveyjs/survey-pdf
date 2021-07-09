@@ -41,7 +41,7 @@ export interface IDocOptions {
     htmlRenderAs?: IHTMLRenderType;
     matrixRenderAs?: 'auto' | 'list';
     readonlyRenderAs?: 'auto' | 'text' | 'acroform';
-    textRenderAs?: 'singleLine' | 'multiLine';
+    textFieldRenderAs?: 'singleLine' | 'multiLine';
     compress?: boolean;
 }
 export class DocOptions implements IDocOptions {
@@ -58,6 +58,7 @@ export class DocOptions implements IDocOptions {
     protected _htmlRenderAs: IHTMLRenderType;
     protected _matrixRenderAs: 'auto' | 'list';
     protected _readonlyRenderAs: 'auto' | 'text' | 'acroform';
+    protected _textFieldRenderAs: 'singleLine' | 'multiLine';
     protected _compress: boolean;
     public constructor(options: IDocOptions) {
         if (typeof options.orientation === 'undefined') {
@@ -108,6 +109,7 @@ export class DocOptions implements IDocOptions {
         this._htmlRenderAs = options.htmlRenderAs || 'auto';
         this._matrixRenderAs = options.matrixRenderAs || 'auto';
         this._readonlyRenderAs = options.readonlyRenderAs || 'auto';
+        this._textFieldRenderAs = options.textFieldRenderAs || 'singleLine';
         this._compress = options.compress || false;
     }
     public get leftTopPoint(): IPoint {
@@ -148,6 +150,9 @@ export class DocOptions implements IDocOptions {
     }
     public get readonlyRenderAs(): 'auto' | 'text' | 'acroform' {
         return this._readonlyRenderAs;
+    }
+    public get textFieldRenderAs(): 'singleLine' | 'multiLine' {
+        return this._textFieldRenderAs;
     }
     public get compress(): boolean {
         return this._compress;
