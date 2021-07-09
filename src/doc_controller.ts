@@ -41,7 +41,6 @@ export interface IDocOptions {
     htmlRenderAs?: IHTMLRenderType;
     matrixRenderAs?: 'auto' | 'list';
     readonlyRenderAs?: 'auto' | 'text' | 'acroform';
-    textRenderAs?: 'singleLine' | 'multiLine';
     compress?: boolean;
 }
 export class DocOptions implements IDocOptions {
