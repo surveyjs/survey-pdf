@@ -2,12 +2,12 @@
 
 Sections in this topic:  
 * [Basics](#Basics)
-  * [Standard 14 fonts]()
-  * [Default font]()
-* [Change the document font](#set-font-name)
-* [Use a custom font](#set-custom-font)
-* [Where to find a font for a certain language](#find-font-for-language)
-* [How to convert .ttf file to a base64 string](#convert-ttf-to-base64)
+  * [Standard 14 fonts](#standard-14-fonts)
+  * [Default font](#default-font)
+* [Change the document font](#change-the-document-font)
+* [Use a custom font](#use-a-custom-font)
+* [Where to find a font for a certain language](#where-to-find-a-font-for-a-certain-language)
+* [How to convert .ttf file to a base64 string](#how-to-convert-a-ttf-file-to-a-base64-string)
 
 
 **API to use:**  
@@ -291,7 +291,7 @@ A library of more than a thousand free and open source font families.
 You may use Google Noto free fonts collection. Just follow the link, type in search bar name of your language, select best for you option in dropdown and click Download button to save archive with .ttf files 
 -->
 
-## How to convert a .ttf file to a base64 string?
+## How to convert a ttf file to a base64 string?
 
 You can use any of the following online tools to convert a .ttf font to a base64 string.
 
