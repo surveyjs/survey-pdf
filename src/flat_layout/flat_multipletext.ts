@@ -1,12 +1,12 @@
 import { IQuestion, QuestionMultipleTextModel, MultipleTextItemModel } from 'survey-core';
 import { SurveyPDF } from '../survey';
 import { IPoint, DocController } from '../doc_controller';
-import { FlatQuestion } from './flat_question';
+import { FlatQuestion, IFlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
-import { MultipleTextBoxBrick } from '../pdf_render/pdf_multipletextbox';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
+import { FlatTextbox } from './flat_textbox';
 
 export class FlatMultipleText extends FlatQuestion {
     public static readonly ROWS_GAP_SCALE: number = 0.195;
@@ -25,12 +25,14 @@ export class FlatMultipleText extends FlatQuestion {
         const compositeFlat: CompositeBrick = new CompositeBrick(await SurveyHelper.
             createBoldTextFlat(point, this.question, this.controller, item.locTitle));
         this.controller.popMargins();
-        compositeFlat.addBrick(new MultipleTextBoxBrick(this.question, this.controller,
-            SurveyHelper.createTextFieldRect({
-                xLeft: point.xLeft +
-                    colWidth * SurveyHelper.MULTIPLETEXT_TEXT_PERS, yTop: point.yTop
-            },
-                this.controller), row_index, col_index, item));
+
+        const flatMultipleTextItemQuestion: IFlatQuestion = FlatRepository.getInstance().create(
+            this.survey, item.editor, this.controller, 'text');
+        const itemPoint: IPoint = SurveyHelper.createTextFieldRect({
+            xLeft: point.xLeft + colWidth * SurveyHelper.MULTIPLETEXT_TEXT_PERS, yTop: point.yTop },
+            this.controller);
+        compositeFlat.addBrick(...await (<FlatTextbox>flatMultipleTextItemQuestion).generateFlatsContent(itemPoint));   
+
         return compositeFlat;
     }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
