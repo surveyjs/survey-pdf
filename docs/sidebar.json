@@ -13,6 +13,10 @@
           "Title": "Customization Options"
         },
         {
+          "Name": "Customization-ChangeFonts",
+          "Title": "Change Fonts"
+        },
+        {
           "Name": "Customization-CustomRender-HeaderFooter",
           "Title": "Custom Render - Header/Footer"
         },
