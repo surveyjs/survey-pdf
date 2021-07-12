@@ -57,7 +57,7 @@ test('Check readonly text expends when textRenderAs option not set', async () =>
     TestHelper.equalRect(expect, flats[0][0], assumeText);
 });
 
-test.skip('Check readonly text expends when textRenderAs option set', async () => {
+test('Check readonly text expends when textRenderAs option set', async () => {
     const json: any = {
         questions: [
             {
@@ -77,8 +77,9 @@ test.skip('Check readonly text expends when textRenderAs option set', async () =
     const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
+    const question = survey.getAllQuestions()[0];
     const textPoint: IPoint = controller.leftTopPoint;
     textPoint.xLeft += controller.unitWidth;
-    const assumeText: IRect = SurveyHelper.createTextFieldRect(textPoint, controller, 2);
-    TestHelper.equalRect(expect, flats[0][0], assumeText);
+    const assumeBrick: IPdfBrick = await SurveyHelper.createCommentFlat(textPoint, question, controller, 1, true); 
+    TestHelper.equalRect(expect, flats[0][0], assumeBrick);
 });
