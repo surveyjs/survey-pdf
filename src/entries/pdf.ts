@@ -36,7 +36,6 @@ export { CompositeBrick } from '../pdf_render/pdf_composite';
 export { DropdownBrick } from '../pdf_render/pdf_dropdown';
 export { HTMLBrick } from '../pdf_render/pdf_html';
 export { LinkBrick } from '../pdf_render/pdf_link';
-export { MultipleTextBoxBrick } from '../pdf_render/pdf_multipletextbox';
 export { RadioItemBrick } from '../pdf_render/pdf_radioitem';
 export { RankingItemBrick } from '../pdf_render/pdf_rankingitem';
 export { RowlineBrick } from '../pdf_render/pdf_rowline';
