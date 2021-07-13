@@ -270,3 +270,23 @@ test('Check textfield with negative width', () => {
     }
     TestHelper.equalRect(expect, resultRect, assumeRect);
 });
+test('Check createSvgContent method' , () => {
+    const options: IDocOptions = {
+        useCustomFontInHtml: true
+    };
+    const controller: DocController = new DocController(options);
+    const old = SurveyHelper.htmlToXml;
+    try {
+        SurveyHelper.htmlToXml = str => str;
+        DocController.addFont('Test Font', 'NNN', 'normal');
+        DocController.addFont('Test Font', 'BBB', 'bold');
+        DocController.addFont('Test Font', 'III', 'italic');
+        DocController.addFont('Test Font', 'BIBIBI', 'bolditalic');
+        controller.fontName = 'Test Font';
+        const res = SurveyHelper.createSvgContent("<span>Test</span>", 200, controller);
+        expect(res.svg).toContain('@font-face { font-family: Test Font');
+    } finally {
+        SurveyHelper.htmlToXml = old;
+        DocController.customFonts = {};
+    }
+});

@@ -238,6 +238,11 @@ export class SurveyHelper {
             `src: url(data:application/font-woff;charset=utf-8;base64,${fontBase64}) format('woff'); ` +
             `font-weight: ${fontWeight}; }`;
     }
+    public static generateFontFaceWithItalicStyle(fontName: string, fontBase64: string, fontWeight: string) {
+        return `@font-face { font-family: ${fontName}; ` + 
+            `src: url(data:application/font-woff;charset=utf-8;base64,${fontBase64}) format('woff'); ` +
+            `font-weight: ${fontWeight}; font-style: italic}`;
+    }
     public static htmlToXml(html: string): string {
         const htmlDoc: Document = document.implementation.createHTMLDocument('');
         htmlDoc.write(html.replace(/\#/g, '%23'));
@@ -245,7 +250,7 @@ export class SurveyHelper {
         htmlDoc.body.style.margin = 'unset';
         return (new XMLSerializer()).serializeToString(htmlDoc.body).replace(/%23/g, '#');
     }
-    public static async htmlToImage(html: string, width: number, controller: DocController): Promise<{ url: string, aspect: number }> {  
+    public static createSvgContent(html: string, width: number, controller: DocController) {
         const style: HTMLStyleElement = document.createElement('style');
         style.innerHTML = '.__surveypdf_html p { margin: unset; line-height: 22px; } body { margin: unset; }';
         document.body.appendChild(style);
@@ -269,13 +274,29 @@ export class SurveyHelper {
         style.remove();
         let defs: string = '';
         if (controller.useCustomFontInHtml) {
-            defs = `<defs><style>${this.generateFontFace(controller.fontName, controller.base64Normal, 'normal')}` +
+            const font = DocController.customFonts[controller.fontName];
+            if(!!font) {
+                Object.keys(font).forEach((fontStyle: 'normal' | 'bold' | 'italic' | 'bolditalic') => {
+                    if (fontStyle === 'normal' || fontStyle === 'bold') {
+                        defs += `${this.generateFontFace(controller.fontName, font[fontStyle], fontStyle)}`;
+                    } else {
+                        defs += `${this.generateFontFaceWithItalicStyle(controller.fontName, font[fontStyle], fontStyle === 'italic' ? 'normal' : 'bold')}`
+                    }
+                });
+                defs = '<defs><style>' + defs + '</style></defs>';
+            } else if (controller.base64Bold !== undefined && controller.base64Normal !== undefined) {
+                defs = `<defs><style>${this.generateFontFace(controller.fontName, controller.base64Normal, 'normal')}` +
                 ` ${this.generateFontFace(controller.fontName, controller.base64Bold, 'bold')}</style></defs>`;
+            }
         }
         const svg: string = '<svg xmlns="http://www.w3.org/2000/svg">' + defs +
             '<style>.__surveypdf_html p { margin: unset; line-height: 22px; }</style>' +
             `<foreignObject width="${divWidth}px" height="${divHeight}px">` +
             this.htmlToXml(html) + '</foreignObject></svg>';
+        return { svg, divWidth, divHeight };
+    }
+    public static async htmlToImage(html: string, width: number, controller: DocController): Promise<{ url: string, aspect: number }> {  
+        const { svg, divWidth, divHeight } = SurveyHelper.createSvgContent(html, width, controller);
         const data: string = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svg)));
         const img: HTMLImageElement = new Image();
         img.src = data;

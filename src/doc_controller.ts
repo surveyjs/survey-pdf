@@ -83,8 +83,7 @@ export class DocOptions implements IDocOptions {
             this._base64Normal = Fonts.SEGOE_NORMAL;
             this._base64Bold = Fonts.SEGOE_BOLD;
         }
-        this._useCustomFontInHtml = options.useCustomFontInHtml &&
-            typeof this.base64Normal !== 'undefined';
+        this._useCustomFontInHtml = options.useCustomFontInHtml;
         this._margins = SurveyHelper.clone(options.margins);
         if (typeof this._margins === 'undefined') {
             this._margins = {};
@@ -177,11 +176,21 @@ export class DocController extends DocOptions {
         this._fontStyle = 'normal';
         this.marginsStack = [];
     }
-    public static addFont(fontName: string, base64: string, fontStyle: string) {
+    public static customFonts: {[name: string]: {normal: string, bold: string, italic: string, bolditalic: string}} = {};
+    public static addFont(fontName: string, base64: string, fontStyle: 'normal' | 'bold' | 'italic' | 'bolditalic') {
+        let font = DocController.customFonts[fontName];
+        if(!font) {
+            font = <any>{};
+            DocController.customFonts[fontName] = font;
+        }
+        font[fontStyle] = base64;
         const addFontCallback: () => void = function() {
-            const fontFile: string = `${fontName}-${fontStyle}.ttf`;
-            this.addFileToVFS(fontFile, base64);
-            this.addFont(fontFile, fontName, fontStyle);
+            let customFont = DocController.customFonts[fontName];
+            if(!!customFont && !!customFont[fontStyle]) {
+                const fontFile: string = `${fontName}-${fontStyle}.ttf`;
+                this.addFileToVFS(fontFile, customFont[fontStyle]);
+                this.addFont(fontFile, fontName, fontStyle);
+            }
         };
         (<any>jsPDF).API.events.push(['addFonts', addFontCallback]);
     }
