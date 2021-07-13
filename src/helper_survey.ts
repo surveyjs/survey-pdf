@@ -274,20 +274,20 @@ export class SurveyHelper {
         style.remove();
         let defs: string = '';
         if (controller.useCustomFontInHtml) {
-            const font = DocController.customFonts[controller.fontName];
-            if(!!font) {
+            defs = `<defs><style>${this.generateFontFace(controller.fontName, controller.base64Normal, 'normal')}` +
+            ` ${this.generateFontFace(controller.fontName, controller.base64Bold, 'bold')}</style></defs>`;
+        } else {
+            Object.keys(DocController.customFonts).forEach(fontName => {
+                const font = DocController.customFonts[fontName];
                 Object.keys(font).forEach((fontStyle: 'normal' | 'bold' | 'italic' | 'bolditalic') => {
                     if (fontStyle === 'normal' || fontStyle === 'bold') {
-                        defs += `${this.generateFontFace(controller.fontName, font[fontStyle], fontStyle)}`;
+                        defs += `${this.generateFontFace(fontName, font[fontStyle], fontStyle)}`;
                     } else {
-                        defs += `${this.generateFontFaceWithItalicStyle(controller.fontName, font[fontStyle], fontStyle === 'italic' ? 'normal' : 'bold')}`
+                        defs += `${this.generateFontFaceWithItalicStyle(fontName, font[fontStyle], fontStyle === 'italic' ? 'normal' : 'bold')}`
                     }
                 });
                 defs = '<defs><style>' + defs + '</style></defs>';
-            } else if (controller.base64Bold !== undefined && controller.base64Normal !== undefined) {
-                defs = `<defs><style>${this.generateFontFace(controller.fontName, controller.base64Normal, 'normal')}` +
-                ` ${this.generateFontFace(controller.fontName, controller.base64Bold, 'bold')}</style></defs>`;
-            }
+            });            
         }
         const svg: string = '<svg xmlns="http://www.w3.org/2000/svg">' + defs +
             '<style>.__surveypdf_html p { margin: unset; line-height: 22px; }</style>' +
