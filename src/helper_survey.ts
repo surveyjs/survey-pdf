@@ -538,6 +538,18 @@ export class SurveyHelper {
         if (this.hasHtml(text)) return text.renderedHtml;
         return (<any>text).renderedText || text.renderedHtml;
     }
+    public static getDropdownQuestionValue(question: Question): string {
+        if (question.isOtherSelected) {
+            return question.otherText;
+        }
+        else if (!!question.displayValue) {
+            return question.displayValue;
+        }
+        else if (question.showOptionsCaption) {
+            return question.optionsCaption;
+        }
+        return '';
+    }
     public static getContentQuestion(question: Question): Question {
         return !!question.contentQuestion ? question.contentQuestion : question;
     }

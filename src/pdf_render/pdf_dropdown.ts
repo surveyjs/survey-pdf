@@ -12,18 +12,6 @@ export class DropdownBrick extends PdfBrick {
         super(question, controller, rect);
         this.question = <QuestionDropdownModel>question;
     }
-    private getValue(): string {
-        if (this.question.isOtherSelected) {
-            return this.question.otherText;
-        }
-        else if (!!this.question.displayValue) {
-            return this.question.displayValue;
-        }
-        else if (this.question.showOptionsCaption) {
-            return this.question.optionsCaption;
-        }
-        return '';
-    }
     public async renderInteractive(): Promise<void> {
         const comboBox = new (<any>this.controller.doc.AcroFormComboBox)();
         comboBox.fieldName = this.question.id;
@@ -45,12 +33,15 @@ export class DropdownBrick extends PdfBrick {
         comboBox.readOnly = this.question.isReadOnly;
         comboBox.isUnicode = SurveyHelper.isCustomFont(
             this.controller, comboBox.fontName);
-        comboBox.V = this.getValue();
+        comboBox.V =  SurveyHelper.getDropdownQuestionValue(this.question);
         this.controller.doc.addField(comboBox);
         SurveyHelper.renderFlatBorders(this.controller, this);
     }
     public async renderReadOnly(): Promise<void> {
-        await SurveyHelper.renderReadOnlyTextField(this.controller,
-            this.question, this, this.getValue());
+        this.controller.pushMargins(this.xLeft,
+            this.controller.paperWidth - this.xRight);
+        await SurveyHelper.renderReadOnlyTextField(this.controller, this.question, this,
+            SurveyHelper.getDropdownQuestionValue(this.question), !(this.question.readOnly && this.controller.textFieldRenderAs === 'multiLine'));
+        this.controller.popMargins();
     }
 }
