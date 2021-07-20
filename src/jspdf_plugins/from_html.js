@@ -828,7 +828,9 @@
 
       if (this.pdf.internal.pageSize.getHeight() - this.pdf.margins_doc.bottom < this.y + this.pdf.internal.getFontSize()) {
         this.pdf.internal.write("ET", "Q", "Q");
-        this.pdf.addPage();
+        const currentPageNumber = this.pdf.getCurrentPageInfo().pageNumber;
+        if (this.pdf.getNumberOfPages() === currentPageNumber) this.pdf.addPage();
+        else this.pdf.setPage(currentPageNumber + 1);
         this.y = this.pdf.margins_doc.top;
         this.pdf.internal.write("q", "q", "BT", this.getPdfColor(style.color), this.pdf.internal.getCoordinateString(this.x), this.pdf.internal.getVerticalCoordinateString(this.y), "Td"); //move cursor by one line on new page
 
