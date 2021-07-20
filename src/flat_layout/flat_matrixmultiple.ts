@@ -29,7 +29,7 @@ export class FlatMatrixMultiple extends FlatQuestion {
                     SurveyHelper.createRect(point, this.controller.unitHeight, this.controller.unitHeight),
                     SurveyHelper.SELECT_ITEM_FLAT_SCALE), point.xLeft);
                 composite.addBrick((<FlatSelectBase>flatMultipleColumnsQuestion)
-                    .generateFlatItem(itemRect, cell.question.choices[cell.choiceIndex], cell.choiceIndex));
+                    .generateFlatItem(itemRect, cell.item, cell.choiceIndex));
             }
             else {
                 cell.question.titleLocation = SurveyHelper.TITLE_LOCATION_MATRIX;
