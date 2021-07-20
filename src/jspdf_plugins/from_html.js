@@ -458,7 +458,8 @@
                 margins: renderer.pdf.margins_doc,
                 css: GetCSS(cn)
               });
-              renderer.y = renderer.pdf.lastCellPos.y + renderer.pdf.lastCellPos.h + 20;
+              renderer.y = renderer.pdf.internal.__cell__.lastCell.y +
+                renderer.pdf.internal.__cell__.lastCell.height;
             } else if (cn.nodeName === "OL" || cn.nodeName === "UL") {
               listCount = 1;
 

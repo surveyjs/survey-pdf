@@ -9,7 +9,7 @@ import { FlatTextbox } from '../src/flat_layout/flat_textbox'
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
-const __dummy_cm = new FlatTextbox(null, null, null);
+const __dummy_tb = new FlatTextbox(null, null, null);
 
 test('Check readonly text', async () => {
     const json: any = {
