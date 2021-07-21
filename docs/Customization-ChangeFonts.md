@@ -72,12 +72,16 @@ Segoe is the SurveyPDF's default font. Two typefaces of this font are by default
 <a id="change-document-font"></a>
 ## Change the document font
 
-Use the `options.fontName` property to specify a document's font.
+Use the `fontName` property (declared as `DocOptions.fontName`) to specify a document's font.
 
-If you want to switch from the default Segoe font to one of the standard 14 fonts, set the `options.fontName` property to the desired font's family name.  
-You don't need to explicitly specify typefaces (such as "normal" or "bold"). SurveyPDF automatically finds and applies required font variations (if they are available within a document).
+  
+* [fontName](https://github.com/surveyjs/survey-pdf/blob/e7727038e6be148a4b38753ab9dddbcaf86c23a5/src/doc_controller.ts#L34)  
+`fontName?: string;`
 
-For instance, to render a PDF document using the Courier font family, set `options.fontName` to "Courier".
+If you want to switch from the default Segoe font to one of the standard 14 fonts, set the `fontName` property to the desired font's family name.  
+You don't need to explicitly specify typefaces (such as "normal" or "bold"). SurveyPDF automatically finds and applies required font variations (if they are available within a document for the specified font family).
+
+For instance, to render a PDF document using the Courier font family, set `fontName` to "Courier".
 
 ```js
 function saveSurveyToPdf(filename, surveyModel) {
@@ -90,6 +94,9 @@ function saveSurveyToPdf(filename, surveyModel) {
     surveyPDF.save(filename);
 }
 ```
+
+> **See also:**  
+> [fontSize](https://github.com/surveyjs/survey-pdf/blob/e7727038e6be148a4b38753ab9dddbcaf86c23a5/src/doc_controller.ts#L33) property
 
 Specifying any other font instead of Segoe through the `fontName` property prevents embedding Segoe fonts into a PDF document and makes Segoe typefaces unavailable within the document.
 
@@ -106,21 +113,21 @@ For instance, if you want to have Chinese text in your survey's PDF file, your f
 To use a custom font within a SurveyPDF document, perform the following steps:
 
 * **Add a custom font** through the `DocController.addFont()` static method.
-* **Set the document font** through the `options.fontName` property.
+* **Set the document font** through the options' `fontName` property.
 
 
 <a id="add-custom-font"></a>
 ### Add a custom font
-Use the `addFont()` method to add a custom font to a PDF document.
+Use the `addFont()` method (declared as `DocController.addFont`) to add a custom font to a PDF document.
 
-* [addFont()]()  
-`addFont(fontName: string, base64: string, fontStyle: string)`  
+* [addFont()](https://github.com/surveyjs/survey-pdf/blob/e7727038e6be148a4b38753ab9dddbcaf86c23a5/src/doc_controller.ts#L186)  
+`public static addFont(fontName: string, base64: string, fontStyle: 'normal' | 'bold' | 'italic' | 'bolditalic')`  
 
 This method does the following:  
 
 * Loads a font face as a base64-encoded string.
 * Specifies the font variation (such as "normal" or "bold") for which to use the loaded font face in a document.
-* Gives the loaded font face a label (a custom font family name/alias) which uniquely identifies the custom font through all fonts available within a document. Use this label to set the `fontName` property.
+* Gives the loaded font face a label (a custom font family name/alias) which uniquely identifies the custom font through all fonts available within a document. Use this label to set the `fontName` property in document options.
 
 <!-- 
 This method loads a font face as a base64-encoded string and associates it with a specified font family name and font style (like "normal" or "bold"). -->
@@ -157,7 +164,7 @@ SurveyPDF.DocController.addFont("myRoboto", fontRobotoMedium, "bold");
 <a id="set-document-font"></a>
 ### Set the document font
 
-As in the 'Change the document font' section above, set the `options.fontName` property to specify the font family used to render all texts in a survey document.  
+As in the [Change the document font](#change-document-font) section above, set the options' `fontName` property to specify the font family used to render all texts in a survey document.  
 Set this property to a custom font family identifier which you previously assigned to the loaded font(s) through the `addFont` method's _fontName_ parameter.
 
 
@@ -218,11 +225,19 @@ function saveSurveyToPdf(filename, surveyModel) {
 }
 ```
 
+
+> **Online Example**  
+> [Custom font family](https://surveyjs.io/Examples/Pdf-Export?id=survey-pdf-customfontfamily)
+
+
 See the complete example code and test it in action at Plunker:  
 [Embed custom fonts to use in SurveyPDF](https://plnkr.co/edit/uyecLKbp1PrZlqtx)
 
 
+
+
 ![Custom fonts](images/survey-pdf-custom-fonts.png)
+
 
 
 <a id="find-font-for-certain-language"></a>
