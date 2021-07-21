@@ -27,6 +27,9 @@ export interface IMargin extends IMarginLR {
     top?: number;
     bot?: number;
 }
+/**
+ * Declares a set of options for a SurveyPDF document.
+ */
 export interface IDocOptions {
     orientation?: 'p' | 'l';
     format?: string | number[];
@@ -44,6 +47,9 @@ export interface IDocOptions {
     textFieldRenderAs?: 'singleLine' | 'multiLine';
     compress?: boolean;
 }
+/**
+ * Contains a set of options that affect the appearance of a PDF document rendered by SurveyPDF.
+ */
 export class DocOptions implements IDocOptions {
     public static readonly MM_TO_PT = 72 / 25.4;
     public static readonly FONT_SIZE = 14;
