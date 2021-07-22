@@ -23,7 +23,7 @@ export class RowlineBrick implements IPdfBrick {
     public async render(): Promise<void> {
         if (this.color !== null) {
             let oldDrawColor: string = this.controller.doc.getDrawColor();
-            this.controller.doc.setDrawColor('#0000EE');
+            this.controller.doc.setDrawColor(this.color);
             this.controller.doc.line(this.xLeft, this.yTop, this.xRight, this.yTop);
             this.controller.doc.setDrawColor(oldDrawColor);
         }
