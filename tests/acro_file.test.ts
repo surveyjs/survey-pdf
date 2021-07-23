@@ -6,7 +6,7 @@ import { SurveyPDF } from '../src/survey';
 import { DocController } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { FlatFile } from '../src/flat_layout/flat_file';
-import { IPdfBrick } from '../src/entries/pdf';
+import { IPdfBrick, SurveyHelper } from '../src/entries/pdf';
 import { TestHelper } from '../src/helper_test';
 const __dummy_fl = new FlatFile(null, null, null);
 
@@ -116,7 +116,30 @@ test('Check hyperlink underline position', async () => {
     const assumeRight: number = flats[0][0].xRight;
     const actualRight: number = +lineInfo[0];
     expect(actualRight).toBe(assumeRight);
-	const bottomMove: number = +moveInfo[1];
-	const bottomLine: number = +lineInfo[1];
-	expect(bottomLine).toBe(bottomMove);
+    const bottomMove: number = +moveInfo[1];
+    const bottomLine: number = +lineInfo[1];
+    expect(bottomLine).toBe(bottomMove);
+});
+test('Check that border does not exist when FORM_TEXTFIELD_BORDER_STYLE is none', async () => {
+  const json: any = {
+    questions: [
+        {
+          type: 'text',
+          readOnly: true,
+          titleLocation: 'hidden',
+          defaultValue: 'I\'m without border'    
+        }
+    ]
+  };
+  (<any>SurveyHelper).FORM_TEXTFIELD_BORDER_STYLE = 'none';
+  const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+  const controller: DocController = new DocController(TestHelper.defaultOptions);
+  await survey['render'](controller);
+  const internal: any = controller.doc.internal;
+  expect(internal.pages[1].length).toBe(3);
+  const textDescription: string = internal.pages[1][2];
+  const textPosition: number = textDescription.indexOf('I\'m without border', 0);
+  expect(textPosition).toBeGreaterThan(-1);
+  const actualEnd: string = textDescription.substring(textDescription.length - 2);
+  expect(actualEnd).toBe("ET");
 });
