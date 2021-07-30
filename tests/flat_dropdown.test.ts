@@ -11,7 +11,6 @@ import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 import { calcTitleTop } from './flat_question.test';
-import { DropdownBrick } from '../src/pdf_render/pdf_dropdown';
 let __dummy_dd = new FlatDropdown(null, null, null);
 
 test('Check dropdown', async () => {
@@ -88,7 +87,7 @@ test('Check readonly text expends when textFieldRenderAs option set', async () =
     const question = survey.getAllQuestions()[0];
     const textPoint: IPoint = controller.leftTopPoint;
     textPoint.xLeft += controller.unitWidth;
-    const firstRect: IRect = await SurveyHelper.createTextFieldRect(textPoint, controller);
+    const firstRect: IRect = SurveyHelper.createTextFieldRect(textPoint, controller);
     const secondRect: IRect = await SurveyHelper.createReadOnlyTextFieldTextFlat(textPoint, controller, question, question.displayValue, false);
     firstRect.yBot = secondRect.yBot + controller.unitHeight * SurveyHelper.VALUE_READONLY_PADDING_SCALE;
     TestHelper.equalRect(expect, flats[0][0], firstRect);
