@@ -103,8 +103,8 @@ async function commentPointAfterItem(titleLocation: string) {
     else expect(resultRects[0].length).toBe(3);
     if (titleLocation === 'top' || titleLocation === 'left') {
         const commentPoint: IPoint = SurveyHelper.createPoint(
-            SurveyHelper.mergeRects(resultRects[0][0].unfold()[titleLocation === 'top' ? 2 : 1],
-                SurveyHelper.mergeRects(resultRects[0][0].unfold()[titleLocation === 'top' ? 3 : 2])));
+            SurveyHelper.mergeRects(resultRects[0][0].unfold()[1],
+                SurveyHelper.mergeRects(resultRects[0][0].unfold()[2])));
         commentPoint.yTop += controller.unitHeight * SurveyHelper.GAP_BETWEEN_ROWS;
         TestHelper.equalPoint(expect, resultRects[0][1], commentPoint);
     }
