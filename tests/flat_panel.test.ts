@@ -4,7 +4,7 @@
 
 import { Question } from 'survey-core';
 import { SurveyPDF } from '../src/survey';
-import { IPoint, DocController } from '../src/doc_controller';
+import { IPoint, DocController, IDocOptions } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { FlatTextbox } from '../src/flat_layout/flat_textbox';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
@@ -218,4 +218,30 @@ test('Check not rendering invisible questions', async () => {
     contentPoint.yTop += FlatSurvey.PANEL_CONT_GAP_SCALE * controller.unitHeight;
     await calcTitleTop(contentPoint, controller,
         <Question>survey.getAllQuestions()[0], flats[0][1]);
+});
+test('Check', async () => {
+    const json = {
+        pages: [
+          {
+            name: 'page1',
+            elements: [
+              {
+                type: 'text',
+                name: 'question1'
+              },
+              {
+                type: 'text',
+                name: 'question2',
+                startWithNewLine: false
+              }
+            ],
+            title: 'A\nA\nA\nA\nA\nA\nA\nA'
+          }
+        ]
+      };
+    const options: IDocOptions = TestHelper.defaultOptions;
+    options.format = [210.0, 117.0];
+    const survey: SurveyPDF = new SurveyPDF(json, options);
+    const controller: DocController = new DocController(options);
+    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
 });

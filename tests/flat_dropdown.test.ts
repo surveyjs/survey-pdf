@@ -55,10 +55,10 @@ test('Check dropdown with other', async () => {
     expect(flats[0].length).toBe(1);
     const otherPoint: IPoint = await calcTitleTop(controller.leftTopPoint, controller,
         <Question>survey.getAllQuestions()[0], TestHelper.wrapRect(SurveyHelper.mergeRects(
-            flats[0][0].unfold()[0], flats[0][0].unfold()[1])));
+            flats[0][0].unfold()[0], flats[0][0].unfold()[2])));
     otherPoint.xLeft += controller.unitWidth;
     otherPoint.yTop += controller.unitHeight * SurveyHelper.GAP_BETWEEN_ROWS;
-    TestHelper.equalRect(expect, flats[0][0].unfold()[2], await SurveyHelper.createCommentFlat(
+    TestHelper.equalRect(expect, flats[0][0].unfold()[3], await SurveyHelper.createCommentFlat(
         otherPoint, survey.getAllQuestions()[0], controller, SurveyHelper.OTHER_ROWS_COUNT, false));
 });
 test('Check readonly text expends when textFieldRenderAs option set', async () => {

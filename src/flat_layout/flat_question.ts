@@ -67,9 +67,11 @@ export class FlatQuestion implements IFlatQuestion {
         switch (titleLocation) {
             case 'top':
             case 'default': {
-                let titleFlat: IPdfBrick = await this.generateFlatTitle(indentPoint);
-                let compositeFlat: CompositeBrick = new CompositeBrick(titleFlat);
-                let contentPoint: IPoint = SurveyHelper.createPoint(titleFlat);
+                const titleFlat: IPdfBrick = await this.generateFlatTitle(indentPoint);
+                const compositeFlat: CompositeBrick = new CompositeBrick(titleFlat);
+                compositeFlat.addBrick(SurveyHelper.createRowlineFlat(
+                    SurveyHelper.createPoint(compositeFlat), this.controller));
+                let contentPoint: IPoint = SurveyHelper.createPoint(compositeFlat);
                 if (isDesc) {
                     let descFlat: IPdfBrick = await this.generateFlatDescription(
                         SurveyHelper.createPoint(titleFlat));

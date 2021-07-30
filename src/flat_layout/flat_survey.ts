@@ -189,6 +189,7 @@ export class FlatSurvey {
                 else flats.push([logoFlat]);
             }
         }
+        //add rowline if flats not empty
         for (let i: number = 0; i < survey.visiblePages.length; i++) {
             let pageFlats: IPdfBrick[] = [];
             let point: IPoint = controller.leftTopPoint;
