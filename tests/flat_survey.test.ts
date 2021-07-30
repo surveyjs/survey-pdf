@@ -7,7 +7,7 @@ import { IPoint, IRect, DocController } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { FlatTextbox } from '../src/flat_layout/flat_textbox';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
-import { HTMLBrick } from '../src/entries/pdf';
+import { HTMLBrick } from '../src/pdf_render/pdf_html';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 const __dummy_tx = new FlatTextbox(null, null, null);
