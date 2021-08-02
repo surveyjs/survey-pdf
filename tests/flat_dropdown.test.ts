@@ -6,6 +6,7 @@ import { Question } from 'survey-core';
 import { SurveyPDF } from '../src/survey';
 import { IPoint, DocController, IRect } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
+import { FlatQuestion } from '../src/flat_layout/flat_question';
 import { FlatDropdown } from '../src/flat_layout/flat_dropdown';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { SurveyHelper } from '../src/helper_survey';
@@ -30,16 +31,16 @@ test('Check dropdown', async () => {
     const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
-    await calcTitleTop(controller.leftTopPoint, controller,
-        <Question>survey.getAllQuestions()[0], flats[0][0]);
+    const question: Question = survey.getAllQuestions()[0];
+    await calcTitleTop(controller.leftTopPoint, controller, question, flats[0][0]);
 });
-test('Check dropdown with other', async () => {
+test('Check dropdown with other not answered', async () => {
     const json: any = {
         showQuestionNumbers: 'false',
         elements: [
             {
                 type: 'dropdown',
-                name: 'dropdownWithOther',
+                name: 'dropdown_other_not_answered',
                 choices: [
                     'right choice'
                 ],
@@ -52,13 +53,41 @@ test('Check dropdown with other', async () => {
     const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
-    const otherPoint: IPoint = await calcTitleTop(controller.leftTopPoint, controller,
-        <Question>survey.getAllQuestions()[0], TestHelper.wrapRect(SurveyHelper.mergeRects(
-            flats[0][0].unfold()[0], flats[0][0].unfold()[1])));
-    otherPoint.xLeft += controller.unitWidth;
+    const question: Question = survey.getAllQuestions()[0];
+    await calcTitleTop(controller.leftTopPoint, controller, question, flats[0][0]);
+});
+test('Check dropdown with other answered', async () => {
+    const json: any = {
+        showQuestionNumbers: 'false',
+        elements: [
+            {
+                type: 'dropdown',
+                name: 'dropdown_other_answered',
+                choices: [
+                    'right choice'
+                ],
+                hasOther: true,
+                defaultValue: 'other'
+            }
+        ]
+    };
+    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    const controller: DocController = new DocController(TestHelper.defaultOptions);
+    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    expect(flats.length).toBe(1);
+    expect(flats[0].length).toBe(1);
+    const question: Question = survey.getAllQuestions()[0];
+    const unfoldFlats: IPdfBrick[] = flats[0][0].unfold();
+    const actualTitleWithDropdown: IPdfBrick = TestHelper.wrapRect(SurveyHelper.mergeRects(
+        ...unfoldFlats.slice(0, unfoldFlats.length - 1)));
+    const otherPoint: IPoint  = await calcTitleTop(
+        controller.leftTopPoint, controller, question, actualTitleWithDropdown);
+    otherPoint.xLeft += controller.unitWidth * FlatQuestion.CONTENT_INDENT_SCALE;
     otherPoint.yTop += controller.unitHeight * SurveyHelper.GAP_BETWEEN_ROWS;
-    TestHelper.equalRect(expect, flats[0][0].unfold()[2], await SurveyHelper.createCommentFlat(
-        otherPoint, survey.getAllQuestions()[0], controller, SurveyHelper.OTHER_ROWS_COUNT, false));
+    const actualComment: IRect = unfoldFlats[unfoldFlats.length - 1];
+    const assumeComment: IRect = await SurveyHelper.createCommentFlat(
+        otherPoint, question, controller, SurveyHelper.OTHER_ROWS_COUNT, false);
+    TestHelper.equalRect(expect, actualComment, assumeComment);
 });
 test('Check readonly text expends when textFieldRenderAs option set', async () => {
     const json = {

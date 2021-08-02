@@ -24,7 +24,7 @@ export class FlatDropdown extends FlatQuestion {
         }
         const compositeFlat: CompositeBrick = new CompositeBrick(
             new DropdownBrick(this.question, this.controller, rect));
-        if (this.question.hasOther) {
+        if (this.question.isOtherSelected) {
             const otherPoint: IPoint = SurveyHelper.createPoint(compositeFlat);
             otherPoint.yTop += this.controller.unitHeight * SurveyHelper.GAP_BETWEEN_ROWS;
             compositeFlat.addBrick(await SurveyHelper.createCommentFlat(
