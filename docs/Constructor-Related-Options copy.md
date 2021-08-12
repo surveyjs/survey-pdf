@@ -416,19 +416,41 @@ See a live Plunker sample:
 [SurveyPDF - Export a file question with readonlyRenderAs set to text](https://plnkr.co/edit/FIiiTa83ppdov5x6)
 
 
+
+
 <a id="textFieldRenderAs"></a>
 ## Text input field render mode
 
-Use the [textFieldRenderAs](https://github.com/surveyjs/survey-pdf/blob/1220a71b51daddf1c4c8d506382c50be5f1b2941/src/doc_controller.ts#L47) option to specify how to render text fields with respondents' open-ended input in questions.
+Use the [textFieldRenderAs](https://github.com/surveyjs/survey-pdf/blob/1220a71b51daddf1c4c8d506382c50be5f1b2941/src/doc_controller.ts#L47) option to specify the manner in which single-line text fields display respondent answers (especially long ones) in the result PDF within questions of the following types: 
+- **Text** ([QuestionTextModel](https://surveyjs.io/Documentation/Library?id=questiontextmodel)),
+- **Multiple Text** ([QuestionMultipleTextModel](https://surveyjs.io/Documentation/Library?id=questionmultipletextmodel)),
+- **Matrix Dropdown** ([QuestionMatrixDropdownModel](https://surveyjs.io/Documentation/Library/?id=questionmatrixdropdownmodel)), if its [cellType](https://surveyjs.io/Documentation/Library/?id=questionmatrixdropdownmodel#cellType) is set to 'text' (_Cell type_ is set to _Single Input_ in Survey Creator's Properties window),
+- **Matrix Dynamic** ([QuestionMatrixDynamicModel](https://surveyjs.io/Documentation/Library/?id=questionmatrixdynamicmodel)), if its [cellType](https://surveyjs.io/Documentation/Library/?id=questionmatrixdynamicmodel#cellType) is set to 'text' (_Cell type_ is set to _Single Input_ in Survey Creator's Properties window).
+
+
+
+
+The [textFieldRenderAs](https://github.com/surveyjs/survey-pdf/blob/1220a71b51daddf1c4c8d506382c50be5f1b2941/src/doc_controller.ts#L47) option is only **in effect** for questions which are used **in read-only mode** due to one of the following settings:
+ - a survey's [mode](https://surveyjs.io/Documentation/Library/?id=surveymodel#mode) property is set to 'display' (in a survey JSON definition),
+ - a page's [readOnly](https://surveyjs.io/Documentation/Library/?id=pagemodel#readOnly) property is set to true,
+ - a panel's [readOnly](https://surveyjs.io/Documentation/Library/?id=panelmodel#readOnly) property is set to true,
+ - a question's [readOnly](https://surveyjs.io/Documentation/Library?id=Question#readOnly) property is set to true,
+ - a SurveyPDF's [mode](https://surveyjs.io/Documentation/Library/?id=surveymodel#mode) property is set to 'display'.  
+ 
+
+
+The [textFieldRenderAs](https://github.com/surveyjs/survey-pdf/blob/1220a71b51daddf1c4c8d506382c50be5f1b2941/src/doc_controller.ts#L47) option allows you to better present long answers to open-ended questions in a PDF document.
+
+
 
 - [textFieldRenderAs](https://github.com/surveyjs/survey-pdf/blob/1220a71b51daddf1c4c8d506382c50be5f1b2941/src/doc_controller.ts#L47)  
 `textFieldRenderAs?: 'singleLine' | 'multiLine';`
 
 Possible values:
 - "singleLine"  
-SurveyPDF renders text input fields as standard single-line text boxes. The text that is too long and does not fit in a box' line is clipped. This mode is useful for short responses (5-7 words).
+SurveyPDF renders text input fields as typical single-line text boxes. The text that is too long and does not fit in a box' line is clipped. This mode is useful for short responses (5-7 words).
 - "multiLine"  
-SurveyPDF renders text input fields as questions of the [Comment](https://surveyjs.io/Documentation/Library/?id=questioncommentmodel) type. This displays long text answers in multi-line format to prevent text clipping.
+SurveyPDF renders text input fields in a manner similar to questions of the [Comment](https://surveyjs.io/Documentation/Library/?id=questioncommentmodel) type. Long text answers are displayed in multi-line format. Text boxes stretch vertically to accommodate the entire texts. This prevents text clipping.
 
 The default value is "singleLine".  
 
@@ -437,7 +459,14 @@ var options = {
     textFieldRenderAs: 'multiLine'
 };
 var surveyPDF = new SurveyPDF.SurveyPDF(json, options);
+surveyPDF.mode = 'display'; 
 ```
+
+You can play with a live Plunker sample:  
+[SurveyPDF - How to use the textFieldRenderAs option](https://plnkr.co/edit/tKwSyFnS80RpVO1N)
+
+![SurveyPDF - Using textFieldRenderAs option](images/SurveyPDF-options-textFieldRenderAs.png)
+
 
 
 <a id="compress"></a>
