@@ -22,6 +22,8 @@ var survey = new SurveyPDF.SurveyPDF(json, options);
 The options are declared by the [IDocOptions](https://github.com/surveyjs/survey-pdf/blob/1220a71b51daddf1c4c8d506382c50be5f1b2941/src/doc_controller.ts#L33) interface and are implemented by the [DocOptions](https://github.com/surveyjs/survey-pdf/blob/1220a71b51daddf1c4c8d506382c50be5f1b2941/src/doc_controller.ts#L53) class.
 
 
+### List of Options
+
 The following options are available (listed as they go in sources).  
  
     orientation?: 'p' | 'l';
@@ -40,7 +42,7 @@ The following options are available (listed as they go in sources).
     textFieldRenderAs?: 'singleLine' | 'multiLine';
     compress?: boolean;
 
-
+### List of Affected Preferences
 Find more details about them in the below document sections that describe the options and the affected document preferences.
 
 - [Page orientation](#orientation)
@@ -54,8 +56,8 @@ Find more details about them in the below document sections that describe the op
 - [Commercial license](#commercial)
 - [HTML question render mode](#htmlRenderAs)
 - [Matrix question render mode](#matrixRenderAs)
-- [Question render in read-only export mode](#readonlyRenderAs)
-- [Text input field render mode](#textFieldRenderAs)
+- [Render mode of read-only questions](#readonlyRenderAs)
+- [Text input render mode in read-only questions](#textFieldRenderAs)
 - [Document compression](#compress)
 
 <a id="orientation"></a>
@@ -372,20 +374,20 @@ var survey = new SurveyPDF.SurveyPDF(json, options);
 
 
 <a id="readonlyRenderAs"></a>
-## Question render in read-only export mode
+## Render mode of read-only questions
 
-Use the [readonlyRenderAs](https://github.com/surveyjs/survey-pdf/blob/1220a71b51daddf1c4c8d506382c50be5f1b2941/src/doc_controller.ts#L46) option to specify how to render questions in the read-only export mode (when the [mode](https://surveyjs.io/Documentation/Library?id=surveymodel#mode) property of a `SurveyPDF` object instance is set to "display").
+The [readonlyRenderAs](https://github.com/surveyjs/survey-pdf/blob/1220a71b51daddf1c4c8d506382c50be5f1b2941/src/doc_controller.ts#L46) option allows you to fine tune the render of read-only questions in a PDF document being exported.
 
 - [readonlyRenderAs](https://github.com/surveyjs/survey-pdf/blob/1220a71b51daddf1c4c8d506382c50be5f1b2941/src/doc_controller.ts#L46)  
 `readonlyRenderAs?: 'auto' | 'text' | 'acroform';`
 
 Possible values:
 - "auto"  
-SurveyPDF automatically selects how to render each question (as a frame with text or as an interactive AcroForm field) depending upon the question's type and read-only state.
+SurveyPDF automatically selects how to render composed elements of  questions (in a custom manner as a selectable text surrounded by custom painted primitives such as borders or by using  interactive AcroForm fields) depending upon the question's type.
 - "text"  
-All questions are rendered as plain texts.
+Plain text and custom painted primitives are used to render questions as not-interactive elements.
 - "acroform"  
-All suitable questions are rendered as interactive form elements using the Acrobat Forms (AcroForms) technology.
+Certain types of questions (Checkbox, Radiogroup, text fields in Text, Multiple Text, Matrix and Dropdown) are rendered with the help of the Acrobat Forms (AcroForms) technology as interactive form elements switched to their native read-only state.
 
 The default value is "auto".  
 
@@ -419,7 +421,7 @@ See a live Plunker sample:
 
 
 <a id="textFieldRenderAs"></a>
-## Text input field render mode
+## Text input render mode in read-only questions
 
 Use the [textFieldRenderAs](https://github.com/surveyjs/survey-pdf/blob/1220a71b51daddf1c4c8d506382c50be5f1b2941/src/doc_controller.ts#L47) option to specify the manner in which single-line text fields display respondent answers (especially long ones) in the result PDF within questions of the following types: 
 - **Text** ([QuestionTextModel](https://surveyjs.io/Documentation/Library?id=questiontextmodel)),
