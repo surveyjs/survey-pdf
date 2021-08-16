@@ -121,3 +121,35 @@ test('Check readonly text expends when textFieldRenderAs option set', async () =
     firstRect.yBot = secondRect.yBot + controller.unitHeight * SurveyHelper.VALUE_READONLY_PADDING_SCALE;
     TestHelper.equalRect(expect, flats[0][0], firstRect);
 });
+test('Check dropdown when survey mode is display and textFieldRenderAs is multiline', async () => {
+    const json = {
+        elements: [
+            {
+             type: "dropdown",
+             choices: [
+              {
+               value: "item1",
+               text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"
+              }
+             ],
+             defaultValue: "item1",
+             titleLocation: 'hidden'
+            }
+        ]
+    };
+    const options = TestHelper.defaultOptions;
+    options.textFieldRenderAs = 'multiLine';
+    const survey: SurveyPDF = new SurveyPDF(json, options);
+    const controller: DocController = new DocController(options);
+    survey.mode = "display";
+    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    expect(flats.length).toBe(1);
+    expect(flats[0].length).toBe(1);
+    const question = survey.getAllQuestions()[0];
+    const textPoint: IPoint = controller.leftTopPoint;
+    textPoint.xLeft += controller.unitWidth;
+    const firstRect: IRect = SurveyHelper.createTextFieldRect(textPoint, controller);
+    const secondRect: IRect = await SurveyHelper.createReadOnlyTextFieldTextFlat(textPoint, controller, question, question.displayValue, false);
+    firstRect.yBot = secondRect.yBot + controller.unitHeight * SurveyHelper.VALUE_READONLY_PADDING_SCALE;
+    TestHelper.equalRect(expect, flats[0][0], firstRect);
+});
