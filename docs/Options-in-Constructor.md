@@ -171,9 +171,9 @@ Obsoleted.
 - [base64Normal](https://github.com/surveyjs/survey-pdf/blob/1220a71b51daddf1c4c8d506382c50be5f1b2941/src/doc_controller.ts#38)  
 `base64Normal?: string;`  
 Notes:  
-Earlier could be used together with `base64Bold` and `useCustomFontInHtml`.  
+Earlier could be used together with [base64Bold](base64Bold) and [useCustomFontInHtml](useCustomFontInHtml).  
 
-Use the loadFont method and the fontName option instead.
+Use the loadFont method and the [fontName](#fontName) option instead.
 
 Learn more: [Change Fonts](https://surveyjs.io/Documentation/Pdf-Export?id=Customization-ChangeFonts)
 
@@ -187,9 +187,9 @@ Obsoleted.
 - [base64Bold](https://github.com/surveyjs/survey-pdf/blob/1220a71b51daddf1c4c8d506382c50be5f1b2941/src/doc_controller.ts#39)  
 `base64Bold?: string;`  
 Notes:  
-Earlier could be used together with `base64Normal` and `useCustomFontInHtml`.  
+Earlier could be used together with [base64Normal](base64Normal) and [useCustomFontInHtml](useCustomFontInHtml).  
 
-Use the loadFont method and the fontName option instead.
+Use the loadFont method and the [fontName](#fontName) option instead.
 
 Learn more: [Change Fonts](https://surveyjs.io/Documentation/Pdf-Export?id=Customization-ChangeFonts)
 
@@ -202,9 +202,9 @@ Obsoleted.
 - [useCustomFontInHtml](https://github.com/surveyjs/survey-pdf/blob/1220a71b51daddf1c4c8d506382c50be5f1b2941/src/doc_controller.ts#40)  
 `useCustomFontInHtml?: boolean;`  
 Notes:  
-Earlier was used together with `base64Normal` and `base64Bold` to specify whether [custom fonts](https://surveyjs.io/Documentation/Pdf-Export?id=Customization-ChangeFonts#use-custom-font) (loaded throught the `base64Normal` and `base64Bold` options) apply to texts rendered within questions of the HTML type.  
+Earlier was used together with [base64Normal](base64Normal) and [base64Bold](base64Bold) to specify whether [custom fonts](https://surveyjs.io/Documentation/Pdf-Export?id=Customization-ChangeFonts#use-custom-font) (loaded throught the `base64Normal` and `base64Bold` options) should apply to texts rendered within questions of the HTML type.  
 
-Now [custom fonts](https://surveyjs.io/Documentation/Pdf-Export?id=Customization-ChangeFonts#use-custom-font) loaded through the `addFont` method are always taken into account when rendering texts within questions of the HTML type.
+Now [custom fonts](https://surveyjs.io/Documentation/Pdf-Export?id=Customization-ChangeFonts#use-custom-font) loaded through the [addFont()](https://github.com/surveyjs/survey-pdf/blob/e7727038e6be148a4b38753ab9dddbcaf86c23a5/src/doc_controller.ts#L186) method are always taken into account when rendering texts within questions of the HTML type.
 
 
 <a id="margins"></a>
