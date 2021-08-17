@@ -174,7 +174,7 @@ Learn more: [Change Fonts](https://surveyjs.io/Documentation/Pdf-Export?id=Custo
 <a id="base64Normal"></a>
 ## Setting a custom normal font
 
-Obsoleted.  
+Obsolete.  
 
 - [base64Normal](https://github.com/surveyjs/survey-pdf/blob/1220a71b51daddf1c4c8d506382c50be5f1b2941/src/doc_controller.ts#38)  
 `base64Normal?: string;`  
@@ -190,7 +190,7 @@ Learn more: [Change Fonts](https://surveyjs.io/Documentation/Pdf-Export?id=Custo
 <a id="base64Bold"></a>
 ## Settings a custom bold font
 
-Obsoleted.
+Obsolete.
 
 - [base64Bold](https://github.com/surveyjs/survey-pdf/blob/1220a71b51daddf1c4c8d506382c50be5f1b2941/src/doc_controller.ts#39)  
 `base64Bold?: string;`  
@@ -205,7 +205,7 @@ Learn more: [Change Fonts](https://surveyjs.io/Documentation/Pdf-Export?id=Custo
 <a id="useCustomFontInHtml"></a>
 ## Ability to use custom fonts in HTML questions
 
-Obsoleted.  
+Obsolete.  
 
 - [useCustomFontInHtml](https://github.com/surveyjs/survey-pdf/blob/1220a71b51daddf1c4c8d506382c50be5f1b2941/src/doc_controller.ts#40)  
 `useCustomFontInHtml?: boolean;`  
