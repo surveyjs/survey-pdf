@@ -377,9 +377,10 @@ var survey = new SurveyPDF.SurveyPDF(json, options);
 ```
 
 Play with a live Plunker sample:  
-[SurveyPDF - How to use the matrixRenderAs option](https://plnkr.co/edit/dsoXpQWlptzSi9EG)
+[SurveyPDF - How to use the matrixRenderAs option and a question's renderAs property
+](https://plnkr.co/edit/urI4az0HTh9cj0sR)
 
-![SurveyPDF - Using matrixRenderAs option](images/SurveyPDF-options-matrixRenderAs.png)
+![SurveyPDF - Using matrixRenderAs option](images/SurveyPDF-options-matrixRenderAs-question-renderAs.png)
 
 
 
