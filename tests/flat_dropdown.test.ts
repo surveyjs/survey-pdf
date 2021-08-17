@@ -113,7 +113,7 @@ test('Check readonly text expends when textFieldRenderAs option set', async () =
     const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
-    const question = survey.getAllQuestions()[0];
+    const question: Question = survey.getAllQuestions()[0];
     const textPoint: IPoint = controller.leftTopPoint;
     textPoint.xLeft += controller.unitWidth;
     const firstRect: IRect = SurveyHelper.createTextFieldRect(textPoint, controller);
@@ -125,14 +125,14 @@ test('Check dropdown when survey mode is display and textFieldRenderAs is multil
     const json = {
         elements: [
             {
-             type: "dropdown",
+             type: 'dropdown',
              choices: [
               {
-               value: "item1",
-               text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"
+               value: 'item1',
+               text: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s'
               }
              ],
-             defaultValue: "item1",
+             defaultValue: 'item1',
              titleLocation: 'hidden'
             }
         ]
@@ -141,11 +141,11 @@ test('Check dropdown when survey mode is display and textFieldRenderAs is multil
     options.textFieldRenderAs = 'multiLine';
     const survey: SurveyPDF = new SurveyPDF(json, options);
     const controller: DocController = new DocController(options);
-    survey.mode = "display";
+    survey.mode = 'display';
     const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
-    const question = survey.getAllQuestions()[0];
+    const question: Question = survey.getAllQuestions()[0];
     const textPoint: IPoint = controller.leftTopPoint;
     textPoint.xLeft += controller.unitWidth;
     const firstRect: IRect = SurveyHelper.createTextFieldRect(textPoint, controller);
