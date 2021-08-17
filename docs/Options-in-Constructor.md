@@ -43,7 +43,7 @@ The following options are available (listed as they go in sources).
     compress?: boolean;
 
 ### List of Affected Preferences
-Find more details about them in the below document sections that describe the options and the affected document preferences.
+Find more details about the available options in the below document sections that describe document preferences affected by corresponding options.
 
 - [Page orientation](#orientation)
 - [Page format](#format)
@@ -72,12 +72,16 @@ Possible values:
  - "p" - specifies the portrait orientation,
  - "l" - specifies the landscape orientation.
 
+The default value is "p".
+
 ```JavaScript
 var options = {
-    orientation: "p"
+    orientation: "l"
 };
 var survey = new SurveyPDF.SurveyPDF(json, options);
 ```
+
+
 
 <a id="format"></a>
 ## Page format
@@ -109,7 +113,7 @@ var options = {
 var survey = new SurveyPDF.SurveyPDF(json, options);
 ```
 
-To use a custom format, set `format` to the required page size as a number array (in mm). Example: [210.0, 297.0].
+To use a custom format, set `format` to the required page size as a number array (in mm). Example: `[210.0, 297.0]` where `210.0` is the width and `297.0` is the height.
 
 ```JavaScript
 var options = {
@@ -118,6 +122,10 @@ var options = {
 var survey = new SurveyPDF.SurveyPDF(json, options);
 ```
 
+Note that setting the `orientation` option has priority over the `format` option. If you set `format` to [297.0, 210.0] (which defines landscape orientation) and explicitly set `orientation` to "p" (which specifies portrait orientation), document pages will have the portrait orientation.
+
+**See Example**  
+[Print to PDF](https://surveyjs.io/Examples/Pdf-Export?id=survey-pdf-export)
 
 <a id="fontSize"></a>
 ## Font size
@@ -148,7 +156,7 @@ The default document font is Segoe.
 Two typefaces of this font (normal and bold) are by default embedded in a generated PDF document and are used to represent all survey texts within the document.  
 > Specifying any other font instead of Segoe prevents embedding Segoe fonts into a PDF document and makes Segoe typefaces unavailable within the document.
 
-Set the `fontName` option to the desired font's family name to [switch](https://surveyjs.io/Documentation/Pdf-Export?id=Customization-ChangeFonts#change-document-font) from the default Segoe font to one of the [standard 14 fonts](https://surveyjs.io/Documentation/Pdf-Export?id=Customization-ChangeFonts#standard-14-fonts) or to a [custom font](https://surveyjs.io/Documentation/Pdf-Export?id=Customization-ChangeFonts#use-custom-font) (explicitly integrated into a document through the `loadFont` method).
+Set the `fontName` option to the desired font's family name to [switch](https://surveyjs.io/Documentation/Pdf-Export?id=Customization-ChangeFonts#change-document-font) from the default Segoe font to one of the [standard 14 fonts](https://surveyjs.io/Documentation/Pdf-Export?id=Customization-ChangeFonts#standard-14-fonts) or to a [custom font](https://surveyjs.io/Documentation/Pdf-Export?id=Customization-ChangeFonts#use-custom-font) (explicitly integrated into a document through the [addFont()](https://github.com/surveyjs/survey-pdf/blob/e7727038e6be148a4b38753ab9dddbcaf86c23a5/src/doc_controller.ts#L186) method).
 
 Example: "Courier".
 
@@ -368,8 +376,10 @@ var options = {
 var survey = new SurveyPDF.SurveyPDF(json, options);
 ```
 
-**See also**  
-[Export matrix questions to PDF](https://surveyjs.io/Documentation/Pdf-Export?id=MatrixToPdf)
+Play with a live Plunker sample:  
+[SurveyPDF - How to use the matrixRenderAs option](https://plnkr.co/edit/dsoXpQWlptzSi9EG)
+
+![SurveyPDF - Using matrixRenderAs option](images/SurveyPDF-options-matrixRenderAs.png)
 
 
 
@@ -439,7 +449,7 @@ The [textFieldRenderAs](https://github.com/surveyjs/survey-pdf/blob/1220a71b51da
  - a question's [readOnly](https://surveyjs.io/Documentation/Library?id=Question#readOnly) property is set to true,
  - a SurveyPDF's [mode](https://surveyjs.io/Documentation/Library/?id=surveymodel#mode) property is set to 'display'.  
  
-
+>You can identify a question's current state by using the [isReadOnly](https://surveyjs.io/Documentation/Library?id=Question#isReadOnly) property.
 
 The [textFieldRenderAs](https://github.com/surveyjs/survey-pdf/blob/1220a71b51daddf1c4c8d506382c50be5f1b2941/src/doc_controller.ts#L47) option allows you to better present long answers to open-ended questions in a PDF document.
 
