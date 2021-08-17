@@ -11,6 +11,10 @@
     "build_prod": "npm run build_dev && webpack --env.buildType prod --env.platform pdf && npm run dts_clean",
     "dts_clean": "node dts_cleaner.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/surveyjs/survey-pdf.git"
+  },
   "version": "1.8.60",
   "name": "survey-pdf",
   "license": "SEE LICENSE IN LICENSE",
