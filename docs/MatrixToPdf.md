@@ -26,3 +26,6 @@ const json = {
     renderAs: 'list'
 }
 ```
+
+**See Also**  
+[Options in SurveyPDF Constructor: Matrix question render mode](Pdf-Export?id=Options-in-Constructor#matrixRenderAs)
