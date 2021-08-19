@@ -13,6 +13,10 @@
           "Title": "Customization Options"
         },
         {
+          "Name": "Options-in-Constructor",
+          "Title": "Options in SurveyPDF Constructor"
+        },
+        {
           "Name": "Customization-ChangeFonts",
           "Title": "Change Fonts"
         },
