@@ -39,6 +39,10 @@
       "Title": "Matrix to PDF"
     },
     {
+      "Name": "Save-Pdf",
+      "Title": "Save PDF"
+    },    
+    {
       "Name": "PDF-Export-API",
       "Title": "PDF Export API",
       "Items": [

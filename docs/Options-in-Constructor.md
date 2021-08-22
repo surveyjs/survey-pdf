@@ -181,7 +181,7 @@ Obsolete.
 Notes:  
 Earlier could be used together with [base64Bold](base64Bold) and [useCustomFontInHtml](useCustomFontInHtml).  
 
-Use the loadFont method and the [fontName](#fontName) option instead.
+Use the [addFont()](https://github.com/surveyjs/survey-pdf/blob/e7727038e6be148a4b38753ab9dddbcaf86c23a5/src/doc_controller.ts#L186) method and the [fontName](#fontName) option instead.
 
 Learn more: [Change Fonts](https://surveyjs.io/Documentation/Pdf-Export?id=Customization-ChangeFonts)
 
@@ -197,7 +197,7 @@ Obsolete.
 Notes:  
 Earlier could be used together with [base64Normal](base64Normal) and [useCustomFontInHtml](useCustomFontInHtml).  
 
-Use the loadFont method and the [fontName](#fontName) option instead.
+Use the [addFont()](https://github.com/surveyjs/survey-pdf/blob/e7727038e6be148a4b38753ab9dddbcaf86c23a5/src/doc_controller.ts#L186) method and the [fontName](#fontName) option instead.
 
 Learn more: [Change Fonts](https://surveyjs.io/Documentation/Pdf-Export?id=Customization-ChangeFonts)
 
