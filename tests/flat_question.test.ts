@@ -28,25 +28,19 @@ export async function calcTitleTop(leftTopPoint: IPoint, controller: DocControll
         const descPoint: IPoint = SurveyHelper.createPoint(assumeTitle);
         descPoint.xLeft += controller.unitWidth;
         descPoint.yTop += FlatQuestion.DESC_GAP_SCALE * controller.unitHeight;
-        const assumeDesc: IRect = await SurveyHelper.createDescFlat(
-            descPoint, null, controller, SurveyHelper.getLocString(
-                titleQuestion.locDescription));
+        const assumeDesc: IRect = await SurveyHelper.createDescFlat(descPoint, null, controller,
+            SurveyHelper.getLocString(titleQuestion.locDescription));
         assumeTextbox = SurveyHelper.createTextFieldRect(
             SurveyHelper.createPoint(assumeDesc), controller);
-        assumeTextbox.yTop += controller.unitHeight *
-            FlatQuestion.CONTENT_GAP_VERT_SCALE;
-        assumeTextbox.yBot += controller.unitHeight *
-            FlatQuestion.CONTENT_GAP_VERT_SCALE;
+        assumeTextbox.yTop += controller.unitHeight * FlatQuestion.CONTENT_GAP_VERT_SCALE;
+        assumeTextbox.yBot += controller.unitHeight * FlatQuestion.CONTENT_GAP_VERT_SCALE;
         TestHelper.equalRect(expect, compositeFlat,
             SurveyHelper.mergeRects(assumeTitle, assumeDesc, assumeTextbox));
     }
     else {
-        assumeTextbox.yTop += controller.unitHeight *
-            FlatQuestion.CONTENT_GAP_VERT_SCALE;
-        assumeTextbox.yBot += controller.unitHeight *
-            FlatQuestion.CONTENT_GAP_VERT_SCALE;
-        TestHelper.equalRect(expect, compositeFlat,
-            SurveyHelper.mergeRects(assumeTitle, assumeTextbox));
+        assumeTextbox.yTop += controller.unitHeight * FlatQuestion.CONTENT_GAP_VERT_SCALE;
+        assumeTextbox.yBot += controller.unitHeight * FlatQuestion.CONTENT_GAP_VERT_SCALE;
+        TestHelper.equalRect(expect, compositeFlat, SurveyHelper.mergeRects(assumeTitle, assumeTextbox));
     }
     return SurveyHelper.createPoint(assumeTextbox);
 }
@@ -131,15 +125,13 @@ export async function calcIndent(expect: any, leftTopPoint: IPoint, controller: 
     textPoint.xLeft = assumeCheckbox.xRight + controller.unitWidth * SurveyHelper.GAP_BETWEEN_ITEM_TEXT;
     const assumeChecktext: IRect = await SurveyHelper.createTextFlat(textPoint,
         null, controller, checktext, TextBrick);
-    assumeCheckbox.yTop += controller.unitHeight *
-        FlatQuestion.CONTENT_GAP_VERT_SCALE;
-    assumeCheckbox.yBot += controller.unitHeight *
-        FlatQuestion.CONTENT_GAP_VERT_SCALE;
-    assumeChecktext.yTop += controller.unitHeight *
-        FlatQuestion.CONTENT_GAP_VERT_SCALE;
-    assumeChecktext.yBot += controller.unitHeight *
-        FlatQuestion.CONTENT_GAP_VERT_SCALE;
-    TestHelper.equalRect(expect, compositeFlat,
+    assumeCheckbox.yTop += controller.unitHeight * FlatQuestion.CONTENT_GAP_VERT_SCALE;
+    assumeCheckbox.yBot += controller.unitHeight * FlatQuestion.CONTENT_GAP_VERT_SCALE;
+    assumeChecktext.yTop += controller.unitHeight * FlatQuestion.CONTENT_GAP_VERT_SCALE;
+    assumeChecktext.yBot += controller.unitHeight * FlatQuestion.CONTENT_GAP_VERT_SCALE;
+    const unfoldFlats: IPdfBrick[] = compositeFlat.unfold().filter(flat => !(flat instanceof RowlineBrick));
+    const actualFlat: IRect = SurveyHelper.mergeRects(...unfoldFlats);
+    TestHelper.equalRect(expect, actualFlat,
         SurveyHelper.mergeRects(assumeTitle, assumeCheckbox, assumeChecktext));
 }
 test('Calc textbox boundaries title top', async () => {
@@ -457,23 +449,27 @@ test('Not visible question and visible question', async () => {
         questions: [
             {
                 type: 'checkbox',
-                name: 'box',
+                name: 'invisible',
                 visible: false
             },
             {
                 type: 'checkbox',
-                name: 'box',
+                name: 'visible',
                 visible: true
             }
         ]
     };
     const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     const controller: DocController = new DocController(TestHelper.defaultOptions);
-    const rects: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    const assumeRect = [];
-    assumeRect[0] = await SurveyHelper.createTitleFlat(TestHelper.defaultPoint,
+    const actualRects: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    const actualUnfoldRects = actualRects[0][0].unfold();
+    const actualTitle = SurveyHelper.mergeRects(actualUnfoldRects[0], actualUnfoldRects[1]);
+    const assumeTitle: IPdfBrick = await SurveyHelper.createTitleFlat(controller.leftTopPoint,
         <Question>survey.getAllQuestions()[1], controller);
-    TestHelper.equalRects(expect, rects[0], assumeRect)
+    TestHelper.equalRect(expect, actualTitle, assumeTitle);
+    const actualRowLine = actualUnfoldRects[2];
+    const assumeRowLine = SurveyHelper.createRowlineFlat(SurveyHelper.createPoint(assumeTitle), controller);
+    TestHelper.equalRect(expect, actualRowLine, assumeRowLine);
 });
 test('VisibleIf row', async () => {
     const json: any = {
@@ -603,6 +599,6 @@ test('Check question\'s content indent with CONTENT_INDENT_SCALE', async () => {
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
     const bricks: IPdfBrick[] = flats[0][0].unfold();
-    expect(bricks.length).toBe(2);
+    expect(bricks.length).toBe(3);
     expect(bricks[0].xLeft).toBeCloseTo(bricks[1].xLeft);
 });

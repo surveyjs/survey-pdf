@@ -93,7 +93,7 @@ export class SurveyHelper {
         return Math.min(value * k, maxWidth);
     }
     public static pxToPt(value: number | string) {
-        if(typeof value === "string") {
+        if (typeof value === "string") {
             return SurveyHelper.parseWidth(value, Number.MAX_VALUE);
         }
         return value * 72.0 / 96.0;

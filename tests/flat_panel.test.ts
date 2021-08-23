@@ -4,7 +4,7 @@
 
 import { Question } from 'survey-core';
 import { SurveyPDF } from '../src/survey';
-import { IPoint, DocController, IDocOptions } from '../src/doc_controller';
+import { IPoint, IDocOptions, DocController } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { FlatTextbox } from '../src/flat_layout/flat_textbox';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';

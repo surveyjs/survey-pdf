@@ -191,14 +191,14 @@ export class DocController extends DocOptions {
     public static customFonts: {[name: string]: {normal: string, bold: string, italic: string, bolditalic: string}} = {};
     public static addFont(fontName: string, base64: string, fontStyle: 'normal' | 'bold' | 'italic' | 'bolditalic') {
         let font = DocController.customFonts[fontName];
-        if(!font) {
+        if (!font) {
             font = <any>{};
             DocController.customFonts[fontName] = font;
         }
         font[fontStyle] = base64;
         const addFontCallback: () => void = function() {
-            let customFont = DocController.customFonts[fontName];
-            if(!!customFont && !!customFont[fontStyle]) {
+            const customFont = DocController.customFonts[fontName];
+            if (!!customFont && !!customFont[fontStyle]) {
                 const fontFile: string = `${fontName}-${fontStyle}.ttf`;
                 this.addFileToVFS(fontFile, customFont[fontStyle]);
                 this.addFont(fontFile, fontName, fontStyle);

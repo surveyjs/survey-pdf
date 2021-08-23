@@ -30,8 +30,8 @@ async function commentPointAfterTitle(titleLocation: string, resultRects: IPdfBr
             SurveyHelper.getPageAvailableWidth(controller) *
                 SurveyHelper.MULTIPLETEXT_TEXT_PERS;
     }
-    let commentAssumePoint: IPoint = await SurveyHelper.createPoint(await SurveyHelper.createTitleFlat(
-        TestHelper.defaultPoint, <Question>survey.getAllQuestions()[0], controller),
+    let commentAssumePoint: IPoint = SurveyHelper.createPoint(await SurveyHelper.createTitleFlat(
+        controller.leftTopPoint, <Question>survey.getAllQuestions()[0], controller),
         titleLocation === 'top', titleLocation !== 'top');
     commentAssumePoint.xLeft += controller.unitWidth;
     if (titleLocation == 'top') {
@@ -82,7 +82,7 @@ test('Comment point, title location hidden', async () => {
     await commmentPointToTitleTests('hidden');
 });
 async function commentPointAfterItem(titleLocation: string) {
-    let json: any = {
+    const json: any = {
         showQuestionNumbers: 'false',
         questions: [
             {
@@ -95,21 +95,22 @@ async function commentPointAfterItem(titleLocation: string) {
         ]
     };
     (<any>json).questions[0].titleLocation = titleLocation;
-    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let controller: DocController = new DocController(TestHelper.defaultOptions);
-    let resultRects: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    const controller: DocController = new DocController(TestHelper.defaultOptions);
+    const resultRects: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(resultRects.length).toBe(1);
     if (titleLocation !== 'bottom') expect(resultRects[0].length).toBe(2);
     else expect(resultRects[0].length).toBe(3);
     if (titleLocation === 'top' || titleLocation === 'left') {
-        let commentPoint: IPoint = SurveyHelper.createPoint(
-            SurveyHelper.mergeRects(resultRects[0][0].unfold()[1],
-                SurveyHelper.mergeRects(resultRects[0][0].unfold()[2])));
+        const rowlineShift: number = titleLocation === 'top' ? 1 : 0;
+        const commentPoint: IPoint = SurveyHelper.createPoint(
+            SurveyHelper.mergeRects(resultRects[0][0].unfold()[1 + rowlineShift],
+                SurveyHelper.mergeRects(resultRects[0][0].unfold()[2 + rowlineShift])));
         commentPoint.yTop += controller.unitHeight * SurveyHelper.GAP_BETWEEN_ROWS;
         TestHelper.equalPoint(expect, resultRects[0][1], commentPoint);
     }
     else {
-        let commentPoint: IPoint = SurveyHelper.createPoint(resultRects[0][0]);
+        const commentPoint: IPoint = SurveyHelper.createPoint(resultRects[0][0]);
         commentPoint.yTop += controller.unitHeight * SurveyHelper.GAP_BETWEEN_ROWS;
         TestHelper.equalPoint(expect, resultRects[0][1], commentPoint);
     }
