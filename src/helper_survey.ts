@@ -385,13 +385,10 @@ export class SurveyHelper {
         const oldFontSize: number = controller.fontSize;
         controller.fontSize = oldFontSize * fontSizeScale;
         controller.fontStyle = 'bold';
-        const composite: CompositeBrick = <CompositeBrick>await this.createTextFlat(point,
-            null, controller, text, TitlePanelBrick);
+        const titleFlat: IPdfBrick = await this.createTextFlat(point, null, controller, text, TitlePanelBrick);
         controller.fontStyle = 'normal';
         controller.fontSize = oldFontSize;
-        const rowLinePoint: IPoint = this.createPoint(composite);
-        composite.addBrick(this.createRowlineFlat(rowLinePoint, controller));
-        return composite;
+        return titleFlat;
     }
     public static async createTitleSurveyFlat(point: IPoint, controller: DocController,
         text: string | LocalizableString): Promise<IPdfBrick> {
@@ -399,7 +396,11 @@ export class SurveyHelper {
     }
     public static async createTitlePanelFlat(point: IPoint, controller: DocController,
         text: string | LocalizableString): Promise<IPdfBrick> {
-        return await this.createTitleSurveyPanelFlat(point, controller, text, this.TITLE_PANEL_FONT_SIZE_SCALE);
+        const composite: CompositeBrick = <CompositeBrick>await this.createTitleSurveyPanelFlat(
+            point, controller, text, this.TITLE_PANEL_FONT_SIZE_SCALE);     
+        const rowLinePoint: IPoint = this.createPoint(composite);
+        composite.addBrick(this.createRowlineFlat(rowLinePoint, controller));
+        return composite;
     }
     public static async createDescFlat(point: IPoint, question: IQuestion,
         controller: DocController, text: string | LocalizableString): Promise<IPdfBrick> {

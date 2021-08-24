@@ -189,22 +189,21 @@ export class FlatSurvey {
                 else flats.push([logoFlat]);
             }
         }
-        //add rowline if flats not empty
+        let point: IPoint = controller.leftTopPoint;
+        if (flats.length !== 0) {
+            point.yTop = SurveyHelper.createPoint(SurveyHelper.mergeRects(...flats[0])).yTop;
+            flats[0].push(SurveyHelper.createRowlineFlat(point, controller));
+            point.yTop += controller.unitHeight * FlatSurvey.PANEL_CONT_GAP_SCALE + SurveyHelper.EPSILON;
+        }
         for (let i: number = 0; i < survey.visiblePages.length; i++) {
             let pageFlats: IPdfBrick[] = [];
-            let point: IPoint = controller.leftTopPoint;
-            if (i == 0 && flats.length != 0) {
-                point = SurveyHelper.createPoint(
-                    SurveyHelper.mergeRects(...flats[0]));
-                point.yTop += controller.unitHeight * FlatSurvey.PANEL_CONT_GAP_SCALE;
-            }
             pageFlats.push(...await this.generateFlatsPagePanel(
                 survey, controller, survey.visiblePages[i], point));
             const adornersOptions: AdornersPageOptions = new AdornersPageOptions(point,
                 pageFlats, survey.visiblePages[i], controller, FlatRepository.getInstance(), SurveyPDFModule);
             await survey.onRenderPage.fire(survey, adornersOptions);
             pageFlats = [...adornersOptions.bricks];
-            if (i == 0 && flats.length != 0) {
+            if (i === 0 && flats.length !== 0) {
                 flats[0].push(...pageFlats);
             }
             else flats.push(pageFlats);

@@ -462,13 +462,14 @@ test('Not visible question and visible question', async () => {
     const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     const controller: DocController = new DocController(TestHelper.defaultOptions);
     const actualRects: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    const actualUnfoldRects = actualRects[0][0].unfold();
-    const actualTitle = SurveyHelper.mergeRects(actualUnfoldRects[0], actualUnfoldRects[1]);
+    const actualUnfoldRects: IPdfBrick[] = actualRects[0][0].unfold();
+    const actualTitle: IRect = SurveyHelper.mergeRects(actualUnfoldRects[0], actualUnfoldRects[1]);
     const assumeTitle: IPdfBrick = await SurveyHelper.createTitleFlat(controller.leftTopPoint,
         <Question>survey.getAllQuestions()[1], controller);
     TestHelper.equalRect(expect, actualTitle, assumeTitle);
-    const actualRowLine = actualUnfoldRects[2];
-    const assumeRowLine = SurveyHelper.createRowlineFlat(SurveyHelper.createPoint(assumeTitle), controller);
+    const actualRowLine: IPdfBrick = actualUnfoldRects[2];
+    const assumeRowLine: IPdfBrick = SurveyHelper.createRowlineFlat(
+        SurveyHelper.createPoint(assumeTitle), controller);
     TestHelper.equalRect(expect, actualRowLine, assumeRowLine);
 });
 test('VisibleIf row', async () => {
