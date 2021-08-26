@@ -64,11 +64,14 @@ test('Page with title', async () => {
     expect(flats[0].length).toBe(2);
     let assumeTitle: IRect = await SurveyHelper.createTitlePanelFlat(
         controller.leftTopPoint, controller, json.pages[0].title);
-    TestHelper.equalRect(expect, flats[0][0], assumeTitle);
-    let textBoxPoint: IPoint = SurveyHelper.createPoint(assumeTitle);
-    textBoxPoint.yTop += controller.unitHeight * FlatSurvey.PANEL_CONT_GAP_SCALE;
+    TestHelper.equalRect(expect, flats[0][0].unfold()[0], assumeTitle);
+    const rowLinePoint: IPoint = SurveyHelper.createPoint(assumeTitle);
+    const assumeRowLine: IRect = SurveyHelper.createRowlineFlat(rowLinePoint, controller);
+    TestHelper.equalRect(expect, flats[0][0].unfold()[1], assumeRowLine);
+    const textBoxPoint: IPoint = rowLinePoint;
+    textBoxPoint.yTop += controller.unitHeight * FlatSurvey.PANEL_CONT_GAP_SCALE + SurveyHelper.EPSILON;
     textBoxPoint.xLeft += controller.unitWidth;
-    let assumeTextBox: IRect = SurveyHelper.createTextFieldRect(textBoxPoint, controller);
+    const assumeTextBox: IRect = SurveyHelper.createTextFieldRect(textBoxPoint, controller);
     TestHelper.equalRect(expect, flats[0][1], assumeTextBox);    
 });
 test('Page with description', async () => {
@@ -94,11 +97,14 @@ test('Page with description', async () => {
     expect(flats[0].length).toBe(2);
     let assumeDescription: IRect = await SurveyHelper.createDescFlat(
         controller.leftTopPoint, null, controller, json.pages[0].description);
-    TestHelper.equalRect(expect, flats[0][0], assumeDescription);
-    let textBoxPoint: IPoint = SurveyHelper.createPoint(assumeDescription);
-    textBoxPoint.yTop += controller.unitHeight * FlatSurvey.PANEL_CONT_GAP_SCALE;
+    TestHelper.equalRect(expect, flats[0][0].unfold()[0], assumeDescription);
+    const rowLinePoint: IPoint = SurveyHelper.createPoint(assumeDescription);
+    const assumeRowLine: IRect = SurveyHelper.createRowlineFlat(rowLinePoint, controller);
+    TestHelper.equalRect(expect, flats[0][0].unfold()[1], assumeRowLine);
+    const textBoxPoint: IPoint = rowLinePoint;
+    textBoxPoint.yTop += controller.unitHeight * FlatSurvey.PANEL_CONT_GAP_SCALE + SurveyHelper.EPSILON;
     textBoxPoint.xLeft += controller.unitWidth;
-    let assumeTextBox: IRect = SurveyHelper.createTextFieldRect(textBoxPoint, controller);
+    const assumeTextBox: IRect = SurveyHelper.createTextFieldRect(textBoxPoint, controller);
     TestHelper.equalRect(expect, flats[0][1], assumeTextBox);    
 });
 test('Page with title and description', async () => {
@@ -129,10 +135,17 @@ test('Page with title and description', async () => {
     descriptionPoint.yTop += controller.unitHeight * FlatSurvey.PANEL_DESC_GAP_SCALE;
     let assumeDescription: IRect = await SurveyHelper.createDescFlat(
         descriptionPoint, null, controller, json.pages[0].description);
-    TestHelper.equalRect(expect, flats[0][0], SurveyHelper.mergeRects(assumeTitle, assumeDescription));
-    let textBoxPoint: IPoint = SurveyHelper.createPoint(assumeDescription);
-    textBoxPoint.yTop += controller.unitHeight * FlatSurvey.PANEL_CONT_GAP_SCALE;
+    const titleUnfoldFlats: IPdfBrick[] = flats[0][0].unfold();
+    const actualTitleWithDescription: IRect = SurveyHelper.mergeRects(titleUnfoldFlats[0], titleUnfoldFlats[1]);        
+    const assumeTitleWithDescription: IRect = SurveyHelper.mergeRects(assumeTitle, assumeDescription);
+    TestHelper.equalRect(expect, actualTitleWithDescription, assumeTitleWithDescription);
+    const actualRowLine: IRect = titleUnfoldFlats[2];
+    const rowLinePoint: IPoint = SurveyHelper.createPoint(assumeTitleWithDescription);
+    const assumeRowLine: IRect = SurveyHelper.createRowlineFlat(rowLinePoint, controller);
+    TestHelper.equalRect(expect, actualRowLine, assumeRowLine);
+    const textBoxPoint: IPoint = rowLinePoint;
+    textBoxPoint.yTop += controller.unitHeight * FlatSurvey.PANEL_CONT_GAP_SCALE + SurveyHelper.EPSILON;
     textBoxPoint.xLeft += controller.unitWidth;
-    let assumeTextBox: IRect = SurveyHelper.createTextFieldRect(textBoxPoint, controller);
+    const assumeTextBox: IRect = SurveyHelper.createTextFieldRect(textBoxPoint, controller);
     TestHelper.equalRect(expect, flats[0][1], assumeTextBox);    
 });

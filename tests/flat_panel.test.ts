@@ -4,7 +4,7 @@
 
 import { Question } from 'survey-core';
 import { SurveyPDF } from '../src/survey';
-import { IPoint, IDocOptions, DocController } from '../src/doc_controller';
+import { IPoint, IRect, IDocOptions, DocController } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { FlatTextbox } from '../src/flat_layout/flat_textbox';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
@@ -73,7 +73,7 @@ test('Check panel wihtout title', async () => {
         <Question>survey.getAllQuestions()[0], flats[0][0]);
 });
 test('Check panel with title', async () => {
-    let json: any = {
+    const json: any = {
         elements: [
             {
                 type: 'panel',
@@ -88,21 +88,24 @@ test('Check panel with title', async () => {
             }
         ]
     };
-    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let controller: DocController = new DocController(TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    const controller: DocController = new DocController(TestHelper.defaultOptions);
+    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(2);
-    let panelTitleFlat: IPdfBrick = await SurveyHelper.createTitlePanelFlat(
+    const panelTitleFlat: IPdfBrick = await SurveyHelper.createTitlePanelFlat(
         controller.leftTopPoint, controller, json.elements[0].title);
-    TestHelper.equalRect(expect, flats[0][0], panelTitleFlat);
-    let contentPoint: IPoint = SurveyHelper.createPoint(panelTitleFlat);
-    contentPoint.yTop += FlatSurvey.PANEL_CONT_GAP_SCALE * controller.unitHeight;
+    TestHelper.equalRect(expect, flats[0][0].unfold()[0], panelTitleFlat);
+    const rowLinePoint: IPoint = SurveyHelper.createPoint(panelTitleFlat);
+    const assumeRowLine: IRect = SurveyHelper.createRowlineFlat(rowLinePoint, controller);
+    TestHelper.equalRect(expect, flats[0][0].unfold()[1], assumeRowLine);
+    const contentPoint: IPoint = rowLinePoint;
+    contentPoint.yTop += FlatSurvey.PANEL_CONT_GAP_SCALE * controller.unitHeight + SurveyHelper.EPSILON;
     await calcTitleTop(contentPoint, controller,
         <Question>survey.getAllQuestions()[0], flats[0][1]);
 });
 test('Check panel with title and description', async () => {
-    let json: any = {
+    const json: any = {
         elements: [
             {
                 type: 'panel',
@@ -118,19 +121,26 @@ test('Check panel with title and description', async () => {
             }
         ]
     };
-    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let controller: DocController = new DocController(TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    const controller: DocController = new DocController(TestHelper.defaultOptions);
+    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(2);
-    let panelTitleFlat: IPdfBrick = await SurveyHelper.createTitlePanelFlat(
+    const panelTitleFlat: IPdfBrick = await SurveyHelper.createTitlePanelFlat(
         controller.leftTopPoint, controller, json.elements[0].title);
-    let descPoint: IPoint = SurveyHelper.createPoint(panelTitleFlat);
+    const descPoint: IPoint = SurveyHelper.createPoint(panelTitleFlat);
     descPoint.yTop += FlatSurvey.PANEL_DESC_GAP_SCALE * controller.unitHeight;
-    let panelDescFlat: IPdfBrick = await SurveyHelper.createDescFlat(
+    const panelDescFlat: IPdfBrick = await SurveyHelper.createDescFlat(
         descPoint, null, controller, json.elements[0].description);
-    TestHelper.equalRect(expect, flats[0][0], SurveyHelper.mergeRects(panelTitleFlat, panelDescFlat));
-    let contentPoint: IPoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(panelTitleFlat, panelDescFlat));
+    const titleUnfoldFlats: IPdfBrick[] = flats[0][0].unfold();
+    const actualTitleWithDescription: IRect = SurveyHelper.mergeRects(titleUnfoldFlats[0], titleUnfoldFlats[1]);    
+    const assumeTitleWithDescription: IRect = SurveyHelper.mergeRects(panelTitleFlat, panelDescFlat);
+    TestHelper.equalRect(expect, actualTitleWithDescription, assumeTitleWithDescription);
+    const actualRowLine: IRect = titleUnfoldFlats[2];
+    const rowLinePoint: IPoint = SurveyHelper.createPoint(assumeTitleWithDescription);
+    const assumeRowLine: IRect = SurveyHelper.createRowlineFlat(rowLinePoint, controller);
+    TestHelper.equalRect(expect, actualRowLine, assumeRowLine);
+    const contentPoint: IPoint = rowLinePoint;
     contentPoint.yTop += FlatSurvey.PANEL_CONT_GAP_SCALE * controller.unitHeight;
     await calcTitleTop(contentPoint, controller, <Question>survey.getAllQuestions()[0], flats[0][1]);
 });
@@ -185,7 +195,7 @@ test('Check question title location in panel', async () => {
     expect(flats[0][1].unfold()[0] instanceof TextBoldBrick).toBe(true);
 });
 test('Check not rendering invisible questions', async () => {
-    let json: any = {
+    const json: any = {
         elements: [
             {
                 type: 'panel',
@@ -206,18 +216,20 @@ test('Check not rendering invisible questions', async () => {
             }
         ]
     };
-    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let controller: DocController = new DocController(TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    const controller: DocController = new DocController(TestHelper.defaultOptions);
+    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(2);
-    let panelTitleFlat: IPdfBrick = await SurveyHelper.createTitlePanelFlat(
+    const panelTitleFlat: IPdfBrick = await SurveyHelper.createTitlePanelFlat(
         controller.leftTopPoint, controller, json.elements[0].title);
-    TestHelper.equalRect(expect, flats[0][0], panelTitleFlat);
-    let contentPoint: IPoint = SurveyHelper.createPoint(panelTitleFlat);
-    contentPoint.yTop += FlatSurvey.PANEL_CONT_GAP_SCALE * controller.unitHeight;
-    await calcTitleTop(contentPoint, controller,
-        <Question>survey.getAllQuestions()[0], flats[0][1]);
+    TestHelper.equalRect(expect, flats[0][0].unfold()[0], panelTitleFlat);
+    const rowLinePoint: IPoint = SurveyHelper.createPoint(panelTitleFlat);
+    const assumeRowLine: IRect = SurveyHelper.createRowlineFlat(rowLinePoint, controller);
+    TestHelper.equalRect(expect, flats[0][0].unfold()[1], assumeRowLine);
+    const contentPoint: IPoint = rowLinePoint;
+    contentPoint.yTop += FlatSurvey.PANEL_CONT_GAP_SCALE * controller.unitHeight + SurveyHelper.EPSILON;
+    await calcTitleTop(contentPoint, controller, <Question>survey.getAllQuestions()[0], flats[0][1]);
 });
 test('Check', async () => {
     const json = {

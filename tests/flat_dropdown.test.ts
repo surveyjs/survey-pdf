@@ -4,14 +4,14 @@
 
 import { Question } from 'survey-core';
 import { SurveyPDF } from '../src/survey';
-import { IPoint, DocController, IRect } from '../src/doc_controller';
+import { IPoint, IRect, DocController } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { FlatDropdown } from '../src/flat_layout/flat_dropdown';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
+import { CompositeBrick } from '../src/pdf_render/pdf_composite';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 import { calcTitleTop } from './flat_question.test';
-import { DropdownBrick } from '../src/pdf_render/pdf_dropdown';
 let __dummy_dd = new FlatDropdown(null, null, null);
 
 test('Check dropdown', async () => {
@@ -53,9 +53,9 @@ test('Check dropdown with other', async () => {
     const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
+    const compositeFlat: CompositeBrick = new CompositeBrick(...flats[0][0].unfold().slice(0, -1));
     const otherPoint: IPoint = await calcTitleTop(controller.leftTopPoint, controller,
-        <Question>survey.getAllQuestions()[0], TestHelper.wrapRect(SurveyHelper.mergeRects(
-            flats[0][0].unfold()[0], flats[0][0].unfold()[2])));
+        <Question>survey.getAllQuestions()[0], compositeFlat);
     otherPoint.xLeft += controller.unitWidth;
     otherPoint.yTop += controller.unitHeight * SurveyHelper.GAP_BETWEEN_ROWS;
     TestHelper.equalRect(expect, flats[0][0].unfold()[3], await SurveyHelper.createCommentFlat(
@@ -88,7 +88,7 @@ test('Check readonly text expends when textFieldRenderAs option set', async () =
     const question = survey.getAllQuestions()[0];
     const textPoint: IPoint = controller.leftTopPoint;
     textPoint.xLeft += controller.unitWidth;
-    const firstRect: IRect = await SurveyHelper.createTextFieldRect(textPoint, controller);
+    const firstRect: IRect = SurveyHelper.createTextFieldRect(textPoint, controller);
     const secondRect: IRect = await SurveyHelper.createReadOnlyTextFieldTextFlat(textPoint, controller, question, question.displayValue, false);
     firstRect.yBot = secondRect.yBot + controller.unitHeight * SurveyHelper.VALUE_READONLY_PADDING_SCALE;
     TestHelper.equalRect(expect, flats[0][0], firstRect);

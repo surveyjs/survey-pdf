@@ -11,6 +11,8 @@ import { FlatTextbox } from '../src/flat_layout/flat_textbox';
 import { FlatCheckbox } from '../src/flat_layout/flat_checkbox';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { TextBrick } from '../src/pdf_render/pdf_text';
+import { DescriptionBrick } from '../src/pdf_render/pdf_description';
+import { TextBoldBrick } from '../src/pdf_render/pdf_textbold';
 import { CompositeBrick } from '../src/pdf_render/pdf_composite';
 import { RowlineBrick } from '../src/pdf_render/pdf_rowline';
 import { SurveyHelper } from '../src/helper_survey';
@@ -20,29 +22,43 @@ const __dummy_cb = new FlatCheckbox(null, null, null);
 
 export async function calcTitleTop(leftTopPoint: IPoint, controller: DocController,
     titleQuestion: Question, compositeFlat: IPdfBrick, isDesc: boolean = false): Promise<IPoint> {
-    const assumeTitle: IRect = await SurveyHelper.createTitleFlat(
-        leftTopPoint, titleQuestion, controller);
-    let assumeTextbox: IRect = SurveyHelper.createTextFieldRect(
-        SurveyHelper.createPoint(assumeTitle), controller);
+    const assumeTitle: IRect = await SurveyHelper.createTitleFlat(leftTopPoint, titleQuestion, controller);
+    let assumeDesc: IRect = assumeTitle;
+    let rowLinePoint: IPoint = SurveyHelper.createPoint(assumeTitle);
+    let assumeRowLine: IRect = SurveyHelper.createRowlineFlat(rowLinePoint, controller); 
+    let textboxPoint: IPoint = SurveyHelper.createPoint(assumeRowLine);
+    textboxPoint.xLeft += controller.unitWidth; 
+    textboxPoint.yTop += controller.unitHeight * FlatQuestion.CONTENT_GAP_VERT_SCALE;
+    let assumeTextbox: IRect = SurveyHelper.createTextFieldRect(textboxPoint, controller);
     if (isDesc) {
         const descPoint: IPoint = SurveyHelper.createPoint(assumeTitle);
         descPoint.xLeft += controller.unitWidth;
-        descPoint.yTop += FlatQuestion.DESC_GAP_SCALE * controller.unitHeight;
-        const assumeDesc: IRect = await SurveyHelper.createDescFlat(descPoint, null, controller,
+        descPoint.yTop += FlatQuestion.DESC_GAP_SCALE * controller.unitHeight;  
+        assumeDesc = await SurveyHelper.createDescFlat(descPoint, null, controller,
             SurveyHelper.getLocString(titleQuestion.locDescription));
-        assumeTextbox = SurveyHelper.createTextFieldRect(
-            SurveyHelper.createPoint(assumeDesc), controller);
-        assumeTextbox.yTop += controller.unitHeight * FlatQuestion.CONTENT_GAP_VERT_SCALE;
-        assumeTextbox.yBot += controller.unitHeight * FlatQuestion.CONTENT_GAP_VERT_SCALE;
-        TestHelper.equalRect(expect, compositeFlat,
-            SurveyHelper.mergeRects(assumeTitle, assumeDesc, assumeTextbox));
+        rowLinePoint = SurveyHelper.createPoint(assumeDesc);
+        rowLinePoint.xLeft = controller.leftTopPoint.xLeft;  
+        assumeRowLine = SurveyHelper.createRowlineFlat(rowLinePoint, controller);
+        textboxPoint = SurveyHelper.createPoint(assumeRowLine);
+        textboxPoint.xLeft = assumeDesc.xLeft;
+        textboxPoint.yTop += controller.unitHeight * FlatQuestion.CONTENT_GAP_VERT_SCALE;
+        assumeTextbox = SurveyHelper.createTextFieldRect(textboxPoint, controller);
     }
-    else {
-        assumeTextbox.yTop += controller.unitHeight * FlatQuestion.CONTENT_GAP_VERT_SCALE;
-        assumeTextbox.yBot += controller.unitHeight * FlatQuestion.CONTENT_GAP_VERT_SCALE;
-        TestHelper.equalRect(expect, compositeFlat, SurveyHelper.mergeRects(assumeTitle, assumeTextbox));
+    const unfoldFlats: IPdfBrick[] = compositeFlat.unfold();
+    const titleWithDescriptionFlats: IPdfBrick[] = unfoldFlats.slice(0, -2);
+    const titleFlats: IPdfBrick[] = titleWithDescriptionFlats.filter(flat => flat instanceof TextBoldBrick)
+    const actualTitle: IRect = SurveyHelper.mergeRects(...titleFlats);
+    TestHelper.equalRect(expect, actualTitle, assumeTitle);    
+    if (isDesc) {
+        const descFlats: IPdfBrick[] = titleWithDescriptionFlats.filter(flat => flat instanceof DescriptionBrick);
+        const actualDesc: IRect = SurveyHelper.mergeRects(...descFlats);
+        TestHelper.equalRect(expect, actualDesc, assumeDesc);  
     }
-    return SurveyHelper.createPoint(assumeTextbox);
+    const actualRowLine: IRect = unfoldFlats[unfoldFlats.length - 2];
+    TestHelper.equalRect(expect, actualRowLine, assumeRowLine);  
+    const actualTextBox: IRect = unfoldFlats[unfoldFlats.length - 1];
+    TestHelper.equalRect(expect, actualTextBox, assumeTextbox);
+    return SurveyHelper.createPoint(SurveyHelper.mergeRects(assumeTitle, assumeDesc, assumeRowLine, assumeTextbox));
 }
 async function calcTitleBottom(controller: DocController, titleQuestion: Question,
     titleFlat: IPdfBrick, textboxFlat: IPdfBrick, isDesc: boolean = false) {
@@ -231,11 +247,11 @@ test('Calc boundaries with space between questions', async () => {
     const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(3);
-    const title2point: IPoint = await calcTitleTop(controller.leftTopPoint,
-        controller, <Question>survey.getAllQuestions()[0], flats[0][0]);
-    title2point.yTop += controller.unitHeight * FlatSurvey.QUES_GAP_VERT_SCALE;
+    const titlePoint: IPoint = await calcTitleTop(controller.leftTopPoint,
+        controller, <Question>survey.getAllQuestions()[0], flats[0][0]);  
+    titlePoint.yTop += controller.unitHeight * FlatSurvey.QUES_GAP_VERT_SCALE;
     expect(flats[0][1] instanceof RowlineBrick).toBe(true);
-    await calcTitleTop(title2point, controller,
+    await calcTitleTop(titlePoint, controller,
         <Question>survey.getAllQuestions()[1], flats[0][2]);
 });
 test('Calc textbox boundaries title without number', async () => {

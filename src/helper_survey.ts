@@ -396,11 +396,7 @@ export class SurveyHelper {
     }
     public static async createTitlePanelFlat(point: IPoint, controller: DocController,
         text: string | LocalizableString): Promise<IPdfBrick> {
-        const composite: CompositeBrick = <CompositeBrick>await this.createTitleSurveyPanelFlat(
-            point, controller, text, this.TITLE_PANEL_FONT_SIZE_SCALE);     
-        const rowLinePoint: IPoint = this.createPoint(composite);
-        composite.addBrick(this.createRowlineFlat(rowLinePoint, controller));
-        return composite;
+        return await this.createTitleSurveyPanelFlat(point, controller, text, this.TITLE_PANEL_FONT_SIZE_SCALE);
     }
     public static async createDescFlat(point: IPoint, question: IQuestion,
         controller: DocController, text: string | LocalizableString): Promise<IPdfBrick> {

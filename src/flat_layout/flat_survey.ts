@@ -52,8 +52,10 @@ export class FlatSurvey {
                 currPoint = SurveyHelper.createPoint(pagePanelDescFlat);
             }
             if (!compositeFlat.isEmpty) {
+                const rowLinePoint: IPoint = SurveyHelper.createPoint(compositeFlat);
+                compositeFlat.addBrick(SurveyHelper.createRowlineFlat(rowLinePoint, controller));
                 pagePanelFlats.push(compositeFlat);
-                currPoint.yTop += controller.unitHeight * FlatSurvey.PANEL_CONT_GAP_SCALE;
+                currPoint.yTop += controller.unitHeight * FlatSurvey.PANEL_CONT_GAP_SCALE + SurveyHelper.EPSILON;
             }
         }
         for (const row of pagePanel.rows) {
