@@ -67,19 +67,22 @@ export class FlatQuestion implements IFlatQuestion {
         switch (titleLocation) {
             case 'top':
             case 'default': {
-                let titleFlat: IPdfBrick = await this.generateFlatTitle(indentPoint);
-                let compositeFlat: CompositeBrick = new CompositeBrick(titleFlat);
-                let contentPoint: IPoint = SurveyHelper.createPoint(titleFlat);
+                const titleFlat: IPdfBrick = await this.generateFlatTitle(indentPoint);
+                const compositeFlat: CompositeBrick = new CompositeBrick(titleFlat);
+                let contentPoint: IPoint = SurveyHelper.createPoint(compositeFlat);
                 if (isDesc) {
-                    let descFlat: IPdfBrick = await this.generateFlatDescription(
+                    const descFlat: IPdfBrick = await this.generateFlatDescription(
                         SurveyHelper.createPoint(titleFlat));
                     compositeFlat.addBrick(descFlat);
                     contentPoint = SurveyHelper.createPoint(descFlat);
                 }
                 else contentPoint.xLeft += this.controller.unitWidth * FlatQuestion.CONTENT_INDENT_SCALE;
-                this.controller.pushMargins();
-                contentPoint.yTop += this.controller.unitHeight * FlatQuestion.CONTENT_GAP_VERT_SCALE;
+                compositeFlat.addBrick(SurveyHelper.createRowlineFlat(
+                    SurveyHelper.createPoint(compositeFlat), this.controller));
+                contentPoint.yTop += this.controller.unitHeight *
+                    FlatQuestion.CONTENT_GAP_VERT_SCALE + SurveyHelper.EPSILON;
                 commentPoint = contentPoint;
+                this.controller.pushMargins();
                 this.controller.margins.left += this.controller.unitWidth * FlatQuestion.CONTENT_INDENT_SCALE;
                 const contentFlats: IPdfBrick[] = await this.generateFlatsComposite(contentPoint);
                 this.controller.popMargins();
@@ -108,17 +111,15 @@ export class FlatQuestion implements IFlatQuestion {
                 if (this.question.hasComment) {
                     flats.push(await this.generateFlatsComment(commentPoint));
                 }
-                let titlePoint: IPoint = indentPoint;
-                if (flats.length != 0) {
-                    titlePoint = SurveyHelper.createPoint(flats[flats.length - 1]);
-                    titlePoint.xLeft = indentPoint.xLeft;
+                const titlePoint: IPoint = indentPoint;
+                if (flats.length !== 0) {
+                    titlePoint.yTop = flats[flats.length - 1].yBot;
                 }
-                titlePoint.yTop += this.controller.unitHeight *
-                    FlatQuestion.CONTENT_GAP_VERT_SCALE;
+                titlePoint.yTop += this.controller.unitHeight * FlatQuestion.CONTENT_GAP_VERT_SCALE;
                 const titleFlat: IPdfBrick = await this.generateFlatTitle(titlePoint);
                 const compositeFlat: CompositeBrick = new CompositeBrick(titleFlat);
                 if (isDesc) {
-                    let descFlat: IPdfBrick = await this.generateFlatDescription(
+                    const descFlat: IPdfBrick = await this.generateFlatDescription(
                         SurveyHelper.createPoint(titleFlat));
                     compositeFlat.addBrick(descFlat);
                 }

@@ -92,7 +92,7 @@ export class SurveyHelper {
         return Math.min(value * k, maxWidth);
     }
     public static pxToPt(value: number | string) {
-        if(typeof value === "string") {
+        if (typeof value === "string") {
             return SurveyHelper.parseWidth(value, Number.MAX_VALUE);
         }
         return value * 72.0 / 96.0;
@@ -379,27 +379,23 @@ export class SurveyHelper {
         controller.fontSize = oldFontSize;
         return composite;
     }
-    public static async createTitleSurveyFlat(point: IPoint, controller: DocController,
-        text: string | LocalizableString): Promise<IPdfBrick> {
+    private static async createTitleSurveyPanelFlat(point: IPoint, controller: DocController,
+        text: string | LocalizableString, fontSizeScale: number): Promise<IPdfBrick> {
         const oldFontSize: number = controller.fontSize;
-        controller.fontSize = oldFontSize * this.TITLE_SURVEY_FONT_SIZE_SCALE;
+        controller.fontSize = oldFontSize * fontSizeScale;
         controller.fontStyle = 'bold';
-        const composite: IPdfBrick = await this.createTextFlat(point,
-            null, controller, text, TitlePanelBrick);
+        const titleFlat: IPdfBrick = await this.createTextFlat(point, null, controller, text, TitlePanelBrick);
         controller.fontStyle = 'normal';
         controller.fontSize = oldFontSize;
-        return composite;
+        return titleFlat;
+    }
+    public static async createTitleSurveyFlat(point: IPoint, controller: DocController,
+        text: string | LocalizableString): Promise<IPdfBrick> {
+        return await this.createTitleSurveyPanelFlat(point, controller, text, this.TITLE_SURVEY_FONT_SIZE_SCALE);
     }
     public static async createTitlePanelFlat(point: IPoint, controller: DocController,
         text: string | LocalizableString): Promise<IPdfBrick> {
-        const oldFontSize: number = controller.fontSize;
-        controller.fontSize = oldFontSize * this.TITLE_PANEL_FONT_SIZE_SCALE;
-        controller.fontStyle = 'bold';
-        const composite: IPdfBrick = await this.createTextFlat(point,
-            null, controller, text, TitlePanelBrick);
-        controller.fontStyle = 'normal';
-        controller.fontSize = oldFontSize;
-        return composite;
+        return await this.createTitleSurveyPanelFlat(point, controller, text, this.TITLE_PANEL_FONT_SIZE_SCALE);
     }
     public static async createDescFlat(point: IPoint, question: IQuestion,
         controller: DocController, text: string | LocalizableString): Promise<IPdfBrick> {

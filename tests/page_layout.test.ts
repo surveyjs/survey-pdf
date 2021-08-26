@@ -176,14 +176,14 @@ test('Unfold compose brick', async () => {
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
-    expect(packs.length).toBe(2);
+    expect(packs.length).toBe(3);
     expect(packs[0].length).toBe(1);
     expect(packs[1].length).toBe(1);
     TestHelper.equalRect(expect, packs[0][0], await SurveyHelper.createTitleFlat(
         controller.leftTopPoint, <Question>survey.getAllQuestions()[0], controller));
     let textBoxPoint: IPoint = controller.leftTopPoint;
     textBoxPoint.xLeft += controller.unitWidth;
-    TestHelper.equalRect(expect, packs[1][0],
+    TestHelper.equalRect(expect, packs[2][0],
         SurveyHelper.createTextFieldRect(textBoxPoint, controller));
 });
 test('Pack to little page', async () => {
@@ -208,7 +208,7 @@ test('Pack to little page', async () => {
     expect(flats[0].length).toBe(1);
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
     expect(packs.length).toBe(2);
-    expect(packs[0].length).toBe(1);
+    expect(packs[0].length).toBe(2);
     expect(packs[1].length).toBe(1);
     TestHelper.equalRect(expect, packs[0][0], await SurveyHelper.createTitleFlat(
         controller.leftTopPoint, <Question>survey.getAllQuestions()[0], controller));

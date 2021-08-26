@@ -4,11 +4,12 @@
 
 import { Question } from 'survey-core';
 import { SurveyPDF } from '../src/survey';
-import { IPoint, DocController, IRect } from '../src/doc_controller';
+import { IPoint, IRect, DocController } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { FlatQuestion } from '../src/flat_layout/flat_question';
 import { FlatDropdown } from '../src/flat_layout/flat_dropdown';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
+import { CompositeBrick } from '../src/pdf_render/pdf_composite';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 import { calcTitleTop } from './flat_question.test';
@@ -76,18 +77,13 @@ test('Check dropdown with other answered', async () => {
     const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
-    const question: Question = survey.getAllQuestions()[0];
-    const unfoldFlats: IPdfBrick[] = flats[0][0].unfold();
-    const actualTitleWithDropdown: IPdfBrick = TestHelper.wrapRect(SurveyHelper.mergeRects(
-        ...unfoldFlats.slice(0, unfoldFlats.length - 1)));
-    const otherPoint: IPoint  = await calcTitleTop(
-        controller.leftTopPoint, controller, question, actualTitleWithDropdown);
-    otherPoint.xLeft += controller.unitWidth * FlatQuestion.CONTENT_INDENT_SCALE;
+    const compositeFlat: CompositeBrick = new CompositeBrick(...flats[0][0].unfold().slice(0, -1));
+    const otherPoint: IPoint = await calcTitleTop(controller.leftTopPoint, controller,
+        <Question>survey.getAllQuestions()[0], compositeFlat);
+    otherPoint.xLeft += controller.unitWidth;
     otherPoint.yTop += controller.unitHeight * SurveyHelper.GAP_BETWEEN_ROWS;
-    const actualComment: IRect = unfoldFlats[unfoldFlats.length - 1];
-    const assumeComment: IRect = await SurveyHelper.createCommentFlat(
-        otherPoint, question, controller, SurveyHelper.OTHER_ROWS_COUNT, false);
-    TestHelper.equalRect(expect, actualComment, assumeComment);
+    TestHelper.equalRect(expect, flats[0][0].unfold()[3], await SurveyHelper.createCommentFlat(
+        otherPoint, survey.getAllQuestions()[0], controller, SurveyHelper.OTHER_ROWS_COUNT, false));
 });
 test('Check readonly text expends when textFieldRenderAs option set', async () => {
     const json = {
