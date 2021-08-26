@@ -15,7 +15,7 @@ import { PagePacker } from '../src/page_layout/page_packer';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { TextBoxBrick } from '../src/pdf_render/pdf_textbox';
 import { CompositeBrick } from '../src/pdf_render/pdf_composite';
-import { RowlineBrick } from '../src/entries/pdf';
+import { RowlineBrick } from '../src/pdf_render/pdf_rowline';
 import { TestHelper } from '../src/helper_test';
 let __dummy_sh = SurveyPDFModule_dummy.SurveyHelper;
 let __dummy_tx = new FlatTextbox(null, null, null);

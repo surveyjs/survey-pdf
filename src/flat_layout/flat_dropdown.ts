@@ -17,14 +17,14 @@ export class FlatDropdown extends FlatQuestion {
     }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         const rect: IRect = SurveyHelper.createTextFieldRect(point, this.controller);
-        if (this.question.readOnly && this.controller.textFieldRenderAs === 'multiLine') {
+        if (this.question.isReadOnly && this.controller.textFieldRenderAs === 'multiLine') {
             const rectWithDinamicBottom: IRect = await SurveyHelper.createReadOnlyTextFieldTextFlat(
                 point, this.controller, this.question, SurveyHelper.getDropdownQuestionValue(this.question), false);
             rect.yBot = Math.max(rect.yBot, rectWithDinamicBottom.yBot + this.controller.unitHeight * SurveyHelper.VALUE_READONLY_PADDING_SCALE);
         }
         const compositeFlat: CompositeBrick = new CompositeBrick(
             new DropdownBrick(this.question, this.controller, rect));
-        if (this.question.hasOther) {
+        if (this.question.isOtherSelected) {
             const otherPoint: IPoint = SurveyHelper.createPoint(compositeFlat);
             otherPoint.yTop += this.controller.unitHeight * SurveyHelper.GAP_BETWEEN_ROWS;
             compositeFlat.addBrick(await SurveyHelper.createCommentFlat(

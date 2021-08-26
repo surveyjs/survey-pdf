@@ -8,7 +8,7 @@ import { IPoint, IRect, DocController } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { FlatHTML } from '../src/flat_layout/flat_html';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
-import { HTMLBrick } from '../src/entries/pdf';
+import { HTMLBrick } from '../src/pdf_render/pdf_html';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 let __dummy_hl = new FlatHTML(null, null, null);

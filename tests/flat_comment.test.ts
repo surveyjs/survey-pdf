@@ -13,13 +13,13 @@ import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { TextBrick } from '../src/pdf_render/pdf_text';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
-let __dummy_cm = new FlatComment(null, null, null);
-let __dummy_cb = new FlatCheckbox(null, null, null);
+const __dummy_cm = new FlatComment(null, null, null);
+const __dummy_cb = new FlatCheckbox(null, null, null);
 
 async function commentPointBeforeTitle(resultRects: IPdfBrick[][], controller: DocController) {
-    let commentPoint: IPoint = controller.leftTopPoint;
+    const commentPoint: IPoint = controller.leftTopPoint;
     commentPoint.xLeft += controller.unitWidth;
-    let resultPoint: IPoint = resultRects[0][0];
+    const resultPoint: IPoint = resultRects[0][0];
     TestHelper.equalPoint(expect, resultPoint, commentPoint);
     return commentPoint;
 }
@@ -27,22 +27,21 @@ async function commentPointAfterTitle(titleLocation: string, resultRects: IPdfBr
     controller: DocController, survey: SurveyPDF) {
     if (titleLocation === 'left') {
         controller.margins.right = controller.paperWidth - controller.margins.left -
-            SurveyHelper.getPageAvailableWidth(controller) *
-                SurveyHelper.MULTIPLETEXT_TEXT_PERS;
+            SurveyHelper.getPageAvailableWidth(controller) * SurveyHelper.MULTIPLETEXT_TEXT_PERS;
     }
-    let commentAssumePoint: IPoint = SurveyHelper.createPoint(await SurveyHelper.createTitleFlat(
+    const commentAssumePoint: IPoint = SurveyHelper.createPoint(await SurveyHelper.createTitleFlat(
         controller.leftTopPoint, <Question>survey.getAllQuestions()[0], controller),
         titleLocation === 'top', titleLocation !== 'top');
     commentAssumePoint.xLeft += controller.unitWidth;
-    if (titleLocation == 'top') {
+    if (titleLocation === 'top') {
         commentAssumePoint.yTop += controller.unitHeight * FlatQuestion.CONTENT_GAP_VERT_SCALE;
     }
-    let commentResultPoint: IPoint = resultRects[0][1];
+    const commentResultPoint: IPoint = resultRects[0][1];
     TestHelper.equalPoint(expect, commentResultPoint, commentAssumePoint);
     return commentAssumePoint;
 }
 async function commmentPointToTitleTests(titleLocation: string) {
-    let json: any = {
+    const json: any = {
         questions: [
             {
                 name: 'checkbox',
@@ -53,9 +52,9 @@ async function commmentPointToTitleTests(titleLocation: string) {
         ]
     };
     json.questions[0].titleLocation = titleLocation;
-    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let controller: DocController = new DocController(TestHelper.defaultOptions);
-    let resultRects: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    const controller: DocController = new DocController(TestHelper.defaultOptions);
+    const resultRects: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     switch (titleLocation) {
         case 'hidden':
         case 'bottom': {
@@ -128,7 +127,7 @@ test('Comment point after choice, title location: left', async () => {
     await commentPointAfterItem('left');
 });
 test('Check comment boundaries title hidden', async () => {
-    let json: any = {
+    const json: any = {
         questions: [
             {
                 type: 'comment',
@@ -138,19 +137,19 @@ test('Check comment boundaries title hidden', async () => {
             }
         ]
     };
-    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let controller: DocController = new DocController(TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    const controller: DocController = new DocController(TestHelper.defaultOptions);
+    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
-    let commentPoint: IPoint = controller.leftTopPoint;
+    const commentPoint: IPoint = controller.leftTopPoint;
     commentPoint.xLeft += controller.unitWidth;
-    let assumeComment: IRect = SurveyHelper.createTextFieldRect(
+    const assumeComment: IRect = SurveyHelper.createTextFieldRect(
         commentPoint, controller, survey.getAllQuestions()[0].rows);
     TestHelper.equalRect(expect, flats[0][0], assumeComment);
 });
 test('Check question comment', async () => {
-    let json: any = {
+    const json: any = {
         questions: [
             {
                 commentText: 'test',
@@ -161,24 +160,24 @@ test('Check question comment', async () => {
             }
         ]
     };
-    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let controller: DocController = new DocController(TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    const controller: DocController = new DocController(TestHelper.defaultOptions);
+    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
-    let commentPoint: IPoint = controller.leftTopPoint;
+    const commentPoint: IPoint = controller.leftTopPoint;
     commentPoint.xLeft += controller.unitWidth;
-    let assumeText: IRect = await SurveyHelper.createTextFlat(
+    const assumeText: IRect = await SurveyHelper.createTextFlat(
         commentPoint, survey.getAllQuestions()[0],
         controller, json.questions[0].commentText, TextBrick);
-    let otherPount: IPoint = SurveyHelper.createPoint(assumeText);
+    const otherPount: IPoint = SurveyHelper.createPoint(assumeText);
     otherPount.yTop += controller.unitHeight * SurveyHelper.GAP_BETWEEN_ROWS;
-    let assumeTextField: IRect = SurveyHelper.createTextFieldRect(otherPount, controller, 2);
+    const assumeTextField: IRect = SurveyHelper.createTextFieldRect(otherPount, controller, 2);
     TestHelper.equalRect(expect, flats[0][0].unfold()[0].unfold()[0], assumeText);
     TestHelper.equalRect(expect, flats[0][0].unfold()[1], assumeTextField);
 });
 test('Check readonly comment', async () => {
-    let json: any = {
+    const json: any = {
         questions: [
             {
                 type: 'comment',
@@ -188,19 +187,19 @@ test('Check readonly comment', async () => {
             }
         ]
     };
-    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let controller: DocController = new DocController(TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    const controller: DocController = new DocController(TestHelper.defaultOptions);
+    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
-    let commentPoint: IPoint = controller.leftTopPoint;
+    const commentPoint: IPoint = controller.leftTopPoint;
     commentPoint.xLeft += controller.unitWidth;
-    let assumeTextField: IRect = SurveyHelper.createTextFieldRect(
+    const assumeTextField: IRect = SurveyHelper.createTextFieldRect(
         commentPoint, controller, survey.getAllQuestions()[0].rows);
     TestHelper.equalRect(expect, flats[0][0], assumeTextField);
 });
 test('Check readonly comment with long text', async () => {
-    let json: any = {
+    const json: any = {
         questions: [
             {
                 type: 'comment',
@@ -223,19 +222,19 @@ test('Check readonly comment with long text', async () => {
             }
         ]
     };
-    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let controller: DocController = new DocController(TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    const controller: DocController = new DocController(TestHelper.defaultOptions);
+    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
-    let commentPoint: IPoint = controller.leftTopPoint;
+    const commentPoint: IPoint = controller.leftTopPoint;
     commentPoint.xLeft += controller.unitWidth;
-    let assumeTextField: IRect = SurveyHelper.createTextFieldRect(
+    const assumeTextField: IRect = SurveyHelper.createTextFieldRect(
         commentPoint, controller, survey.getAllQuestions()[0].rows);
-    let textFlat: IPdfBrick = await SurveyHelper.
+    const textFlat: IPdfBrick = await SurveyHelper.
         createReadOnlyTextFieldTextFlat(commentPoint, controller,
             survey.getAllQuestions()[0], survey.getAllQuestions()[0].value, false);
-    let padding: number = controller.unitWidth *
+    const padding: number = controller.unitWidth *
         SurveyHelper.VALUE_READONLY_PADDING_SCALE;
     assumeTextField.yBot = textFlat.yBot + padding;
     TestHelper.equalRect(expect, flats[0][0], assumeTextField);
