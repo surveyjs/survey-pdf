@@ -287,7 +287,7 @@ export class SurveyHelper {
                     }
                 });
                 defs = '<defs><style>' + defs + '</style></defs>';
-            });            
+            });
         }
         const svg: string = '<svg xmlns="http://www.w3.org/2000/svg">' + defs +
             '<style>.__surveypdf_html p { margin: unset; line-height: 22px; }</style>' +
