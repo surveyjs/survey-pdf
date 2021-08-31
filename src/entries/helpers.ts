@@ -84,12 +84,12 @@ export function __generator(thisArg: any, body: any) {
   }
 }
 
-export var __spreadArray = function (to: any, from: any, pack: any) {
+export function __spreadArray (to: any, from: any, pack: any) {
   if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar: any; i < l; i++) {
-      if (ar || !(i in from)) {
-          if (!ar) ar = Array.prototype.slice.call(from, 0, i);
-          ar[i] = from[i];
-      }
+    if (ar || !(i in from)) {
+      if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+      ar[i] = from[i];
+    }
   }
   return to.concat(ar || Array.prototype.slice.call(from));
 };
