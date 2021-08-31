@@ -1,8 +1,8 @@
 # Export HTML to PDF
 
-SurveyPDF supports export html to pdf via SurveyJS [Html Question](https://surveyjs.io/Documentation/Library/?id=questionhtmlmodel). Nevertheless, it is a difficult task to map html elements to pdf document primitives. Therefore SurveyPDF automatically choose more suitable of two render types. If the given html markup is simple enough, it will be rendered as selectable text in pdf document (fits to long descriptive text). Otherwise, it will be rendered as an image (fits to greeting text)
+SurveyPDF can export HTML markup to PDF via SurveyJS [Html](https://surveyjs.io/Documentation/Library/?id=questionhtmlmodel) questions. Nevertheless, it is a difficult task to map HTML elements to PDF document primitives. Therefore, SurveyPDF automatically chooses the more suitable from two render types - standard text or image. If the given HTML markup is simple enough, it will be rendered as selectable text in the PDF document (this is appropriate for long descriptive texts with a simple layout). Otherwise (if the HTML markup is complex), it will be rendered as an image (this is suitable for greeting texts that might have an elaborate layout).
 
-You can set preferred render directly to fit your needs more accurately. Pass `htmlRenderAs` parameter with `'standard'` value to render all html questions as selectable text or with `'image'` value to render all html questions as an image. Default value is `'auto'`
+You can set the preferred render mode directly to fit your needs more accurately. Pass the `'standard'` value through the `htmlRenderAs` parameter to render all HTML questions as selectable texts. Or pass the `'image'` value to render all HTML questions as images. The default value is `'auto'`.
 
 ```javascript
 const options = {
@@ -11,7 +11,7 @@ const options = {
 const surveyPDF = new SurveyPDF.SurveyPDF(json, options);
 ```
 
-Also, you can override the render of particular html question via setting `renderAs` property with values `'standard'` or `'image'` correspondingly. Default value is `'auto'`
+Also, you can override the render of a particular HTML question by setting its `renderAs` property to the `'standard'` or `'image'` value correspondingly. The default value is `'auto'`.
 
 ```javascript
 const json = {
@@ -26,8 +26,13 @@ const json = {
 };
 ```
 
+**See Also**  
+[Options in SurveyPDF Constructor: HTML question render mode](Pdf-Export?id=Options-in-Constructor#htmlRenderAs)
+
 ## Use custom font in HTML
-In case of rendering html as image, you can pass `useCustomFontInHtml` parameter with `true` value to use custom font in html. Default value is `false`. Please, note that using custom font in html can increase time of export. See more [information about custom fonts in SurveyPDF](https://surveyjs.io/Examples/Pdf-Export?id=survey-pdf-customfont#content-docs)
+In case of rendering HTML as ans image, you can pass `true` through the `useCustomFontInHtml` parameter to use custom font in HTML. The default value is `false`.  
+Please, note that using a custom font in HTML can increase the time of export.  
+See more: [Information about custom fonts in SurveyPDF](https://surveyjs.io/Examples/Pdf-Export?id=survey-pdf-customfont#content-docs)
 
 ```javascript
 const options = {
@@ -39,4 +44,7 @@ const options = {
 const surveyPDF = new SurveyPDF.SurveyPDF(json, options);
 ```
 
-Standard render of html is not supports of using custom font at this moment
+<!-- A standard render of HTML does not support using custom fonts at this moment. -->
+
+**See Also**  
+[Options in SurveyPDF Constructor: Ability to use custom fonts in HTML questions](Pdf-Export?id=Options-in-Constructor#useCustomFontInHtml)

@@ -5,7 +5,7 @@
 import { SurveyPDF } from '../src/survey';
 import { IRect, DocController } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
-import { FlatHTML } from '../src/entries/pdf';
+import { FlatHTML } from '../src/flat_layout/flat_html';
 import { FlatSignaturePad } from '../src/flat_layout/flat_signaturepad';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { SurveyHelper } from '../src/helper_survey';

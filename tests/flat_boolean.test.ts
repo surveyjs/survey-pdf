@@ -8,7 +8,7 @@ import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { FlatBoolean } from '../src/flat_layout/flat_boolean';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { TextBrick } from '../src/pdf_render/pdf_text';
-import { BooleanItemBrick } from '../src/entries/pdf';
+import { BooleanItemBrick } from '../src/pdf_render/pdf_booleanitem';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 let __dummy_bl = new FlatBoolean(null, null, null);

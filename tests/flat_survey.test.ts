@@ -7,7 +7,8 @@ import { IPoint, IRect, DocController } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { FlatTextbox } from '../src/flat_layout/flat_textbox';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
-import { HTMLBrick } from '../src/entries/pdf';
+import { HTMLBrick } from '../src/pdf_render/pdf_html';
+import { RowlineBrick } from '../src/pdf_render/pdf_rowline';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 const __dummy_tx = new FlatTextbox(null, null, null);
@@ -27,15 +28,18 @@ test('Survey with title', async () => {
     const controller: DocController = new DocController(TestHelper.defaultOptions);
     const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(2);
+    expect(flats[0].length).toBe(3);
     const assumeTitle: IRect = await SurveyHelper.createTitleSurveyFlat(
         controller.leftTopPoint, controller, json.title);
     TestHelper.equalRect(expect, flats[0][0], assumeTitle);
-    const textBoxPoint: IPoint = SurveyHelper.createPoint(assumeTitle);
-    textBoxPoint.yTop += controller.unitHeight * FlatSurvey.PANEL_CONT_GAP_SCALE;
+    const rowLinePoint: IPoint = SurveyHelper.createPoint(assumeTitle);
+    const assumeRowLine: IRect = SurveyHelper.createRowlineFlat(rowLinePoint, controller);
+    TestHelper.equalRect(expect, flats[0][1], assumeRowLine);    
+    const textBoxPoint: IPoint = rowLinePoint;
+    textBoxPoint.yTop += controller.unitHeight * FlatSurvey.PANEL_CONT_GAP_SCALE + SurveyHelper.EPSILON;
     textBoxPoint.xLeft += controller.unitWidth;
     const assumeTextBox: IRect = SurveyHelper.createTextFieldRect(textBoxPoint, controller);
-    TestHelper.equalRect(expect, flats[0][1], assumeTextBox);    
+    TestHelper.equalRect(expect, flats[0][2], assumeTextBox);    
 });
 test('Survey with description', async () => {
     const json: any = {
@@ -52,15 +56,18 @@ test('Survey with description', async () => {
     const controller: DocController = new DocController(TestHelper.defaultOptions);
     const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(2);
+    expect(flats[0].length).toBe(3);
     const assumeDescription: IRect = await SurveyHelper.createDescFlat(
         controller.leftTopPoint, null, controller, json.description);
     TestHelper.equalRect(expect, flats[0][0], assumeDescription);
-    const textBoxPoint: IPoint = SurveyHelper.createPoint(assumeDescription);
-    textBoxPoint.yTop += controller.unitHeight * FlatSurvey.PANEL_CONT_GAP_SCALE;
+    const rowLinePoint: IPoint = SurveyHelper.createPoint(assumeDescription);
+    const assumeRowLine: IRect = SurveyHelper.createRowlineFlat(rowLinePoint, controller);
+    TestHelper.equalRect(expect, flats[0][1], assumeRowLine);    
+    const textBoxPoint: IPoint = rowLinePoint;
+    textBoxPoint.yTop += controller.unitHeight * FlatSurvey.PANEL_CONT_GAP_SCALE + SurveyHelper.EPSILON;
     textBoxPoint.xLeft += controller.unitWidth;
     const assumeTextBox: IRect = SurveyHelper.createTextFieldRect(textBoxPoint, controller);
-    TestHelper.equalRect(expect, flats[0][1], assumeTextBox);    
+    TestHelper.equalRect(expect, flats[0][2], assumeTextBox);    
 });
 test('Survey with title and description', async () => {
     const json: any = {
@@ -78,19 +85,23 @@ test('Survey with title and description', async () => {
     const controller: DocController = new DocController(TestHelper.defaultOptions);
     const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(2);
+    expect(flats[0].length).toBe(3);
     const assumeTitle: IRect = await SurveyHelper.createTitleSurveyFlat(
         controller.leftTopPoint, controller, json.title);
     const descriptionPoint: IPoint = SurveyHelper.createPoint(assumeTitle);
     descriptionPoint.yTop += controller.unitHeight * FlatSurvey.PANEL_DESC_GAP_SCALE;
     const assumeDescription: IRect = await SurveyHelper.createDescFlat(
         descriptionPoint, null, controller, json.description);
-    TestHelper.equalRect(expect, flats[0][0], SurveyHelper.mergeRects(assumeTitle, assumeDescription));
-    const textBoxPoint: IPoint = SurveyHelper.createPoint(assumeDescription);
-    textBoxPoint.yTop += controller.unitHeight * FlatSurvey.PANEL_CONT_GAP_SCALE;
+    const assumeTitleWithDescription: IRect = SurveyHelper.mergeRects(assumeTitle, assumeDescription)
+    TestHelper.equalRect(expect, flats[0][0], assumeTitleWithDescription);
+    const rowLinePoint: IPoint = SurveyHelper.createPoint(assumeTitleWithDescription);
+    const assumeRowLine: IRect = SurveyHelper.createRowlineFlat(rowLinePoint, controller);
+    TestHelper.equalRect(expect, flats[0][1], assumeRowLine);    
+    const textBoxPoint: IPoint = rowLinePoint;
+    textBoxPoint.yTop += controller.unitHeight * FlatSurvey.PANEL_CONT_GAP_SCALE + SurveyHelper.EPSILON;
     textBoxPoint.xLeft += controller.unitWidth;
     const assumeTextBox: IRect = SurveyHelper.createTextFieldRect(textBoxPoint, controller);
-    TestHelper.equalRect(expect, flats[0][1], assumeTextBox);    
+    TestHelper.equalRect(expect, flats[0][2], assumeTextBox);    
 });
 test('Survey with logo', async () => {
     const json: any = {
@@ -101,7 +112,7 @@ test('Survey with logo', async () => {
     const controller: DocController = new DocController(TestHelper.defaultOptions);
     const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(1);
+    expect(flats[0].length).toBe(2);
     expect(flats[0][0] instanceof HTMLBrick);
     const assumeLogo: IRect = {
         xLeft: controller.leftTopPoint.xLeft,
@@ -128,7 +139,7 @@ test('Survey with left logo and title', async () => {
     const controller: DocController = new DocController(TestHelper.defaultOptions);
     const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(3);
+    expect(flats[0].length).toBe(4);
     expect(flats[0][0] instanceof HTMLBrick);
     const assumeLogo: IRect = {
         xLeft: controller.leftTopPoint.xLeft,
@@ -142,11 +153,14 @@ test('Survey with left logo and title', async () => {
     const assumeTitle: IRect = await SurveyHelper.createTitleSurveyFlat(
         titlePoint, controller, json.title);
     TestHelper.equalRect(expect, flats[0][1], assumeTitle);
-    const textBoxPoint: IPoint = SurveyHelper.createPoint(assumeLogo);
+    const rowLinePoint: IPoint = SurveyHelper.createPoint(assumeLogo);
+    const assumeRowLine: IRect = SurveyHelper.createRowlineFlat(rowLinePoint, controller);
+    TestHelper.equalRect(expect, flats[0][2], assumeRowLine);
+    const textBoxPoint: IPoint = rowLinePoint;
     textBoxPoint.xLeft += controller.unitWidth;
-    textBoxPoint.yTop += controller.unitHeight * FlatSurvey.PANEL_CONT_GAP_SCALE;
+    textBoxPoint.yTop += controller.unitHeight * FlatSurvey.PANEL_CONT_GAP_SCALE + SurveyHelper.EPSILON;
     const assumeTextBox: IRect = SurveyHelper.createTextFieldRect(textBoxPoint, controller);
-    TestHelper.equalRect(expect, flats[0][2], assumeTextBox);
+    TestHelper.equalRect(expect, flats[0][3], assumeTextBox);
 });
 test('Survey with left logo and big title', async () => {
     const json: any = {
@@ -165,7 +179,7 @@ test('Survey with left logo and big title', async () => {
     const controller: DocController = new DocController(TestHelper.defaultOptions);
     const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(3);
+    expect(flats[0].length).toBe(4);
     expect(flats[0][0] instanceof HTMLBrick);
     const assumeLogo: IRect = {
         xLeft: controller.leftTopPoint.xLeft,
@@ -179,11 +193,14 @@ test('Survey with left logo and big title', async () => {
     const assumeTitle: IRect = await SurveyHelper.createTitleSurveyFlat(
         titlePoint, controller, json.title);
     TestHelper.equalRect(expect, flats[0][1], assumeTitle);
-    const textBoxPoint: IPoint = SurveyHelper.createPoint(assumeTitle);
-    textBoxPoint.xLeft = controller.leftTopPoint.xLeft + controller.unitWidth;
-    textBoxPoint.yTop += controller.unitHeight * FlatSurvey.PANEL_CONT_GAP_SCALE;
+    const rowLinePoint: IPoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(assumeLogo, assumeTitle));
+    const assumeRowLine: IRect = SurveyHelper.createRowlineFlat(rowLinePoint, controller);
+    TestHelper.equalRect(expect, flats[0][2], assumeRowLine);
+    const textBoxPoint: IPoint = rowLinePoint;
+    textBoxPoint.xLeft += controller.unitWidth;
+    textBoxPoint.yTop += controller.unitHeight * FlatSurvey.PANEL_CONT_GAP_SCALE + SurveyHelper.EPSILON;
     const assumeTextBox: IRect = SurveyHelper.createTextFieldRect(textBoxPoint, controller);
-    TestHelper.equalRect(expect, flats[0][2], assumeTextBox);
+    TestHelper.equalRect(expect, flats[0][3], assumeTextBox);
 });
 test('Survey with right logo and title', async () => {
     const json: any = {
@@ -202,7 +219,7 @@ test('Survey with right logo and title', async () => {
     const controller: DocController = new DocController(TestHelper.defaultOptions);
     const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(3);
+    expect(flats[0].length).toBe(4);
     const assumeTitle: IRect = await SurveyHelper.createTitleSurveyFlat(
         controller.leftTopPoint, controller, json.title);
     TestHelper.equalRect(expect, flats[0][0], assumeTitle);
@@ -215,11 +232,14 @@ test('Survey with right logo and title', async () => {
         yBot: controller.leftTopPoint.yTop + SurveyHelper.pxToPt(survey.logoHeight)
     };
     TestHelper.equalRect(expect, flats[0][1], assumeLogo);
-    const textBoxPoint: IPoint = SurveyHelper.createPoint(assumeLogo);
-    textBoxPoint.xLeft = controller.leftTopPoint.xLeft + controller.unitWidth;
-    textBoxPoint.yTop += controller.unitHeight * FlatSurvey.PANEL_CONT_GAP_SCALE;
+    const rowLinePoint: IPoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(assumeTitle, assumeLogo));
+    const assumeRowLine: IRect = SurveyHelper.createRowlineFlat(rowLinePoint, controller);
+    TestHelper.equalRect(expect, flats[0][2], assumeRowLine);
+    const textBoxPoint: IPoint = rowLinePoint;
+    textBoxPoint.xLeft += controller.unitWidth;
+    textBoxPoint.yTop += controller.unitHeight * FlatSurvey.PANEL_CONT_GAP_SCALE + SurveyHelper.EPSILON;
     const assumeTextBox: IRect = SurveyHelper.createTextFieldRect(textBoxPoint, controller);
-    TestHelper.equalRect(expect, flats[0][2], assumeTextBox);
+    TestHelper.equalRect(expect, flats[0][3], assumeTextBox);
 });
 test('Survey with bottom logo and title', async () => {
     const json: any = {
@@ -232,7 +252,7 @@ test('Survey with bottom logo and title', async () => {
     const controller: DocController = new DocController(TestHelper.defaultOptions);
     const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(2);
+    expect(flats[0].length).toBe(3);
     const assumeTitle: IRect = await SurveyHelper.createTitleSurveyFlat(
         controller.leftTopPoint, controller, json.title);
     TestHelper.equalRect(expect, flats[0][0], assumeTitle);
@@ -250,6 +270,7 @@ test('Survey with bottom logo and title', async () => {
             SurveyHelper.pxToPt(survey.logoHeight)
     };
     TestHelper.equalRect(expect, flats[0][1], assumeLogo);
+    expect(flats[0][2] instanceof RowlineBrick);
 });
 test('Survey with botton logo without title', async () => {
     const json: any = {
@@ -261,7 +282,7 @@ test('Survey with botton logo without title', async () => {
     const controller: DocController = new DocController(TestHelper.defaultOptions);
     const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(1);
+    expect(flats[0].length).toBe(2);
     expect(flats[0][0] instanceof HTMLBrick);
     const assumeLogo: IRect = {
         xLeft: controller.leftTopPoint.xLeft +

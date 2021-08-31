@@ -27,14 +27,13 @@ async function commentPointAfterTitle(titleLocation: string, resultRects: IPdfBr
     controller: DocController, survey: SurveyPDF) {
     if (titleLocation === 'left') {
         controller.margins.right = controller.paperWidth - controller.margins.left -
-            SurveyHelper.getPageAvailableWidth(controller) *
-                SurveyHelper.MULTIPLETEXT_TEXT_PERS;
+            SurveyHelper.getPageAvailableWidth(controller) * SurveyHelper.MULTIPLETEXT_TEXT_PERS;
     }
-    const commentAssumePoint: IPoint = await SurveyHelper.createPoint(await SurveyHelper.createTitleFlat(
-        TestHelper.defaultPoint, <Question>survey.getAllQuestions()[0], controller),
+    const commentAssumePoint: IPoint = SurveyHelper.createPoint(await SurveyHelper.createTitleFlat(
+        controller.leftTopPoint, <Question>survey.getAllQuestions()[0], controller),
         titleLocation === 'top', titleLocation !== 'top');
     commentAssumePoint.xLeft += controller.unitWidth;
-    if (titleLocation == 'top') {
+    if (titleLocation === 'top') {
         commentAssumePoint.yTop += controller.unitHeight * FlatQuestion.CONTENT_GAP_VERT_SCALE;
     }
     const commentResultPoint: IPoint = resultRects[0][1];
@@ -102,9 +101,10 @@ async function commentPointAfterItem(titleLocation: string) {
     if (titleLocation !== 'bottom') expect(resultRects[0].length).toBe(2);
     else expect(resultRects[0].length).toBe(3);
     if (titleLocation === 'top' || titleLocation === 'left') {
+        const rowlineShift: number = titleLocation === 'top' ? 1 : 0;
         const commentPoint: IPoint = SurveyHelper.createPoint(
-            SurveyHelper.mergeRects(resultRects[0][0].unfold()[titleLocation === 'top' ? 2 : 1],
-                SurveyHelper.mergeRects(resultRects[0][0].unfold()[titleLocation === 'top' ? 3 : 2])));
+            SurveyHelper.mergeRects(resultRects[0][0].unfold()[1 + rowlineShift],
+                SurveyHelper.mergeRects(resultRects[0][0].unfold()[2 + rowlineShift])));
         commentPoint.yTop += controller.unitHeight * SurveyHelper.GAP_BETWEEN_ROWS;
         TestHelper.equalPoint(expect, resultRects[0][1], commentPoint);
     }

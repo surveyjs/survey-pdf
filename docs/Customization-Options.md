@@ -9,8 +9,8 @@ Ability to draw header and footer with logo and company information   -->
 
 This section describes the available API in the following topics:
 
-<!-- * [SurveyPDF Options](Customization-SurveyPDF-Options) -->
-* [Change Fonts](Customization-ChangeFonts)
+* [Options in SurveyPDF Constructor](Pdf-Export?id=Options-in-Constructor)
+* [Change Fonts](Pdf-Export?id=Customization-ChangeFonts)
 * [Custom Render - Header/Footer](Pdf-Export?id=Customization-CustomRender-HeaderFooter)
 * [Custom Render - Question Elements](Pdf-Export?id=Customization-CustomRender-QuestionElements)
 

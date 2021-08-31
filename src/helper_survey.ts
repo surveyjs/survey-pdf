@@ -37,7 +37,6 @@ export class SurveyHelper {
     public static readonly GAP_BETWEEN_ROWS: number = 0.25;
     public static readonly GAP_BETWEEN_COLUMNS: number = 1.5;
     public static readonly GAP_BETWEEN_ITEM_TEXT: number = 0.25;
-    public static readonly FORM_TEXTFIELD_BORDER_STYLE: 'none' | 'solid' = 'solid';
     public static readonly BORDER_SCALE: number = 0.1;
     public static readonly VISIBLE_BORDER_SCALE: number = 0.8;
     public static readonly UNVISIBLE_BORDER_SCALE: number = 0.2;
@@ -93,7 +92,7 @@ export class SurveyHelper {
         return Math.min(value * k, maxWidth);
     }
     public static pxToPt(value: number | string) {
-        if(typeof value === "string") {
+        if (typeof value === "string") {
             return SurveyHelper.parseWidth(value, Number.MAX_VALUE);
         }
         return value * 72.0 / 96.0;
@@ -288,7 +287,7 @@ export class SurveyHelper {
                     }
                 });
                 defs = '<defs><style>' + defs + '</style></defs>';
-            });            
+            });
         }
         const svg: string = '<svg xmlns="http://www.w3.org/2000/svg">' + defs +
             '<style>.__surveypdf_html p { margin: unset; line-height: 22px; }</style>' +
@@ -380,27 +379,23 @@ export class SurveyHelper {
         controller.fontSize = oldFontSize;
         return composite;
     }
-    public static async createTitleSurveyFlat(point: IPoint, controller: DocController,
-        text: string | LocalizableString): Promise<IPdfBrick> {
+    private static async createTitleSurveyPanelFlat(point: IPoint, controller: DocController,
+        text: string | LocalizableString, fontSizeScale: number): Promise<IPdfBrick> {
         const oldFontSize: number = controller.fontSize;
-        controller.fontSize = oldFontSize * this.TITLE_SURVEY_FONT_SIZE_SCALE;
+        controller.fontSize = oldFontSize * fontSizeScale;
         controller.fontStyle = 'bold';
-        const composite: IPdfBrick = await this.createTextFlat(point,
-            null, controller, text, TitlePanelBrick);
+        const titleFlat: IPdfBrick = await this.createTextFlat(point, null, controller, text, TitlePanelBrick);
         controller.fontStyle = 'normal';
         controller.fontSize = oldFontSize;
-        return composite;
+        return titleFlat;
+    }
+    public static async createTitleSurveyFlat(point: IPoint, controller: DocController,
+        text: string | LocalizableString): Promise<IPdfBrick> {
+        return await this.createTitleSurveyPanelFlat(point, controller, text, this.TITLE_SURVEY_FONT_SIZE_SCALE);
     }
     public static async createTitlePanelFlat(point: IPoint, controller: DocController,
         text: string | LocalizableString): Promise<IPdfBrick> {
-        const oldFontSize: number = controller.fontSize;
-        controller.fontSize = oldFontSize * this.TITLE_PANEL_FONT_SIZE_SCALE;
-        controller.fontStyle = 'bold';
-        const composite: IPdfBrick = await this.createTextFlat(point,
-            null, controller, text, TitlePanelBrick);
-        controller.fontStyle = 'normal';
-        controller.fontSize = oldFontSize;
-        return composite;
+        return await this.createTitleSurveyPanelFlat(point, controller, text, this.TITLE_PANEL_FONT_SIZE_SCALE);
     }
     public static async createDescFlat(point: IPoint, question: IQuestion,
         controller: DocController, text: string | LocalizableString): Promise<IPdfBrick> {
@@ -506,7 +501,6 @@ export class SurveyHelper {
         return textFlat;
     }
     public static renderFlatBorders(controller: DocController, flat: PdfBrick): void {
-        if (this.FORM_TEXTFIELD_BORDER_STYLE === 'none') { return; }
         const minSide: number = Math.min(flat.width, flat.height);
         const visibleWidth: number = controller.unitHeight * this.VISIBLE_BORDER_SCALE * this.BORDER_SCALE;
         const visibleScale: number = this.formScale(controller, flat) + visibleWidth / minSide;
