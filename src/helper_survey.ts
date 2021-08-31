@@ -37,6 +37,7 @@ export class SurveyHelper {
     public static readonly GAP_BETWEEN_ROWS: number = 0.25;
     public static readonly GAP_BETWEEN_COLUMNS: number = 1.5;
     public static readonly GAP_BETWEEN_ITEM_TEXT: number = 0.25;
+    public static readonly FORM_BORDER_VISIBLE: boolean = true;
     public static readonly BORDER_SCALE: number = 0.1;
     public static readonly VISIBLE_BORDER_SCALE: number = 0.8;
     public static readonly UNVISIBLE_BORDER_SCALE: number = 0.2;
@@ -501,6 +502,7 @@ export class SurveyHelper {
         return textFlat;
     }
     public static renderFlatBorders(controller: DocController, flat: PdfBrick): void {
+        if (!this.FORM_BORDER_VISIBLE) return;
         const minSide: number = Math.min(flat.width, flat.height);
         const visibleWidth: number = controller.unitHeight * this.VISIBLE_BORDER_SCALE * this.BORDER_SCALE;
         const visibleScale: number = this.formScale(controller, flat) + visibleWidth / minSide;
