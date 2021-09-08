@@ -106,7 +106,7 @@ test('Check two text files', async () => {
     };
     TestHelper.equalRect(expect, flats[0][0], assumeFile);
 });
-test('Check one image 16x16px file', async () => {
+test.skip('Check one image 16x16px file', async () => {
     let imageSize: ISize = { width: 170, height: 50 };
     SurveyHelper.getImageSize = async (url: string) => { return imageSize };
     let json: any = {
@@ -141,7 +141,7 @@ test('Check one image 16x16px file', async () => {
     };
     TestHelper.equalRect(expect, flats[0][0], assumeFile);
 });
-test('Check one image 16x16px file shorter than text', async () => {
+test.skip('Check one image 16x16px file shorter than text', async () => {
     let imageSize: ISize = { width: 50, height: 50 };
     SurveyHelper.getImageSize = async (url: string) => { return imageSize };
     let json: any = {
@@ -176,7 +176,7 @@ test('Check one image 16x16px file shorter than text', async () => {
     };
     TestHelper.equalRect(expect, flats[0][0], assumeFile);
 });
-test('Check one image 16x16px with set size', async () => {
+test.skip('Check one image 16x16px with set size', async () => {
     let imageSize: ISize = { width: 50, height: 50 };
     SurveyHelper.getImageSize = async (url: string) => { return imageSize };
     let json: any = {
