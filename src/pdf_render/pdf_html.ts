@@ -37,3 +37,21 @@ export class HTMLBrick extends PdfBrick {
         });
     }
 }
+
+export class ImageBrick extends PdfBrick {
+    private margins: { top: number, bottom: number };
+    public constructor(question: IQuestion, controller: DocController,
+        rect: IRect, protected image: string) {
+        super(question, controller, rect);
+        this.margins = {
+            top: 0.0,
+            bottom: 0.0
+        };
+    }
+    public async renderInteractive(): Promise<void> {
+        await new Promise<void>((resolve) => {
+            this.controller.doc.addImage(this.image, 'JPEG', this.xLeft, this.yTop, this.width, this.height);
+            resolve();
+        });
+    }
+}

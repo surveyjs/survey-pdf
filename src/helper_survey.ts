@@ -13,7 +13,7 @@ import { TitlePanelBrick } from './pdf_render/pdf_titlepanel';
 import { DescriptionBrick } from './pdf_render/pdf_description';
 import { CommentBrick } from './pdf_render/pdf_comment';
 import { LinkBrick } from './pdf_render/pdf_link';
-import { HTMLBrick } from './pdf_render/pdf_html';
+import { HTMLBrick, ImageBrick } from './pdf_render/pdf_html';
 import { EmptyBrick } from './pdf_render/pdf_empty';
 import { RowlineBrick } from './pdf_render/pdf_rowline';
 import { CompositeBrick } from './pdf_render/pdf_composite';
@@ -430,15 +430,21 @@ export class SurveyHelper {
         if (typeof height === 'undefined') {
             height = width / this.IMAGEPICKER_RATIO;
         }
-        const html: string = `<img src='${imagelink}' width='${width}' height='${height}'/>`;
-        return new HTMLBrick(question, controller,
-            this.createRect(point, width, height), html, true);
+        if(typeof Image === "function") {
+            const html: string = `<img src='${imagelink}' width='${width}' height='${height}'/>`;
+            return new HTMLBrick(question, controller,
+                this.createRect(point, width, height), html, true);
+        }
+
+        return new ImageBrick(question, controller,
+            this.createRect(point, width, height), imagelink);
+
     }
-    public static async canPreviewImage(question: QuestionFileModel,
+    public static canPreviewImage(question: QuestionFileModel,
         item: { name: string, type: string, content: string },
-        url: string): Promise<boolean> {
-        return question.canPreviewImage(item) &&
-            await this.getImageSize(url) !== null; 
+        url: string): boolean {
+        return question.canPreviewImage(item);
+        //  &&  await this.getImageSize(url) !== null; 
     }
     public static async getImageSize(url: string): Promise<ISize> {
         return await new Promise((resolve) => {

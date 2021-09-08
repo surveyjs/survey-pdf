@@ -21,9 +21,10 @@ export class FlatFile extends FlatQuestion {
         name: string, type: string, content: string
     }): Promise<IPdfBrick> {
         const compositeFlat: CompositeBrick = new CompositeBrick(await SurveyHelper.createLinkFlat(
-            point, this.question, this.controller, item.name, item.content));
-        if (await SurveyHelper.canPreviewImage(this.question, item, item.content)) {
-            const imageSize: ISize = await SurveyHelper.getImageSize(item.content);
+            point, this.question, this.controller, item.name === undefined ? 'image' : item.name, item.content));
+        if (SurveyHelper.canPreviewImage(this.question, item, item.content)) {
+            const imageSize: ISize = {width: 0, height: 0};
+            // await SurveyHelper.getImageSize(item.content); 
             if (this.question.imageWidth) {
                 imageSize.width = SurveyHelper.parseWidth(this.question.imageWidth,
                     SurveyHelper.getPageAvailableWidth(this.controller));
@@ -61,9 +62,15 @@ export class FlatFile extends FlatQuestion {
             const item: { name: string, type: string, content: string } = this.question.previewValue[i];
             const availableWidth: number = this.controller.paperWidth -
                 this.controller.margins.right - currPoint.xLeft;
-            if (await SurveyHelper.canPreviewImage(this.question, item, item.content)) {
-                const compositeWidth: number = Math.max((
-                    await SurveyHelper.getImageSize(item.content)).width,
+            if (SurveyHelper.canPreviewImage(this.question, item, item.content)) {
+                let imageWidth = 0;
+                if (this.question.imageWidth !== undefined) {
+                    imageWidth = SurveyHelper.parseWidth(this.question.imageWidth,
+                            SurveyHelper.getPageAvailableWidth(this.controller));
+                } else {
+                    imageWidth = (await SurveyHelper.getImageSize(item.content)).width;
+                }
+                const compositeWidth: number = Math.max(imageWidth, 
                     FlatFile.TEXT_MIN_SCALE * this.controller.unitWidth);
                 if (availableWidth < compositeWidth) {
                     currPoint.xLeft = point.xLeft;
