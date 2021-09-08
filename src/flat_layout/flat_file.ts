@@ -23,8 +23,7 @@ export class FlatFile extends FlatQuestion {
         const compositeFlat: CompositeBrick = new CompositeBrick(await SurveyHelper.createLinkFlat(
             point, this.question, this.controller, item.name === undefined ? 'image' : item.name, item.content));
         if (SurveyHelper.canPreviewImage(this.question, item, item.content)) {
-            const imageSize: ISize = {width: 0, height: 0};
-            // await SurveyHelper.getImageSize(item.content); 
+            const imageSize: ISize = await SurveyHelper.getImageSize(item.content);
             if (this.question.imageWidth) {
                 imageSize.width = SurveyHelper.parseWidth(this.question.imageWidth,
                     SurveyHelper.getPageAvailableWidth(this.controller));
@@ -63,14 +62,8 @@ export class FlatFile extends FlatQuestion {
             const availableWidth: number = this.controller.paperWidth -
                 this.controller.margins.right - currPoint.xLeft;
             if (SurveyHelper.canPreviewImage(this.question, item, item.content)) {
-                let imageWidth = 0;
-                if (this.question.imageWidth !== undefined) {
-                    imageWidth = SurveyHelper.parseWidth(this.question.imageWidth,
-                            SurveyHelper.getPageAvailableWidth(this.controller));
-                } else {
-                    imageWidth = (await SurveyHelper.getImageSize(item.content)).width;
-                }
-                const compositeWidth: number = Math.max(imageWidth, 
+                const compositeWidth: number = Math.max((
+                    await SurveyHelper.getImageSize(item.content)).width,
                     FlatFile.TEXT_MIN_SCALE * this.controller.unitWidth);
                 if (availableWidth < compositeWidth) {
                     currPoint.xLeft = point.xLeft;

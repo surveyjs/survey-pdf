@@ -1,6 +1,7 @@
 import { IQuestion } from 'survey-core';
 import { PdfBrick } from './pdf_brick';
 import { IRect, DocController } from '../doc_controller';
+import { IPoint } from '../entries/pdf';
 
 export class HTMLBrick extends PdfBrick {
     private margins: { top: number, bottom: number };
@@ -39,18 +40,19 @@ export class HTMLBrick extends PdfBrick {
 }
 
 export class ImageBrick extends PdfBrick {
-    private margins: { top: number, bottom: number };
-    public constructor(question: IQuestion, controller: DocController,
-        rect: IRect, protected image: string) {
-        super(question, controller, rect);
-        this.margins = {
-            top: 0.0,
-            bottom: 0.0
-        };
+    public constructor(question: IQuestion, controller: DocController, protected image: string,
+        point: IPoint, protected originalWidth: number, protected originalHeight: number) {
+        super(question, controller, {
+            xLeft: point.xLeft,
+            xRight: point.xLeft + (originalWidth || 0),
+            yTop: point.yTop,
+            yBot: point.yTop + (originalHeight || 0)
+        });
+        this.isPageBreak = this.originalHeight === undefined;
     }
     public async renderInteractive(): Promise<void> {
         await new Promise<void>((resolve) => {
-            this.controller.doc.addImage(this.image, 'JPEG', this.xLeft, this.yTop, this.width, this.height);
+            this.controller.doc.addImage(this.image, this.xLeft, this.yTop, this.originalWidth || this.width, this.originalHeight || this.height);
             resolve();
         });
     }
