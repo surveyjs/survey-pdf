@@ -9,6 +9,7 @@ import { FlatImagePicker } from '../src/flat_layout/flat_imagepicker';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
+import { ImageBrick } from '../src/pdf_render/pdf_image';
 let __dummy_ip = new FlatImagePicker(null, null, null);
 
 test('Check imagepicker one image 100x100px', async () => {
@@ -33,8 +34,7 @@ test('Check imagepicker one image 100x100px', async () => {
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
     controller.margins.left += controller.unitWidth;
-    let width: number = SurveyHelper.getImagePickerAvailableWidth(
-        controller) / SurveyHelper.IMAGEPICKER_COUNT;
+    let width: number = SurveyHelper.getImagePickerAvailableWidth(controller) / SurveyHelper.IMAGEPICKER_COUNT;
     let height: number = width / SurveyHelper.IMAGEPICKER_RATIO;
     let assumeimagePicker: IRect = {
         xLeft: controller.leftTopPoint.xLeft,
@@ -67,8 +67,7 @@ test('Check imagepicker one image 100x100px with label', async () => {
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
     controller.margins.left += controller.unitWidth;
-    let width: number = SurveyHelper.getImagePickerAvailableWidth(
-        controller) / SurveyHelper.IMAGEPICKER_COUNT;
+    let width: number = SurveyHelper.getImagePickerAvailableWidth(controller) / SurveyHelper.IMAGEPICKER_COUNT;
     let height: number = width / SurveyHelper.IMAGEPICKER_RATIO;
     let assumeimagePicker: IRect = {
         xLeft: controller.leftTopPoint.xLeft,
@@ -104,8 +103,7 @@ test('Check imagepicker two images 100x100px', async () => {
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
     controller.margins.left += controller.unitWidth;
-    let width: number = SurveyHelper.getImagePickerAvailableWidth(
-        controller) / SurveyHelper.IMAGEPICKER_COUNT;
+    let width: number = SurveyHelper.getImagePickerAvailableWidth(controller) / SurveyHelper.IMAGEPICKER_COUNT;
     let height: number = width / SurveyHelper.IMAGEPICKER_RATIO;
     let assumeimagePicker: IRect = {
         xLeft: controller.leftTopPoint.xLeft,
@@ -114,4 +112,41 @@ test('Check imagepicker two images 100x100px', async () => {
         yBot: controller.leftTopPoint.yTop + height + controller.unitHeight
     };
     TestHelper.equalRect(expect, flats[0][0], assumeimagePicker);
+});
+
+test('Check imagepicker one image 100x100px server-side', async () => {
+    SurveyHelper.inBrowser = false;
+    let json: any = {
+        elements: [
+            {
+                type: 'imagepicker',
+                name: 'imaque',
+                titleLocation: 'hidden',
+                choices: [
+                    {
+                        value: 'fox',
+                        imageLink: TestHelper.BASE64_IMAGE_100PX
+                    }
+                ]
+            }
+        ]
+    };
+    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    expect(flats.length).toBe(1);
+    expect(flats[0].length).toBe(1);
+    expect((<any>flats[0][0]).bricks[0].bricks[0] instanceof ImageBrick).toBeTruthy();
+    expect((<any>flats[0][0]).bricks[0].bricks[0].isPageBreak).toBeFalsy();
+    controller.margins.left += controller.unitWidth;
+    let width: number = SurveyHelper.getImagePickerAvailableWidth(controller) / SurveyHelper.IMAGEPICKER_COUNT;
+    let height: number = width / SurveyHelper.IMAGEPICKER_RATIO;
+    let assumeimagePicker: IRect = {
+        xLeft: controller.leftTopPoint.xLeft,
+        xRight: controller.leftTopPoint.xLeft + width,
+        yTop: controller.leftTopPoint.yTop,
+        yBot: controller.leftTopPoint.yTop + height + controller.unitHeight
+    };
+    TestHelper.equalRect(expect, flats[0][0], assumeimagePicker);
+    SurveyHelper.inBrowser = true;
 });

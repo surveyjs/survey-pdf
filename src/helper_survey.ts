@@ -426,13 +426,9 @@ export class SurveyHelper {
             (question.comment !== undefined && question.comment !== null ? question.comment : '');
     }
     public static inBrowser = typeof Image === "function";
-    public static createImageFlat(point: IPoint, question: IQuestion,
-        controller: DocController, imagelink: string, width: number, height?: number): IPdfBrick {
+    public static createImageFlat(point: IPoint, question: IQuestion, controller: DocController, imagelink: string, width: number, height: number): IPdfBrick {
 
         if (SurveyHelper.inBrowser) {
-            if (typeof height === 'undefined') {
-                height = width / this.IMAGEPICKER_RATIO;
-            }
             const html: string = `<img src='${imagelink}' width='${width}' height='${height}'/>`;
             return new HTMLBrick(question, controller, this.createRect(point, width, height), html, true);
         }
