@@ -21,23 +21,18 @@ export class FlatFile extends FlatQuestion {
         name: string, type: string, content: string
     }): Promise<IPdfBrick> {
         const compositeFlat: CompositeBrick = new CompositeBrick(await SurveyHelper.createLinkFlat(
-            point, this.question, this.controller, item.name, item.content));
-        if (await SurveyHelper.canPreviewImage(this.question, item, item.content)) {
+            point, this.question, this.controller, item.name === undefined ? 'image' : item.name, item.content));
+        if (SurveyHelper.canPreviewImage(this.question, item, item.content)) {
             const imageSize: ISize = await SurveyHelper.getImageSize(item.content);
             if (this.question.imageWidth) {
-                imageSize.width = SurveyHelper.parseWidth(this.question.imageWidth,
-                    SurveyHelper.getPageAvailableWidth(this.controller));
+                imageSize.width = SurveyHelper.parseWidth(this.question.imageWidth, SurveyHelper.getPageAvailableWidth(this.controller));
             }
-            if (this.question.imageHeight) {
-                imageSize.height = SurveyHelper.parseWidth(this.question.imageHeight,
-                    SurveyHelper.getPageAvailableWidth(this.controller));
+            if (this.question.imageHeight) { // TODO: we shouldn't use getPageAvailableWidth here
+                imageSize.height = SurveyHelper.parseWidth(this.question.imageHeight, SurveyHelper.getPageAvailableWidth(this.controller));
             }
             const imagePoint: IPoint = SurveyHelper.createPoint(compositeFlat);
-            imagePoint.yTop += this.controller.unitHeight *
-                FlatFile.IMAGE_GAP_SCALE;
-            compositeFlat.addBrick(SurveyHelper.createImageFlat(
-                imagePoint, this.question, this.controller, item.content,
-                imageSize.width, imageSize.height));
+            imagePoint.yTop += this.controller.unitHeight * FlatFile.IMAGE_GAP_SCALE;
+            compositeFlat.addBrick(SurveyHelper.createImageFlat(imagePoint, this.question, this.controller, item.content, imageSize.width, imageSize.height));
         }
         return compositeFlat;
     }
@@ -61,10 +56,16 @@ export class FlatFile extends FlatQuestion {
             const item: { name: string, type: string, content: string } = this.question.previewValue[i];
             const availableWidth: number = this.controller.paperWidth -
                 this.controller.margins.right - currPoint.xLeft;
-            if (await SurveyHelper.canPreviewImage(this.question, item, item.content)) {
-                const compositeWidth: number = Math.max((
-                    await SurveyHelper.getImageSize(item.content)).width,
-                    FlatFile.TEXT_MIN_SCALE * this.controller.unitWidth);
+            if (SurveyHelper.canPreviewImage(this.question, item, item.content)) {
+                let contentWidth = (await SurveyHelper.getImageSize(item.content)).width;
+                if(contentWidth === undefined) {
+                    if(!!this.question.imageWidth) {
+                        contentWidth = SurveyHelper.parseWidth(this.question.imageWidth, SurveyHelper.getPageAvailableWidth(this.controller));
+                    } else {
+                        contentWidth = 0;
+                    }
+                }
+                const compositeWidth: number = Math.max(contentWidth, FlatFile.TEXT_MIN_SCALE * this.controller.unitWidth);
                 if (availableWidth < compositeWidth) {
                     currPoint.xLeft = point.xLeft;
                     currPoint.yTop = yBot;

@@ -19,19 +19,17 @@ export class FlatImagePicker extends FlatQuestion {
         this.question = <QuestionImagePickerModel>question;
     }
     private async generateFlatItem(point: IPoint, item: ItemValue, index: number): Promise<IPdfBrick> {
-        const compositeFlat: CompositeBrick = new CompositeBrick(SurveyHelper.
-            createImageFlat(point, this.question, this.controller, item['imageLink'],
-                SurveyHelper.getPageAvailableWidth(this.controller)));
+        const pageAvailableWidth = SurveyHelper.getPageAvailableWidth(this.controller);
+        const imageFlat = SurveyHelper.createImageFlat(point, this.question, this.controller, item['imageLink'], pageAvailableWidth, pageAvailableWidth / SurveyHelper.IMAGEPICKER_RATIO);
+        const compositeFlat: CompositeBrick = new CompositeBrick(imageFlat);
         let buttonPoint: IPoint = SurveyHelper.createPoint(compositeFlat);
         if (this.question.showLabel) {
-            let labelFlat: IPdfBrick = await SurveyHelper.createTextFlat(buttonPoint,
-                this.question, this.controller, item.text || item.value, TextBrick);
+            let labelFlat: IPdfBrick = await SurveyHelper.createTextFlat(buttonPoint, this.question, this.controller, item.text || item.value, TextBrick);
             compositeFlat.addBrick(labelFlat);
             buttonPoint = SurveyHelper.createPoint(labelFlat);
         }
         const height: number = this.controller.unitHeight;
-        const buttonRect: IRect = SurveyHelper.createRect(buttonPoint,
-            SurveyHelper.getPageAvailableWidth(this.controller), height);
+        const buttonRect: IRect = SurveyHelper.createRect(buttonPoint, pageAvailableWidth, height);
         if (this.question.multiSelect) {
             compositeFlat.addBrick(new CheckItemBrick(this.question, this.controller,
                 buttonRect, this.question.id + 'index' + index,

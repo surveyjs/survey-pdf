@@ -24,9 +24,9 @@ export class HTMLBrick extends PdfBrick {
         await new Promise<void>((resolve) => {
             this.controller.doc.fromHTML(this.html, this.xLeft, this.yTop, {
                 width: this.width, pagesplit: true,
-            }, function() {
+            }, function () {
                 [].slice.call(document.querySelectorAll('iframe')).forEach(
-                    function(el: HTMLIFrameElement) {
+                    function (el: HTMLIFrameElement) {
                         if (el.name.lastIndexOf('jsPDFhtmlText', 0) === 0) {
                             el.parentNode.removeChild(el);
                         }

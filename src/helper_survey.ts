@@ -1,5 +1,4 @@
-import { IQuestion, Question, QuestionRatingModel,
-    QuestionFileModel, LocalizableString } from 'survey-core';
+import { IQuestion, Question, QuestionRatingModel, QuestionFileModel, LocalizableString } from 'survey-core';
 import * as SurveyPDFModule from './entries/pdf';
 import { SurveyPDF } from './survey';
 import { IPoint, IRect, ISize, DocController } from './doc_controller';
@@ -14,6 +13,7 @@ import { DescriptionBrick } from './pdf_render/pdf_description';
 import { CommentBrick } from './pdf_render/pdf_comment';
 import { LinkBrick } from './pdf_render/pdf_link';
 import { HTMLBrick } from './pdf_render/pdf_html';
+import { ImageBrick } from './pdf_render/pdf_image';
 import { EmptyBrick } from './pdf_render/pdf_empty';
 import { RowlineBrick } from './pdf_render/pdf_rowline';
 import { CompositeBrick } from './pdf_render/pdf_composite';
@@ -425,22 +425,26 @@ export class SurveyHelper {
         return isQuestion ? (question.value !== undefined && question.value !== null ? question.value : '') :
             (question.comment !== undefined && question.comment !== null ? question.comment : '');
     }
-    public static createImageFlat(point: IPoint, question: IQuestion,
-        controller: DocController, imagelink: string, width: number, height?: number): IPdfBrick {
-        if (typeof height === 'undefined') {
-            height = width / this.IMAGEPICKER_RATIO;
+    public static inBrowser = typeof Image === "function";
+    public static createImageFlat(point: IPoint, question: IQuestion, controller: DocController, imagelink: string, width: number, height: number): IPdfBrick {
+
+        if (SurveyHelper.inBrowser) {
+            const html: string = `<img src='${imagelink}' width='${width}' height='${height}'/>`;
+            return new HTMLBrick(question, controller, this.createRect(point, width, height), html, true);
         }
-        const html: string = `<img src='${imagelink}' width='${width}' height='${height}'/>`;
-        return new HTMLBrick(question, controller,
-            this.createRect(point, width, height), html, true);
+
+        return new ImageBrick(question, controller, imagelink, point, width, height);
     }
-    public static async canPreviewImage(question: QuestionFileModel,
-        item: { name: string, type: string, content: string },
-        url: string): Promise<boolean> {
-        return question.canPreviewImage(item) &&
-            await this.getImageSize(url) !== null; 
+    public static canPreviewImage(question: QuestionFileModel, item: { name: string, type: string, content: string }, url: string): boolean {
+        return question.canPreviewImage(item);
+        //  &&  await this.getImageSize(url) !== null; 
     }
     public static async getImageSize(url: string): Promise<ISize> {
+        if(!SurveyHelper.inBrowser) {
+            return await new Promise((resolve) => {
+                return resolve({ width: undefined, height: undefined });
+            });
+        }
         return await new Promise((resolve) => {
             const image: any = new Image();
             image.src = url;

@@ -11,6 +11,7 @@ import { HTMLBrick } from '../src/pdf_render/pdf_html';
 import { RowlineBrick } from '../src/pdf_render/pdf_rowline';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
+import { ImageBrick } from '../src/pdf_render/pdf_image';
 const __dummy_tx = new FlatTextbox(null, null, null);
 
 test('Survey with title', async () => {
@@ -297,4 +298,29 @@ test('Survey with botton logo without title', async () => {
             SurveyHelper.pxToPt(survey.logoHeight)
     };
     TestHelper.equalRect(expect, flats[0][0], assumeLogo);
+});
+
+test('Survey with logo server-side', async () => {
+    SurveyHelper.inBrowser = false;
+    const json: any = {
+        logo: TestHelper.BASE64_IMAGE_16PX,
+        logoWidth: "420px",
+        logoHeight: "320px",
+        pages: []
+    };
+    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    const controller: DocController = new DocController(TestHelper.defaultOptions);
+    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    expect(flats.length).toBe(1);
+    expect(flats[0].length).toBe(2);
+    expect(flats[0][0] instanceof ImageBrick);
+    expect(flats[0][0].isPageBreak).toBeFalsy();
+    const assumeLogo: IRect = {
+        xLeft: controller.leftTopPoint.xLeft,
+        xRight: controller.leftTopPoint.xLeft + SurveyHelper.pxToPt(survey.logoWidth),
+        yTop: controller.leftTopPoint.yTop,
+        yBot: controller.leftTopPoint.yTop + SurveyHelper.pxToPt(survey.logoHeight)
+    };
+    TestHelper.equalRect(expect, flats[0][0], assumeLogo);  
+    SurveyHelper.inBrowser = true;
 });
