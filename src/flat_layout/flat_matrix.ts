@@ -5,7 +5,7 @@ import { DocController, IPoint, IRect } from '../doc_controller';
 import { FlatQuestion } from './flat_question';
 import { FlatRadiogroup } from './flat_radiogroup';
 import { FlatRepository } from './flat_repository';
-import { IPdfBrick } from '../pdf_render/pdf_brick'
+import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { TextBrick } from '../pdf_render/pdf_text';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
@@ -21,7 +21,7 @@ export class FlatMatrix extends FlatQuestion {
     protected async generateFlatsHeader(point: IPoint): Promise<IPdfBrick[]> {
         const headers: IPdfBrick[] = [];
         const currPoint: IPoint = SurveyHelper.clone(point);
-        const colCount: number = this.question.visibleColumns.length + (this.question.hasRows ? 1 : 0)
+        const colCount: number = this.question.visibleColumns.length + (this.question.hasRows ? 1 : 0);
         for (let i: number = 0; i < this.question.visibleColumns.length; i++) {
             const column = this.question.hasRows ? i + 1 : i;
             this.controller.pushMargins();
@@ -103,7 +103,7 @@ export class FlatMatrixRow extends FlatRadiogroup {
     protected async generateFlatsHorizontallyCells(point: IPoint) {
         const cells: IPdfBrick[] = [];
         const currPoint: IPoint = SurveyHelper.clone(point);
-        const colCount: number = this.question.visibleColumns.length + (this.question.hasRows ? 1 : 0)
+        const colCount: number = this.question.visibleColumns.length + (this.question.hasRows ? 1 : 0);
         if (this.questionMatrix.hasRows) {
             this.controller.pushMargins();
             SurveyHelper.setColumnMargins(this.controller, colCount, 0);

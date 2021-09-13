@@ -88,7 +88,7 @@ export class DrawCanvas {
         protected _countPages: number,
         protected _pageNumber: number) {}
     /**
-     * Count of pages in the document 
+     * Count of pages in the document
      */
     public get countPages(): number {
         return this._countPages;
@@ -146,7 +146,7 @@ export class DrawCanvas {
                     rect.xLeft = Math.max(this.rect.xLeft + rectOptions.margins.left,
                         (this.rect.xLeft + this.rect.xRight - itemSize.width) / 2.0);
                     rect.xRight = Math.min(this.rect.xRight - rectOptions.margins.right,
-                        (this.rect.xLeft + this.rect.xRight + itemSize.width) / 2.0); 
+                        (this.rect.xLeft + this.rect.xRight + itemSize.width) / 2.0);
                     break;
                 case HorizontalAlign.Right:
                     rect.xLeft = Math.max(this.rect.xLeft + rectOptions.margins.left,
@@ -170,7 +170,7 @@ export class DrawCanvas {
                     rect.yTop = Math.max(this.rect.yTop + rectOptions.margins.top,
                         (this.rect.yTop + this.rect.yBot - itemSize.height) / 2.0);
                     rect.yBot = Math.min(this.rect.yBot - rectOptions.margins.bot,
-                        (this.rect.yTop + this.rect.yBot + itemSize.height) / 2.0); 
+                        (this.rect.yTop + this.rect.yBot + itemSize.height) / 2.0);
                     break;
                 case VerticalAlign.Bottom:
                     rect.yTop = Math.max(this.rect.yTop + rectOptions.margins.top,
@@ -186,7 +186,7 @@ export class DrawCanvas {
         return rect;
     }
     /**
-     * Call this method to draw text 
+     * Call this method to draw text
      * @param textOptions Set options of the drawn text
      */
     public drawText(textOptions: IDrawTextOptions): void {
@@ -212,7 +212,7 @@ export class DrawCanvas {
     }
     /**
      * Call this method to draw image
-     * @param imageOptions 
+     * @param imageOptions
      */
     public drawImage(imageOptions: IDrawImageOptions): void {
         imageOptions = SurveyHelper.clone(imageOptions);

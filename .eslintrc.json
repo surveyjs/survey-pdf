@@ -16,7 +16,7 @@
         "no-console": 2, // Remember, this means error!
         "indent": [
             "error",
-            2,
+            4,
             {
                 "SwitchCase": 1,
                 "MemberExpression": 1,
@@ -100,7 +100,7 @@
         "no-case-declarations": "off",
         "quotes": [
             "error",
-            "double",
+            "single",
             {
                 "avoidEscape": true
             }

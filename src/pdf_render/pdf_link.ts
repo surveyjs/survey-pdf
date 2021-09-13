@@ -26,7 +26,7 @@ export class LinkBrick extends TextBrick {
     }
     public async renderReadOnly(): Promise<void> {
         if (SurveyHelper.getReadonlyRenderAs(<Question>this.question,
-            this.controller) !== "text") {
+            this.controller) !== 'text') {
             return this.renderInteractive();
         }
         await super.renderInteractive();

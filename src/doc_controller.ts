@@ -16,8 +16,8 @@ export interface IRect extends IPoint {
     yBot: number;
 }
 export interface ISize {
-    width: number,
-    height: number
+    width: number;
+    height: number;
 }
 export interface IMarginLR {
     left?: number;
@@ -121,7 +121,7 @@ export class DocOptions implements IDocOptions {
         return {
             xLeft: this.margins.left,
             yTop: this.margins.top
-        }
+        };
     }
     public get fontSize(): number {
         return this._fontSize;
@@ -215,21 +215,21 @@ export class DocController extends DocOptions {
     public get fontName(): string {
         return this._fontName;
     }
-    public get fontSize(): number {
-        return this._fontSize;
-    }
-    public get fontStyle(): string {
-        return this._fontStyle;
-    }
     public set fontName(fontName: string) {
         this._fontName = fontName;
         this._doc.setFont(fontName);
         this._helperDoc.setFont(fontName);
     }
+    public get fontSize(): number {
+        return this._fontSize;
+    }
     public set fontSize(fontSize: number) {
         this._fontSize = fontSize;
         this._doc.setFontSize(fontSize);
         this._helperDoc.setFontSize(fontSize);
+    }
+    public get fontStyle(): string {
+        return this._fontStyle;
     }
     public set fontStyle(fontStyle: string) {
         this._fontStyle = fontStyle;
@@ -256,7 +256,7 @@ export class DocController extends DocOptions {
         return {
             width: width,
             height: height
-        }
+        };
     }
     public get unitWidth(): number {
         return this.measureText().width;

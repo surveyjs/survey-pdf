@@ -6,36 +6,36 @@ import { DrawCanvas } from './draw_canvas';
 import { SurveyHelper } from '../helper_survey';
 
 export class EventAsync<T extends Function, Options> extends Event<T, Options> {
-  public unshift(func: T) {
-    if (this.hasFunc(func)) return;
-    if (this.callbacks == null) {
-      this.callbacks = new Array<T>();
+    public unshift(func: T) {
+        if (this.hasFunc(func)) return;
+        if (this.callbacks == null) {
+            this.callbacks = new Array<T>();
+        }
+        this.callbacks.unshift(func);
     }
-    this.callbacks.unshift(func);
-  }
-  public async fire(sender: any, options: Options) {
-    if (this.callbacks == null) return;
-    for (var i = 0; i < this.callbacks.length; i++) {
-      await this.callbacks[i](sender, options);
+    public async fire(sender: any, options: Options) {
+        if (this.callbacks == null) return;
+        for (var i = 0; i < this.callbacks.length; i++) {
+            await this.callbacks[i](sender, options);
+        }
     }
-  }
 }
 export class EventHandler {
-  public static process_header_events(survey: SurveyPDF,
-    controller: DocController, packs: IPdfBrick[][]): void {
-    if (!survey.haveCommercialLicense) {
-      survey.onRenderHeader.add((_, canvas) => {
-        canvas.drawText({
-          text: 'SurveyJS PDF | Please purchase a SurveyJS PDF developer license to use it in your app | https://surveyjs.io/Buy',
-          fontSize: 10
-        });
-      });
+    public static process_header_events(survey: SurveyPDF,
+        controller: DocController, packs: IPdfBrick[][]): void {
+        if (!survey.haveCommercialLicense) {
+            survey.onRenderHeader.add((_, canvas) => {
+                canvas.drawText({
+                    text: 'SurveyJS PDF | Please purchase a SurveyJS PDF developer license to use it in your app | https://surveyjs.io/Buy',
+                    fontSize: 10
+                });
+            });
+        }
+        for (let i: number = 0; i < packs.length; i++) {
+            survey.onRenderHeader.fire(survey, new DrawCanvas(packs[i], controller,
+                SurveyHelper.createHeaderRect(controller), packs.length, i + 1));
+            survey.onRenderFooter.fire(survey, new DrawCanvas(packs[i], controller,
+                SurveyHelper.createFooterRect(controller), packs.length, i + 1));
+        }
     }
-    for (let i: number = 0; i < packs.length; i++) {
-      survey.onRenderHeader.fire(survey, new DrawCanvas(packs[i], controller,
-          SurveyHelper.createHeaderRect(controller), packs.length, i + 1));
-      survey.onRenderFooter.fire(survey,new DrawCanvas(packs[i], controller,
-          SurveyHelper.createFooterRect(controller), packs.length, i + 1));
-    }
-  }
 }

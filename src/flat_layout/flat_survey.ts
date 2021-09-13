@@ -34,7 +34,7 @@ export class FlatSurvey {
         pagePanel.onFirstRendering();
         const pagePanelFlats: IPdfBrick[] = [];
         let currPoint: IPoint = SurveyHelper.clone(point);
-        if (pagePanel.getType() !== "page" || survey.showPageTitles) {
+        if (pagePanel.getType() !== 'page' || survey.showPageTitles) {
             const compositeFlat: CompositeBrick = new CompositeBrick();
             if (pagePanel.title) {
                 const pagelPanelTitleFlat: IPdfBrick = await SurveyHelper.createTitlePanelFlat(
@@ -131,7 +131,7 @@ export class FlatSurvey {
             shift = SurveyHelper.getPageAvailableWidth(controller) - logoFlat.width;
         }
         else if (survey.logoPosition !== 'left') {
-            shift = SurveyHelper.getPageAvailableWidth(controller) / 2.0 - logoFlat.width / 2.0; 
+            shift = SurveyHelper.getPageAvailableWidth(controller) / 2.0 - logoFlat.width / 2.0;
         }
         logoFlat.xLeft += shift;
         logoFlat.xRight += shift;

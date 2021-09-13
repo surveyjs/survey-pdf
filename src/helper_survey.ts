@@ -93,7 +93,7 @@ export class SurveyHelper {
         return Math.min(value * k, maxWidth);
     }
     public static pxToPt(value: number | string) {
-        if (typeof value === "string") {
+        if (typeof value === 'string') {
             return SurveyHelper.parseWidth(value, Number.MAX_VALUE);
         }
         return value * 72.0 / 96.0;
@@ -107,9 +107,9 @@ export class SurveyHelper {
         };
         rects.forEach((rect: IRect) => {
             resultRect.xLeft = Math.min(resultRect.xLeft, rect.xLeft),
-                resultRect.xRight = Math.max(resultRect.xRight, rect.xRight),
-                resultRect.yTop = Math.min(resultRect.yTop, rect.yTop),
-                resultRect.yBot = Math.max(resultRect.yBot, rect.yBot)
+            resultRect.xRight = Math.max(resultRect.xRight, rect.xRight),
+            resultRect.yTop = Math.min(resultRect.yTop, rect.yTop),
+            resultRect.yBot = Math.max(resultRect.yBot, rect.yBot);
         });
         return resultRect;
     }
@@ -213,14 +213,14 @@ export class SurveyHelper {
             top: controller.margins.top,
             bottom: controller.margins.bot,
             width: width > controller.unitWidth ? width : controller.unitWidth
-        }
+        };
     }
     public static async createHTMLFlat(point: IPoint, question: Question, controller: DocController, html: string): Promise<IPdfBrick> {
         const margins: { top: number, bottom: number, width: number } = this.getHtmlMargins(controller, point);
         return await new Promise<IPdfBrick>((resolve) => {
             controller.helperDoc.fromHTML(html, point.xLeft, margins.top, {
                 pagesplit: true, width: margins.width
-            }, function(result: any) {
+            }, function (result: any) {
                 const height: number = (controller.helperDoc.getNumberOfPages() - 1) *
                     (controller.paperHeight - controller.margins.bot - controller.margins.top)
                     + result.y - margins.top + SurveyHelper.HTML_TAIL_TEXT_SCALE * controller.fontSize;
@@ -231,16 +231,16 @@ export class SurveyHelper {
                 }
                 const rect: IRect = SurveyHelper.createRect(point, margins.width, height);
                 resolve(new HTMLBrick(question, controller, rect, html));
-            }, margins)
+            }, margins);
         });
     }
     public static generateFontFace(fontName: string, fontBase64: string, fontWeight: string) {
-        return `@font-face { font-family: ${fontName}; ` + 
+        return `@font-face { font-family: ${fontName}; ` +
             `src: url(data:application/font-woff;charset=utf-8;base64,${fontBase64}) format('woff'); ` +
             `font-weight: ${fontWeight}; }`;
     }
     public static generateFontFaceWithItalicStyle(fontName: string, fontBase64: string, fontWeight: string) {
-        return `@font-face { font-family: ${fontName}; ` + 
+        return `@font-face { font-family: ${fontName}; ` +
             `src: url(data:application/font-woff;charset=utf-8;base64,${fontBase64}) format('woff'); ` +
             `font-weight: ${fontWeight}; font-style: italic}`;
     }
@@ -276,7 +276,7 @@ export class SurveyHelper {
         let defs: string = '';
         if (controller.useCustomFontInHtml) {
             defs = `<defs><style>${this.generateFontFace(controller.fontName, controller.base64Normal, 'normal')}` +
-            ` ${this.generateFontFace(controller.fontName, controller.base64Bold, 'bold')}</style></defs>`;
+                ` ${this.generateFontFace(controller.fontName, controller.base64Bold, 'bold')}</style></defs>`;
         } else {
             Object.keys(DocController.customFonts).forEach(fontName => {
                 const font = DocController.customFonts[fontName];
@@ -284,7 +284,7 @@ export class SurveyHelper {
                     if (fontStyle === 'normal' || fontStyle === 'bold') {
                         defs += `${this.generateFontFace(fontName, font[fontStyle], fontStyle)}`;
                     } else {
-                        defs += `${this.generateFontFaceWithItalicStyle(fontName, font[fontStyle], fontStyle === 'italic' ? 'normal' : 'bold')}`
+                        defs += `${this.generateFontFaceWithItalicStyle(fontName, font[fontStyle], fontStyle === 'italic' ? 'normal' : 'bold')}`;
                     }
                 });
                 defs = '<defs><style>' + defs + '</style></defs>';
@@ -296,13 +296,13 @@ export class SurveyHelper {
             this.htmlToXml(html) + '</foreignObject></svg>';
         return { svg, divWidth, divHeight };
     }
-    public static async htmlToImage(html: string, width: number, controller: DocController): Promise<{ url: string, aspect: number }> {  
+    public static async htmlToImage(html: string, width: number, controller: DocController): Promise<{ url: string, aspect: number }> {
         const { svg, divWidth, divHeight } = SurveyHelper.createSvgContent(html, width, controller);
         const data: string = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svg)));
         const img: HTMLImageElement = new Image();
         img.src = data;
         return await new Promise((resolve) => {
-            img.onload = function() {
+            img.onload = function () {
                 const canvas: HTMLCanvasElement = document.createElement('canvas');
                 canvas.width = divWidth;
                 canvas.height = divHeight;
@@ -314,7 +314,7 @@ export class SurveyHelper {
                 canvas.remove();
                 resolve({ url: url, aspect: divWidth / divHeight });
             };
-            img.onerror = function() {
+            img.onerror = function () {
                 resolve({ url: 'data:,', aspect: width / this.EPSILON });
             };
         });
@@ -425,7 +425,7 @@ export class SurveyHelper {
         return isQuestion ? (question.value !== undefined && question.value !== null ? question.value : '') :
             (question.comment !== undefined && question.comment !== null ? question.comment : '');
     }
-    public static inBrowser = typeof Image === "function";
+    public static inBrowser = typeof Image === 'function';
     public static createImageFlat(point: IPoint, question: IQuestion, controller: DocController, imagelink: string, width: number, height: number): IPdfBrick {
 
         if (SurveyHelper.inBrowser) {
@@ -437,10 +437,10 @@ export class SurveyHelper {
     }
     public static canPreviewImage(question: QuestionFileModel, item: { name: string, type: string, content: string }, url: string): boolean {
         return question.canPreviewImage(item);
-        //  &&  await this.getImageSize(url) !== null; 
+        //  &&  await this.getImageSize(url) !== null;
     }
     public static async getImageSize(url: string): Promise<ISize> {
-        if(!SurveyHelper.inBrowser) {
+        if (!SurveyHelper.inBrowser) {
             return await new Promise((resolve) => {
                 return resolve({ width: undefined, height: undefined });
             });
@@ -448,10 +448,10 @@ export class SurveyHelper {
         return await new Promise((resolve) => {
             const image: any = new Image();
             image.src = url;
-            image.onload = function() {
+            image.onload = function () {
                 return resolve({ width: image.width, height: image.height });
-            }
-            image.onerror = function() { return resolve(null); }
+            };
+            image.onerror = function () { return resolve(null); };
         });
     }
     public static createRowlineFlat(point: IPoint, controller: DocController,
