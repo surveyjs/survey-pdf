@@ -18,7 +18,7 @@ export class FlatFile extends FlatQuestion {
         this.question = <QuestionFileModel>question;
     }
     private async generateFlatItem(point: IPoint, item: {
-        name: string, type: string, content: string
+        name: string, type: string, content: string,
     }): Promise<IPdfBrick> {
         const compositeFlat: CompositeBrick = new CompositeBrick(await SurveyHelper.createLinkFlat(
             point, this.question, this.controller, item.name === undefined ? 'image' : item.name, item.content));
@@ -91,7 +91,7 @@ export class FlatFile extends FlatQuestion {
                 yBot = Math.max(yBot, itemFlat.yBot);
             }
             currPoint.xLeft += this.controller.unitWidth;
-        };
+        }
         return rowsFlats;
     }
 }

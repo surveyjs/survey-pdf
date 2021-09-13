@@ -13,8 +13,8 @@ export class FlatSignaturePad extends FlatQuestion {
         super(survey, question, controller);
         this.question = <QuestionSignaturePadModel>question;
     }
-    public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {	
-        let imageBrick = SurveyHelper.createImageFlat(point,	
+    public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
+        let imageBrick = SurveyHelper.createImageFlat(point,
             this.question, this.controller,	this.question.value,
             SurveyHelper.pxToPt(<any>this.question.width),
             SurveyHelper.pxToPt(<any>this.question.height)

@@ -17,7 +17,7 @@ export class DropdownBrick extends PdfBrick {
         comboBox.fieldName = this.question.id;
         comboBox.Rect = SurveyHelper.createAcroformRect(
             SurveyHelper.scaleRect(this,
-            SurveyHelper.formScale(this.controller, this)));
+                SurveyHelper.formScale(this.controller, this)));
         comboBox.edit = false;
         comboBox.color = this.textColor;
         const options: string[] = [];
@@ -33,7 +33,7 @@ export class DropdownBrick extends PdfBrick {
         comboBox.readOnly = this.question.isReadOnly;
         comboBox.isUnicode = SurveyHelper.isCustomFont(
             this.controller, comboBox.fontName);
-        comboBox.V =  SurveyHelper.getDropdownQuestionValue(this.question);
+        comboBox.V = SurveyHelper.getDropdownQuestionValue(this.question);
         this.controller.doc.addField(comboBox);
         SurveyHelper.renderFlatBorders(this.controller, this);
     }

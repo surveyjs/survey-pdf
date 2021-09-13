@@ -9,7 +9,9 @@
     "doc_update": "chmod +x ./docupdate_npm.sh && ./docupdate_npm.sh",
     "build_dev": "webpack --env.buildType dev --env.platform pdf",
     "build_prod": "npm run build_dev && webpack --env.buildType prod --env.platform pdf && npm run dts_clean",
-    "dts_clean": "node dts_cleaner.js"
+    "dts_clean": "node dts_cleaner.js",
+    "lint": "eslint ./src --quiet",
+    "pre-push-check": "npm run lint && npm run build_prod && npm test"
   },
   "repository": {
     "type": "git",
@@ -27,8 +29,11 @@
     "@types/jest": "^23.3.3",
     "@types/lodash": "4.14.121",
     "@types/node": "7.0.4",
+    "@typescript-eslint/eslint-plugin": "^4.31.0",
+    "@typescript-eslint/parser": "^4.31.0",
     "dotenv": "4.0.0",
     "dts-bundle": "0.7.2",
+    "eslint": "^7.32.0",
     "generate-json-webpack-plugin": "0.2.1",
     "husky": "^2.7.0",
     "jest": "^23.6.0",
@@ -43,7 +48,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-push": "npm run build_prod && npm test"
+      "pre-push": "npm run pre-push-check"
     }
   }
 }

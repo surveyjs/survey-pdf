@@ -10,7 +10,7 @@ export class TestHelper {
         return {
             xLeft: 10.0 * DocOptions.MM_TO_PT,
             yTop: 10.0 * DocOptions.MM_TO_PT
-        }
+        };
     }
     public static get defaultRect(): IRect {
         return {
@@ -18,7 +18,7 @@ export class TestHelper {
             xRight: 20.0 * DocOptions.MM_TO_PT,
             yTop: 10.0 * DocOptions.MM_TO_PT,
             yBot: 20.0 * DocOptions.MM_TO_PT
-        }
+        };
     }
     public static get defaultOptions(): IDocOptions {
         return {

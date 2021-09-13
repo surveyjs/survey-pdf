@@ -16,9 +16,25 @@ export class CompositeBrick implements IPdfBrick {
         this.addBrick(...bricks);
     }
     get xLeft(): number { return this._xLeft; }
+    set xLeft(xLeft: number) {
+        this.shift(xLeft - this.xLeft, 0.0, 0.0, 0.0);
+        this._xLeft = xLeft;
+    }
     get xRight(): number { return this._xRight; }
+    set xRight(xRight: number) {
+        this.shift(0.0, xRight - this.xRight, 0.0, 0.0);
+        this._xRight = xRight;
+    }
     get yTop(): number { return this._yTop; }
+    set yTop(yTop: number) {
+        this.shift(0.0, 0.0, yTop - this.yTop, 0.0);
+        this._yTop = yTop;
+    }
     get yBot(): number { return this._yBot; }
+    set yBot(yBot: number) {
+        this.shift(0.0, 0.0, 0.0, yBot - this.yBot);
+        this._yBot = yBot;
+    }
     private shift(leftShift: number, rightShift: number,
         topShift: number, botShift: number) {
         this.bricks.forEach((brick: IPdfBrick) => {
@@ -27,22 +43,6 @@ export class CompositeBrick implements IPdfBrick {
             brick.yTop += topShift;
             brick.yBot += botShift;
         });
-    }
-    set xLeft(xLeft: number) {
-        this.shift(xLeft - this.xLeft, 0.0, 0.0, 0.0);
-        this._xLeft = xLeft;
-    }
-    set xRight(xRight: number) {
-        this.shift(0.0, xRight - this.xRight, 0.0, 0.0);
-        this._xRight = xRight;
-    }
-    set yTop(yTop: number) {
-        this.shift(0.0, 0.0, yTop - this.yTop, 0.0);
-        this._yTop = yTop;
-    }
-    set yBot(yBot: number) {
-        this.shift(0.0, 0.0, 0.0, yBot - this.yBot);
-        this._yBot = yBot;
     }
     public get width(): number {
         return this.xRight - this.xLeft;
@@ -75,4 +75,4 @@ export class CompositeBrick implements IPdfBrick {
         });
         return unfoldBricks;
     }
-} 
+}

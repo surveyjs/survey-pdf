@@ -20,7 +20,7 @@ export class AdornersBaseOptions {
     }
 }
 export class AdornersOptions extends AdornersBaseOptions {
-    public question: IQuestion; 
+    public question: IQuestion;
     public constructor(point: IPoint, bricks: IPdfBrick[],
         question: IQuestion, controller: DocController,
         repository: FlatRepository, module: any) {
@@ -29,7 +29,7 @@ export class AdornersOptions extends AdornersBaseOptions {
     }
 }
 export class AdornersPanelOptions extends AdornersBaseOptions {
-    public panel: PanelModel; 
+    public panel: PanelModel;
     public constructor(point: IPoint, bricks: IPdfBrick[],
         panel: PanelModel, controller: DocController,
         repository: FlatRepository, module: any) {
@@ -39,7 +39,7 @@ export class AdornersPanelOptions extends AdornersBaseOptions {
 }
 
 export class AdornersPageOptions extends AdornersBaseOptions {
-    public page: PageModel; 
+    public page: PageModel;
     public constructor(point: IPoint, bricks: IPdfBrick[],
         page: PageModel, controller: DocController,
         repository: FlatRepository, module: any) {

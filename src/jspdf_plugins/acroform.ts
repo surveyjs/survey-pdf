@@ -7,5 +7,5 @@ export default function setRadioAppearance(doc: any): any {
         stream[0] = stream[0] + '\n' + encodeColor + '\n' + encodeColor.toUpperCase();
         xobj.stream = stream.join('\n');
         return xobj;
-    }
+    };
 }

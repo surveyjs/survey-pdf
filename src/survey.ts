@@ -69,20 +69,20 @@ export class SurveyPDF extends SurveyModel {
     public onRenderPage: EventAsync<(survey: SurveyPDF, options: AdornersPageOptions) => any, any> =
         new EventAsync<(survey: SurveyPDF, options: AdornersPageOptions) => any, any>();
     private waitForQuestionIsReady(question: Question): Promise<void> {
-        return new Promise((resolve: any) => {     
-          if (question.isReady) {
-              resolve();
-          }
-          else {
-            const readyCallback: (sender: Question, options: any) => void =
+        return new Promise((resolve: any) => {
+            if (question.isReady) {
+                resolve();
+            }
+            else {
+                const readyCallback: (sender: Question, options: any) => void =
                 (_, options: any) => {
                     if (options.isReady) {
                         question.onReadyChanged.remove(readyCallback);
                         resolve();
                     }
-                }
-            question.onReadyChanged.add(readyCallback);
-          }
+                };
+                question.onReadyChanged.add(readyCallback);
+            }
         });
     }
     private async waitForCoreIsReady(): Promise<void> {
@@ -100,12 +100,12 @@ export class SurveyPDF extends SurveyModel {
         }
     }
     private async render(controller: DocController): Promise<void> {
-      await this.waitForCoreIsReady();
-      const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(this, controller);
-      const packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
-      EventHandler.process_header_events(this, controller, packs);
-      for (let i: number = 0; i < packs.length; i++) {
-          for (let j: number = 0; j < packs[i].length; j++) {
+        await this.waitForCoreIsReady();
+        const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(this, controller);
+        const packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
+        EventHandler.process_header_events(this, controller, packs);
+        for (let i: number = 0; i < packs.length; i++) {
+            for (let j: number = 0; j < packs[i].length; j++) {
                 if (controller.getNumberOfPages() === i) {
                     controller.addPage();
                 }
@@ -118,8 +118,8 @@ export class SurveyPDF extends SurveyModel {
                 //   }
                 // );
                 await packs[i][j].render();
-          }
-      }
+            }
+        }
     }
     /**
      * Call save method of surveyPDF object to download file in browser. This is asynchronous method

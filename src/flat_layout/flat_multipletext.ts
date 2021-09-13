@@ -30,8 +30,8 @@ export class FlatMultipleText extends FlatQuestion {
             this.survey, item.editor, this.controller, 'text');
         const itemPoint: IPoint = SurveyHelper.createTextFieldRect({
             xLeft: point.xLeft + colWidth * SurveyHelper.MULTIPLETEXT_TEXT_PERS, yTop: point.yTop },
-            this.controller);
-        compositeFlat.addBrick(...await (<FlatTextbox>flatMultipleTextItemQuestion).generateFlatsContent(itemPoint));   
+        this.controller);
+        compositeFlat.addBrick(...await (<FlatTextbox>flatMultipleTextItemQuestion).generateFlatsContent(itemPoint));
 
         return compositeFlat;
     }
@@ -41,7 +41,7 @@ export class FlatMultipleText extends FlatQuestion {
         const rows = this.question.getRows();
         for (let i: number = 0; i < rows.length; i++) {
             rowsFlats.push(new CompositeBrick());
-            let yBot: number = currPoint.yTop
+            let yBot: number = currPoint.yTop;
             this.controller.pushMargins();
             for (let j: number = 0; j < rows[i].length; j++) {
                 this.controller.pushMargins();

@@ -2,7 +2,7 @@ import { IQuestion, Question, LocalizableString, Serializer } from 'survey-core'
 import { SurveyPDF } from '../survey';
 import { IPoint, DocController } from '../doc_controller';
 import { FlatSurvey } from './flat_survey';
-import { IPdfBrick } from '../pdf_render/pdf_brick'
+import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { TextBrick } from '../pdf_render/pdf_text';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
@@ -23,7 +23,7 @@ export class FlatQuestion implements IFlatQuestion {
     }
     private async generateFlatTitle(point: IPoint): Promise<IPdfBrick> {
         return await SurveyHelper.createTitleFlat(point,
-            this.question, this.controller)
+            this.question, this.controller);
     }
     private async generateFlatDescription(point: IPoint): Promise<IPdfBrick> {
         const descPoint: IPoint = SurveyHelper.clone(point);
