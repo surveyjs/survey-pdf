@@ -10,7 +10,8 @@
     "build_dev": "webpack --env.buildType dev --env.platform pdf",
     "build_prod": "npm run build_dev && webpack --env.buildType prod --env.platform pdf && npm run dts_clean",
     "dts_clean": "node dts_cleaner.js",
-    "lint": "eslint ./src --quiet"
+    "lint": "eslint ./src --quiet",
+    "pre-push-check": "npm run lint && npm run build_prod && npm test"
   },
   "repository": {
     "type": "git",
@@ -47,7 +48,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-push": "npm run build_prod && npm test"
+      "pre-push": "npm run pre-push-check"
     }
   }
 }
