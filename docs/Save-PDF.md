@@ -79,8 +79,9 @@ This is asynchronous method.
 Example:  
 Obtains a PDF document as a string, creates a Blob object from the string, creates a URL for the Blob object and downloads the Blob through a dynamically created `a` element with `href` set to the Blob URL.
 
+Note: use only with default jspdf fonts.
 ```JavaScript
-var surveyPDF = new SurveyPDF.SurveyPDF(json);
+var surveyPDF = new SurveyPDF.SurveyPDF(json, { fontName: "helvetica" });
 surveyPDF.data = survey.data;
 surveyPDF
     .raw()
@@ -95,7 +96,7 @@ surveyPDF
 ```
 
 See a Plunker sample:  
-[SurveyPDF - How to save the result PDF as a string](https://plnkr.co/edit/TeYhoAxkvwF3EAPc)
+[SurveyPDF - How to save the result PDF as a string](https://plnkr.co/edit/3IrArYjYdHiuVPoK)
 
 
 
