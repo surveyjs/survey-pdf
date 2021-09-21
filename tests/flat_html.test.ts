@@ -4,7 +4,7 @@
 
 import { Question } from 'survey-core';
 import { SurveyPDF } from '../src/survey';
-import { IPoint, IRect, DocController } from '../src/doc_controller';
+import { IPoint, IRect, DocController, IDocOptions } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { FlatHTML } from '../src/flat_layout/flat_html';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
@@ -53,4 +53,26 @@ test('Check choose auto render', async () => {
     expect((<any>flats[0][0].unfold())[0]['html'].startsWith('<img')).toBe(false);
     expect(flats[0][2].unfold()[0] instanceof HTMLBrick).toBe(true);
     expect((<any>flats[0][2])['html'].startsWith('<img')).toBe(true);
+});
+
+test('Check createHTMLRect method with long html', async () => {
+    const options: IDocOptions = TestHelper.defaultOptions;
+    options.htmlRenderAs = 'standard';
+    options.format = [150, 100];
+    const controller: DocController = new DocController(options);
+    const descPoint: IPoint = controller.leftTopPoint;
+    const margins: any = { top: controller.margins.top, bottom: controller.margins.bot, width: controller.unitWidth };
+    const result: number = descPoint.yTop;
+
+    let actualRect: IRect = SurveyHelper.createHTMLRect(descPoint, controller, margins, result);
+    expect(actualRect.yBot - actualRect.yTop).toBeCloseTo(7.2, 8);
+
+    controller.helperDoc.addPage();
+    actualRect = SurveyHelper.createHTMLRect(descPoint, controller, margins, result);
+    expect(actualRect.yBot - actualRect.yTop).toBeCloseTo(217.2, 8);
+
+    controller.helperDoc.addPage();
+    controller.helperDoc.addPage();
+    actualRect = SurveyHelper.createHTMLRect(descPoint, controller, margins, result);
+    expect(actualRect.yBot - actualRect.yTop).toBeCloseTo(427.2, 8);
 });

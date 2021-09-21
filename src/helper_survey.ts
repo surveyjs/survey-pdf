@@ -156,14 +156,14 @@ export class SurveyHelper {
         const font = this.chooseHtmlFont(controller, renderAs);
         return `<div class="__surveypdf_html" style=${this.generateCssTextRule(
             controller.fontSize, controller.fontStyle, font)}>` +
-            `<style>.__surveypdf_html p { margin: unset; line-height: 22px; } body { margin: unset; }</style>${html}</div>`;
+            `<style>.__surveypdf_html p { margin: 0; line-height: ${controller.fontSize}pt } body { margin: 0; }</style>${html}</div>`;
     }
     public static splitHtmlRect(controller: DocController, htmlBrick: IPdfBrick): IPdfBrick {
         const bricks: IPdfBrick[] = [];
         const htmlHeight: number = htmlBrick.height;
-        const minHeight: number = controller.measureText(1, 'normal', controller.doc.fontSize).height;
-        const emptyBrickCount: number = Math.floor(htmlHeight / minHeight) - 1;
+        const minHeight: number = controller.doc.getFontSize();
         htmlBrick.yBot = htmlBrick.yTop + minHeight;
+        const emptyBrickCount: number = Math.floor(htmlHeight / minHeight) - 1;
         bricks.push(htmlBrick);
         const currPoint: IPoint = this.createPoint(htmlBrick);
         for (let i: number = 0; i < emptyBrickCount; i++) {
@@ -215,21 +215,28 @@ export class SurveyHelper {
             width: width > controller.unitWidth ? width : controller.unitWidth
         };
     }
+
+    public static createHTMLRect(point: IPoint, controller: DocController,
+        margins: { top: number, bottom: number, width: number }, resultY: number): IRect {
+        const availablePageHeight: number = controller.paperHeight - controller.margins.bot - controller.margins.top;
+        const height: number = (controller.helperDoc.getNumberOfPages() - 1) *
+            (controller.fontSize * Math.floor(availablePageHeight / controller.fontSize))
+            + resultY - margins.top + SurveyHelper.HTML_TAIL_TEXT_SCALE * controller.fontSize;
+        const numberOfPages: number = controller.helperDoc.getNumberOfPages();
+        controller.helperDoc.addPage();
+        for (let i: number = 0; i < numberOfPages; i++) {
+            controller.helperDoc.deletePage(1);
+        }
+        return SurveyHelper.createRect(point, margins.width, height);
+    }
+
     public static async createHTMLFlat(point: IPoint, question: Question, controller: DocController, html: string): Promise<IPdfBrick> {
         const margins: { top: number, bottom: number, width: number } = this.getHtmlMargins(controller, point);
         return await new Promise<IPdfBrick>((resolve) => {
             controller.helperDoc.fromHTML(html, point.xLeft, margins.top, {
                 pagesplit: true, width: margins.width
             }, function (result: any) {
-                const height: number = (controller.helperDoc.getNumberOfPages() - 1) *
-                    (controller.paperHeight - controller.margins.bot - controller.margins.top)
-                    + result.y - margins.top + SurveyHelper.HTML_TAIL_TEXT_SCALE * controller.fontSize;
-                const numberOfPages: number = controller.helperDoc.getNumberOfPages();
-                controller.helperDoc.addPage();
-                for (let i: number = 0; i < numberOfPages; i++) {
-                    controller.helperDoc.deletePage(1);
-                }
-                const rect: IRect = SurveyHelper.createRect(point, margins.width, height);
+                const rect: IRect = SurveyHelper.createHTMLRect(point, controller, margins, result.y);
                 resolve(new HTMLBrick(question, controller, rect, html));
             }, margins);
         });
