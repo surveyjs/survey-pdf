@@ -21,6 +21,8 @@ export class HTMLBrick extends PdfBrick {
         }
     }
     public async renderInteractive(): Promise<void> {
+        let oldFontSize: number = this.controller.fontSize;
+        this.controller.fontSize = this.fontSize;
         await new Promise<void>((resolve) => {
             this.controller.doc.fromHTML(this.html, this.xLeft, this.yTop, {
                 width: this.width, pagesplit: true,
@@ -35,5 +37,6 @@ export class HTMLBrick extends PdfBrick {
                 resolve();
             }, this.margins);
         });
+        this.controller.fontSize = oldFontSize;
     }
 }
