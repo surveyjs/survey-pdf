@@ -13,13 +13,16 @@ export class TextFieldBrick extends PdfBrick {
         super(question, controller, rect);
         this.question = <QuestionTextModel>question;
     }
+    private renderColorQuestion(): void {
+        let oldFillColor: string = this.controller.doc.getFillColor();
+        this.controller.doc.setFillColor(this.question.value || 'black');
+        this.controller.doc.rect(this.xLeft, this.yTop,
+            this.width, this.height, 'F');
+        this.controller.doc.setFillColor(oldFillColor);
+    }
     public async renderInteractive(): Promise<void> {
         if (this.inputType === 'color') {
-            let oldFillColor: string = this.controller.doc.getFillColor();
-            this.controller.doc.setFillColor(this.question.value || 'black');
-            this.controller.doc.rect(this.xLeft, this.yTop,
-                this.width, this.height, 'F');
-            this.controller.doc.setFillColor(oldFillColor);
+            this.renderColorQuestion();
             return;
         }
         const inputField: any = this.inputType === 'password' ?
@@ -48,8 +51,12 @@ export class TextFieldBrick extends PdfBrick {
     public async renderReadOnly(): Promise<void> {
         this.controller.pushMargins(this.xLeft,
             this.controller.paperWidth - this.xRight);
-        await SurveyHelper.renderReadOnlyTextField(this.controller,
-            this.question, this, this.value, !this.isMultiline);
+        if (this.inputType === 'color') {
+            this.renderColorQuestion();
+        } else {
+            await SurveyHelper.renderReadOnlyTextField(this.controller,
+                this.question, this, this.value, !this.isMultiline);
+        }
         this.controller.popMargins();
     }
 }
