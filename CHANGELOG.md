@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.8.73](https://github.com/surveyjs/survey-pdf/compare/v1.8.72...v1.8.73) (2021-10-21)
+
+### [1.8.72](https://github.com/surveyjs/survey-pdf/compare/v1.8.71...v1.8.72) (2021-10-12)
+
+### [1.8.71](https://github.com/surveyjs/survey-pdf/compare/v1.8.70...v1.8.71) (2021-10-07)
+
+### [1.8.70](https://github.com/surveyjs/survey-pdf/compare/v1.8.69...v1.8.70) (2021-09-29)
+
+### [1.8.69](https://github.com/surveyjs/survey-pdf/compare/v1.8.68...v1.8.69) (2021-09-28)
+
 ### [1.8.68](https://github.com/surveyjs/survey-pdf/compare/v1.8.67...v1.8.68) (2021-09-21)
 
 ### [1.8.67](https://github.com/surveyjs/survey-pdf/compare/v1.8.66...v1.8.67) (2021-09-17)
