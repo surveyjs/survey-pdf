@@ -197,9 +197,13 @@ var jspdf = require('jspdf');
             : text;
         // split into array of words
         var textSplit = text.split(" ");
-        textSplit = textSplit.map(word => word.split("\n"));
+        textSplit = textSplit.map(function (word) {
+            return word.split("\n");
+        });
         if (!formObject.multiline) {
-            textSplit = textSplit.map(arr => [arr.join(" ")]);
+            textSplit = textSplit.map(function (arr) {
+                return [arr.join(" ")]
+            });
         }
 
         var fontSize = maxFontSize; // The Starting fontSize (The Maximum)
@@ -256,7 +260,7 @@ var jspdf = require('jspdf');
             var lineCount = 0;
             Line: for (var i = 0; i < textSplit.length; i++) {
             if (textSplit.hasOwnProperty(i)) {
-                let isWithNewLine = false;
+                var isWithNewLine = false;
                 if (textSplit[i].length !== 1 && currWord !== textSplit[i].length - 1) {
                 if (
                     (textHeight + lineSpacing) * (lineCount + 2) + lineSpacing >
