@@ -22,6 +22,7 @@ import { AdornersOptions } from './event_handler/adorners';
 export class SurveyHelper {
     public static readonly EPSILON: number = 2.2204460492503130808472633361816e-15;
     public static readonly TITLE_SURVEY_FONT_SIZE_SCALE: number = 1.7;
+    public static readonly TITLE_PAGE_FONT_SIZE_SCALE: number = 1.3;
     public static readonly TITLE_PANEL_FONT_SIZE_SCALE: number = 1.3;
     public static readonly DESCRIPTION_FONT_SIZE_SCALE: number = 2.0 / 3.0;
     public static readonly OTHER_ROWS_COUNT: number = 2;
@@ -402,8 +403,9 @@ export class SurveyHelper {
         return await this.createTitleSurveyPanelFlat(point, controller, text, this.TITLE_SURVEY_FONT_SIZE_SCALE);
     }
     public static async createTitlePanelFlat(point: IPoint, controller: DocController,
-        text: string | LocalizableString): Promise<IPdfBrick> {
-        return await this.createTitleSurveyPanelFlat(point, controller, text, this.TITLE_PANEL_FONT_SIZE_SCALE);
+        text: string | LocalizableString, isPage: boolean): Promise<IPdfBrick> {
+        return await this.createTitleSurveyPanelFlat(point, controller, text,
+            isPage ? this.TITLE_PAGE_FONT_SIZE_SCALE : this.TITLE_PANEL_FONT_SIZE_SCALE);
     }
     public static async createDescFlat(point: IPoint, question: IQuestion,
         controller: DocController, text: string | LocalizableString): Promise<IPdfBrick> {
