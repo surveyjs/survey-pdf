@@ -403,7 +403,7 @@ export class SurveyHelper {
         return await this.createTitleSurveyPanelFlat(point, controller, text, this.TITLE_SURVEY_FONT_SIZE_SCALE);
     }
     public static async createTitlePanelFlat(point: IPoint, controller: DocController,
-        text: string | LocalizableString, isPage: boolean): Promise<IPdfBrick> {
+        text: string | LocalizableString, isPage: boolean = false): Promise<IPdfBrick> {
         return await this.createTitleSurveyPanelFlat(point, controller, text,
             isPage ? this.TITLE_PAGE_FONT_SIZE_SCALE : this.TITLE_PANEL_FONT_SIZE_SCALE);
     }
