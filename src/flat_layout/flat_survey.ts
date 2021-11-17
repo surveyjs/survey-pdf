@@ -38,7 +38,7 @@ export class FlatSurvey {
             const compositeFlat: CompositeBrick = new CompositeBrick();
             if (pagePanel.title) {
                 const pagelPanelTitleFlat: IPdfBrick = await SurveyHelper.createTitlePanelFlat(
-                    currPoint, controller, pagePanel.locTitle);
+                    currPoint, controller, pagePanel.locTitle, pagePanel.getType() === 'page');
                 compositeFlat.addBrick(pagelPanelTitleFlat);
                 currPoint = SurveyHelper.createPoint(pagelPanelTitleFlat);
             }
