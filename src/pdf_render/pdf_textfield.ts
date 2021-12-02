@@ -56,7 +56,7 @@ export class TextFieldBrick extends PdfBrick {
         } else {
             await SurveyHelper.renderReadOnlyTextField(this.controller,
                 this.question, this,
-                SurveyHelper.getQuestionOrCommentValue(this.question, this.isQuestion),
+                SurveyHelper.getQuestionOrCommentDisplayValue(this.question, this.isQuestion),
                 !this.isMultiline);
         }
         this.controller.popMargins();
