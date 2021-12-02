@@ -9,6 +9,7 @@ import { FlatExpression } from '../src/flat_layout/flat_expression';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
+import { QuestionExpressionModel } from 'survey-core';
 let __dummy_ex = new FlatExpression(null, null, null);
 
 test('Check expression', async () => {
@@ -34,4 +35,16 @@ test('Check expression', async () => {
         yBot: controller.leftTopPoint.yTop + controller.unitHeight
     };
     TestHelper.equalRect(expect, flats[0][0], assumeExpression);
+});
+test('Check expression with display format', async () => {
+    let json: any = {
+        elements: [
+            { type: 'expression', name: 'exp', expression: '0.05', displayStyle: 'percent' },
+        ]
+    };
+    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    let question = <QuestionExpressionModel>survey.getAllQuestions()[0];
+    expect(question.formatedValue).toEqual('5%');
+    expect(question.displayValue).toEqual('5%');
+    expect(SurveyHelper.getQuestionOrCommentDisplayValue(question, true)).toEqual('5%');
 });

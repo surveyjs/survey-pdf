@@ -434,6 +434,9 @@ export class SurveyHelper {
         return isQuestion ? (question.value !== undefined && question.value !== null ? question.value : '') :
             (question.comment !== undefined && question.comment !== null ? question.comment : '');
     }
+    public static getQuestionOrCommentDisplayValue(question: Question, isQuestion: boolean = true): string {
+        return isQuestion ? question.displayValue : SurveyHelper.getQuestionOrCommentValue(question, isQuestion);
+    }
     public static inBrowser = typeof Image === 'function';
     public static createImageFlat(point: IPoint, question: IQuestion, controller: DocController, imagelink: string, width: number, height: number): IPdfBrick {
 
