@@ -37,6 +37,12 @@ export class FlatSurvey {
         if (pagePanel.getType() !== 'page' || survey.showPageTitles) {
             const compositeFlat: CompositeBrick = new CompositeBrick();
             if (pagePanel.title) {
+                if (pagePanel instanceof PanelModel && pagePanel.no) {
+                    const noFlat: IPdfBrick = await SurveyHelper.createTitlePanelFlat(
+                        currPoint, controller, pagePanel.no, pagePanel.getType() === 'page');
+                    compositeFlat.addBrick(noFlat);
+                    currPoint.xLeft = noFlat.xRight + SurveyHelper.GAP_BETWEEN_ITEM_TEXT * controller.doc.getFontSize();
+                }
                 const pagelPanelTitleFlat: IPdfBrick = await SurveyHelper.createTitlePanelFlat(
                     currPoint, controller, pagePanel.locTitle, pagePanel.getType() === 'page');
                 compositeFlat.addBrick(pagelPanelTitleFlat);
