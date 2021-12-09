@@ -36,7 +36,7 @@ test('Check expression', async () => {
     };
     TestHelper.equalRect(expect, flats[0][0], assumeExpression);
 });
-test('Check expression with display format', async () => {
+test.skip('Check expression with display format', async () => {
     let json: any = {
         elements: [
             { type: 'expression', name: 'exp', expression: '0.05', displayStyle: 'percent' },
