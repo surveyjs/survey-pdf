@@ -41,7 +41,7 @@ export class FlatSurvey {
                     const noFlat: IPdfBrick = await SurveyHelper.createTitlePanelFlat(
                         currPoint, controller, pagePanel.no, pagePanel.getType() === 'page');
                     compositeFlat.addBrick(noFlat);
-                    currPoint.xLeft = noFlat.xRight + SurveyHelper.GAP_BETWEEN_ITEM_TEXT * controller.doc.getFontSize();
+                    currPoint.xLeft = noFlat.xRight + controller.measureText(' ').width;
                 }
                 const pagelPanelTitleFlat: IPdfBrick = await SurveyHelper.createTitlePanelFlat(
                     currPoint, controller, pagePanel.locTitle, pagePanel.getType() === 'page');
