@@ -33,6 +33,7 @@ export { CheckboxItemBrick } from '../pdf_render/pdf_checkboxitem';
 export { CheckItemBrick } from '../pdf_render/pdf_checkitem';
 export { CommentBrick } from '../pdf_render/pdf_comment';
 export { CompositeBrick } from '../pdf_render/pdf_composite';
+export { CustomBrick } from '../pdf_render/pdf_custom';
 export { DropdownBrick } from '../pdf_render/pdf_dropdown';
 export { EmptyBrick } from '../pdf_render/pdf_empty';
 export { HTMLBrick } from '../pdf_render/pdf_html';
