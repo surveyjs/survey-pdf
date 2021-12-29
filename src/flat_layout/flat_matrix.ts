@@ -103,7 +103,7 @@ export class FlatMatrixRow extends FlatRadiogroup {
     protected async generateFlatsHorizontallyCells(point: IPoint) {
         const cells: IPdfBrick[] = [];
         const currPoint: IPoint = SurveyHelper.clone(point);
-        const colCount: number = this.question.visibleColumns.length + (this.question.hasRows ? 1 : 0);
+        const colCount: number = this.questionMatrix.visibleColumns.length + (this.questionMatrix.hasRows ? 1 : 0);
         if (this.questionMatrix.hasRows) {
             this.controller.pushMargins();
             SurveyHelper.setColumnMargins(this.controller, colCount, 0);

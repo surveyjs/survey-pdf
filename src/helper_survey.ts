@@ -1,4 +1,4 @@
-import { IQuestion, Question, QuestionRatingModel, QuestionFileModel, LocalizableString } from 'survey-core';
+import { IQuestion, Question, QuestionRatingModel, QuestionFileModel, LocalizableString, QuestionSelectBase, QuestionDropdownModel } from 'survey-core';
 import * as SurveyPDFModule from './entries/pdf';
 import { SurveyPDF } from './survey';
 import { IPoint, IRect, ISize, DocController } from './doc_controller';
@@ -417,7 +417,7 @@ export class SurveyHelper {
         return composite;
     }
     public static getReadonlyRenderAs(question: Question, controller: DocController): 'auto' | 'text' | 'acroform' {
-        return question.readonlyRenderAs === 'auto' ? controller.readonlyRenderAs : question.readonlyRenderAs;
+        return (<any>question).readonlyRenderAs === 'auto' ? controller.readonlyRenderAs : (<any>question).readonlyRenderAs;
     }
     public static async createCommentFlat(point: IPoint, question: Question,
         controller: DocController, rows: number, isQuestion: boolean, index: number = 0): Promise<IPdfBrick> {
@@ -553,19 +553,20 @@ export class SurveyHelper {
         return (<any>text).renderedText || text.renderedHtml;
     }
     public static getDropdownQuestionValue(question: Question): string {
-        if (question.isOtherSelected) {
-            return question.otherText;
+        const qDropDown: QuestionDropdownModel = <QuestionDropdownModel>question;
+        if (qDropDown.isOtherSelected) {
+            return qDropDown.otherText;
         }
         else if (!!question.displayValue) {
             return question.displayValue;
         }
-        else if (question.showOptionsCaption) {
-            return question.optionsCaption;
+        else if (qDropDown.showOptionsCaption) {
+            return qDropDown.optionsCaption;
         }
         return '';
     }
     public static getContentQuestion(question: Question): Question {
-        return !!question.contentQuestion ? question.contentQuestion : question;
+        return !!(<any>question).contentQuestion ? (<any>question).contentQuestion : question;
     }
     public static getRatingMinWidth(controller: DocController): number {
         return controller.measureText(this.RATING_MIN_WIDTH).width;

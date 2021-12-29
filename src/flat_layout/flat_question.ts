@@ -42,9 +42,10 @@ export class FlatQuestion implements IFlatQuestion {
             otherPoint, this.question, this.controller, SurveyHelper.OTHER_ROWS_COUNT, false));
     }
     public async generateFlatsComposite(point: IPoint): Promise<IPdfBrick[]> {
-        if (!!this.question.contentPanel) {
+        const contentPanel = (<any>this.question).contentPanel;
+        if (!!contentPanel) {
             return await FlatSurvey.generateFlatsPanel(this.survey,
-                this.controller, this.question.contentPanel, point);
+                this.controller, contentPanel, point);
         }
         this.question = SurveyHelper.getContentQuestion(this.question);
         return await this.generateFlatsContent(point);

@@ -19,10 +19,10 @@ export class FlatRadiogroup extends FlatSelectBase {
         if (index === 0) {
             this.radioGroupWrap = new RadioGroupWrap(this.question.id + ((typeof key === 'undefined') ? '' : key),
                 this.controller, this.question.isReadOnly);
-            this.question['pdfRadioGroupWrap'] = this.radioGroupWrap;
+            (<any>this.question).pdfRadioGroupWrap = this.radioGroupWrap;
         }
         else if (typeof this.radioGroupWrap === 'undefined') {
-            this.radioGroupWrap = this.question['pdfRadioGroupWrap'];
+            this.radioGroupWrap = (<any>this.question).pdfRadioGroupWrap;
         }
         const isChecked: boolean = (typeof checked === 'undefined') ?
             (item === this.question.otherItem ? this.question.isOtherSelected :
