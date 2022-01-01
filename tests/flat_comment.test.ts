@@ -2,7 +2,7 @@
     return {};
 };
 
-import { Question } from 'survey-core';
+import { Question, QuestionCommentModel } from 'survey-core';
 import { SurveyPDF } from '../src/survey';
 import { IPoint, IRect, DocController } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
@@ -31,7 +31,7 @@ async function commentPointAfterTitle(titleLocation: string, resultRects: IPdfBr
     }
     const commentAssumePoint: IPoint = SurveyHelper.createPoint(await SurveyHelper.createTitleFlat(
         controller.leftTopPoint, <Question>survey.getAllQuestions()[0], controller),
-        titleLocation === 'top', titleLocation !== 'top');
+    titleLocation === 'top', titleLocation !== 'top');
     commentAssumePoint.xLeft += controller.unitWidth;
     if (titleLocation === 'top') {
         commentAssumePoint.yTop += controller.unitHeight * FlatQuestion.CONTENT_GAP_VERT_SCALE;
@@ -58,7 +58,7 @@ async function commmentPointToTitleTests(titleLocation: string) {
     switch (titleLocation) {
         case 'hidden':
         case 'bottom': {
-            await commentPointBeforeTitle(resultRects, controller)
+            await commentPointBeforeTitle(resultRects, controller);
             break;
         }
         case 'top':
@@ -144,8 +144,9 @@ test('Check comment boundaries title hidden', async () => {
     expect(flats[0].length).toBe(1);
     const commentPoint: IPoint = controller.leftTopPoint;
     commentPoint.xLeft += controller.unitWidth;
+    const question = <QuestionCommentModel>survey.getAllQuestions()[0];
     const assumeComment: IRect = SurveyHelper.createTextFieldRect(
-        commentPoint, controller, survey.getAllQuestions()[0].rows);
+        commentPoint, controller, question.rows);
     TestHelper.equalRect(expect, flats[0][0], assumeComment);
 });
 test('Check question comment', async () => {
@@ -194,8 +195,9 @@ test('Check readonly comment', async () => {
     expect(flats[0].length).toBe(1);
     const commentPoint: IPoint = controller.leftTopPoint;
     commentPoint.xLeft += controller.unitWidth;
+    const question = <QuestionCommentModel>survey.getAllQuestions()[0];
     const assumeTextField: IRect = SurveyHelper.createTextFieldRect(
-        commentPoint, controller, survey.getAllQuestions()[0].rows);
+        commentPoint, controller, question.rows);
     TestHelper.equalRect(expect, flats[0][0], assumeTextField);
 });
 test('Check readonly comment with long text', async () => {
@@ -229,8 +231,9 @@ test('Check readonly comment with long text', async () => {
     expect(flats[0].length).toBe(1);
     const commentPoint: IPoint = controller.leftTopPoint;
     commentPoint.xLeft += controller.unitWidth;
+    const question = <QuestionCommentModel>survey.getAllQuestions()[0];
     const assumeTextField: IRect = SurveyHelper.createTextFieldRect(
-        commentPoint, controller, survey.getAllQuestions()[0].rows);
+        commentPoint, controller, question.rows);
     const textFlat: IPdfBrick = await SurveyHelper.
         createReadOnlyTextFieldTextFlat(commentPoint, controller,
             survey.getAllQuestions()[0], survey.getAllQuestions()[0].value, false);
