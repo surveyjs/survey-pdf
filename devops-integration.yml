@@ -35,7 +35,7 @@ steps:
 
 - task: Cache@2
   inputs:
-    key: 'npm-cache-pdf | "$(Agent.OS)" | $(Build.SourcesDirectory)/survey-pdf/package.json'
+    key: 'npm-cache-pdf | $(Build.SourcesDirectory)/survey-pdf/package.json'
     path: $(Build.SourcesDirectory)/survey-pdf/node_modules
     cacheHitVar: NPM_CACHE_RESTORED
   displayName: Cache NPM
