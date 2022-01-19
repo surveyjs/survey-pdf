@@ -83,7 +83,7 @@ export interface IDrawImageOptions extends IDrawRectOptions {
  */
 export class DrawCanvas {
     public constructor(protected packs: IPdfBrick[],
-        protected controller: DocController,
+        public controller: DocController,
         protected _rect: IRect,
         protected _countPages: number,
         protected _pageNumber: number) {}
