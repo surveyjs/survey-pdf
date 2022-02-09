@@ -1,5 +1,7 @@
-import { IQuestion, QuestionMatrixDropdownModelBase, QuestionMatrixDropdownRenderedTable,
-    QuestionMatrixDropdownRenderedRow, QuestionMatrixDropdownRenderedCell, Serializer } from 'survey-core';
+import {
+    IQuestion, QuestionMatrixDropdownModelBase, QuestionMatrixDropdownRenderedTable,
+    QuestionMatrixDropdownRenderedRow, QuestionMatrixDropdownRenderedCell, Serializer
+} from 'survey-core';
 import { SurveyPDF } from '../survey';
 import { IPoint, IRect, DocController } from '../doc_controller';
 import { IFlatQuestion, FlatQuestion } from './flat_question';
@@ -9,6 +11,7 @@ import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { TextBrick } from '../pdf_render/pdf_text';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
+import { FlatSurvey } from './flat_survey';
 
 export class FlatMatrixMultiple extends FlatQuestion {
     public static readonly GAP_BETWEEN_ROWS: number = 0.5;
@@ -129,6 +132,16 @@ export class FlatMatrixMultiple extends FlatQuestion {
             }
             rowsFlats.push(rowFlat);
             currPoint.yTop = rowFlat.yBot + FlatMatrixMultiple.GAP_BETWEEN_ROWS * this.controller.unitHeight;
+
+            if (this.question.detailPanelMode !== 'none' && i > 0) {
+                const panelBricks: IPdfBrick[] = await FlatSurvey.generateFlatsPanel(this.survey, this.controller, this.question.detailPanelValue, currPoint);
+
+                const currCompposite: CompositeBrick = new CompositeBrick();
+                currCompposite.addBrick(...panelBricks);
+                currPoint.yTop = currCompposite.yBot + FlatMatrixMultiple.GAP_BETWEEN_ROWS * this.controller.unitHeight;
+
+                rowsFlats.push(currCompposite);
+            }
         }
         return rowsFlats;
     }
