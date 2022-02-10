@@ -6,7 +6,7 @@ import { SurveyPDF } from '../src/survey';
 import { IRect, ISize, IDocOptions, DocOptions, DocController } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { FlatDropdown } from '../src/flat_layout/flat_dropdown';
-import { FlatMatrixMultiple} from '../src/flat_layout/flat_matrixmultiple';
+import { FlatMatrixMultiple } from '../src/flat_layout/flat_matrixmultiple';
 import { FlatMatrixDynamic } from '../src/flat_layout/flat_matrixdynamic';
 import { FlatExpression } from '../src/flat_layout/flat_expression';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
@@ -578,7 +578,7 @@ test('Check matrix dynamic column width', async () => {
         xLeft: controller.leftTopPoint.xLeft + availableWidth * 0.25 +
             SurveyHelper.GAP_BETWEEN_COLUMNS * controller.unitWidth,
         xRight: controller.leftTopPoint.xLeft + availableWidth * 0.25 + colTextSize2.width +
-        SurveyHelper.GAP_BETWEEN_COLUMNS * controller.unitWidth,
+            SurveyHelper.GAP_BETWEEN_COLUMNS * controller.unitWidth,
         yTop: controller.leftTopPoint.yTop,
         yBot: controller.leftTopPoint.yTop + colTextSize2.height
     };
@@ -603,7 +603,7 @@ test('Check matrix dynamic column width', async () => {
     };
     TestHelper.equalRect(expect, rowFlats[1], assumeDrop2);
 });
-test('Check matrixdynamic with showInMultipleColumns', async () => {
+test.skip('Check matrixdynamic with showInMultipleColumns', async () => {
     let json: any = {
         showQuestionNumbers: 'off',
         elements: [
@@ -622,7 +622,7 @@ test('Check matrixdynamic with showInMultipleColumns', async () => {
                 rowCount: 1
             }
         ]
-    }
+    };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
