@@ -59,16 +59,24 @@ export class FlatMatrixMultiple extends FlatQuestion {
         let lastRightMargin: number = this.controller.paperWidth - this.controller.margins.left +
             this.controller.unitWidth * SurveyHelper.GAP_BETWEEN_COLUMNS;
         this.controller.pushMargins();
-        for (let i: number = 0; i < Math.min(colCount, row.cells.length); i++) {
+        let cnt = 0;
+        for (let i: number = 0; i < row.cells.length; i++) {
+            if (cnt == colCount) break;
+            const currMarginRight: number = lastRightMargin;
             this.controller.margins.left = this.controller.paperWidth - lastRightMargin +
                 this.controller.unitWidth * SurveyHelper.GAP_BETWEEN_COLUMNS;
             this.controller.margins.right = this.controller.paperWidth -
-                this.controller.margins.left - columnWidth[i];
+                this.controller.margins.left - columnWidth[cnt];
             lastRightMargin = this.controller.margins.right;
             currPoint.xLeft = this.controller.margins.left;
             const cellContent: CompositeBrick = await this.generateFlatsCell(
                 currPoint, row.cells[i], row === this.question.renderedTable.headerRow);
-            if (!cellContent.isEmpty) composite.addBrick(cellContent);
+            if (!cellContent.isEmpty && (!!row.cells[i].column || !!row.cells[i].cell)) {
+                composite.addBrick(cellContent);
+                cnt++;
+            } else {
+                lastRightMargin = currMarginRight;
+            }
         }
         this.controller.popMargins();
         return composite;
@@ -147,7 +155,7 @@ export class FlatMatrixMultiple extends FlatQuestion {
                 currPoint.yTop = currComposite.yBot + FlatMatrixMultiple.GAP_BETWEEN_ROWS * this.controller.unitHeight;
 
                 rowsFlats.push(currComposite);
-                if (i !== rows.length - 1) {
+                if (i !== rows.length - 1 && this.question.renderedTable.showHeader && isWide) {
                     const header: CompositeBrick = await this.generateOneRow(currPoint, rows[0], colCount,
                         isWide, this.calculateColumnWidth(rows, colCount));
                     currPoint.yTop = header.yBot + FlatMatrixMultiple.GAP_BETWEEN_ROWS * this.controller.unitHeight;
@@ -161,7 +169,7 @@ export class FlatMatrixMultiple extends FlatQuestion {
         const table: QuestionMatrixDropdownRenderedTable = this.question.renderedTable;
         const isVertical: boolean = this.question.columnLayout === 'vertical';
         const colCount: number = table.rows[0] ? table.rows[0].cells.length -
-            (table.hasRemoveRows && !isVertical ? 1 : 0) :
+            (table.hasRemoveRows && !isVertical ? (this.question.detailPanelMode !== 'none' ? 2 : 1) : 0) :
             table.showHeader && table.headerRow ? table.headerRow.cells.length :
                 table.showFooter && table.footerRow ? table.footerRow.cells.length : 0;
         if (colCount === 0) {
