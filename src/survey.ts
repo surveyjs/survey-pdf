@@ -99,7 +99,7 @@ export class SurveyPDF extends SurveyModel {
                 SurveyHelper.getContentQuestion(<Question>question));
         }
     }
-    private async render(controller: DocController): Promise<void> {
+    private async renderSurvey(controller: DocController): Promise<void> {
         await this.waitForCoreIsReady();
         const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(this, controller);
         const packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
@@ -128,7 +128,7 @@ export class SurveyPDF extends SurveyModel {
     public async save(fileName: string = 'survey_result.pdf'): Promise<any> {
         const controller: DocController = new DocController(this.options);
         SurveyHelper.fixFont(controller);
-        await this.render(controller);
+        await this.renderSurvey(controller);
         return controller.doc.save(fileName, { returnPromise: true });
     }
     /**
@@ -138,7 +138,7 @@ export class SurveyPDF extends SurveyModel {
     public async raw(type?: string): Promise<string> {
         const controller: DocController = new DocController(this.options);
         SurveyHelper.fixFont(controller);
-        await this.render(controller);
+        await this.renderSurvey(controller);
         return controller.doc.output(type);
     }
 }
