@@ -643,3 +643,42 @@ test('Check matrixdynamic with showInMultipleColumns', async () => {
         SurveyHelper.SELECT_ITEM_FLAT_SCALE), controller.leftTopPoint.xLeft, unfolRowFlats[0].yTop);
     TestHelper.equalRect(expect, unfolRowFlats[0], assumeCheck1);
 });
+test('Check matrixdynamic with detailPanel', async () => {
+    const json: any = {
+        showQuestionNumbers: 'off',
+        elements: [
+            {
+                type: 'matrixdynamic',
+                name: 'detailPanelChecker',
+                titleLocation: 'hidden',
+                hideNumber: true,
+                columns: [
+                    {
+                        cellType: 'input',
+                    }
+                ],
+                detailElements: [
+                    {
+                        type: 'comment',
+                        name: 'commentInPanel',
+                        titleLocation: 'hidden',
+                    }
+                ],
+                rowCount: 1,
+                detailPanelMode: 'underRow',
+            }
+        ]
+    };
+    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    const controller: DocController = new DocController(TestHelper.defaultOptions);
+    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    expect(flats.length).toBe(1);
+    expect(flats[0].length).toBe(3);
+    controller.margins.left += controller.unitWidth;
+    const unfoldHeaderFlats: IPdfBrick[] = flats[0][0].unfold();
+    expect(unfoldHeaderFlats.length).toBe(2);
+    const unfoldRowFlats: IPdfBrick[] = flats[0][1].unfold();
+    expect(unfoldRowFlats.length).toBe(1);
+    const unfoldDetailPanelFlats: IPdfBrick[] = flats[0][2].unfold();
+    expect(unfoldDetailPanelFlats.length).toBe(2);
+});
