@@ -58,6 +58,10 @@ steps:
   displayName: 'npm run release with SurveyJSVersion'
 
 - script: |
+    npm run build_fonts
+  displayName: 'build fonts'
+
+- script: |
     npm run build_prod
   displayName: 'build'
 

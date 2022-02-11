@@ -41,6 +41,7 @@ steps:
     OverWrite: true
 
 - script: |
+    npm run build_fonts
     npm run build_prod
     npm test
   displayName: 'npm build and test'

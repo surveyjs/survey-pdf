@@ -90,8 +90,9 @@ module.exports = function(options) {
     files: [
       "survey." + options.platformPrefix + ".d.ts",
       "survey." + options.platformPrefix + ".js",
-      "survey." + options.platformPrefix + ".min.js"
-    ],
+      "survey." + options.platformPrefix + ".min.js",
+      "survey." + options.platformPrefix + ".fonts.js",
+      "survey." + options.platformPrefix + ".fonts.min.js"    ],
     main: mainFile,
     repository: {
       type: "git",
@@ -147,7 +148,7 @@ module.exports = function(options) {
         "[name]" +
         (options.buildType === "prod" ? ".min" : "") +
         ".js",
-      library: "SurveyPDF",
+      library: options.libraryName || "SurveyPDF",
       libraryTarget: "umd",
       umdNamedDefine: true
     },

@@ -2,7 +2,7 @@ import { jsPDF, jsPDFOptions } from 'jspdf';
 import { IHTMLRenderType } from './flat_layout/flat_html';
 import { SurveyHelper } from './helper_survey';
 import { LocalizableString } from 'survey-core';
-import Fonts from './fonts';
+// import Fonts from './fonts';
 import setRadioAppearance from './jspdf_plugins/acroform';
 import './jspdf_plugins/acroform.js';
 import './jspdf_plugins/from_html.js';
@@ -57,6 +57,8 @@ export class DocOptions implements IDocOptions {
     protected _format: string | number[];
     protected _fontSize: number;
     protected _fontName: string;
+    public static SEGOE_NORMAL: string;
+    public static SEGOE_BOLD: string;
     protected _base64Normal: string = undefined;
     protected _base64Bold: string = undefined;
     protected _useCustomFontInHtml: boolean;
@@ -88,8 +90,10 @@ export class DocOptions implements IDocOptions {
             this._base64Bold = options.base64Bold || options.base64Normal;
         }
         else if (this.fontName === 'segoe') {
-            this._base64Normal = Fonts.SEGOE_NORMAL;
-            this._base64Bold = Fonts.SEGOE_BOLD;
+            // this._base64Normal = Fonts.SEGOE_NORMAL;
+            // this._base64Bold = Fonts.SEGOE_BOLD;
+            this._base64Normal = DocOptions.SEGOE_NORMAL;
+            this._base64Bold = DocOptions.SEGOE_BOLD;
         }
         this._useCustomFontInHtml = options.useCustomFontInHtml && typeof options.base64Normal !== 'undefined';
         this._margins = SurveyHelper.clone(options.margins);

@@ -119,6 +119,11 @@ steps:
 
 - script: |
     cd $(Build.SourcesDirectory)/survey-pdf
+    npm run build_fonts
+  displayName: 'build fonts'
+
+- script: |
+    cd $(Build.SourcesDirectory)/survey-pdf
     npm run build_prod
   displayName: 'build'
 
