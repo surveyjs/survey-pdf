@@ -603,7 +603,7 @@ test('Check matrix dynamic column width', async () => {
     };
     TestHelper.equalRect(expect, rowFlats[1], assumeDrop2);
 });
-test.skip('Check matrixdynamic with showInMultipleColumns', async () => {
+test('Check matrixdynamic with showInMultipleColumns', async () => {
     let json: any = {
         showQuestionNumbers: 'off',
         elements: [

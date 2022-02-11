@@ -14,7 +14,7 @@ import { TestHelper } from '../src/helper_test';
 let __dummy_dd = new FlatDropdown(null, null, null);
 let __dummy_mm = new FlatMatrixMultiple(null, null, null);
 
-test.skip('Check matrix multiple one column no rows', async () => {
+test('Check matrix multiple one column no rows', async () => {
     const json: any = {
         elements: [
             {
@@ -79,7 +79,7 @@ test('Check matrix multiple one column no rows vertical layout', async () => {
     };
     TestHelper.equalRect(expect, flats[0][0].unfold()[0], assumeMatrix);
 });
-test.skip('Check matrix multiple one column one row', async () => {
+test('Check matrix multiple one column one row', async () => {
     const json: any = {
         elements: [
             {
@@ -146,7 +146,7 @@ test.skip('Check matrix multiple one column one row', async () => {
     };
     TestHelper.equalRect(expect, unfoldRowFlats[1], assumeRowQuestion);
 });
-test.skip('Check matrix multiple two columns one row vertical layout', async () => {
+test('Check matrix multiple two columns one row vertical layout', async () => {
     const json: any = {
         elements: [
             {
@@ -423,7 +423,7 @@ test('Check matrix multiple two columns one row vertical layout narrow width', a
     };
     TestHelper.equalRect(expect, SurveyHelper.mergeRects(...flats[0]), assumeMatrix);
 });
-test.skip('Check matrix multiple with showInMultipleColumns option and none choice', async () => {
+test('Check matrix multiple with showInMultipleColumns option and none choice', async () => {
     const json: any = {
         elements: [
             {

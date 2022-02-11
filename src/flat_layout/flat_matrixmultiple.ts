@@ -60,9 +60,8 @@ export class FlatMatrixMultiple extends FlatQuestion {
             this.controller.unitWidth * SurveyHelper.GAP_BETWEEN_COLUMNS;
         this.controller.pushMargins();
         let cnt = 0;
-        for (let i: number = 0; i < row.cells.length; i++) {
+        for (let i: number = this.question.detailPanelMode !== 'none' ? 1 : 0; i < row.cells.length; i++) {
             if (cnt == colCount) break;
-            const currMarginRight: number = lastRightMargin;
             this.controller.margins.left = this.controller.paperWidth - lastRightMargin +
                 this.controller.unitWidth * SurveyHelper.GAP_BETWEEN_COLUMNS;
             this.controller.margins.right = this.controller.paperWidth -
@@ -71,11 +70,9 @@ export class FlatMatrixMultiple extends FlatQuestion {
             currPoint.xLeft = this.controller.margins.left;
             const cellContent: CompositeBrick = await this.generateFlatsCell(
                 currPoint, row.cells[i], row === this.question.renderedTable.headerRow);
-            if (!cellContent.isEmpty && (!!row.cells[i].column || !!row.cells[i].cell)) {
+            if (!cellContent.isEmpty) {
                 composite.addBrick(cellContent);
                 cnt++;
-            } else {
-                lastRightMargin = currMarginRight;
             }
         }
         this.controller.popMargins();
