@@ -6,7 +6,7 @@ import { SurveyPDF } from '../src/survey';
 import { IRect, ISize, IDocOptions, DocOptions, DocController } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { FlatDropdown } from '../src/flat_layout/flat_dropdown';
-import { FlatMatrixMultiple} from '../src/flat_layout/flat_matrixmultiple';
+import { FlatMatrixMultiple } from '../src/flat_layout/flat_matrixmultiple';
 import { FlatMatrixDynamic } from '../src/flat_layout/flat_matrixdynamic';
 import { FlatExpression } from '../src/flat_layout/flat_expression';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
@@ -578,7 +578,7 @@ test('Check matrix dynamic column width', async () => {
         xLeft: controller.leftTopPoint.xLeft + availableWidth * 0.25 +
             SurveyHelper.GAP_BETWEEN_COLUMNS * controller.unitWidth,
         xRight: controller.leftTopPoint.xLeft + availableWidth * 0.25 + colTextSize2.width +
-        SurveyHelper.GAP_BETWEEN_COLUMNS * controller.unitWidth,
+            SurveyHelper.GAP_BETWEEN_COLUMNS * controller.unitWidth,
         yTop: controller.leftTopPoint.yTop,
         yBot: controller.leftTopPoint.yTop + colTextSize2.height
     };
@@ -622,7 +622,7 @@ test('Check matrixdynamic with showInMultipleColumns', async () => {
                 rowCount: 1
             }
         ]
-    }
+    };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
@@ -642,4 +642,43 @@ test('Check matrixdynamic with showInMultipleColumns', async () => {
     assumeCheck1 = SurveyHelper.moveRect(SurveyHelper.scaleRect(assumeCheck1,
         SurveyHelper.SELECT_ITEM_FLAT_SCALE), controller.leftTopPoint.xLeft, unfolRowFlats[0].yTop);
     TestHelper.equalRect(expect, unfolRowFlats[0], assumeCheck1);
+});
+test('Check matrixdynamic with detailPanel', async () => {
+    const json: any = {
+        showQuestionNumbers: 'off',
+        elements: [
+            {
+                type: 'matrixdynamic',
+                name: 'detailPanelChecker',
+                titleLocation: 'hidden',
+                hideNumber: true,
+                columns: [
+                    {
+                        cellType: 'input',
+                    }
+                ],
+                detailElements: [
+                    {
+                        type: 'comment',
+                        name: 'commentInPanel',
+                        titleLocation: 'hidden',
+                    }
+                ],
+                rowCount: 1,
+                detailPanelMode: 'underRow',
+            }
+        ]
+    };
+    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    const controller: DocController = new DocController(TestHelper.defaultOptions);
+    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    expect(flats.length).toBe(1);
+    expect(flats[0].length).toBe(3);
+    controller.margins.left += controller.unitWidth;
+    const unfoldHeaderFlats: IPdfBrick[] = flats[0][0].unfold();
+    expect(unfoldHeaderFlats.length).toBe(2);
+    const unfoldRowFlats: IPdfBrick[] = flats[0][1].unfold();
+    expect(unfoldRowFlats.length).toBe(1);
+    const unfoldDetailPanelFlats: IPdfBrick[] = flats[0][2].unfold();
+    expect(unfoldDetailPanelFlats.length).toBe(2);
 });

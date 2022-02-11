@@ -1,5 +1,7 @@
-import { IQuestion, QuestionMatrixDropdownModelBase, QuestionMatrixDropdownRenderedTable,
-    QuestionMatrixDropdownRenderedRow, QuestionMatrixDropdownRenderedCell, Serializer } from 'survey-core';
+import {
+    IQuestion, QuestionMatrixDropdownModelBase, QuestionMatrixDropdownRenderedTable,
+    QuestionMatrixDropdownRenderedRow, QuestionMatrixDropdownRenderedCell, Serializer, PanelModel
+} from 'survey-core';
 import { SurveyPDF } from '../survey';
 import { IPoint, IRect, DocController } from '../doc_controller';
 import { IFlatQuestion, FlatQuestion } from './flat_question';
@@ -9,6 +11,7 @@ import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { TextBrick } from '../pdf_render/pdf_text';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
+import { FlatSurvey } from './flat_survey';
 
 export class FlatMatrixMultiple extends FlatQuestion {
     public static readonly GAP_BETWEEN_ROWS: number = 0.5;
@@ -56,16 +59,21 @@ export class FlatMatrixMultiple extends FlatQuestion {
         let lastRightMargin: number = this.controller.paperWidth - this.controller.margins.left +
             this.controller.unitWidth * SurveyHelper.GAP_BETWEEN_COLUMNS;
         this.controller.pushMargins();
-        for (let i: number = 0; i < Math.min(colCount, row.cells.length); i++) {
+        let cnt = 0;
+        for (let i: number = this.question.detailPanelMode !== 'none' ? 1 : 0; i < row.cells.length; i++) {
+            if (cnt == colCount) break;
             this.controller.margins.left = this.controller.paperWidth - lastRightMargin +
                 this.controller.unitWidth * SurveyHelper.GAP_BETWEEN_COLUMNS;
             this.controller.margins.right = this.controller.paperWidth -
-                this.controller.margins.left - columnWidth[i];
+                this.controller.margins.left - columnWidth[cnt];
             lastRightMargin = this.controller.margins.right;
             currPoint.xLeft = this.controller.margins.left;
             const cellContent: CompositeBrick = await this.generateFlatsCell(
                 currPoint, row.cells[i], row === this.question.renderedTable.headerRow);
-            if (!cellContent.isEmpty) composite.addBrick(cellContent);
+            if (!cellContent.isEmpty) {
+                composite.addBrick(cellContent);
+                cnt++;
+            }
         }
         this.controller.popMargins();
         return composite;
@@ -109,19 +117,20 @@ export class FlatMatrixMultiple extends FlatQuestion {
         }
         return columnWidth;
     }
+    private async generateOneRow(point: IPoint, row: QuestionMatrixDropdownRenderedRow,
+        colCount: number, isWide: boolean, columnWidth: number[]): Promise<CompositeBrick> {
+        if (isWide) {
+            return await this.generateFlatsRowHorisontal(point, row, colCount, columnWidth);
+        }
+        return await this.generateFlatsRowVertical(point, row, colCount);
+    }
     private async generateFlatsRows(point: IPoint, rows: QuestionMatrixDropdownRenderedRow[],
         colCount: number, isWide: boolean): Promise<CompositeBrick[]> {
         const currPoint: IPoint = SurveyHelper.clone(point);
         const rowsFlats: CompositeBrick[] = [];
         for (let i: number = 0; i < rows.length; i++) {
-            let rowFlat: CompositeBrick;
-            if (isWide) {
-                rowFlat = await this.generateFlatsRowHorisontal(currPoint, rows[i], colCount,
-                    this.calculateColumnWidth(rows, colCount));
-            }
-            else {
-                rowFlat = await this.generateFlatsRowVertical(currPoint, rows[i], colCount);
-            }
+            let rowFlat: CompositeBrick = await this.generateOneRow(currPoint, rows[i], colCount,
+                isWide, this.calculateColumnWidth(rows, colCount));
             if (rowFlat.isEmpty) continue;
             if (i !== rows.length - 1) {
                 currPoint.yTop = rowFlat.yBot;
@@ -129,6 +138,27 @@ export class FlatMatrixMultiple extends FlatQuestion {
             }
             rowsFlats.push(rowFlat);
             currPoint.yTop = rowFlat.yBot + FlatMatrixMultiple.GAP_BETWEEN_ROWS * this.controller.unitHeight;
+
+            if (this.question.detailPanelMode !== 'none' && i > 0) {
+                const currentDetailPanel: PanelModel = this.question.detailPanelValue;
+                for (let j = 0; j < currentDetailPanel.questions.length; j++) {
+                    currentDetailPanel.questions[j].id += '_' + i;
+                }
+                const panelBricks: IPdfBrick[] = await FlatSurvey.generateFlatsPanel(
+                    this.survey, this.controller, currentDetailPanel, currPoint);
+
+                const currComposite: CompositeBrick = new CompositeBrick();
+                currComposite.addBrick(...panelBricks);
+                currPoint.yTop = currComposite.yBot + FlatMatrixMultiple.GAP_BETWEEN_ROWS * this.controller.unitHeight;
+
+                rowsFlats.push(currComposite);
+                if (i !== rows.length - 1 && this.question.renderedTable.showHeader && isWide) {
+                    const header: CompositeBrick = await this.generateOneRow(currPoint, rows[0], colCount,
+                        isWide, this.calculateColumnWidth(rows, colCount));
+                    currPoint.yTop = header.yBot + FlatMatrixMultiple.GAP_BETWEEN_ROWS * this.controller.unitHeight;
+                    rowsFlats.push(header);
+                }
+            }
         }
         return rowsFlats;
     }
@@ -136,7 +166,7 @@ export class FlatMatrixMultiple extends FlatQuestion {
         const table: QuestionMatrixDropdownRenderedTable = this.question.renderedTable;
         const isVertical: boolean = this.question.columnLayout === 'vertical';
         const colCount: number = table.rows[0] ? table.rows[0].cells.length -
-            (table.hasRemoveRows && !isVertical ? 1 : 0) :
+            (table.hasRemoveRows && !isVertical ? (this.question.detailPanelMode !== 'none' ? 2 : 1) : 0) :
             table.showHeader && table.headerRow ? table.headerRow.cells.length :
                 table.showFooter && table.footerRow ? table.footerRow.cells.length : 0;
         if (colCount === 0) {
