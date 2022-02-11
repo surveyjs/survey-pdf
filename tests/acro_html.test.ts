@@ -24,6 +24,6 @@ test('Check html render in question description', async () => {
         options.html = options.text;
     });
     const controller: DocController = new DocController(TestHelper.defaultOptions);
-    await survey['render'](controller);
+    await survey['renderSurvey'](controller);
     Object.defineProperty(Element.prototype, 'clientWidth', descriptor);
 });

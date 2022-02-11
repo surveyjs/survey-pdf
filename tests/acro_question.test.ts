@@ -30,7 +30,7 @@ async function checkTitleText(questionStartIndex: string, isRequired: boolean = 
     survey.questionStartIndex = questionStartIndex;
   }
   let controller: DocController = new DocController(TestHelper.defaultOptions);
-  await survey['render'](controller);
+  await survey['renderSurvey'](controller);
   let content: string = '';
   let regex: RegExp = /\((.*)\)/;
   let internalContent: string = controller.doc.internal.pages[1][2];
@@ -70,7 +70,7 @@ test('Check comment', async () => {
   };
   let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
   let controller: DocController = new DocController(TestHelper.defaultOptions);
-  await survey['render'](controller);
+  await survey['renderSurvey'](controller);
   let internal: any = controller.doc.internal;
   let internalContent: string = controller.doc.internal.pages[1][2];
   let textField: any = internal.acroformPlugin.acroFormDictionaryRoot.Fields[0]
@@ -95,7 +95,7 @@ test('Check comment readonly', async () => {
   };
   let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
   let controller: DocController = new DocController(TestHelper.defaultOptions);
-  await survey['render'](controller);
+  await survey['renderSurvey'](controller);
   let internal = controller.doc.internal;
   expect(internal.acroformPlugin).toBe(undefined);
 });
@@ -145,7 +145,7 @@ test('Check descrition with hidden title', async () => {
   };
   let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
   let controller: DocController = new DocController(TestHelper.defaultOptions);
-  await survey['render'](controller);
+  await survey['renderSurvey'](controller);
   let internalContent: string = controller.doc.internal.pages[1][3];
   expect(internalContent).toBeDefined();
   let regex: RegExp = /\((.*)\)/;

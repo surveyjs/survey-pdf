@@ -17,7 +17,7 @@ async function checkTextboxValue(json: any, tobe: string,
       survey.data = data;
     }
     let controller: DocController = new DocController(TestHelper.defaultOptions);
-	await survey['render'](controller);
+	await survey['renderSurvey'](controller);
 	if (readOnly) {
 		expect(controller.doc.internal.acroformPlugin).toBe(undefined);
 	}  

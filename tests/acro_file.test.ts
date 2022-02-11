@@ -31,7 +31,7 @@ test('Check file readonly with link', async () => {
     };
     const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     const controller: DocController = new DocController(TestHelper.defaultOptions);
-    await survey['render'](controller);
+    await survey['renderSurvey'](controller);
     expect(controller.doc.internal.pages[1].join('').split('text.txt')).toHaveLength(3);
 });
 test('Check file readonly without link', async () => {
@@ -55,7 +55,7 @@ test('Check file readonly without link', async () => {
     };
     const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     const controller: DocController = new DocController(TestHelper.defaultOptions);
-    await survey['render'](controller);
+    await survey['renderSurvey'](controller);
     expect(controller.doc.internal.pages[1].join('').split('text.txt')).toHaveLength(2);
 });
 test('Check hyperlink underline color', async () => {
@@ -77,7 +77,7 @@ test('Check hyperlink underline color', async () => {
     };
     const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     const controller: DocController = new DocController(TestHelper.defaultOptions);
-    await survey['render'](controller);
+    await survey['renderSurvey'](controller);
     const internal: any = controller.doc.internal;
     const colorInfo: string[] = internal.pages[1][4].split(/(\.| )/);
     expect(colorInfo[0]).toBe('0');
@@ -104,7 +104,7 @@ test('Check hyperlink underline position', async () => {
     };
     const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     const controller: DocController = new DocController(TestHelper.defaultOptions);
-    await survey['render'](controller);
+    await survey['renderSurvey'](controller);
     const internal: any = controller.doc.internal;
     const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     const moveInfo: string[] = internal.pages[1][5].split(' ')
@@ -133,7 +133,7 @@ test('Check that border does not exist when FORM_BORDER_VISIBLE is false', async
     (<any>SurveyHelper).FORM_BORDER_VISIBLE = false;
     const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     const controller: DocController = new DocController(TestHelper.defaultOptions);
-    await survey['render'](controller);
+    await survey['renderSurvey'](controller);
     const internal: any = controller.doc.internal;
     expect(internal.pages[1].length).toBe(3);
     const textDescription: string = internal.pages[1][2];

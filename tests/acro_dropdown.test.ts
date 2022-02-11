@@ -24,7 +24,7 @@ test('Check dropdown readonly', async () => {
 	data[json.questions[0].name] = json.questions[0].choices[0];
 	survey.data = data;
 	let controller: DocController = new DocController(TestHelper.defaultOptions);
-	await survey['render'](controller);
+	await survey['renderSurvey'](controller);
 	expect(typeof controller.doc.internal.acroformPlugin).toBe('undefined');
 	let lastPage: any = controller.doc.internal.pages[
 		controller.doc.internal.pages.length -1];
@@ -42,7 +42,7 @@ test('Dropdown MK appearence fix', async () => {
 	};
 	let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
 	let controller: DocController = new DocController(TestHelper.defaultOptions);
-	await survey['render'](controller);
+	await survey['renderSurvey'](controller);
     expect(controller.doc.internal.acroformPlugin.
 	    acroFormDictionaryRoot.Fields[0].MK).toBe('<< /BG [ 0.975 0.975 0.975 ]  >>');
 });
@@ -64,7 +64,7 @@ test('Dropdown display value', async () => {
 		dropdown_displayvalue: json.questions[0].choices[0].value
 	};
 	let controller: DocController = new DocController(TestHelper.defaultOptions);
-	await survey['render'](controller);
+	await survey['renderSurvey'](controller);
     expect(controller.doc.internal.acroformPlugin.
 	    acroFormDictionaryRoot.Fields[0].value).toBe(json.questions[0].choices[0].text);
 });

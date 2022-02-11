@@ -24,7 +24,7 @@ test('Has other radiogroup', async () => {
         radiogroup_hasother: 'other'
     };
     const controller: DocController = new DocController(TestHelper.defaultOptions);
-    await survey['render'](controller);
+    await survey['renderSurvey'](controller);
     const internal: any = controller.doc.internal;
     const internalOtherText: string = internal.pages[1][21];
     expect(internalOtherText).toBeDefined();
@@ -50,7 +50,7 @@ test('Other selected with value radiogroup', async () => {
     };
     const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     const controller: DocController = new DocController(TestHelper.defaultOptions);
-    await survey['render'](controller);
+    await survey['renderSurvey'](controller);
     const fields: any = controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields;
     expect(fields[1].AS).toBe('/' + survey.getAllQuestions()[0].id + 'index0');
     expect(fields[2].V).toBe('( ' + json.questions[0].defaultValue + ')');
@@ -69,7 +69,7 @@ test('Check all items disabled or enabled', async () => {
         (<any>json).questions[0].readOnly = readOnly;
         const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
         const controller: DocController = new DocController(TestHelper.defaultOptions);
-        await survey['render'](controller);
+        await survey['renderSurvey'](controller);
         if (!readOnly) {
             expect(controller.doc.internal.acroformPlugin.
                 acroFormDictionaryRoot.Fields[0].readOnly).toBe(readOnly);
