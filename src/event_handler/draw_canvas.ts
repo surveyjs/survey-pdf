@@ -86,7 +86,7 @@ export class DrawCanvas {
         public controller: DocController,
         protected _rect: IRect,
         protected _countPages: number,
-        protected _pageNumber: number) {}
+        protected _pageNumber: number) { }
     /**
      * Count of pages in the document
      */
@@ -214,7 +214,7 @@ export class DrawCanvas {
      * Call this method to draw image
      * @param imageOptions
      */
-    public drawImage(imageOptions: IDrawImageOptions): void {
+    public async drawImage(imageOptions: IDrawImageOptions): Promise<void> {
         imageOptions = SurveyHelper.clone(imageOptions);
         if (typeof imageOptions.width === 'undefined') {
             imageOptions.width = this.rect.xRight - this.rect.xLeft;
@@ -227,7 +227,7 @@ export class DrawCanvas {
             height: imageOptions.height
         };
         const imageRect: IRect = this.alignRect(imageOptions, imageSize);
-        this.packs.push(SurveyHelper.createImageFlat(
+        this.packs.push(await SurveyHelper.createImageFlat(
             SurveyHelper.createPoint(imageRect, true, true),
             null, this.controller, imageOptions.base64,
             imageRect.xRight - imageRect.xLeft,

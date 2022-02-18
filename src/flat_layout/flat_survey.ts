@@ -127,9 +127,9 @@ export class FlatSurvey {
         }
         return compositeFlat;
     }
-    private static generateFlatLogoImage(survey: SurveyPDF, controller: DocController,
-        point: IPoint): IPdfBrick {
-        const logoFlat: IPdfBrick = SurveyHelper.createImageFlat(
+    private static async generateFlatLogoImage(survey: SurveyPDF, controller: DocController,
+        point: IPoint): Promise<IPdfBrick> {
+        const logoFlat: IPdfBrick = await SurveyHelper.createImageFlat(
             point, null, controller, SurveyHelper.getLocString(survey.locLogo),
             SurveyHelper.pxToPt(survey.logoWidth), SurveyHelper.pxToPt(survey.logoHeight));
         let shift: number = 0;
@@ -151,7 +151,7 @@ export class FlatSurvey {
             if (!titleFlat.isEmpty) flats.push([titleFlat]);
         }
         else if (survey.isLogoBefore) {
-            const logoFlat: IPdfBrick = this.generateFlatLogoImage(
+            const logoFlat: IPdfBrick = await this.generateFlatLogoImage(
                 survey, controller, controller.leftTopPoint);
             flats.push([logoFlat]);
             const titlePoint: IPoint = SurveyHelper.createPoint(logoFlat,
@@ -172,7 +172,7 @@ export class FlatSurvey {
         }
         else {
             if (survey.logoPosition === 'right') {
-                const logoFlat: IPdfBrick = this.generateFlatLogoImage(
+                const logoFlat: IPdfBrick = await this.generateFlatLogoImage(
                     survey, controller, controller.leftTopPoint);
                 flats.push([logoFlat]);
                 controller.pushMargins();
@@ -191,7 +191,7 @@ export class FlatSurvey {
                     logoPoint = SurveyHelper.createPoint(titleFlat);
                     logoPoint.yTop += controller.unitHeight / 2.0;
                 }
-                const logoFlat: IPdfBrick = this.generateFlatLogoImage(
+                const logoFlat: IPdfBrick = await this.generateFlatLogoImage(
                     survey, controller, logoPoint);
                 if (flats.length !== 0) flats[0].push(logoFlat);
                 else flats.push([logoFlat]);

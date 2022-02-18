@@ -46,6 +46,7 @@ export interface IDocOptions {
     readonlyRenderAs?: 'auto' | 'text' | 'acroform';
     textFieldRenderAs?: 'singleLine' | 'multiLine';
     compress?: boolean;
+    applyImageFit?: boolean;
 }
 /**
  * Contains a set of options that affect the appearance of a PDF document rendered by SurveyPDF.
@@ -68,6 +69,7 @@ export class DocOptions implements IDocOptions {
     protected _readonlyRenderAs: 'auto' | 'text' | 'acroform';
     protected _textFieldRenderAs: 'singleLine' | 'multiLine';
     protected _compress: boolean;
+    protected _applyImageFit: boolean;
     public constructor(options: IDocOptions) {
         if (typeof options.orientation === 'undefined') {
             if (typeof options.format === 'undefined' ||
@@ -85,7 +87,7 @@ export class DocOptions implements IDocOptions {
         this._fontName = options.fontName || 'segoe';
         if ((typeof options.fontName !== 'undefined' &&
             (typeof options.base64Normal !== 'undefined' ||
-            typeof options.base64Bold !== 'undefined'))) {
+                typeof options.base64Bold !== 'undefined'))) {
             this._base64Normal = options.base64Normal || options.base64Bold;
             this._base64Bold = options.base64Bold || options.base64Normal;
         }
@@ -120,6 +122,7 @@ export class DocOptions implements IDocOptions {
         this._readonlyRenderAs = options.readonlyRenderAs || 'auto';
         this._textFieldRenderAs = options.textFieldRenderAs || 'singleLine';
         this._compress = options.compress || false;
+        this._applyImageFit = options.applyImageFit || false;
     }
     public get leftTopPoint(): IPoint {
         return {
@@ -166,6 +169,9 @@ export class DocOptions implements IDocOptions {
     public get compress(): boolean {
         return this._compress;
     }
+    public get applyImageFit(): boolean {
+        return this._applyImageFit;
+    }
 }
 
 export class DocController extends DocOptions {
@@ -175,8 +181,10 @@ export class DocController extends DocOptions {
     private marginsStack: IMarginLR[];
     public constructor(options: IDocOptions = {}) {
         super(options);
-        const jspdfOptions: jsPDFOptions = { orientation: this.orientation,
-            unit: 'pt', format: this.format, compress: this.compress };
+        const jspdfOptions: jsPDFOptions = {
+            orientation: this.orientation,
+            unit: 'pt', format: this.format, compress: this.compress
+        };
         this._doc = new jsPDF(jspdfOptions);
         if (typeof this.base64Normal !== 'undefined' && !SurveyHelper.isFontExist(this, this.fontName)) {
             DocController.addFont(this.fontName, this.base64Normal, 'normal');
@@ -192,7 +200,7 @@ export class DocController extends DocOptions {
         this._fontStyle = 'normal';
         this.marginsStack = [];
     }
-    public static customFonts: {[name: string]: {normal: string, bold: string, italic: string, bolditalic: string}} = {};
+    public static customFonts: { [name: string]: { normal: string, bold: string, italic: string, bolditalic: string } } = {};
     public static addFont(fontName: string, base64: string, fontStyle: 'normal' | 'bold' | 'italic' | 'bolditalic') {
         let font = DocController.customFonts[fontName];
         if (!font) {
@@ -200,7 +208,7 @@ export class DocController extends DocOptions {
             DocController.customFonts[fontName] = font;
         }
         font[fontStyle] = base64;
-        const addFontCallback: () => void = function() {
+        const addFontCallback: () => void = function () {
             const customFont = DocController.customFonts[fontName];
             if (!!customFont && !!customFont[fontStyle]) {
                 const fontFile: string = `${fontName}-${fontStyle}.ttf`;
