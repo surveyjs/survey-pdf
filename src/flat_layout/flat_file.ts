@@ -32,7 +32,7 @@ export class FlatFile extends FlatQuestion {
             }
             const imagePoint: IPoint = SurveyHelper.createPoint(compositeFlat);
             imagePoint.yTop += this.controller.unitHeight * FlatFile.IMAGE_GAP_SCALE;
-            compositeFlat.addBrick(SurveyHelper.createImageFlat(imagePoint, this.question, this.controller, item.content, imageSize.width, imageSize.height));
+            compositeFlat.addBrick(await SurveyHelper.createImageFlat(imagePoint, this.question, this.controller, item.content, imageSize.width, imageSize.height));
         }
         return compositeFlat;
     }
@@ -58,8 +58,8 @@ export class FlatFile extends FlatQuestion {
                 this.controller.margins.right - currPoint.xLeft;
             if (SurveyHelper.canPreviewImage(this.question, item, item.content)) {
                 let contentWidth = (await SurveyHelper.getImageSize(item.content)).width;
-                if(contentWidth === undefined) {
-                    if(!!this.question.imageWidth) {
+                if (contentWidth === undefined) {
+                    if (!!this.question.imageWidth) {
                         contentWidth = SurveyHelper.parseWidth(this.question.imageWidth, SurveyHelper.getPageAvailableWidth(this.controller));
                     } else {
                         contentWidth = 0;

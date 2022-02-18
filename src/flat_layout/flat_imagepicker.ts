@@ -20,7 +20,7 @@ export class FlatImagePicker extends FlatQuestion {
     }
     private async generateFlatItem(point: IPoint, item: ItemValue, index: number): Promise<IPdfBrick> {
         const pageAvailableWidth = SurveyHelper.getPageAvailableWidth(this.controller);
-        const imageFlat = SurveyHelper.createImageFlat(point, this.question, this.controller, (<any>item).imageLink, pageAvailableWidth, pageAvailableWidth / SurveyHelper.IMAGEPICKER_RATIO);
+        const imageFlat = await SurveyHelper.createImageFlat(point, this.question, this.controller, (<any>item).imageLink, pageAvailableWidth, pageAvailableWidth / SurveyHelper.IMAGEPICKER_RATIO);
         const compositeFlat: CompositeBrick = new CompositeBrick(imageFlat);
         let buttonPoint: IPoint = SurveyHelper.createPoint(compositeFlat);
         if (this.question.showLabel) {
