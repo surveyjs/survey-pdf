@@ -438,9 +438,29 @@ export class SurveyHelper {
         return isQuestion ? question.displayValue : SurveyHelper.getQuestionOrCommentValue(question, isQuestion);
     }
     public static inBrowser = typeof Image === 'function';
-    public static createImageFlat(point: IPoint, question: IQuestion, controller: DocController, imagelink: string, width: number, height: number): IPdfBrick {
+    public static async createImageFlat(point: IPoint, question: any,
+        controller: DocController, imagelink: string, width: number, height: number): Promise<IPdfBrick> {
 
         if (SurveyHelper.inBrowser) {
+            if (!!question && !!question.imageFit && controller.applyImageFit) {
+                if (width > controller.paperWidth - controller.margins.left - controller.margins.right) {
+                    const newWidth: number = controller.paperWidth - controller.margins.left - controller.margins.right;
+                    height *= newWidth / width;
+                    width = newWidth;
+                }
+
+                const ptToPx: number = 96.0 / 72.0;
+                const canvasHtml: string =
+                    `<div style='overflow: hidden; width: ${width * ptToPx}px; height: ${height * ptToPx}px;'>
+                        <img src='${imagelink}' style='object-fit: ${question.imageFit}; width: 100%; height: 100%;'/>
+                    </div>`;
+
+                const { url, aspect }: { url: string, aspect: number } =
+                    await SurveyHelper.htmlToImage(canvasHtml, width, controller);
+
+                imagelink = url;
+            }
+
             const html: string = `<img src='${imagelink}' width='${width}' height='${height}'/>`;
             return new HTMLBrick(question, controller, this.createRect(point, width, height), html, true);
         }
