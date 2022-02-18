@@ -442,7 +442,7 @@ export class SurveyHelper {
         controller: DocController, imagelink: string, width: number, height: number): Promise<IPdfBrick> {
 
         if (SurveyHelper.inBrowser) {
-            if (!!question && !!question.imageFit && controller.applyImageFit) {
+            if (controller.applyImageFit) {
                 if (width > controller.paperWidth - controller.margins.left - controller.margins.right) {
                     const newWidth: number = controller.paperWidth - controller.margins.left - controller.margins.right;
                     height *= newWidth / width;
@@ -450,9 +450,10 @@ export class SurveyHelper {
                 }
 
                 const ptToPx: number = 96.0 / 72.0;
+                const fitType = !!question && !!question.imageFit ? question.imageFit : 'contain';
                 const canvasHtml: string =
                     `<div style='overflow: hidden; width: ${width * ptToPx}px; height: ${height * ptToPx}px;'>
-                        <img src='${imagelink}' style='object-fit: ${question.imageFit}; width: 100%; height: 100%;'/>
+                        <img src='${imagelink}' style='object-fit: ${fitType}; width: 100%; height: 100%;'/>
                     </div>`;
 
                 const { url, aspect }: { url: string, aspect: number } =
