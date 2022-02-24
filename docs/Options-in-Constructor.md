@@ -3,15 +3,14 @@
 ## Basics
 
 
-You can pass a set of options as a parameter into a [SurveyPDF](https://surveyjs.io/Documentation/Pdf-Export?id=surveypdf)'s [constructor](https://github.com/surveyjs/survey-pdf/blob/1220a71b51daddf1c4c8d506382c50be5f1b2941/src/survey.ts#L17) to predefine settings of the resulting PDF document.
+You can pass a set of options as a parameter into a [SurveyPDF](https://surveyjs.io/Documentation/Pdf-Export?id=surveypdf) [constructor](https://github.com/surveyjs/survey-pdf/blob/master/src/survey.ts#L17) to predefine settings for the resulting PDF file.
 
-```JavaScript
+```js
 var options = {
     // Specify option settings here.
     orientation: "p",
 	fontSize: 14,
     //...
-	}
 };
 var survey = new SurveyPDF.SurveyPDF(json, options);
 ```
@@ -19,7 +18,7 @@ var survey = new SurveyPDF.SurveyPDF(json, options);
 **Online Example**  
 [Print to PDF - Options](https://surveyjs.io/Examples/Pdf-Export?id=survey-pdf-export)
 
-The options are declared by the [IDocOptions](https://github.com/surveyjs/survey-pdf/blob/1220a71b51daddf1c4c8d506382c50be5f1b2941/src/doc_controller.ts#L33) interface and are implemented by the [DocOptions](https://github.com/surveyjs/survey-pdf/blob/1220a71b51daddf1c4c8d506382c50be5f1b2941/src/doc_controller.ts#L53) class.
+The options are declared by the [IDocOptions](https://github.com/surveyjs/survey-pdf/blob/master/src/doc_controller.ts#L33) interface and are implemented by the [DocOptions](https://github.com/surveyjs/survey-pdf/blob/master/src/doc_controller.ts#L53) class.
 
 
 ### List of Options
@@ -41,9 +40,10 @@ The following options are available (listed as they go in sources).
     readonlyRenderAs?: 'auto' | 'text' | 'acroform';
     textFieldRenderAs?: 'singleLine' | 'multiLine';
     compress?: boolean;
+    applyImageFit?: boolean;
 
 ### List of Affected Preferences
-Find more details about the available options in the below document sections that describe document preferences affected by corresponding options.
+Find more details about the available options that describe document preferences affected by corresponding options in the sections below.
 
 - [Page orientation](#orientation)
 - [Page format](#format)
@@ -59,13 +59,14 @@ Find more details about the available options in the below document sections tha
 - [Render mode of read-only questions](#readonlyRenderAs)
 - [Text input render mode in read-only questions](#textFieldRenderAs)
 - [Document compression](#compress)
+- [Image rendering](#image-rendering)
 
 <a id="orientation"></a>
 ## Page orientation
 
-Use the [orientation](https://github.com/surveyjs/survey-pdf/blob/1220a71b51daddf1c4c8d506382c50be5f1b2941/src/doc_controller.ts#L34) option to specify the page orientation within the document.
+Use the [orientation](https://github.com/surveyjs/survey-pdf/blob/master/src/doc_controller.ts#L34) option to specify the page orientation within the document.
 
-- [orientation](https://github.com/surveyjs/survey-pdf/blob/1220a71b51daddf1c4c8d506382c50be5f1b2941/src/doc_controller.ts#L34)  
+- [orientation](https://github.com/surveyjs/survey-pdf/blob/master/src/doc_controller.ts#L34)  
 `orientation?: 'p' | 'l';`  
 
 Possible values:  
@@ -74,7 +75,7 @@ Possible values:
 
 The default value is "p".
 
-```JavaScript
+```js
 var options = {
     orientation: "l"
 };
@@ -86,9 +87,9 @@ var survey = new SurveyPDF.SurveyPDF(json, options);
 <a id="format"></a>
 ## Page format
 
-Use the [format](https://github.com/surveyjs/survey-pdf/blob/1220a71b51daddf1c4c8d506382c50be5f1b2941/src/doc_controller.ts#L35) option to specify the document's page size.
+Use the [format](https://github.com/surveyjs/survey-pdf/blob/master/src/doc_controller.ts#L35) option to specify the document's page size.
 
-- [format](https://github.com/surveyjs/survey-pdf/blob/1220a71b51daddf1c4c8d506382c50be5f1b2941/src/doc_controller.ts#L35)  
+- [format](https://github.com/surveyjs/survey-pdf/blob/master/src/doc_controller.ts#L35)  
 `format?: string | number[];`
 
 Possible values:  
@@ -106,7 +107,7 @@ Possible values:
 
 The default value is "a4".  
 
-```JavaScript
+```js
 var options = {
     format: "a3"
 };
@@ -115,7 +116,7 @@ var survey = new SurveyPDF.SurveyPDF(json, options);
 
 To use a custom format, set `format` to the required page size as a number array (in mm). Example: `[210.0, 297.0]` where `210.0` is the width and `297.0` is the height.
 
-```JavaScript
+```js
 var options = {
     format: [210.0, 297.0]
 };
@@ -130,14 +131,14 @@ Note that setting the `orientation` option has priority over the `format` option
 <a id="fontSize"></a>
 ## Font size
 
-Use the [fontSize](https://github.com/surveyjs/survey-pdf/blob/1220a71b51daddf1c4c8d506382c50be5f1b2941/src/doc_controller.ts#L36) option to specify the base font size (in points) for the PDF document's text elements.
+Use the [fontSize](https://github.com/surveyjs/survey-pdf/blob/master/src/doc_controller.ts#L36) option to specify the base font size (in points) for the PDF document's text elements.
 
-- [fontSize](https://github.com/surveyjs/survey-pdf/blob/1220a71b51daddf1c4c8d506382c50be5f1b2941/src/doc_controller.ts#L36)  
+- [fontSize](https://github.com/surveyjs/survey-pdf/blob/master/src/doc_controller.ts#L36)  
 `fontSize?: number;`
 
 The sizes of titles, descriptions, and text boxes will be calculated (scaled) proportionally based on the `fontSize` value.
 
-```JavaScript
+```js
 var options = {
     fontSize: 14
 };
@@ -147,9 +148,9 @@ var survey = new SurveyPDF.SurveyPDF(json, options);
 <a id="fontName"></a>
 ## Font name
 
-Use the [fontName](https://github.com/surveyjs/survey-pdf/blob/1220a71b51daddf1c4c8d506382c50be5f1b2941/src/doc_controller.ts#L37) option to specify the font name or family for the PDF document's text elements.
+Use the [fontName](https://github.com/surveyjs/survey-pdf/blob/master/src/doc_controller.ts#L37) option to specify the font name or family for the PDF file's text elements.
 
-- [fontName](https://github.com/surveyjs/survey-pdf/blob/1220a71b51daddf1c4c8d506382c50be5f1b2941/src/doc_controller.ts#L37)  
+- [fontName](https://github.com/surveyjs/survey-pdf/blob/master/src/doc_controller.ts#L37)  
 `fontName?: string;`
 
 The default document font is Segoe.  
@@ -160,7 +161,7 @@ Set the `fontName` option to the desired font's family name to [switch](https://
 
 Example: "Courier".
 
-```JavaScript
+```js
 var options = {
     fontName: "Courier"
 };
@@ -176,7 +177,7 @@ Learn more: [Change Fonts](https://surveyjs.io/Documentation/Pdf-Export?id=Custo
 
 Obsolete.  
 
-- [base64Normal](https://github.com/surveyjs/survey-pdf/blob/1220a71b51daddf1c4c8d506382c50be5f1b2941/src/doc_controller.ts#38)  
+- [base64Normal](https://github.com/surveyjs/survey-pdf/blob/master/src/doc_controller.ts#38)  
 `base64Normal?: string;`  
 Notes:  
 Earlier could be used together with [base64Bold](base64Bold) and [useCustomFontInHtml](useCustomFontInHtml).  
@@ -192,7 +193,7 @@ Learn more: [Change Fonts](https://surveyjs.io/Documentation/Pdf-Export?id=Custo
 
 Obsolete.
 
-- [base64Bold](https://github.com/surveyjs/survey-pdf/blob/1220a71b51daddf1c4c8d506382c50be5f1b2941/src/doc_controller.ts#39)  
+- [base64Bold](https://github.com/surveyjs/survey-pdf/blob/master/src/doc_controller.ts#39)  
 `base64Bold?: string;`  
 Notes:  
 Earlier could be used together with [base64Normal](base64Normal) and [useCustomFontInHtml](useCustomFontInHtml).  
@@ -207,7 +208,7 @@ Learn more: [Change Fonts](https://surveyjs.io/Documentation/Pdf-Export?id=Custo
 
 Obsolete.  
 
-- [useCustomFontInHtml](https://github.com/surveyjs/survey-pdf/blob/1220a71b51daddf1c4c8d506382c50be5f1b2941/src/doc_controller.ts#40)  
+- [useCustomFontInHtml](https://github.com/surveyjs/survey-pdf/blob/master/src/doc_controller.ts#40)  
 `useCustomFontInHtml?: boolean;`  
 Notes:  
 Earlier was used together with [base64Normal](base64Normal) and [base64Bold](base64Bold) to specify whether [custom fonts](https://surveyjs.io/Documentation/Pdf-Export?id=Customization-ChangeFonts#use-custom-font) (loaded throught the `base64Normal` and `base64Bold` options) should apply to texts rendered within questions of the HTML type.  
@@ -218,12 +219,12 @@ Now [custom fonts](https://surveyjs.io/Documentation/Pdf-Export?id=Customization
 <a id="margins"></a>
 ## Page margins
 
-Use the [margins](https://github.com/surveyjs/survey-pdf/blob/1220a71b51daddf1c4c8d506382c50be5f1b2941/src/doc_controller.ts#L41) option to specify the margins for document pages.
+Use the [margins](https://github.com/surveyjs/survey-pdf/blob/master/src/doc_controller.ts#L41) option to specify the margins for document pages.
 
-- [margins](https://github.com/surveyjs/survey-pdf/blob/1220a71b51daddf1c4c8d506382c50be5f1b2941/src/doc_controller.ts#L41)  
+- [margins](https://github.com/surveyjs/survey-pdf/blob/master/src/doc_controller.ts#L41)  
 `margins?: IMargin;`
 
-```JavaScript
+```js
 var options = {
     margins: {
         top: 18,
@@ -241,17 +242,17 @@ See also: [Custom Render - Header/Footer: Drawing area](https://surveyjs.io/Docu
 <a id="commercial"></a>
 ## Commercial license
 
-Use the [commercial](https://github.com/surveyjs/survey-pdf/blob/1220a71b51daddf1c4c8d506382c50be5f1b2941/src/doc_controller.ts#L42) or [haveCommercialLicense](https://github.com/surveyjs/survey-pdf/blob/1220a71b51daddf1c4c8d506382c50be5f1b2941/src/doc_controller.ts#L43) option to specify whether you have a commercial license for  the **Survey PDF Export** library.
+Use the [commercial](https://github.com/surveyjs/survey-pdf/blob/master/src/doc_controller.ts#L42) or [haveCommercialLicense](https://github.com/surveyjs/survey-pdf/blob/master/src/doc_controller.ts#L43) option to specify whether you have a commercial license for  the **Survey PDF Export** library.
 
-- [commercial](https://github.com/surveyjs/survey-pdf/blob/1220a71b51daddf1c4c8d506382c50be5f1b2941/src/doc_controller.ts#L42)  
+- [commercial](https://github.com/surveyjs/survey-pdf/blob/master/src/doc_controller.ts#L42)  
 `commercial?: boolean;`
 
-- [haveCommercialLicense](https://github.com/surveyjs/survey-pdf/blob/1220a71b51daddf1c4c8d506382c50be5f1b2941/src/doc_controller.ts#L43)  
+- [haveCommercialLicense](https://github.com/surveyjs/survey-pdf/blob/master/src/doc_controller.ts#L43)  
 `haveCommercialLicense?: boolean;`
 
-Setting an option to true removes a non-commercial usage warning displayed on the top of the document.  
+Setting an option to true removes a non-commercial usage warning displayed at the top of the document.  
 
-```JavaScript
+```js
 var options = {
     commercial: true
 };
@@ -260,7 +261,7 @@ var survey = new SurveyPDF.SurveyPDF(json, options);
 
 or
 
-```JavaScript
+```js
 var options = {
     haveCommercialLicense: true
 };
@@ -274,15 +275,15 @@ Setting any of these options to true without having a commercial license is ille
 <a id="htmlRenderAs"></a>
 ## HTML question render mode
 
-Use the [htmlRenderAs](https://github.com/surveyjs/survey-pdf/blob/1220a71b51daddf1c4c8d506382c50be5f1b2941/src/doc_controller.ts#L44) option to specify how to render questions of the [HTML type](https://surveyjs.io/Documentation/Library/?id=questionhtmlmodel) into the result PDF document.
+Use the [htmlRenderAs](https://github.com/surveyjs/survey-pdf/blob/master/src/doc_controller.ts#L44) option to specify how to render questions of the [HTML type](https://surveyjs.io/Documentation/Library/?id=questionhtmlmodel) into the resulting PDF file.
 
-- [htmlRenderAs](https://github.com/surveyjs/survey-pdf/blob/1220a71b51daddf1c4c8d506382c50be5f1b2941/src/doc_controller.ts#L44)  
+- [htmlRenderAs](https://github.com/surveyjs/survey-pdf/blob/master/src/doc_controller.ts#L44)  
 `htmlRenderAs?: IHTMLRenderType;`
 
-Possible values are listed in [IHTMLRenderType](https://github.com/surveyjs/survey-pdf/blob/1220a71b51daddf1c4c8d506382c50be5f1b2941/src/flat_layout/flat_html.ts#L9): 
+Possible values are listed in [IHTMLRenderType](https://github.com/surveyjs/survey-pdf/blob/master/src/flat_layout/flat_html.ts#L9): 
 
 - "auto"  
-SurveyPDF automatically selects how to render each HTML question (as a standard text or as an image) depending upon the complexity of the processed HTML markup.
+SurveyPDF automatically selects how to render each HTML question (as a standard text or as an image) depending on the complexity of the processed HTML markup.
 
 - "standard"  
 All HTML questions are rendered as standard selectable texts.
@@ -292,7 +293,7 @@ All HTML questions are rendered as images (this might present the result of HTML
 
 The default value is "auto". 
 
-```JavaScript
+```js
 var options = {
     htmlRenderAs: 'image'
 };
@@ -303,9 +304,9 @@ When exporting a survey's HTML questions to a PDF document, it is a difficult ta
 If the markup of the processed HTML question is simple enough, it will be rendered to a PDF document as selectable text. This is more appropriate for long descriptive texts with a simple layout.  
 Complex HTML markup will be rendered as an image. For instance, this is suitable for greeting texts that might have an elaborate layout.
 
-For each particular HTML question, you can override this general ("auto") behavior at the question level - by specifying a question's `renderAs` property (in a survey JSON definition). Set the property to "standard" or "image" as well (its default value is "auto").
+For each HTML question, you can override this general ("auto") behavior at the question level: specify a question's `renderAs` property (in a survey JSON definition); also set the property to "standard" or "image" (its default value is "auto").
 
-```JavaScript
+```js
 var json = {
     elements: [
         {
@@ -330,9 +331,9 @@ var survey = new SurveyPDF.SurveyPDF(json, options);
 <a id="matrixRenderAs"></a>
 ## Matrix question render mode
 
-Use the [matrixRenderAs](https://github.com/surveyjs/survey-pdf/blob/1220a71b51daddf1c4c8d506382c50be5f1b2941/src/doc_controller.ts#L45) option to specify how to render questions of the [matrix types](https://surveyjs.io/Examples/Library?id=questiontype-matrix) into the result PDF document.
+Use the [matrixRenderAs](https://github.com/surveyjs/survey-pdf/blob/master/src/doc_controller.ts#L45) option to specify how to render [matrix types](https://surveyjs.io/Examples/Library?id=questiontype-matrix) questions into the resulting PDF file.
 
-- [matrixRenderAs](https://github.com/surveyjs/survey-pdf/blob/1220a71b51daddf1c4c8d506382c50be5f1b2941/src/doc_controller.ts#L45)  
+- [matrixRenderAs](https://github.com/surveyjs/survey-pdf/blob/master/src/doc_controller.ts#L45)  
 `matrixRenderAs?: 'auto' | 'list';`
 
 Possible values:  
@@ -343,7 +344,7 @@ Possible values:
 
 The default value is "auto".  
 
-```JavaScript
+```js
 var options = {
     matrixRenderAs: 'list'
 };
@@ -352,9 +353,9 @@ var surveyPDF = new SurveyPDF.SurveyPDF(json, options);
 
 In "auto" mode, SurveyPDF initially tries to render each matrix question as a table. However, if there is no enough free space to accommodate a table, SurveyPDF renders a matrix as a narrow vertical list.
 
-For each particular matrix question, you can override this general behavior at the question level - by specifying a question's `renderAs` property (in a survey JSON definition).
+For each matrix question, you can override this general behavior at the question level: specify the question's `renderAs` property (in a survey JSON definition).
 
-```JavaScript
+```js
 var json = {
     elements: [
         {    
@@ -387,9 +388,9 @@ Play with a live Plunker sample:
 <a id="readonlyRenderAs"></a>
 ## Render mode of read-only questions
 
-The [readonlyRenderAs](https://github.com/surveyjs/survey-pdf/blob/1220a71b51daddf1c4c8d506382c50be5f1b2941/src/doc_controller.ts#L46) option allows you to fine tune the render of read-only questions in a PDF document being exported.
+The [readonlyRenderAs](https://github.com/surveyjs/survey-pdf/blob/master/src/doc_controller.ts#L46) option allows you to fine tune the render of read-only questions in a PDF document being exported.
 
-- [readonlyRenderAs](https://github.com/surveyjs/survey-pdf/blob/1220a71b51daddf1c4c8d506382c50be5f1b2941/src/doc_controller.ts#L46)  
+- [readonlyRenderAs](https://github.com/surveyjs/survey-pdf/blob/master/src/doc_controller.ts#L46)  
 `readonlyRenderAs?: 'auto' | 'text' | 'acroform';`
 
 Possible values:
@@ -402,16 +403,16 @@ Certain types of questions (Checkbox, Radiogroup, text fields in Text, Multiple 
 
 The default value is "auto".  
 
-```JavaScript
+```js
 var options = {
     readonlyRenderAs: 'text'
 };
 var surveyPDF = new SurveyPDF.SurveyPDF(json, options);
 ```
 
-For each particular question, you can override the default render behavior at the question level - by programmatically specifying a question's `readonlyRenderAs` custom property.
+For each question, you can override the default render behavior at the question level: programmatically specify a question's `readonlyRenderAs` custom property.
 
-```JavaScript
+```js
 function saveSurveyToPdf(filename, surveyModel) {
     var surveyPDF = new SurveyPDF.SurveyPDF(json);
     surveyPDF.data = surveyModel.data;
@@ -434,7 +435,7 @@ See a live Plunker sample:
 <a id="textFieldRenderAs"></a>
 ## Text input render mode in read-only questions
 
-Use the [textFieldRenderAs](https://github.com/surveyjs/survey-pdf/blob/1220a71b51daddf1c4c8d506382c50be5f1b2941/src/doc_controller.ts#L47) option to specify the manner in which single-line text fields display respondent answers (especially long ones) in the result PDF within questions of the following types: 
+Use the [textFieldRenderAs](https://github.com/surveyjs/survey-pdf/blob/master/src/doc_controller.ts#L47) option to specify the manner in which single-line text fields display respondent answers (especially long ones) in the resulting PDF within questions of the following types: 
 - **Text** ([QuestionTextModel](https://surveyjs.io/Documentation/Library?id=questiontextmodel)),
 - **Multiple Text** ([QuestionMultipleTextModel](https://surveyjs.io/Documentation/Library?id=questionmultipletextmodel)),
 - **Matrix Dropdown** ([QuestionMatrixDropdownModel](https://surveyjs.io/Documentation/Library/?id=questionmatrixdropdownmodel)), if its [cellType](https://surveyjs.io/Documentation/Library/?id=questionmatrixdropdownmodel#cellType) is set to 'text' (_Cell type_ is set to _Single Input_ in Survey Creator's Properties window),
@@ -443,7 +444,7 @@ Use the [textFieldRenderAs](https://github.com/surveyjs/survey-pdf/blob/1220a71b
 
 
 
-The [textFieldRenderAs](https://github.com/surveyjs/survey-pdf/blob/1220a71b51daddf1c4c8d506382c50be5f1b2941/src/doc_controller.ts#L47) option is only **in effect** for questions which are used **in read-only mode** due to one of the following settings:
+The [textFieldRenderAs](https://github.com/surveyjs/survey-pdf/blob/master/src/doc_controller.ts#L47) option is only **in effect** for questions used **in read-only mode** due to one of the following settings:
  - a survey's [mode](https://surveyjs.io/Documentation/Library/?id=surveymodel#mode) property is set to 'display' (in a survey JSON definition),
  - a page's [readOnly](https://surveyjs.io/Documentation/Library/?id=pagemodel#readOnly) property is set to true,
  - a panel's [readOnly](https://surveyjs.io/Documentation/Library/?id=panelmodel#readOnly) property is set to true,
@@ -452,11 +453,11 @@ The [textFieldRenderAs](https://github.com/surveyjs/survey-pdf/blob/1220a71b51da
  
 >You can identify a question's current state by using the [isReadOnly](https://surveyjs.io/Documentation/Library?id=Question#isReadOnly) property.
 
-The [textFieldRenderAs](https://github.com/surveyjs/survey-pdf/blob/1220a71b51daddf1c4c8d506382c50be5f1b2941/src/doc_controller.ts#L47) option allows you to better present long answers to open-ended questions in a PDF document.
+The [textFieldRenderAs](https://github.com/surveyjs/survey-pdf/blob/master/src/doc_controller.ts#L47) option allows you to present long answers to open-ended questions as a PDF file.
 
 
 
-- [textFieldRenderAs](https://github.com/surveyjs/survey-pdf/blob/1220a71b51daddf1c4c8d506382c50be5f1b2941/src/doc_controller.ts#L47)  
+- [textFieldRenderAs](https://github.com/surveyjs/survey-pdf/blob/master/src/doc_controller.ts#L47)  
 `textFieldRenderAs?: 'singleLine' | 'multiLine';`
 
 Possible values:
@@ -467,7 +468,7 @@ SurveyPDF renders text input fields in a manner similar to questions of the [Com
 
 The default value is "singleLine".  
 
-```JavaScript
+```js
 var options = {
     textFieldRenderAs: 'multiLine'
 };
@@ -485,14 +486,27 @@ You can play with a live Plunker sample:
 <a id="compress"></a>
 ## Document compression
 
-Use the [compress](https://github.com/surveyjs/survey-pdf/blob/1220a71b51daddf1c4c8d506382c50be5f1b2941/src/doc_controller.ts#L48) option to specify whether to compress the  generated PDF document. A compressed document does not support using [custom fonts](https://surveyjs.io/Documentation/Pdf-Export?id=Customization-ChangeFonts#use-custom-font).
+Use the [compress](https://github.com/surveyjs/survey-pdf/blob/master/src/doc_controller.ts#L48) option to specify whether to compress the  generated PDF document. A compressed document does not support using [custom fonts](https://surveyjs.io/Documentation/Pdf-Export?id=Customization-ChangeFonts#use-custom-font).
 
-- [compress](https://github.com/surveyjs/survey-pdf/blob/1220a71b51daddf1c4c8d506382c50be5f1b2941/src/doc_controller.ts#L48)  
+- [compress](https://github.com/surveyjs/survey-pdf/blob/master/src/doc_controller.ts#L48)  
 `compress?: boolean;`
 
-```JavaScript
+```js
 var options = {
     compress: true
 };
 var survey = new SurveyPDF.SurveyPDF(json, options);
 ```
+
+## Image Rendering
+
+[Image questions](https://surveyjs.io/Documentation/Library?id=questionimagemodel) have an [imageFit](https://surveyjs.io/Documentation/Library?id=questionimagemodel#imageFit) property that specifies how images should fit into their containers. If exported images should apply this property, enable the `applyImageFit` option. Please note that with this option, the quality of images may be lower because they pass through several conversions.
+
+```js
+var options = {
+    applyImageFit: true
+};
+var survey = new SurveyPDF.SurveyPDF(json, options);
+```
+
+If `applyImageFit` is disabled, exported images fill the entire container and do not preserve their aspect ratio, but their quality remains the same because they are exported as is.
