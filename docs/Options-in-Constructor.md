@@ -500,7 +500,7 @@ var survey = new SurveyPDF.SurveyPDF(json, options);
 
 ## Image Rendering
 
-[Image questions](https://surveyjs.io/Documentation/Library?id=questionimagemodel) have an [imageFit](https://surveyjs.io/Documentation/Library?id=questionimagemodel#imageFit) property that specifies how images should fit into their container. If exported images should take this property into account, enable the `applyImageFit` option. Please note that with this option, the quality of images may be lower because they pass through several conversions.
+[Image questions](https://surveyjs.io/Documentation/Library?id=questionimagemodel) have an [imageFit](https://surveyjs.io/Documentation/Library?id=questionimagemodel#imageFit) property that specifies how images should fit into their containers. If exported images should apply this property, enable the `applyImageFit` option. Please note that with this option, the quality of images may be lower because they pass through several conversions.
 
 ```js
 var options = {
