@@ -216,6 +216,7 @@ export class FlatSurvey {
             }
             else flats.push(pageFlats);
             this.popRowlines(flats[flats.length - 1]);
+            point.yTop = controller.leftTopPoint.yTop;
         }
         return flats;
     }

@@ -35,12 +35,12 @@ test('Survey with title', async () => {
     TestHelper.equalRect(expect, flats[0][0], assumeTitle);
     const rowLinePoint: IPoint = SurveyHelper.createPoint(assumeTitle);
     const assumeRowLine: IRect = SurveyHelper.createRowlineFlat(rowLinePoint, controller);
-    TestHelper.equalRect(expect, flats[0][1], assumeRowLine);    
+    TestHelper.equalRect(expect, flats[0][1], assumeRowLine);
     const textBoxPoint: IPoint = rowLinePoint;
     textBoxPoint.yTop += controller.unitHeight * FlatSurvey.PANEL_CONT_GAP_SCALE + SurveyHelper.EPSILON;
     textBoxPoint.xLeft += controller.unitWidth;
     const assumeTextBox: IRect = SurveyHelper.createTextFieldRect(textBoxPoint, controller);
-    TestHelper.equalRect(expect, flats[0][2], assumeTextBox);    
+    TestHelper.equalRect(expect, flats[0][2], assumeTextBox);
 });
 test('Survey with description', async () => {
     const json: any = {
@@ -63,12 +63,12 @@ test('Survey with description', async () => {
     TestHelper.equalRect(expect, flats[0][0], assumeDescription);
     const rowLinePoint: IPoint = SurveyHelper.createPoint(assumeDescription);
     const assumeRowLine: IRect = SurveyHelper.createRowlineFlat(rowLinePoint, controller);
-    TestHelper.equalRect(expect, flats[0][1], assumeRowLine);    
+    TestHelper.equalRect(expect, flats[0][1], assumeRowLine);
     const textBoxPoint: IPoint = rowLinePoint;
     textBoxPoint.yTop += controller.unitHeight * FlatSurvey.PANEL_CONT_GAP_SCALE + SurveyHelper.EPSILON;
     textBoxPoint.xLeft += controller.unitWidth;
     const assumeTextBox: IRect = SurveyHelper.createTextFieldRect(textBoxPoint, controller);
-    TestHelper.equalRect(expect, flats[0][2], assumeTextBox);    
+    TestHelper.equalRect(expect, flats[0][2], assumeTextBox);
 });
 test('Survey with title and description', async () => {
     const json: any = {
@@ -93,16 +93,16 @@ test('Survey with title and description', async () => {
     descriptionPoint.yTop += controller.unitHeight * FlatSurvey.PANEL_DESC_GAP_SCALE;
     const assumeDescription: IRect = await SurveyHelper.createDescFlat(
         descriptionPoint, null, controller, json.description);
-    const assumeTitleWithDescription: IRect = SurveyHelper.mergeRects(assumeTitle, assumeDescription)
+    const assumeTitleWithDescription: IRect = SurveyHelper.mergeRects(assumeTitle, assumeDescription);
     TestHelper.equalRect(expect, flats[0][0], assumeTitleWithDescription);
     const rowLinePoint: IPoint = SurveyHelper.createPoint(assumeTitleWithDescription);
     const assumeRowLine: IRect = SurveyHelper.createRowlineFlat(rowLinePoint, controller);
-    TestHelper.equalRect(expect, flats[0][1], assumeRowLine);    
+    TestHelper.equalRect(expect, flats[0][1], assumeRowLine);
     const textBoxPoint: IPoint = rowLinePoint;
     textBoxPoint.yTop += controller.unitHeight * FlatSurvey.PANEL_CONT_GAP_SCALE + SurveyHelper.EPSILON;
     textBoxPoint.xLeft += controller.unitWidth;
     const assumeTextBox: IRect = SurveyHelper.createTextFieldRect(textBoxPoint, controller);
-    TestHelper.equalRect(expect, flats[0][2], assumeTextBox);    
+    TestHelper.equalRect(expect, flats[0][2], assumeTextBox);
 });
 test('Survey with logo', async () => {
     const json: any = {
@@ -121,7 +121,7 @@ test('Survey with logo', async () => {
         yTop: controller.leftTopPoint.yTop,
         yBot: controller.leftTopPoint.yTop + SurveyHelper.pxToPt(survey.logoHeight)
     };
-    TestHelper.equalRect(expect, flats[0][0], assumeLogo);  
+    TestHelper.equalRect(expect, flats[0][0], assumeLogo);
 });
 test('Survey with left logo and title', async () => {
     const json: any = {
@@ -130,9 +130,9 @@ test('Survey with left logo and title', async () => {
         logoPosition: 'left',
         questions: [
             {
-               type: 'text',
-               name: 'logoleft',
-               titleLocation: 'hidden'
+                type: 'text',
+                name: 'logoleft',
+                titleLocation: 'hidden'
             }
         ]
     };
@@ -170,9 +170,9 @@ test('Survey with left logo and big title', async () => {
         logoPosition: 'left',
         questions: [
             {
-               type: 'text',
-               name: 'logoleftbig',
-               titleLocation: 'hidden'
+                type: 'text',
+                name: 'logoleftbig',
+                titleLocation: 'hidden'
             }
         ]
     };
@@ -210,9 +210,9 @@ test('Survey with right logo and title', async () => {
         logoPosition: 'right',
         questions: [
             {
-               type: 'text',
-               name: 'logoright',
-               titleLocation: 'hidden'
+                type: 'text',
+                name: 'logoright',
+                titleLocation: 'hidden'
             }
         ]
     };
@@ -304,8 +304,8 @@ test('Survey with logo server-side', async () => {
     SurveyHelper.inBrowser = false;
     const json: any = {
         logo: TestHelper.BASE64_IMAGE_16PX,
-        logoWidth: "420px",
-        logoHeight: "320px",
+        logoWidth: '420px',
+        logoHeight: '320px',
         pages: []
     };
     const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
@@ -321,6 +321,41 @@ test('Survey with logo server-side', async () => {
         yTop: controller.leftTopPoint.yTop,
         yBot: controller.leftTopPoint.yTop + SurveyHelper.pxToPt(survey.logoHeight)
     };
-    TestHelper.equalRect(expect, flats[0][0], assumeLogo);  
+    TestHelper.equalRect(expect, flats[0][0], assumeLogo);
     SurveyHelper.inBrowser = true;
+});
+
+test('Survey with logo and pages', async () => {
+    const json: any = {
+        logo: TestHelper.BASE64_IMAGE_16PX,
+        pages: [
+            {
+                name: 'page1',
+                elements: [
+                    {
+                        type: 'text',
+                        name: 'First page qw'
+                    }
+                ]
+            },
+            {
+                name: 'page2',
+                elements: [
+                    {
+                        type: 'text',
+                        name: 'Second page qw'
+                    }
+                ]
+            }
+        ]
+    };
+    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    const controller: DocController = new DocController(TestHelper.defaultOptions);
+    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    expect(flats.length).toBe(2);
+    expect(flats[0].length).toBe(3);
+
+    expect(flats[1].length).toBe(1);
+    expect(flats[1][0].yTop).toBe(controller.leftTopPoint.yTop);
+    expect(flats[1][0].xLeft).toBe(controller.leftTopPoint.xLeft);
 });
