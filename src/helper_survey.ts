@@ -591,7 +591,7 @@ export class SurveyHelper {
     }
     public static getContentQuestionType(question: Question): string {
         if(!!question.customWidget) return question.customWidget.pdfQuestionType;
-        return !!(<any>question).contentQuestion ? "custom_model" : question.getType();
+        return !!(<any>question).contentQuestion ? 'custom_model' : question.getType();
     }
     public static getRatingMinWidth(controller: DocController): number {
         return controller.measureText(this.RATING_MIN_WIDTH).width;
