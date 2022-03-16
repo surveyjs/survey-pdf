@@ -589,6 +589,10 @@ export class SurveyHelper {
     public static getContentQuestion(question: Question): Question {
         return !!(<any>question).contentQuestion ? (<any>question).contentQuestion : question;
     }
+    public static getContentQuestionType(question: Question): string {
+        if(!!question.customWidget) return question.customWidget.pdfQuestionType;
+        return !!(<any>question).contentQuestion ? "custom_model" : question.getType();
+    }
     public static getRatingMinWidth(controller: DocController): number {
         return controller.measureText(this.RATING_MIN_WIDTH).width;
     }
@@ -649,9 +653,7 @@ export class SurveyHelper {
     }
     public static async generateQuestionFlats(survey: SurveyPDF,
         controller: DocController, question: Question, point: IPoint): Promise<IPdfBrick[]> {
-        const questionComposite: Question = this.getContentQuestion(question);
-        const questionType: string = question.customWidget ?
-            question.customWidget.pdfQuestionType : questionComposite.getType();
+        const questionType: string = this.getContentQuestionType(question);
         const flatQuestion: IFlatQuestion = FlatRepository.getInstance().
             create(survey, question, controller, questionType);
         const questionFlats: IPdfBrick[] = await flatQuestion.generateFlats(point);
