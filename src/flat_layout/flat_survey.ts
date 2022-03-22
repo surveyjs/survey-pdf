@@ -10,9 +10,9 @@ import { FlatRepository } from '../entries/pdf';
 import * as SurveyPDFModule from '../entries/pdf';
 
 export class FlatSurvey {
-    public static readonly QUES_GAP_VERT_SCALE: number = 1.5;
-    public static readonly PANEL_CONT_GAP_SCALE: number = 1.0;
-    public static readonly PANEL_DESC_GAP_SCALE: number = 0.25;
+    public static QUES_GAP_VERT_SCALE: number = 1.5;
+    public static PANEL_CONT_GAP_SCALE: number = 1.0;
+    public static PANEL_DESC_GAP_SCALE: number = 0.25;
     public static async generateFlatsPanel(survey: SurveyPDF, controller: DocController,
         panel: PanelModel, point: IPoint): Promise<IPdfBrick[]> {
         const panelFlats: IPdfBrick[] = [];
