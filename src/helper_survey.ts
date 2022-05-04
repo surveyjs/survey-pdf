@@ -589,9 +589,20 @@ export class SurveyHelper {
     public static getContentQuestion(question: Question): Question {
         return !!(<any>question).contentQuestion ? (<any>question).contentQuestion : question;
     }
-    public static getContentQuestionType(question: Question): string {
+    public static getContentQuestionTypeRenderAs(question: Question, survey: SurveyPDF): string {
+        let renderAs = question.renderAs;
+        if(question.getType() === 'boolean' && question.renderAs === 'default') {
+            renderAs = survey.options.booleanRenderAs;
+        }
+        if(renderAs !== 'default') {
+            const type = `${question.getType()}-${renderAs}`;
+            if(FlatRepository.getInstance().isTypeRegistered(type)) return type;
+        }
+        return question.getType();
+    }
+    public static getContentQuestionType(question: Question, survey: SurveyPDF): string {
         if(!!question.customWidget) return question.customWidget.pdfQuestionType;
-        return !!(<any>question).contentQuestion ? 'custom_model' : question.getType();
+        return !!(<any>question).contentQuestion ? 'custom_model' : this.getContentQuestionTypeRenderAs(question, survey);
     }
     public static getRatingMinWidth(controller: DocController): number {
         return controller.measureText(this.RATING_MIN_WIDTH).width;
@@ -653,7 +664,7 @@ export class SurveyHelper {
     }
     public static async generateQuestionFlats(survey: SurveyPDF,
         controller: DocController, question: Question, point: IPoint): Promise<IPdfBrick[]> {
-        const questionType: string = this.getContentQuestionType(question);
+        const questionType: string = this.getContentQuestionType(question, survey);
         const flatQuestion: IFlatQuestion = FlatRepository.getInstance().
             create(survey, question, controller, questionType);
         const questionFlats: IPdfBrick[] = await flatQuestion.generateFlats(point);

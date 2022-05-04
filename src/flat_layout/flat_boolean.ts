@@ -1,4 +1,4 @@
-import { IQuestion, LocalizableString, QuestionBooleanModel } from 'survey-core';
+import { IQuestion, ItemValue, LocalizableString, QuestionBooleanModel, QuestionRadiogroupModel } from 'survey-core';
 import { SurveyPDF } from '../survey';
 import { IPoint, DocController } from '../doc_controller';
 import { FlatQuestion } from './flat_question';
@@ -8,6 +8,7 @@ import { TextBrick } from '../pdf_render/pdf_text';
 import { BooleanItemBrick } from '../pdf_render/pdf_booleanitem';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
+import { FlatRadiogroup } from './flat_radiogroup';
 
 export class FlatBoolean extends FlatQuestion {
     protected question: QuestionBooleanModel;
@@ -36,4 +37,30 @@ export class FlatBoolean extends FlatQuestion {
     }
 }
 
+export class FlatBooleanRadiogroup extends FlatRadiogroup {
+    constructor(protected survey: SurveyPDF,
+        question: IQuestion, protected controller: DocController) {
+        super(survey, question, controller);
+        this.question = this.getRadiogroupQuestion(<QuestionBooleanModel>question);
+    }
+    private getRadiogroupQuestion(question: QuestionBooleanModel): QuestionRadiogroupModel {
+        const radiogroupQuestion = new QuestionRadiogroupModel(question.name);
+        const radioJson = radiogroupQuestion.toJSON();
+        const booleanJson = question.toJSON();
+        for (let key in booleanJson) {
+            radioJson[key] = booleanJson[key];
+        }
+        radiogroupQuestion.fromJSON(radioJson);
+        const falseChoice = new ItemValue(question.valueFalse !== undefined ? question.valueFalse : 'false');
+        falseChoice.locOwner = question;
+        falseChoice.setLocText(question.locLabelFalse);
+        const trueChoice = new ItemValue(question.valueTrue !== undefined ? question.valueTrue : 'true');
+        trueChoice.locOwner = question;
+        trueChoice.setLocText(question.locLabelTrue);
+        radiogroupQuestion.choices = [falseChoice, trueChoice];
+        radiogroupQuestion.value = question.value;
+        return radiogroupQuestion;
+    }
+}
 FlatRepository.getInstance().register('boolean', FlatBoolean);
+FlatRepository.getInstance().register('boolean-radiogroup', FlatBooleanRadiogroup);
