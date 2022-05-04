@@ -1,11 +1,12 @@
 (<any>window)['HTMLCanvasElement'].prototype.getContext = () => {
     return {};
 };
-import { IPoint, IRect,ISize, IDocOptions, DocOptions, DocController } from '../src/doc_controller';
+import { IPoint, IRect, ISize, IDocOptions, DocOptions, DocController } from '../src/doc_controller';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { TextBrick } from '../src/pdf_render/pdf_text';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
+import { SurveyPDF } from '../src/survey';
 
 test('Merge rects 2 count', () => {
     let rectKeys: string[] = Object.keys(TestHelper.defaultRect);
@@ -289,4 +290,35 @@ test('Check createSvgContent method' , () => {
         SurveyHelper.htmlToXml = old;
         DocController.customFonts = {};
     }
+});
+test('Check getContentQuestionType method with renderAs', () => {
+    let json: any = {
+        elements: [
+            {
+                type: 'boolean',
+            }
+        ]
+    };
+    let survey = new SurveyPDF(json);
+    let question = survey.getAllQuestions()[0];
+    let type = SurveyHelper.getContentQuestionType(question, survey);
+    expect(type).toEqual('boolean');
+
+    survey = new SurveyPDF(json, { booleanRenderAs: 'radiogroup' });
+    question = survey.getAllQuestions()[0];
+    type = SurveyHelper.getContentQuestionType(question, survey);
+    expect(type).toEqual('boolean-radiogroup');
+
+    json = {
+        elements: [
+            {
+                type: 'boolean',
+                'renderAs': 'radiogroup'
+            }
+        ]
+    };
+    survey = new SurveyPDF(json);
+    question = survey.getAllQuestions()[0];
+    type = SurveyHelper.getContentQuestionType(question, survey);
+    expect(type).toEqual('boolean-radiogroup');
 });
