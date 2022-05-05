@@ -312,9 +312,10 @@ export class SurveyHelper {
         return await new Promise((resolve) => {
             img.onload = function () {
                 const canvas: HTMLCanvasElement = document.createElement('canvas');
-                canvas.width = divWidth;
-                canvas.height = divHeight;
+                canvas.width = divWidth * SurveyHelper.HTML_TO_IMAGE_QUALITY;
+                canvas.height = divHeight * SurveyHelper.HTML_TO_IMAGE_QUALITY;
                 const context: CanvasRenderingContext2D = canvas.getContext('2d');
+                context.scale(SurveyHelper.HTML_TO_IMAGE_QUALITY, SurveyHelper.HTML_TO_IMAGE_QUALITY);
                 context.fillStyle = SurveyHelper.BACKGROUND_COLOR;
                 context.fillRect(0, 0, divWidth, divHeight);
                 context.drawImage(img, 0, 0);
