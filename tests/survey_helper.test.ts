@@ -290,3 +290,41 @@ test('Check createSvgContent method' , () => {
         DocController.customFonts = {};
     }
 });
+test('Check setCanvas method', () => {
+    class ContextMock {
+        xScale: number;
+        yScale: number;
+
+        scale = (xScale: number, yScale: number) => {
+            this.xScale = xScale;
+            this.yScale = yScale;
+        };
+        fillRect = () => { };
+        drawImage = () => { }
+    }
+    const canvas: HTMLCanvasElement = document.createElement('canvas');
+    let context: ContextMock;
+    (<any>canvas).getContext = () => {
+        context = new ContextMock();
+        return context;
+    };
+
+    const img = new Image();
+    const oldValue = SurveyHelper.HTML_TO_IMAGE_QUALITY;
+
+    SurveyHelper.HTML_TO_IMAGE_QUALITY = 4;
+    SurveyHelper['setCanvas'](canvas, 50, 20, img);
+    expect(canvas.width).toBe(200);
+    expect(canvas.height).toBe(80);
+    expect(context.xScale).toBe(4);
+    expect(context.yScale).toBe(4);
+
+    SurveyHelper.HTML_TO_IMAGE_QUALITY = 1;
+    SurveyHelper['setCanvas'](canvas, 60, 40, img);
+    expect(canvas.width).toBe(60);
+    expect(canvas.height).toBe(40);
+    expect(context.xScale).toBe(1);
+    expect(context.yScale).toBe(1);
+
+    SurveyHelper.HTML_TO_IMAGE_QUALITY = oldValue;
+});

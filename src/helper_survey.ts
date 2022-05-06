@@ -304,6 +304,15 @@ export class SurveyHelper {
             this.htmlToXml(html) + '</foreignObject></svg>';
         return { svg, divWidth, divHeight };
     }
+    private static setCanvas(canvas: HTMLCanvasElement, divWidth: number, divHeight: number, img: HTMLImageElement): void {
+        canvas.width = divWidth * SurveyHelper.HTML_TO_IMAGE_QUALITY;
+        canvas.height = divHeight * SurveyHelper.HTML_TO_IMAGE_QUALITY;
+        const context: CanvasRenderingContext2D = canvas.getContext('2d');
+        context.scale(SurveyHelper.HTML_TO_IMAGE_QUALITY, SurveyHelper.HTML_TO_IMAGE_QUALITY);
+        context.fillStyle = SurveyHelper.BACKGROUND_COLOR;
+        context.fillRect(0, 0, divWidth, divHeight);
+        context.drawImage(img, 0, 0);
+    }
     public static async htmlToImage(html: string, width: number, controller: DocController): Promise<{ url: string, aspect: number }> {
         const { svg, divWidth, divHeight } = SurveyHelper.createSvgContent(html, width, controller);
         const data: string = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svg)));
@@ -312,13 +321,7 @@ export class SurveyHelper {
         return await new Promise((resolve) => {
             img.onload = function () {
                 const canvas: HTMLCanvasElement = document.createElement('canvas');
-                canvas.width = divWidth * SurveyHelper.HTML_TO_IMAGE_QUALITY;
-                canvas.height = divHeight * SurveyHelper.HTML_TO_IMAGE_QUALITY;
-                const context: CanvasRenderingContext2D = canvas.getContext('2d');
-                context.scale(SurveyHelper.HTML_TO_IMAGE_QUALITY, SurveyHelper.HTML_TO_IMAGE_QUALITY);
-                context.fillStyle = SurveyHelper.BACKGROUND_COLOR;
-                context.fillRect(0, 0, divWidth, divHeight);
-                context.drawImage(img, 0, 0);
+                SurveyHelper.setCanvas(canvas, divHeight, divWidth, img);
                 const url: string = canvas.toDataURL('image/jpeg', SurveyHelper.HTML_TO_IMAGE_QUALITY);
                 canvas.remove();
                 resolve({ url: url, aspect: divWidth / divHeight });
