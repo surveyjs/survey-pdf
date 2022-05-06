@@ -5,12 +5,14 @@
 import { SurveyPDF } from '../src/survey';
 import { DocController } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
-import { FlatBoolean } from '../src/flat_layout/flat_boolean';
+import { FlatBoolean, FlatBooleanRadiogroup } from '../src/flat_layout/flat_boolean';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { TextBrick } from '../src/pdf_render/pdf_text';
 import { BooleanItemBrick } from '../src/pdf_render/pdf_booleanitem';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
+import { FlatRepository } from '../src/flat_layout/flat_repository';
+import { QuestionBooleanModel } from 'survey-core';
 let __dummy_bl = new FlatBoolean(null, null, null);
 
 test('Check boolean undefined', async () => {
@@ -85,4 +87,30 @@ test('Check boolean false', async () => {
     expect(unfoldFlats[1].xLeft).toBe(unfoldFlats[0].xRight +
         controller.unitWidth * SurveyHelper.GAP_BETWEEN_ITEM_TEXT);
     expect((<TextBrick>unfoldFlats[1])['text']).toBe(json.questions[0].labelFalse);
+});
+
+test('Check boolean renderAs: radiogroup question', async () => {
+    const question = new QuestionBooleanModel('q1');
+    question.title = 'q1_title';
+    question.description = 'q1_description';
+    question.valueFalse = 'q1_value_false';
+    question.labelTrue = 'q1_label_true';
+    question.labelFalse = 'q1_label_false';
+    question.value = true;
+    let flat = new FlatBooleanRadiogroup(null, question, null);
+    expect(flat['question'].title).toEqual('q1_title');
+    expect(flat['question'].description).toEqual('q1_description');
+    expect(flat['question'].value).toEqual('true');
+    expect(flat['question'].visibleChoices[0].value).toEqual('q1_value_false');
+    expect(flat['question'].visibleChoices[1].value).toEqual('true');
+    expect(flat['question'].visibleChoices[0].locText.text).toEqual('q1_label_false');
+    expect(flat['question'].visibleChoices[1].locText.text).toEqual('q1_label_true');
+    expect(flat['question'].isItemSelected(flat['question'].visibleChoices[1])).toEqual(true);
+
+    question.valueTrue = 'q1_value_true';
+    question.value = 'q1_value_true';
+    flat = new FlatBooleanRadiogroup(null, question, null);
+    expect(flat['question'].value).toEqual('q1_value_true');
+    expect(flat['question'].visibleChoices[1].value).toEqual('q1_value_true');
+    expect(flat['question'].isItemSelected(flat['question'].visibleChoices[1])).toEqual(true);
 });
