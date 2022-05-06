@@ -193,7 +193,15 @@ export class DocOptions implements IDocOptions {
             this._format = this._format.map(f => f * DocOptions.MM_TO_PT);
         }
         this._fontSize = options.fontSize || DocOptions.FONT_SIZE;
-        this._fontName = options.fontName || 'segoe';
+        if(!options.fontName) {
+            if(!DocOptions.SEGOE_BOLD && !DocOptions.SEGOE_NORMAL) {
+                this._fontName = SurveyHelper.STANDARD_FONT;
+            } else {
+                this._fontName = 'segoe';
+            }
+        } else {
+            this._fontName = options.fontName;
+        }
         if ((typeof options.fontName !== 'undefined' &&
             (typeof options.base64Normal !== 'undefined' ||
                 typeof options.base64Bold !== 'undefined'))) {
