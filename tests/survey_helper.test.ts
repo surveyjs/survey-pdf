@@ -19,24 +19,24 @@ test('Merge rects 2 count', () => {
         (<any>assumeRect)[key] = (<any>firstRect)[key];
         let resultRect = SurveyHelper.mergeRects(firstRect, secondRect);
         TestHelper.equalRect(expect, resultRect, assumeRect);
-    })
+    });
 });
 test('Create rect', () => {
     let parametres: ISize = {
         width: 0,
         height: 0
-    }
+    };
     let point: IPoint = TestHelper.defaultPoint;
     for (let i: number = 0; i < 10; i++) {
         Object.keys(parametres).forEach((key: string) => {
             (<any>parametres)[key]++;
-        })
+        });
         let assumeRect: IRect = {
             xLeft: point.xLeft,
             xRight: point.xLeft + parametres.width,
             yTop: point.yTop,
             yBot: point.yTop + parametres.height
-        }
+        };
         TestHelper.equalRect(expect, SurveyHelper.createRect(point, parametres.width, parametres.height), assumeRect);
     }
 });
@@ -136,43 +136,43 @@ test('Scale squre 0.8', () => {
         xRight: 20,
         yTop: 10,
         yBot: 20
-    }
+    };
     let assumeRect: IRect = {
         xLeft: 11,
         xRight: 19,
         yTop: 11,
         yBot: 19
-    }
+    };
     TestHelper.equalRect(expect, SurveyHelper.scaleRect(rect, 0.8), assumeRect);
-})
+});
 test('Scale rect 0.8', () => {
     let rect: IRect = {
         xLeft: 10,
         xRight: 26,
         yTop: 10,
         yBot: 20
-    }
+    };
     let assumeRect: IRect = {
         xLeft: 11,
         xRight: 25,
         yTop: 11,
         yBot: 19
-    }
+    };
     TestHelper.equalRect(expect, SurveyHelper.scaleRect(rect, 0.8), assumeRect);
-})
+});
 test('Scale rect 0.2', () => {
     let rect: IRect = {
         xLeft: 10,
         xRight: 20,
         yTop: 10,
         yBot: 20
-    }
+    };
     let assumeRect: IRect = {
         xLeft: 14,
         xRight: 16,
         yTop: 14,
         yBot: 16
-    }
+    };
     TestHelper.equalRect(expect, SurveyHelper.scaleRect(rect, 0.2), assumeRect);
 });
 test('Move rect to (0,0)', () => {
@@ -181,13 +181,13 @@ test('Move rect to (0,0)', () => {
         xRight: 20,
         yTop: 10,
         yBot: 20
-    }
+    };
     let assumeRect: IRect = {
         xLeft: 0,
         xRight: 10,
         yTop: 0,
         yBot: 10
-    }
+    };
     TestHelper.equalRect(expect, SurveyHelper.moveRect(rect, 0, 0), assumeRect);
 });
 test('Move rect to (0, undefined)', () => {
@@ -196,13 +196,13 @@ test('Move rect to (0, undefined)', () => {
         xRight: 20,
         yTop: 10,
         yBot: 20
-    }
+    };
     let assumeRect: IRect = {
         xLeft: 0,
         xRight: 10,
         yTop: 10,
         yBot: 20
-    }
+    };
     TestHelper.equalRect(expect, SurveyHelper.moveRect(rect, 0), assumeRect);
 });
 test('Move rect to (undefined, 0)', () => {
@@ -211,13 +211,13 @@ test('Move rect to (undefined, 0)', () => {
         xRight: 20,
         yTop: 10,
         yBot: 20
-    }
+    };
     let assumeRect: IRect = {
         xLeft: 10,
         xRight: 20,
         yTop: 0,
         yBot: 10
-    }
+    };
     TestHelper.equalRect(expect, SurveyHelper.moveRect(rect, undefined, 0), assumeRect);
 });
 test('Parse width 10 px', () => {
@@ -238,7 +238,7 @@ test('Check set column width', () => {
             top: 0,
             bot: 0
         }
-    }
+    };
     let controller: DocController = new DocController(options);
     let columnWidth: number = SurveyHelper.getColumnWidth(controller, 3);
     let gap: number = controller.unitWidth * SurveyHelper.GAP_BETWEEN_COLUMNS;
@@ -268,10 +268,10 @@ test('Check textfield with negative width', () => {
         xRight: controller.leftTopPoint.xLeft + controller.unitWidth,
         yTop: controller.leftTopPoint.yTop,
         yBot: controller.leftTopPoint.yTop + controller.unitHeight
-    }
+    };
     TestHelper.equalRect(expect, resultRect, assumeRect);
 });
-test('Check createSvgContent method' , () => {
+test('Check createSvgContent method', () => {
     const options: IDocOptions = {
         useCustomFontInHtml: true
     };
@@ -284,12 +284,50 @@ test('Check createSvgContent method' , () => {
         DocController.addFont('Test Font', 'III', 'italic');
         DocController.addFont('Test Font', 'BIBIBI', 'bolditalic');
         controller.fontName = 'Test Font';
-        const res = SurveyHelper.createSvgContent("<span>Test</span>", 200, controller);
+        const res = SurveyHelper.createSvgContent('<span>Test</span>', 200, controller);
         expect(res.svg).toContain('@font-face { font-family: Test Font');
     } finally {
         SurveyHelper.htmlToXml = old;
         DocController.customFonts = {};
     }
+});
+test('Check setCanvas method', () => {
+    class ContextMock {
+        xScale: number;
+        yScale: number;
+
+        scale = (xScale: number, yScale: number) => {
+            this.xScale = xScale;
+            this.yScale = yScale;
+        };
+        fillRect = () => { };
+        drawImage = () => { }
+    }
+    const canvas: HTMLCanvasElement = document.createElement('canvas');
+    let context: ContextMock;
+    (<any>canvas).getContext = () => {
+        context = new ContextMock();
+        return context;
+    };
+
+    const img = new Image();
+    const oldValue = SurveyHelper.HTML_TO_IMAGE_QUALITY;
+
+    SurveyHelper.HTML_TO_IMAGE_QUALITY = 4;
+    SurveyHelper['setCanvas'](canvas, 50, 20, img);
+    expect(canvas.width).toBe(200);
+    expect(canvas.height).toBe(80);
+    expect(context.xScale).toBe(4);
+    expect(context.yScale).toBe(4);
+
+    SurveyHelper.HTML_TO_IMAGE_QUALITY = 1;
+    SurveyHelper['setCanvas'](canvas, 60, 40, img);
+    expect(canvas.width).toBe(60);
+    expect(canvas.height).toBe(40);
+    expect(context.xScale).toBe(1);
+    expect(context.yScale).toBe(1);
+
+    SurveyHelper.HTML_TO_IMAGE_QUALITY = oldValue;
 });
 test('Check getContentQuestionType method with renderAs', () => {
     let json: any = {
