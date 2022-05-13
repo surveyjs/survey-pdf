@@ -321,7 +321,7 @@ export class SurveyHelper {
         return await new Promise((resolve) => {
             img.onload = function () {
                 const canvas: HTMLCanvasElement = document.createElement('canvas');
-                SurveyHelper.setCanvas(canvas, divHeight, divWidth, img);
+                SurveyHelper.setCanvas(canvas, divWidth, divHeight, img);
                 const url: string = canvas.toDataURL('image/jpeg', SurveyHelper.HTML_TO_IMAGE_QUALITY);
                 canvas.remove();
                 resolve({ url: url, aspect: divWidth / divHeight });
