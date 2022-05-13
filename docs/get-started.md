@@ -1,9 +1,9 @@
-# Get Started with SurveyJS
+# Get Started with PDF Export for SurveyJS
 
-Refer to one of the following tutorials to get started with SurveyJS on your platform:
+Refer to one of the following tutorials to integrate the survey export functionality into applications on your platform:
 
-- [Angular](https://surveyjs.io/Documentation/Library?id=get-started-angular)
-- [Vue](https://surveyjs.io/Documentation/Library?id=get-started-vue)
-- [React](https://surveyjs.io/Documentation/Library?id=get-started-react)
-- [Knockout](https://surveyjs.io/Documentation/Library?id=get-started-knockout)
-- [jQuery](https://surveyjs.io/Documentation/Library?id=get-started-jquery)
+- [Angular](/Documentation/Pdf-Export?id=get-started-angular)
+- [Vue](/Documentation/Pdf-Export?id=get-started-vue)
+- [React](/Documentation/Pdf-Export?id=get-started-react)
+- [Knockout](/Documentation/Pdf-Export?id=get-started-knockout)
+- [jQuery](/Documentation/Pdf-Export?id=get-started-jquery)
