@@ -28,7 +28,9 @@ const exportToPdfOptions = {
 
 ## Export a Survey
 
-To export a survey, you need to create a `SurveyPDF` instance. Its constructor accepts two parameters: a [survey JSON definition](/Documentation/Library?id=design-survey-create-a-simple-survey#define-a-static-survey-model-in-json) and [export properties](#configure-export-properties). To save a PDF document with the exported survey, call the [`save(fileName)`](/Documentation/Pdf-Export?id=surveypdf#save) method on the `SurveyPDF` instance. If you omit the `fileName` parameter, the document uses the default name (`"survey_result"`). The code below implements a `savePdf` helper function that instantiates `SurveyPDF` and calls the `save(fileName)` method:
+To export a survey, you need to create a `SurveyPDF` instance. Its constructor accepts two parameters: a [survey JSON definition](/Documentation/Library?id=design-survey-create-a-simple-survey#define-a-static-survey-model-in-json) and [export properties](#configure-export-properties). To save a PDF document with the exported survey, call the [`save(fileName)`](/Documentation/Pdf-Export?id=surveypdf#save) method on the `SurveyPDF` instance. If you omit the `fileName` parameter, the document uses the default name (`"survey_result"`).
+
+The code below implements a `savePdf` helper function that instantiates `SurveyPDF`, assigns survey data (user responses) to it, and calls the `save(fileName)` method. If you want to export the survey without the user responses, do not specify the `SurveyPDF`'s `data` property.
 
 ```js
 import { SurveyPDF } from "survey-pdf";
@@ -37,9 +39,10 @@ const surveyJson = { /* ... */ };
 
 const exportToPdfOptions = { /* ... */ };
 
-const savePdf = function () {
-    const surveyPdf = new SurveyPDF(surveyJson, exportToPdfOptions);
-    surveyPdf.save();
+const savePdf = function (surveyData) {
+  const surveyPdf = new SurveyPDF(surveyJson, exportToPdfOptions);
+  surveyPdf.data = surveyData;
+  surveyPdf.save();
 };
 ```
 
@@ -68,7 +71,7 @@ export default {
     survey.addNavigationItem({
       id: "pdf-export",
       title: "Save as PDF",
-      action: savePdf
+      action: () => savePdf(survey.data)
     });
 
     return {
@@ -111,8 +114,9 @@ const exportToPdfOptions = {
   fontSize: 12
 };
 
-const savePdf = function () {
+const savePdf = function (surveyData) {
   const surveyPdf = new SurveyPDF(surveyJson, exportToPdfOptions);
+  surveyPdf.data = surveyData;
   surveyPdf.save();
 };
 
@@ -127,7 +131,7 @@ export default {
     survey.addNavigationItem({
       id: "pdf-export",
       title: "Save as PDF",
-      action: savePdf
+      action: () => savePdf(survey.data)
     });
 
     return {
