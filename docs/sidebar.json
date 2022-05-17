@@ -5,6 +5,32 @@
       "Title": "PDF Export Overview"
     },
     {
+      "Name": "get-started",
+      "Title": "Get Started with PDF Export",
+      "Items": [
+        {
+          "Name": "get-started-angular",
+          "Title": "Angular"
+        },
+        {
+          "Name": "get-started-vue",
+          "Title": "Vue"
+        },
+        {
+          "Name": "get-started-react",
+          "Title": "React"
+        },
+        {
+          "Name": "get-started-knockout",
+          "Title": "Knockout"
+        },
+        {
+          "Name": "get-started-jquery",
+          "Title": "jQuery"
+        }
+      ]
+    },
+    {
       "Name": "Customization-Options",
       "Title": "Customization Options",
       "Items": [
