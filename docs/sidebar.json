@@ -51,6 +51,10 @@
           "Title": "Survey PDF"
         },
         {
+          "Name": "IDocOptions",
+          "Title": "IDocOptions"
+        },
+        {
           "Name": "drawcanvas",
           "Title": "Draw Canvas"
         }
