@@ -1,6 +1,6 @@
 # Export Survey to PDF in an Angular Application
 
-PDF Export for SurveyJS allows your end users to save surveys as interactive PDF documents. This tutorial describes how to add the export functionality to your Angular application.
+PDF Export for SurveyJS allows your users to save surveys as interactive PDF documents. This tutorial describes how to add the export functionality to your Angular application.
 
 - [Install the `survey-pdf` npm package](#install-the-survey-pdf-npm-package)
 - [Configure Export Properties](#configure-export-properties)
@@ -32,7 +32,7 @@ const exportToPdfOptions: IDocOptions = {
 
 To export a survey, you need to create a `SurveyPDF` instance. Its constructor accepts two parameters: a [survey JSON definition](/Documentation/Library?id=design-survey-create-a-simple-survey#define-a-static-survey-model-in-json) and [export properties](#configure-export-properties). To save a PDF document with the exported survey, call the [`save(fileName)`](/Documentation/Pdf-Export?id=surveypdf#save) method on the `SurveyPDF` instance. If you omit the `fileName` parameter, the document uses the default name (`"survey_result"`).
 
-The code below implements a `savePdf` helper function that instantiates `SurveyPDF`, assigns survey data (user responses) to it, and calls the `save(fileName)` method. If you want to export the survey without the user responses, do not specify the `SurveyPDF`'s `data` property.
+The code below implements a `savePdf` helper function that instantiates `SurveyPDF`, assigns survey data (user responses) to this instance, and calls the `save(fileName)` method. If you want to export the survey without the user responses, do not specify the `SurveyPDF`'s `data` property.
 
 ```js
 import { IDocOptions, SurveyPDF } from "survey-pdf";
@@ -48,7 +48,7 @@ const savePdf = function (surveyData: any) {
 };
 ```
 
-You can use any UI element to call this helper function. For instance, the following code adds a new [navigation button](/Documentation/Library?id=iaction) below the survey and calls the function when a user clicks this button:
+You can use any UI element to call this helper function. For instance, the following code adds a new [navigation button](/Documentation/Library?id=iaction) below the survey and calls the `savePdf` function when a user clicks this button:
 
 ```js
 import { Component, OnInit } from '@angular/core';
@@ -70,7 +70,7 @@ export class AppComponent implements OnInit {
 }
 ```
 
-The following image illustrates the resulting UI in the [Modern theme](/Documentation/Library?id=get-started-angular#configure-styles):
+The following image illustrates the resulting UI with the [Modern theme](/Documentation/Library?id=get-started-angular#configure-styles) applied:
 
 ![Export Survey to PDF - Save as PDF navigation button](images/surveypdf-navigation-button.png)
 
