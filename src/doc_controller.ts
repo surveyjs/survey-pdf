@@ -29,7 +29,7 @@ export interface IMargin extends IMarginLR {
 }
 /**
  * PDF document configuration. Pass it as the second argument to the `SurveyPDF` constructor:
- * 
+ *
  * ```js
  * const surveyPdf = new SurveyPDF.SurveyPDF(surveyJson, pdfDocOptions);
  * ```
@@ -38,10 +38,10 @@ export interface IDocOptions {
     /**
      * Page orientation.
      * Accepted values:
-     * 
+     *
      * - `"p"`- Portrait orientation (default).
      * - `"l"` - Landscape orientation.
-     * 
+     *
      * @see format
      */
     orientation?: 'p' | 'l';
@@ -49,7 +49,7 @@ export interface IDocOptions {
     /**
      * Page format.
      * Accepted values:
-     * 
+     *
      * - `"a0"` - `"a10"` (`"a4"` is default)
      * - `"b0"` - `"b10"`
      * - `"c0"` - `"c10"`
@@ -62,14 +62,14 @@ export interface IDocOptions {
      * - `"tabloid"`
      * - `"credit-card"`
      * - Array<Number> - custom page size in millimeters, for example, `[210.0, 297.0]`.
-     * 
+     *
      * @see orientation
      */
     format?: string | number[];
 
     /**
      * Font size in points.
-     * 
+     *
      * @see fontName
      */
     fontSize?: number;
@@ -77,7 +77,7 @@ export interface IDocOptions {
     /**
      * Font name.
      * Accepted values:
-     * 
+     *
      * - `"Helvetica"` (default)
      * - `"Courier"`
      * - `"Times"`
@@ -85,7 +85,7 @@ export interface IDocOptions {
      * - `"ZapfDingbats"`
      * - `"Segoe"` (requires [additional configuration](https://surveyjs.io/Documentation/Pdf-Export?id=Customization-ChangeFonts))
      * - [Custom font name](https://surveyjs.io/Documentation/Pdf-Export?id=Customization-ChangeFonts#use-custom-font)
-     * 
+     *
      * @see fontSize
      */
     fontName?: string;
@@ -102,7 +102,7 @@ export interface IDocOptions {
     commercial?: boolean;
 
     /**
-     * Removes watermarks from the exported document. 
+     * Removes watermarks from the exported document.
      * **IMPORTANT**: You can enable this property only if you have a SurveyJS PDF Export commercial license. It is illegal to enable this property without a license.
      */
     haveCommercialLicense?: boolean;
@@ -110,23 +110,23 @@ export interface IDocOptions {
     /**
      * Specifies how to render [HTML questions](https://surveyjs.io/Documentation/Library?id=questionhtmlmodel) into PDF.
      * Accepted values:
-     * 
+     *
      * - `"standard"` - Render HTML questions as selectable text.
      * - `"image"` - Render HTML questions as images.
      * - `"auto"` (default) - Select between the `"standard"` and `"image"` modes automatically based on the HTML content.
-     * 
-     * You can override this property for an individual HTML question. Set the question's `renderAs` property to `"standard"` or `"image"` in the survey JSON definition. 
+     *
+     * You can override this property for an individual HTML question. Set the question's `renderAs` property to `"standard"` or `"image"` in the survey JSON definition.
      */
     htmlRenderAs?: IHTMLRenderType;
 
     /**
      * Specifies how to render [Matrix](https://surveyjs.io/Documentation/Library?id=questionmatrixmodel), [Matrix Dropdown](https://surveyjs.io/Documentation/Library?id=questionmatrixdropdownmodel), and [Matrix Dynamic](https://surveyjs.io/Documentation/Library?id=questionmatrixdynamicmodel) questions into PDF.
      * Accepted values:
-     * 
+     *
      * - `"list"` - Render matrix-like questions as lists.
      * - `"auto"` (default) - Render matrix-like questions as tables if they fit into the available space. Otherwise, render the questions as lists.
-     * 
-     * You can override this property for an individual matrix-like question. Set the question's `renderAs` property to `"list"` in the survey JSON definition. 
+     *
+     * You can override this property for an individual matrix-like question. Set the question's `renderAs` property to `"list"` in the survey JSON definition.
      */
     matrixRenderAs?: 'auto' | 'list';
 
@@ -135,7 +135,7 @@ export interface IDocOptions {
     /**
      * Specifies how to render read-only questions.
      * Accepted values:
-     * 
+     *
      * - `"text"` - Render read-only questions as plain text and custom primitives.
      * - `"acroform"` - Use Acrobat Forms (AcroForms) to render questions that support them. Other questions are rendered in `"text"` mode.
      * - `"auto"` (default) - Prefer the `"text"` mode but use `"acroform"` for File question type and links.
