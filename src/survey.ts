@@ -38,15 +38,15 @@ export class SurveyPDF extends SurveyModel {
      * @param survey SurveyPDF object that fires the event
      * @param canvas DrawCanvas object that you may use it to draw text and images in the page header
      */
-    public onRenderHeader: Event<(survey: SurveyPDF, canvas: DrawCanvas) => any, any> =
-        new Event<(survey: SurveyPDF, canvas: DrawCanvas) => any, any>();
+    public onRenderHeader: EventAsync<(survey: SurveyPDF, canvas: DrawCanvas) => any, any> =
+        new EventAsync<(survey: SurveyPDF, canvas: DrawCanvas) => any, any>();
     /**
      * The event in fired for every rendered page
      * @param survey SurveyPDF object that fires the event
      * @param canvas DrawCanvas object that you may use it to draw text and images in the page footer
      */
-    public onRenderFooter: Event<(survey: SurveyPDF, canvas: DrawCanvas) => any, any> =
-        new Event<(survey: SurveyPDF, canvas: DrawCanvas) => any, any>();
+    public onRenderFooter: EventAsync<(survey: SurveyPDF, canvas: DrawCanvas) => any, any> =
+        new EventAsync<(survey: SurveyPDF, canvas: DrawCanvas) => any, any>();
     /**
      * The event in fired for every rendered question
      * @param survey SurveyPDF object that fires the event
@@ -103,7 +103,7 @@ export class SurveyPDF extends SurveyModel {
         await this.waitForCoreIsReady();
         const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(this, controller);
         const packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
-        EventHandler.process_header_events(this, controller, packs);
+        await EventHandler.process_header_events(this, controller, packs);
         for (let i: number = 0; i < packs.length; i++) {
             for (let j: number = 0; j < packs[i].length; j++) {
                 if (controller.getNumberOfPages() === i) {

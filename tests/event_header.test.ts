@@ -30,7 +30,7 @@ test('Event render header simple text', async () => {
         canvas.drawText({
             text: 'SimpleHeaderText',
             rect: canvas.rect
-        })
+        });
     });
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
@@ -58,7 +58,7 @@ test('Event render header bold text', async () => {
             text: 'Doing sports',
             isBold: true,
             rect: canvas.rect
-        })
+        });
     });
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
@@ -88,7 +88,7 @@ test('Event render header left top text', async () => {
             text: text,
             horizontalAlign: HorizontalAlign.Left,
             verticalAlign: VerticalAlign.Top
-        })
+        });
     });
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
@@ -119,7 +119,7 @@ test('Event render header center middle text', async () => {
             text: text,
             horizontalAlign: HorizontalAlign.Center,
             verticalAlign: VerticalAlign.Middle
-        })
+        });
     });
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
@@ -136,7 +136,7 @@ test('Event render header center middle text', async () => {
         xRight: (headerRect.xRight - headerRect.xLeft + textSize.width) / 2.0,
         yTop: (headerRect.yBot - headerRect.yTop - textSize.height) / 2.0,
         yBot: (headerRect.yBot - headerRect.yTop + textSize.height) / 2.0
-    }
+    };
     TestHelper.equalRect(expect, packs[0][1], assumeText);
 });
 test('Event render footer center middle text', async () => {
@@ -156,14 +156,14 @@ test('Event render footer center middle text', async () => {
             text: text,
             horizontalAlign: HorizontalAlign.Center,
             verticalAlign: VerticalAlign.Middle
-        })
+        });
     });
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(1);
-    EventHandler.process_header_events(survey, controller, packs);
+    await EventHandler.process_header_events(survey, controller, packs);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(2);
     let textSize: ISize = controller.measureText(text, 'normal', DocOptions.FONT_SIZE);
@@ -173,7 +173,7 @@ test('Event render footer center middle text', async () => {
         xRight: (footerRect.xLeft + footerRect.xRight + textSize.width) / 2.0,
         yTop: (footerRect.yTop + footerRect.yBot - textSize.height) / 2.0,
         yBot: (footerRect.yTop + footerRect.yBot + textSize.height) / 2.0
-    }
+    };
     TestHelper.equalRect(expect, packs[0][1], assumeText);
 });
 test('Have commercial license: true', async () => {

@@ -21,8 +21,8 @@ export class EventAsync<T extends Function, Options> extends Event<T, Options> {
     }
 }
 export class EventHandler {
-    public static process_header_events(survey: SurveyPDF,
-        controller: DocController, packs: IPdfBrick[][]): void {
+    public static async process_header_events(survey: SurveyPDF,
+        controller: DocController, packs: IPdfBrick[][]): Promise<void> {
         if (!survey.haveCommercialLicense) {
             survey.onRenderHeader.add((_, canvas) => {
                 canvas.drawText({
@@ -32,9 +32,9 @@ export class EventHandler {
             });
         }
         for (let i: number = 0; i < packs.length; i++) {
-            survey.onRenderHeader.fire(survey, new DrawCanvas(packs[i], controller,
+            await survey.onRenderHeader.fire(survey, new DrawCanvas(packs[i], controller,
                 SurveyHelper.createHeaderRect(controller), packs.length, i + 1));
-            survey.onRenderFooter.fire(survey, new DrawCanvas(packs[i], controller,
+            await survey.onRenderFooter.fire(survey, new DrawCanvas(packs[i], controller,
                 SurveyHelper.createFooterRect(controller), packs.length, i + 1));
         }
     }
