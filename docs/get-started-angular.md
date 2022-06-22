@@ -8,13 +8,6 @@ PDF Export for SurveyJS allows your users to save surveys as interactive PDF doc
 
 You can find the full code for this tutorial in the following GitHub repository: <a href="https://github.com/surveyjs/code-examples/tree/main/get-started-pdf/angular" target="blank">Export Survey to PDF (SurveyJS for Angular)</a>.
 
-## Note
-With Angular you must import following `zone.js` package
-
-```js
-import "zone.js/dist/zone-evergreen"
-```
-
 ## Install the `survey-pdf` npm package
 
 PDF Export for SurveyJS is built upon the <a href="https://github.com/parallax/jsPDF#readme" target="_blank">jsPDF</a> library and is distributed as a <a href="https://www.npmjs.com/package/survey-pdf" target="_blank">`survey-pdf`</a> npm package. Run the following command to install the package and its dependencies, including jsPDF:
