@@ -10,6 +10,8 @@
 
 SurveyJS PDF Export is a client-side extension over the [SurveyJS Library](https://github.com/surveyjs/survey-library) that enables users to save surveys as PDF documents.
 
+![Survey PDF Export](docs/images/survey-pdf-export-overview.png)
+
 ### Features
 
 - Support for all built-in SurveyJS Library question types
