@@ -14,7 +14,7 @@ import { TestHelper } from '../src/helper_test';
 const __dummy_rn: FlatRanking = new FlatRanking(null, null, null);
 
 test('Check ranking in custom component', async () => {
-    ComponentCollection.Instance.add({ name: 'comp', questionJSON: { type: 'rating', choices: ['A', 'B'] } });
+    ComponentCollection.Instance.add({ name: 'comp', questionJSON: <any>{ type: 'rating', choices: ['A', 'B'] } });
     const json: any = {
         questions: [
             {
