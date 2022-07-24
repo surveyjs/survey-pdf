@@ -286,6 +286,8 @@ test('Check createSvgContent method', () => {
         controller.fontName = 'Test Font';
         const res = SurveyHelper.createSvgContent('<span>Test</span>', 200, controller);
         expect(res.svg).toContain('@font-face { font-family: Test Font');
+        const svgElem: string = `<svg xmlns="http://www.w3.org/2000/svg" width="${res.divWidth}px" height="${res.divHeight}px">`;
+        expect(res.svg).toContain(svgElem);
     } finally {
         SurveyHelper.htmlToXml = old;
         DocController.customFonts = {};

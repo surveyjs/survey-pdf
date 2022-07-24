@@ -298,7 +298,7 @@ export class SurveyHelper {
                 defs = '<defs><style>' + defs + '</style></defs>';
             });
         }
-        const svg: string = `<svg xmlns="http://www.w3.org/2000/svg" width="${divWidth}px">` + defs +
+        const svg: string = `<svg xmlns="http://www.w3.org/2000/svg" width="${divWidth}px" height="${divHeight}px">` + defs +
             '<style>.__surveypdf_html p { margin: unset; line-height: 22px; }</style>' +
             `<foreignObject width="${divWidth}px" height="${divHeight}px">` +
             this.htmlToXml(html) + '</foreignObject></svg>';
