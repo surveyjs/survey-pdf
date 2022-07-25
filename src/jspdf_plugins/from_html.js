@@ -280,17 +280,24 @@
       data = [];
       headers = [];
       i = 0;
-      l = table.rows[0].cells.length;
+      l = 0;
+      for (var j = 0; j < table.rows[0].cells.length; j++) {
+        l += table.rows[0].cells[j].colSpan;
+      }
       table_with = table.clientWidth;
 
       while (i < l) {
         cell = table.rows[0].cells[i];
-        headers[i] = {
-          name: cell.textContent.toLowerCase().replace(/\s+/g, ''),
-          prompt: cell.textContent.replace(/\r?\n/g, ''),
-          width: cell.clientWidth / table_with * renderer.pdf.internal.pageSize.getWidth()
-        };
-        i++;
+
+        for (var j = 0; j < cell.colSpan; j++) {
+          headers[i + j] = {
+            name: cell.textContent.toLowerCase().replace(/\s+/g, '') + '_' + j,
+            prompt: cell.textContent.replace(/\r?\n/g, ''),
+            width: cell.clientWidth / table_with * renderer.pdf.internal.pageSize.getWidth() / cell.colSpan
+          };
+        }
+
+        i += j;
       }
 
       i = 1;
