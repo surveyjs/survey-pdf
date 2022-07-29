@@ -470,7 +470,12 @@
                   renderer.pdf.internal.__cell__.lastCell.height;
               } else {
                 renderer.y += 10;
-                renderer.pdf.autoTable({ theme: "grid", html: cn, startY: renderer.y, /*tableWidth: "auto",*/ 
+                renderer.pdf.autoTable({ theme: "grid", html: cn, startY: renderer.y,
+                  styles: {
+                    font: renderer.pdf.getFont().fontName,
+                    fontSize: renderer.pdf.getFontSize(),
+                    textColor: renderer.pdf.getTextColor()
+                  },
                   margin: { 
                     top: 0, 
                     left: renderer.x, 
