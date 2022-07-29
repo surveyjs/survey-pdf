@@ -477,10 +477,10 @@
                     textColor: renderer.pdf.getTextColor()
                   },
                   margin: { 
-                    top: 0, 
+                    top: renderer.pdf.margins_doc.top, 
                     left: renderer.x, 
                     right: renderer.pdf.internal.pageSize.getWidth() - (renderer.x  + renderer.settings.width), 
-                    bottom: 0 },
+                    bottom: renderer.pdf.margins_doc.bottom },
                 });
                 renderer.y = renderer.pdf.lastAutoTable.finalY;
               }
