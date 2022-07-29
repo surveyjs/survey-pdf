@@ -293,7 +293,7 @@
           headers[i + j] = {
             name: cell.textContent.toLowerCase().replace(/\s+/g, '') + '_' + j,
             prompt: cell.textContent.replace(/\r?\n/g, ''),
-            width: cell.clientWidth / table_with * renderer.pdf.internal.pageSize.getWidth() / cell.colSpan
+            width: cell.clientWidth / table_with * renderer.settings.width / cell.colSpan
           };
         }
 
@@ -457,16 +457,28 @@
               /*** TABLE RENDERING ***/
 
             } else if (cn.nodeName === "TABLE") {
-              table2json = tableToJson(cn, renderer);
-              renderer.y += 10;
-              renderer.pdf.table(renderer.x, renderer.y, table2json.rows, table2json.headers, {
-                autoSize: false,
-                printHeaders: elementHandlers.printHeaders,
-                margins: renderer.pdf.margins_doc,
-                css: GetCSS(cn)
-              });
-              renderer.y = renderer.pdf.internal.__cell__.lastCell.y +
-                renderer.pdf.internal.__cell__.lastCell.height;
+              if(!renderer.pdf.autoTable) {
+                table2json = tableToJson(cn, renderer);
+                renderer.y += 10;
+                renderer.pdf.table(renderer.x, renderer.y, table2json.rows, table2json.headers, {
+                  autoSize: false,
+                  printHeaders: elementHandlers.printHeaders,
+                  margins: renderer.pdf.margins_doc,
+                  css: GetCSS(cn)
+                });
+                renderer.y = renderer.pdf.internal.__cell__.lastCell.y +
+                  renderer.pdf.internal.__cell__.lastCell.height;
+              } else {
+                renderer.y += 10;
+                renderer.pdf.autoTable({ theme: "grid", html: cn, startY: renderer.y, /*tableWidth: "auto",*/ 
+                  margin: { 
+                    top: 0, 
+                    left: renderer.x, 
+                    right: renderer.pdf.internal.pageSize.getWidth() - (renderer.x  + renderer.settings.width), 
+                    bottom: 0 },
+                });
+                renderer.y = renderer.pdf.lastAutoTable.finalY;
+              }
             } else if (cn.nodeName === "OL" || cn.nodeName === "UL") {
               listCount = 1;
 
