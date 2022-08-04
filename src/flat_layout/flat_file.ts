@@ -44,6 +44,20 @@ export class FlatFile extends FlatQuestion {
             rowsFlats.push(new CompositeBrick());
         }
     }
+
+    private async getImagePreviewContentWidth(item: { name: string, type: string, content: string }, availableWidth: number) {
+        let contentWidth = (await SurveyHelper.getImageSize(item.content)).width;
+        if (!!this.question.imageWidth) {
+            contentWidth = SurveyHelper.parseWidth(this.question.imageWidth, availableWidth);
+        } else if(this.controller.applyImageFit) {
+            contentWidth = availableWidth;
+        }
+        if(contentWidth === undefined) {
+            contentWidth = 0;
+        }
+        return Math.max(contentWidth, FlatFile.TEXT_MIN_SCALE * this.controller.unitWidth);
+    }
+
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         if (this.question.previewValue.length === 0) {
             return [await SurveyHelper.createTextFlat(point, this.question,
@@ -57,15 +71,7 @@ export class FlatFile extends FlatQuestion {
             const availableWidth: number = this.controller.paperWidth -
                 this.controller.margins.right - currPoint.xLeft;
             if (SurveyHelper.canPreviewImage(this.question, item, item.content)) {
-                let contentWidth = (await SurveyHelper.getImageSize(item.content)).width;
-                if (contentWidth === undefined) {
-                    if (!!this.question.imageWidth) {
-                        contentWidth = SurveyHelper.parseWidth(this.question.imageWidth, SurveyHelper.getPageAvailableWidth(this.controller));
-                    } else {
-                        contentWidth = 0;
-                    }
-                }
-                const compositeWidth: number = Math.max(contentWidth, FlatFile.TEXT_MIN_SCALE * this.controller.unitWidth);
+                const compositeWidth = await this.getImagePreviewContentWidth(item, availableWidth);
                 if (availableWidth < compositeWidth) {
                     currPoint.xLeft = point.xLeft;
                     currPoint.yTop = yBot;

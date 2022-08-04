@@ -2,7 +2,7 @@
     return {};
 };
 
-import { Question } from 'survey-core';
+import { Question, QuestionFileModel } from 'survey-core';
 import { SurveyPDF } from '../src/survey';
 import { IPoint, IRect, ISize, DocController } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
@@ -110,7 +110,7 @@ test('Check two text files', async () => {
 test('Check one image 16x16px file', async () => {
     const imageSize: ISize = { width: 170, height: 50 };
     const oldGetImageSize = SurveyHelper.getImageSize;
-    SurveyHelper.getImageSize = async (url: string) => { return imageSize };
+    SurveyHelper.getImageSize = async (url: string) => { return imageSize; };
     const json: any = {
         elements: [
             {
@@ -147,7 +147,7 @@ test('Check one image 16x16px file', async () => {
 test('Check one image 16x16px file shorter than text', async () => {
     const imageSize: ISize = { width: 50, height: 50 };
     const oldGetImageSize = SurveyHelper.getImageSize;
-    SurveyHelper.getImageSize = async (url: string) => { return imageSize };
+    SurveyHelper.getImageSize = async (url: string) => { return imageSize; };
     const json: any = {
         elements: [
             {
@@ -184,7 +184,7 @@ test('Check one image 16x16px file shorter than text', async () => {
 test('Check one image 16x16px with set size', async () => {
     const imageSize: ISize = { width: 50, height: 50 };
     const oldGetImageSize = SurveyHelper.getImageSize;
-    SurveyHelper.getImageSize = async (url: string) => { return imageSize };
+    SurveyHelper.getImageSize = async (url: string) => { return imageSize; };
     const json: any = {
         elements: [
             {
@@ -304,4 +304,53 @@ test('Check one image 16x16px with set size server-side', async () => {
     };
     TestHelper.equalRect(expect, flats[0][0], assumeFile);
     SurveyHelper.inBrowser = true;
+});
+
+test('Test file question getImagePreviewContentWidth ', async () => {
+    const json: any = {
+        elements: [
+            {
+                type: 'file',
+                name: 'faqueoneimgwithsz',
+                titleLocation: 'hidden',
+                allowImagesPreview: true,
+            }
+        ]
+    };
+    SurveyHelper.inBrowser = false;
+    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    const question = <QuestionFileModel>survey.getAllQuestions()[0];
+    const controller: DocController = new DocController(TestHelper.defaultOptions);
+    const flatFile = new FlatFile(survey, question, controller);
+
+    let width = await flatFile['getImagePreviewContentWidth']({ content: '', type: 'image', name: 'file' }, 200);
+    expect(width).toBe(FlatFile.TEXT_MIN_SCALE * controller.unitWidth);
+
+    controller['_applyImageFit'] = true;
+    width = await flatFile['getImagePreviewContentWidth']({ content: '', type: 'image', name: 'file' }, 200);
+    expect(width).toBe(200);
+
+    question.imageWidth = '250px';
+    width = await flatFile['getImagePreviewContentWidth']({ content: '', type: 'image', name: 'file' }, 300);
+    expect(width).toBe(SurveyHelper.parseWidth(question.imageWidth, 300));
+
+    SurveyHelper.inBrowser = true;
+    const oldImageSize = SurveyHelper.getImageSize;
+    SurveyHelper.getImageSize = async (url: string) => {
+        return <ISize>{ width: 200, height: 0 };
+    };
+    question.imageWidth = <any>undefined;
+    controller['_applyImageFit'] = false;
+    width = await flatFile['getImagePreviewContentWidth']({ content: '', type: 'image', name: 'file' }, 300);
+    expect(width).toBe(200);
+
+    controller['_applyImageFit'] = true;
+    width = await flatFile['getImagePreviewContentWidth']({ content: '', type: 'image', name: 'file' }, 200);
+    expect(width).toBe(200);
+
+    question.imageWidth = '250px';
+    width = await flatFile['getImagePreviewContentWidth']({ content: '', type: 'image', name: 'file' }, 300);
+    expect(width).toBe(SurveyHelper.parseWidth(question.imageWidth, 300));
+
+    SurveyHelper.getImageSize = oldImageSize;
 });
