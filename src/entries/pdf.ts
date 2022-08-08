@@ -5,6 +5,7 @@ export { FlatRepository } from '../flat_layout/flat_repository';
 export { IFlatQuestion, FlatQuestion } from '../flat_layout/flat_question';
 export { FlatBoolean } from '../flat_layout/flat_boolean';
 export { FlatCheckbox } from '../flat_layout/flat_checkbox';
+export { FlatCustomModel } from '../flat_layout/flat_custom_model';
 export { FlatComment } from '../flat_layout/flat_comment';
 export { FlatDropdown } from '../flat_layout/flat_dropdown';
 export { FlatExpression } from '../flat_layout/flat_expression';

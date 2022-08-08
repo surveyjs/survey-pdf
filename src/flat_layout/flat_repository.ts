@@ -17,6 +17,9 @@ export class FlatRepository {
     public register(modelType: string, rendererConstructor: FlatConstructor): void {
         this.questions[modelType] = rendererConstructor;
     }
+    public isTypeRegistered(type: string): boolean {
+        return !!this.questions[type];
+    }
     public create(survey: SurveyPDF, question: IQuestion,
         docController: DocController, type?: string): IFlatQuestion {
         const questionType: string = typeof type === 'undefined' ? question.getType() : type;

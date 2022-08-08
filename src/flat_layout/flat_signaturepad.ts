@@ -16,8 +16,8 @@ export class FlatSignaturePad extends FlatQuestion {
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         let imageBrick = await SurveyHelper.createImageFlat(point,
             this.question, this.controller, this.question.value,
-            SurveyHelper.pxToPt(<any>this.question.width),
-            SurveyHelper.pxToPt(<any>this.question.height)
+            SurveyHelper.pxToPt(<any>this.question.signatureWidth),
+            SurveyHelper.pxToPt(<any>this.question.signatureHeight)
         );
         return [imageBrick];
     }

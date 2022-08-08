@@ -280,17 +280,24 @@
       data = [];
       headers = [];
       i = 0;
-      l = table.rows[0].cells.length;
+      l = 0;
+      for (var j = 0; j < table.rows[0].cells.length; j++) {
+        l += table.rows[0].cells[j].colSpan;
+      }
       table_with = table.clientWidth;
 
       while (i < l) {
         cell = table.rows[0].cells[i];
-        headers[i] = {
-          name: cell.textContent.toLowerCase().replace(/\s+/g, ''),
-          prompt: cell.textContent.replace(/\r?\n/g, ''),
-          width: cell.clientWidth / table_with * renderer.pdf.internal.pageSize.getWidth()
-        };
-        i++;
+
+        for (var j = 0; j < cell.colSpan; j++) {
+          headers[i + j] = {
+            name: cell.textContent.toLowerCase().replace(/\s+/g, '') + '_' + j,
+            prompt: cell.textContent.replace(/\r?\n/g, ''),
+            width: cell.clientWidth / table_with * renderer.settings.width / cell.colSpan
+          };
+        }
+
+        i += j;
       }
 
       i = 1;
@@ -450,16 +457,33 @@
               /*** TABLE RENDERING ***/
 
             } else if (cn.nodeName === "TABLE") {
-              table2json = tableToJson(cn, renderer);
-              renderer.y += 10;
-              renderer.pdf.table(renderer.x, renderer.y, table2json.rows, table2json.headers, {
-                autoSize: false,
-                printHeaders: elementHandlers.printHeaders,
-                margins: renderer.pdf.margins_doc,
-                css: GetCSS(cn)
-              });
-              renderer.y = renderer.pdf.internal.__cell__.lastCell.y +
-                renderer.pdf.internal.__cell__.lastCell.height;
+              if(!renderer.pdf.autoTable) {
+                table2json = tableToJson(cn, renderer);
+                renderer.y += 10;
+                renderer.pdf.table(renderer.x, renderer.y, table2json.rows, table2json.headers, {
+                  autoSize: false,
+                  printHeaders: elementHandlers.printHeaders,
+                  margins: renderer.pdf.margins_doc,
+                  css: GetCSS(cn)
+                });
+                renderer.y = renderer.pdf.internal.__cell__.lastCell.y +
+                  renderer.pdf.internal.__cell__.lastCell.height;
+              } else {
+                renderer.y += 10;
+                renderer.pdf.autoTable({ theme: "grid", html: cn, startY: renderer.y,
+                  styles: {
+                    font: renderer.pdf.getFont().fontName,
+                    fontSize: renderer.pdf.getFontSize(),
+                    textColor: renderer.pdf.getTextColor()
+                  },
+                  margin: { 
+                    top: renderer.pdf.margins_doc.top, 
+                    left: renderer.x, 
+                    right: renderer.pdf.internal.pageSize.getWidth() - (renderer.x  + renderer.settings.width), 
+                    bottom: renderer.pdf.margins_doc.bottom },
+                });
+                renderer.y = renderer.pdf.lastAutoTable.finalY;
+              }
             } else if (cn.nodeName === "OL" || cn.nodeName === "UL") {
               listCount = 1;
 

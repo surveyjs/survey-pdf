@@ -1,6 +1,6 @@
 (<any>window)['HTMLCanvasElement'].prototype.getContext = async () => {
     return {};
-  };
+};
 
 import { SurveyPDF } from '../src/survey';
 import { IRect, DocController } from '../src/doc_controller';
@@ -32,10 +32,10 @@ test('Check signaturepad', async () => {
     let assumeHTML: IRect = {
         xLeft: controller.leftTopPoint.xLeft + controller.unitWidth,
         xRight: controller.leftTopPoint.xLeft + controller.unitWidth +
-            SurveyHelper.pxToPt(<any>survey.getAllQuestions()[0].width),
+            SurveyHelper.pxToPt((<any>survey.getAllQuestions()[0]).signatureWidth),
         yTop: controller.leftTopPoint.yTop,
         yBot: controller.leftTopPoint.yTop +
-            SurveyHelper.pxToPt((<any>survey.getAllQuestions()[0]).height)
+            SurveyHelper.pxToPt((<any>survey.getAllQuestions()[0]).signatureHeight)
     };
     TestHelper.equalRect(expect, flats[0][0], assumeHTML);
 });

@@ -151,17 +151,17 @@ steps:
     TargetFolder: '$(Build.SourcesDirectory)/service/surveyjs.io/App_Data/DocsPdf'
   displayName: 'copy generated docs to the local surveyjs/service repo'
 
-- task: DeleteFiles@1
-  inputs:
-    SourceFolder: '$(Build.SourcesDirectory)/service/surveyjs.io/App_Data/DocsPdf'
-    Contents: 'PdfExportOverview.md'
+# - task: DeleteFiles@1
+#   inputs:
+#     SourceFolder: '$(Build.SourcesDirectory)/service/surveyjs.io/App_Data/DocsPdf'
+#     Contents: 'PdfExportOverview.md'
+#  Rename-Item -Path "$(Build.SourcesDirectory)/service/surveyjs.io/App_Data/DocsPdf/README.md" -NewName "PdfExportOverview.md"
 
 # read about the problem with git output ($env:GIT_REDIRECT_STDERR = '2>&1') :
 # https://github.com/microsoft/azure-pipelines-yaml/issues/248
 # https://stackoverflow.com/questions/58485585/azure-pipeline-powershell-and-git-on-windows-server-2019-gives-error-in-output
 - powershell: |
     cd $(Build.SourcesDirectory)/service
-    Rename-Item -Path "$(Build.SourcesDirectory)/service/surveyjs.io/App_Data/DocsPdf/README.md" -NewName "PdfExportOverview.md"
     git checkout master
     git pull origin master
     git fetch --tags --force

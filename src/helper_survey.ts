@@ -298,11 +298,20 @@ export class SurveyHelper {
                 defs = '<defs><style>' + defs + '</style></defs>';
             });
         }
-        const svg: string = '<svg xmlns="http://www.w3.org/2000/svg">' + defs +
+        const svg: string = `<svg xmlns="http://www.w3.org/2000/svg" width="${divWidth}px" height="${divHeight}px">` + defs +
             '<style>.__surveypdf_html p { margin: unset; line-height: 22px; }</style>' +
             `<foreignObject width="${divWidth}px" height="${divHeight}px">` +
             this.htmlToXml(html) + '</foreignObject></svg>';
         return { svg, divWidth, divHeight };
+    }
+    private static setCanvas(canvas: HTMLCanvasElement, divWidth: number, divHeight: number, img: HTMLImageElement): void {
+        canvas.width = divWidth * SurveyHelper.HTML_TO_IMAGE_QUALITY;
+        canvas.height = divHeight * SurveyHelper.HTML_TO_IMAGE_QUALITY;
+        const context: CanvasRenderingContext2D = canvas.getContext('2d');
+        context.scale(SurveyHelper.HTML_TO_IMAGE_QUALITY, SurveyHelper.HTML_TO_IMAGE_QUALITY);
+        context.fillStyle = SurveyHelper.BACKGROUND_COLOR;
+        context.fillRect(0, 0, divWidth, divHeight);
+        context.drawImage(img, 0, 0);
     }
     public static async htmlToImage(html: string, width: number, controller: DocController): Promise<{ url: string, aspect: number }> {
         const { svg, divWidth, divHeight } = SurveyHelper.createSvgContent(html, width, controller);
@@ -312,12 +321,7 @@ export class SurveyHelper {
         return await new Promise((resolve) => {
             img.onload = function () {
                 const canvas: HTMLCanvasElement = document.createElement('canvas');
-                canvas.width = divWidth;
-                canvas.height = divHeight;
-                const context: CanvasRenderingContext2D = canvas.getContext('2d');
-                context.fillStyle = SurveyHelper.BACKGROUND_COLOR;
-                context.fillRect(0, 0, divWidth, divHeight);
-                context.drawImage(img, 0, 0);
+                SurveyHelper.setCanvas(canvas, divWidth, divHeight, img);
                 const url: string = canvas.toDataURL('image/jpeg', SurveyHelper.HTML_TO_IMAGE_QUALITY);
                 canvas.remove();
                 resolve({ url: url, aspect: divWidth / divHeight });
@@ -589,6 +593,21 @@ export class SurveyHelper {
     public static getContentQuestion(question: Question): Question {
         return !!(<any>question).contentQuestion ? (<any>question).contentQuestion : question;
     }
+    public static getContentQuestionTypeRenderAs(question: Question, survey: SurveyPDF): string {
+        let renderAs = question.renderAs;
+        if(question.getType() === 'boolean' && question.renderAs === 'default') {
+            renderAs = survey.options.booleanRenderAs;
+        }
+        if(renderAs !== 'default') {
+            const type = `${question.getType()}-${renderAs}`;
+            if(FlatRepository.getInstance().isTypeRegistered(type)) return type;
+        }
+        return question.getType();
+    }
+    public static getContentQuestionType(question: Question, survey: SurveyPDF): string {
+        if(!!question.customWidget) return question.customWidget.pdfQuestionType;
+        return !!(<any>question).contentQuestion ? 'custom_model' : this.getContentQuestionTypeRenderAs(question, survey);
+    }
     public static getRatingMinWidth(controller: DocController): number {
         return controller.measureText(this.RATING_MIN_WIDTH).width;
     }
@@ -649,9 +668,7 @@ export class SurveyHelper {
     }
     public static async generateQuestionFlats(survey: SurveyPDF,
         controller: DocController, question: Question, point: IPoint): Promise<IPdfBrick[]> {
-        const questionComposite: Question = this.getContentQuestion(question);
-        const questionType: string = question.customWidget ?
-            question.customWidget.pdfQuestionType : questionComposite.getType();
+        const questionType: string = this.getContentQuestionType(question, survey);
         const flatQuestion: IFlatQuestion = FlatRepository.getInstance().
             create(survey, question, controller, questionType);
         const questionFlats: IPdfBrick[] = await flatQuestion.generateFlats(point);
