@@ -2,10 +2,11 @@
     return {};
 };
 
+import * as Survey from 'survey-core';
 import { SurveyPDF } from '../src/survey';
 import { IPoint, IRect, IDocOptions, DocController } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
-import { FlatTextbox } from '../src/flat_layout/flat_textbox'
+import { FlatTextbox } from '../src/flat_layout/flat_textbox';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
@@ -41,7 +42,7 @@ test('Check readonly text expends when textRenderAs option not set', async () =>
                 name: 'text_textrenderasnotset',
                 readOnly: true,
                 titleLocation: 'hidden',
-                defaultValue: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. '  +
+                defaultValue: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ' +
                     'Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s'
             }
         ]
@@ -65,7 +66,7 @@ test('Check readonly text expends when textRenderAs option set', async () => {
                 name: 'text_textrenderasset',
                 readOnly: true,
                 titleLocation: 'hidden',
-                defaultValue: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. '  +
+                defaultValue: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ' +
                     'Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s'
             }
         ]
@@ -80,6 +81,30 @@ test('Check readonly text expends when textRenderAs option set', async () => {
     const question = survey.getAllQuestions()[0];
     const textPoint: IPoint = controller.leftTopPoint;
     textPoint.xLeft += controller.unitWidth;
-    const assumeBrick: IPdfBrick = await SurveyHelper.createCommentFlat(textPoint, question, controller, 1, true); 
+    const assumeBrick: IPdfBrick = await SurveyHelper.createCommentFlat(textPoint, question, controller, 1, true);
     TestHelper.equalRect(expect, flats[0][0], assumeBrick);
+});
+
+test('Check readonly text with readOnlyTextRenderMode set to div', async () => {
+    const oldRenderMode = Survey.settings.readOnlyTextRenderMode;
+    Survey.settings.readOnlyTextRenderMode = 'div';
+    try {
+        const json: any = {
+            questions: [
+                {
+                    type: 'text',
+                    name: 'text_readonly',
+                    readOnly: true,
+                    titleLocation: 'hidden'
+                }
+            ]
+        };
+        const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+        const pdfAsString = await survey.raw();
+        // Stream in result PDF document should be small - in this example 14
+        expect(pdfAsString.indexOf('/Length 14\n') > 0).toBeTruthy();
+
+    } finally {
+        Survey.settings.readOnlyTextRenderMode = oldRenderMode;
+    }
 });
