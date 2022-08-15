@@ -1,4 +1,4 @@
-import { IQuestion, QuestionTextModel } from 'survey-core';
+import { IQuestion, QuestionTextModel, settings } from 'survey-core';
 import { IRect, DocController } from '../doc_controller';
 import { PdfBrick } from './pdf_brick';
 import { SurveyHelper } from '../helper_survey';
@@ -48,6 +48,9 @@ export class TextFieldBrick extends PdfBrick {
         this.controller.doc.addField(inputField);
         SurveyHelper.renderFlatBorders(this.controller, this);
     }
+    protected shouldRenderFlatBorders() {
+        return settings.readOnlyTextRenderMode === 'input';
+    }
     public async renderReadOnly(): Promise<void> {
         this.controller.pushMargins(this.xLeft,
             this.controller.paperWidth - this.xRight);
@@ -57,7 +60,7 @@ export class TextFieldBrick extends PdfBrick {
             await SurveyHelper.renderReadOnlyTextField(this.controller,
                 this.question, this,
                 SurveyHelper.getQuestionOrCommentDisplayValue(this.question, this.isQuestion),
-                !this.isMultiline);
+                !this.isMultiline, this.shouldRenderFlatBorders());
         }
         this.controller.popMargins();
     }

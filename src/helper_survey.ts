@@ -562,7 +562,7 @@ export class SurveyHelper {
     }
     public static async renderReadOnlyTextField(controller: DocController,
         question: Question, flat: PdfBrick, value: string,
-        onlyFirstLine: boolean = true): Promise<void> {
+        onlyFirstLine: boolean = true, shouldRenderFlatBorders: boolean = true): Promise<void> {
         const point: IPoint = this.createPoint(flat, true, true);
         const oldFontSize: number = controller.fontSize;
         controller.fontSize = flat.fontSize;
@@ -571,7 +571,7 @@ export class SurveyHelper {
         controller.fontSize = oldFontSize;
         if (onlyFirstLine) await textFlat.unfold()[0].render();
         else await textFlat.render();
-        if(settings.readOnlyTextRenderMode === 'input') {
+        if(shouldRenderFlatBorders) {
             this.renderFlatBorders(controller, flat);
         }
     }

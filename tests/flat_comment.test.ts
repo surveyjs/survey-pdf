@@ -13,6 +13,9 @@ import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { TextBrick } from '../src/pdf_render/pdf_text';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
+
+import * as Survey from 'survey-core';
+
 const __dummy_cm = new FlatComment(null, null, null);
 const __dummy_cb = new FlatCheckbox(null, null, null);
 
@@ -241,4 +244,28 @@ test('Check readonly comment with long text', async () => {
         SurveyHelper.VALUE_READONLY_PADDING_SCALE;
     assumeTextField.yBot = textFlat.yBot + padding;
     TestHelper.equalRect(expect, flats[0][0], assumeTextField);
+});
+
+test('Check readonly text with readOnlyTextRenderMode set to div', async () => {
+    const oldRenderMode = Survey.settings.readOnlyCommentRenderMode;
+    Survey.settings.readOnlyCommentRenderMode = 'div';
+    try {
+        const json: any = {
+            questions: [
+                {
+                    type: 'comment',
+                    name: 'text_readonly',
+                    readOnly: true,
+                    titleLocation: 'hidden'
+                }
+            ]
+        };
+        const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+        const pdfAsString = await survey.raw();
+        // Stream in result PDF document should be small - in this example 14
+        expect(pdfAsString.indexOf('/Length 14\n') > 0).toBeTruthy();
+
+    } finally {
+        Survey.settings.readOnlyCommentRenderMode = oldRenderMode;
+    }
 });
