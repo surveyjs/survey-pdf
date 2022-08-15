@@ -1,4 +1,4 @@
-import { IQuestion, Question, QuestionRatingModel, QuestionFileModel, LocalizableString, QuestionSelectBase, QuestionDropdownModel } from 'survey-core';
+import { IQuestion, Question, QuestionRatingModel, QuestionFileModel, LocalizableString, QuestionSelectBase, QuestionDropdownModel, settings } from 'survey-core';
 import * as SurveyPDFModule from './entries/pdf';
 import { SurveyPDF } from './survey';
 import { IPoint, IRect, ISize, DocController } from './doc_controller';
@@ -562,7 +562,7 @@ export class SurveyHelper {
     }
     public static async renderReadOnlyTextField(controller: DocController,
         question: Question, flat: PdfBrick, value: string,
-        onlyFirstLine: boolean = true): Promise<void> {
+        onlyFirstLine: boolean = true, shouldRenderFlatBorders: boolean = true): Promise<void> {
         const point: IPoint = this.createPoint(flat, true, true);
         const oldFontSize: number = controller.fontSize;
         controller.fontSize = flat.fontSize;
@@ -571,7 +571,9 @@ export class SurveyHelper {
         controller.fontSize = oldFontSize;
         if (onlyFirstLine) await textFlat.unfold()[0].render();
         else await textFlat.render();
-        this.renderFlatBorders(controller, flat);
+        if(shouldRenderFlatBorders) {
+            this.renderFlatBorders(controller, flat);
+        }
     }
     public static getLocString(text: LocalizableString): string {
         if (this.hasHtml(text)) return text.renderedHtml;
