@@ -304,7 +304,7 @@ When exporting a survey's HTML questions to a PDF document, it is a difficult ta
 If the markup of the processed HTML question is simple enough, it will be rendered to a PDF document as selectable text. This is more appropriate for long descriptive texts with a simple layout.  
 Complex HTML markup will be rendered as an image. For instance, this is suitable for greeting texts that might have an elaborate layout.
 
-For each HTML question, you can override this general ("auto") behavior at the question level: specify a question's `renderAs` property (in a survey JSON definition); also set the property to "standard" or "image" (its default value is "auto").
+For each HTML question, you can override this general ("auto") behavior at the question level: specify a question's `renderAs` property (in a survey JSON schema); also set the property to "standard" or "image" (its default value is "auto").
 
 ```js
 var json = {
@@ -353,7 +353,7 @@ var surveyPDF = new SurveyPDF.SurveyPDF(json, options);
 
 In "auto" mode, SurveyPDF initially tries to render each matrix question as a table. However, if there is no enough free space to accommodate a table, SurveyPDF renders a matrix as a narrow vertical list.
 
-For each matrix question, you can override this general behavior at the question level: specify the question's `renderAs` property (in a survey JSON definition).
+For each matrix question, you can override this general behavior at the question level: specify the question's `renderAs` property (in a survey JSON schema).
 
 ```js
 var json = {
@@ -445,7 +445,7 @@ Use the [textFieldRenderAs](https://github.com/surveyjs/survey-pdf/blob/master/s
 
 
 The [textFieldRenderAs](https://github.com/surveyjs/survey-pdf/blob/master/src/doc_controller.ts#L47) option is only **in effect** for questions used **in read-only mode** due to one of the following settings:
- - a survey's [mode](https://surveyjs.io/Documentation/Library/?id=surveymodel#mode) property is set to 'display' (in a survey JSON definition),
+ - a survey's [mode](https://surveyjs.io/Documentation/Library/?id=surveymodel#mode) property is set to 'display' (in a survey JSON schema),
  - a page's [readOnly](https://surveyjs.io/Documentation/Library/?id=pagemodel#readOnly) property is set to true,
  - a panel's [readOnly](https://surveyjs.io/Documentation/Library/?id=panelmodel#readOnly) property is set to true,
  - a question's [readOnly](https://surveyjs.io/Documentation/Library?id=Question#readOnly) property is set to true,

@@ -115,7 +115,7 @@ export interface IDocOptions {
      * - `"image"` - Render HTML questions as images.
      * - `"auto"` (default) - Select between the `"standard"` and `"image"` modes automatically based on the HTML content.
      *
-     * You can override this property for an individual HTML question. Set the question's `renderAs` property to `"standard"` or `"image"` in the survey JSON definition.
+     * You can override this property for an individual HTML question. Set the question's `renderAs` property to `"standard"` or `"image"` in the survey JSON schema.
      */
     htmlRenderAs?: IHTMLRenderType;
 
@@ -126,7 +126,7 @@ export interface IDocOptions {
      * - `"list"` - Render matrix-like questions as lists.
      * - `"auto"` (default) - Render matrix-like questions as tables if they fit into the available space. Otherwise, render the questions as lists.
      *
-     * You can override this property for an individual matrix-like question. Set the question's `renderAs` property to `"list"` in the survey JSON definition.
+     * You can override this property for an individual matrix-like question. Set the question's `renderAs` property to `"list"` in the survey JSON schema.
      */
     matrixRenderAs?: 'auto' | 'list';
 
