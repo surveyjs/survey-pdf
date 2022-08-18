@@ -44,7 +44,7 @@ var platformOptions = {
     keywords: ["pdf"],
     dependencies: {
       jspdf: "^2.3.0",
-      "survey-core": "^1.8.29"
+      "survey-core": packageJson.version
     }
   }
 };
