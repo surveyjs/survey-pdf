@@ -66,7 +66,7 @@ survey.addNavigationItem({
 });
 ```
 
-The following image illustrates the resulting UI with the [Modern theme](/Documentation/Library?id=get-started-jquery#link-surveyjs-resources) applied:
+The following image illustrates the resulting UI with the [Default V2 theme](/Documentation/Library?id=get-started-jquery#link-surveyjs-resources) applied:
 
 ![Export Survey to PDF - Save as PDF navigation button](images/surveypdf-navigation-button.png)
 
@@ -84,7 +84,7 @@ The following image illustrates the resulting UI with the [Modern theme](/Docume
     <!-- jsPDF library -->
     <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
 
-    <link href="https://unpkg.com/survey-jquery/modern.min.css" type="text/css" rel="stylesheet">
+    <link href="https://unpkg.com/survey-jquery/defaultV2.min.css" type="text/css" rel="stylesheet">
     <script type="text/javascript" src="https://unpkg.com/survey-jquery/survey.jquery.min.js"></script>
 
     <!-- SurveyJS PDF Export library -->
@@ -99,7 +99,7 @@ The following image illustrates the resulting UI with the [Modern theme](/Docume
 ```
 
 ```js
-Survey.StylesManager.applyTheme("modern");
+Survey.StylesManager.applyTheme("defaultV2");
 
 const surveyJson = {
     // ...

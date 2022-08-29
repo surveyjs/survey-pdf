@@ -56,7 +56,7 @@ You can use any UI element to call this helper function. For instance, the follo
 </template>
 
 <script>
-import 'survey-core/modern.min.css';
+import 'survey-core/defaultV2.min.css';
 import { Model } from 'survey-core';
 import { Survey } from 'survey-vue-ui';
 // ...
@@ -82,7 +82,7 @@ export default {
 </script>
 ```
 
-The following image illustrates the resulting UI with the [Modern theme](/Documentation/Library?id=get-started-vue#configure-styles) applied:
+The following image illustrates the resulting UI with the [Default V2 theme](/Documentation/Library?id=get-started-vue#configure-styles) applied:
 
 ![Export Survey to PDF - Save as PDF navigation button](images/surveypdf-navigation-button.png)
 
@@ -99,12 +99,12 @@ To view the application, run `npm run serve` in a command line and open [http://
 </template>
 
 <script>
-import 'survey-core/modern.min.css';
+import 'survey-core/defaultV2.min.css';
 import { StylesManager, Model } from 'survey-core';
 import { Survey } from 'survey-vue-ui';
 import { SurveyPDF } from 'survey-pdf';
 
-StylesManager.applyTheme("modern");
+StylesManager.applyTheme("defaultV2");
 
 const surveyJson = {
   // ...

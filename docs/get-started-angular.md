@@ -70,7 +70,7 @@ export class AppComponent implements OnInit {
 }
 ```
 
-The following image illustrates the resulting UI with the [Modern theme](/Documentation/Library?id=get-started-angular#configure-styles) applied:
+The following image illustrates the resulting UI with the [Default V2 theme](/Documentation/Library?id=get-started-angular#configure-styles) applied:
 
 ![Export Survey to PDF - Save as PDF navigation button](images/surveypdf-navigation-button.png)
 
@@ -84,7 +84,7 @@ import { Component, OnInit } from '@angular/core';
 import { Model, StylesManager, SurveyNG } from "survey-angular";
 import { SurveyPDF, IDocOptions } from "survey-pdf";
 
-StylesManager.applyTheme("modern");
+StylesManager.applyTheme("defaultV2");
 
 const surveyJson = {
   // ...
