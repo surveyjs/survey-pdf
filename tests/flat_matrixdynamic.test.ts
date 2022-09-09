@@ -13,6 +13,7 @@ import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { RowlineBrick } from '../src/pdf_render/pdf_rowline';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
+import { CompositeBrick } from '../src/pdf_render/pdf_composite';
 let __dummy_dd = new FlatDropdown(null, null, null);
 let __dummy_md = new FlatMatrixDynamic(null, null, null);
 let __dummy_tx = new FlatExpression(null, null, null);
@@ -681,4 +682,76 @@ test('Check matrixdynamic with detailPanel', async () => {
     expect(unfoldRowFlats.length).toBe(1);
     const unfoldDetailPanelFlats: IPdfBrick[] = flats[0][2].unfold();
     expect(unfoldDetailPanelFlats.length).toBe(2);
+});
+
+test('Check matrixdynamic with allowRowsDragAndDrop', async () => {
+    const json: any = {
+        showQuestionNumbers: 'off',
+        elements: [
+            {
+                type: 'matrixdynamic',
+                name: 'panel',
+                titleLocation: 'hidden',
+                hideNumber: true,
+                columns: [
+                    {
+                        cellType: 'input',
+                    }
+                ],
+                allowRowsDragAndDrop: true,
+                rowCount: 1,
+            }
+        ]
+    };
+    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    const controller: DocController = new DocController(TestHelper.defaultOptions);
+    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    expect(flats.length).toBe(1);
+    expect(flats[0].length).toBe(2);
+    const unfoldHeaderFlats: IPdfBrick[] = flats[0][0].unfold();
+    expect(unfoldHeaderFlats.length).toBe(2); //header + row line brick
+    const unfoldRowFlats: IPdfBrick[] = flats[0][1].unfold();
+    expect(unfoldRowFlats.length).toBe(1);
+    expect(unfoldRowFlats[0].xLeft).toBeCloseTo(controller.margins.left + controller.unitWidth);
+});
+test('Check matrixdynamic with allowRowsDragAndDrop list', async () => {
+    const json: any = {
+        showQuestionNumbers: 'off',
+        elements: [
+            {
+                type: 'matrixdynamic',
+                name: 'panel',
+                titleLocation: 'hidden',
+                hideNumber: true,
+                columns: [
+                    {
+                        cellType: 'input',
+                    },
+                    {
+                        cellType: 'input',
+                    },
+                    {
+                        cellType: 'input',
+                    },
+                    {
+                        cellType: 'input',
+                    },
+                    {
+                        cellType: 'input',
+                    },
+                    {
+                        cellType: 'input',
+                    }
+                ],
+                allowRowsDragAndDrop: true,
+                rowCount: 1,
+            }
+        ]
+    };
+    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    const controller: DocController = new DocController(TestHelper.defaultOptions);
+    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    expect(flats.length).toBe(1);
+    expect(flats[0].length).toBe(1);
+    expect((<any>flats[0][0]).bricks.length).toBe(12);
 });

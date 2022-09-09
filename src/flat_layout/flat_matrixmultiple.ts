@@ -1,6 +1,6 @@
 import {
     IQuestion, QuestionMatrixDropdownModelBase, QuestionMatrixDropdownRenderedTable,
-    QuestionMatrixDropdownRenderedRow, QuestionMatrixDropdownRenderedCell, Serializer, PanelModel
+    QuestionMatrixDropdownRenderedRow, QuestionMatrixDropdownRenderedCell, Serializer, PanelModel, QuestionMatrixDynamicModel
 } from 'survey-core';
 import { SurveyPDF } from '../survey';
 import { IPoint, IRect, DocController } from '../doc_controller';
@@ -52,6 +52,9 @@ export class FlatMatrixMultiple extends FlatQuestion {
         }
         return composite;
     }
+    private ignoreCell(cell: QuestionMatrixDropdownRenderedCell, index: number): boolean {
+        return !(cell.hasQuestion || cell.hasTitle || this.isMultiple && index == 0);
+    }
     private async generateFlatsRowHorisontal(point: IPoint, row: QuestionMatrixDropdownRenderedRow,
         colCount: number, columnWidth: number[]): Promise<CompositeBrick> {
         const composite: CompositeBrick = new CompositeBrick();
@@ -60,8 +63,8 @@ export class FlatMatrixMultiple extends FlatQuestion {
             this.controller.unitWidth * SurveyHelper.GAP_BETWEEN_COLUMNS;
         this.controller.pushMargins();
         let cnt = 0;
-        for (let i: number = this.question.detailPanelMode !== 'none' ? 1 : 0; i < row.cells.length; i++) {
-            if (cnt == colCount) break;
+        for (let i = 0; i < row.cells.length; i++) {
+            if (this.ignoreCell(row.cells[i], i)) continue;
             this.controller.margins.left = this.controller.paperWidth - lastRightMargin +
                 this.controller.unitWidth * SurveyHelper.GAP_BETWEEN_COLUMNS;
             this.controller.margins.right = this.controller.paperWidth -
@@ -82,7 +85,8 @@ export class FlatMatrixMultiple extends FlatQuestion {
         colCount: number): Promise<CompositeBrick> {
         const composite: CompositeBrick = new CompositeBrick();
         const currPoint: IPoint = SurveyHelper.clone(point);
-        for (let i: number = 0; i < Math.min(colCount, row.cells.length); i++) {
+        for (let i: number = 0; i < row.cells.length; i++) {
+            if (this.ignoreCell(row.cells[i], i)) continue;
             if (this.question.renderedTable.showHeader && (!this.isMultiple || i > 0)) {
                 composite.addBrick(await this.generateFlatsCell(currPoint,
                     this.question.renderedTable.headerRow.cells[i], false));
@@ -165,10 +169,13 @@ export class FlatMatrixMultiple extends FlatQuestion {
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         const table: QuestionMatrixDropdownRenderedTable = this.question.renderedTable;
         const isVertical: boolean = this.question.columnLayout === 'vertical';
-        const colCount: number = table.rows[0] ? table.rows[0].cells.length -
-            (table.hasRemoveRows && !isVertical ? (this.question.detailPanelMode !== 'none' ? 2 : 1) : 0) :
-            table.showHeader && table.headerRow ? table.headerRow.cells.length :
+        let colCount: number;
+        if (!!table.rows[0]) {
+            colCount = table.rows[0].cells.filter((cell: QuestionMatrixDropdownRenderedCell, index: number) => !this.ignoreCell(cell, index)).length;
+        } else {
+            colCount = table.showHeader && table.headerRow ? table.headerRow.cells.length :
                 table.showFooter && table.footerRow ? table.footerRow.cells.length : 0;
+        }
         if (colCount === 0) {
             return [new CompositeBrick(SurveyHelper.createRowlineFlat(point, this.controller))];
         }
