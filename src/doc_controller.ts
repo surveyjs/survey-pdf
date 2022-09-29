@@ -151,8 +151,12 @@ export interface IDocOptions {
     compress?: boolean;
 
     /**
-     * Specifies whether to apply the [imageFit](https://surveyjs.io/Documentation/Library?id=questionimagemodel#imageFit) property to exported [Image](https://surveyjs.io/Documentation/Library?id=questionimagemodel) questions.
-     * If you enable the `applyImageFit` property, the quality of images may be lower because they pass through several conversions. If `applyImageFit` is disabled, exported images fill the entire container and do not preserve their aspect ratio, but their quality remains the same because they are exported as is.
+     * Gets or sets whether the [imageFit](https://surveyjs.io/Documentation/Library?id=questionimagemodel#imageFit) property is applied to exported [Image](https://surveyjs.io/Documentation/Library?id=questionimagemodel) questions.
+     * 
+     * Set this property to `true` to apply the specified `imageFit` setting. With this option, images pass through multiple conversions so their quality may be decreased.
+     * To increase image quality, specify the SurveyPDF.SurveyHelper.HTML_TO_IMAGE_QUALITY setting. For example: SurveyPDF.SurveyHelper.HTML_TO_IMAGE_QUALITY = 4.0;
+     * 
+     * Set this property to `false` to fit images to the entire container and do not preserve aspect ratio. Images are exported as is and preserve quality.
      */
     applyImageFit?: boolean;
 }
