@@ -11,7 +11,7 @@
 - [How to convert a ttf file to a base64 string?](#how-to-convert-a-ttf-file-to-a-base64-string)
 
 **API to use:**  
-_Switch fonts:_  
+_Change fonts:_  
 `DocOptions.fontName`  
 _Load fonts:_  
 `DocController.addFont()`  
@@ -30,27 +30,25 @@ The **SurveyJS PDF Export** library uses a third-party [jsPDF](https://github.co
 <a id="standard-14-fonts"></a>
 ### Standard 14 fonts
 
-PDF documents rendered by jsPDF support the following fonts out of the box:
+PDF documents rendered by jsPDF support the following fonts (also known as the [standard (or base) 14 PDF fonts](https://en.wikipedia.org/wiki/PDF#:~:text=Fourteen%20typefaces%2C%20known%20as%20the,oblique%2C%20bold%20and%20bold%20oblique)):
 
 - **Helvetica** (default)  
-typefaces: "normal", "bold", "oblique", and "bold oblique"
+in: "normal", "bold", "oblique", and "bold oblique"
 
 - **Courier**  
-typefaces: "normal", "bold", "oblique", and "bold oblique"
+in: "normal", "bold", "oblique", and "bold oblique"
 
 - **Times**  
-typefaces: "normal", "bold", "oblique", and "bold oblique"
+in: "normal", "bold", "oblique", and "bold oblique"
 
 - **Symbol**  
 
 - **ZapfDingbats**  
 
-The first three fonts have four typefaces each: "**normal**", "**bold**", "**oblique**" and "**bold oblique**". This results in a final set of fonts known as the [standard (or base) 14 PDF fonts](https://en.wikipedia.org/wiki/PDF#:~:text=Fourteen%20typefaces%2C%20known%20as%20the,oblique%2C%20bold%20and%20bold%20oblique).
-
 For more details, see **jsPDF** [sources](https://github.com/MrRio/jsPDF/blob/cef97fb34eda41a8704c9f3983e680919a328ce4/src/jspdf.js#L793-L808).
 
 >**Note:**  
-The standard 14 PDF fonts only provide a limited set of glyphs but have the advantage that they don't need to be embedded into a document. These fonts are intended to be installed on a client machine and all PDF reading/viewing applications need to support them. 
+The standard 14 PDF fonts contain a limited set of glyphs, but their advantage is that they don't need to be embedded into a document. These fonts are intended to be installed on a client machine and most PDF readers support them. 
 
 
 <!-- <a id="default-font"></a>
@@ -67,16 +65,12 @@ Segoe is the SurveyPDF's default font. Two typefaces of this font are by default
 
 
 <a id="change-document-font"></a>
-## Change the document font
+## Change a document font
 
-Use the `fontName` property (declared as `DocOptions.fontName`) to specify a document's font.
+Use the [fontName](https://surveyjs.io/pdf-generator/documentation/idocoptions#fontName) property to specify a document's font.
 
-  
-* [fontName](https://github.com/surveyjs/survey-pdf/blob/e7727038e6be148a4b38753ab9dddbcaf86c23a5/src/doc_controller.ts#L34)  
-`fontName?: string;`
-
-If you want to change from the default font, set the `fontName` property to the desired font's family name.  
-You don't need to explicitly specify typefaces (such as "normal" or "bold"). SurveyPDF automatically finds and applies required font variations (if they are available within a document for the specified font family).
+If you want to change the default font, set the `fontName` property to the required font family name.  
+You don't need to explicitly specify a font variation (such as "normal" or "bold"). SurveyPDF applies a required font variation if it is available within a document for the specified font family.
 
 For instance, to render a PDF document using the Courier font family, set `fontName` to "Courier".
 
@@ -93,27 +87,25 @@ function saveSurveyToPdf(filename, surveyModel) {
 ```
 
 > **See also:**  
-> [fontSize](https://github.com/surveyjs/survey-pdf/blob/e7727038e6be148a4b38753ab9dddbcaf86c23a5/src/doc_controller.ts#L33) property
+> The [fontSize](https://surveyjs.io/pdf-generator/documentation/idocoptions#fontSize) property.
 
 
 <a id="use-custom-font"></a>
 ## Use a custom font
 
-Along with the use of the standard 14 fonts, the **SurveyJS PDF Export** library also allows you to integrate custom fonts into a PDF document and use them to render survey texts. 
+Standard 14 PDF fonts are ASCII-encoded and they may not include specific glyphs (for example, UTF-8 encoded glyphs). 
 
-Custom fonts are typically useful when there is a need for specific (UTF-8 encoded) glyphs which are absent in standard (ASCII-encoded) 14 fonts.
+With the **SurveyJS PDF Export** library, you can add a custom font. The custom font will be used to render survey PDF texts. For example, if you want to render Chinese text in a survey file, add a font which contains Chinese glyphs. 
 
-For instance, if you want to have Chinese text in your survey's PDF file, your font needs to have the necessary Chinese glyphs.
+To use a custom font for a SurveyPDF document, perform the following steps:
 
-To use a custom font within a SurveyPDF document, perform the following steps:
-
-* **Add a custom font** through the `DocController.addFont()` static method.
-* **Set the document font** through the options' `fontName` property.
+* **Add a custom font** using the static `DocController.addFont` method.
+* **Set the document font** using the `IDocOptions.fontName` property.
 
 
 <a id="add-custom-font"></a>
 ### Add a custom font
-Use the `addFont()` method (declared as `DocController.addFont`) to add a custom font to a PDF document.
+Use the `DocController.addFont` method to add a custom font to a PDF document.
 
 * [addFont()](https://github.com/surveyjs/survey-pdf/blob/e7727038e6be148a4b38753ab9dddbcaf86c23a5/src/doc_controller.ts#L186)  
 `public static addFont(fontName: string, base64: string, fontStyle: 'normal' | 'bold' | 'italic' | 'bolditalic')`  
@@ -121,13 +113,13 @@ Use the `addFont()` method (declared as `DocController.addFont`) to add a custom
 This method does the following:  
 
 * Loads a font face as a base64-encoded string.
-* Specifies the font variation (such as "normal" or "bold") for which to use the loaded font face in a document.
-* Gives the loaded font face a label (a custom font family name/alias) which uniquely identifies the custom font through all fonts available within a document. Use this label to set the `fontName` property in document options.
+* Specifies the font variation (such as "normal" or "bold") for the loaded font face.
+* Specifies a label (a custom font family name/alias) for the loaded font face. The label uniquely identifies the custom font in a collection of fonts available within a document. Use this label to set the `fontName` property in document options.
 
 <!-- 
 This method loads a font face as a base64-encoded string and associates it with a specified font family name and font style (like "normal" or "bold"). -->
 
-A typical method call:
+An example of the `DocController.addFont` method call:
 ```js
 SurveyPDF.DocController.addFont("myFont", "<<base64-encoded string>>", "normal");
 ```
@@ -135,18 +127,21 @@ SurveyPDF.DocController.addFont("myFont", "<<base64-encoded string>>", "normal")
 Method parameters:
 
 * _fontName_  
-A dynamically created label to assign to the loaded custom font. This label serves as a custom font family name. Example: "myFont".
+A dynamically created label that identifies the custom font. This label is used as a custom font family name. Example: "myFont".
 
 * _base64_  
  A base64-encoded string that represents the content of a custom font's .ttf file to embed.
 
 * _fontStyle_  
-A font variation for which to use the loaded custom font when rendering a PDF document. Might represent a combination of the font weight and font style. Possible values: "normal", "bold", "italic", "bolditalic".  
-SurveyPDF typically uses two font variations for survey element texts: "bold" is used for texts of titles, "normal" - for texts of other elements.  
-You might, however, have a need to use additional font variations within a custom HTML content you provide for questions of the HTML type ([QuestionHtmlModel](https://surveyjs.io/Documentation/Library?id=questionhtmlmodel)).
+A font variation of a custom font. The *_fontStyle* may represent a combination of the font weight and font style. Possible values: "normal", "bold", "italic", "bolditalic".  
+SurveyPDF generally uses two font variations for survey element texts: "bold" is used for texts of titles, "normal" - for texts of other elements.  
 
+>**Note:** 
+You may need to apply additional font variations to custom HTML content of [HTML survey questions](https://surveyjs.io/Documentation/Library?id=questionhtmlmodel)).
 
-The sample code below demonstrates how to use the `addFont` method to add two custom font faces (for "normal" and "bold" font variations) and to combine them into a custom font family ("myRoboto" is used as a font family label).
+The following sample code demonstrates how to:
+* Use the `addFont` method to add two custom fonts in "normal" and "bold" variations;
+* Combine fonts into a custom font family. "myRoboto" is used as a font family label.
 ```js
 var fontRobotoThin = "<<base64-encoded string for Roboto-Thin.ttf>>";
 var fontRobotoMedium = "<<base64-encoded string for Roboto-Medium.ttf>>";
@@ -159,9 +154,8 @@ SurveyPDF.DocController.addFont("myRoboto", fontRobotoMedium, "bold");
 <a id="set-document-font"></a>
 ### Set the document font
 
-As in the [Change the document font](#change-document-font) section above, set the options' `fontName` property to specify the font family used to render all texts in a survey document.  
-Set this property to a custom font family identifier which you previously assigned to the loaded font(s) through the `addFont` method's _fontName_ parameter.
-
+Use the `IDocOptions.fontName` to render survey PDF texts with a custom font.
+Set this property to a custom font family identifier - the  _fontName_ parameter used in the `addFont` method.
 
 ```js
 function saveSurveyToPdf(filename, surveyModel) {
@@ -174,13 +168,16 @@ function saveSurveyToPdf(filename, surveyModel) {
 }
 ```
 
+>**Note:**
+SurveyPDF uses a specified font to render survey PDF contents. If your survey is a multi-language and, for example, includes English and Chineese texts, consider a font which includes glyphs for all languages used withing a survey.
+
 <a id="example"></a>
 ### Example - Add a custom font family to SurveyPDF
 
-The following example uses SurveyPDF to generate a survey PDF file with four Roboto fonts integrated into the document as a custom font family named 'myRoboto'.  
+The following example generates a survey PDF file with four Roboto fonts embedded into the document as a custom font family named 'myRoboto'.  
 
-The Roboto-Thin and Roboto-Medium typefaces are respectively specified for two main font variations - "normal" and "bold" - used by SurveyPDF to render all survey elements.  
-The Roboto-LightItalic and Roboto-BlackItalic typefaces are additionally added to represent italic variations - "normal italic" and "bold italic" - which are used in custom HTML contents within survey questions of the HTML type ([QuestionHtmlModel](https://surveyjs.io/Documentation/Library?id=questionhtmlmodel)).
+The Roboto-Thin and Roboto-Medium font variations are used for two main font variations - "normal" and "bold". SurveyPDF uses these font variations to render all survey elements.  
+The Roboto-LightItalic and Roboto-BlackItalic represent italic font variations - "normal italic" and "bold italic". SurveyPDF uses these font variations to render HTML content of [survey HTML questions](https://surveyjs.io/Documentation/Library?id=questionhtmlmodel)).
 
 
 ```js
@@ -201,7 +198,7 @@ var fontRobotoMedium = "<<base64-encoded string for Roboto-Medium.ttf>>";
 var fontRobotLightItalic = "<<base64-encoded string for Roboto-LightItalic.ttf>>";
 var fontRobotoBlackItalic = "<<base64-encoded string for Roboto-BlackItalic.ttf>>";
 
-// Embed custom fonts (Roboto font faces) for four font variations:
+// Embed custom Roboto fonts in four variations:
 SurveyPDF.DocController.addFont("myRoboto", fontRobotoThin, "normal");
 SurveyPDF.DocController.addFont("myRoboto", fontRobotoMedium, "bold");
 SurveyPDF.DocController.addFont("myRoboto", fontRobotoLightItalic, "italic");
@@ -210,7 +207,7 @@ SurveyPDF.DocController.addFont("myRoboto", fontRobotoBlackItalic, "bolditalic")
 function saveSurveyToPdf(filename, surveyModel) {
 
     var options = {
-        // Specify the font family to use to render a document:
+        // Specify the font family used to render a document:
         fontName: 'myRoboto',
     };
     
@@ -220,29 +217,19 @@ function saveSurveyToPdf(filename, surveyModel) {
 }
 ```
 
-
 > **Online Example**  
 > [Custom font family](https://surveyjs.io/Examples/Pdf-Export?id=survey-pdf-customfontfamily)
-
-
-See the complete example code and test it in action at Plunker:  
-[Embed custom fonts to use in SurveyPDF](https://plnkr.co/edit/uyecLKbp1PrZlqtx)
-
-
 
 
 ![Custom fonts](images/survey-pdf-custom-fonts.png)
 
 
-
 <a id="find-font-for-certain-language"></a>
-## Where to find a font for a certain language?
+## How to obtain a font for a specific language
 
-To be able to integrate a custom font into a PDF document, you first need to have a font as a .ttf (a regular TrueType font) file.
+To integrate a custom font to a PDF document, obtain a font .TTF (a regular TrueType font) file.
 
-You can use online resources to search for and download language- and lettering style specific fonts.
-
-As an example, the following Google services provide convenient ways to find and download fonts.
+You can use online resources to search for and download language- and lettering style specific fonts. For example, check the following resources:
 
 * [Google Noto Fonts](https://www.google.com/get/noto/)  
 The Noto font family - a Google-developed collection of free fonts, which aims to support all languages. 
@@ -252,16 +239,14 @@ A library of more than a thousand free and open source font families.
 
 
 <a id="convert-ttf-to-base64"></a>
-## How to convert a ttf file to a base64 string?
+## How to convert a TTF file to a base64 string
 
-You can use any of the following online tools to convert a .ttf font to a base64 string.
+You can use the following online tools to convert a .ttf font file to a base64 string.
 
 * [jsPDF's Font Converter](https://rawgit.com/MrRio/jsPDF/master/fontconverter/fontconverter.html)  
 A font converter developed by authors of the jsPDF library.  
-Accepts a .ttf file and creates a .js file to store the font content as a base64 encoded string and additional jsPDF-specific code.  
-To obtain a font's base64 representation, you just need to find and copy the value of the `font` variable (`var font = "..."`) in the downloaded .js file.
+Accepts a .ttf file and creates a .js file. The .js file contains font content as a base64 encoded string and additional jsPDF-specific code.  
+To obtain a font's base64 representation, open the downloaded .js file and copy the value of the `font` variable (`var font = "..."`).
 
 * [GiftOfSpeed's File to Base64 Encoder](https://www.giftofspeed.com/base64-encoder/)  
-A simplest way to encode web files to a base64 string.  
-Upload a .ttf file and copy the generated string.
-
+The simplest way to encode web files to a base64 string. Upload a .ttf file and copy the generated string.
