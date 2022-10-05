@@ -6,7 +6,7 @@ export class BooleanItemBrick extends CheckItemBrick {
     public constructor(question: IQuestion, controller: DocController,
         rect: IRect) {
         super(question, controller, rect,
-            (<QuestionBooleanModel>question).id,
+            (<QuestionBooleanModel>question).id, (<QuestionBooleanModel>question).id,
             question.isReadOnly,
             (<QuestionBooleanModel>question).checkedValue);
     }

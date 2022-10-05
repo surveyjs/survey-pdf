@@ -11,7 +11,7 @@ export class CheckItemBrick extends PdfBrick {
     public static readonly CHECKMARK_READONLY_FONT_SIZE_SCALE: number = 1.0 - Math.E / 10.0;
     protected question: QuestionCheckboxModel;
     public constructor(question: IQuestion, controller: DocController,
-        rect: IRect, protected fieldName: string,
+        rect: IRect, protected fieldName: string, private value: string,
         protected readonly: boolean, protected checked: boolean) {
         super(question, controller, rect);
         this.question = <QuestionCheckboxModel>question;
@@ -30,7 +30,7 @@ export class CheckItemBrick extends PdfBrick {
         checkBox.fieldName = this.fieldName;
         checkBox.readOnly = this.readonly;
         checkBox.color = this.formBorderColor;
-        checkBox.value = this.checked ? 'On' : false;
+        checkBox.value = this.value;
         checkBox.AS = this.checked ? '/On' : '/Off';
         checkBox.Rect = SurveyHelper.createAcroformRect(
             SurveyHelper.scaleRect(this, formScale));

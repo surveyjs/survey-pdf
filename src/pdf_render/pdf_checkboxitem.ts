@@ -4,9 +4,9 @@ import { CheckItemBrick } from './pdf_checkitem';
 
 export class CheckboxItemBrick extends CheckItemBrick {
     public constructor(question: IQuestion, controller: DocController,
-        rect: IRect, item: ItemValue, index: number) {
+        rect: IRect, item: ItemValue) {
         super(question, controller, rect,
-            (<QuestionCheckboxModel>question).id + 'index' + index,
+            (<QuestionCheckboxModel>question).id, item.value,
             question.isReadOnly || !item.isEnabled,
             (<QuestionCheckboxModel>question).isItemSelected(item));
     }

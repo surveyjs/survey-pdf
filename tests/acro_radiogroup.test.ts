@@ -52,7 +52,7 @@ test('Other selected with value radiogroup', async () => {
     const controller: DocController = new DocController(TestHelper.defaultOptions);
     await survey['renderSurvey'](controller);
     const fields: any = controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields;
-    expect(fields[1].AS).toBe('/' + survey.getAllQuestions()[0].id + 'index0');
+    expect(fields[1].AS).toBe('/other');
     expect(fields[2].V).toBe('( ' + json.questions[0].defaultValue + ')');
 });
 test('Check all items disabled or enabled', async () => {
