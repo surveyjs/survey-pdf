@@ -48,3 +48,6 @@ export { TextBoldBrick } from '../pdf_render/pdf_textbold';
 export { TextBoxBrick } from '../pdf_render/pdf_textbox';
 export { TextBrick } from '../pdf_render/pdf_text';
 export { TitlePanelBrick } from '../pdf_render/pdf_titlepanel';
+
+import { checkLibraryVersion } from 'survey-core';
+checkLibraryVersion(`${process.env.VERSION}`, 'survey-pdf');
