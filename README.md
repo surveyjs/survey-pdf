@@ -8,7 +8,7 @@
 <img alt="Closed issues" title="Closed Issues" src="https://img.shields.io/github/issues-closed/surveyjs/survey-pdf.svg">
 </a>
 
-SurveyJS PDF generator allows saving an unlimited number of custom-built survey forms to PDF (both new and filled-in), and generate fillable PDF forms that your end users can edit. The PDF generator library surves as a client-side extension for the [SurveyJS Form Library](https://github.com/surveyjs/survey-library).
+SurveyJS PDF Generator allows you to save an unlimited number of custom-built survey forms to PDF (both blank and filled-in) and generate fillable PDF forms that your end users can edit. The PDF Generator library surves as a client-side extension for the [SurveyJS Form Library](https://github.com/surveyjs/survey-library).
 
 ![Survey PDF Generator](docs/images/survey-pdf-export-overview.png)
 
@@ -21,9 +21,9 @@ SurveyJS PDF generator allows saving an unlimited number of custom-built survey 
 - Automatic page breaks
 - Markdown support
 - Customizable page format and font
-- Option to add a header and footer both on a page and an entire survey level
+- Support for headers and footers both on a page and an entire survey level
 - An API to download a fillable survey form as a document file in a traditional PDF format
-- PDF Form convertion to Blob, Base64 URL, or Raw PDF
+- PDF Form conversion to Blob, Base64 URL, or Raw PDF
 
 ## Get Started
 
