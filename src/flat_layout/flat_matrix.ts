@@ -38,7 +38,14 @@ export class FlatMatrix extends FlatQuestion {
         const cells: IPdfBrick[] = [];
         let currPoint: IPoint = SurveyHelper.clone(point);
         for (let i: number = 0; i < this.question.visibleRows.length; i++) {
-            const key: string = '_row_' + this.question.visibleRows[0].value;
+            let key: string = '_row_';
+            const row = this.question.visibleRows[i];
+            if(!!row.item?.value) {
+                key += this.question.visibleRows[i].item.value;
+            }
+            else {
+                key += 'index' + i;
+            }
             const flatsRow: IPdfBrick[] = await new FlatMatrixRow(this.survey, this.question, this.controller,
                 this.question.visibleRows[i], key, i == 0, isVertical).generateFlatsContent(currPoint);
             currPoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(...flatsRow));
