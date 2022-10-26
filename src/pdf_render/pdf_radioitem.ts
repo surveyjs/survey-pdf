@@ -26,6 +26,10 @@ export class RadioGroupWrap {
     }
 }
 
+function replaceSpaces(str: string): string {
+    return str.replace(/\s/g, '_');
+}
+
 export class RadioItemBrick extends PdfBrick {
     private static readonly RADIOMARKER_READONLY_SYMBOL: string = '•';
     private static readonly RADIOMARKER_READONLY_FONT_SIZE_SCALE: number = 1.575;
@@ -43,11 +47,12 @@ export class RadioItemBrick extends PdfBrick {
         if (this.index == 0) {
             this.radioGroupWrap.addToPdf(this.formBorderColor);
         }
-        let radioButton: any = this.radioGroupWrap.radioGroup.createOption(this.value);
+        const value: string = this.value.toString();
+        let radioButton: any = this.radioGroupWrap.radioGroup.createOption(replaceSpaces(value));
         radioButton.Rect = SurveyHelper.createAcroformRect(this);
         if(this.checked) {
-            radioButton.AS = '/' + this.value;
-            this.radioGroupWrap.radioGroup.value = this.value;
+            radioButton.AS = '/' + replaceSpaces(value);
+            this.radioGroupWrap.radioGroup.value = replaceSpaces(value);
         }
         let formScale: number = SurveyHelper.formScale(this.controller, this);
         radioButton.Rect = SurveyHelper.createAcroformRect(

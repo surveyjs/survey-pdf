@@ -77,3 +77,47 @@ test('Check all items disabled or enabled', async () => {
         else expect(controller.doc.internal.acroformPlugin).toBe(undefined);
     }
 });
+
+test('Check radiogroup names and values with spaces', async () => {
+    const json: any = {
+        questions: [
+            {
+                titleLocation: 'hidden',
+                type: 'radiogroup',
+                choices: ['A B C', 'D E F'],
+                defaultValue: 'A B C'
+            }]
+    };
+    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    survey.getAllQuestions()[0].id = 'questionId';
+    const controller: DocController = new DocController(TestHelper.defaultOptions);
+    await survey['renderSurvey'](controller);
+    const acroFormFields = controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields;
+    expect(acroFormFields[0].fieldName).toBe('questionId');
+    expect(acroFormFields[0].value).toBe('A_B_C');
+    expect(acroFormFields[1].AS).toBe('/A_B_C');
+    expect(acroFormFields[2].AS).toBe('/Off');
+});
+test('Check rating with value as string', async () => {
+    const json: any = {
+        questions: [
+            {
+                titleLocation: 'hidden',
+                name: 'q1',
+                type: 'rating',
+                rateMax: 2,
+            }]
+    };
+    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    survey.data = {
+        'q1': '1'
+    };
+    survey.getAllQuestions()[0].id = 'questionId';
+    const controller: DocController = new DocController(TestHelper.defaultOptions);
+    await survey['renderSurvey'](controller);
+    const acroFormFields = controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields;
+    expect(acroFormFields[0].fieldName).toBe('questionId');
+    expect(acroFormFields[0].value).toBe('1');
+    expect(acroFormFields[1].AS).toBe('/1');
+    expect(acroFormFields[2].AS).toBe('/Off');
+});
