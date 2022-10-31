@@ -52,10 +52,11 @@ You can use any UI element to call this helper function. For instance, the follo
 
 ```js
 import { Component, OnInit } from '@angular/core';
-import { Model, SurveyNG } from "survey-angular";
+import { Model } from "survey-core";
 // ...
 @Component({ /* ... */ })
 export class AppComponent implements OnInit {
+  surveyModel: Model;
   ngOnInit() {
     const survey = new Model(surveyJson);
 
@@ -65,7 +66,7 @@ export class AppComponent implements OnInit {
       action: () => savePdf(survey.data)
     });
 
-    SurveyNG.render("surveyContainer", { model: survey });
+    this.surveyModel = survey;
   }
 }
 ```
@@ -79,9 +80,15 @@ To view the application, run `ng serve` in a command line and open [http://local
 <details>
     <summary>View full code</summary>  
 
+```html
+<!-- app.component.html -->
+<survey [model]="surveyModel"></survey>
+```
+
 ```js
+// app.component.ts
 import { Component, OnInit } from '@angular/core';
-import { Model, StylesManager, SurveyNG } from "survey-angular";
+import { Model, StylesManager } from "survey-core";
 import { SurveyPDF, IDocOptions } from "survey-pdf";
 
 StylesManager.applyTheme("defaultV2");
@@ -107,6 +114,7 @@ const savePdf = function (surveyData: any) {
 })
 export class AppComponent implements OnInit {
   title = 'Export Survey to PDF - SurveyJS for Angular';
+  surveyModel: Model;
   ngOnInit() {
     const survey = new Model(surveyJson);
 
@@ -116,9 +124,31 @@ export class AppComponent implements OnInit {
       action: () => savePdf(survey.data)
     });
 
-    SurveyNG.render("surveyContainer", { model: survey });
+    this.surveyModel = survey;
   }
 }
+```
+
+```js
+// app.module.ts
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { SurveyAngularModule } from "survey-angular-ui";
+
+import { AppComponent } from './app.component';
+
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    BrowserModule,
+    SurveyAngularModule
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
 ```
 </details>
 
