@@ -39,7 +39,7 @@ export class FlatRating extends FlatRadiogroup {
         const radioPoint: IPoint = SurveyHelper.createPoint(compositeFlat);
         radioPoint.xLeft = point.xLeft;
         compositeFlat.addBrick(this.generateFlatItem(SurveyHelper.createRect(
-            radioPoint, textWidth, this.controller.unitHeight), item, index));
+            radioPoint, textWidth, this.controller.unitHeight), item, index, undefined, this.question.value == item.value));
         return compositeFlat;
     }
     protected async generateFlatComposite(point: IPoint, item: ItemValue, index: number): Promise<IPdfBrick> {
@@ -48,7 +48,7 @@ export class FlatRating extends FlatRadiogroup {
             this.controller.unitHeight, this.controller.unitHeight);
         const itemFlat: IPdfBrick = this.generateFlatItem(SurveyHelper.moveRect(
             SurveyHelper.scaleRect(itemRect, SurveyHelper.SELECT_ITEM_FLAT_SCALE),
-            point.xLeft), item, index);
+            point.xLeft), item, index, undefined, this.question.value == item.value);
         compositeFlat.addBrick(itemFlat);
         const textPoint: IPoint = SurveyHelper.clone(point);
         textPoint.xLeft = itemFlat.xRight + this.controller.unitWidth * SurveyHelper.GAP_BETWEEN_ITEM_TEXT;
