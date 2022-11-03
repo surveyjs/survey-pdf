@@ -40,7 +40,7 @@ export class FlatMatrix extends FlatQuestion {
         for (let i: number = 0; i < this.question.visibleRows.length; i++) {
             let key: string = '_row_';
             const row = this.question.visibleRows[i];
-            if(!!row.item?.value) {
+            if(!!row.item?.value && this.controller.useValuesInAcroforms) {
                 key += this.question.visibleRows[i].item.value;
             }
             else {

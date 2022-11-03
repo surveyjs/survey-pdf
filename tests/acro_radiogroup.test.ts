@@ -49,10 +49,16 @@ test('Other selected with value radiogroup', async () => {
         ]
     };
     const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    const controller: DocController = new DocController(TestHelper.defaultOptions);
+    let controller: DocController = new DocController({ useValuesInAcroforms: true });
     await survey['renderSurvey'](controller);
-    const fields: any = controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields;
+    let fields: any = controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields;
     expect(fields[1].AS).toBe('/other');
+    expect(fields[2].V).toBe('( ' + json.questions[0].defaultValue + ')');
+
+    controller = new DocController({ useValuesInAcroforms: false });
+    await survey['renderSurvey'](controller);
+    fields = controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields;
+    expect(fields[1].AS).toBe('/index0');
     expect(fields[2].V).toBe('( ' + json.questions[0].defaultValue + ')');
 });
 test('Check all items disabled or enabled', async () => {
@@ -90,7 +96,7 @@ test('Check radiogroup names and values with spaces', async () => {
     };
     const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     survey.getAllQuestions()[0].id = 'questionId';
-    const controller: DocController = new DocController(TestHelper.defaultOptions);
+    const controller: DocController = new DocController({ useValuesInAcroforms: true });
     await survey['renderSurvey'](controller);
     const acroFormFields = controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields;
     expect(acroFormFields[0].fieldName).toBe('questionId');
@@ -113,11 +119,19 @@ test('Check rating with value as string', async () => {
         'q1': '1'
     };
     survey.getAllQuestions()[0].id = 'questionId';
-    const controller: DocController = new DocController(TestHelper.defaultOptions);
+    let controller: DocController = new DocController({ useValuesInAcroforms: true });
     await survey['renderSurvey'](controller);
-    const acroFormFields = controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields;
+    let acroFormFields = controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields;
     expect(acroFormFields[0].fieldName).toBe('questionId');
     expect(acroFormFields[0].value).toBe('1');
     expect(acroFormFields[1].AS).toBe('/1');
+    expect(acroFormFields[2].AS).toBe('/Off');
+
+    controller = new DocController({ useValuesInAcroforms: false });
+    await survey['renderSurvey'](controller);
+    acroFormFields = controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields;
+    expect(acroFormFields[0].fieldName).toBe('questionId');
+    expect(acroFormFields[0].value).toBe('index0');
+    expect(acroFormFields[1].AS).toBe('/index0');
     expect(acroFormFields[2].AS).toBe('/Off');
 });

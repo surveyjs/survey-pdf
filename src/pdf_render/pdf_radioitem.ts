@@ -47,7 +47,7 @@ export class RadioItemBrick extends PdfBrick {
         if (this.index == 0) {
             this.radioGroupWrap.addToPdf(this.formBorderColor);
         }
-        const value: string = this.value.toString();
+        const value: string = this.controller.useValuesInAcroforms ? this.value.toString() : 'index' + this.index;
         let radioButton: any = this.radioGroupWrap.radioGroup.createOption(replaceSpaces(value));
         radioButton.Rect = SurveyHelper.createAcroformRect(this);
         if(this.checked) {

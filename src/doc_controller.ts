@@ -155,6 +155,7 @@ export interface IDocOptions {
      * If you enable the `applyImageFit` property, the quality of images may be lower because they pass through several conversions. If `applyImageFit` is disabled, exported images fill the entire container and do not preserve their aspect ratio, but their quality remains the same because they are exported as is.
      */
     applyImageFit?: boolean;
+    useValuesInAcroforms?: boolean;
 }
 /**
  * Contains a set of options that affect the appearance of a PDF document rendered by SurveyPDF.
@@ -178,6 +179,7 @@ export class DocOptions implements IDocOptions {
     protected _textFieldRenderAs: 'singleLine' | 'multiLine';
     protected _compress: boolean;
     protected _applyImageFit: boolean;
+    protected _useValuesInAcroforms: boolean;
     protected _booleanRenderAs: 'default' | 'radiogroup'
     public constructor(options: IDocOptions) {
         if (typeof options.orientation === 'undefined') {
@@ -240,6 +242,7 @@ export class DocOptions implements IDocOptions {
         this._textFieldRenderAs = options.textFieldRenderAs || 'singleLine';
         this._compress = options.compress || false;
         this._applyImageFit = options.applyImageFit || false;
+        this._useValuesInAcroforms = options.useValuesInAcroforms || false;
         this._booleanRenderAs = options.booleanRenderAs || 'default';
     }
     public get leftTopPoint(): IPoint {
@@ -292,6 +295,9 @@ export class DocOptions implements IDocOptions {
     }
     public get booleanRenderAs(): 'default' | 'radiogroup' {
         return this._booleanRenderAs;
+    }
+    public get useValuesInAcroforms(): boolean {
+        return this._useValuesInAcroforms;
     }
 }
 
