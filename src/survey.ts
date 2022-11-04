@@ -68,6 +68,16 @@ export class SurveyPDF extends SurveyModel {
      */
     public onRenderPage: EventAsync<(survey: SurveyPDF, options: AdornersPageOptions) => any, any> =
         new EventAsync<(survey: SurveyPDF, options: AdornersPageOptions) => any, any>();
+
+    public onRenderCheckItemAcroform: EventAsync<(survey: SurveyPDF, options: any) => any, any> =
+        new EventAsync<(survey: SurveyPDF, options: any) => any, any>();
+
+    public onRenderRadioGroupWrapAcroform: EventAsync<(survey: SurveyPDF, options: any) => any, any> =
+    new EventAsync<(survey: SurveyPDF, options: any) => any, any>();
+
+    public onRenderRadioItemAcroform: EventAsync<(survey: SurveyPDF, options: any) => any, any> =
+    new EventAsync<(survey: SurveyPDF, options: any) => any, any>();
+
     private waitForQuestionIsReady(question: Question): Promise<void> {
         return new Promise((resolve: any) => {
             if (question.isReady) {
@@ -98,6 +108,15 @@ export class SurveyPDF extends SurveyModel {
             else await this.waitForQuestionIsReady(
                 SurveyHelper.getContentQuestion(<Question>question));
         }
+    }
+    public getUpdatedCheckItemAcroformOptions(options: any): void {
+        this.onRenderCheckItemAcroform.fire(this, options);
+    }
+    public getUpdatedRadioGroupWrapOptions(options: any): void {
+        this.onRenderRadioGroupWrapAcroform.fire(this, options);
+    }
+    public getUpdatedRadioItemAcroformOptions(options: any): void {
+        this.onRenderRadioItemAcroform.fire(this, options);
     }
     private async renderSurvey(controller: DocController): Promise<void> {
         await this.waitForCoreIsReady();

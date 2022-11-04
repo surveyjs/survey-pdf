@@ -77,3 +77,32 @@ test('Check all items disabled or enabled', async () => {
         else expect(controller.doc.internal.acroformPlugin).toBe(undefined);
     }
 });
+test('Check onRenderRadio* events', async () => {
+    const json: any = {
+        questions: [
+            {
+                name: 'radiogroup',
+                type: 'radiogroup',
+                choices: ['item1', 'item2', 'item3'],
+                defaultValue: 'item2'
+            }
+        ]
+    };
+    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    survey.getAllQuestions()[0].id = 'questionId';
+    const controller: DocController = new DocController(TestHelper.defaultOptions);
+    survey.onRenderRadioGroupWrapAcroform.add((_, opt) => {
+        opt.fieldName = opt.context.question.name;
+    });
+
+    survey.onRenderRadioItemAcroform.add((_, opt) => {
+        opt.fieldName = opt.context.item.value;
+    });
+    await survey['renderSurvey'](controller);
+    const fields: any = controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields;
+    expect(fields[0].V).toBe('/item2');
+    expect(fields[0].fieldName).toBe('radiogroup');
+    expect(fields[1].AS).toBe('/Off');
+    expect(fields[2].AS).toBe('/item2');
+    expect(fields[3].AS).toBe('/Off');
+});

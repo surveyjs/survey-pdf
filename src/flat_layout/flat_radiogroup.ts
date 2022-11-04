@@ -15,10 +15,10 @@ export class FlatRadiogroup extends FlatSelectBase {
         this.question = <QuestionRadiogroupModel>question;
     }
     public generateFlatItem(rect: IRect, item: ItemValue,
-        index: number, key?: string, checked?: boolean): IPdfBrick {
+        index: number, key?: string, checked?: boolean, context: any = {}): IPdfBrick {
         if (index === 0) {
             this.radioGroupWrap = new RadioGroupWrap(this.question.id + ((typeof key === 'undefined') ? '' : key),
-                this.controller, this.question.isReadOnly);
+                this.controller, { readOnly: this.question.isReadOnly, question: this.question, ...context });
             (<any>this.question).pdfRadioGroupWrap = this.radioGroupWrap;
         }
         else if (typeof this.radioGroupWrap === 'undefined') {
@@ -29,8 +29,8 @@ export class FlatRadiogroup extends FlatSelectBase {
                 (item.value === this.question.value ||
                     (typeof this.question.isItemSelected !== 'undefined' &&
                         this.question.isItemSelected(item)))) : checked;
-        return new RadioItemBrick(this.question, this.controller, rect,
-            index, isChecked, this.radioGroupWrap);
+        return new RadioItemBrick(this.controller, rect,
+            { question: this.question, index: index, checked: isChecked, item: item }, this.radioGroupWrap);
     }
 }
 
