@@ -32,7 +32,7 @@ export class FlatImagePicker extends FlatQuestion {
         const buttonRect: IRect = SurveyHelper.createRect(buttonPoint, pageAvailableWidth, height);
         if (this.question.multiSelect) {
             compositeFlat.addBrick(new CheckItemBrick(this.question, this.controller,
-                buttonRect, this.question.id, item.value,
+                buttonRect, this.question.id + 'index' + index,
                 this.question.isReadOnly || !item.isEnabled,
                 this.question.value.indexOf(item.value) !== -1));
         }

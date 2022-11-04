@@ -28,8 +28,8 @@ test('Matrix default value', async () => {
     const controller: DocController = new DocController(TestHelper.defaultOptions);
     await survey['renderSurvey'](controller);
     const acroFormFields = controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields;
-    expect(acroFormFields[0].value).toBe('Column');
-    expect(acroFormFields[1].AS).toBe('/Column');
+    expect(acroFormFields[0].value).toBe('sq_100row0index0');
+    expect(acroFormFields[1].AS).toBe('/sq_100row0index0');
     expect(acroFormFields[2].AS).toBe('/Off');
 });
 test('Matrix dropdown with radiogroup showInMultipleColumns equals true', async () => {

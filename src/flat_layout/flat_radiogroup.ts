@@ -30,7 +30,7 @@ export class FlatRadiogroup extends FlatSelectBase {
                     (typeof this.question.isItemSelected !== 'undefined' &&
                         this.question.isItemSelected(item)))) : checked;
         return new RadioItemBrick(this.question, this.controller, rect,
-            index, isChecked, this.radioGroupWrap, item.value);
+            index, isChecked, this.radioGroupWrap);
     }
 }
 

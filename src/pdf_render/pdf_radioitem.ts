@@ -31,7 +31,7 @@ export class RadioItemBrick extends PdfBrick {
     private static readonly RADIOMARKER_READONLY_FONT_SIZE_SCALE: number = 1.575;
     public constructor(question: IQuestion, controller: DocController,
         rect: IRect, private index: number, private checked: boolean,
-        private radioGroupWrap: RadioGroupWrap, private value: string) {
+        private radioGroupWrap: RadioGroupWrap) {
         super(question, controller, rect);
         this.textColor = this.formBorderColor;
     }
@@ -43,11 +43,15 @@ export class RadioItemBrick extends PdfBrick {
         if (this.index == 0) {
             this.radioGroupWrap.addToPdf(this.formBorderColor);
         }
-        let radioButton: any = this.radioGroupWrap.radioGroup.createOption(this.value);
+        let name: string = this.radioGroupWrap.name + 'index' + this.index;
+        let radioButton: any = this.radioGroupWrap.radioGroup.createOption(name);
         radioButton.Rect = SurveyHelper.createAcroformRect(this);
-        if(this.checked) {
-            radioButton.AS = '/' + this.value;
-            this.radioGroupWrap.radioGroup.value = this.value;
+        if (this.checked) {
+            radioButton.AS = '/' + name;
+            this.radioGroupWrap.radioGroup.value = name;
+        }
+        else {
+            radioButton.AS = '/Off';
         }
         let formScale: number = SurveyHelper.formScale(this.controller, this);
         radioButton.Rect = SurveyHelper.createAcroformRect(
