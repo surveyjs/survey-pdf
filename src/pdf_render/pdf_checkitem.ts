@@ -27,7 +27,7 @@ export class CheckItemBrick extends PdfBrick {
         checkBox.maxFontSize = this.height * formScale * CheckItemBrick.FONT_SIZE_SCALE;
         checkBox.caption = CheckItemBrick.CHECKMARK_READONLY_SYMBOL;
         checkBox.textAlign = 'center';
-        checkBox.fieldName = this.fieldName + '_' + this.value;
+        checkBox.fieldName = this.fieldName;
         checkBox.readOnly = this.readonly;
         checkBox.color = this.formBorderColor;
         checkBox.value = this.value;
