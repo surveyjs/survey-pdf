@@ -38,7 +38,7 @@ export class RadioGroupWrap {
     }
 }
 
-export class IRadioGroupItemBrickContext {
+export interface IRadioGroupItemBrickContext {
     question: IQuestion;
     checked: boolean;
     index: number;
@@ -62,7 +62,7 @@ export class RadioItemBrick extends PdfBrick {
         if (this.context.index == 0) {
             this.radioGroupWrap.addToPdf(this.formBorderColor);
         }
-        const options:any = {};
+        const options: any = {};
         options.fieldName = this.radioGroupWrap.name + 'index' + this.context.index;
         let formScale: number = SurveyHelper.formScale(this.controller, this);
         options.Rect = SurveyHelper.createAcroformRect(
@@ -88,7 +88,7 @@ export class RadioItemBrick extends PdfBrick {
                 options.AS = '/Off';
             }
         }
-        radioButton.Rect = options.rect;
+        radioButton.Rect = options.Rect;
         radioButton.color = options.formBorderColor;
 
         SurveyHelper.renderFlatBorders(this.controller, this);
