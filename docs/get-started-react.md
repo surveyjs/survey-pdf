@@ -1,3 +1,7 @@
+---
+title: Save survey form to fillable PDF in a React app | SurveyJS
+description: Export your SurveyJS survey, quiz, or poll to a fillable PDF form in a React application. A step-by-step guide to help you get started.
+---
 # Export Survey to PDF in a React Application
 
 PDF Export for SurveyJS allows your users to save surveys as interactive PDF documents. This tutorial describes how to add the export functionality to your React application.
