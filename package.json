@@ -4,7 +4,7 @@
     "serve": "live-server --port=7777",
     "test": "jest",
     "testDev": "jest --watch",
-    "release": "standard-version --message \"Release: %s [skip ci]\" ",
+    "release": "standard-version --message \"Release: %s [azurepipelines skip]\" ",
     "doc_gen": "node doc_generator/lib_docgenerator.js src/entries/pdf.ts",
     "doc_update": "chmod +x ./docupdate_npm.sh && ./docupdate_npm.sh",
     "build_dev": "webpack --env.buildType dev --env.platform pdf",
@@ -18,7 +18,7 @@
     "type": "git",
     "url": "https://github.com/surveyjs/survey-pdf.git"
   },
-  "version": "1.9.55",
+  "version": "1.9.56",
   "name": "survey-pdf",
   "license": "SEE LICENSE IN LICENSE",
   "dependencies": {
