@@ -17,5 +17,5 @@ export class FlatCheckbox extends FlatSelectBase {
         return new CheckboxItemBrick(this.question, this.controller, rect, item);
     }
 }
-
+FlatRepository.getInstance().register('tagbox', FlatCheckbox);
 FlatRepository.getInstance().register('checkbox', FlatCheckbox);
