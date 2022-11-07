@@ -148,7 +148,8 @@ test('Check readonly checkbox symbol', async () => {
     expect(controller.doc.internal.pages[1][22]).toContain(
         '(' + CheckItemBrick['CHECKMARK_READONLY_SYMBOL'] + ')');
 });
-test('Check checkbox fieldnames and values', async () => {
+
+test('Check onRenderCheck event', async () => {
     let json: any = {
         questions: [
             {
@@ -160,14 +161,17 @@ test('Check checkbox fieldnames and values', async () => {
         ]
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    survey.getAllQuestions()[0].id = 'questionId';
+    survey.onRenderCheckItemAcroform.add((_, opt) => {
+        opt.fieldName = opt.context.question.name + '_value_' + opt.context.item.value;
+        opt.value = opt.context.item.value;
+    });
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     await survey['renderSurvey'](controller);
     const fields: any = controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields;
-    expect(fields[0].T).toBe('(questionId_item)');
     expect(fields[0].V).toBe('/item');
+    expect(fields[0].fieldName).toBe('checkbox_value_item');
     expect(fields[0].AS).toBe('/On');
-    expect(fields[1].T).toBe('(questionId_item2)');
     expect(fields[1].V).toBe('/item2');
+    expect(fields[1].fieldName).toBe('checkbox_value_item2');
     expect(fields[1].AS).toBe('/Off');
 });

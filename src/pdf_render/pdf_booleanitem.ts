@@ -5,9 +5,8 @@ import { CheckItemBrick } from './pdf_checkitem';
 export class BooleanItemBrick extends CheckItemBrick {
     public constructor(question: IQuestion, controller: DocController,
         rect: IRect) {
-        super(question, controller, rect,
-            (<QuestionBooleanModel>question).id, (<QuestionBooleanModel>question).id,
-            question.isReadOnly,
-            (<QuestionBooleanModel>question).checkedValue);
+        super(controller, rect,
+            (<QuestionBooleanModel>question).id,
+            { question: question, readOnly: question.isReadOnly, checked: (<QuestionBooleanModel>question).checkedValue });
     }
 }
