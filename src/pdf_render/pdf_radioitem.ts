@@ -67,7 +67,7 @@ export class RadioItemBrick extends PdfBrick {
         let formScale: number = SurveyHelper.formScale(this.controller, this);
         options.Rect = SurveyHelper.createAcroformRect(
             SurveyHelper.scaleRect(this, formScale));
-        options.formBorderColor = this.formBorderColor;
+        options.color = this.formBorderColor;
         options.appearance = this.controller.doc.AcroForm.Appearance.RadioButton.Circle;
         options.radioGroup = this.radioGroupWrap.radioGroup;
         options.context = this.context;
@@ -89,7 +89,7 @@ export class RadioItemBrick extends PdfBrick {
             }
         }
         radioButton.Rect = options.Rect;
-        radioButton.color = options.formBorderColor;
+        radioButton.color = options.color;
 
         SurveyHelper.renderFlatBorders(this.controller, this);
         this.radioGroupWrap.radioGroup.setAppearance(

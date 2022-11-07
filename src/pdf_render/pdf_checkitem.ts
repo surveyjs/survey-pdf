@@ -37,7 +37,7 @@ export class CheckItemBrick extends PdfBrick {
         options.textAlign = 'center';
         options.fieldName = this.fieldName;
         options.readOnly = this.context.readOnly;
-        options.formBorderColor = this.formBorderColor;
+        options.color = this.formBorderColor;
         options.value = this.context.checked ? 'On' : false;
         options.AS = this.context.checked ? '/On' : '/Off';
         options.context = this.context;
@@ -52,7 +52,7 @@ export class CheckItemBrick extends PdfBrick {
         checkBox.textAlign = options.textAlign;
         checkBox.fieldName = options.fieldName;
         checkBox.readOnly = options.readOnly;
-        checkBox.color = options.formBorderColor;
+        checkBox.color = options.color;
         checkBox.value = options.value;
         checkBox.AS = options.AS;
         checkBox.Rect = options.Rect;
