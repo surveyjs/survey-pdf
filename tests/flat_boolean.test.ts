@@ -1,5 +1,5 @@
 (<any>window)['HTMLCanvasElement'].prototype.getContext = async () => {
-  return {};
+    return {};
 };
 
 import { SurveyPDF } from '../src/survey';
@@ -113,4 +113,28 @@ test('Check boolean renderAs: radiogroup question', async () => {
     expect(flat['question'].value).toEqual('q1_value_true');
     expect(flat['question'].visibleChoices[1].value).toEqual('q1_value_true');
     expect(flat['question'].isItemSelected(flat['question'].visibleChoices[1])).toEqual(true);
+});
+
+test('Check boolean renderAs: radiogroup default Yes/No labels', async () => {
+    const question = new QuestionBooleanModel('q1');
+    let flat = new FlatBooleanRadiogroup(null, question, null);
+    expect(flat['question'].visibleChoices[0].text).toBe('No');
+    expect(flat['question'].visibleChoices[1].text).toBe('Yes');
+});
+
+test('Check boolean renderAs: radiogroup locales', async () => {
+    const question = new QuestionBooleanModel('q1');
+    question.fromJSON({
+        labelTrue: {
+            'en': 'yes',
+            'fr': 'oui'
+        }
+    });
+    let flat = new FlatBooleanRadiogroup(null, question, null);
+    expect(flat['question'].visibleChoices[1].text).toBe('yes');
+    question.setSurveyImpl(new SurveyPDF({
+        locale: 'fr'
+    }));
+    flat = new FlatBooleanRadiogroup(null, question, null);
+    expect(flat['question'].visibleChoices[1].text).toBe('oui');
 });
