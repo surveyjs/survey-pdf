@@ -597,8 +597,8 @@ export class SurveyHelper {
     }
     public static getContentQuestionTypeRenderAs(question: Question, survey: SurveyPDF): string {
         let renderAs = question.renderAs;
-        if(question.getType() === 'boolean' && question.renderAs === 'default') {
-            renderAs = survey.options.booleanRenderAs;
+        if(question.getType() === 'boolean' && survey.options.useLegacyBooleanRendering) {
+            renderAs = 'checkbox';
         }
         if(renderAs !== 'default') {
             const type = `${question.getType()}-${renderAs}`;

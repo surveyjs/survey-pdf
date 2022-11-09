@@ -10,7 +10,7 @@ import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
 import { FlatRadiogroup } from './flat_radiogroup';
 
-export class FlatBoolean extends FlatQuestion {
+export class FlatBooleanCheckbox extends FlatQuestion {
     protected question: QuestionBooleanModel;
     constructor(protected survey: SurveyPDF,
         question: IQuestion, protected controller: DocController) {
@@ -36,14 +36,13 @@ export class FlatBoolean extends FlatQuestion {
         return [compositeFlat];
     }
 }
-
-export class FlatBooleanRadiogroup extends FlatRadiogroup {
+export class FlatBoolean extends FlatRadiogroup {
     constructor(protected survey: SurveyPDF,
         question: IQuestion, protected controller: DocController) {
         super(survey, question, controller);
         this.question = this.getRadiogroupQuestion(<QuestionBooleanModel>question);
     }
-    private getRadiogroupQuestion(question: QuestionBooleanModel): QuestionRadiogroupModel {
+    protected getRadiogroupQuestion(question: QuestionBooleanModel): QuestionRadiogroupModel {
         const radiogroupQuestion = new QuestionRadiogroupModel(question.name);
         const radioJson = radiogroupQuestion.toJSON();
         const booleanJson = question.toJSON();
@@ -59,8 +58,10 @@ export class FlatBooleanRadiogroup extends FlatRadiogroup {
         trueChoice.setLocText(question.locLabelTrue);
         radiogroupQuestion.choices = [falseChoice, trueChoice];
         radiogroupQuestion.value = question.value;
+        radiogroupQuestion.colCount = 0;
         return radiogroupQuestion;
     }
 }
+
 FlatRepository.getInstance().register('boolean', FlatBoolean);
-FlatRepository.getInstance().register('boolean-radiogroup', FlatBooleanRadiogroup);
+FlatRepository.getInstance().register('boolean-checkbox', FlatBooleanCheckbox);

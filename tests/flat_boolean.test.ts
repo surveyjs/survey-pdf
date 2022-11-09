@@ -1,19 +1,17 @@
 (<any>window)['HTMLCanvasElement'].prototype.getContext = async () => {
-  return {};
+    return {};
 };
 
 import { SurveyPDF } from '../src/survey';
 import { DocController } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
-import { FlatBoolean, FlatBooleanRadiogroup } from '../src/flat_layout/flat_boolean';
+import { FlatBooleanCheckbox, FlatBoolean } from '../src/flat_layout/flat_boolean';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { TextBrick } from '../src/pdf_render/pdf_text';
 import { BooleanItemBrick } from '../src/pdf_render/pdf_booleanitem';
 import { SurveyHelper } from '../src/helper_survey';
-import { TestHelper } from '../src/helper_test';
-import { FlatRepository } from '../src/flat_layout/flat_repository';
 import { QuestionBooleanModel } from 'survey-core';
-let __dummy_bl = new FlatBoolean(null, null, null);
+let __dummy_bl = new FlatBooleanCheckbox(null, null, null);
 
 test('Check boolean undefined', async () => {
     let json: any = {
@@ -27,8 +25,8 @@ test('Check boolean undefined', async () => {
             }
         ]
     };
-    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let survey: SurveyPDF = new SurveyPDF(json, { useLegacyBooleanRendering: true });
+    let controller: DocController = new DocController({ useLegacyBooleanRendering: true });
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
@@ -49,8 +47,8 @@ test('Check boolean true', async () => {
             }
         ]
     };
-    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let survey: SurveyPDF = new SurveyPDF(json, { useLegacyBooleanRendering: true });
+    let controller: DocController = new DocController({ useLegacyBooleanRendering: true });
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
@@ -75,8 +73,8 @@ test('Check boolean false', async () => {
             }
         ]
     };
-    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let survey: SurveyPDF = new SurveyPDF(json, { useLegacyBooleanRendering: true });
+    let controller: DocController = new DocController({ useLegacyBooleanRendering: true });
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
@@ -97,7 +95,7 @@ test('Check boolean renderAs: radiogroup question', async () => {
     question.labelTrue = 'q1_label_true';
     question.labelFalse = 'q1_label_false';
     question.value = true;
-    let flat = new FlatBooleanRadiogroup(null, question, null);
+    let flat = new FlatBoolean(null, question, null);
     expect(flat['question'].title).toEqual('q1_title');
     expect(flat['question'].description).toEqual('q1_description');
     expect(flat['question'].value).toEqual('true');
@@ -109,7 +107,7 @@ test('Check boolean renderAs: radiogroup question', async () => {
 
     question.valueTrue = 'q1_value_true';
     question.value = 'q1_value_true';
-    flat = new FlatBooleanRadiogroup(null, question, null);
+    flat = new FlatBoolean(null, question, null);
     expect(flat['question'].value).toEqual('q1_value_true');
     expect(flat['question'].visibleChoices[1].value).toEqual('q1_value_true');
     expect(flat['question'].isItemSelected(flat['question'].visibleChoices[1])).toEqual(true);
