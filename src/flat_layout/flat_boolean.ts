@@ -50,13 +50,15 @@ export class FlatBoolean extends FlatRadiogroup {
             radioJson[key] = booleanJson[key];
         }
         radiogroupQuestion.fromJSON(radioJson);
-        const falseChoice = new ItemValue(question.valueFalse !== undefined ? question.valueFalse : 'false');
+        let falseChoice = new ItemValue(question.valueFalse !== undefined ? question.valueFalse : 'false');
+        let trueChoice = new ItemValue(question.valueTrue !== undefined ? question.valueTrue : 'true');
+        radiogroupQuestion.choices = [falseChoice, trueChoice];
+        falseChoice = radiogroupQuestion.visibleChoices[0];
+        trueChoice = radiogroupQuestion.visibleChoices[1];
         falseChoice.locOwner = question;
         falseChoice.setLocText(question.locLabelFalse);
-        const trueChoice = new ItemValue(question.valueTrue !== undefined ? question.valueTrue : 'true');
         trueChoice.locOwner = question;
         trueChoice.setLocText(question.locLabelTrue);
-        radiogroupQuestion.choices = [falseChoice, trueChoice];
         radiogroupQuestion.value = question.value;
         radiogroupQuestion.colCount = 0;
         return radiogroupQuestion;
