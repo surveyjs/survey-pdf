@@ -115,7 +115,7 @@ test('Check boolean renderAs: radiogroup question', async () => {
 
 test('Check boolean renderAs: radiogroup default Yes/No labels', async () => {
     const question = new QuestionBooleanModel('q1');
-    let flat = new FlatBooleanRadiogroup(null, question, null);
+    let flat = new FlatBoolean(null, question, null);
     expect(flat['question'].visibleChoices[0].text).toBe('No');
     expect(flat['question'].visibleChoices[1].text).toBe('Yes');
 });
@@ -128,11 +128,11 @@ test('Check boolean renderAs: radiogroup locales', async () => {
             'fr': 'oui'
         }
     });
-    let flat = new FlatBooleanRadiogroup(null, question, null);
+    let flat = new FlatBoolean(null, question, null);
     expect(flat['question'].visibleChoices[1].text).toBe('yes');
     question.setSurveyImpl(new SurveyPDF({
         locale: 'fr'
     }));
-    flat = new FlatBooleanRadiogroup(null, question, null);
+    flat = new FlatBoolean(null, question, null);
     expect(flat['question'].visibleChoices[1].text).toBe('oui');
 });
