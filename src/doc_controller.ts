@@ -129,9 +129,7 @@ export interface IDocOptions {
      * You can override this property for an individual matrix-like question. Set the question's `renderAs` property to `"list"` in the survey JSON schema.
      */
     matrixRenderAs?: 'auto' | 'list';
-
-    booleanRenderAs?: 'default' | 'radiogroup';
-
+    useLegacyBooleanRendering?: boolean;
     /**
      * Specifies how to render read-only questions.
      * Accepted values:
@@ -178,7 +176,7 @@ export class DocOptions implements IDocOptions {
     protected _textFieldRenderAs: 'singleLine' | 'multiLine';
     protected _compress: boolean;
     protected _applyImageFit: boolean;
-    protected _booleanRenderAs: 'default' | 'radiogroup'
+    protected _useLegacyBooleanRendering: boolean
     public constructor(options: IDocOptions) {
         if (typeof options.orientation === 'undefined') {
             if (typeof options.format === 'undefined' ||
@@ -240,7 +238,7 @@ export class DocOptions implements IDocOptions {
         this._textFieldRenderAs = options.textFieldRenderAs || 'singleLine';
         this._compress = options.compress || false;
         this._applyImageFit = options.applyImageFit || false;
-        this._booleanRenderAs = options.booleanRenderAs || 'default';
+        this._useLegacyBooleanRendering = options.useLegacyBooleanRendering || false;
     }
     public get leftTopPoint(): IPoint {
         return {
@@ -290,8 +288,8 @@ export class DocOptions implements IDocOptions {
     public get applyImageFit(): boolean {
         return this._applyImageFit;
     }
-    public get booleanRenderAs(): 'default' | 'radiogroup' {
-        return this._booleanRenderAs;
+    public get useLegacyBooleanRendering(): boolean {
+        return this._useLegacyBooleanRendering;
     }
 }
 

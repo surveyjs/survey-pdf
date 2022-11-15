@@ -344,21 +344,21 @@ test('Check getContentQuestionType method with renderAs', () => {
     let type = SurveyHelper.getContentQuestionType(question, survey);
     expect(type).toEqual('boolean');
 
-    survey = new SurveyPDF(json, { booleanRenderAs: 'radiogroup' });
+    survey = new SurveyPDF(json, { useLegacyBooleanRendering: true });
     question = survey.getAllQuestions()[0];
     type = SurveyHelper.getContentQuestionType(question, survey);
-    expect(type).toEqual('boolean-radiogroup');
+    expect(type).toEqual('boolean-checkbox');
 
     json = {
         elements: [
             {
                 type: 'boolean',
-                'renderAs': 'radiogroup'
+                'renderAs': 'checkbox'
             }
         ]
     };
     survey = new SurveyPDF(json);
     question = survey.getAllQuestions()[0];
     type = SurveyHelper.getContentQuestionType(question, survey);
-    expect(type).toEqual('boolean-radiogroup');
+    expect(type).toEqual('boolean-checkbox');
 });

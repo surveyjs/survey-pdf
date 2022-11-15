@@ -3,7 +3,7 @@ export { SurveyHelper } from '../helper_survey';
 export { IPoint, IRect, ISize, IMarginLR, IMargin, IDocOptions, DocOptions, DocController } from '../doc_controller';
 export { FlatRepository } from '../flat_layout/flat_repository';
 export { IFlatQuestion, FlatQuestion } from '../flat_layout/flat_question';
-export { FlatBoolean } from '../flat_layout/flat_boolean';
+export { FlatBooleanCheckbox as FlatBoolean } from '../flat_layout/flat_boolean';
 export { FlatCheckbox } from '../flat_layout/flat_checkbox';
 export { FlatCustomModel } from '../flat_layout/flat_custom_model';
 export { FlatComment } from '../flat_layout/flat_comment';
