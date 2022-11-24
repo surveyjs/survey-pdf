@@ -53,7 +53,7 @@ export class FlatMatrixMultiple extends FlatQuestion {
         return composite;
     }
     private ignoreCell(cell: QuestionMatrixDropdownRenderedCell, index: number): boolean {
-        return !(cell.hasQuestion || cell.hasTitle || this.isMultiple && index == 0);
+        return !(cell.hasQuestion || cell.hasTitle || (this.isMultiple && index == 0));
     }
     private async generateFlatsRowHorisontal(point: IPoint, row: QuestionMatrixDropdownRenderedRow,
         colCount: number, columnWidth: number[]): Promise<CompositeBrick> {
@@ -75,8 +75,8 @@ export class FlatMatrixMultiple extends FlatQuestion {
                 currPoint, row.cells[i], row === this.question.renderedTable.headerRow);
             if (!cellContent.isEmpty) {
                 composite.addBrick(cellContent);
-                cnt++;
             }
+            cnt++;
         }
         this.controller.popMargins();
         return composite;
@@ -97,27 +97,33 @@ export class FlatMatrixMultiple extends FlatQuestion {
         }
         return composite;
     }
+    private getAvalableWidth(colCount: number): number {
+        return SurveyHelper.getPageAvailableWidth(this.controller) -
+        (colCount - 1) * this.controller.unitWidth * SurveyHelper.GAP_BETWEEN_COLUMNS;
+    }
     private calculateColumnWidth(rows: QuestionMatrixDropdownRenderedRow[], colCount: number): number[] {
-        const availableWidth: number = SurveyHelper.getPageAvailableWidth(this.controller) -
-            (colCount - 1) * this.controller.unitWidth * SurveyHelper.GAP_BETWEEN_COLUMNS;
+        const availableWidth: number = this.getAvalableWidth(colCount);
         let remainWidth: number = availableWidth;
         let remainColCount: number = colCount;
         const columnWidth: number[] = [];
+        const unsetCells: QuestionMatrixDropdownRenderedCell[] = [];
         for (let i: number = 0; i < colCount; i++) {
             const width: number = SurveyHelper.parseWidth(rows[0].cells[i].width,
                 availableWidth, colCount) || 0.0;
             remainWidth -= width;
-            if (width !== 0.0) remainColCount--;
+            if (width !== 0.0) {
+                remainColCount--;
+            } else {
+                unsetCells.push(rows[0].cells[i]);
+            }
             columnWidth.push(width);
         }
         if (remainColCount === 0) return columnWidth;
         const heuristicWidth: number = this.controller.measureText(SurveyHelper.MATRIX_COLUMN_WIDTH).width;
-        const columnMinWidth: number = SurveyHelper.parseWidth(
-            rows[0].cells[0].minWidth, remainWidth, colCount) || 0.0;
         const equalWidth: number = remainWidth / remainColCount;
-        const width: number = Math.max(heuristicWidth, columnMinWidth, equalWidth);
-        for (let i: number = 0; i < columnWidth.length; i++) {
-            if (columnWidth[i] === 0.0) columnWidth[i] = width;
+        for (let i = 0; i< unsetCells.length; i++) {
+            const columnMinWidth: number = SurveyHelper.parseWidth(unsetCells[i].minWidth, availableWidth, colCount) || 0.0;
+            columnWidth[rows[0].cells.indexOf(unsetCells[i])] = Math.max(heuristicWidth, columnMinWidth, equalWidth);
         }
         return columnWidth;
     }
@@ -166,6 +172,16 @@ export class FlatMatrixMultiple extends FlatQuestion {
         }
         return rowsFlats;
     }
+    private calculateIsWide(table: QuestionMatrixDropdownRenderedTable, colCount: number) {
+        const rows: QuestionMatrixDropdownRenderedRow[] = [];
+        if(table.showHeader) {
+            rows.push(table.headerRow);
+        }
+        rows.push(...table.rows);
+        if(rows.length === 0) return true;
+        const columnWidthSum = this.calculateColumnWidth(rows, colCount).reduce((widthSum: number, width: number) => widthSum += width, 0);
+        return this.question.renderAs !== 'list' && this.controller.matrixRenderAs !== 'list' && Math.floor(columnWidthSum) <= Math.floor(this.getAvalableWidth(colCount));
+    }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         const table: QuestionMatrixDropdownRenderedTable = this.question.renderedTable;
         const isVertical: boolean = this.question.columnLayout === 'vertical';
@@ -180,10 +196,7 @@ export class FlatMatrixMultiple extends FlatQuestion {
             return [new CompositeBrick(SurveyHelper.createRowlineFlat(point, this.controller))];
         }
         const rows: QuestionMatrixDropdownRenderedRow[] = [];
-        const cellWidth: number = SurveyHelper.getColumnWidth(this.controller, colCount);
-        const isWide: boolean = this.question.renderAs !== 'list' &&
-            this.controller.matrixRenderAs !== 'list' &&
-            cellWidth >= this.controller.measureText(SurveyHelper.MATRIX_COLUMN_WIDTH).width;
+        const isWide = this.calculateIsWide(table, colCount);
         if (table.showHeader && isWide) rows.push(table.headerRow);
         rows.push(...table.rows);
         if (table.hasRemoveRows && isVertical) rows.pop();
