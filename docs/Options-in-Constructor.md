@@ -242,7 +242,7 @@ See also: [Custom Render - Header/Footer: Drawing area](https://surveyjs.io/Docu
 <a id="commercial"></a>
 ## Commercial license
 
-Use the [commercial](https://github.com/surveyjs/survey-pdf/blob/master/src/doc_controller.ts#L42) or [haveCommercialLicense](https://github.com/surveyjs/survey-pdf/blob/master/src/doc_controller.ts#L43) option to specify whether you have a commercial license for  the **Survey PDF Export** library.
+Use the [commercial](https://github.com/surveyjs/survey-pdf/blob/master/src/doc_controller.ts#L42) or [haveCommercialLicense](https://github.com/surveyjs/survey-pdf/blob/master/src/doc_controller.ts#L43) option to specify whether you have a commercial license for  the **Survey PDF Generator** library.
 
 - [commercial](https://github.com/surveyjs/survey-pdf/blob/master/src/doc_controller.ts#L42)  
 `commercial?: boolean;`

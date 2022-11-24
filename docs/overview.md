@@ -1,8 +1,12 @@
-# SurveyJS PDF Export Overview
+---
+title: Introduction to the PDF Generator Library | SurveyJS
+description: SurveyJS PDF Generator is an open-source JS component that allows you to save and download created surveys and forms in PDF and convert forms to fillable PDF files.
+---
+# SurveyJS PDF Generator Overview
 
-SurveyJS PDF Export is a client-side extension over the [SurveyJS Library](/Documentation/Library) that enables users to save surveys as PDF documents.
+SurveyJS PDF Generator is a client-side extension over the [SurveyJS Library](/Documentation/Library) that enables users to save surveys as PDF documents.
 
-![Survey PDF Export](images/survey-pdf-export-overview.png)
+![Survey PDF Generator](images/survey-pdf-export-overview.png)
 
 ## Features
 
@@ -42,4 +46,4 @@ Visit our [What's New page](/WhatsNew) for information on new features, recent b
 
 ## Licensing
 
-SurveyJS PDF Export is **not available for free commercial usage**. If you want to integrate it into your application, you must purchase a [commercial license](/Licenses#SurveyCreator).
+SurveyJS PDF Generator is **not available for free commercial usage**. If you want to integrate it into your application, you must purchase a [commercial license](/Licenses#SurveyCreator).

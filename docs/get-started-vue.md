@@ -1,10 +1,10 @@
 ---
-title: Save survey form to fillable PDF in a Vue app | SurveyJS
+title: Save survey form to fillable PDF in a Vue.js app | SurveyJS
 description: Export your SurveyJS survey, quiz, or poll to a fillable PDF form in a Vue application. A step-by-step guide to help you get started.
 ---
-# Export Survey to PDF in a Vue Application
+# Export Survey to PDF in a Vue.js Application
 
-PDF Export for SurveyJS allows your users to save surveys as interactive PDF documents. This tutorial describes how to add the export functionality to your Vue application.
+PDF Generator for SurveyJS allows your users to save surveys as interactive PDF documents. This tutorial describes how to add the export functionality to your Vue application.
 
 - [Install the `survey-pdf` npm package](#install-the-survey-pdf-npm-package)
 - [Configure Export Properties](#configure-export-properties)
@@ -14,7 +14,7 @@ You can find the full code for this tutorial in the following GitHub repository:
 
 ## Install the `survey-pdf` npm package
 
-PDF Export for SurveyJS is built upon the <a href="https://github.com/parallax/jsPDF#readme" target="_blank">jsPDF</a> library and is distributed as a <a href="https://www.npmjs.com/package/survey-pdf" target="_blank">`survey-pdf`</a> npm package. Run the following command to install the package and its dependencies, including jsPDF:
+PDF Generator for SurveyJS is built upon the <a href="https://github.com/parallax/jsPDF#readme" target="_blank">jsPDF</a> library and is distributed as a <a href="https://www.npmjs.com/package/survey-pdf" target="_blank">`survey-pdf`</a> npm package. Run the following command to install the package and its dependencies, including jsPDF:
 
 ```cmd
 npm install survey-pdf --save

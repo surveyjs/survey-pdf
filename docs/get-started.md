@@ -1,4 +1,4 @@
-# Get Started with PDF Export for SurveyJS
+# Get Started with PDF Generator for SurveyJS
 
 Refer to one of the following tutorials to integrate the survey export functionality into applications on your platform:
 

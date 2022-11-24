@@ -4,7 +4,7 @@ description: Export your SurveyJS survey, quiz, or poll to a fillable PDF form i
 ---
 # Export Survey to PDF in a jQuery Application
 
-PDF Export for SurveyJS allows your users to save surveys as interactive PDF documents. This tutorial describes how to add the export functionality to your jQuery application.
+PDF Generator for SurveyJS allows your users to save surveys as interactive PDF documents. This tutorial describes how to add the export functionality to your jQuery application.
 
 - [Link Resources](#link-resources)
 - [Configure Export Properties](#configure-export-properties)
@@ -14,7 +14,7 @@ You can find the full code for this tutorial in the following GitHub repository:
 
 ## Link Resources
 
-PDF Export for SurveyJS is built upon the <a href="https://github.com/parallax/jsPDF#readme" target="_blank">jsPDF</a> library. Insert links to the jsPDF and SurveyJS PDF Export scripts within the `<head>` tag on your HTML page _after_ the jQuery link:
+PDF Generator for SurveyJS is built upon the <a href="https://github.com/parallax/jsPDF#readme" target="_blank">jsPDF</a> library. Insert links to the jsPDF and SurveyJS PDF Generator scripts within the `<head>` tag on your HTML page _after_ the jQuery link:
 
 ```html
 <head>
@@ -24,7 +24,7 @@ PDF Export for SurveyJS is built upon the <a href="https://github.com/parallax/j
     <!-- jsPDF library -->
     <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
 
-    <!-- SurveyJS PDF Export library -->
+    <!-- SurveyJS PDF Generator library -->
     <script src="https://unpkg.com/survey-pdf/survey.pdf.min.js"></script>
     <!-- ... -->
 </head>
@@ -91,7 +91,7 @@ The following image illustrates the resulting UI with the [Default V2 theme](/Do
     <link href="https://unpkg.com/survey-jquery/defaultV2.min.css" type="text/css" rel="stylesheet">
     <script type="text/javascript" src="https://unpkg.com/survey-jquery/survey.jquery.min.js"></script>
 
-    <!-- SurveyJS PDF Export library -->
+    <!-- SurveyJS PDF Generator library -->
     <script src="https://unpkg.com/survey-pdf/survey.pdf.min.js"></script>
     
     <script type="text/javascript" src="index.js"></script>

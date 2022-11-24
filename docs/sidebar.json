@@ -70,7 +70,7 @@
     },    
     {
       "Name": "PDF-Export-API",
-      "Title": "PDF Export API",
+      "Title": "PDF Generator API",
       "Items": [
         {
           "Name": "surveypdf",

@@ -1,6 +1,6 @@
-# SurveyJS PDF Export API
+# SurveyJS PDF Generator API
 
-This topic lists the SurveyJS PDF Export library's public API.
+This topic lists the SurveyJS PDF Generator library's public API.
 
 | Type | Links |
 | --- | --- |
