@@ -11,6 +11,7 @@ import { FlatMatrixDynamic } from '../src/flat_layout/flat_matrixdynamic';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
+import { QuestionMatrixDropdownModel } from 'survey-core';
 let __dummy_dd = new FlatDropdown(null, null, null);
 let __dummy_mm = new FlatMatrixMultiple(null, null, null);
 
@@ -488,4 +489,78 @@ test('Check matrix multiple with showInMultipleColumns option and none choice', 
             controller.unitWidth, controller.unitHeight), SurveyHelper.SELECT_ITEM_FLAT_SCALE),
         leftTopPointColumn3.xLeft);
     TestHelper.equalRect(expect, unfoldFlats[2], assumeNoneChoice);
+});
+test('Check matrix multiple column widths', async () => {
+    let json: any = {
+        elements: [
+            {
+                type: 'matrixdropdown',
+                name: 'matrixdropdown',
+                titleLocation: 'hidden',
+                rowTitleWidth: '400px',
+                showHeader: false,
+                columns: [
+                    {
+                        cellType: 'text',
+                        name: 'Col1',
+                    },
+                    {
+                        cellType: 'text',
+                        name: 'Col1',
+                        width: '50px'
+                    },
+                    {
+                        cellType: 'text',
+                        name: 'Col1',
+                    }
+                ],
+                rows: ['Row1']
+            }
+        ]
+    };
+    const options: IDocOptions = TestHelper.defaultOptions;
+    options.fontSize = DocController.FONT_SIZE;
+    let survey: SurveyPDF = new SurveyPDF(json, options);
+    let question = <QuestionMatrixDropdownModel>survey.getAllQuestions()[0];
+    const controller: DocController = new DocController(options);
+    let flat = new FlatMatrixMultiple(survey, question, controller);
+    let widths = flat['calculateColumnWidth'](question.renderedTable.rows, 4);
+    let restWidth = controller.measureText(SurveyHelper.MATRIX_COLUMN_WIDTH).width;
+    expect(widths).toEqual([300, restWidth, 37.5, restWidth]);
+    expect(flat['calculateIsWide'](question.renderedTable, 4)).toBeFalsy();
+
+    json = {
+        elements: [
+            {
+                type: 'matrixdropdown',
+                name: 'matrixdropdown',
+                titleLocation: 'hidden',
+                rowTitleWidth: '100px',
+                showHeader: false,
+                columns: [
+                    {
+                        cellType: 'text',
+                        name: 'Col1',
+                    },
+                    {
+                        cellType: 'text',
+                        name: 'Col1',
+                        width: '50px'
+                    },
+                    {
+                        cellType: 'text',
+                        name: 'Col1',
+                    }
+                ],
+                rows: ['Row1']
+            }
+        ]
+    };
+    survey = new SurveyPDF(json, options);
+    question = <QuestionMatrixDropdownModel>survey.getAllQuestions()[0];
+    flat = new FlatMatrixMultiple(survey, question, controller);
+    widths = flat['calculateColumnWidth'](question.renderedTable.rows, 4);
+    restWidth = (flat['getAvalableWidth'](4) - 75 - 37.5) / 2;
+    expect(widths).toEqual([75, restWidth, 37.5, restWidth]);
+    expect(flat['calculateIsWide'](question.renderedTable, 4)).toBeTruthy();
 });
