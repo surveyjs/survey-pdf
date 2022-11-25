@@ -10,7 +10,7 @@ PDF Generator for SurveyJS allows your users to save surveys as interactive PDF 
 - [Configure Export Properties](#configure-export-properties)
 - [Export a Survey](#export-a-survey)
 
-You can find the full code for this tutorial in the following GitHub repository: <a href="https://github.com/surveyjs/code-examples/tree/main/get-started-pdf/jquery" target="blank">Export Survey to PDF (SurveyJS for jQuery)</a>.
+[View Full Code on GitHub](https://github.com/surveyjs/code-examples/tree/main/get-started-pdf/jquery (linkStyle))
 
 ## Link Resources
 
@@ -75,7 +75,7 @@ The following image illustrates the resulting UI with the [Default V2 theme](/Do
 ![Export Survey to PDF - Save as PDF navigation button](images/surveypdf-navigation-button.png)
 
 <details>
-    <summary>View full code</summary>  
+    <summary>View Full Code</summary>  
 
 ```html
 <!DOCTYPE html>
@@ -133,7 +133,7 @@ $(function() {
 ```
 </details>
 
-<a href="https://github.com/surveyjs/code-examples/tree/main/get-started-pdf/jquery" target="blank">View full code on GitHub</a>
+[View Full Code on GitHub](https://github.com/surveyjs/code-examples/tree/main/get-started-pdf/jquery (linkStyle))
 
 ## Further Reading
 

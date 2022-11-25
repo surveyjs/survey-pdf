@@ -10,7 +10,7 @@ PDF Generator for SurveyJS allows your users to save surveys as interactive PDF 
 - [Configure Export Properties](#configure-export-properties)
 - [Export a Survey](#export-a-survey)
 
-You can find the full code for this tutorial in the following GitHub repository: <a href="https://github.com/surveyjs/code-examples/tree/main/get-started-pdf/react" target="blank">Export Survey to PDF (SurveyJS for React)</a>.
+[View Full Code on GitHub](https://github.com/surveyjs/code-examples/tree/main/get-started-pdf/react (linkStyle))
 
 ## Install the `survey-pdf` npm package
 
@@ -80,7 +80,7 @@ The following image illustrates the resulting UI with the [Default V2 theme](/Do
 To view the application, run `npm run start` in a command line and open [http://localhost:3000/](http://localhost:3000/) in your browser.
 
 <details>
-    <summary>View full code</summary>  
+    <summary>View Full Code</summary>  
 
 ```js
 import './App.css'
@@ -124,7 +124,7 @@ export default App;
 ```
 </details>
 
-<a href="https://github.com/surveyjs/code-examples/tree/main/get-started-pdf/react" target="blank">View full code on GitHub</a>
+[View Full Code on GitHub](https://github.com/surveyjs/code-examples/tree/main/get-started-pdf/react (linkStyle))
 
 ## Further Reading
 

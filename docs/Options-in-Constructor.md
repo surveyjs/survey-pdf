@@ -436,10 +436,10 @@ See a live Plunker sample:
 ## Text input render mode in read-only questions
 
 Use the [textFieldRenderAs](https://github.com/surveyjs/survey-pdf/blob/master/src/doc_controller.ts#L47) option to specify the manner in which single-line text fields display respondent answers (especially long ones) in the resulting PDF within questions of the following types: 
-- **Text** ([QuestionTextModel](https://surveyjs.io/Documentation/Library?id=questiontextmodel)),
-- **Multiple Text** ([QuestionMultipleTextModel](https://surveyjs.io/Documentation/Library?id=questionmultipletextmodel)),
-- **Matrix Dropdown** ([QuestionMatrixDropdownModel](https://surveyjs.io/Documentation/Library/?id=questionmatrixdropdownmodel)), if its [cellType](https://surveyjs.io/Documentation/Library/?id=questionmatrixdropdownmodel#cellType) is set to 'text' (_Cell type_ is set to _Single Input_ in Survey Creator's Properties window),
-- **Matrix Dynamic** ([QuestionMatrixDynamicModel](https://surveyjs.io/Documentation/Library/?id=questionmatrixdynamicmodel)), if its [cellType](https://surveyjs.io/Documentation/Library/?id=questionmatrixdynamicmodel#cellType) is set to 'text' (_Cell type_ is set to _Single Input_ in Survey Creator's Properties window).
+- Text ([QuestionTextModel](https://surveyjs.io/Documentation/Library?id=questiontextmodel)),
+- Multiple Text ([QuestionMultipleTextModel](https://surveyjs.io/Documentation/Library?id=questionmultipletextmodel)),
+- Matrix Dropdown ([QuestionMatrixDropdownModel](https://surveyjs.io/Documentation/Library/?id=questionmatrixdropdownmodel)), if its [cellType](https://surveyjs.io/Documentation/Library/?id=questionmatrixdropdownmodel#cellType) is set to 'text' (_Cell type_ is set to _Single Input_ in Survey Creator's Properties window),
+- Matrix Dynamic ([QuestionMatrixDynamicModel](https://surveyjs.io/Documentation/Library/?id=questionmatrixdynamicmodel)), if its [cellType](https://surveyjs.io/Documentation/Library/?id=questionmatrixdynamicmodel#cellType) is set to 'text' (_Cell type_ is set to _Single Input_ in Survey Creator's Properties window).
 
 
 

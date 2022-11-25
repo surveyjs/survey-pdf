@@ -10,7 +10,7 @@ PDF Generator for SurveyJS allows your users to save surveys as interactive PDF 
 - [Configure Export Properties](#configure-export-properties)
 - [Export a Survey](#export-a-survey)
 
-You can find the full code for this tutorial in the following GitHub repository: <a href="https://github.com/surveyjs/code-examples/tree/main/get-started-pdf/angular" target="blank">Export Survey to PDF (SurveyJS for Angular)</a>.
+[View Full Code on GitHub](https://github.com/surveyjs/code-examples/tree/main/get-started-pdf/angular (linkStyle))
 
 ## Install the `survey-pdf` npm package
 
@@ -82,7 +82,7 @@ The following image illustrates the resulting UI with the [Default V2 theme](/Do
 To view the application, run `ng serve` in a command line and open [http://localhost:4200/](http://localhost:4200/) in your browser.
 
 <details>
-    <summary>View full code</summary>  
+    <summary>View Full Code</summary>  
 
 ```html
 <!-- app.component.html -->
@@ -156,7 +156,7 @@ export class AppModule { }
 ```
 </details>
 
-<a href="https://github.com/surveyjs/code-examples/tree/main/get-started-pdf/angular" target="blank">View full code on GitHub</a>
+[View Full Code on GitHub](https://github.com/surveyjs/code-examples/tree/main/get-started-pdf/angular (linkStyle))
 
 ## Further Reading
 
