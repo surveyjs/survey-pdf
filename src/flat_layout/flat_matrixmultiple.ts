@@ -120,11 +120,19 @@ export class FlatMatrixMultiple extends FlatQuestion {
         }
         if (remainColCount === 0) return columnWidth;
         const heuristicWidth: number = this.controller.measureText(SurveyHelper.MATRIX_COLUMN_WIDTH).width;
-        const equalWidth: number = remainWidth / remainColCount;
-        for (let i = 0; i< unsetCells.length; i++) {
-            const columnMinWidth: number = SurveyHelper.parseWidth(unsetCells[i].minWidth, availableWidth, colCount) || 0.0;
-            columnWidth[rows[0].cells.indexOf(unsetCells[i])] = Math.max(heuristicWidth, columnMinWidth, equalWidth);
-        }
+        unsetCells.sort((cell1: QuestionMatrixDropdownRenderedCell, cell2: QuestionMatrixDropdownRenderedCell) => {
+            let minWidth1 = SurveyHelper.parseWidth(cell1.minWidth, availableWidth, colCount) || 0.0;
+            let minWidth2 = SurveyHelper.parseWidth(cell2.minWidth, availableWidth, colCount) || 0.0;
+            return minWidth2 > minWidth1 ? 1 : -1;
+        }).forEach((cell: QuestionMatrixDropdownRenderedCell) => {
+            const equalWidth: number = remainWidth / remainColCount;
+            const columnMinWidth: number = SurveyHelper.parseWidth(cell.minWidth, availableWidth, colCount) || 0.0;
+            if(columnMinWidth > equalWidth && columnMinWidth > heuristicWidth) {
+                remainWidth -= columnMinWidth;
+                remainColCount--;
+            }
+            columnWidth[rows[0].cells.indexOf(cell)] = Math.max(heuristicWidth, columnMinWidth, equalWidth);
+        });
         return columnWidth;
     }
     private async generateOneRow(point: IPoint, row: QuestionMatrixDropdownRenderedRow,
