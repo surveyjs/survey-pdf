@@ -107,14 +107,15 @@ export class FlatMatrixMultiple extends FlatQuestion {
         let remainColCount: number = colCount;
         const columnWidth: number[] = [];
         const unsetCells: QuestionMatrixDropdownRenderedCell[] = [];
+        let cells = rows[0].cells.filter((cell: QuestionMatrixDropdownRenderedCell, index: number) => !this.ignoreCell(cell, index));
         for (let i: number = 0; i < colCount; i++) {
-            const width: number = SurveyHelper.parseWidth(rows[0].cells[i].width,
+            const width: number = SurveyHelper.parseWidth(cells[i].width,
                 availableWidth, colCount) || 0.0;
             remainWidth -= width;
             if (width !== 0.0) {
                 remainColCount--;
             } else {
-                unsetCells.push(rows[0].cells[i]);
+                unsetCells.push(cells[i]);
             }
             columnWidth.push(width);
         }
@@ -131,7 +132,7 @@ export class FlatMatrixMultiple extends FlatQuestion {
                 remainWidth -= columnMinWidth;
                 remainColCount--;
             }
-            columnWidth[rows[0].cells.indexOf(cell)] = Math.max(heuristicWidth, columnMinWidth, equalWidth);
+            columnWidth[cells.indexOf(cell)] = Math.max(heuristicWidth, columnMinWidth, equalWidth);
         });
         return columnWidth;
     }
