@@ -159,7 +159,7 @@ export class FlatMatrixMultiple extends FlatQuestion {
             currPoint.yTop = rowFlat.yBot + FlatMatrixMultiple.GAP_BETWEEN_ROWS * this.controller.unitHeight;
 
             if (this.question.detailPanelMode !== 'none' && i > 0) {
-                const currentDetailPanel: PanelModel = this.question.detailPanelValue;
+                const currentDetailPanel: PanelModel = (this.question as any).detailPanelValue;
                 for (let j = 0; j < currentDetailPanel.questions.length; j++) {
                     currentDetailPanel.questions[j].id += '_' + i;
                 }
