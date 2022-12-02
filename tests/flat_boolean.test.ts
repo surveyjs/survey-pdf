@@ -123,6 +123,14 @@ test('Check boolean renderAs: radiogroup default Yes/No labels', async () => {
 test('Check boolean renderAs: radiogroup locales', async () => {
     const question = new QuestionBooleanModel('q1');
     question.fromJSON({
+        title: {
+            'en': 'Title_en',
+            'fr': 'Title_fr',
+        },
+        description: {
+            'en': 'Description_en',
+            'fr': 'Description_fr',
+        },
         labelTrue: {
             'en': 'yes',
             'fr': 'oui'
@@ -130,10 +138,14 @@ test('Check boolean renderAs: radiogroup locales', async () => {
     });
     let flat = new FlatBoolean(null, question, null);
     expect(flat['question'].visibleChoices[1].text).toBe('yes');
+    expect(flat['question'].title).toBe('Title_en');
+    expect(flat['question'].description).toBe('Description_en');
     question.setSurveyImpl(new SurveyPDF({
         locale: 'fr'
     }));
     flat = new FlatBoolean(null, question, null);
+    expect(flat['question'].title).toBe('Title_fr');
+    expect(flat['question'].description).toBe('Description_fr');
     expect(flat['question'].visibleChoices[1].text).toBe('oui');
 });
 
@@ -150,5 +162,4 @@ test('Check boolean with display mode', async () => {
     question.setSurveyImpl(survey);
     let flat = new FlatBoolean(null, question, null);
     expect(flat['question'].isInputReadOnly).toBe(true);
-
 });
