@@ -12,6 +12,7 @@ import { TextBrick } from '../src/pdf_render/pdf_text';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 import { ImageBrick } from '../src/pdf_render/pdf_image';
+import { CompositeBrick } from '../src/pdf_render/pdf_composite';
 let __dummy_fl = new FlatFile(null, null, null);
 
 test('Check no files', async () => {
@@ -353,4 +354,69 @@ test('Test file question getImagePreviewContentWidth ', async () => {
     expect(width).toBe(SurveyHelper.parseWidth(question.imageWidth, 300));
 
     SurveyHelper.getImageSize = oldImageSize;
+});
+
+test('Test file question getImagePreviewContentWidth always return correct image width', async () => {
+    const json: any = {
+        elements: [
+            {
+                type: 'file',
+                name: 'faqueoneimgwithsz',
+                titleLocation: 'hidden',
+                allowImagesPreview: true,
+                imageWidth: '250px',
+                defaultValue: [
+                    {
+                        name: 'cat.png',
+                        type: 'image/png',
+                        content: TestHelper.BASE64_IMAGE_16PX
+                    },
+                    {
+                        name: 'cat.png',
+                        type: 'image/png',
+                        content: TestHelper.BASE64_IMAGE_16PX
+                    },
+                    {
+                        name: 'cat.png',
+                        type: 'image/png',
+                        content: TestHelper.BASE64_IMAGE_16PX
+                    },
+                    {
+                        name: 'cat.png',
+                        type: 'image/png',
+                        content: TestHelper.BASE64_IMAGE_16PX
+                    },
+                    {
+                        name: 'cat.png',
+                        type: 'image/png',
+                        content: TestHelper.BASE64_IMAGE_16PX
+                    },
+                    {
+                        name: 'cat.png',
+                        type: 'image/png',
+                        content: TestHelper.BASE64_IMAGE_16PX
+                    }, {
+                        name: 'cat.png',
+                        type: 'image/png',
+                        content: TestHelper.BASE64_IMAGE_16PX
+                    }
+                ],
+            }
+        ]
+    };
+    SurveyHelper.inBrowser = false;
+    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    const question = <QuestionFileModel>survey.getAllQuestions()[0];
+    const controller: DocController = new DocController(TestHelper.defaultOptions);
+    const flatFile = new FlatFile(survey, question, controller);
+    const questionBricks = await flatFile.generateFlatsContent({ xLeft: controller.margins.left || 10, yTop: controller.margins.top || 10 });
+    expect(questionBricks.length).toBe(3);
+    //check all item bricks have the same width
+    questionBricks.forEach((rowBrick: IPdfBrick) => {
+        (<CompositeBrick>rowBrick)['bricks'].forEach((itemBrick: IPdfBrick) =>{
+            if(itemBrick instanceof CompositeBrick) {
+                expect(itemBrick.width).toBeCloseTo(187.5);
+            }
+        });
+    });
 });

@@ -443,7 +443,7 @@ export class SurveyHelper {
     }
     public static inBrowser = typeof Image === 'function';
     public static async createImageFlat(point: IPoint, question: any,
-        controller: DocController, imagelink: string, width: number, height: number): Promise<IPdfBrick> {
+        controller: DocController, imagelink: string, width: number, height: number, imageFit?: string): Promise<IPdfBrick> {
 
         if (SurveyHelper.inBrowser) {
             if (controller.applyImageFit) {
@@ -466,7 +466,7 @@ export class SurveyHelper {
                 imagelink = url;
             }
 
-            const html: string = `<img src='${imagelink}' width='${width}' height='${height}'/>`;
+            const html: string = `<img src='${imagelink}' width='${width}' height='${height}' style="object-fit='${imageFit}'"/>`;
             return new HTMLBrick(question, controller, this.createRect(point, width, height), html, true);
         }
 
