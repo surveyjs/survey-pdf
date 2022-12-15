@@ -13,6 +13,7 @@ import { SurveyHelper } from './helper_survey';
  */
 export class SurveyPDF extends SurveyModel {
     private static currentlySaving: boolean = false;
+    private static saveQueue: any[] = [];
     private _haveCommercialLicense: boolean;
     public options: IDocOptions;
     public constructor(jsonObject: any, options?: IDocOptions) {
@@ -154,11 +155,14 @@ export class SurveyPDF extends SurveyModel {
             const promise = controller.doc.save(fileName, { returnPromise: true });
             promise.then(() => {
                 SurveyPDF.currentlySaving = false;
+                const saveFunc = SurveyPDF.saveQueue.shift();
+                saveFunc();
             });
             return promise;
         } else {
-            // eslint-disable-next-line no-console
-            console.warn('Multiple access to jspdf is prevented. Please see the issue: https://github.com/surveyjs/survey-pdf/issues/184, that occurs');
+            SurveyPDF.saveQueue.push(() => {
+                this.save(fileName);
+            });
         }
     }
     /**
