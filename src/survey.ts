@@ -156,7 +156,9 @@ export class SurveyPDF extends SurveyModel {
             promise.then(() => {
                 SurveyPDF.currentlySaving = false;
                 const saveFunc = SurveyPDF.saveQueue.shift();
-                saveFunc();
+                if(!!saveFunc) {
+                    saveFunc();
+                }
             });
             return promise;
         } else {
