@@ -12,6 +12,7 @@ import { SurveyHelper } from './helper_survey';
  * SurveyPDF object contains options, events and methods to export PDF
  */
 export class SurveyPDF extends SurveyModel {
+    private static currentlySaving: boolean = false;
     private _haveCommercialLicense: boolean;
     public options: IDocOptions;
     public constructor(jsonObject: any, options?: IDocOptions) {
@@ -145,10 +146,20 @@ export class SurveyPDF extends SurveyModel {
      * @param fileName optional filename parameter
      */
     public async save(fileName: string = 'survey_result.pdf'): Promise<any> {
-        const controller: DocController = new DocController(this.options);
-        SurveyHelper.fixFont(controller);
-        await this.renderSurvey(controller);
-        return controller.doc.save(fileName, { returnPromise: true });
+        if(!SurveyPDF.currentlySaving) {
+            const controller: DocController = new DocController(this.options);
+            SurveyPDF.currentlySaving = true;
+            SurveyHelper.fixFont(controller);
+            await this.renderSurvey(controller);
+            const promise = controller.doc.save(fileName, { returnPromise: true });
+            promise.then(() => {
+                SurveyPDF.currentlySaving = false;
+            });
+            return promise;
+        } else {
+            // eslint-disable-next-line no-console
+            console.warn('Multiple access to jspdf is prevented. Please see the issue: https://github.com/surveyjs/survey-pdf/issues/184, that occurs');
+        }
     }
     /**
      * Call raw method of surveyPDF to get PDF document as string object. This is asynchronous method
