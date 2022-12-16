@@ -120,7 +120,7 @@ export class SurveyPDF extends SurveyModel {
     public getUpdatedRadioItemAcroformOptions(options: any): void {
         this.onRenderRadioItemAcroform.fire(this, options);
     }
-    private async renderSurvey(controller: DocController): Promise<void> {
+    protected async renderSurvey(controller: DocController): Promise<void> {
         await this.waitForCoreIsReady();
         const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(this, controller);
         const packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
