@@ -63,7 +63,7 @@ class SurveyPDFSaveTester extends SurveyPDF {
         controller.doc.save = async () => {
             let promise = new Promise((resolve) => {
                 this.logger.log += '->saving';
-                resolve(null);
+                resolve('saved');
             });
             promise.then(() => {
                 this.logger.log += '->saved';
@@ -72,6 +72,15 @@ class SurveyPDFSaveTester extends SurveyPDF {
         };
     }
 }
+test('check that save functions called sync if use correctly', async () => {
+    const surveyPDF = new SurveyPDFSaveTester({});
+    const logger = new Log();
+    surveyPDF.setLog(logger);
+    expect(await surveyPDF.save()).toBe('saved');
+    expect(await surveyPDF.save()).toBe('saved');
+    expect(await surveyPDF.save()).toBe('saved');
+    expect(logger.log).toEqual('->rendered->saving->saved->rendered->saving->saved->rendered->saving->saved');
+});
 
 test('check that save functions called sync', async (done) => {
     const surveyPDF = new SurveyPDFSaveTester({});
