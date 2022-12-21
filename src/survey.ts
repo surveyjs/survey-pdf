@@ -12,6 +12,8 @@ import { SurveyHelper } from './helper_survey';
  * SurveyPDF object contains options, events and methods to export PDF
  */
 export class SurveyPDF extends SurveyModel {
+    private static currentlySaving: boolean = false;
+    private static saveQueue: any[] = [];
     private _haveCommercialLicense: boolean;
     public options: IDocOptions;
     public constructor(jsonObject: any, options?: IDocOptions) {
@@ -118,7 +120,7 @@ export class SurveyPDF extends SurveyModel {
     public getUpdatedRadioItemAcroformOptions(options: any): void {
         this.onRenderRadioItemAcroform.fire(this, options);
     }
-    private async renderSurvey(controller: DocController): Promise<void> {
+    protected async renderSurvey(controller: DocController): Promise<void> {
         await this.waitForCoreIsReady();
         const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(this, controller);
         const packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
@@ -145,10 +147,25 @@ export class SurveyPDF extends SurveyModel {
      * @param fileName optional filename parameter
      */
     public async save(fileName: string = 'survey_result.pdf'): Promise<any> {
-        const controller: DocController = new DocController(this.options);
-        SurveyHelper.fixFont(controller);
-        await this.renderSurvey(controller);
-        return controller.doc.save(fileName, { returnPromise: true });
+        if(!SurveyPDF.currentlySaving) {
+            const controller: DocController = new DocController(this.options);
+            SurveyPDF.currentlySaving = true;
+            SurveyHelper.fixFont(controller);
+            await this.renderSurvey(controller);
+            const promise = controller.doc.save(fileName, { returnPromise: true });
+            promise.then(() => {
+                SurveyPDF.currentlySaving = false;
+                const saveFunc = SurveyPDF.saveQueue.shift();
+                if(!!saveFunc) {
+                    saveFunc();
+                }
+            });
+            return promise;
+        } else {
+            SurveyPDF.saveQueue.push(() => {
+                this.save(fileName);
+            });
+        }
     }
     /**
      * Call raw method of surveyPDF to get PDF document as string object. This is asynchronous method
