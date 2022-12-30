@@ -89,7 +89,8 @@ The following image illustrates the resulting UI with the [Default V2 theme](/Do
     <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
 
     <link href="https://unpkg.com/survey-knockout/defaultV2.min.css" type="text/css" rel="stylesheet">
-    <script type="text/javascript" src="https://unpkg.com/survey-knockout/survey.ko.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/survey-core/survey.core.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/survey-knockout-ui/survey-knockout-ui.min.js"></script>
 
     <!-- SurveyJS PDF Generator library -->
     <script src="https://unpkg.com/survey-pdf/survey.pdf.min.js"></script>
@@ -97,7 +98,7 @@ The following image illustrates the resulting UI with the [Default V2 theme](/Do
     <script type="text/javascript" src="index.js"></script>
 </head>
 <body>
-    <div id="surveyContainer"></div>
+    <survey params="survey: model"></survey>
 </body>
 </html>
 ```
@@ -128,7 +129,9 @@ survey.addNavigationItem({
 });
 
 document.addEventListener("DOMContentLoaded", function() {
-    survey.render("surveyContainer");
+    ko.applyBindings({
+        model: survey
+    });
 });
 ```
 </details>
