@@ -1,4 +1,4 @@
-import { IQuestion, ItemValue, LocalizableString, QuestionBooleanModel, QuestionRadiogroupModel } from 'survey-core';
+import { IQuestion, ItemValue, LocalizableString, QuestionBooleanModel, QuestionRadiogroupModel, SurveyModel } from 'survey-core';
 import { SurveyPDF } from '../survey';
 import { IPoint, DocController } from '../doc_controller';
 import { FlatQuestion } from './flat_question';
@@ -37,34 +37,27 @@ export class FlatBooleanCheckbox extends FlatQuestion {
     }
 }
 export class FlatBoolean extends FlatRadiogroup {
+    private items: Array<ItemValue>;
     constructor(protected survey: SurveyPDF,
         question: IQuestion, protected controller: DocController) {
         super(survey, question, controller);
-        this.question = this.getRadiogroupQuestion(<QuestionBooleanModel>question);
+        this.buildItems();
     }
-    protected getRadiogroupQuestion(question: QuestionBooleanModel): QuestionRadiogroupModel {
-        const radiogroupQuestion = new QuestionRadiogroupModel(question.name);
-        const radioJson = radiogroupQuestion.toJSON();
-        const booleanJson = question.toJSON();
-        for (let key in booleanJson) {
-            radioJson[key] = booleanJson[key];
-        }
-        radiogroupQuestion.fromJSON(radioJson);
-        radiogroupQuestion.title = question.title;
-        radiogroupQuestion.description = question.description;
-        radiogroupQuestion.readOnly = question.isInputReadOnly;
-        let falseChoice = new ItemValue(question.valueFalse !== undefined ? question.valueFalse : 'false');
-        let trueChoice = new ItemValue(question.valueTrue !== undefined ? question.valueTrue : 'true');
-        radiogroupQuestion.choices = [falseChoice, trueChoice];
-        falseChoice = radiogroupQuestion.visibleChoices[0];
-        trueChoice = radiogroupQuestion.visibleChoices[1];
+    private buildItems() {
+        const question = <QuestionBooleanModel>(<any>this.question);
+        const falseChoice = new ItemValue((<QuestionBooleanModel>question).valueFalse !== undefined ? (<QuestionBooleanModel>question).valueFalse : false);
+        const trueChoice = new ItemValue((<QuestionBooleanModel>question).valueTrue !== undefined ? (<QuestionBooleanModel>question).valueTrue : true);
         falseChoice.locOwner = question;
-        falseChoice.setLocText(question.locLabelFalse);
+        falseChoice.setLocText((<QuestionBooleanModel>question).locLabelFalse);
         trueChoice.locOwner = question;
-        trueChoice.setLocText(question.locLabelTrue);
-        radiogroupQuestion.value = question.value;
-        radiogroupQuestion.colCount = 0;
-        return radiogroupQuestion;
+        trueChoice.setLocText((<QuestionBooleanModel>question).locLabelTrue);
+        this.items = [falseChoice, trueChoice];
+    }
+    protected getVisibleChoices(): Array<ItemValue> {
+        return this.items;
+    }
+    protected getColCount(): number {
+        return 0;
     }
 }
 
