@@ -27,7 +27,7 @@ const json = {
 ```
 
 **See Also**  
-[Options in SurveyPDF Constructor: HTML question render mode](Pdf-Export?id=Options-in-Constructor#htmlRenderAs)
+[Options in SurveyPDF Constructor: HTML question render mode](https://surveyjs.io/pdf-generator/documentation/options-in-constructor#html-question-render-mode)
 
 ## Use custom font in HTML
 In case of rendering HTML as ans image, you can pass `true` through the `useCustomFontInHtml` parameter to use custom font in HTML. The default value is `false`.  
@@ -47,4 +47,4 @@ const surveyPDF = new SurveyPDF.SurveyPDF(json, options);
 <!-- A standard render of HTML does not support using custom fonts at this moment. -->
 
 **See Also**  
-[Options in SurveyPDF Constructor: Ability to use custom fonts in HTML questions](Pdf-Export?id=Options-in-Constructor#useCustomFontInHtml)
+[Options in SurveyPDF Constructor: Ability to use custom fonts in HTML questions](https://surveyjs.io/pdf-generator/documentation/options-in-constructor#ability-to-use-custom-fonts-in-html-questions)
