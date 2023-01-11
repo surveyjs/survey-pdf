@@ -18,7 +18,7 @@
     "type": "git",
     "url": "https://github.com/surveyjs/survey-pdf.git"
   },
-  "version": "1.9.67",
+  "version": "1.9.68",
   "name": "survey-pdf",
   "license": "SEE LICENSE IN LICENSE",
   "dependencies": {
