@@ -86,11 +86,9 @@ To view the application, run `npm run start` in a command line and open [http://
 import './App.css'
 
 import 'survey-core/defaultV2.min.css';
-import { StylesManager, Model } from 'survey-core';
+import { Model } from 'survey-core';
 import { Survey } from 'survey-react-ui';
 import { SurveyPDF } from 'survey-pdf';
-
-StylesManager.applyTheme("defaultV2");
 
 const surveyJson = {
   // ...

@@ -92,10 +92,8 @@ To view the application, run `ng serve` in a command line and open [http://local
 ```js
 // app.component.ts
 import { Component, OnInit } from '@angular/core';
-import { Model, StylesManager } from "survey-core";
+import { Model } from "survey-core";
 import { SurveyPDF, IDocOptions } from "survey-pdf";
-
-StylesManager.applyTheme("defaultV2");
 
 const surveyJson = {
   // ...

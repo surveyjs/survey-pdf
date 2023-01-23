@@ -104,8 +104,6 @@ The following image illustrates the resulting UI with the [Default V2 theme](/Do
 ```
 
 ```js
-Survey.StylesManager.applyTheme("defaultV2");
-
 const surveyJson = {
     // ...
 };
