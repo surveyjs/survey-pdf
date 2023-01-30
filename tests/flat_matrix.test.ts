@@ -83,7 +83,7 @@ test('Matrix simple hasRows false columns', async () => {
     let rowLineRect: IPdfBrick = SurveyHelper.createRowlineFlat(SurveyHelper.createPoint(columnRect), controller);
     assumeCells.push(rowLineRect);
     let currPoint: IPoint = SurveyHelper.createPoint(rowLineRect);
-    currPoint.yTop += controller.unitHeight * FlatMatrix.GAP_BETWEEN_ROWS
+    currPoint.yTop += controller.unitHeight * FlatMatrix.GAP_BETWEEN_ROWS;
     let itemWidth: number = controller.unitWidth;
     assumeCells.push(SurveyHelper.moveRect(SurveyHelper.scaleRect(
         SurveyHelper.createRect(currPoint, itemWidth, itemWidth),
@@ -130,10 +130,10 @@ test('Matrix simple vertical', async () => {
         assumeCells.push(SurveyHelper.moveRect(SurveyHelper.scaleRect(itemRect,
             SurveyHelper.SELECT_ITEM_FLAT_SCALE), currPoint.xLeft));
         let oldXleft: number = currPoint.xLeft;
-        currPoint.xLeft += itemWidth * (SurveyHelper.SELECT_ITEM_FLAT_SCALE + SurveyHelper.GAP_BETWEEN_ITEM_TEXT)
+        currPoint.xLeft += itemWidth * (SurveyHelper.SELECT_ITEM_FLAT_SCALE + SurveyHelper.GAP_BETWEEN_ITEM_TEXT);
         let columnTextWidth: number = controller.measureText(column.text).width;
         let columnTextHeight: number = controller.measureText(column.text).height;
-        assumeCells.push(SurveyHelper.createRect(currPoint, columnTextWidth, columnTextHeight))
+        assumeCells.push(SurveyHelper.createRect(currPoint, columnTextWidth, columnTextHeight));
         currPoint.xLeft = oldXleft;
         currPoint.yTop += SurveyHelper.GAP_BETWEEN_ROWS *
             controller.unitHeight + columnTextHeight;
@@ -160,22 +160,28 @@ test('Matrix simple hidden header', async () => {
                         value: 3,
                         text: 'test3'
                     }
-                ]
+                ],
+                rows: ['Row1']
             }]
     };
     let options: IDocOptions = TestHelper.defaultOptions;
-    options.format = [260.0, 297.0];
+    options.format = [400, 297.0];
     let survey: SurveyPDF = new SurveyPDF(json, options);
     let controller: DocController = new DocController(options);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     let assumeCells: IRect[] = [];
     let itemWidth: number = controller.unitHeight;
     controller.margins.left += controller.unitWidth;
-    let cellWidth: number = SurveyHelper.getColumnWidth(controller, 3);
+    let cellWidth: number = SurveyHelper.getColumnWidth(controller, 4);
+    let rowTextFlat: IPdfBrick = await SurveyHelper.createTextFlat(controller.leftTopPoint,
+        survey.getAllQuestions()[0], controller, json.questions[0].rows[0], TextBrick);
+    assumeCells.push(rowTextFlat);
+    let columnsCurrPoint = controller.leftTopPoint;
+    columnsCurrPoint.xLeft += cellWidth + controller.unitWidth * SurveyHelper.GAP_BETWEEN_COLUMNS;
     for (let i: number = 0; i < json.questions[0].columns.length; i++) {
-        let currPoint: IPoint = controller.leftTopPoint;
-        currPoint.xLeft = i * (cellWidth + controller.unitWidth *
-            SurveyHelper.GAP_BETWEEN_COLUMNS) + controller.margins.left;
+        let currPoint = SurveyHelper.createPoint(<IRect>columnsCurrPoint, true, true);
+        currPoint.xLeft += i * (cellWidth + controller.unitWidth *
+            SurveyHelper.GAP_BETWEEN_COLUMNS);
         assumeCells.push(SurveyHelper.moveRect(SurveyHelper.scaleRect(
             SurveyHelper.createRect(currPoint, itemWidth, itemWidth),
             SurveyHelper.SELECT_ITEM_FLAT_SCALE), currPoint.xLeft));
@@ -287,7 +293,8 @@ test('Matrix simple check matrixRenderAs list', async () => {
                 columns: [
                     'Column 1',
                     'Column 2'
-                ]
+                ],
+                rows: ['Row']
             }
         ]
     };
@@ -297,8 +304,8 @@ test('Matrix simple check matrixRenderAs list', async () => {
     let controller: DocController = new DocController(options);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     let unfoldFlats: IPdfBrick[] = flats[0][0].unfold();
-    expect(unfoldFlats[0].xLeft).toBeCloseTo(unfoldFlats[2].xLeft);
-    expect(unfoldFlats[0].yTop).toBeLessThan(unfoldFlats[2].yTop);
-    expect(unfoldFlats[0].xRight).toBeCloseTo(unfoldFlats[2].xRight)
-    expect(unfoldFlats[0].yBot).not.toBeCloseTo(unfoldFlats[2].yBot);
+    expect(unfoldFlats[1].xLeft).toBeCloseTo(unfoldFlats[3].xLeft);
+    expect(unfoldFlats[1].yTop).toBeLessThan(unfoldFlats[3].yTop);
+    expect(unfoldFlats[1].xRight).toBeCloseTo(unfoldFlats[3].xRight);
+    expect(unfoldFlats[1].yBot).not.toBeCloseTo(unfoldFlats[3].yBot);
 });

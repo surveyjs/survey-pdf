@@ -17,11 +17,12 @@ test('Matrix default value', async () => {
                 type: 'matrix',
                 name: 'matrix_defaultvalue',
                 title: 'Please indicate if you agree or disagree with the following statements',
-                defaultValue: 'Column',
+                defaultValue: { 'row1': 'Column' },
                 columns: [
                     'Column',
                     'Column2'
-                ]
+                ],
+                rows: ['row1']
             }]
     };
     const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
