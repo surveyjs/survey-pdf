@@ -1,19 +1,19 @@
-import { Event } from 'survey-core';
+import { Event, EventBase } from 'survey-core';
 import { SurveyPDF } from '../survey';
 import { DocController } from '../doc_controller';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { DrawCanvas } from './draw_canvas';
 import { SurveyHelper } from '../helper_survey';
 
-export class EventAsync<T extends Function, Options> extends Event<T, Options> {
-    public unshift(func: T) {
+export class EventAsync<Sender, Options> extends EventBase<Sender, Options> {
+    public unshift(func: (sender: Sender, options: Options) => any) {
         if (this.hasFunc(func)) return;
         if (this.callbacks == null) {
-            this.callbacks = new Array<T>();
+            this.callbacks = new Array<(sender: Sender, options: Options) => any>();
         }
         this.callbacks.unshift(func);
     }
-    public async fire(sender: any, options: Options) {
+    public async fire(sender: Sender, options: Options) {
         if (this.callbacks == null) return;
         for (var i = 0; i < this.callbacks.length; i++) {
             await this.callbacks[i](sender, options);
