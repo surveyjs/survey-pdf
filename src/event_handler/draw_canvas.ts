@@ -22,64 +22,81 @@ export enum VerticalAlign {
     Middle = 'middle',
     Bottom = 'bottom'
 }
-/**
- * Common options of rendering text and images in onRenderHeader and onRenderFooter events
- */
+
 export interface IDrawRectOptions {
     /**
-     * Specifies horizontal alignment of item, if set (center by default)
+     * Horizontal alignment within the rectangle that limits the drawing area.
+     * 
+     * Possible values:
+     * 
+     * - `"center"` (default)
+     * - `"left"`
+     * - `"right"`
      */
     horizontalAlign?: HorizontalAlign;
     /**
-     * Specifies vertical alignment of item, if set (middle by default)
+     * Vertical alignment within the rectangle that limits the drawing area.
+     * 
+     * Possible values:
+     * 
+     * - `"middle"` (default)
+     * - `"top"`
+     * - `"bottom"`
      */
     verticalAlign?: VerticalAlign;
     /**
-     * Specifies margins inside the drawing rectangle (used if alignment set, all zero by default)
+     * The distance between the content and the borders of the rectangle. This property applies only if alignment the content is aligned to the left/right or top/bottom.
      */
     margins?: IMargin;
     /**
-     * Object with coordinates of text rectangle (used if alignment not set)
+     * An object with coordinates of the rectangle.
      */
     rect?: IRect;
 }
 /**
- * Options of rendering text in onRenderHeader and onRenderFooter events
+ * An object that configures the drawing of a piece of text.
  */
 export interface IDrawTextOptions extends IDrawRectOptions {
     /**
-     * String that will be drawn
+     * A text string to be drawn.
      */
     text: string;
     /**
-     * Font size of text (14 by default)
+     * Font size.
+     * 
+     * Default value: 14
      */
     fontSize?: number;
     /**
-     * Set true to make text bold (false by default)
+     * Enable this property to render the text string bold.
+     * 
+     * Default value: `false`
      */
     isBold?: boolean;
 }
 /**
- * Options of rendering images in onRenderHeader and onRenderFooter events
+ * An object that configures the drawing of an image.
  */
 export interface IDrawImageOptions extends IDrawRectOptions {
     /**
-     * Specifies image width (used if alignment set, canvas.rect's width by default)
+     * An image width in pixels. Defaults to the [rectangle width](https://surveyjs.io/pdf-generator/documentation/api-reference/idrawimageoptions#rect).
      */
     width?: number;
     /**
-     * Specifies image height (used if alignment set, canvas.rect's height by default)
+     * An image height in pixels. Defaults to the [rectangle height](https://surveyjs.io/pdf-generator/documentation/api-reference/idrawimageoptions#rect).
      */
     height?: number;
     /**
-     * String with base64 encoded image
+     * A string value with a base64-encoded image to be drawn.
      */
     base64: string;
 }
 
 /**
- * DrawCanvas object passed to onRenderHeader and onRenderFooter events
+ * An object that describes a drawing area and enables you to draw an image or a piece of text within the area.
+ * 
+ * [View Demo](https://surveyjs.io/pdf-generator/examples/customize-header-and-footer-of-pdf-form/ (linkStyle))
+ * 
  */
 export class DrawCanvas {
     public constructor(protected packs: IPdfBrick[],
@@ -88,20 +105,19 @@ export class DrawCanvas {
         protected _countPages: number,
         protected _pageNumber: number) { }
     /**
-     * Count of pages in the document
+     * A total number of pages in the document.
      */
     public get countPages(): number {
         return this._countPages;
     }
     /**
-     * Page number from 1
+     * The number of the page that contains the drawing area. Enumeration starts with 1.
      */
     public get pageNumber(): number {
         return this._pageNumber;
     }
     /**
-     * Object with coordinates of the rectangle available for drawing
-     * @see IRect
+     * An object with coordinates of a rectangle that limits the drawing area.
      */
     public get rect(): IRect {
         return this._rect;
@@ -186,8 +202,8 @@ export class DrawCanvas {
         return rect;
     }
     /**
-     * Call this method to draw text
-     * @param textOptions Set options of the drawn text
+     * Draws a piece of text within the drawing area.
+     * @param textOptions An object that configures the drawing.
      */
     public drawText(textOptions: IDrawTextOptions): void {
         textOptions = SurveyHelper.clone(textOptions);
@@ -211,8 +227,8 @@ export class DrawCanvas {
         (<PdfBrick>this.packs[this.packs.length - 1]).fontSize = textOptions.fontSize;
     }
     /**
-     * Call this method to draw image
-     * @param imageOptions
+     * Draws an image within the drawing area.
+     * @param imageOptions An object that configures the drawing.
      */
     public async drawImage(imageOptions: IDrawImageOptions): Promise<void> {
         imageOptions = SurveyHelper.clone(imageOptions);

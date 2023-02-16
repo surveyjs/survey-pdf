@@ -8,11 +8,26 @@ import './jspdf_plugins/acroform.js';
 import './jspdf_plugins/from_html.js';
 
 export interface IPoint {
+    /**
+     * An X-coordinate for the left element edge.
+     */
     xLeft: number;
+    /**
+     * A Y-coordinate for the top element edge.
+     */
     yTop: number;
 }
+/**
+ * An interface that describes a rectangle.
+ */
 export interface IRect extends IPoint {
+    /**
+     * An X-coordinate for the right element edge.
+     */
     xRight: number;
+    /**
+     * A Y-coordinate for the bottom element edge.
+     */
     yBot: number;
 }
 export interface ISize {
@@ -20,11 +35,26 @@ export interface ISize {
     height: number;
 }
 export interface IMarginLR {
+    /**
+     * A left margin.
+     */
     left?: number;
+    /**
+     * A right margin.
+     */
     right?: number;
 }
+/**
+ * An interface that describes margins.
+ */
 export interface IMargin extends IMarginLR {
+    /**
+     * A top margin.
+     */
     top?: number;
+    /**
+     * A bottom margin.
+     */
     bot?: number;
 }
 /**
@@ -42,7 +72,7 @@ export interface IDocOptions {
     /**
      * Page orientation.
      * 
-     * Accepted values:
+     * Possible values:
      *
      * - `"p"` (default) - Portrait orientation.
      * - `"l"` - Landscape orientation.
@@ -54,7 +84,7 @@ export interface IDocOptions {
     /**
      * Page format.
      * 
-     * Accepted values:
+     * Possible values:
      *
      * - `"a0"` - `"a10"` (`"a4"` is default)
      * - `"b0"` - `"b10"`
@@ -83,7 +113,7 @@ export interface IDocOptions {
     /**
      * Font name.
      * 
-     * Accepted values:
+     * Possible values:
      *
      * - `"Helvetica"` (default)
      * - `"Courier"`
@@ -102,7 +132,7 @@ export interface IDocOptions {
     useCustomFontInHtml?: boolean;
 
     /**
-     * Page margins. Set this property to an object with the following fields: `top`, `bottom`, `left`, `right`.
+     * Page margins. Set this property to an object with the following fields: `top`, `bot`, `left`, `right`.
      */
     margins?: IMargin;
 
@@ -118,7 +148,7 @@ export interface IDocOptions {
     /**
      * Specifies how to render [HTML questions](https://surveyjs.io/Documentation/Library?id=questionhtmlmodel) into PDF.
      * 
-     * Accepted values:
+     * Possible values:
      *
      * - `"standard"` - Render HTML questions as selectable text.
      * - `"image"` - Render HTML questions as images.
@@ -131,7 +161,7 @@ export interface IDocOptions {
     /**
      * Specifies how to render [Matrix](https://surveyjs.io/Documentation/Library?id=questionmatrixmodel), [Matrix Dropdown](https://surveyjs.io/Documentation/Library?id=questionmatrixdropdownmodel), and [Matrix Dynamic](https://surveyjs.io/Documentation/Library?id=questionmatrixdynamicmodel) questions into PDF.
      *
-     * Accepted values:
+     * Possible values:
      *
      * - `"list"` - Render matrix-like questions as lists.
      * - `"auto"` (default) - Render matrix-like questions as tables if they fit into the available space. Otherwise, render the questions as lists.
@@ -143,7 +173,7 @@ export interface IDocOptions {
     /**
      * Specifies how to render read-only questions.
      * 
-     * Accepted values:
+     * Possible values:
      *
      * - `"text"` - Render read-only questions as plain text and custom primitives.
      * - `"acroform"` - Use Acrobat Forms (AcroForms) to render questions that support them. Other questions are rendered in `"text"` mode.

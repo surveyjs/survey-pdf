@@ -46,7 +46,7 @@ export class SurveyPDF extends SurveyModel {
      * A SurveyPDF instance that raised the event.
      * 
      * - `canvas`: [`DrawCanvas`](https://surveyjs.io/pdf-generator/documentation/api-reference/drawcanvas)\
-     * An object that you can use to draw text and images in the page hander.
+     * An object that you can use to draw text and images in the page header.
      * 
      * [View Demo](https://surveyjs.io/pdf-generator/examples/customize-header-and-footer-of-pdf-form/ (linkStyle))
      */
