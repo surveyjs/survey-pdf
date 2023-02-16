@@ -32,14 +32,19 @@ export interface IMargin extends IMarginLR {
  *
  * ```js
  * const surveyPdf = new SurveyPDF.SurveyPDF(surveyJson, pdfDocOptions);
+ * 
+ * // In modular applications:
+ * import { SurveyPDF } from "survey-pdf";
+ * const surveyPdf = new SurveyPDF(surveyJson, pdfDocOptions);
  * ```
  */
 export interface IDocOptions {
     /**
      * Page orientation.
+     * 
      * Accepted values:
      *
-     * - `"p"`- Portrait orientation (default).
+     * - `"p"` (default) - Portrait orientation.
      * - `"l"` - Landscape orientation.
      *
      * @see format
@@ -48,6 +53,7 @@ export interface IDocOptions {
 
     /**
      * Page format.
+     * 
      * Accepted values:
      *
      * - `"a0"` - `"a10"` (`"a4"` is default)
@@ -76,6 +82,7 @@ export interface IDocOptions {
 
     /**
      * Font name.
+     * 
      * Accepted values:
      *
      * - `"Helvetica"` (default)
@@ -104,12 +111,13 @@ export interface IDocOptions {
     /**
      * Removes watermarks from the exported document.
      *
-     * > You can enable this property only if you have a SurveyJS PDF Generator commercial license. It is illegal to enable this property without a license.
+     * > You can enable this property only if you have a SurveyJS PDF Generator [commercial license](https://surveyjs.io/pricing). It is illegal to enable this property without a license.
      */
     haveCommercialLicense?: boolean;
 
     /**
      * Specifies how to render [HTML questions](https://surveyjs.io/Documentation/Library?id=questionhtmlmodel) into PDF.
+     * 
      * Accepted values:
      *
      * - `"standard"` - Render HTML questions as selectable text.
@@ -122,6 +130,7 @@ export interface IDocOptions {
 
     /**
      * Specifies how to render [Matrix](https://surveyjs.io/Documentation/Library?id=questionmatrixmodel), [Matrix Dropdown](https://surveyjs.io/Documentation/Library?id=questionmatrixdropdownmodel), and [Matrix Dynamic](https://surveyjs.io/Documentation/Library?id=questionmatrixdynamicmodel) questions into PDF.
+     *
      * Accepted values:
      *
      * - `"list"` - Render matrix-like questions as lists.
@@ -133,6 +142,7 @@ export interface IDocOptions {
     useLegacyBooleanRendering?: boolean;
     /**
      * Specifies how to render read-only questions.
+     * 
      * Accepted values:
      *
      * - `"text"` - Render read-only questions as plain text and custom primitives.
@@ -144,13 +154,13 @@ export interface IDocOptions {
     textFieldRenderAs?: 'singleLine' | 'multiLine';
 
     /**
-     * Specifies whether to compress the PDF document.
-     * Compressed documents do not support [custom fonts](https://surveyjs.io/Documentation/Pdf-Export?id=Customization-ChangeFonts#use-custom-font).
+     * Specifies whether to compress the PDF document. Compressed documents do not support [custom fonts](https://surveyjs.io/Documentation/Pdf-Export?id=Customization-ChangeFonts#use-custom-font).
      */
     compress?: boolean;
 
     /**
      * Specifies whether to apply the [imageFit](https://surveyjs.io/Documentation/Library?id=questionimagemodel#imageFit) property to exported [Image](https://surveyjs.io/Documentation/Library?id=questionimagemodel) questions.
+     * 
      * If you enable the `applyImageFit` property, the quality of images may be lower because they pass through several conversions. If `applyImageFit` is disabled, exported images fill the entire container and do not preserve their aspect ratio, but their quality remains the same because they are exported as is.
      */
     applyImageFit?: boolean;
