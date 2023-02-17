@@ -105,6 +105,8 @@ export interface IDocOptions {
 
     /**
      * Font size in points.
+     * 
+     * Default value: 14
      *
      * @see fontName
      */
@@ -195,9 +197,7 @@ export interface IDocOptions {
      */
     applyImageFit?: boolean;
 }
-/**
- * Contains a set of options that affect the appearance of a PDF document rendered by SurveyPDF.
- */
+
 export class DocOptions implements IDocOptions {
     public static readonly MM_TO_PT = 72 / 25.4;
     public static readonly FONT_SIZE = 14;
@@ -334,6 +334,11 @@ export class DocOptions implements IDocOptions {
     }
 }
 
+/**
+ * The `DocController` object includes an API that allows you to configure the resulting PDF document. You can access this object within functions that handle the `SurveyPDF`'s [`onRender...`](https://surveyjs.io/pdf-generator/documentation/api-reference/surveypdf#onRenderFooter) events.
+ * 
+ * [View Demo](https://surveyjs.io/pdf-generator/examples/how-to-use-adorners-in-pdf-forms/ (linkStyle))
+ */
 export class DocController extends DocOptions {
     private _doc: jsPDF;
     private _helperDoc: jsPDF;
@@ -430,9 +435,15 @@ export class DocController extends DocOptions {
             height: height
         };
     }
+    /**
+     * The width of one character in pixels.
+     */
     public get unitWidth(): number {
         return this.measureText().width;
     }
+    /**
+     * The heigth of one character in pixels.
+     */
     public get unitHeight(): number {
         return this.measureText().height;
     }
@@ -446,9 +457,15 @@ export class DocController extends DocOptions {
         this.margins.left = margins.left;
         this.margins.right = margins.right;
     }
+    /**
+     * The width of a PDF page in pixels.
+     */
     public get paperWidth(): number {
         return this.doc.internal.pageSize.width;
     }
+    /**
+     * The height of a PDF page in pixels.
+     */
     public get paperHeight(): number {
         return this.doc.internal.pageSize.height;
     }

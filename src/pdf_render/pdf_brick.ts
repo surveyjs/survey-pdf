@@ -7,13 +7,34 @@ export interface IPdfBrick extends IRect, ISize {
     unfold(): IPdfBrick[];
     isPageBreak: boolean;
 }
+/**
+ * An object that describes a PDF brick&mdash;a simple element with specified content, size, and location. Bricks are fundamental elements used to construct a PDF document.
+ * 
+ * You can access `PdfBrick` objects within functions that handle the `SurveyPDF`'s [`onRenderQuestion`](https://surveyjs.io/pdf-generator/documentation/api-reference/surveypdf#onRenderQuestion), [`onRenderPanel`](https://surveyjs.io/pdf-generator/documentation/api-reference/surveypdf#onRenderPanel), and [`onRenderPage`](https://surveyjs.io/pdf-generator/documentation/api-reference/surveypdf#onRenderPage) events.
+ * 
+ * [View Demo](https://surveyjs.io/pdf-generator/examples/add-markup-to-customize-pdf-forms/ (linkStyle))
+ */
 export class PdfBrick implements IPdfBrick {
+    /**
+     * An X-coordinate for the left brick edge.
+     */
     public xLeft: number;
+    /**
+     * An X-coordinate for the right brick edge.
+     */
     public xRight: number;
+    /**
+     * A Y-coordinate for the top brick edge.
+     */
     public yTop: number;
+    /**
+     * A Y-coordinate for the bottom brick edge.
+     */
     public yBot: number;
     /**
-     * Size of text. Set 0 for auto size
+     * Font size in points.
+     * 
+     * Default value: 14 (inherited from the parent PDF document)
      */
     public fontSize: number;
     public textColor: string = SurveyHelper.TEXT_COLOR;
@@ -28,9 +49,15 @@ export class PdfBrick implements IPdfBrick {
         this.fontSize = !!controller ?
             controller.fontSize : DocController.FONT_SIZE;
     }
+    /**
+     * The brick's width in pixels.
+     */
     public get width(): number {
         return this.xRight - this.xLeft;
     }
+    /**
+     * The brick's height in pixels.
+     */
     public get height(): number {
         return this.yBot - this.yTop;
     }
@@ -45,6 +72,10 @@ export class PdfBrick implements IPdfBrick {
     public async renderReadOnly(): Promise<void> {
         await this.renderInteractive();
     }
+    /**
+     * Allows you to get a flat array of nested PDF bricks.
+     * @returns A flat array of nested PDF bricks.
+     */
     public unfold(): IPdfBrick[] {
         return [this];
     }

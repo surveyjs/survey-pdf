@@ -62,7 +62,7 @@ export interface IDrawTextOptions extends IDrawRectOptions {
      */
     text: string;
     /**
-     * Font size.
+     * Font size in points.
      * 
      * Default value: 14
      */
@@ -93,10 +93,9 @@ export interface IDrawImageOptions extends IDrawRectOptions {
 }
 
 /**
- * An object that describes a drawing area and enables you to draw an image or a piece of text within the area.
+ * An object that describes a drawing area and enables you to draw an image or a piece of text within the area. You can access this object within functions that handle the `SurveyPDF`'s [`onRenderHeader`](https://surveyjs.io/pdf-generator/documentation/api-reference/surveypdf#onRenderHeader) and [`onRenderFooter`](https://surveyjs.io/pdf-generator/documentation/api-reference/surveypdf#onRenderFooter) events.
  * 
  * [View Demo](https://surveyjs.io/pdf-generator/examples/customize-header-and-footer-of-pdf-form/ (linkStyle))
- * 
  */
 export class DrawCanvas {
     public constructor(protected packs: IPdfBrick[],

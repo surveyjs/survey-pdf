@@ -83,6 +83,14 @@
         {
           "Name": "drawcanvas",
           "Title": "DrawCanvas"
+        },
+        {
+          "Name": "pdfbrick",
+          "Title": "PdfBrick"
+        },
+        {
+          "Name": "doccontroller",
+          "Title": "DocController"
         }
       ]
     }
