@@ -318,7 +318,7 @@ export class SurveyHelper {
         const data: string = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svg)));
         const img: HTMLImageElement = new Image();
         img.src = data;
-        return await new Promise((resolve) => {
+        return new Promise((resolve) => {
             img.onload = function () {
                 const canvas: HTMLCanvasElement = document.createElement('canvas');
                 SurveyHelper.setCanvas(canvas, divWidth, divHeight, img);
@@ -442,31 +442,32 @@ export class SurveyHelper {
         return isQuestion ? question.displayValue : SurveyHelper.getQuestionOrCommentValue(question, isQuestion);
     }
     public static inBrowser = typeof Image === 'function';
+    /**
+     *allows to convert any image in acceptable format for jspdf, default: true
+     */
+    public static convertImageToSvg = true;
     public static async createImageFlat(point: IPoint, question: any,
         controller: DocController, imagelink: string, width: number, height: number, imageFit?: string): Promise<IPdfBrick> {
-
         if (SurveyHelper.inBrowser) {
+            const fitType = !!question && !!question.imageFit ? question.imageFit : (imageFit || 'contain');
+            const ptToPx: number = 96.0 / 72.0;
             if (controller.applyImageFit) {
                 if (width > controller.paperWidth - controller.margins.left - controller.margins.right) {
                     const newWidth: number = controller.paperWidth - controller.margins.left - controller.margins.right;
                     height *= newWidth / width;
                     width = newWidth;
                 }
-
-                const ptToPx: number = 96.0 / 72.0;
-                const fitType = !!question && !!question.imageFit ? question.imageFit : 'contain';
+            }
+            //this
+            if(typeof XMLSerializer === 'function' && this.convertImageToSvg) {
                 const canvasHtml: string =
-                    `<div style='overflow: hidden; width: ${width * ptToPx}px; height: ${height * ptToPx}px;'>
-                        <img src='${imagelink}' style='object-fit: ${fitType}; width: 100%; height: 100%;'/>
-                    </div>`;
-
-                const { url, aspect }: { url: string, aspect: number } =
-                    await SurveyHelper.htmlToImage(canvasHtml, width, controller);
-
+                `<div style='overflow: hidden; width: ${width * ptToPx}px; height: ${height * ptToPx}px;'>
+                    <img src='${imagelink}' style='object-fit: ${fitType}; width: 100%; height: 100%;'/>
+                </div>`;
+                const { url } = await SurveyHelper.htmlToImage(canvasHtml, width, controller);
                 imagelink = url;
             }
-
-            const html: string = `<img src='${imagelink}' width='${width}' height='${height}' style="object-fit='${imageFit}'"/>`;
+            const html: string = `<img src='${imagelink}' width='${width}' height='${height}'/>`;
             return new HTMLBrick(question, controller, this.createRect(point, width, height), html, true);
         }
 
