@@ -88,7 +88,7 @@ export class SurveyPDF extends SurveyModel {
      * An object that provides access to main PDF document properties (font, margins, page width and height) and allows you to modify them.
      * 
      * - `options.repository`: `FlatRepository`\
-     * A repository with classes that render elements to PDF. Use its `create` method if you need to create a new rendering class.
+     * A repository with classes that render elements to PDF. Use its `create` method if you need to create a new instance of a rendering class.
      * 
      * [View Demo](https://surveyjs.io/pdf-generator/examples/customize-header-and-footer-of-pdf-form/ (linkStyle))
      */
@@ -115,7 +115,7 @@ export class SurveyPDF extends SurveyModel {
      * An object that provides access to main PDF document properties (font, margins, page width and height) and allows you to modify them.
      * 
      * - `options.repository`: `FlatRepository`\
-     * A repository with classes that render elements to PDF. Use its `create` method if you need to create a new rendering class.
+     * A repository with classes that render elements to PDF. Use its `create` method if you need to create a new instance of a rendering class.
      */
     public onRenderPanel: EventAsync<(survey: SurveyPDF, options: AdornersPanelOptions) => any, any> =
         new EventAsync<(survey: SurveyPDF, options: AdornersPanelOptions) => any, any>();
@@ -140,7 +140,7 @@ export class SurveyPDF extends SurveyModel {
      * An object that provides access to main PDF document properties (font, margins, page width and height) and allows you to modify them.
      * 
      * - `options.repository`: `FlatRepository`\
-     * A repository with classes that render elements to PDF. Use its `create` method if you need to create a new rendering class.
+     * A repository with classes that render elements to PDF. Use its `create` method if you need to create a new instance of a rendering class.
      */
     public onRenderPage: EventAsync<(survey: SurveyPDF, options: AdornersPageOptions) => any, any> =
         new EventAsync<(survey: SurveyPDF, options: AdornersPageOptions) => any, any>();
