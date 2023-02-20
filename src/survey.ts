@@ -243,7 +243,7 @@ export class SurveyPDF extends SurveyModel {
         }
     }
     /**
-     * An asynchronous method that allow you to get PDF content in different formats.
+     * An asynchronous method that allows you to get PDF content in different formats.
      * 
      * [View Demo](https://surveyjs.io/pdf-generator/examples/convert-pdf-form-blob-base64-raw-pdf-javascript/ (linkStyle))
      * 
