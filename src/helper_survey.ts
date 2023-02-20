@@ -443,7 +443,7 @@ export class SurveyHelper {
     }
     public static inBrowser = typeof Image === 'function';
     /**
-     *allows to convert any image in acceptable format for jspdf, default: true
+     * allows to convert any image in acceptable format for jspdf, default: true
      */
     public static convertImageToSvg = true;
     public static async createImageFlat(point: IPoint, question: any,
@@ -458,7 +458,7 @@ export class SurveyHelper {
                     width = newWidth;
                 }
             }
-            //this
+            //converts image to svg
             if(typeof XMLSerializer === 'function' && this.convertImageToSvg) {
                 const canvasHtml: string =
                 `<div style='overflow: hidden; width: ${width * ptToPx}px; height: ${height * ptToPx}px;'>
