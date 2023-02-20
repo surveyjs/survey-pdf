@@ -40,45 +40,45 @@ export class SurveyPDF extends SurveyModel {
      * @param survey SurveyPDF object that fires the event
      * @param canvas DrawCanvas object that you may use it to draw text and images in the page header
      */
-    public onRenderHeader: EventAsync<(survey: SurveyPDF, canvas: DrawCanvas) => any, any> =
-        new EventAsync<(survey: SurveyPDF, canvas: DrawCanvas) => any, any>();
+    public onRenderHeader: EventAsync<SurveyPDF, DrawCanvas> =
+        new EventAsync<SurveyPDF, DrawCanvas>();
     /**
      * The event in fired for every rendered page
      * @param survey SurveyPDF object that fires the event
      * @param canvas DrawCanvas object that you may use it to draw text and images in the page footer
      */
-    public onRenderFooter: EventAsync<(survey: SurveyPDF, canvas: DrawCanvas) => any, any> =
-        new EventAsync<(survey: SurveyPDF, canvas: DrawCanvas) => any, any>();
+    public onRenderFooter: EventAsync<SurveyPDF, DrawCanvas> =
+        new EventAsync<SurveyPDF, DrawCanvas>();
     /**
      * The event in fired for every rendered question
      * @param survey SurveyPDF object that fires the event
      * @param options AdornersOptions object that have options to custom render the question
      */
-    public onRenderQuestion: EventAsync<(survey: SurveyPDF, options: AdornersOptions) => any, any> =
-        new EventAsync<(survey: SurveyPDF, options: AdornersOptions) => any, any>();
+    public onRenderQuestion: EventAsync<SurveyPDF, AdornersOptions> =
+        new EventAsync<SurveyPDF, AdornersOptions>();
     /**
      * The event in fired for every rendered panel
      * @param survey SurveyPDF object that fires the event
      * @param options AdornersPanelOptions object that have options to custom render the panel
      */
-    public onRenderPanel: EventAsync<(survey: SurveyPDF, options: AdornersPanelOptions) => any, any> =
-        new EventAsync<(survey: SurveyPDF, options: AdornersPanelOptions) => any, any>();
+    public onRenderPanel: EventAsync<SurveyPDF, AdornersPanelOptions> =
+        new EventAsync<SurveyPDF, AdornersPanelOptions>();
     /**
      * The event in fired for every rendered page
      * @param survey SurveyPDF object that fires the event
      * @param options AdornersPageOptions object that have options to custom render the page
      */
-    public onRenderPage: EventAsync<(survey: SurveyPDF, options: AdornersPageOptions) => any, any> =
-        new EventAsync<(survey: SurveyPDF, options: AdornersPageOptions) => any, any>();
+    public onRenderPage: EventAsync<SurveyPDF, AdornersPageOptions> =
+        new EventAsync<SurveyPDF, AdornersPageOptions>();
 
-    public onRenderCheckItemAcroform: EventAsync<(survey: SurveyPDF, options: any) => any, any> =
-        new EventAsync<(survey: SurveyPDF, options: any) => any, any>();
+    public onRenderCheckItemAcroform: EventAsync<SurveyPDF, any> =
+        new EventAsync<SurveyPDF, any>();
 
-    public onRenderRadioGroupWrapAcroform: EventAsync<(survey: SurveyPDF, options: any) => any, any> =
-    new EventAsync<(survey: SurveyPDF, options: any) => any, any>();
+    public onRenderRadioGroupWrapAcroform: EventAsync<SurveyPDF, any> =
+    new EventAsync<SurveyPDF, any>();
 
-    public onRenderRadioItemAcroform: EventAsync<(survey: SurveyPDF, options: any) => any, any> =
-    new EventAsync<(survey: SurveyPDF, options: any) => any, any>();
+    public onRenderRadioItemAcroform: EventAsync<SurveyPDF, any> =
+    new EventAsync<SurveyPDF, any>();
 
     private waitForQuestionIsReady(question: Question): Promise<void> {
         return new Promise((resolve: any) => {

@@ -684,6 +684,37 @@ test('Check matrixdynamic with detailPanel', async () => {
     expect(unfoldDetailPanelFlats.length).toBe(2);
 });
 
+test('Check matrixdynamic with empty detail panel', async () => {
+    const json: any = {
+        showQuestionNumbers: 'off',
+        elements: [
+            {
+                type: 'matrixdynamic',
+                name: 'detailPanelChecker',
+                titleLocation: 'hidden',
+                hideNumber: true,
+                columns: [
+                    {
+                        cellType: 'input',
+                    }
+                ],
+                rowCount: 1,
+                detailPanelMode: 'underRow',
+            }
+        ]
+    };
+    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    const controller: DocController = new DocController(TestHelper.defaultOptions);
+    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    expect(flats.length).toBe(1);
+    expect(flats[0].length).toBe(2);
+    controller.margins.left += controller.unitWidth;
+    const unfoldHeaderFlats: IPdfBrick[] = flats[0][0].unfold();
+    expect(unfoldHeaderFlats.length).toBe(2);
+    const unfoldRowFlats: IPdfBrick[] = flats[0][1].unfold();
+    expect(unfoldRowFlats.length).toBe(1);
+});
+
 test('Check matrixdynamic with allowRowsDragAndDrop', async () => {
     const json: any = {
         showQuestionNumbers: 'off',
