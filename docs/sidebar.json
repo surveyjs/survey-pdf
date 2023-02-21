@@ -74,7 +74,7 @@
       "Items": [
         {
           "Name": "surveypdf",
-          "Title": "Survey PDF"
+          "Title": "SurveyPDF"
         },
         {
           "Name": "IDocOptions",
@@ -82,7 +82,15 @@
         },
         {
           "Name": "drawcanvas",
-          "Title": "Draw Canvas"
+          "Title": "DrawCanvas"
+        },
+        {
+          "Name": "pdfbrick",
+          "Title": "PdfBrick"
+        },
+        {
+          "Name": "doccontroller",
+          "Title": "DocController"
         }
       ]
     }

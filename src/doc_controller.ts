@@ -8,11 +8,26 @@ import './jspdf_plugins/acroform.js';
 import './jspdf_plugins/from_html.js';
 
 export interface IPoint {
+    /**
+     * An X-coordinate for the left element edge.
+     */
     xLeft: number;
+    /**
+     * A Y-coordinate for the top element edge.
+     */
     yTop: number;
 }
+/**
+ * An interface that describes a rectangle.
+ */
 export interface IRect extends IPoint {
+    /**
+     * An X-coordinate for the right element edge.
+     */
     xRight: number;
+    /**
+     * A Y-coordinate for the bottom element edge.
+     */
     yBot: number;
 }
 export interface ISize {
@@ -20,11 +35,26 @@ export interface ISize {
     height: number;
 }
 export interface IMarginLR {
+    /**
+     * A left margin.
+     */
     left?: number;
+    /**
+     * A right margin.
+     */
     right?: number;
 }
+/**
+ * An interface that describes margins.
+ */
 export interface IMargin extends IMarginLR {
+    /**
+     * A top margin.
+     */
     top?: number;
+    /**
+     * A bottom margin.
+     */
     bot?: number;
 }
 /**
@@ -32,14 +62,19 @@ export interface IMargin extends IMarginLR {
  *
  * ```js
  * const surveyPdf = new SurveyPDF.SurveyPDF(surveyJson, pdfDocOptions);
+ * 
+ * // In modular applications:
+ * import { SurveyPDF } from "survey-pdf";
+ * const surveyPdf = new SurveyPDF(surveyJson, pdfDocOptions);
  * ```
  */
 export interface IDocOptions {
     /**
      * Page orientation.
-     * Accepted values:
+     * 
+     * Possible values:
      *
-     * - `"p"`- Portrait orientation (default).
+     * - `"p"` (default) - Portrait orientation.
      * - `"l"` - Landscape orientation.
      *
      * @see format
@@ -48,7 +83,8 @@ export interface IDocOptions {
 
     /**
      * Page format.
-     * Accepted values:
+     * 
+     * Possible values:
      *
      * - `"a0"` - `"a10"` (`"a4"` is default)
      * - `"b0"` - `"b10"`
@@ -69,6 +105,8 @@ export interface IDocOptions {
 
     /**
      * Font size in points.
+     * 
+     * Default value: 14
      *
      * @see fontName
      */
@@ -76,7 +114,8 @@ export interface IDocOptions {
 
     /**
      * Font name.
-     * Accepted values:
+     * 
+     * Possible values:
      *
      * - `"Helvetica"` (default)
      * - `"Courier"`
@@ -95,7 +134,7 @@ export interface IDocOptions {
     useCustomFontInHtml?: boolean;
 
     /**
-     * Page margins. Set this property to an object with the following fields: `top`, `bottom`, `left`, `right`.
+     * Page margins. Set this property to an object with the following fields: `top`, `bot`, `left`, `right`.
      */
     margins?: IMargin;
 
@@ -104,13 +143,14 @@ export interface IDocOptions {
     /**
      * Removes watermarks from the exported document.
      *
-     * > You can enable this property only if you have a SurveyJS PDF Generator commercial license. It is illegal to enable this property without a license.
+     * > You can enable this property only if you have a SurveyJS PDF Generator [commercial license](https://surveyjs.io/pricing). It is illegal to enable this property without a license.
      */
     haveCommercialLicense?: boolean;
 
     /**
      * Specifies how to render [HTML questions](https://surveyjs.io/Documentation/Library?id=questionhtmlmodel) into PDF.
-     * Accepted values:
+     * 
+     * Possible values:
      *
      * - `"standard"` - Render HTML questions as selectable text.
      * - `"image"` - Render HTML questions as images.
@@ -122,7 +162,8 @@ export interface IDocOptions {
 
     /**
      * Specifies how to render [Matrix](https://surveyjs.io/Documentation/Library?id=questionmatrixmodel), [Matrix Dropdown](https://surveyjs.io/Documentation/Library?id=questionmatrixdropdownmodel), and [Matrix Dynamic](https://surveyjs.io/Documentation/Library?id=questionmatrixdynamicmodel) questions into PDF.
-     * Accepted values:
+     *
+     * Possible values:
      *
      * - `"list"` - Render matrix-like questions as lists.
      * - `"auto"` (default) - Render matrix-like questions as tables if they fit into the available space. Otherwise, render the questions as lists.
@@ -133,7 +174,8 @@ export interface IDocOptions {
     useLegacyBooleanRendering?: boolean;
     /**
      * Specifies how to render read-only questions.
-     * Accepted values:
+     * 
+     * Possible values:
      *
      * - `"text"` - Render read-only questions as plain text and custom primitives.
      * - `"acroform"` - Use Acrobat Forms (AcroForms) to render questions that support them. Other questions are rendered in `"text"` mode.
@@ -144,20 +186,18 @@ export interface IDocOptions {
     textFieldRenderAs?: 'singleLine' | 'multiLine';
 
     /**
-     * Specifies whether to compress the PDF document.
-     * Compressed documents do not support [custom fonts](https://surveyjs.io/Documentation/Pdf-Export?id=Customization-ChangeFonts#use-custom-font).
+     * Specifies whether to compress the PDF document. Compressed documents do not support [custom fonts](https://surveyjs.io/Documentation/Pdf-Export?id=Customization-ChangeFonts#use-custom-font).
      */
     compress?: boolean;
 
     /**
      * Specifies whether to apply the [imageFit](https://surveyjs.io/Documentation/Library?id=questionimagemodel#imageFit) property to exported [Image](https://surveyjs.io/Documentation/Library?id=questionimagemodel) questions.
+     * 
      * If you enable the `applyImageFit` property, the quality of images may be lower because they pass through several conversions. If `applyImageFit` is disabled, exported images fill the entire container and do not preserve their aspect ratio, but their quality remains the same because they are exported as is.
      */
     applyImageFit?: boolean;
 }
-/**
- * Contains a set of options that affect the appearance of a PDF document rendered by SurveyPDF.
- */
+
 export class DocOptions implements IDocOptions {
     public static readonly MM_TO_PT = 72 / 25.4;
     public static readonly FONT_SIZE = 14;
@@ -294,6 +334,11 @@ export class DocOptions implements IDocOptions {
     }
 }
 
+/**
+ * The `DocController` object includes an API that allows you to configure the resulting PDF document. You can access this object within functions that handle the `SurveyPDF`'s [`onRender...`](https://surveyjs.io/pdf-generator/documentation/api-reference/surveypdf#onRenderFooter) events.
+ * 
+ * [View Demo](https://surveyjs.io/pdf-generator/examples/how-to-use-adorners-in-pdf-forms/ (linkStyle))
+ */
 export class DocController extends DocOptions {
     private _doc: jsPDF;
     private _helperDoc: jsPDF;
@@ -390,9 +435,15 @@ export class DocController extends DocOptions {
             height: height
         };
     }
+    /**
+     * The width of one character in pixels.
+     */
     public get unitWidth(): number {
         return this.measureText().width;
     }
+    /**
+     * The heigth of one character in pixels.
+     */
     public get unitHeight(): number {
         return this.measureText().height;
     }
@@ -406,9 +457,15 @@ export class DocController extends DocOptions {
         this.margins.left = margins.left;
         this.margins.right = margins.right;
     }
+    /**
+     * The width of a PDF page in pixels.
+     */
     public get paperWidth(): number {
         return this.doc.internal.pageSize.width;
     }
+    /**
+     * The height of a PDF page in pixels.
+     */
     public get paperHeight(): number {
         return this.doc.internal.pageSize.height;
     }

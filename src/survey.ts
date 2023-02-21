@@ -9,7 +9,9 @@ import { AdornersOptions, AdornersPanelOptions, AdornersPageOptions } from './ev
 import { SurveyHelper } from './helper_survey';
 
 /**
- * SurveyPDF object contains options, events and methods to export PDF
+ * The `SurveyPDF` object enables you to export your surveys and forms to PDF documents.
+ * 
+ * [View Demo](https://surveyjs.io/pdf-generator/examples/ (linkStyle))
  */
 export class SurveyPDF extends SurveyModel {
     private static currentlySaving: boolean = false;
@@ -25,9 +27,9 @@ export class SurveyPDF extends SurveyModel {
         this._haveCommercialLicense = options.commercial || options.haveCommercialLicense;
     }
     /**
-     * You have right to set this property to true if you have bought the commercial licence only.
-     * It will remove the text about non-commerical usage on the top of the document.
-     * Setting this property true without having a commercial licence is illegal
+     * Removes watermarks from the exported document.
+     *
+     * > You can enable this property only if you have a SurveyJS PDF Generator [commercial license](https://surveyjs.io/pricing). It is illegal to enable this property without a license.
      */
     public get haveCommercialLicense(): boolean {
         return this._haveCommercialLicense;
@@ -36,37 +38,109 @@ export class SurveyPDF extends SurveyModel {
         this._haveCommercialLicense = val;
     }
     /**
-     * The event in fired for every rendered page
-     * @param survey SurveyPDF object that fires the event
-     * @param canvas DrawCanvas object that you may use it to draw text and images in the page header
+     * An event that is raised when SurveyJS PDF Generator renders a page header. Handle this event to customize the header.
+     * 
+     * Parameters:
+     * 
+     * - `sender`: `SurveyPDF`\
+     * A SurveyPDF instance that raised the event.
+     * 
+     * - `canvas`: [`DrawCanvas`](https://surveyjs.io/pdf-generator/documentation/api-reference/drawcanvas)\
+     * An object that you can use to draw text and images in the page header.
+     * 
+     * [View Demo](https://surveyjs.io/pdf-generator/examples/customize-header-and-footer-of-pdf-form/ (linkStyle))
      */
     public onRenderHeader: EventAsync<SurveyPDF, DrawCanvas> =
         new EventAsync<SurveyPDF, DrawCanvas>();
     /**
-     * The event in fired for every rendered page
-     * @param survey SurveyPDF object that fires the event
-     * @param canvas DrawCanvas object that you may use it to draw text and images in the page footer
+     * An event that is raised when SurveyJS PDF Generator renders a page footer. Handle this event to customize the footer.
+     * 
+     * Parameters:
+     * 
+     * - `sender`: `SurveyPDF`\
+     * A SurveyPDF instance that raised the event.
+     * 
+     * - `canvas`: [`DrawCanvas`](https://surveyjs.io/pdf-generator/documentation/api-reference/drawcanvas)\
+     * An object that you can use to draw text and images in the page footer.
+     * 
+     * [View Demo](https://surveyjs.io/pdf-generator/examples/customize-header-and-footer-of-pdf-form/ (linkStyle))
      */
     public onRenderFooter: EventAsync<SurveyPDF, DrawCanvas> =
         new EventAsync<SurveyPDF, DrawCanvas>();
     /**
-     * The event in fired for every rendered question
-     * @param survey SurveyPDF object that fires the event
-     * @param options AdornersOptions object that have options to custom render the question
+     * An event that is raised when SurveyJS PDF Generator renders a survey question. Handle this event to customize question rendering.
+     * 
+     * Parameters:
+     * 
+     * - `sender`: `SurveyPDF`\
+     * A SurveyPDF instance that raised the event.
+     * 
+     * - `options.question`: [`Question`](https://surveyjs.io/form-library/documentation/api-reference/question)\
+     * A survey question that is being rendered.
+     * 
+     * - `options.point`: `IPoint`\
+     * An object with coordinates of the top-left corner of the element being rendered. This object contains the following properties: `{ xLeft: number, yTop: number }`.
+     * 
+     * - `options.bricks`: [`PdfBrick[]`](https://surveyjs.io/pdf-generator/documentation/api-reference/pdfbrick)\
+     * An array of [bricks](https://surveyjs.io/pdf-generator/documentation/customization-customrender-questionelements#bricks) used to render the element.
+     * 
+     * - `options.controller`: [`DocController`](https://surveyjs.io/pdf-generator/documentation/api-reference/doccontroller)\
+     * An object that provides access to main PDF document properties (font, margins, page width and height) and allows you to modify them.
+     * 
+     * - `options.repository`: `FlatRepository`\
+     * A repository with classes that render elements to PDF. Use its `create` method if you need to create a new instance of a rendering class.
+     * 
+     * [View Demo](https://surveyjs.io/pdf-generator/examples/customize-header-and-footer-of-pdf-form/ (linkStyle))
      */
     public onRenderQuestion: EventAsync<SurveyPDF, AdornersOptions> =
         new EventAsync<SurveyPDF, AdornersOptions>();
     /**
-     * The event in fired for every rendered panel
-     * @param survey SurveyPDF object that fires the event
-     * @param options AdornersPanelOptions object that have options to custom render the panel
+     * An event that is raised when SurveyJS PDF Generator renders a panel. Handle this event to customize panel rendering.
+     * 
+     * Parameters:
+     * 
+     * - `sender`: `SurveyPDF`\
+     * A SurveyPDF instance that raised the event.
+     * 
+     * - `options.panel`: [`PanelModel`](https://surveyjs.io/form-library/documentation/api-reference/panel-model)\
+     * A panel that is being rendered.
+     * 
+     * - `options.point`: `IPoint`\
+     * An object with coordinates of the top-left corner of the element being rendered. This object contains the following properties: `{ xLeft: number, yTop: number }`.
+     * 
+     * - `options.bricks`: [`PdfBrick[]`](https://surveyjs.io/pdf-generator/documentation/api-reference/pdfbrick)\
+     * An array of [bricks](https://surveyjs.io/pdf-generator/documentation/customization-customrender-questionelements#bricks) used to render the element.
+     * 
+     * - `options.controller`: [`DocController`](https://surveyjs.io/pdf-generator/documentation/api-reference/doccontroller)\
+     * An object that provides access to main PDF document properties (font, margins, page width and height) and allows you to modify them.
+     * 
+     * - `options.repository`: `FlatRepository`\
+     * A repository with classes that render elements to PDF. Use its `create` method if you need to create a new instance of a rendering class.
      */
     public onRenderPanel: EventAsync<SurveyPDF, AdornersPanelOptions> =
         new EventAsync<SurveyPDF, AdornersPanelOptions>();
     /**
-     * The event in fired for every rendered page
-     * @param survey SurveyPDF object that fires the event
-     * @param options AdornersPageOptions object that have options to custom render the page
+     * An event that is raised when SurveyJS PDF Generator renders a page. Handle this event to customize page rendering.
+     * 
+     * Parameters:
+     * 
+     * - `sender`: `SurveyPDF`\
+     * A SurveyPDF instance that raised the event.
+     * 
+     * - `options.page`: [`PageModel`](https://surveyjs.io/form-library/documentation/api-reference/page-model)\
+     * A page that is being rendered.
+     * 
+     * - `options.point`: `IPoint`\
+     * An object with coordinates of the top-left corner of the element being rendered. This object contains the following properties: `{ xLeft: number, yTop: number }`.
+     * 
+     * - `options.bricks`: [`PdfBrick[]`](https://surveyjs.io/pdf-generator/documentation/api-reference/pdfbrick)\
+     * An array of [bricks](https://surveyjs.io/pdf-generator/documentation/customization-customrender-questionelements#bricks) used to render the element.
+     * 
+     * - `options.controller`: [`DocController`](https://surveyjs.io/pdf-generator/documentation/api-reference/doccontroller)\
+     * An object that provides access to main PDF document properties (font, margins, page width and height) and allows you to modify them.
+     * 
+     * - `options.repository`: `FlatRepository`\
+     * A repository with classes that render elements to PDF. Use its `create` method if you need to create a new instance of a rendering class.
      */
     public onRenderPage: EventAsync<SurveyPDF, AdornersPageOptions> =
         new EventAsync<SurveyPDF, AdornersPageOptions>();
@@ -143,8 +217,9 @@ export class SurveyPDF extends SurveyModel {
         }
     }
     /**
-     * Call save method of surveyPDF object to download file in browser. This is asynchronous method
-     * @param fileName optional filename parameter
+     * An asynchronous method that starts download of the generated PDF file in the web browser.
+     * 
+     * @param fileName *(Optional)* A file name with the ".pdf" extension. Default value: `"survey_result.pdf"`.
      */
     public async save(fileName: string = 'survey_result.pdf'): Promise<any> {
         if(!SurveyPDF.currentlySaving) {
@@ -168,8 +243,12 @@ export class SurveyPDF extends SurveyModel {
         }
     }
     /**
-     * Call raw method of surveyPDF to get PDF document as string object. This is asynchronous method
-     * @param type omit to get raw string, or pass "blob", "bloburl" or "dataurlstring"
+     * An asynchronous method that allows you to get PDF content in different formats.
+     * 
+     * [View Demo](https://surveyjs.io/pdf-generator/examples/convert-pdf-form-blob-base64-raw-pdf-javascript/ (linkStyle))
+     * 
+     * @param type *(Optional)* One of `"blob"`, `"bloburl"`, `"dataurlstring"`. Do not specify this parameter if you want to get raw PDF content as a string value. 
+     * 
      */
     public async raw(type?: string): Promise<string> {
         const controller: DocController = new DocController(this.options);
