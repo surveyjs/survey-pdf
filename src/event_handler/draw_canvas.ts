@@ -90,6 +90,12 @@ export class DrawCanvas {
     /**
      * Count of pages in the document
      */
+    public get pageCount(): number {
+        return this._countPages;
+    }
+    /**
+     * @deprecated use pageCount instead
+     */
     public get countPages(): number {
         return this._countPages;
     }
