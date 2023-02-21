@@ -45,7 +45,7 @@ export interface IDrawRectOptions {
      */
     verticalAlign?: VerticalAlign;
     /**
-     * The distance between the content and the borders of the rectangle. This property applies only if alignment the content is aligned to the left/right or top/bottom.
+     * The distance between the content and the borders of the rectangle. This property applies only if the content is aligned to the left/right or top/bottom.
      */
     margins?: IMargin;
     /**
@@ -54,7 +54,7 @@ export interface IDrawRectOptions {
     rect?: IRect;
 }
 /**
- * An object that configures the drawing of a piece of text.
+ * An object that configures rendering a piece of text.
  */
 export interface IDrawTextOptions extends IDrawRectOptions {
     /**
@@ -75,7 +75,7 @@ export interface IDrawTextOptions extends IDrawRectOptions {
     isBold?: boolean;
 }
 /**
- * An object that configures the drawing of an image.
+ * An object that configures rendering an image.
  */
 export interface IDrawImageOptions extends IDrawRectOptions {
     /**
@@ -93,7 +93,7 @@ export interface IDrawImageOptions extends IDrawRectOptions {
 }
 
 /**
- * An object that describes a drawing area and enables you to draw an image or a piece of text within the area. You can access this object within functions that handle the `SurveyPDF`'s [`onRenderHeader`](https://surveyjs.io/pdf-generator/documentation/api-reference/surveypdf#onRenderHeader) and [`onRenderFooter`](https://surveyjs.io/pdf-generator/documentation/api-reference/surveypdf#onRenderFooter) events.
+ * An object that describes a drawing area and enables you to draw an image or a piece of text within the area. You can access this object within functions that handle `SurveyPDF`'s [`onRenderHeader`](https://surveyjs.io/pdf-generator/documentation/api-reference/surveypdf#onRenderHeader) and [`onRenderFooter`](https://surveyjs.io/pdf-generator/documentation/api-reference/surveypdf#onRenderFooter) events.
  * 
  * [View Demo](https://surveyjs.io/pdf-generator/examples/customize-header-and-footer-of-pdf-form/ (linkStyle))
  */
@@ -227,7 +227,7 @@ export class DrawCanvas {
     }
     /**
      * Draws an image within the drawing area.
-     * @param imageOptions An object that configures the drawing.
+     * @param imageOptions An object that configures drawing.
      */
     public async drawImage(imageOptions: IDrawImageOptions): Promise<void> {
         imageOptions = SurveyHelper.clone(imageOptions);

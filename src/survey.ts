@@ -217,7 +217,7 @@ export class SurveyPDF extends SurveyModel {
         }
     }
     /**
-     * An asynchronous method that starts a download of the generated PDF file in the web browser.
+     * An asynchronous method that starts download of the generated PDF file in the web browser.
      * 
      * @param fileName *(Optional)* A file name with the ".pdf" extension. Default value: `"survey_result.pdf"`.
      */
