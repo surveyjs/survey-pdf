@@ -445,12 +445,24 @@ export class SurveyHelper {
     /**
      * allows to convert any image in acceptable format for jspdf, default: true
      */
-    public static convertImageToSvg = true;
+    public static convertImageToJPEG = true;
+    public static async getImageLink(controller: DocController, originalImageLink: string, width: number, height: number, fitType: string): Promise<string> {
+        const ptToPx: number = 96.0 / 72.0;
+        if(typeof XMLSerializer === 'function' && this.convertImageToJPEG) {
+            const canvasHtml: string =
+            `<div style='overflow: hidden; width: ${width * ptToPx}px; height: ${height * ptToPx}px;'>
+                <img src='${originalImageLink}' style='object-fit: ${fitType}; width: 100%; height: 100%;'/>
+            </div>`;
+            const { url } = await SurveyHelper.htmlToImage(canvasHtml, width, controller);
+            return url;
+        } else {
+            return originalImageLink;
+        }
+    }
     public static async createImageFlat(point: IPoint, question: any,
         controller: DocController, imagelink: string, width: number, height: number, imageFit?: string): Promise<IPdfBrick> {
         if (SurveyHelper.inBrowser) {
             const fitType = !!question && !!question.imageFit ? question.imageFit : (imageFit || 'contain');
-            const ptToPx: number = 96.0 / 72.0;
             if (controller.applyImageFit) {
                 if (width > controller.paperWidth - controller.margins.left - controller.margins.right) {
                     const newWidth: number = controller.paperWidth - controller.margins.left - controller.margins.right;
@@ -458,16 +470,7 @@ export class SurveyHelper {
                     width = newWidth;
                 }
             }
-            //converts image to svg
-            if(typeof XMLSerializer === 'function' && this.convertImageToSvg) {
-                const canvasHtml: string =
-                `<div style='overflow: hidden; width: ${width * ptToPx}px; height: ${height * ptToPx}px;'>
-                    <img src='${imagelink}' style='object-fit: ${fitType}; width: 100%; height: 100%;'/>
-                </div>`;
-                const { url } = await SurveyHelper.htmlToImage(canvasHtml, width, controller);
-                imagelink = url;
-            }
-            const html: string = `<img src='${imagelink}' width='${width}' height='${height}'/>`;
+            const html: string = `<img src='${await SurveyHelper.getImageLink(controller, imagelink, width, height, fitType)}' width='${width}' height='${height}'/>`;
             return new HTMLBrick(question, controller, this.createRect(point, width, height), html, true);
         }
 
