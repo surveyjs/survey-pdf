@@ -362,3 +362,21 @@ test('Check getContentQuestionType method with renderAs', () => {
     type = SurveyHelper.getContentQuestionType(question, survey);
     expect(type).toEqual('boolean-checkbox');
 });
+
+test('Check getImageLink method', async () => {
+    const oldHtmlToImage = SurveyHelper.htmlToImage;
+    const oldXMLSerializer = window.XMLSerializer;
+    const oldConvertImageToJPEG = SurveyHelper.convertImageToJPEG;
+
+    const controller = new DocController();
+    expect(await SurveyHelper.getImageLink(controller, 'svg_16x16', 10, 10, 'contain')).toEqual('svg_16x16');
+    (<any>SurveyHelper).htmlToImage = () => { return { url: 'jpeg_16x16' }; };
+    (<any>window).XMLSerializer = () => {};
+    expect(await SurveyHelper.getImageLink(controller, 'svg_16x16', 10, 10, 'contain')).toEqual('jpeg_16x16');
+    SurveyHelper.convertImageToJPEG = false;
+    expect(await SurveyHelper.getImageLink(controller, 'svg_16x16', 10, 10, 'contain')).toEqual('svg_16x16');
+
+    SurveyHelper.convertImageToJPEG = oldConvertImageToJPEG;
+    SurveyHelper.htmlToImage = oldHtmlToImage;
+    window.XMLSerializer = oldXMLSerializer;
+});
