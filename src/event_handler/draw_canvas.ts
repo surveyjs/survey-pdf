@@ -106,6 +106,9 @@ export class DrawCanvas {
     /**
      * A total number of pages in the document.
      */
+    public get pageCount(): number {
+        return this._countPages;
+    }
     public get countPages(): number {
         return this._countPages;
     }
