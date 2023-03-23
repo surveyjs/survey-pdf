@@ -10,6 +10,7 @@ import { FlatTextbox } from '../src/flat_layout/flat_textbox';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
+import { QuestionTextModel } from 'survey-core';
 const __dummy_tb = new FlatTextbox(null, null, null);
 
 test('Check readonly text', async () => {
@@ -83,4 +84,15 @@ test('Check readonly text with readOnlyTextRenderMode set to div', async () => {
     } finally {
         Survey.settings.readOnlyTextRenderMode = oldRenderMode;
     }
+});
+
+test('Check shouldRenderAsComment flag for text flat', async () => {
+    const question = new QuestionTextModel('');
+    const controller = new DocController({});
+    const flat = new FlatTextbox(<any>undefined, question, controller);
+    expect(flat['shouldRenderAsComment']).toBeFalsy();
+    question.readOnly = true;
+    expect(flat['shouldRenderAsComment']).toBeTruthy();
+    question.readonlyRenderAs = 'acroform';
+    expect(flat['shouldRenderAsComment']).toBeFalsy();
 });
