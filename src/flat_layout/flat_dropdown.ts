@@ -15,9 +15,12 @@ export class FlatDropdown extends FlatQuestion {
         super(survey, question, controller);
         this.question = <QuestionDropdownModel>question;
     }
+    protected get shouldRenderAsComment(): boolean {
+        return this.question.isReadOnly && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform';
+    }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         const rect: IRect = SurveyHelper.createTextFieldRect(point, this.controller);
-        if (this.question.isReadOnly && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform') {
+        if (this.shouldRenderAsComment) {
             const rectWithDinamicBottom: IRect = await SurveyHelper.createReadOnlyTextFieldTextFlat(
                 point, this.controller, this.question, SurveyHelper.getDropdownQuestionValue(this.question), false);
             rect.yBot = Math.max(rect.yBot, rectWithDinamicBottom.yBot + this.controller.unitHeight * SurveyHelper.VALUE_READONLY_PADDING_SCALE);

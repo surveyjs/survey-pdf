@@ -70,14 +70,3 @@ test('Dropdown display value', async () => {
     expect(controller.doc.internal.acroformPlugin.
 	    acroFormDictionaryRoot.Fields[0].value).toBe(json.questions[0].choices[0].text);
 });
-
-test('Dropdown check should renderAsComment flag', async () => {
-    const question = new QuestionDropdownModel('');
-    const controller = new DocController({});
-    const brick = new DropdownBrick(question, controller, <any>{});
-    expect(brick['shouldRenderAsComment']).toBeFalsy();
-    question.readOnly = true;
-    expect(brick['shouldRenderAsComment']).toBeTruthy();
-    question.readonlyRenderAs = 'acroform';
-    expect(brick['shouldRenderAsComment']).toBeFalsy();
-});

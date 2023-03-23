@@ -37,14 +37,11 @@ export class DropdownBrick extends PdfBrick {
         this.controller.doc.addField(comboBox);
         SurveyHelper.renderFlatBorders(this.controller, this);
     }
-    protected get shouldRenderAsComment(): boolean {
-        return this.question.isReadOnly && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform';
-    }
     public async renderReadOnly(): Promise<void> {
         this.controller.pushMargins(this.xLeft,
             this.controller.paperWidth - this.xRight);
         await SurveyHelper.renderReadOnlyTextField(this.controller, this.question, this,
-            SurveyHelper.getDropdownQuestionValue(this.question), this.shouldRenderAsComment);
+            SurveyHelper.getDropdownQuestionValue(this.question), false);
         this.controller.popMargins();
     }
 }
