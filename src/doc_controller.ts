@@ -62,7 +62,7 @@ export interface IMargin extends IMarginLR {
  *
  * ```js
  * const surveyPdf = new SurveyPDF.SurveyPDF(surveyJson, pdfDocOptions);
- * 
+ *
  * // In modular applications:
  * import { SurveyPDF } from "survey-pdf";
  * const surveyPdf = new SurveyPDF(surveyJson, pdfDocOptions);
@@ -71,7 +71,7 @@ export interface IMargin extends IMarginLR {
 export interface IDocOptions {
     /**
      * Page orientation.
-     * 
+     *
      * Possible values:
      *
      * - `"p"` (default) - Portrait orientation.
@@ -83,7 +83,7 @@ export interface IDocOptions {
 
     /**
      * Page format.
-     * 
+     *
      * Possible values:
      *
      * - `"a0"` - `"a10"` (`"a4"` is default)
@@ -105,7 +105,7 @@ export interface IDocOptions {
 
     /**
      * Font size in points.
-     * 
+     *
      * Default value: 14
      *
      * @see fontName
@@ -114,7 +114,7 @@ export interface IDocOptions {
 
     /**
      * Font name.
-     * 
+     *
      * Possible values:
      *
      * - `"Helvetica"` (default)
@@ -149,7 +149,7 @@ export interface IDocOptions {
 
     /**
      * Specifies how to render [HTML questions](https://surveyjs.io/Documentation/Library?id=questionhtmlmodel) into PDF.
-     * 
+     *
      * Possible values:
      *
      * - `"standard"` - Render HTML questions as selectable text.
@@ -174,7 +174,7 @@ export interface IDocOptions {
     useLegacyBooleanRendering?: boolean;
     /**
      * Specifies how to render read-only questions.
-     * 
+     *
      * Possible values:
      *
      * - `"text"` - Render read-only questions as plain text and custom primitives.
@@ -192,10 +192,11 @@ export interface IDocOptions {
 
     /**
      * Specifies whether to apply the [imageFit](https://surveyjs.io/Documentation/Library?id=questionimagemodel#imageFit) property to exported [Image](https://surveyjs.io/Documentation/Library?id=questionimagemodel) questions.
-     * 
+     *
      * If you enable the `applyImageFit` property, the quality of images may be lower because they pass through several conversions. If `applyImageFit` is disabled, exported images fill the entire container and do not preserve their aspect ratio, but their quality remains the same because they are exported as is.
      */
     applyImageFit?: boolean;
+    isRTL?: boolean;
 }
 
 export class DocOptions implements IDocOptions {
@@ -218,6 +219,7 @@ export class DocOptions implements IDocOptions {
     protected _compress: boolean;
     protected _applyImageFit: boolean;
     protected _useLegacyBooleanRendering: boolean
+    protected _isRTL: boolean;
     public constructor(options: IDocOptions) {
         if (typeof options.orientation === 'undefined') {
             if (typeof options.format === 'undefined' ||
@@ -280,6 +282,7 @@ export class DocOptions implements IDocOptions {
         this._compress = options.compress || false;
         this._applyImageFit = options.applyImageFit || false;
         this._useLegacyBooleanRendering = options.useLegacyBooleanRendering || false;
+        this._isRTL = options.isRTL || false;
     }
     public get leftTopPoint(): IPoint {
         return {
@@ -332,11 +335,14 @@ export class DocOptions implements IDocOptions {
     public get useLegacyBooleanRendering(): boolean {
         return this._useLegacyBooleanRendering;
     }
+    public get isRTL(): boolean {
+        return this._isRTL;
+    }
 }
 
 /**
  * The `DocController` object includes an API that allows you to configure the resulting PDF document. You can access this object within functions that handle the `SurveyPDF`'s [`onRender...`](https://surveyjs.io/pdf-generator/documentation/api-reference/surveypdf#onRenderFooter) events.
- * 
+ *
  * [View Demo](https://surveyjs.io/pdf-generator/examples/how-to-use-adorners-in-pdf-forms/ (linkStyle))
  */
 export class DocController extends DocOptions {
@@ -348,7 +354,9 @@ export class DocController extends DocOptions {
         super(options);
         const jspdfOptions: jsPDFOptions = {
             orientation: this.orientation,
-            unit: 'pt', format: this.format, compress: this.compress
+            unit: 'pt',
+            format: this.format,
+            compress: this.compress
         };
         this._doc = new jsPDF(jspdfOptions);
         if (typeof this.base64Normal !== 'undefined' && !SurveyHelper.isFontExist(this, this.fontName)) {
@@ -362,6 +370,8 @@ export class DocController extends DocOptions {
         this._helperDoc.setFont(this.fontName);
         this._doc.setFontSize(this.fontSize);
         this._helperDoc.setFontSize(this.fontSize);
+        this._doc.setR2L(this.isRTL);
+        this._helperDoc.setR2L(this.isRTL);
         this._fontStyle = 'normal';
         this.marginsStack = [];
     }
