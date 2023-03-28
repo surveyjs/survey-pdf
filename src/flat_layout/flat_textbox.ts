@@ -15,8 +15,11 @@ export class FlatTextbox extends FlatQuestion {
         super(survey, question, controller);
         this.question = <QuestionTextModel>question;
     }
+    protected get shouldRenderAsComment(): boolean {
+        return this.question.isReadOnly && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform';
+    }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
-        if (this.controller.textFieldRenderAs === 'singleLine') {
+        if (!this.shouldRenderAsComment) {
             const rect: IRect = SurveyHelper.createTextFieldRect(point, this.controller);
             return [new TextBoxBrick(this.question, this.controller, rect)];
         }

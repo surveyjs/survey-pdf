@@ -62,7 +62,7 @@ export interface IMargin extends IMarginLR {
  *
  * ```js
  * const surveyPdf = new SurveyPDF.SurveyPDF(surveyJson, pdfDocOptions);
- * 
+ *
  * // In modular applications:
  * import { SurveyPDF } from "survey-pdf";
  * const surveyPdf = new SurveyPDF(surveyJson, pdfDocOptions);
@@ -71,7 +71,7 @@ export interface IMargin extends IMarginLR {
 export interface IDocOptions {
     /**
      * Page orientation.
-     * 
+     *
      * Possible values:
      *
      * - `"p"` (default) - Portrait orientation.
@@ -83,7 +83,7 @@ export interface IDocOptions {
 
     /**
      * Page format.
-     * 
+     *
      * Possible values:
      *
      * - `"a0"` - `"a10"` (`"a4"` is default)
@@ -105,7 +105,7 @@ export interface IDocOptions {
 
     /**
      * Font size in points.
-     * 
+     *
      * Default value: 14
      *
      * @see fontName
@@ -114,7 +114,7 @@ export interface IDocOptions {
 
     /**
      * Font name.
-     * 
+     *
      * Possible values:
      *
      * - `"Helvetica"` (default)
@@ -149,7 +149,7 @@ export interface IDocOptions {
 
     /**
      * Specifies how to render [HTML questions](https://surveyjs.io/Documentation/Library?id=questionhtmlmodel) into PDF.
-     * 
+     *
      * Possible values:
      *
      * - `"standard"` - Render HTML questions as selectable text.
@@ -174,7 +174,7 @@ export interface IDocOptions {
     useLegacyBooleanRendering?: boolean;
     /**
      * Specifies how to render read-only questions.
-     * 
+     *
      * Possible values:
      *
      * - `"text"` - Render read-only questions as plain text and custom primitives.
@@ -192,7 +192,7 @@ export interface IDocOptions {
 
     /**
      * Specifies whether to apply the [imageFit](https://surveyjs.io/Documentation/Library?id=questionimagemodel#imageFit) property to exported [Image](https://surveyjs.io/Documentation/Library?id=questionimagemodel) questions.
-     * 
+     *
      * If you enable the `applyImageFit` property, the quality of images may be lower because they pass through several conversions. If `applyImageFit` is disabled, exported images fill the entire container and do not preserve their aspect ratio, but their quality remains the same because they are exported as is.
      */
     applyImageFit?: boolean;
@@ -214,7 +214,6 @@ export class DocOptions implements IDocOptions {
     protected _htmlRenderAs: IHTMLRenderType;
     protected _matrixRenderAs: 'auto' | 'list';
     protected _readonlyRenderAs: 'auto' | 'text' | 'acroform';
-    protected _textFieldRenderAs: 'singleLine' | 'multiLine';
     protected _compress: boolean;
     protected _applyImageFit: boolean;
     protected _useLegacyBooleanRendering: boolean
@@ -276,7 +275,6 @@ export class DocOptions implements IDocOptions {
         this._htmlRenderAs = options.htmlRenderAs || 'auto';
         this._matrixRenderAs = options.matrixRenderAs || 'auto';
         this._readonlyRenderAs = options.readonlyRenderAs || 'auto';
-        this._textFieldRenderAs = options.textFieldRenderAs || 'singleLine';
         this._compress = options.compress || false;
         this._applyImageFit = options.applyImageFit || false;
         this._useLegacyBooleanRendering = options.useLegacyBooleanRendering || false;
@@ -320,9 +318,6 @@ export class DocOptions implements IDocOptions {
     public get readonlyRenderAs(): 'auto' | 'text' | 'acroform' {
         return this._readonlyRenderAs;
     }
-    public get textFieldRenderAs(): 'singleLine' | 'multiLine' {
-        return this._textFieldRenderAs;
-    }
     public get compress(): boolean {
         return this._compress;
     }
@@ -336,7 +331,7 @@ export class DocOptions implements IDocOptions {
 
 /**
  * The `DocController` object includes an API that allows you to configure the resulting PDF document. You can access this object within functions that handle the `SurveyPDF`'s [`onRender...`](https://surveyjs.io/pdf-generator/documentation/api-reference/surveypdf#onRenderFooter) events.
- * 
+ *
  * [View Demo](https://surveyjs.io/pdf-generator/examples/how-to-use-adorners-in-pdf-forms/ (linkStyle))
  */
 export class DocController extends DocOptions {

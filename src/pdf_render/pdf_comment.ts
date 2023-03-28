@@ -8,6 +8,7 @@ export class CommentBrick extends TextBoxBrick {
         super(question, controller, rect, isQuestion, true, index);
     }
     protected shouldRenderFlatBorders(): boolean {
+        if(this.isQuestion && this.question.getType() !== 'comment') return super.shouldRenderFlatBorders();
         return settings.readOnlyCommentRenderMode === 'textarea';
     }
 }
