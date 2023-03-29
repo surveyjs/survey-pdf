@@ -241,7 +241,7 @@ survey.onRenderFooter.add((_, canvas) => {
     fontSize: 10
   });
   canvas.drawText({
-    text: canvas.pageNumber + "/" + canvas.countPages,
+    text: canvas.pageNumber + "/" + canvas.pageCount,
     fontSize: 10,
     horizontalAlign: "right",
     margins: {

@@ -20,7 +20,7 @@ _Event parameter options:_
 `DrawCanvas.drawText()`  
 `DrawCanvas.drawImage()`  
 `DrawCanvas.pageNumber`  
-`DrawCanvas.countPages`
+`DrawCanvas.pageCount`
 
 <a id="handle-events"></a>
 ## Handle events
@@ -151,8 +151,8 @@ survey.onRenderHeader.add(function (survey, canvas) {
 
 You can add page numbering information into a document's headers/footers. Use the `DrawCanvas` object's specific properties to obtain page-related information.
 
-[countPages](https://surveyjs.io/Documentation/Pdf-Export?id=drawcanvas#countPages) property  
-`countPages: number`   
+[pageCount](https://surveyjs.io/pdf-generator/documentation/api-reference/drawcanvas#pageCount) property  
+`pageCount: number`   
 Gets the total count of pages in the PDF document.
 
 [pageNumber](https://surveyjs.io/Documentation/Pdf-Export?id=drawcanvas#pageNumber) property  
@@ -164,7 +164,7 @@ Example:
 ```javascript
 survey.onRenderHeader.add(function (survey, canvas) {
     canvas.drawText({
-        text: canvas.pageNumber + "/" + canvas.countPages
+        text: canvas.pageNumber + "/" + canvas.pageCount
     });
 });
 ```
@@ -201,7 +201,7 @@ Example:
 ```javascript
 survey.onRenderFooter.add(function (survey, canvas) {
     canvas.drawText({
-        text: canvas.pageNumber + "/" + canvas.countPages,
+        text: canvas.pageNumber + "/" + canvas.pageCount,
         horizontalAlign: "right",
         verticalAlign: "bottom",
         margins: {
