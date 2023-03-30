@@ -1,4 +1,4 @@
-import { IQuestion, PanelModel, PageModel } from 'survey-core';
+import { IQuestion, PanelModel, PageModel, Question } from 'survey-core';
 import { IPoint, DocController } from '../doc_controller';
 import { FlatRepository } from '../flat_layout/flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
@@ -20,9 +20,9 @@ export class AdornersBaseOptions {
     }
 }
 export class AdornersOptions extends AdornersBaseOptions {
-    public question: IQuestion;
+    public question: Question;
     public constructor(point: IPoint, bricks: IPdfBrick[],
-        question: IQuestion, controller: DocController,
+        question: Question, controller: DocController,
         repository: FlatRepository, module: any) {
         super(point, bricks, controller, repository, module);
         this.question = question;
