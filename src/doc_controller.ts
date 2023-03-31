@@ -187,6 +187,8 @@ export interface IDocOptions {
 
     /**
      * Specifies whether to compress the PDF document. Compressed documents do not support [custom fonts](https://surveyjs.io/Documentation/Pdf-Export?id=Customization-ChangeFonts#use-custom-font).
+     *
+     * Default value: `false`
      */
     compress?: boolean;
 
@@ -196,6 +198,12 @@ export interface IDocOptions {
      * If you enable the `applyImageFit` property, the quality of images may be lower because they pass through several conversions. If `applyImageFit` is disabled, exported images fill the entire container and do not preserve their aspect ratio, but their quality remains the same because they are exported as is.
      */
     applyImageFit?: boolean;
+
+    /**
+     * Specifies whether the PDF document contains text in right-to-left languages.
+     *
+     * Default value: `false`
+     */
     isRTL?: boolean;
 }
 
