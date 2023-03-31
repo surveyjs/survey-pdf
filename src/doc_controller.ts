@@ -223,7 +223,6 @@ export class DocOptions implements IDocOptions {
     protected _htmlRenderAs: IHTMLRenderType;
     protected _matrixRenderAs: 'auto' | 'list';
     protected _readonlyRenderAs: 'auto' | 'text' | 'acroform';
-    protected _textFieldRenderAs: 'singleLine' | 'multiLine';
     protected _compress: boolean;
     protected _applyImageFit: boolean;
     protected _useLegacyBooleanRendering: boolean
@@ -286,7 +285,6 @@ export class DocOptions implements IDocOptions {
         this._htmlRenderAs = options.htmlRenderAs || 'auto';
         this._matrixRenderAs = options.matrixRenderAs || 'auto';
         this._readonlyRenderAs = options.readonlyRenderAs || 'auto';
-        this._textFieldRenderAs = options.textFieldRenderAs || 'singleLine';
         this._compress = options.compress || false;
         this._applyImageFit = options.applyImageFit || false;
         this._useLegacyBooleanRendering = options.useLegacyBooleanRendering || false;
@@ -330,9 +328,6 @@ export class DocOptions implements IDocOptions {
     }
     public get readonlyRenderAs(): 'auto' | 'text' | 'acroform' {
         return this._readonlyRenderAs;
-    }
-    public get textFieldRenderAs(): 'singleLine' | 'multiLine' {
-        return this._textFieldRenderAs;
     }
     public get compress(): boolean {
         return this._compress;

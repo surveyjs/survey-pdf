@@ -7,12 +7,16 @@ import { DocController } from '../src/doc_controller';
 import { FlatTextbox } from '../src/flat_layout/flat_textbox';
 import { FlatComment } from '../src/flat_layout/flat_comment';
 import { TestHelper } from '../src/helper_test';
+import { CommentBrick } from '../src/pdf_render/pdf_comment';
+import { QuestionCommentModel, QuestionDropdownModel, QuestionTextModel } from 'survey-core';
+import { settings } from 'survey-core';
 let __dummy_tx = new FlatTextbox(null, null, null);
 let __dummy_cm = new FlatComment(null, null, null);
 
 async function checkTextboxValue(json: any, tobe: string,
     data: any = null, tobeDef: string = null, readOnly: boolean = false) {
-  	let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+
     if (data !== null) {
         survey.data = data;
     }
@@ -36,9 +40,9 @@ test('Set textbox no value', async () => {
     let json: any = {
         questions: [
             {
-        		name: 'textbox',
-        		type: 'text',
-        		title: 'NoValue:'
+                name: 'textbox',
+                type: 'text',
+                title: 'NoValue:'
             }
         ]
     };
@@ -231,7 +235,38 @@ test('Set comment no value', async () => {
     };
     await checkTextboxValue(json, ' ');
 });
-test('Dropdown display value with rtl', async () => {
+test('Check comment shouldRenderBoders method', async () => {
+    const commentQuestion = new QuestionCommentModel('');
+    const textQuestion = new QuestionTextModel('');
+    const dropdownQuestion = new QuestionDropdownModel('');
+    const controller = new DocController();
+    expect(new CommentBrick(commentQuestion, controller, { yTop: 0, xLeft: 0, yBot: 10, xRight: 10 }, true)['shouldRenderFlatBorders']()).toBeTruthy();
+    expect(new CommentBrick(textQuestion, controller, { yTop: 0, xLeft: 0, yBot: 10, xRight: 10 }, true)['shouldRenderFlatBorders']()).toBeTruthy();
+    expect(new CommentBrick(dropdownQuestion, controller, { yTop: 0, xLeft: 0, yBot: 10, xRight: 10 }, false)['shouldRenderFlatBorders']()).toBeTruthy();
+    const oldReadOnlyCommentRenderMode = settings.readOnlyCommentRenderMode;
+    const oldReadOnlyTextRenderMode = settings.readOnlyTextRenderMode;
+
+    settings.readOnlyCommentRenderMode = 'div';
+    expect(new CommentBrick(commentQuestion, controller, { yTop: 0, xLeft: 0, yBot: 10, xRight: 10 }, true)['shouldRenderFlatBorders']()).toBeFalsy();
+    expect(new CommentBrick(textQuestion, controller, { yTop: 0, xLeft: 0, yBot: 10, xRight: 10 }, true)['shouldRenderFlatBorders']()).toBeTruthy();
+    expect(new CommentBrick(dropdownQuestion, controller, { yTop: 0, xLeft: 0, yBot: 10, xRight: 10 }, false)['shouldRenderFlatBorders']()).toBeFalsy();
+
+    settings.readOnlyCommentRenderMode = 'textarea';
+    settings.readOnlyTextRenderMode = 'div';
+    expect(new CommentBrick(commentQuestion, controller, { yTop: 0, xLeft: 0, yBot: 10, xRight: 10 }, true)['shouldRenderFlatBorders']()).toBeTruthy();
+    expect(new CommentBrick(textQuestion, controller, { yTop: 0, xLeft: 0, yBot: 10, xRight: 10 }, true)['shouldRenderFlatBorders']()).toBeFalsy();
+    expect(new CommentBrick(dropdownQuestion, controller, { yTop: 0, xLeft: 0, yBot: 10, xRight: 10 }, false)['shouldRenderFlatBorders']()).toBeTruthy();
+
+    settings.readOnlyCommentRenderMode = 'div';
+
+    expect(new CommentBrick(commentQuestion, controller, { yTop: 0, xLeft: 0, yBot: 10, xRight: 10 }, true)['shouldRenderFlatBorders']()).toBeFalsy();
+    expect(new CommentBrick(textQuestion, controller, { yTop: 0, xLeft: 0, yBot: 10, xRight: 10 }, true)['shouldRenderFlatBorders']()).toBeFalsy();
+    expect(new CommentBrick(dropdownQuestion, controller, { yTop: 0, xLeft: 0, yBot: 10, xRight: 10 }, false)['shouldRenderFlatBorders']()).toBeFalsy();
+
+    settings.readOnlyTextRenderMode = oldReadOnlyTextRenderMode;
+    settings.readOnlyCommentRenderMode = oldReadOnlyCommentRenderMode;
+});
+test('Text question display value with rtl', async () => {
     let json: any = {
         questions: [
             {

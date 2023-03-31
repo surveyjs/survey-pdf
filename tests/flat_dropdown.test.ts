@@ -2,7 +2,7 @@
     return {};
 };
 
-import { Question } from 'survey-core';
+import { Question, QuestionDropdownModel } from 'survey-core';
 import { SurveyPDF } from '../src/survey';
 import { IPoint, IRect, DocController } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
@@ -89,16 +89,16 @@ test('Check readonly text expends when textFieldRenderAs option set', async () =
     const json = {
         elements: [
             {
-             type: "dropdown",
-             choices: [
-              {
-               value: "item1",
-               text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"
-              }
-             ],
-             defaultValue: "item1",
-             titleLocation: 'hidden',
-             readOnly: true
+                type: 'dropdown',
+                choices: [
+                    {
+                        value: 'item1',
+                        text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"
+                    }
+                ],
+                defaultValue: 'item1',
+                titleLocation: 'hidden',
+                readOnly: true
             }
         ]
     };
@@ -121,15 +121,15 @@ test('Check dropdown when survey mode is display and textFieldRenderAs is multil
     const json = {
         elements: [
             {
-             type: 'dropdown',
-             choices: [
-              {
-               value: 'item1',
-               text: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s'
-              }
-             ],
-             defaultValue: 'item1',
-             titleLocation: 'hidden'
+                type: 'dropdown',
+                choices: [
+                    {
+                        value: 'item1',
+                        text: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s'
+                    }
+                ],
+                defaultValue: 'item1',
+                titleLocation: 'hidden'
             }
         ]
     };
@@ -148,4 +148,15 @@ test('Check dropdown when survey mode is display and textFieldRenderAs is multil
     const secondRect: IRect = await SurveyHelper.createReadOnlyTextFieldTextFlat(textPoint, controller, question, question.displayValue, false);
     firstRect.yBot = secondRect.yBot + controller.unitHeight * SurveyHelper.VALUE_READONLY_PADDING_SCALE;
     TestHelper.equalRect(expect, flats[0][0], firstRect);
+});
+
+test('Check shouldRenderAsComment flag for text flat', async () => {
+    const question = new QuestionDropdownModel('');
+    const controller = new DocController({});
+    const flat = new FlatDropdown(<any>undefined, question, controller);
+    expect(flat['shouldRenderAsComment']).toBeFalsy();
+    question.readOnly = true;
+    expect(flat['shouldRenderAsComment']).toBeTruthy();
+    question.readonlyRenderAs = 'acroform';
+    expect(flat['shouldRenderAsComment']).toBeFalsy();
 });
