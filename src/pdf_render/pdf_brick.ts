@@ -9,9 +9,9 @@ export interface IPdfBrick extends IRect, ISize {
 }
 /**
  * An object that describes a PDF brick&mdash;a simple element with specified content, size, and location. Bricks are fundamental elements used to construct a PDF document.
- * 
+ *
  * You can access `PdfBrick` objects within functions that handle `SurveyPDF`'s [`onRenderQuestion`](https://surveyjs.io/pdf-generator/documentation/api-reference/surveypdf#onRenderQuestion), [`onRenderPanel`](https://surveyjs.io/pdf-generator/documentation/api-reference/surveypdf#onRenderPanel), and [`onRenderPage`](https://surveyjs.io/pdf-generator/documentation/api-reference/surveypdf#onRenderPage) events.
- * 
+ *
  * [View Demo](https://surveyjs.io/pdf-generator/examples/add-markup-to-customize-pdf-forms/ (linkStyle))
  */
 export class PdfBrick implements IPdfBrick {
@@ -33,7 +33,7 @@ export class PdfBrick implements IPdfBrick {
     public yBot: number;
     /**
      * Font size in points.
-     * 
+     *
      * Default value: 14 (inherited from the parent PDF document)
      */
     public fontSize: number;
@@ -78,5 +78,8 @@ export class PdfBrick implements IPdfBrick {
      */
     public unfold(): IPdfBrick[] {
         return [this];
+    }
+    protected getCorrectedText(val: string): string {
+        return this.controller.isRTL ? (val || '').split('').reverse().join(''): val;
     }
 }

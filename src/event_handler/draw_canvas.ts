@@ -26,9 +26,9 @@ export enum VerticalAlign {
 export interface IDrawRectOptions {
     /**
      * Horizontal alignment within the rectangle that limits the drawing area.
-     * 
+     *
      * Possible values:
-     * 
+     *
      * - `"center"` (default)
      * - `"left"`
      * - `"right"`
@@ -36,9 +36,9 @@ export interface IDrawRectOptions {
     horizontalAlign?: HorizontalAlign;
     /**
      * Vertical alignment within the rectangle that limits the drawing area.
-     * 
+     *
      * Possible values:
-     * 
+     *
      * - `"middle"` (default)
      * - `"top"`
      * - `"bottom"`
@@ -63,13 +63,13 @@ export interface IDrawTextOptions extends IDrawRectOptions {
     text: string;
     /**
      * Font size in points.
-     * 
+     *
      * Default value: 14
      */
     fontSize?: number;
     /**
      * Enable this property to render the text string bold.
-     * 
+     *
      * Default value: `false`
      */
     isBold?: boolean;
@@ -94,7 +94,7 @@ export interface IDrawImageOptions extends IDrawRectOptions {
 
 /**
  * An object that describes a drawing area and enables you to draw an image or a piece of text within the area. You can access this object within functions that handle `SurveyPDF`'s [`onRenderHeader`](https://surveyjs.io/pdf-generator/documentation/api-reference/surveypdf#onRenderHeader) and [`onRenderFooter`](https://surveyjs.io/pdf-generator/documentation/api-reference/surveypdf#onRenderFooter) events.
- * 
+ *
  * [View Demo](https://surveyjs.io/pdf-generator/examples/customize-header-and-footer-of-pdf-form/ (linkStyle))
  */
 export class DrawCanvas {
