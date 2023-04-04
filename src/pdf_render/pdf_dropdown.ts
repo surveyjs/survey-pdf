@@ -22,10 +22,10 @@ export class DropdownBrick extends PdfBrick {
         comboBox.color = this.textColor;
         const options: string[] = [];
         if (this.question.showOptionsCaption) {
-            options.push(this.question.optionsCaption);
+            options.push(this.getCorrectedText(this.question.optionsCaption));
         }
         this.question.visibleChoices.forEach((item: ItemValue) => {
-            options.push(SurveyHelper.getLocString(item.locText));
+            options.push(this.getCorrectedText(SurveyHelper.getLocString(item.locText)));
         });
         comboBox.setOptions(options);
         comboBox.fontName = this.controller.fontName;
@@ -33,7 +33,7 @@ export class DropdownBrick extends PdfBrick {
         comboBox.readOnly = this.question.isReadOnly;
         comboBox.isUnicode = SurveyHelper.isCustomFont(
             this.controller, comboBox.fontName);
-        comboBox.V = SurveyHelper.getDropdownQuestionValue(this.question);
+        comboBox.V = this.getCorrectedText(SurveyHelper.getDropdownQuestionValue(this.question));
         this.controller.doc.addField(comboBox);
         SurveyHelper.renderFlatBorders(this.controller, this);
     }

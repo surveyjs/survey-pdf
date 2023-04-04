@@ -79,4 +79,7 @@ export class PdfBrick implements IPdfBrick {
     public unfold(): IPdfBrick[] {
         return [this];
     }
+    protected getCorrectedText(val: string): string {
+        return this.controller.isRTL ? (val || '').split('').reverse().join(''): val;
+    }
 }

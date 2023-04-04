@@ -94,3 +94,39 @@ test('check that save functions called sync', async (done) => {
         done();
     }, 1000);
 });
+
+test('Check surveyPDF onDocControllerCreated event', async (done) => {
+    const surveyPDF = new SurveyPDF({});
+    surveyPDF.onDocControllerCreated.add((sender, options) => {
+        expect(sender).toBe(surveyPDF);
+        expect(options.controller instanceof DocController).toBeTruthy();
+        done();
+    });
+    surveyPDF.save();
+
+});
+
+test('Check surveyPDF isRTL options', async (done) => {
+    let surveyPDF = new SurveyPDF({});
+    surveyPDF.onDocControllerCreated.add((sender, options) => {
+        expect(options.controller.isRTL).toBe(false);
+        expect(options.controller.doc.getR2L()).toBeFalsy();
+        expect(options.controller.helperDoc.getR2L()).toBeFalsy();
+    });
+    surveyPDF.save();
+    surveyPDF = new SurveyPDF({}, { isRTL: true });
+    surveyPDF.onDocControllerCreated.add((sender, options) => {
+        expect(options.controller.isRTL).toBe(true);
+        expect(options.controller.doc.getR2L()).toBeTruthy();
+        expect(options.controller.helperDoc.getR2L()).toBeTruthy();
+    });
+    surveyPDF.save();
+    surveyPDF = new SurveyPDF({}, { isRTL: false });
+    surveyPDF.onDocControllerCreated.add((sender, options) => {
+        expect(options.controller.isRTL).toBe(false);
+        expect(options.controller.doc.getR2L()).toBeFalsy();
+        expect(options.controller.helperDoc.getR2L()).toBeFalsy();
+        done();
+    });
+    surveyPDF.save();
+});

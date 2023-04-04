@@ -187,6 +187,8 @@ export interface IDocOptions {
 
     /**
      * Specifies whether to compress the PDF document. Compressed documents do not support [custom fonts](https://surveyjs.io/Documentation/Pdf-Export?id=Customization-ChangeFonts#use-custom-font).
+     *
+     * Default value: `false`
      */
     compress?: boolean;
 
@@ -196,6 +198,13 @@ export interface IDocOptions {
      * If you enable the `applyImageFit` property, the quality of images may be lower because they pass through several conversions. If `applyImageFit` is disabled, exported images fill the entire container and do not preserve their aspect ratio, but their quality remains the same because they are exported as is.
      */
     applyImageFit?: boolean;
+
+    /**
+     * Specifies whether the PDF document contains text in right-to-left languages.
+     *
+     * Default value: `false`
+     */
+    isRTL?: boolean;
 }
 
 export class DocOptions implements IDocOptions {
@@ -217,6 +226,7 @@ export class DocOptions implements IDocOptions {
     protected _compress: boolean;
     protected _applyImageFit: boolean;
     protected _useLegacyBooleanRendering: boolean
+    protected _isRTL: boolean;
     public constructor(options: IDocOptions) {
         if (typeof options.orientation === 'undefined') {
             if (typeof options.format === 'undefined' ||
@@ -278,6 +288,7 @@ export class DocOptions implements IDocOptions {
         this._compress = options.compress || false;
         this._applyImageFit = options.applyImageFit || false;
         this._useLegacyBooleanRendering = options.useLegacyBooleanRendering || false;
+        this._isRTL = options.isRTL || false;
     }
     public get leftTopPoint(): IPoint {
         return {
@@ -327,6 +338,9 @@ export class DocOptions implements IDocOptions {
     public get useLegacyBooleanRendering(): boolean {
         return this._useLegacyBooleanRendering;
     }
+    public get isRTL(): boolean {
+        return this._isRTL;
+    }
 }
 
 /**
@@ -343,7 +357,9 @@ export class DocController extends DocOptions {
         super(options);
         const jspdfOptions: jsPDFOptions = {
             orientation: this.orientation,
-            unit: 'pt', format: this.format, compress: this.compress
+            unit: 'pt',
+            format: this.format,
+            compress: this.compress
         };
         this._doc = new jsPDF(jspdfOptions);
         if (typeof this.base64Normal !== 'undefined' && !SurveyHelper.isFontExist(this, this.fontName)) {
@@ -357,6 +373,8 @@ export class DocController extends DocOptions {
         this._helperDoc.setFont(this.fontName);
         this._doc.setFontSize(this.fontSize);
         this._helperDoc.setFontSize(this.fontSize);
+        this._doc.setR2L(this.isRTL);
+        this._helperDoc.setR2L(this.isRTL);
         this._fontStyle = 'normal';
         this.marginsStack = [];
     }

@@ -16,6 +16,7 @@ let __dummy_cm = new FlatComment(null, null, null);
 async function checkTextboxValue(json: any, tobe: string,
     data: any = null, tobeDef: string = null, readOnly: boolean = false) {
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+
     if (data !== null) {
         survey.data = data;
     }
@@ -222,20 +223,18 @@ test('Check readOnly textbox', async () => {
     };
     await checkTextboxValue(json, ' ', null, ' ', true);
 });
-test('Set comment no value',
-    async () => {
-        let json: any = {
-            questions: [
-                {
-                    name: 'comment_novalue',
-                    type: 'comment',
-                    title: 'NoValue:'
-                }
-            ]
-        };
-        await checkTextboxValue(json, ' ');
-    });
-
+test('Set comment no value', async () => {
+    let json: any = {
+        questions: [
+            {
+                name: 'comment_novalue',
+                type: 'comment',
+                title: 'NoValue:'
+            }
+        ]
+    };
+    await checkTextboxValue(json, ' ');
+});
 test('Check comment shouldRenderBoders method', async () => {
     const commentQuestion = new QuestionCommentModel('');
     const textQuestion = new QuestionTextModel('');
@@ -266,4 +265,20 @@ test('Check comment shouldRenderBoders method', async () => {
 
     settings.readOnlyTextRenderMode = oldReadOnlyTextRenderMode;
     settings.readOnlyCommentRenderMode = oldReadOnlyCommentRenderMode;
+});
+test('Text question display value with rtl', async () => {
+    let json: any = {
+        questions: [
+            {
+                name: 'dropdown_displayvalue',
+                type: 'text',
+                defaultValue: 'Value',
+            }
+        ]
+    };
+    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    controller['_isRTL'] = true;
+    await survey['renderSurvey'](controller);
+    expect(controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields[0].value).toBe(' ' + 'eulaV');
 });
