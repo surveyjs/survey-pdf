@@ -12,6 +12,9 @@ import { RowlineBrick } from '../src/pdf_render/pdf_rowline';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 import { ImageBrick } from '../src/pdf_render/pdf_image';
+import { ElementFactory, Question, Serializer } from 'survey-core';
+import { FlatRepository } from '../src/flat_layout/flat_repository';
+import { FlatQuestionDefault } from '../src/flat_layout/flat_default';
 const __dummy_tx = new FlatTextbox(null, null, null);
 
 test('Survey with title', async () => {
@@ -358,4 +361,43 @@ test('Survey with logo and pages', async () => {
     expect(flats[1].length).toBe(1);
     expect(flats[1][0].yTop).toBe(controller.leftTopPoint.yTop);
     expect(flats[1][0].xLeft).toBe(controller.leftTopPoint.xLeft);
+});
+
+test('Check default renderer for custom questions', async () => {
+    const CUSTOM_TYPE = 'test';
+    const json = {
+        elements: [
+            {
+                type: CUSTOM_TYPE,
+                name: 'q1'
+            }
+        ]
+    };
+    class CustomQuestionModel extends Question {
+        getType() {
+            return CUSTOM_TYPE;
+        }
+    }
+    Serializer.addClass(
+        CUSTOM_TYPE,
+        [],
+        function () {
+            return new CustomQuestionModel('');
+        },
+        'question'
+    );
+
+    ElementFactory.Instance.registerElement(CUSTOM_TYPE, (name: string) => {
+        return new CustomQuestionModel(name);
+    });
+    const survey = new SurveyPDF(json);
+    survey.data = {
+        'q1': 'test_value'
+    };
+    const question = survey.getAllQuestions()[0];
+    const controller = new DocController();
+    const questionFlat = FlatRepository.getInstance().create(survey, question, controller, 'test');
+    expect(questionFlat).toBeInstanceOf(FlatQuestionDefault);
+    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    expect((<any>flats[0][0].unfold()[3]).text).toBe('test_value');
 });

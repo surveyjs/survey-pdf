@@ -1,7 +1,8 @@
-import { IQuestion } from 'survey-core';
+import { IQuestion, Question } from 'survey-core';
 import { SurveyPDF } from '../survey';
 import { DocController } from '../doc_controller';
 import { IFlatQuestion, FlatQuestion } from './flat_question';
+import { FlatQuestionDefault } from './flat_default';
 
 export type FlatConstructor = new (
     survey: SurveyPDF,
@@ -20,10 +21,17 @@ export class FlatRepository {
     public isTypeRegistered(type: string): boolean {
         return !!this.questions[type];
     }
-    public create(survey: SurveyPDF, question: IQuestion,
+    public create(survey: SurveyPDF, question: Question,
         docController: DocController, type?: string): IFlatQuestion {
         const questionType: string = typeof type === 'undefined' ? question.getType() : type;
-        const rendererConstructor: FlatConstructor = this.questions[questionType] || FlatQuestion;
+        let rendererConstructor: FlatConstructor = this.questions[questionType];
+        if(!rendererConstructor) {
+            if(!!question.customWidget?.pdfRender) {
+                rendererConstructor = FlatQuestion;
+            } else {
+                rendererConstructor = FlatQuestionDefault;
+            }
+        }
         return new rendererConstructor(survey, question, docController);
     }
 }
