@@ -21,10 +21,13 @@ export class FlatRepository {
     public isTypeRegistered(type: string): boolean {
         return !!this.questions[type];
     }
+    public getRenderer(type: string): FlatConstructor {
+        return this.questions[type];
+    }
     public create(survey: SurveyPDF, question: Question,
         docController: DocController, type?: string): IFlatQuestion {
         const questionType: string = typeof type === 'undefined' ? question.getType() : type;
-        let rendererConstructor: FlatConstructor = this.questions[questionType];
+        let rendererConstructor = this.getRenderer(questionType);
         if(!rendererConstructor) {
             if(!!question.customWidget?.pdfRender) {
                 rendererConstructor = FlatQuestion;
@@ -33,5 +36,11 @@ export class FlatRepository {
             }
         }
         return new rendererConstructor(survey, question, docController);
+    }
+    public static register(type: string, rendererConstructor: FlatConstructor): void {
+        this.getInstance().register(type, rendererConstructor);
+    }
+    public static getRenderer(type: string): FlatConstructor {
+        return this.getInstance().getRenderer(type);
     }
 }
