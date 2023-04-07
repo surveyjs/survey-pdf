@@ -1,32 +1,43 @@
 ---
-title: Export custom questions | SurveyJS
-description: Export custom and third-party widgets to a PDF form.
+title: Export Custom Questions to PDF | SurveyJS PDF Generator
+description: Learn how to export custom questions and third-party components to a PDF form.
 ---
-# Export Custom Questions to PDF
 
-This help topic describes how to export a custom question type to PDF.
+# Export Custom Questions and Third-Party Components to PDF
 
-If you implement a [custom question](https://surveyjs.io/survey-creator/documentation/customize-question-types/third-party-component-integration-react) and export a survey to PDF, you can use either option to export custom questions to PDF.
+This help topic describes how to export custom questions that use [third-party components](https://surveyjs.io/survey-creator/documentation/customize-question-types/third-party-component-integration-react) to PDF. You can export custom questions as plain text, use a predefined renderer to export a custom question as an out-of-the-box question, or implement a custom PDF brick to customize the export as you like.
 
-### Use Default Rendering
-The SurveyJS PDF library renders a custom component's `value` as a text field by default.
+## Render Custom Questions as Text
 
-### Use a Standard SurveyJS Question Renderer
-If you derive your custom question from one of the standard Survey questions (for instance, from a [QuestionTextModel](https://surveyjs.io/form-library/documentation/api-reference/text-entry-question-model)), you can export a custom component as one of the [standard question](https://github.com/surveyjs/survey-pdf/tree/1c6c73528b18fbf70533933e265a250eab5e9a80/src/flat_layout) types. For instance, the following code registers a Text Box question PDF renderer for a custom `color-picker` question.
+SurveyJS PDF Generator exports custom questions as plain non-editable text that displays question values.
+
+![SurveyJS PDF Generator - Render custom questions as text](images/export-custom-question-as-text.png)
+
+Since this is the default behavior, you do not need to specifically configure it.
+
+## Use a Predefined Renderer
+
+If your custom question extends one of the out-of-the-box question types ([`QuestionTextModel`](https://surveyjs.io/form-library/documentation/api-reference/text-entry-question-model), [`QuestionCheckboxModel`](https://surveyjs.io/form-library/documentation/api-reference/checkbox-question-model), [`QuestionDropdownModel`](https://surveyjs.io/form-library/documentation/api-reference/dropdown-menu-model), etc.), you can use the same renderer used by the extended question type. For instance, the following code specifies to use a Text Input question renderer to export a custom `color-picker` question:
+
 ```js
-// TODO: Instead of using undocumented FlatTextbox, create a new API function: https://github.com/surveyjs/survey-pdf/issues/218
-import { FlatRepository, FlatTextbox } from "survey-pdf";
+import { FlatRepository } from "survey-pdf";
 
-FlatRepository.getInstance().register('color-picker', 
-  FlatTextbox
+FlatRepository.register(
+  "color-picker",
+  FlatRepository.getRenderer("text")
 );
 ```
-[Example](https://codesandbox.io/s/amazing-fast-kb5lkq?file=/src/SurveyPdfComponent.jsx)
 
-### Use a Custom Brick
-If none of the standard options suits you, you can use [jspdf API](https://raw.githack.com/MrRio/jsPDF/master/docs/index.html) to render the content of your custom component.
+The image below illustrates the result:
 
-The following code registers a custom PDF brick for a `color-picker` question type. The `renderInteractive` function calls the [setFillColor](https://artskydj.github.io/jsPDF/docs/jsPDF.html#setFillColor) and [rect](https://artskydj.github.io/jsPDF/docs/jsPDF.html#rect) function of [a jsPDF document instance](https://artskydj.github.io/jsPDF/docs/jsPDF.html) to render a custom Color question as a rectangle filled in with a selected color.
+![SurveyJS PDF Generator - Export custom questions using a predefined renderer](images/export-custom-question-with-predefined-renderer.png)
+
+<!-- TODO: Update the example to use the new API -->
+<!-- [Example](https://codesandbox.io/s/amazing-fast-kb5lkq?file=/src/SurveyPdfComponent.jsx) -->
+
+## Implement a Custom PDF Brick
+
+If none of the previous options suit your scenario, you can implement a custom PDF brick that uses a [jsPDF API](https://raw.githack.com/MrRio/jsPDF/master/docs/jsPDF.html) to render your custom question. Create a custom class that extends the [`PdfBrick`](https://surveyjs.io/pdf-generator/documentation/api-reference/pdfbrick) class. Within this custom class, implement the `renderInteractive()` method. In the following code, it calls the [`setFillColor()`](https://artskydj.github.io/jsPDF/docs/jsPDF.html#setFillColor) and [`rect()`](https://artskydj.github.io/jsPDF/docs/jsPDF.html#rect) jsPDF methods to render a custom Color question as a rectangle filled with a selected color.
 
 ```js
 class CustomPdfBrick extends PdfBrick {
@@ -38,6 +49,14 @@ class CustomPdfBrick extends PdfBrick {
     doc.setFillColor(oldFillColor);
   }
 }
+```
+
+To use this custom PDF brick, you need to configure a custom renderer. Create a custom class by extending the `FlatQuestion` class and implement the `generateFlatsContent()` method within it. This method accepts a point at which drawing starts and returns an array of PDF bricks. Register the custom class as a renderer for your custom question type (`"color-picker"` in the code below).
+
+```js
+import { FlatRepository } from "survey-pdf";
+
+/** Custom PDF brick configuration goes here */
 
 class FlatCustomColor extends FlatQuestion {
   async generateFlatsContent(point) {
@@ -48,7 +67,12 @@ class FlatCustomColor extends FlatQuestion {
   }
 }
 
-FlatRepository.getInstance().register(CUSTOM_TYPE, FlatCustomColor);
+FlatRepository.register("color-picker", FlatCustomColor);
 ```
-[Example](https://codesandbox.io/s/trusting-golick-7uzd59?file=/src/SurveyPdfComponent.jsx)
 
+The following image demonstrates the exported PDF document:
+
+![SurveyJS PDF Generator - Export custom questions using a custom PDF brick](images/export-custom-question-with-custom-pdf-brick.png)
+
+<!-- TODO: Update the example to use the new API -->
+<!-- [Example](https://codesandbox.io/s/trusting-golick-7uzd59?file=/src/SurveyPdfComponent.jsx) -->

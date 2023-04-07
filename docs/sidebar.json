@@ -67,7 +67,11 @@
     {
       "Name": "Save-Pdf",
       "Title": "Save PDF"
-    },    
+    },
+    {
+      "Name": "export-custom-components",
+      "Title": "Export Custom Questions and Third-Party Components"
+    },
     {
       "Name": "PDF-Export-API",
       "Title": "PDF Generator API",
