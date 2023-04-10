@@ -17,7 +17,7 @@ Since this is the default behavior, you do not need to specifically configure it
 
 ## Use a Predefined Renderer
 
-If your custom question extends one of the out-of-the-box question types ([`QuestionTextModel`](https://surveyjs.io/form-library/documentation/api-reference/text-entry-question-model), [`QuestionCheckboxModel`](https://surveyjs.io/form-library/documentation/api-reference/checkbox-question-model), [`QuestionDropdownModel`](https://surveyjs.io/form-library/documentation/api-reference/dropdown-menu-model), etc.), you can use the same renderer used by the extended question type. For instance, the following code specifies to use a Text Input question renderer to export a custom `color-picker` question:
+If your custom question extends one of the out-of-the-box question types ([`QuestionTextModel`](https://surveyjs.io/form-library/documentation/api-reference/text-entry-question-model), [`QuestionCheckboxModel`](https://surveyjs.io/form-library/documentation/api-reference/checkbox-question-model), [`QuestionDropdownModel`](https://surveyjs.io/form-library/documentation/api-reference/dropdown-menu-model), etc.), it can use the renderer of the extended question type. For instance, the following code specifies to use a Text Input question renderer to export a custom `color-picker` question:
 
 ```js
 import { FlatRepository } from "survey-pdf";
@@ -51,7 +51,7 @@ class CustomPdfBrick extends PdfBrick {
 }
 ```
 
-To use this custom PDF brick, you need to configure a custom renderer. Create a custom class by extending the `FlatQuestion` class and implement the `generateFlatsContent()` method within it. This method accepts a point at which drawing starts and returns an array of PDF bricks. Register the custom class as a renderer for your custom question type (`"color-picker"` in the code below).
+To use this custom PDF brick, you need to configure a custom renderer. Create a custom class that extends the `FlatQuestion` class and implement the `generateFlatsContent()` method within it. This method accepts a drawing start point and returns an array of PDF bricks. Register the custom class as a renderer for your custom question type (`"color-picker"` in the code below).
 
 ```js
 import { FlatRepository } from "survey-pdf";
