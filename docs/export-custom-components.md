@@ -17,7 +17,8 @@ Since this is the default behavior, you do not need to specifically configure it
 
 ## Use a Predefined Renderer
 
-If your custom question extends one of the out-of-the-box question types ([`QuestionTextModel`](https://surveyjs.io/form-library/documentation/api-reference/text-entry-question-model), [`QuestionCheckboxModel`](https://surveyjs.io/form-library/documentation/api-reference/checkbox-question-model), [`QuestionDropdownModel`](https://surveyjs.io/form-library/documentation/api-reference/dropdown-menu-model), etc.), it can use the renderer of the extended question type. For instance, the following code specifies to use a Text Input question renderer to export a custom `color-picker` question:
+If your custom question extends one of the out-of-the-box question types ([`QuestionTextModel`](https://surveyjs.io/form-library/documentation/api-reference/text-entry-question-model), [`QuestionCheckboxModel`](https://surveyjs.io/form-library/documentation/api-reference/checkbox-question-model), [`QuestionDropdownModel`](https://surveyjs.io/form-library/documentation/api-reference/dropdown-menu-model), etc.), it can use the renderer of the extended question type. For instance, the following code specifies the use of a Text Input question renderer to export a custom `color-picker` question:
+
 
 ```js
 import { FlatRepository } from "survey-pdf";
@@ -37,7 +38,8 @@ The image below illustrates the result:
 
 ## Implement a Custom PDF Brick
 
-If none of the previous options suit your scenario, you can implement a custom PDF brick that uses a [jsPDF API](https://raw.githack.com/MrRio/jsPDF/master/docs/jsPDF.html) to render your custom question. Create a custom class that extends the [`PdfBrick`](https://surveyjs.io/pdf-generator/documentation/api-reference/pdfbrick) class. Within this custom class, implement the `renderInteractive()` method. In the following code, it calls the [`setFillColor()`](https://artskydj.github.io/jsPDF/docs/jsPDF.html#setFillColor) and [`rect()`](https://artskydj.github.io/jsPDF/docs/jsPDF.html#rect) jsPDF methods to render a custom Color question as a rectangle filled with a selected color.
+If none of the previous options is suitable for your scenario, you can implement a custom PDF brick that uses a [jsPDF API](https://raw.githack.com/MrRio/jsPDF/master/docs/jsPDF.html) to render your custom question. Create a custom class that extends the [`PdfBrick`](https://surveyjs.io/pdf-generator/documentation/api-reference/pdfbrick) class. Within this custom class, implement the `renderInteractive()` method. In the following code, it calls the [`setFillColor()`](https://artskydj.github.io/jsPDF/docs/jsPDF.html#setFillColor) and [`rect()`](https://artskydj.github.io/jsPDF/docs/jsPDF.html#rect) jsPDF methods to render a custom Color question as a rectangle filled with a selected color.
+
 
 ```js
 class CustomPdfBrick extends PdfBrick {
