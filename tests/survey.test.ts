@@ -6,6 +6,7 @@ import { SurveyPDF } from '../src/survey';
 import { FlatTextbox } from '../src/flat_layout/flat_textbox';
 import { TestHelper } from '../src/helper_test';
 import { DocController, DocOptions } from '../src/doc_controller';
+import { FlatRepository } from '../src/flat_layout/flat_repository';
 let __dummy_tx = new FlatTextbox(null, null, null);
 
 test('Check raw method', async () => {
@@ -129,4 +130,10 @@ test('Check surveyPDF isRTL options', async (done) => {
         done();
     });
     surveyPDF.save();
+});
+
+test('Check FlatRepository static methods', () => {
+    expect(FlatRepository.getRenderer('text')).toBe(FlatTextbox);
+    FlatRepository.register('custom-question', FlatRepository.getRenderer('text'));
+    expect(FlatRepository.getRenderer('custom-question')).toBe(FlatTextbox);
 });
