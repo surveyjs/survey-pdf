@@ -33,7 +33,7 @@ The image below illustrates the result:
 
 ![SurveyJS PDF Generator - Export custom questions using a predefined renderer](images/export-custom-question-with-predefined-renderer.png)
 
-[Example](https://codesandbox.io/s/heuristic-star-81nso2?file=/src/SurveyPdfComponent.jsx)
+[View CodeSandbox Example](https://codesandbox.io/s/heuristic-star-81nso2?file=/src/SurveyPdfComponent.jsx:3273-3347 (linkStyle))
 
 ## Implement a Custom PDF Brick
 
@@ -75,4 +75,4 @@ The following image demonstrates the exported PDF document:
 
 ![SurveyJS PDF Generator - Export custom questions using a custom PDF brick](images/export-custom-question-with-custom-pdf-brick.png)
 
-[Example](https://codesandbox.io/s/blazing-bird-zemrxh)
+[View CodeSandbox Example](https://codesandbox.io/s/gracious-fermat-5n19tr?file=/src/SurveyPdfComponent.jsx:3189-3835 (linkStyle))
