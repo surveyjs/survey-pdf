@@ -145,7 +145,7 @@ export class SurveyPDF extends SurveyModel {
     public onRenderPage: EventAsync<SurveyPDF, AdornersPageOptions> =
         new EventAsync<SurveyPDF, AdornersPageOptions>();
 
-    public onDocControllerCreated: EventBase<SurveyPDF, { controller: DocController }> = new EventBase<SurveyPDF, {controller: DocController}>;
+    public onDocControllerCreated: EventBase<SurveyPDF, { controller: DocController }> = new EventBase<SurveyPDF, {controller: DocController}>();
 
     public onRenderCheckItemAcroform: EventAsync<SurveyPDF, any> =
         new EventAsync<SurveyPDF, any>();
