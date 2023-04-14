@@ -367,10 +367,12 @@ test('Check getImageLink method', async () => {
     const oldHtmlToImage = SurveyHelper.htmlToImage;
     const oldXMLSerializer = window.XMLSerializer;
     const oldConvertImageToJPEG = SurveyHelper.convertImageToJPEG;
+    const oldGetImageBase64 = SurveyHelper.getImageBase64;
 
     const controller = new DocController();
     expect(await SurveyHelper.getImageLink(controller, 'svg_16x16', 10, 10, 'contain')).toEqual('svg_16x16');
     (<any>SurveyHelper).htmlToImage = () => { return { url: 'jpeg_16x16' }; };
+    (<any>SurveyHelper).getImageBase64 = () => { return ''; };
     (<any>window).XMLSerializer = () => {};
     expect(await SurveyHelper.getImageLink(controller, 'svg_16x16', 10, 10, 'contain')).toEqual('jpeg_16x16');
     SurveyHelper.convertImageToJPEG = false;
@@ -378,5 +380,6 @@ test('Check getImageLink method', async () => {
 
     SurveyHelper.convertImageToJPEG = oldConvertImageToJPEG;
     SurveyHelper.htmlToImage = oldHtmlToImage;
+    SurveyHelper.getImageBase64 = oldGetImageBase64;
     window.XMLSerializer = oldXMLSerializer;
 });
