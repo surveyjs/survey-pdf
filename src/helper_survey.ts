@@ -320,6 +320,7 @@ export class SurveyHelper {
         const { svg, divWidth, divHeight } = SurveyHelper.createSvgContent(html, width, controller);
         const data: string = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svg)));
         const img: HTMLImageElement = new Image();
+        img.crossOrigin='anonymous';
         img.src = data;
         return new Promise((resolve) => {
             img.onload = function () {
@@ -449,12 +450,33 @@ export class SurveyHelper {
      * allows to convert any image in acceptable format for jspdf, default: true
      */
     public static convertImageToJPEG = true;
+
+    public static async getImageBase64(imageLink: string): Promise<string> {
+        const image = new Image();
+        image.crossOrigin='anonymous';
+        return new Promise((resolve) => {
+            image.onload = () => {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                canvas.height = image.naturalHeight;
+                canvas.width = image.naturalWidth;
+                ctx.drawImage(image, 0, 0);
+                const dataUrl = canvas.toDataURL();
+                resolve(dataUrl);
+            };
+            image.onerror = () => {
+                resolve('');
+            };
+            image.src = imageLink;
+        });
+    }
+
     public static async getImageLink(controller: DocController, originalImageLink: string, width: number, height: number, fitType: string): Promise<string> {
         const ptToPx: number = 96.0 / 72.0;
-        if(typeof XMLSerializer === 'function' && this.convertImageToJPEG) {
+        if(typeof XMLSerializer === 'function' && this.convertImageToJPEG && typeof Image === 'function') {
             const canvasHtml: string =
             `<div style='overflow: hidden; width: ${width * ptToPx}px; height: ${height * ptToPx}px;'>
-                <img src='${originalImageLink}' style='object-fit: ${fitType}; width: 100%; height: 100%;'/>
+                <img src='${await SurveyHelper.getImageBase64(originalImageLink)}' style='object-fit: ${fitType}; width: 100%; height: 100%;'/>
             </div>`;
             const { url } = await SurveyHelper.htmlToImage(canvasHtml, width, controller);
             return url;
