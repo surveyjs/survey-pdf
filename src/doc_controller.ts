@@ -262,7 +262,7 @@ export class DocOptions implements IDocOptions {
             this._base64Normal = DocOptions.SEGOE_NORMAL;
             this._base64Bold = DocOptions.SEGOE_BOLD;
         }
-        this._useCustomFontInHtml = options.useCustomFontInHtml && typeof options.base64Normal !== 'undefined';
+        this._useCustomFontInHtml = options.useCustomFontInHtml && typeof this._base64Normal !== 'undefined';
         this._margins = SurveyHelper.clone(options.margins);
         if (typeof this._margins === 'undefined') {
             this._margins = {};
