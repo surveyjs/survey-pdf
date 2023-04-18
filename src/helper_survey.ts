@@ -147,17 +147,14 @@ export class SurveyHelper {
             yBot: controller.paperHeight
         };
     }
-    public static chooseHtmlFont(controller: DocController, renderAs: IHTMLRenderType): string {
-        if (renderAs === 'standard') {
-            return this.isCustomFont(controller, controller.fontName) ? this.STANDARD_FONT : controller.fontName;
-        }
+    public static chooseHtmlFont(controller: DocController): string {
         return controller.useCustomFontInHtml ? controller.fontName : this.STANDARD_FONT;
     }
     public static generateCssTextRule(fontSize: number, fontStyle: string, fontName: string): string {
         return `"font-size: ${fontSize}pt; font-weight: ${fontStyle}; font-family: ${fontName}; color: ${this.TEXT_COLOR};"`;
     }
     public static createHtmlContainerBlock(html: string, controller: DocController, renderAs: IHTMLRenderType): string {
-        const font = this.chooseHtmlFont(controller, renderAs);
+        const font = this.chooseHtmlFont(controller);
         return `<div class="__surveypdf_html" style=${this.generateCssTextRule(
             controller.fontSize, controller.fontStyle, font)}>` +
             `<style>.__surveypdf_html p { margin: 0; line-height: ${controller.fontSize}pt } body { margin: 0; }</style>${html}</div>`;

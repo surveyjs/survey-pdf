@@ -383,3 +383,22 @@ test('Check getImageLink method', async () => {
     SurveyHelper.getImageBase64 = oldGetImageBase64;
     window.XMLSerializer = oldXMLSerializer;
 });
+
+test('Check chooseHtmlFont method', async () => {
+    let controller = new DocController(
+        { fontName: 'custom_font' }
+    );
+    expect(SurveyHelper.chooseHtmlFont(controller)).toBe(SurveyHelper.STANDARD_FONT);
+    controller = new DocController(
+        { fontName: 'custom_font', useCustomFontInHtml: true }
+    );
+    expect(SurveyHelper.chooseHtmlFont(controller)).toBe(SurveyHelper.STANDARD_FONT);
+    controller = new DocController(
+        { fontName: 'custom_font', useCustomFontInHtml: true, base64Bold: 'base64font' }
+    );
+    expect(SurveyHelper.chooseHtmlFont(controller)).toBe('custom_font');
+    controller = new DocController(
+        { fontName: 'custom_font', useCustomFontInHtml: true, base64Normal: 'base64font' }
+    );
+    expect(SurveyHelper.chooseHtmlFont(controller)).toBe('custom_font');
+});
