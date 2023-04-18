@@ -5,7 +5,7 @@ description: Learn how to export custom questions and third-party components to 
 
 # Export Custom Questions and Third-Party Components to PDF
 
-This help topic describes how to export custom questions that use [third-party components](https://surveyjs.io/survey-creator/documentation/customize-question-types/third-party-component-integration-react) to PDF. You can export custom questions as plain text, use a predefined renderer to export a custom question as an out-of-the-box question, or implement a custom PDF brick to customize the export as you like.
+This help topic describes how to export custom questions that use [third-party components](https://surveyjs.io/form-library/documentation/customize-question-types/third-party-component-integration-react) to PDF. You can export custom questions as plain text, use a predefined renderer to export a custom question as an out-of-the-box question, or implement a custom PDF brick to customize the export as you like.
 
 ## Render Custom Questions as Text
 
