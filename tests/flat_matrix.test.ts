@@ -9,6 +9,7 @@ import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { TextBrick } from '../src/pdf_render/pdf_text';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
+import { FlatQuestion } from '../src/entries/pdf';
 let __dummy_mt = new FlatMatrix(null, null, null);
 
 test('Matrix simple hasRows true columns', async () => {
@@ -308,4 +309,48 @@ test('Matrix simple check matrixRenderAs list', async () => {
     expect(unfoldFlats[1].yTop).toBeLessThan(unfoldFlats[3].yTop);
     expect(unfoldFlats[1].xRight).toBeCloseTo(unfoldFlats[3].xRight);
     expect(unfoldFlats[1].yBot).not.toBeCloseTo(unfoldFlats[3].yBot);
+});
+
+test('Matrix check rowTitleWidth', async () => {
+    let json: any = {
+        questions: [
+            {
+                type: 'matrix',
+                name: 'matrix',
+                titleLocation: 'hidden',
+                showHeader: true,
+                rowTitleWidth: '40px',
+                columns: [
+                    'Column 1',
+                    'Column 2'
+                ],
+                rows: ['Row']
+            }
+        ]
+    };
+    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    let unfoldHeaderFlats: IPdfBrick[] = flats[0][0].unfold();
+    let unfoldRowFlats: IPdfBrick[] = flats[0][2].unfold();
+    const pageWidth = SurveyHelper.getPageAvailableWidth(controller);
+    const defaultLeftMargin = controller.margins.left + controller.unitWidth * FlatQuestion.CONTENT_INDENT_SCALE;
+    const gapBetweenColumns = SurveyHelper.GAP_BETWEEN_COLUMNS * controller.unitWidth;
+    let rowTitleWidth = SurveyHelper.parseWidth('40px', pageWidth);
+    let columnWidth = (pageWidth - controller.unitWidth * FlatQuestion.CONTENT_INDENT_SCALE - rowTitleWidth - 2 * gapBetweenColumns) / 2;
+    expect(unfoldHeaderFlats[0].xLeft).toBe(rowTitleWidth + defaultLeftMargin + gapBetweenColumns);
+    expect(unfoldHeaderFlats[1].xLeft).toBe(rowTitleWidth + defaultLeftMargin + columnWidth + 2 * gapBetweenColumns);
+    expect(unfoldRowFlats[3].xLeft).toBe(rowTitleWidth + defaultLeftMargin + gapBetweenColumns);
+    expect(unfoldRowFlats[4].xLeft).toBe(rowTitleWidth + defaultLeftMargin + columnWidth + 2 * gapBetweenColumns);
+
+    survey.getAllQuestions()[0].rowTitleWidth = '50px';
+    flats = await FlatSurvey.generateFlats(survey, controller);
+    unfoldHeaderFlats = flats[0][0].unfold();
+    unfoldRowFlats = flats[0][2].unfold();
+    rowTitleWidth = SurveyHelper.parseWidth('50px', pageWidth);
+    columnWidth = (pageWidth - controller.unitWidth * FlatQuestion.CONTENT_INDENT_SCALE - rowTitleWidth - 2 * gapBetweenColumns) / 2;
+    expect(unfoldHeaderFlats[0].xLeft).toBe(rowTitleWidth + defaultLeftMargin + gapBetweenColumns);
+    expect(unfoldHeaderFlats[1].xLeft).toBe(rowTitleWidth + defaultLeftMargin + columnWidth + 2 * gapBetweenColumns);
+    expect(unfoldRowFlats[3].xLeft).toBe(rowTitleWidth + defaultLeftMargin + gapBetweenColumns);
+    expect(unfoldRowFlats[4].xLeft).toBe(rowTitleWidth + defaultLeftMargin + columnWidth + 2 * gapBetweenColumns);
 });
