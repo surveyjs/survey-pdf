@@ -90,7 +90,7 @@ export class SurveyPDF extends SurveyModel {
      * - `options.repository`: `FlatRepository`\
      * A repository with classes that render elements to PDF. Use its `create` method if you need to create a new instance of a rendering class.
      *
-     * [View Demo](https://surveyjs.io/pdf-generator/examples/customize-header-and-footer-of-pdf-form/ (linkStyle))
+     * [View Demo](https://surveyjs.io/pdf-generator/examples/add-markup-to-customize-pdf-forms/ (linkStyle))
      */
     public onRenderQuestion: EventAsync<SurveyPDF, AdornersOptions> =
         new EventAsync<SurveyPDF, AdornersOptions>();
