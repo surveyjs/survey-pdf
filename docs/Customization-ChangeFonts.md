@@ -47,8 +47,7 @@ in: "normal", "bold", "oblique", and "bold oblique"
 
 For more details, see **jsPDF** [sources](https://github.com/MrRio/jsPDF/blob/cef97fb34eda41a8704c9f3983e680919a328ce4/src/jspdf.js#L793-L808).
 
->**Note:**  
-The standard 14 PDF fonts contain a limited set of glyphs, but their advantage is that they don't need to be embedded into a document. These fonts are intended to be installed on a client machine and most PDF readers support them. 
+> The standard 14 PDF fonts contain a limited set of glyphs, but their advantage is that they don't need to be embedded into a document. These fonts are intended to be installed on a client machine and most PDF readers support them. 
 
 
 <!-- <a id="default-font"></a>
@@ -136,8 +135,7 @@ A dynamically created label that identifies the custom font. This label is used 
 A font variation of a custom font. The *_fontStyle* may represent a combination of the font weight and font style. Possible values: "normal", "bold", "italic", "bolditalic".  
 SurveyPDF generally uses two font variations for survey element texts: "bold" is used for texts of titles, "normal" - for texts of other elements.  
 
->**Note:** 
-You may need to apply additional font variations to custom HTML content of [HTML survey questions](https://surveyjs.io/Documentation/Library?id=questionhtmlmodel)).
+> You may need to apply additional font variations to custom HTML content of [HTML survey questions](https://surveyjs.io/Documentation/Library?id=questionhtmlmodel)).
 
 The following sample code demonstrates how to:
 * Use the `addFont` method to add two custom fonts in "normal" and "bold" variations;
@@ -168,8 +166,7 @@ function saveSurveyToPdf(filename, surveyModel) {
 }
 ```
 
->**Note:**
-SurveyPDF uses a specified font to render survey PDF contents. If your survey is a multi-language and, for example, includes English and Chineese texts, consider a font which includes glyphs for all languages used withing a survey.
+> SurveyPDF uses a specified font to render survey PDF contents. If your survey is a multi-language and, for example, includes English and Chineese texts, consider a font which includes glyphs for all languages used withing a survey.
 
 <a id="example"></a>
 ### Example - Add a custom font family to SurveyPDF
