@@ -262,7 +262,6 @@ export class DocOptions implements IDocOptions {
             this._base64Normal = DocOptions.SEGOE_NORMAL;
             this._base64Bold = DocOptions.SEGOE_BOLD;
         }
-        this._useCustomFontInHtml = options.useCustomFontInHtml && typeof this._base64Normal !== 'undefined';
         this._margins = SurveyHelper.clone(options.margins);
         if (typeof this._margins === 'undefined') {
             this._margins = {};
@@ -368,6 +367,7 @@ export class DocController extends DocOptions {
             this._doc = new jsPDF(jspdfOptions);
         }
         setRadioAppearance(this._doc);
+        this._useCustomFontInHtml = options.useCustomFontInHtml && SurveyHelper.isFontExist(this, this.fontName);
         this._helperDoc = new jsPDF(jspdfOptions);
         this._doc.setFont(this.fontName);
         this._helperDoc.setFont(this.fontName);
