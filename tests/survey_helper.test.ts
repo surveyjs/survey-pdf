@@ -401,4 +401,13 @@ test('Check chooseHtmlFont method', async () => {
         { fontName: 'custom_font', useCustomFontInHtml: true, base64Normal: 'base64font' }
     );
     expect(SurveyHelper.chooseHtmlFont(controller)).toBe('custom_font');
+    controller = new DocController(
+        { fontName: 'custom_font2', useCustomFontInHtml: true }
+    );
+    expect(SurveyHelper.chooseHtmlFont(controller)).toBe(SurveyHelper.STANDARD_FONT);
+    DocController.addFont('custom_font2', 'base64', 'normal');
+    controller = new DocController(
+        { fontName: 'custom_font2', useCustomFontInHtml: true }
+    );
+    expect(SurveyHelper.chooseHtmlFont(controller)).toBe('custom_font2');
 });
