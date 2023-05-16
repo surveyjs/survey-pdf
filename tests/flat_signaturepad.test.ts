@@ -13,6 +13,7 @@ import { TestHelper } from '../src/helper_test';
 let __dummy_sp = new FlatSignaturePad(null, null, null);
 
 test('Check signaturepad', async () => {
+    SurveyHelper.shouldConvertImageToPng = false;
     let json: any = {
         questions: [
             {
@@ -38,4 +39,5 @@ test('Check signaturepad', async () => {
             SurveyHelper.pxToPt((<any>survey.getAllQuestions()[0]).signatureHeight)
     };
     TestHelper.equalRect(expect, flats[0][0], assumeHTML);
+    SurveyHelper.shouldConvertImageToPng = true;
 });

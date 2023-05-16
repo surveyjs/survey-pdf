@@ -443,10 +443,6 @@ export class SurveyHelper {
         return isQuestion ? question.displayValue : SurveyHelper.getQuestionOrCommentValue(question, isQuestion);
     }
     public static inBrowser = typeof Image === 'function';
-    /**
-     * allows to convert any image in acceptable format for jspdf, default: true
-     */
-    public static convertImageToJPEG = true;
 
     public static async getImageBase64(imageLink: string): Promise<string> {
         const image = new Image();
@@ -467,19 +463,18 @@ export class SurveyHelper {
             image.src = imageLink;
         });
     }
-
+    public static shouldConvertImageToPng = true;
     public static async getImageLink(controller: DocController, originalImageLink: string, width: number, height: number, fitType: string): Promise<string> {
         const ptToPx: number = 96.0 / 72.0;
-        if(typeof XMLSerializer === 'function' && this.convertImageToJPEG && typeof Image === 'function') {
+        let url = this.shouldConvertImageToPng ? await SurveyHelper.getImageBase64(originalImageLink) : originalImageLink;
+        if(typeof XMLSerializer === 'function' && controller.applyImageFit) {
             const canvasHtml: string =
-            `<div style='overflow: hidden; width: ${width * ptToPx}px; height: ${height * ptToPx}px;'>
-                <img src='${await SurveyHelper.getImageBase64(originalImageLink)}' style='object-fit: ${fitType}; width: 100%; height: 100%;'/>
-            </div>`;
-            const { url } = await SurveyHelper.htmlToImage(canvasHtml, width, controller);
-            return url;
-        } else {
-            return originalImageLink;
+               `<div style='overflow: hidden; width: ${width * ptToPx}px; height: ${height * ptToPx}px;'>
+                   <img src='${url}' style='object-fit: ${fitType}; width: 100%; height: 100%;'/>
+               </div>`;
+            url = (await SurveyHelper.htmlToImage(canvasHtml, width, controller)).url;
         }
+        return url;
     }
     public static async createImageFlat(point: IPoint, question: any,
         controller: DocController, imagelink: string, width: number, height: number, imageFit?: string): Promise<IPdfBrick> {

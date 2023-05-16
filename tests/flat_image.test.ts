@@ -13,6 +13,7 @@ import { ImageBrick } from '../src/pdf_render/pdf_image';
 const __dummy_im: FlatImage = new FlatImage(null, null, null);
 
 test('Check image question 100x100px', async () => {
+    SurveyHelper.shouldConvertImageToPng = false;
     const json: any = {
         elements: [
             {
@@ -40,6 +41,7 @@ test('Check image question 100x100px', async () => {
         yBot: controller.leftTopPoint.yTop + heightPt
     };
     TestHelper.equalRect(expect, flats[0][0], assumeImage);
+    SurveyHelper.shouldConvertImageToPng = true;
 });
 
 test('Check image question 100x100px with set size server-side', async () => {

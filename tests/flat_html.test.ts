@@ -45,6 +45,7 @@ test('Check choose auto render', async () => {
         ]
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    SurveyHelper.shouldConvertImageToPng = false;
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
@@ -53,6 +54,7 @@ test('Check choose auto render', async () => {
     expect((<any>flats[0][0].unfold())[0]['html'].startsWith('<img')).toBe(false);
     expect(flats[0][2].unfold()[0] instanceof HTMLBrick).toBe(true);
     expect((<any>flats[0][2])['html'].startsWith('<img')).toBe(true);
+    SurveyHelper.shouldConvertImageToPng = true;
 });
 
 test('Check createHTMLRect method with long html', async () => {

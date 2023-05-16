@@ -111,6 +111,7 @@ test('Check two text files', async () => {
 test('Check one image 16x16px file', async () => {
     const imageSize: ISize = { width: 170, height: 50 };
     const oldGetImageSize = SurveyHelper.getImageSize;
+    SurveyHelper.shouldConvertImageToPng = false;
     SurveyHelper.getImageSize = async (url: string) => { return imageSize; };
     const json: any = {
         elements: [
@@ -144,10 +145,12 @@ test('Check one image 16x16px file', async () => {
     };
     TestHelper.equalRect(expect, flats[0][0], assumeFile);
     SurveyHelper.getImageSize = oldGetImageSize;
+    SurveyHelper.shouldConvertImageToPng = true;
 });
 test('Check one image 16x16px file shorter than text', async () => {
     const imageSize: ISize = { width: 50, height: 50 };
     const oldGetImageSize = SurveyHelper.getImageSize;
+    SurveyHelper.shouldConvertImageToPng = false;
     SurveyHelper.getImageSize = async (url: string) => { return imageSize; };
     const json: any = {
         elements: [
@@ -181,10 +184,12 @@ test('Check one image 16x16px file shorter than text', async () => {
     };
     TestHelper.equalRect(expect, flats[0][0], assumeFile);
     SurveyHelper.getImageSize = oldGetImageSize;
+    SurveyHelper.shouldConvertImageToPng = true;
 });
 test('Check one image 16x16px with set size', async () => {
     const imageSize: ISize = { width: 50, height: 50 };
     const oldGetImageSize = SurveyHelper.getImageSize;
+    SurveyHelper.shouldConvertImageToPng = false;
     SurveyHelper.getImageSize = async (url: string) => { return imageSize; };
     const json: any = {
         elements: [
@@ -223,6 +228,7 @@ test('Check one image 16x16px with set size', async () => {
     };
     TestHelper.equalRect(expect, flats[0][0], assumeFile);
     SurveyHelper.getImageSize = oldGetImageSize;
+    SurveyHelper.shouldConvertImageToPng = true;
 });
 
 test('Check one image 16x16px file server-side', async () => {
