@@ -108,6 +108,7 @@ test('Survey with title and description', async () => {
     TestHelper.equalRect(expect, flats[0][2], assumeTextBox);
 });
 test('Survey with logo', async () => {
+    SurveyHelper.shouldConvertImageToPng = false;
     const json: any = {
         logo: TestHelper.BASE64_IMAGE_16PX,
         pages: []
@@ -125,8 +126,10 @@ test('Survey with logo', async () => {
         yBot: controller.leftTopPoint.yTop + SurveyHelper.pxToPt(survey.logoHeight)
     };
     TestHelper.equalRect(expect, flats[0][0], assumeLogo);
+    SurveyHelper.shouldConvertImageToPng = true;
 });
 test('Survey with left logo and title', async () => {
+    SurveyHelper.shouldConvertImageToPng = false;
     const json: any = {
         title: 'TitleLogoLeft',
         logo: TestHelper.BASE64_IMAGE_16PX,
@@ -165,8 +168,10 @@ test('Survey with left logo and title', async () => {
     textBoxPoint.yTop += controller.unitHeight * FlatSurvey.PANEL_CONT_GAP_SCALE + SurveyHelper.EPSILON;
     const assumeTextBox: IRect = SurveyHelper.createTextFieldRect(textBoxPoint, controller);
     TestHelper.equalRect(expect, flats[0][3], assumeTextBox);
+    SurveyHelper.shouldConvertImageToPng = true;
 });
 test('Survey with left logo and big title', async () => {
+    SurveyHelper.shouldConvertImageToPng = false;
     const json: any = {
         title: 'TitleLogoLeftBiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiig',
         logo: TestHelper.BASE64_IMAGE_16PX,
@@ -205,8 +210,10 @@ test('Survey with left logo and big title', async () => {
     textBoxPoint.yTop += controller.unitHeight * FlatSurvey.PANEL_CONT_GAP_SCALE + SurveyHelper.EPSILON;
     const assumeTextBox: IRect = SurveyHelper.createTextFieldRect(textBoxPoint, controller);
     TestHelper.equalRect(expect, flats[0][3], assumeTextBox);
+    SurveyHelper.shouldConvertImageToPng = true;
 });
 test('Survey with right logo and title', async () => {
+    SurveyHelper.shouldConvertImageToPng = false;
     const json: any = {
         title: 'TitleRight',
         logo: TestHelper.BASE64_IMAGE_16PX,
@@ -244,8 +251,10 @@ test('Survey with right logo and title', async () => {
     textBoxPoint.yTop += controller.unitHeight * FlatSurvey.PANEL_CONT_GAP_SCALE + SurveyHelper.EPSILON;
     const assumeTextBox: IRect = SurveyHelper.createTextFieldRect(textBoxPoint, controller);
     TestHelper.equalRect(expect, flats[0][3], assumeTextBox);
+    SurveyHelper.shouldConvertImageToPng = true;
 });
 test('Survey with bottom logo and title', async () => {
+    SurveyHelper.shouldConvertImageToPng = false;
     const json: any = {
         title: 'TitleLogoBottom',
         logo: TestHelper.BASE64_IMAGE_16PX,
@@ -275,8 +284,10 @@ test('Survey with bottom logo and title', async () => {
     };
     TestHelper.equalRect(expect, flats[0][1], assumeLogo);
     expect(flats[0][2] instanceof RowlineBrick);
+    SurveyHelper.shouldConvertImageToPng = true;
 });
 test('Survey with botton logo without title', async () => {
+    SurveyHelper.shouldConvertImageToPng = false;
     const json: any = {
         logo: TestHelper.BASE64_IMAGE_16PX,
         logoPosition: 'bottom',
@@ -301,6 +312,7 @@ test('Survey with botton logo without title', async () => {
             SurveyHelper.pxToPt(survey.logoHeight)
     };
     TestHelper.equalRect(expect, flats[0][0], assumeLogo);
+    SurveyHelper.shouldConvertImageToPng = true;
 });
 
 test('Survey with logo server-side', async () => {
@@ -352,6 +364,7 @@ test('Survey with logo and pages', async () => {
             }
         ]
     };
+    SurveyHelper.shouldConvertImageToPng = false;
     const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     const controller: DocController = new DocController(TestHelper.defaultOptions);
     const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
@@ -361,6 +374,7 @@ test('Survey with logo and pages', async () => {
     expect(flats[1].length).toBe(1);
     expect(flats[1][0].yTop).toBe(controller.leftTopPoint.yTop);
     expect(flats[1][0].xLeft).toBe(controller.leftTopPoint.xLeft);
+    SurveyHelper.shouldConvertImageToPng = true;
 });
 
 test('Check default renderer for custom questions', async () => {

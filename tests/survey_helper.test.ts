@@ -366,19 +366,22 @@ test('Check getContentQuestionType method with renderAs', () => {
 test('Check getImageLink method', async () => {
     const oldHtmlToImage = SurveyHelper.htmlToImage;
     const oldXMLSerializer = window.XMLSerializer;
-    const oldConvertImageToJPEG = SurveyHelper.convertImageToJPEG;
+    const oldshouldConvertImageToPng = SurveyHelper.shouldConvertImageToPng;
     const oldGetImageBase64 = SurveyHelper.getImageBase64;
 
     const controller = new DocController();
+    SurveyHelper.shouldConvertImageToPng = false;
     expect(await SurveyHelper.getImageLink(controller, 'svg_16x16', 10, 10, 'contain')).toEqual('svg_16x16');
     (<any>SurveyHelper).htmlToImage = () => { return { url: 'jpeg_16x16' }; };
-    (<any>SurveyHelper).getImageBase64 = () => { return ''; };
+    (<any>SurveyHelper).getImageBase64 = () => { return 'png_16x16'; };
     (<any>window).XMLSerializer = () => {};
+    SurveyHelper.shouldConvertImageToPng = true;
+    controller['_applyImageFit'] = true;
     expect(await SurveyHelper.getImageLink(controller, 'svg_16x16', 10, 10, 'contain')).toEqual('jpeg_16x16');
-    SurveyHelper.convertImageToJPEG = false;
-    expect(await SurveyHelper.getImageLink(controller, 'svg_16x16', 10, 10, 'contain')).toEqual('svg_16x16');
+    controller['_applyImageFit'] = false;
+    expect(await SurveyHelper.getImageLink(controller, 'svg_16x16', 10, 10, 'contain')).toEqual('png_16x16');
 
-    SurveyHelper.convertImageToJPEG = oldConvertImageToJPEG;
+    SurveyHelper.shouldConvertImageToPng = oldshouldConvertImageToPng;
     SurveyHelper.htmlToImage = oldHtmlToImage;
     SurveyHelper.getImageBase64 = oldGetImageBase64;
     window.XMLSerializer = oldXMLSerializer;
