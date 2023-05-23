@@ -1,5 +1,5 @@
 import { IRect, DocController } from '../doc_controller';
-import { IPdfBrick } from './pdf_brick';
+import { IPdfBrick, TranslateXFunction } from './pdf_brick';
 
 export class RowlineBrick implements IPdfBrick {
     xLeft: number;
@@ -31,4 +31,5 @@ export class RowlineBrick implements IPdfBrick {
     public unfold(): IPdfBrick[] {
         return [this];
     }
+    translateX(_: TranslateXFunction): void {}
 }

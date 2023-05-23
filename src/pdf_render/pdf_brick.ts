@@ -2,9 +2,11 @@ import { IRect, ISize, DocController } from '../doc_controller';
 import { IQuestion, Question } from 'survey-core';
 import { SurveyHelper } from '../helper_survey';
 
+export type TranslateXFunction = (xLeft: number, xRight : number) => { xLeft: number, xRight: number};
 export interface IPdfBrick extends IRect, ISize {
     render(): Promise<void>;
     unfold(): IPdfBrick[];
+    translateX(func: TranslateXFunction): void;
     isPageBreak: boolean;
 }
 /**
@@ -48,6 +50,11 @@ export class PdfBrick implements IPdfBrick {
         this.yBot = rect.yBot;
         this.fontSize = !!controller ?
             controller.fontSize : DocController.FONT_SIZE;
+    }
+    translateX(func: TranslateXFunction): void {
+        const res = func(this.xLeft, this.xRight);
+        this.xLeft = res.xLeft;
+        this.xRight = res.xRight;
     }
     /**
      * The brick's width in pixels.

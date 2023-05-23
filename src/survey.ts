@@ -199,6 +199,16 @@ export class SurveyPDF extends SurveyModel {
     protected async renderSurvey(controller: DocController): Promise<void> {
         await this.waitForCoreIsReady();
         const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(this, controller);
+        if(controller.isRTL) {
+            flats.forEach(flatsArr => {
+                flatsArr.forEach(flat => {
+                    flat.translateX((xLeft: number, xRight: number) => {
+                        const shiftWidth = controller.paperWidth - xLeft - xRight;
+                        return { xLeft: xLeft + shiftWidth, xRight: xRight + shiftWidth };
+                    });
+                });
+            });
+        }
         const packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
         await EventHandler.process_header_events(this, controller, packs);
         for (let i: number = 0; i < packs.length; i++) {
