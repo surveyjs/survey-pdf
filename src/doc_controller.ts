@@ -125,12 +125,21 @@ export interface IDocOptions {
      * - `"Segoe"` (requires [additional configuration](https://surveyjs.io/Documentation/Pdf-Export?id=Customization-ChangeFonts))
      * - [Custom font name](https://surveyjs.io/Documentation/Pdf-Export?id=Customization-ChangeFonts#use-custom-font)
      *
+     * [View Demo](/pdf-generator/examples/change-font-in-pdf-form/ (linkStyle))
      * @see fontSize
      */
     fontName?: string;
 
     base64Normal?: string;
     base64Bold?: string;
+    /**
+     * Specifies whether to apply a custom font to [HTML questions](https://surveyjs.io/form-library/examples/questiontype-html/).
+     * 
+     * Default value: `false`
+     * 
+     * [View Demo](/pdf-generator/examples/change-font-in-pdf-form/ (linkStyle))
+     * @see htmlRenderAs
+     */
     useCustomFontInHtml?: boolean;
 
     /**
@@ -157,6 +166,7 @@ export interface IDocOptions {
      * - `"auto"` (default) - Select between the `"standard"` and `"image"` modes automatically based on the HTML content.
      *
      * You can override this property for an individual HTML question. Set the question's `renderAs` property to `"standard"` or `"image"` in the survey JSON schema.
+     * @see useCustomFontInHtml
      */
     htmlRenderAs?: IHTMLRenderType;
 
