@@ -113,7 +113,7 @@ test('Check readonly text expends when textFieldRenderAs option set', async () =
     const textPoint: IPoint = controller.leftTopPoint;
     textPoint.xLeft += controller.unitWidth;
     const firstRect: IRect = SurveyHelper.createTextFieldRect(textPoint, controller);
-    const secondRect: IRect = await SurveyHelper.createReadOnlyTextFieldTextFlat(textPoint, controller, question, question.displayValue, false);
+    const secondRect: IRect = await SurveyHelper.createReadOnlyTextFieldTextFlat(textPoint, controller, question, question.displayValue);
     firstRect.yBot = secondRect.yBot + controller.unitHeight * SurveyHelper.VALUE_READONLY_PADDING_SCALE;
     TestHelper.equalRect(expect, flats[0][0], firstRect);
 });
@@ -145,7 +145,7 @@ test('Check dropdown when survey mode is display and textFieldRenderAs is multil
     const textPoint: IPoint = controller.leftTopPoint;
     textPoint.xLeft += controller.unitWidth;
     const firstRect: IRect = SurveyHelper.createTextFieldRect(textPoint, controller);
-    const secondRect: IRect = await SurveyHelper.createReadOnlyTextFieldTextFlat(textPoint, controller, question, question.displayValue, false);
+    const secondRect: IRect = await SurveyHelper.createReadOnlyTextFieldTextFlat(textPoint, controller, question, question.displayValue);
     firstRect.yBot = secondRect.yBot + controller.unitHeight * SurveyHelper.VALUE_READONLY_PADDING_SCALE;
     TestHelper.equalRect(expect, flats[0][0], firstRect);
 });

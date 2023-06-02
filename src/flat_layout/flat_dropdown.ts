@@ -22,7 +22,7 @@ export class FlatDropdown extends FlatQuestion {
         const rect: IRect = SurveyHelper.createTextFieldRect(point, this.controller);
         if (this.shouldRenderAsComment) {
             const rectWithDinamicBottom: IRect = await SurveyHelper.createReadOnlyTextFieldTextFlat(
-                point, this.controller, this.question, SurveyHelper.getDropdownQuestionValue(this.question), false);
+                point, this.controller, this.question, SurveyHelper.getDropdownQuestionValue(this.question));
             rect.yBot = Math.max(rect.yBot, rectWithDinamicBottom.yBot + this.controller.unitHeight * SurveyHelper.VALUE_READONLY_PADDING_SCALE);
         }
         const compositeFlat: CompositeBrick = new CompositeBrick(

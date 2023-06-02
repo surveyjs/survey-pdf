@@ -59,8 +59,7 @@ export class TextFieldBrick extends PdfBrick {
         } else {
             await SurveyHelper.renderReadOnlyTextField(this.controller,
                 this.question, this,
-                SurveyHelper.getQuestionOrCommentDisplayValue(this.question, this.isQuestion),
-                !this.isMultiline, this.shouldRenderFlatBorders());
+                SurveyHelper.getQuestionOrCommentDisplayValue(this.question, this.isQuestion), this.shouldRenderFlatBorders());
         }
         this.controller.popMargins();
     }

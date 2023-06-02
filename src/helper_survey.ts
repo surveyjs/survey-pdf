@@ -429,7 +429,7 @@ export class SurveyHelper {
         const rect: IRect = this.createTextFieldRect(point, controller, rows);
         if (question.isReadOnly && this.getReadonlyRenderAs(question, controller) !== 'acroform') {
             const textFlat: IPdfBrick = await this.createReadOnlyTextFieldTextFlat(
-                point, controller, question, this.getQuestionOrCommentValue(question, isQuestion), false);
+                point, controller, question, this.getQuestionOrCommentValue(question, isQuestion));
             const padding: number = controller.unitHeight * this.VALUE_READONLY_PADDING_SCALE;
             if (textFlat.yBot + padding > rect.yBot) rect.yBot = textFlat.yBot + padding;
         }
@@ -553,9 +553,9 @@ export class SurveyHelper {
         return this.createRect(point, width, height);
     }
     public static async createReadOnlyTextFieldTextFlat(point: IPoint,
-        controller: DocController, question: Question, value: string, onlyFirstLine: boolean): Promise<IPdfBrick> {
+        controller: DocController, question: Question, value: string): Promise<IPdfBrick> {
         const padding: number = controller.unitWidth * this.VALUE_READONLY_PADDING_SCALE;
-        if (!onlyFirstLine) point.yTop += padding;
+        point.yTop += padding;
         point.xLeft += padding;
         controller.pushMargins(point.xLeft, controller.margins.right + padding);
         const textFlat: IPdfBrick = await this.createTextFlat(
@@ -582,16 +582,14 @@ export class SurveyHelper {
         controller.doc.setDrawColor(oldDrawColor);
     }
     public static async renderReadOnlyTextField(controller: DocController,
-        question: Question, flat: PdfBrick, value: string,
-        onlyFirstLine: boolean = true, shouldRenderFlatBorders: boolean = true): Promise<void> {
+        question: Question, flat: PdfBrick, value: string, shouldRenderFlatBorders: boolean = true): Promise<void> {
         const point: IPoint = this.createPoint(flat, true, true);
         const oldFontSize: number = controller.fontSize;
         controller.fontSize = flat.fontSize;
         const textFlat: IPdfBrick = await this.createReadOnlyTextFieldTextFlat(
-            point, controller, question, value, onlyFirstLine);
+            point, controller, question, value);
         controller.fontSize = oldFontSize;
-        if (onlyFirstLine) await textFlat.unfold()[0].render();
-        else await textFlat.render();
+        await textFlat.render();
         if(shouldRenderFlatBorders) {
             this.renderFlatBorders(controller, flat);
         }
