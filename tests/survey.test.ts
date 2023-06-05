@@ -7,6 +7,8 @@ import { FlatTextbox } from '../src/flat_layout/flat_textbox';
 import { TestHelper } from '../src/helper_test';
 import { DocController, DocOptions } from '../src/doc_controller';
 import { FlatRepository } from '../src/flat_layout/flat_repository';
+import { TextBoldBrick } from '../src/pdf_render/pdf_textbold';
+import { SurveyHelper } from '../src/helper_survey';
 let __dummy_tx = new FlatTextbox(null, null, null);
 
 test('Check raw method', async () => {
@@ -108,28 +110,31 @@ test('Check surveyPDF onDocControllerCreated event', async (done) => {
 });
 
 test('Check surveyPDF isRTL options', async (done) => {
-    let surveyPDF = new SurveyPDF({});
-    surveyPDF.onDocControllerCreated.add((sender, options) => {
-        expect(options.controller.isRTL).toBe(false);
-        expect(options.controller.doc.getR2L()).toBeFalsy();
-        expect(options.controller.helperDoc.getR2L()).toBeFalsy();
+    let surveyPDF = new SurveyPDF({
+        showQuestionNumbers: 'off',
+        elements: [{
+            type: 'text',
+            name: 'q1'
+        }]
+    }, {
+        isRTL: true
     });
-    surveyPDF.save();
-    surveyPDF = new SurveyPDF({}, { isRTL: true });
-    surveyPDF.onDocControllerCreated.add((sender, options) => {
-        expect(options.controller.isRTL).toBe(true);
-        expect(options.controller.doc.getR2L()).toBeTruthy();
-        expect(options.controller.helperDoc.getR2L()).toBeTruthy();
+    surveyPDF.showQuestionNumbers = 'off';
+    let originalXLeft: number;
+    let originalXRight: number;
+    surveyPDF.onRenderQuestion.add((sender, options) => {
+        const titleBrick = options.bricks[0].unfold()[0];
+        originalXLeft = titleBrick.xLeft;
+        originalXRight = titleBrick.xRight;
     });
-    surveyPDF.save();
-    surveyPDF = new SurveyPDF({}, { isRTL: false });
-    surveyPDF.onDocControllerCreated.add((sender, options) => {
-        expect(options.controller.isRTL).toBe(false);
-        expect(options.controller.doc.getR2L()).toBeFalsy();
-        expect(options.controller.helperDoc.getR2L()).toBeFalsy();
+    surveyPDF.onRenderHeader.add((sender, options) => {
+        const titleBrick = <TextBoldBrick>options['packs'][0].unfold()[0];
+        expect(titleBrick.xLeft).toBeCloseTo(options.controller.paperWidth - originalXRight);
+        expect(titleBrick.xRight).toBeCloseTo(options.controller.paperWidth - originalXLeft);
+        expect(titleBrick['align']).toEqual({ 'align': 'right', 'baseline': 'middle', 'isInputRtl': false, 'isOutputRtl': true });
         done();
     });
-    surveyPDF.save();
+    surveyPDF.raw();
 });
 
 test('Check FlatRepository static methods', () => {

@@ -196,9 +196,7 @@ export class SurveyPDF extends SurveyModel {
     public getUpdatedRadioItemAcroformOptions(options: any): void {
         this.onRenderRadioItemAcroform.fire(this, options);
     }
-    protected async renderSurvey(controller: DocController): Promise<void> {
-        await this.waitForCoreIsReady();
-        const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(this, controller);
+    private correctBricksPosition(controller: DocController, flats: IPdfBrick[][]) {
         if(controller.isRTL) {
             flats.forEach(flatsArr => {
                 flatsArr.forEach(flat => {
@@ -209,6 +207,11 @@ export class SurveyPDF extends SurveyModel {
                 });
             });
         }
+    }
+    protected async renderSurvey(controller: DocController): Promise<void> {
+        await this.waitForCoreIsReady();
+        const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(this, controller);
+        this.correctBricksPosition(controller, flats);
         const packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
         await EventHandler.process_header_events(this, controller, packs);
         for (let i: number = 0; i < packs.length; i++) {
