@@ -15,18 +15,9 @@ export class FlatDropdown extends FlatQuestion {
         super(survey, question, controller);
         this.question = <QuestionDropdownModel>question;
     }
-    protected get shouldRenderAsComment(): boolean {
-        return this.question.isReadOnly && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform';
-    }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
-        const rect: IRect = SurveyHelper.createTextFieldRect(point, this.controller);
-        if (this.shouldRenderAsComment) {
-            const rectWithDinamicBottom: IRect = await SurveyHelper.createReadOnlyTextFieldTextFlat(
-                point, this.controller, this.question, SurveyHelper.getDropdownQuestionValue(this.question));
-            rect.yBot = Math.max(rect.yBot, rectWithDinamicBottom.yBot + this.controller.unitHeight * SurveyHelper.VALUE_READONLY_PADDING_SCALE);
-        }
-        const compositeFlat: CompositeBrick = new CompositeBrick(
-            new DropdownBrick(this.question, this.controller, rect));
+        const valueBrick = !this.shouldRenderAsComment ? new DropdownBrick(this.question, this.controller, SurveyHelper.createTextFieldRect(point, this.controller)) : await SurveyHelper.createCommentFlat(point, this.question, this.controller, 1, true, 0, SurveyHelper.getDropdownQuestionValue(this.question));
+        const compositeFlat: CompositeBrick = new CompositeBrick(valueBrick);
         if (this.question.isOtherSelected) {
             const otherPoint: IPoint = SurveyHelper.createPoint(compositeFlat);
             otherPoint.yTop += this.controller.unitHeight * SurveyHelper.GAP_BETWEEN_ROWS;

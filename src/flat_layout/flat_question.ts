@@ -180,6 +180,9 @@ export class FlatQuestion implements IFlatQuestion {
         this.controller.popMargins();
         return flats;
     }
+    protected get shouldRenderAsComment(): boolean {
+        return SurveyHelper.shouldRenderReadOnly(this.question, this.controller);
+    }
 }
 
 Serializer.addProperty('question', {

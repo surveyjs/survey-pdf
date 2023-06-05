@@ -24,11 +24,11 @@ export class CheckItemBrick extends PdfBrick {
         this.question = <QuestionCheckboxModel>this.context.question;
         this.textColor = this.formBorderColor;
     }
+    protected getShouldRenderReadOnly(): boolean {
+        return this.context.readOnly && SurveyHelper.getReadonlyRenderAs(
+            this.question, this.controller) !== 'acroform' || this.controller.compress;
+    }
     public async renderInteractive(): Promise<void> {
-        if (this.context.readOnly && SurveyHelper.getReadonlyRenderAs(
-            this.question, this.controller) !== 'acroform') {
-            return await this.renderReadOnly();
-        }
         const checkBox: any = new (<any>this.controller.doc.AcroFormCheckBox)();
         const formScale: number = SurveyHelper.formScale(this.controller, this);
         const options: any = {};

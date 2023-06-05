@@ -54,11 +54,11 @@ export class RadioItemBrick extends PdfBrick {
         super(context.question, controller, rect);
         this.textColor = this.formBorderColor;
     }
+    protected getShouldRenderReadOnly(): boolean {
+        return this.radioGroupWrap.readOnly && SurveyHelper.getReadonlyRenderAs(
+            <Question>this.question, this.controller) !== 'acroform' || this.controller.compress;
+    }
     public async renderInteractive(): Promise<void> {
-        if (this.radioGroupWrap.readOnly && SurveyHelper.getReadonlyRenderAs(
-            <Question>this.question, this.controller) !== 'acroform') {
-            return await this.renderReadOnly();
-        }
         if (this.context.index == 0) {
             this.radioGroupWrap.addToPdf(this.formBorderColor);
         }

@@ -68,9 +68,11 @@ export class PdfBrick implements IPdfBrick {
     public get height(): number {
         return this.yBot - this.yTop;
     }
+    protected getShouldRenderReadOnly(): boolean {
+        return SurveyHelper.shouldRenderReadOnly(this.question, this.controller);
+    }
     public async render(): Promise<void> {
-        if ((!!this.question && this.question.isReadOnly && SurveyHelper.getReadonlyRenderAs(
-            <Question>this.question, this.controller) !== 'acroform') || this.controller?.compress) {
+        if (this.getShouldRenderReadOnly()) {
             await this.renderReadOnly();
         }
         else await this.renderInteractive();
