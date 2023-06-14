@@ -134,9 +134,9 @@ export interface IDocOptions {
     base64Bold?: string;
     /**
      * Specifies whether to apply a custom font to [HTML questions](https://surveyjs.io/form-library/examples/questiontype-html/).
-     * 
+     *
      * Default value: `false`
-     * 
+     *
      * [View Demo](/pdf-generator/examples/change-font-in-pdf-form/ (linkStyle))
      * @see htmlRenderAs
      */
