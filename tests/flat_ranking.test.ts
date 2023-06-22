@@ -71,7 +71,7 @@ test('Check ranking with selectToRank', async () => {
                 titleLocation: 'hidden',
                 name: 'ranking',
                 type: 'ranking',
-                selectToRank: true,
+                selectToRankEnabled: true,
                 choices: ['A', 'B', 'C']
             }
         ]
@@ -144,8 +144,8 @@ test('Check ranking with selectToRank vertical', async () => {
                 titleLocation: 'hidden',
                 name: 'ranking',
                 type: 'ranking',
-                selectToRank: true,
-                selectToRankAlign: 'vertical',
+                selectToRankEnabled: true,
+                selectToRankAreasLayout: 'vertical',
                 choices: ['A', 'B', 'C']
             }
         ]

@@ -93,10 +93,10 @@ export class FlatRanking extends FlatQuestion {
         return flats;
     }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
-        if(!this.question.selectToRank) {
+        if(!this.question.selectToRankEnabled) {
             return this.generateChoicesColumn(point, this.question.rankingChoices);
         }
-        else if(this.question.selectToRankAlign == 'vertical') {
+        else if(this.question.selectToRankAreasLayout == 'vertical') {
             return this.generateSelectToRankItemsVertically(point);
         }
         else {
