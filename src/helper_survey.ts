@@ -425,15 +425,19 @@ export class SurveyHelper {
         return (<any>question).readonlyRenderAs === 'auto' ? controller.readonlyRenderAs : (<any>question).readonlyRenderAs;
     }
     public static async createCommentFlat(point: IPoint, question: Question,
-        controller: DocController, rows: number, isQuestion: boolean, index: number = 0): Promise<IPdfBrick> {
+        controller: DocController, rows: number, isQuestion: boolean, index: number = 0, value?: string): Promise<IPdfBrick> {
         const rect: IRect = this.createTextFieldRect(point, controller, rows);
-        if (question.isReadOnly && this.getReadonlyRenderAs(question, controller) !== 'acroform') {
-            const textFlat: IPdfBrick = await this.createReadOnlyTextFieldTextFlat(
-                point, controller, question, this.getQuestionOrCommentValue(question, isQuestion), false);
+        let textFlat;
+        if (SurveyHelper.shouldRenderReadOnly(question, controller)) {
+            const renderedValue = value ?? this.getQuestionOrCommentValue(question, isQuestion);
+            textFlat = await this.createReadOnlyTextFieldTextFlat(
+                point, controller, question, renderedValue);
             const padding: number = controller.unitHeight * this.VALUE_READONLY_PADDING_SCALE;
             if (textFlat.yBot + padding > rect.yBot) rect.yBot = textFlat.yBot + padding;
         }
-        return new CommentBrick(question, controller, rect, isQuestion, index);
+        const comment = new CommentBrick(question, controller, rect, isQuestion, index);
+        comment.textBrick = textFlat;
+        return comment;
     }
     public static getQuestionOrCommentValue(question: Question, isQuestion: boolean = true): string {
         return isQuestion ? (question.value !== undefined && question.value !== null ? question.value : '') :
@@ -553,9 +557,9 @@ export class SurveyHelper {
         return this.createRect(point, width, height);
     }
     public static async createReadOnlyTextFieldTextFlat(point: IPoint,
-        controller: DocController, question: Question, value: string, onlyFirstLine: boolean): Promise<IPdfBrick> {
+        controller: DocController, question: Question, value: string): Promise<IPdfBrick> {
         const padding: number = controller.unitWidth * this.VALUE_READONLY_PADDING_SCALE;
-        if (!onlyFirstLine) point.yTop += padding;
+        point.yTop += padding;
         point.xLeft += padding;
         controller.pushMargins(point.xLeft, controller.margins.right + padding);
         const textFlat: IPdfBrick = await this.createTextFlat(
@@ -580,21 +584,6 @@ export class SurveyHelper {
         controller.doc.roundedRect(...this.createAcroformRect(
             this.scaleRect(flat, unvisibleScale)), unvisibleRadius, unvisibleRadius);
         controller.doc.setDrawColor(oldDrawColor);
-    }
-    public static async renderReadOnlyTextField(controller: DocController,
-        question: Question, flat: PdfBrick, value: string,
-        onlyFirstLine: boolean = true, shouldRenderFlatBorders: boolean = true): Promise<void> {
-        const point: IPoint = this.createPoint(flat, true, true);
-        const oldFontSize: number = controller.fontSize;
-        controller.fontSize = flat.fontSize;
-        const textFlat: IPdfBrick = await this.createReadOnlyTextFieldTextFlat(
-            point, controller, question, value, onlyFirstLine);
-        controller.fontSize = oldFontSize;
-        if (onlyFirstLine) await textFlat.unfold()[0].render();
-        else await textFlat.render();
-        if(shouldRenderFlatBorders) {
-            this.renderFlatBorders(controller, flat);
-        }
     }
     public static getLocString(text: LocalizableString): string {
         if (this.hasHtml(text)) return text.renderedHtml;
@@ -725,5 +714,9 @@ export class SurveyHelper {
             }
         }
         return target;
+    }
+    public static shouldRenderReadOnly(question: IQuestion, controller: DocController): boolean {
+        return (!!question && question.isReadOnly && SurveyHelper.getReadonlyRenderAs(
+            <Question>question, controller) !== 'acroform') || controller?.compress;
     }
 }

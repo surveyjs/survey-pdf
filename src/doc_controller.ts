@@ -383,8 +383,6 @@ export class DocController extends DocOptions {
         this._helperDoc.setFont(this.fontName);
         this._doc.setFontSize(this.fontSize);
         this._helperDoc.setFontSize(this.fontSize);
-        this._doc.setR2L(this.isRTL);
-        this._helperDoc.setR2L(this.isRTL);
         this._fontStyle = 'normal';
         this.marginsStack = [];
     }

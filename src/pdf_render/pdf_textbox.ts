@@ -10,7 +10,7 @@ export class TextBoxBrick extends TextFieldBrick {
         super(question, controller, rect, isQuestion,
             (<QuestionTextModel>question).id + (isQuestion ? '' : '_comment' + index),
             SurveyHelper.getQuestionOrCommentValue(<Question>question, isQuestion),
-            isQuestion ? SurveyHelper.getLocString((<QuestionTextModel>question).locPlaceHolder) : '',
+            isQuestion && (<QuestionTextModel>question).locPlaceHolder ? SurveyHelper.getLocString((<QuestionTextModel>question).locPlaceHolder) : '',
             question.isReadOnly, isMultiline,
             (<QuestionTextModel>question).inputType);
     }
