@@ -17,22 +17,46 @@ export interface IPdfBrick extends IRect, ISize {
  * [View Demo](https://surveyjs.io/pdf-generator/examples/add-markup-to-customize-pdf-forms/ (linkStyle))
  */
 export class PdfBrick implements IPdfBrick {
+    protected _xLeft: number;
+    protected _xRight: number;
+    protected _yTop: number;
+    protected _yBot: number;
     /**
      * An X-coordinate for the left brick edge.
      */
-    public xLeft: number;
+    public set xLeft(val: number) {
+        this.setXLeft(val);
+    }
+    public get xLeft(): number {
+        return this._xLeft;
+    }
     /**
      * An X-coordinate for the right brick edge.
      */
-    public xRight: number;
+    public set xRight(val: number) {
+        this.setXRight(val);
+    }
+    public get xRight(): number {
+        return this._xRight;
+    }
     /**
      * A Y-coordinate for the top brick edge.
      */
-    public yTop: number;
+    public set yTop(val: number) {
+        this.setYTop(val);
+    }
+    public get yTop(): number {
+        return this._yTop;
+    }
     /**
      * A Y-coordinate for the bottom brick edge.
      */
-    public yBot: number;
+    public set yBot(val: number) {
+        this.setYBottom(val);
+    }
+    public get yBot(): number {
+        return this._yBot;
+    }
     /**
      * Font size in points.
      *
@@ -90,5 +114,17 @@ export class PdfBrick implements IPdfBrick {
     }
     protected getCorrectedText(val: string): string {
         return this.controller.isRTL ? (val || '').split('').reverse().join(''): val;
+    }
+    protected setXLeft(val: number): void {
+        this._xLeft = val;
+    }
+    protected setXRight(val: number): void {
+        this._xRight = val;
+    }
+    protected setYTop(val: number): void {
+        this._yTop = val;
+    }
+    protected setYBottom(val: number): void {
+        this._yBot = val;
     }
 }

@@ -71,4 +71,32 @@ export class TextFieldBrick extends PdfBrick {
             this.textBrick.translateX(func);
         }
     }
+    protected setXLeft(val: number): void {
+        const delta = val - this._xLeft;
+        super.setXLeft(val);
+        if(this.textBrick) {
+            this.textBrick.xLeft = this.textBrick.xLeft + delta;
+        }
+    }
+    protected setXRight(val: number): void {
+        const delta = val - this._xRight;
+        super.setXRight(val);
+        if(this.textBrick) {
+            this.textBrick.xRight = this.textBrick.xRight + delta;
+        }
+    }
+    protected setYTop(val: number): void {
+        const delta = val - this._yTop;
+        super.setYTop(val);
+        if(this.textBrick) {
+            this.textBrick.yTop = this.textBrick.yTop + delta;
+        }
+    }
+    protected setYBottom(val: number): void {
+        const delta = val - this._yBot;
+        super.setYBottom(val);
+        if(this.textBrick) {
+            this.textBrick.yBot = this.textBrick.yBot + delta;
+        }
+    }
 }

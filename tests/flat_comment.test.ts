@@ -15,6 +15,7 @@ import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 
 import * as Survey from 'survey-core';
+import { TextFieldBrick } from '../src/pdf_render/pdf_textfield';
 
 const __dummy_cm = new FlatComment(null, null, null);
 const __dummy_cb = new FlatCheckbox(null, null, null);
@@ -268,4 +269,35 @@ test('Check readonly text with readOnlyTextRenderMode set to div', async () => {
     } finally {
         Survey.settings.readOnlyCommentRenderMode = oldRenderMode;
     }
+});
+
+test('Check readOnly comment flat is moving text bruck inside', async () => {
+    const json: any = {
+        questions: [
+            {
+                type: 'comment',
+                name: 'text_readonly',
+                readOnly: true,
+                titleLocation: 'hidden'
+            }
+        ]
+    };
+    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    const controller: DocController = new DocController(TestHelper.defaultOptions);
+    const question = survey.getAllQuestions()[0];
+    const comment = <TextFieldBrick>await SurveyHelper.createCommentFlat({ xLeft: 0, yTop: 0 }, question, controller, 1, true);
+    const textBrick = comment['textBrick'];
+    expect(textBrick).toBeDefined();
+    const initialXLeft = textBrick.xLeft;
+    const initialXRight = textBrick.xRight;
+    const initialYTop = textBrick.yTop;
+    const initialYBot = textBrick.yBot;
+    comment.xLeft += 20;
+    comment.xRight += 25;
+    comment.yTop +=10;
+    comment.yBot +=15;
+    expect(textBrick.xLeft - initialXLeft).toBeCloseTo(20);
+    expect(textBrick.xRight - initialXRight).toBeCloseTo(25);
+    expect(textBrick.yTop - initialYTop).toBeCloseTo(10);
+    expect(textBrick.yBot - initialYBot).toBeCloseTo(15);
 });
