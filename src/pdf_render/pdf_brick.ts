@@ -21,41 +21,42 @@ export class PdfBrick implements IPdfBrick {
     protected _xRight: number;
     protected _yTop: number;
     protected _yBot: number;
+
     /**
      * An X-coordinate for the left brick edge.
      */
-    public set xLeft(val: number) {
-        this.setXLeft(val);
-    }
     public get xLeft(): number {
         return this._xLeft;
+    }
+    public set xLeft(val: number) {
+        this.setXLeft(val);
     }
     /**
      * An X-coordinate for the right brick edge.
      */
-    public set xRight(val: number) {
-        this.setXRight(val);
-    }
     public get xRight(): number {
         return this._xRight;
+    }
+    public set xRight(val: number) {
+        this.setXRight(val);
     }
     /**
      * A Y-coordinate for the top brick edge.
      */
-    public set yTop(val: number) {
-        this.setYTop(val);
-    }
     public get yTop(): number {
         return this._yTop;
+    }
+    public set yTop(val: number) {
+        this.setYTop(val);
     }
     /**
      * A Y-coordinate for the bottom brick edge.
      */
-    public set yBot(val: number) {
-        this.setYBottom(val);
-    }
     public get yBot(): number {
         return this._yBot;
+    }
+    public set yBot(val: number) {
+        this.setYBottom(val);
     }
     /**
      * Font size in points.
