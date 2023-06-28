@@ -66,7 +66,9 @@ export class TextFieldBrick extends PdfBrick {
         this.controller.popMargins();
     }
     public translateX(func: TranslateXFunction): void {
-        super.translateX(func);
+        const res = func(this.xLeft, this.xRight);
+        this._xLeft = res.xLeft;
+        this._xRight = res.xRight;
         if(this.textBrick) {
             this.textBrick.translateX(func);
         }
