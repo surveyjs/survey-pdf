@@ -525,7 +525,7 @@ test('Check matrixdynamic with totals', async () => {
         xRight: controller.paperWidth - controller.margins.right,
         yTop: assumeQuestion1.yBot + SurveyHelper.EPSILON + FlatMatrixDynamic.GAP_BETWEEN_ROWS * controller.unitHeight,
         yBot: assumeQuestion1.yBot + SurveyHelper.EPSILON +
-            controller.unitHeight * (1 + FlatMatrixDynamic.GAP_BETWEEN_ROWS)
+            controller.unitHeight * (1 + FlatMatrixDynamic.GAP_BETWEEN_ROWS + 2 * SurveyHelper.VALUE_READONLY_PADDING_SCALE)
     };
     TestHelper.equalRect(expect, unfolFooterFlats[0], assumeFooter);
     let assumeMatrix: IRect = {

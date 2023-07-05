@@ -32,7 +32,7 @@ test('Check readonly text', async () => {
     expect(flats[0].length).toBe(1);
     const textPoint: IPoint = controller.leftTopPoint;
     textPoint.xLeft += controller.unitWidth;
-    const assumeText: IRect = await SurveyHelper.createCommentFlat(textPoint, question, controller, 1, true);
+    const assumeText: IRect = await SurveyHelper.createCommentFlat(textPoint, question, controller, true);
     TestHelper.equalRect(expect, flats[0][0], assumeText);
 });
 
@@ -58,7 +58,7 @@ test('Check readonly text expends when textRenderAs option set', async () => {
     const question = survey.getAllQuestions()[0];
     const textPoint: IPoint = controller.leftTopPoint;
     textPoint.xLeft += controller.unitWidth;
-    const assumeBrick: IPdfBrick = await SurveyHelper.createCommentFlat(textPoint, question, controller, 1, true);
+    const assumeBrick: IPdfBrick = await SurveyHelper.createCommentFlat(textPoint, question, controller, true);
     TestHelper.equalRect(expect, flats[0][0], assumeBrick);
 });
 

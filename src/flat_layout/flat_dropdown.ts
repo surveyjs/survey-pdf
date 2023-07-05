@@ -16,13 +16,13 @@ export class FlatDropdown extends FlatQuestion {
         this.question = <QuestionDropdownModel>question;
     }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
-        const valueBrick = !this.shouldRenderAsComment ? new DropdownBrick(this.question, this.controller, SurveyHelper.createTextFieldRect(point, this.controller)) : await SurveyHelper.createCommentFlat(point, this.question, this.controller, 1, true, 0, SurveyHelper.getDropdownQuestionValue(this.question));
+        const valueBrick = !this.shouldRenderAsComment ? new DropdownBrick(this.question, this.controller, SurveyHelper.createTextFieldRect(point, this.controller)) : await SurveyHelper.createCommentFlat(point, this.question, this.controller, true, { value: SurveyHelper.getDropdownQuestionValue(this.question) });
         const compositeFlat: CompositeBrick = new CompositeBrick(valueBrick);
         if (this.question.isOtherSelected) {
             const otherPoint: IPoint = SurveyHelper.createPoint(compositeFlat);
             otherPoint.yTop += this.controller.unitHeight * SurveyHelper.GAP_BETWEEN_ROWS;
             compositeFlat.addBrick(await SurveyHelper.createCommentFlat(
-                otherPoint, this.question, this.controller, SurveyHelper.OTHER_ROWS_COUNT, false));
+                otherPoint, this.question, this.controller, false, { rows: SurveyHelper.OTHER_ROWS_COUNT }));
         }
         return [compositeFlat];
     }

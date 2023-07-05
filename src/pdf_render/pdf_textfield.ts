@@ -8,7 +8,7 @@ export class TextFieldBrick extends PdfBrick {
     public constructor(question: IQuestion, controller: DocController,
         rect: IRect, protected isQuestion: boolean,
         protected fieldName: string, protected value: string,
-        protected placeholder: string, protected isReadOnly: boolean,
+        protected placeholder: string, public isReadOnly: boolean,
         protected isMultiline: boolean, protected inputType: string) {
         super(question, controller, rect);
         this.question = <QuestionTextModel>question;
@@ -50,6 +50,9 @@ export class TextFieldBrick extends PdfBrick {
     }
     protected shouldRenderFlatBorders() {
         return settings.readOnlyTextRenderMode === 'input';
+    }
+    protected getShouldRenderReadOnly(): boolean {
+        return SurveyHelper.shouldRenderReadOnly(this.question, this.controller, this.isReadOnly);
     }
     public textBrick: IPdfBrick;
     public async renderReadOnly(): Promise<void> {
