@@ -15,9 +15,7 @@ export class FlatExpression extends FlatQuestion {
         this.question = <QuestionExpressionModel>question;
     }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
-        const rect: IRect = SurveyHelper.createTextFieldRect(point, this.controller);
-        return [new TextFieldBrick(this.question, this.controller, rect, true,
-            this.question.id, this.question.displayValue, '', true, false, 'text')];
+        return [await SurveyHelper.createCommentFlat(point, this.question, this.controller, true, { value: this.question.displayValue, readOnly: true })];
     }
 }
 

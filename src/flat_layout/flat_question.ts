@@ -39,7 +39,7 @@ export class FlatQuestion implements IFlatQuestion {
         const otherPoint: IPoint = SurveyHelper.createPoint(otherTextFlat);
         otherPoint.yTop += this.controller.unitHeight * SurveyHelper.GAP_BETWEEN_ROWS;
         return new CompositeBrick(otherTextFlat, await SurveyHelper.createCommentFlat(
-            otherPoint, this.question, this.controller, SurveyHelper.OTHER_ROWS_COUNT, false));
+            otherPoint, this.question, this.controller, false, { rows: SurveyHelper.OTHER_ROWS_COUNT }));
     }
     public async generateFlatsComposite(point: IPoint): Promise<IPdfBrick[]> {
         const contentPanel = (<any>this.question).contentPanel;

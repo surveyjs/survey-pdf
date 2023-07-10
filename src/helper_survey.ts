@@ -425,17 +425,20 @@ export class SurveyHelper {
         return (<any>question).readonlyRenderAs === 'auto' ? controller.readonlyRenderAs : (<any>question).readonlyRenderAs;
     }
     public static async createCommentFlat(point: IPoint, question: Question,
-        controller: DocController, rows: number, isQuestion: boolean, index: number = 0, value?: string): Promise<IPdfBrick> {
-        const rect: IRect = this.createTextFieldRect(point, controller, rows);
+        controller: DocController, isQuestion: boolean, options: { rows?: number, index?: number, value?: string, readOnly?: boolean } = {}): Promise<IPdfBrick> {
+        const rect: IRect = this.createTextFieldRect(point, controller, options.rows ?? 1);
         let textFlat;
-        if (SurveyHelper.shouldRenderReadOnly(question, controller)) {
-            const renderedValue = value ?? this.getQuestionOrCommentValue(question, isQuestion);
+        if (options.readOnly ?? SurveyHelper.shouldRenderReadOnly(question, controller)) {
+            const renderedValue = options.value ?? this.getQuestionOrCommentValue(question, isQuestion);
             textFlat = await this.createReadOnlyTextFieldTextFlat(
                 point, controller, question, renderedValue);
             const padding: number = controller.unitHeight * this.VALUE_READONLY_PADDING_SCALE;
             if (textFlat.yBot + padding > rect.yBot) rect.yBot = textFlat.yBot + padding;
         }
-        const comment = new CommentBrick(question, controller, rect, isQuestion, index);
+        const comment = new CommentBrick(question, controller, rect, isQuestion, options.index);
+        if(options.readOnly !== null && options.readOnly !== undefined) {
+            comment.isReadOnly = options.readOnly;
+        }
         comment.textBrick = textFlat;
         return comment;
     }
@@ -715,8 +718,8 @@ export class SurveyHelper {
         }
         return target;
     }
-    public static shouldRenderReadOnly(question: IQuestion, controller: DocController): boolean {
-        return (!!question && question.isReadOnly && SurveyHelper.getReadonlyRenderAs(
+    public static shouldRenderReadOnly(question: IQuestion, controller: DocController, readOnly?: boolean): boolean {
+        return ((!!question && question.isReadOnly || readOnly) && SurveyHelper.getReadonlyRenderAs(
             <Question>question, controller) !== 'acroform') || controller?.compress;
     }
 }

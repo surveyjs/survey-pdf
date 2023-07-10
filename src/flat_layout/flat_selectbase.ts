@@ -34,7 +34,7 @@ export abstract class FlatSelectBase extends FlatQuestion {
             const otherPoint: IPoint = SurveyHelper.createPoint(compositeFlat);
             otherPoint.yTop += this.controller.unitHeight * SurveyHelper.GAP_BETWEEN_ROWS;
             compositeFlat.addBrick(await SurveyHelper.createCommentFlat(
-                otherPoint, this.question, this.controller, SurveyHelper.OTHER_ROWS_COUNT, false, index));
+                otherPoint, this.question, this.controller, false, { index, rows: SurveyHelper.OTHER_ROWS_COUNT }));
         }
         return compositeFlat;
     }

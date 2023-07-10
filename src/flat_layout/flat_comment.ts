@@ -15,7 +15,7 @@ export class FlatComment extends FlatQuestion {
     }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         return [await SurveyHelper.createCommentFlat(
-            point, this.question, this.controller, this.question.rows, true)];
+            point, this.question, this.controller, true, { rows: this.question.rows })];
     }
 }
 

@@ -21,7 +21,7 @@ export class FlatTextbox extends FlatQuestion {
             return [new TextBoxBrick(this.question, this.controller, rect)];
         }
         return [await SurveyHelper.createCommentFlat(point, this.question,
-            this.controller, FlatTextbox.MULTILINE_TEXT_ROWS_COUNT, true)];
+            this.controller, true, { rows: FlatTextbox.MULTILINE_TEXT_ROWS_COUNT })];
     }
 }
 

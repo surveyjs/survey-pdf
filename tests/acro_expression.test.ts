@@ -23,7 +23,6 @@ test('Check expression left space padding', async () => {
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     await survey['renderSurvey'](controller);
-    expect(controller.doc.internal.acroformPlugin
-        .acroFormDictionaryRoot.Fields[0].value).toBe(
-            ' ' + json.elements[0].expression);
+    //expression should be rendered always readOnly
+    expect(controller.doc.internal.acroformPlugin).toBeUndefined();
 });
