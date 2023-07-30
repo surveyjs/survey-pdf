@@ -1,4 +1,5 @@
-import { SurveyModel, Question, EventBase, hasLicense } from 'survey-core';
+import { SurveyModel, Question, EventBase } from 'survey-core';
+import * as SurveyCore from 'survey-core';
 import { IDocOptions, DocController } from './doc_controller';
 import { FlatSurvey } from './flat_layout/flat_survey';
 import { PagePacker } from './page_layout/page_packer';
@@ -32,7 +33,8 @@ export class SurveyPDF extends SurveyModel {
      * > You can enable this property only if you have a SurveyJS PDF Generator [commercial license](https://surveyjs.io/pricing). It is illegal to enable this property without a license.
      */
     public get haveCommercialLicense(): boolean {
-        if(!!hasLicense && hasLicense(2)) return true;
+        const f = SurveyCore.hasLicense;
+        if(!!f && f(2)) return true;
         return this._haveCommercialLicense;
     }
     public set haveCommercialLicense(val: boolean) {
