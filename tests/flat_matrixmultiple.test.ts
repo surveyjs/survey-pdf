@@ -524,7 +524,7 @@ test('Check matrix multiple column widths', async () => {
     let question = <QuestionMatrixDropdownModel>survey.getAllQuestions()[0];
     const controller: DocController = new DocController(options);
     let flat = new FlatMatrixMultiple(survey, question, controller);
-    let widths = flat['calculateColumnWidth'](question.renderedTable.rows, 4);
+    let widths = flat['calculateColumnWidth'](flat['visibleRows'], 4);
     let restWidth = controller.measureText(SurveyHelper.MATRIX_COLUMN_WIDTH).width;
     expect(widths).toEqual([300, restWidth, 37.5, restWidth]);
     expect(flat['calculateIsWide'](question.renderedTable, 4)).toBeFalsy();
@@ -559,7 +559,7 @@ test('Check matrix multiple column widths', async () => {
     survey = new SurveyPDF(json, options);
     question = <QuestionMatrixDropdownModel>survey.getAllQuestions()[0];
     flat = new FlatMatrixMultiple(survey, question, controller);
-    widths = flat['calculateColumnWidth'](question.renderedTable.rows, 4);
+    widths = flat['calculateColumnWidth'](flat['visibleRows'], 4);
     restWidth = (flat['getAvalableWidth'](4) - 75 - 37.5) / 2;
     expect(widths).toEqual([75, restWidth, 37.5, restWidth]);
     expect(flat['calculateIsWide'](question.renderedTable, 4)).toBeTruthy();
@@ -605,7 +605,7 @@ test('Check matrix dynamic column min widths', async () => {
     let question = <QuestionMatrixDropdownModel>survey.getAllQuestions()[0];
     const controller: DocController = new DocController(options);
     let flat = new FlatMatrixDynamic(survey, question, controller);
-    let widths = flat['calculateColumnWidth'](question.renderedTable.rows, 4);
+    let widths = flat['calculateColumnWidth'](flat['visibleRows'], 4);
     let restWidth = (flat['getAvalableWidth'](4) - 112.5 - 150) / 2;
     expect(widths).toEqual([112.5, restWidth, 150, restWidth]);
 });
@@ -656,7 +656,7 @@ test('Check matrix dynamic column min widths with detailPanel', async () => {
     let question = <QuestionMatrixDropdownModel>survey.getAllQuestions()[0];
     const controller: DocController = new DocController(options);
     let flat = new FlatMatrixDynamic(survey, question, controller);
-    let widths = flat['calculateColumnWidth'](question.renderedTable.rows, 4);
+    let widths = flat['calculateColumnWidth'](flat['visibleRows'], 4);
     let restWidth = (flat['getAvalableWidth'](4) - 112.5 - 150) / 2;
     expect(widths).toEqual([112.5, restWidth, 150, restWidth]);
 });
