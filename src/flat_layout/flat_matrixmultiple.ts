@@ -21,6 +21,9 @@ export class FlatMatrixMultiple extends FlatQuestion {
         super(survey, question, controller);
         this.question = <QuestionMatrixDropdownModelBase>question;
     }
+    private get visibleRows() {
+        return this.question.renderedTable.rows.filter(row => row.visible);
+    }
     private async generateFlatsCell(point: IPoint, cell: QuestionMatrixDropdownRenderedCell,
         isHeader: boolean): Promise<CompositeBrick> {
         const composite: CompositeBrick = new CompositeBrick();
@@ -186,17 +189,18 @@ export class FlatMatrixMultiple extends FlatQuestion {
         if(table.showHeader) {
             rows.push(table.headerRow);
         }
-        rows.push(...table.rows);
+        rows.push(...this.visibleRows);
         if(rows.length === 0) return true;
         const columnWidthSum = this.calculateColumnWidth(rows, colCount).reduce((widthSum: number, width: number) => widthSum += width, 0);
         return this.question.renderAs !== 'list' && this.controller.matrixRenderAs !== 'list' && Math.floor(columnWidthSum) <= Math.floor(this.getAvalableWidth(colCount));
     }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         const table: QuestionMatrixDropdownRenderedTable = this.question.renderedTable;
+        const renderedRows = this.visibleRows;
         const isVertical: boolean = this.question.columnLayout === 'vertical';
         let colCount: number;
-        if (!!table.rows[0]) {
-            colCount = table.rows[0].cells.filter((cell: QuestionMatrixDropdownRenderedCell, index: number) => !this.ignoreCell(cell, index)).length;
+        if (!!renderedRows[0]) {
+            colCount = renderedRows[0].cells.filter((cell: QuestionMatrixDropdownRenderedCell, index: number) => !this.ignoreCell(cell, index)).length;
         } else {
             colCount = table.showHeader && table.headerRow ? table.headerRow.cells.length :
                 table.showFooter && table.footerRow ? table.footerRow.cells.length : 0;
@@ -207,7 +211,7 @@ export class FlatMatrixMultiple extends FlatQuestion {
         const rows: QuestionMatrixDropdownRenderedRow[] = [];
         const isWide = this.calculateIsWide(table, colCount);
         if (table.showHeader && isWide) rows.push(table.headerRow);
-        rows.push(...table.rows);
+        rows.push(...renderedRows);
         if (table.hasRemoveRows && isVertical) rows.pop();
         if (table.showFooter && isWide) rows.push(table.footerRow);
         return await this.generateFlatsRows(point, rows, colCount, isWide);
