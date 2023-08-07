@@ -660,3 +660,44 @@ test('Check matrix dynamic column min widths with detailPanel', async () => {
     let restWidth = (flat['getAvalableWidth'](4) - 112.5 - 150) / 2;
     expect(widths).toEqual([112.5, restWidth, 150, restWidth]);
 });
+test('Check getRowsToRender method', async () => {
+    const json = {
+        pages: [
+            {
+                name: 'page1',
+                elements: [
+                    {
+                        type: 'matrixdropdown',
+                        name: 'question1',
+                        columns: [
+                            {
+                                name: 'Column 1',
+                                title: 'Column 1',
+                                totalType: 'sum'
+                            },
+                        ],
+                        choices: [1, 2, 3, 4, 5],
+                        rows: ['Row 1']
+                    }
+                ]
+            }
+        ]
+    };
+    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    const question = <QuestionMatrixDropdownModel>survey.getAllQuestions()[0];
+    const controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flat = new FlatMatrixMultiple(survey, survey.getAllQuestions()[0], controller);
+    let table = question.renderedTable;
+    let rows = flat['getRowsToRender'](question.renderedTable, false, true);
+    expect(rows.length).toBe(3);
+
+    expect(rows[0] === table.headerRow).toBeTruthy();
+    expect(rows[1] === table.rows[1]).toBeTruthy();
+    expect(rows[2] === table.footerRow).toBeTruthy();
+
+    rows = flat['getRowsToRender'](question.renderedTable, false, false);
+    expect(rows.length).toBe(2);
+
+    expect(rows[0] === table.rows[1]).toBeTruthy();
+    expect(rows[1] === table.footerRow).toBeTruthy();
+});
