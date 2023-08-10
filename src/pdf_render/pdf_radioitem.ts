@@ -106,7 +106,7 @@ export class RadioItemBrick extends PdfBrick {
             let radiomarkerSize: ISize = this.controller.measureText(
                 RadioItemBrick.RADIOMARKER_READONLY_SYMBOL);
             radiomarkerPoint.xLeft += this.width / 2.0 - radiomarkerSize.width / 2.0;
-            radiomarkerPoint.yTop += this.height / 2.0 - radiomarkerSize.height / 1.9;
+            radiomarkerPoint.yTop += this.height / 2.0 - radiomarkerSize.height / 1.925;
             let radiomarkerFlat: IPdfBrick = await SurveyHelper.createTextFlat(
                 radiomarkerPoint, this.question, this.controller,
                 RadioItemBrick.RADIOMARKER_READONLY_SYMBOL, TextBrick);
