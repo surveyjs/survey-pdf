@@ -21,6 +21,13 @@ export class FlatMatrixMultiple extends FlatQuestion {
         super(survey, question, controller);
         this.question = <QuestionMatrixDropdownModelBase>question;
     }
+    private visibleRowsValue: QuestionMatrixDropdownRenderedRow[];
+    private get visibleRows() {
+        if(!this.visibleRowsValue) {
+            this.visibleRowsValue = this.question.renderedTable.rows.filter(row => row.visible);
+        }
+        return this.visibleRowsValue;
+    }
     private async generateFlatsCell(point: IPoint, cell: QuestionMatrixDropdownRenderedCell,
         isHeader: boolean): Promise<CompositeBrick> {
         const composite: CompositeBrick = new CompositeBrick();
@@ -186,17 +193,27 @@ export class FlatMatrixMultiple extends FlatQuestion {
         if(table.showHeader) {
             rows.push(table.headerRow);
         }
-        rows.push(...table.rows);
+        rows.push(...this.visibleRows);
         if(rows.length === 0) return true;
         const columnWidthSum = this.calculateColumnWidth(rows, colCount).reduce((widthSum: number, width: number) => widthSum += width, 0);
         return this.question.renderAs !== 'list' && this.controller.matrixRenderAs !== 'list' && Math.floor(columnWidthSum) <= Math.floor(this.getAvalableWidth(colCount));
     }
+    private getRowsToRender(table: QuestionMatrixDropdownRenderedTable, isVertical: boolean, isWide: boolean) {
+        const rows: QuestionMatrixDropdownRenderedRow[] = [];
+        const renderedRows = this.visibleRows;
+        if (table.showHeader && isWide) rows.push(table.headerRow);
+        rows.push(...renderedRows);
+        if (table.hasRemoveRows && isVertical) rows.pop();
+        if (table.showFooter) rows.push(table.footerRow);
+        return rows;
+    }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         const table: QuestionMatrixDropdownRenderedTable = this.question.renderedTable;
+        const renderedRows = this.visibleRows;
         const isVertical: boolean = this.question.columnLayout === 'vertical';
         let colCount: number;
-        if (!!table.rows[0]) {
-            colCount = table.rows[0].cells.filter((cell: QuestionMatrixDropdownRenderedCell, index: number) => !this.ignoreCell(cell, index)).length;
+        if (!!renderedRows[0]) {
+            colCount = renderedRows[0].cells.filter((cell: QuestionMatrixDropdownRenderedCell, index: number) => !this.ignoreCell(cell, index)).length;
         } else {
             colCount = table.showHeader && table.headerRow ? table.headerRow.cells.length :
                 table.showFooter && table.footerRow ? table.footerRow.cells.length : 0;
@@ -204,12 +221,8 @@ export class FlatMatrixMultiple extends FlatQuestion {
         if (colCount === 0) {
             return [new CompositeBrick(SurveyHelper.createRowlineFlat(point, this.controller))];
         }
-        const rows: QuestionMatrixDropdownRenderedRow[] = [];
         const isWide = this.calculateIsWide(table, colCount);
-        if (table.showHeader && isWide) rows.push(table.headerRow);
-        rows.push(...table.rows);
-        if (table.hasRemoveRows && isVertical) rows.pop();
-        if (table.showFooter && isWide) rows.push(table.footerRow);
+        const rows = this.getRowsToRender(table, isVertical, isWide);
         return await this.generateFlatsRows(point, rows, colCount, isWide);
     }
 }
