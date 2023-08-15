@@ -149,11 +149,6 @@ export interface IDocOptions {
 
     commercial?: boolean;
 
-    /**
-     * Removes watermarks from the exported document.
-     *
-     * > You can enable this property only if you have a SurveyJS PDF Generator [commercial license](https://surveyjs.io/pricing). It is illegal to enable this property without a license.
-     */
     haveCommercialLicense?: boolean;
 
     /**

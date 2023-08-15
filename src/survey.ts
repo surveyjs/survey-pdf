@@ -27,11 +27,6 @@ export class SurveyPDF extends SurveyModel {
         this.options = SurveyHelper.clone(options);
         this._haveCommercialLicense = options.commercial || options.haveCommercialLicense;
     }
-    /**
-     * Removes watermarks from the exported document.
-     *
-     * > You can enable this property only if you have a SurveyJS PDF Generator [commercial license](https://surveyjs.io/pricing). It is illegal to enable this property without a license.
-     */
     public get haveCommercialLicense(): boolean {
         const f = SurveyCore.hasLicense;
         if(!!f && f(2)) return true;
