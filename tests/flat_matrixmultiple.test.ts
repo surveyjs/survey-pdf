@@ -12,6 +12,8 @@ import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 import { QuestionMatrixDropdownModel } from 'survey-core';
+import { FlatRepository } from '../src/flat_layout/flat_repository';
+import { CompositeBrick } from '../src/pdf_render/pdf_composite';
 let __dummy_dd = new FlatDropdown(null, null, null);
 let __dummy_mm = new FlatMatrixMultiple(null, null, null);
 
@@ -700,4 +702,136 @@ test('Check getRowsToRender method', async () => {
 
     expect(rows[0] === table.rows[1]).toBeTruthy();
     expect(rows[1] === table.footerRow).toBeTruthy();
+});
+
+test('Check matrix multiple one column one row with detailPanel', async () => {
+    const json: any = {
+        showQuestionNumbers: 'off',
+        elements: [
+            {
+                type: 'matrixdropdown',
+                name: 'detailPanelChecker',
+                titleLocation: 'hidden',
+                hideNumber: true,
+                columns: [
+                    {
+                        name: 'Col1',
+                    }
+                ],
+                detailElements: [
+                    {
+                        type: 'comment',
+                        name: 'commentInPanel',
+                        titleLocation: 'hidden',
+                    }
+                ],
+                rows: ['Row1'],
+                detailPanelMode: 'underRow',
+            }
+        ]
+    };
+    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    const question = <QuestionMatrixDropdownModel>survey.getAllQuestions()[0];
+    const controller: DocController = new DocController(TestHelper.defaultOptions);
+    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    expect(flats.length).toBe(1);
+    expect(flats[0].length).toBe(3);
+    controller.margins.left += controller.unitWidth;
+    const unfoldHeaderFlats: IPdfBrick[] = flats[0][0].unfold();
+    expect(unfoldHeaderFlats.length).toBe(2);
+    const unfoldRowFlats: IPdfBrick[] = flats[0][1].unfold();
+    expect(unfoldRowFlats.length).toBe(2);
+    const header: ISize = controller.measureText(json.elements[0].columns[0].name, 'bold');
+    const assumeMatrix: IRect = {
+        xLeft: controller.leftTopPoint.xLeft,
+        xRight: controller.paperWidth - controller.margins.right,
+        yTop: controller.leftTopPoint.yTop,
+        yBot: controller.leftTopPoint.yTop + header.height +
+            SurveyHelper.EPSILON + controller.unitHeight * (1 + FlatMatrixMultiple.GAP_BETWEEN_ROWS)
+    };
+    TestHelper.equalRect(expect, SurveyHelper.mergeRects(flats[0][0], flats[0][1]), assumeMatrix);
+    const assumeHeader: IRect = {
+        xLeft: controller.leftTopPoint.xLeft +
+            SurveyHelper.getPageAvailableWidth(controller) / 2.0 +
+            SurveyHelper.GAP_BETWEEN_COLUMNS * controller.unitWidth / 2.0,
+        xRight: controller.leftTopPoint.xLeft +
+            SurveyHelper.getPageAvailableWidth(controller) / 2.0 +
+            SurveyHelper.GAP_BETWEEN_COLUMNS * controller.unitWidth / 2.0 +
+            header.width,
+        yTop: controller.leftTopPoint.yTop,
+        yBot: controller.leftTopPoint.yTop + header.height
+    };
+    TestHelper.equalRect(expect, unfoldHeaderFlats[0], assumeHeader);
+    const rowText: ISize = controller.measureText(json.elements[0].rows[0]);
+    const assumeRowText: IRect = {
+        xLeft: controller.leftTopPoint.xLeft,
+        xRight: controller.leftTopPoint.xLeft + rowText.width,
+        yTop: assumeHeader.yBot + SurveyHelper.EPSILON
+            + controller.unitHeight * FlatMatrixMultiple.GAP_BETWEEN_ROWS,
+        yBot: assumeHeader.yBot + SurveyHelper.EPSILON + rowText.height +
+            controller.unitHeight * FlatMatrixMultiple.GAP_BETWEEN_ROWS
+    };
+    TestHelper.equalRect(expect, unfoldRowFlats[0], assumeRowText);
+    const assumeRowQuestion: IRect = {
+        xLeft: assumeHeader.xLeft,
+        xRight: assumeMatrix.xRight,
+        yTop: assumeRowText.yTop,
+        yBot: assumeRowText.yTop + controller.unitHeight
+    };
+    TestHelper.equalRect(expect, unfoldRowFlats[1], assumeRowQuestion);
+    question.visibleRows[0].showDetailPanel();
+    const panel = question.visibleRows[0].detailPanel;
+    const assumePanelBricks = await FlatSurvey.generateFlatsPanel(
+        survey, controller, panel, { xLeft: assumeRowText.xLeft, yTop: assumeRowQuestion.yBot + SurveyHelper.EPSILON
+            + controller.unitHeight * FlatMatrixMultiple.GAP_BETWEEN_ROWS });
+    const assumePanelCompositeBrick = new CompositeBrick(...assumePanelBricks);
+    TestHelper.equalRect(expect, flats[0][2], assumePanelCompositeBrick);
+});
+
+test('Check matrix multiple zero columns one row with detailPanel', async () => {
+    const json: any = {
+        showQuestionNumbers: 'off',
+        elements: [
+            {
+                type: 'matrixdropdown',
+                name: 'detailPanelChecker',
+                titleLocation: 'hidden',
+                hideNumber: true,
+                columns: [],
+                detailElements: [
+                    {
+                        type: 'comment',
+                        name: 'commentInPanel',
+                        titleLocation: 'hidden',
+                    }
+                ],
+                rows: ['Row1'],
+                detailPanelMode: 'underRow',
+            }
+        ]
+    };
+    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    const question = <QuestionMatrixDropdownModel>survey.getAllQuestions()[0];
+    const controller: DocController = new DocController(TestHelper.defaultOptions);
+    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    expect(flats.length).toBe(1);
+    expect(flats[0].length).toBe(2);
+    controller.margins.left += controller.unitWidth;
+    const unfoldRowFlats: IPdfBrick[] = flats[0][0].unfold();
+    expect(unfoldRowFlats.length).toBe(1);
+    const rowText: ISize = controller.measureText(json.elements[0].rows[0]);
+    const assumeRowText: IRect = {
+        xLeft: controller.leftTopPoint.xLeft,
+        xRight: controller.leftTopPoint.xLeft + rowText.width,
+        yTop: controller.leftTopPoint.yTop,
+        yBot: controller.leftTopPoint.yTop + controller.unitHeight
+    };
+    TestHelper.equalRect(expect, unfoldRowFlats[0], assumeRowText);
+    question.visibleRows[0].showDetailPanel();
+    const panel = question.visibleRows[0].detailPanel;
+    const assumePanelBricks = await FlatSurvey.generateFlatsPanel(
+        survey, controller, panel, { xLeft: assumeRowText.xLeft, yTop: assumeRowText.yBot + SurveyHelper.EPSILON
+            + controller.unitHeight * FlatMatrixMultiple.GAP_BETWEEN_ROWS });
+    const assumePanelCompositeBrick = new CompositeBrick(...assumePanelBricks);
+    TestHelper.equalRect(expect, flats[0][1], assumePanelCompositeBrick);
 });
