@@ -16,6 +16,9 @@ export class FlatMultipleText extends FlatQuestion {
         super(survey, question, controller);
         this.question = <QuestionMultipleTextModel>question;
     }
+    private getVisibleRows() {
+        return this.question.getRows().filter(row => row.isVisible);
+    }
     private async generateFlatItem(point: IPoint, row_index: number, col_index: number,
         item: MultipleTextItemModel): Promise<IPdfBrick> {
         const colWidth: number = SurveyHelper.getPageAvailableWidth(this.controller);
@@ -38,17 +41,17 @@ export class FlatMultipleText extends FlatQuestion {
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         const rowsFlats: CompositeBrick[] = [];
         const currPoint: IPoint = SurveyHelper.clone(point);
-        const rows = this.question.getRows();
+        const rows = this.getVisibleRows();
         for (let i: number = 0; i < rows.length; i++) {
             rowsFlats.push(new CompositeBrick());
             let yBot: number = currPoint.yTop;
             this.controller.pushMargins();
-            for (let j: number = 0; j < rows[i].length; j++) {
+            for (let j: number = 0; j < rows[i].cells.length; j++) {
                 this.controller.pushMargins();
                 SurveyHelper.setColumnMargins(this.controller, this.question.colCount, j);
                 currPoint.xLeft = this.controller.margins.left;
                 const itemFlat: IPdfBrick = await this.generateFlatItem(
-                    currPoint, i, j, rows[i][j]);
+                    currPoint, i, j, rows[i].cells[j].item);
                 rowsFlats[rowsFlats.length - 1].addBrick(itemFlat);
                 yBot = Math.max(yBot, itemFlat.yBot);
                 this.controller.popMargins();
