@@ -35,6 +35,28 @@ test('Check no files', async () => {
         <Question>survey.getAllQuestions()[0], controller, 'No file chosen', TextBrick);
     TestHelper.equalRect(expect, flats[0][0], assumeFile);
 });
+test('Check noFileChosen locale', async () => {
+    let json: any = {
+        elements: [
+            {
+                type: 'file',
+                name: 'faque',
+                titleLocation: 'hidden'
+            }
+        ]
+    };
+    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    survey.getAllQuestions()[0].noFileChosenCaption = 'test';
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    expect(flats.length).toBe(1);
+    expect(flats[0].length).toBe(1);
+    controller.margins.left += controller.unitWidth;
+    let assumeFile: IRect = await SurveyHelper.createTextFlat(controller.leftTopPoint,
+        <Question>survey.getAllQuestions()[0], controller, 'test', TextBrick);
+    TestHelper.equalRect(expect, flats[0][0], assumeFile);
+    expect((<TextBrick>(<CompositeBrick>flats[0][0])['bricks'][0])['text']).toEqual('test');
+});
 test('Check one text file', async () => {
     let json: any = {
         elements: [
