@@ -25,7 +25,7 @@ npm install survey-pdf --save
 Export properties allow you to customize the page format, orientation, margins, font, and other parameters. Refer to the [`IDocOptions`](/Documentation/Pdf-Export?id=idocoptions) interface for a full list of properties. The following code changes the [`fontSize`](/Documentation/Pdf-Export?id=idocoptions#fontSize) property:
 
 ```js
-const exportToPdfOptions = {
+const pdfDocOptions = {
   fontSize: 12
 };
 ```
@@ -41,10 +41,10 @@ import { SurveyPDF } from "survey-pdf";
 
 const surveyJson = { /* ... */ };
 
-const exportToPdfOptions = { /* ... */ };
+const pdfDocOptions = { /* ... */ };
 
 const savePdf = function (surveyData) {
-  const surveyPdf = new SurveyPDF(surveyJson, exportToPdfOptions);
+  const surveyPdf = new SurveyPDF(surveyJson, pdfDocOptions);
   surveyPdf.data = surveyData;
   surveyPdf.save();
 };
@@ -94,12 +94,12 @@ const surveyJson = {
   // ...
 };
 
-const exportToPdfOptions = {
+const pdfDocOptions = {
   fontSize: 12
 };
 
 const savePdf = function (surveyData) {
-  const surveyPdf = new SurveyPDF(surveyJson, exportToPdfOptions);
+  const surveyPdf = new SurveyPDF(surveyJson, pdfDocOptions);
   surveyPdf.data = surveyData;
   surveyPdf.save();
 };

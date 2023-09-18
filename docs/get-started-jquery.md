@@ -35,7 +35,7 @@ PDF Generator for SurveyJS is built upon the <a href="https://github.com/paralla
 Export properties allow you to customize the page format, orientation, margins, font, and other parameters. Refer to the [`IDocOptions`](/Documentation/Pdf-Export?id=idocoptions) interface for a full list of properties. The following code changes the [`fontSize`](/Documentation/Pdf-Export?id=idocoptions#fontSize) property:
 
 ```js
-const exportToPdfOptions = {
+const pdfDocOptions = {
     fontSize: 12
 };
 ```
@@ -49,10 +49,10 @@ The code below implements a `savePdf` helper function that instantiates `SurveyP
 ```js
 const surveyJson = { /* ... */ };
 
-const exportToPdfOptions = { /* ... */ };
+const pdfDocOptions = { /* ... */ };
 
 const savePdf = function (surveyData) {
-    const surveyPdf = new SurveyPDF.SurveyPDF(surveyJson, exportToPdfOptions);
+    const surveyPdf = new SurveyPDF.SurveyPDF(surveyJson, pdfDocOptions);
     surveyPdf.data = surveyData;
     surveyPdf.save();
 };
@@ -109,12 +109,12 @@ const surveyJson = {
 
 const survey = new Survey.Model(surveyJson);
 
-const exportToPdfOptions = {
+const pdfDocOptions = {
     fontSize: 12
 };
 
 const savePdf = function (surveyData) {
-    const surveyPdf = new SurveyPDF.SurveyPDF(surveyJson, exportToPdfOptions);
+    const surveyPdf = new SurveyPDF.SurveyPDF(surveyJson, pdfDocOptions);
     surveyPdf.data = surveyData;
     surveyPdf.save();
 };

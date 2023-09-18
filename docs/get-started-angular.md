@@ -27,7 +27,7 @@ Export properties allow you to customize the page format, orientation, margins, 
 ```js
 import { IDocOptions } from "survey-pdf";
 
-const exportToPdfOptions: IDocOptions = {
+const pdfDocOptions: IDocOptions = {
   fontSize: 12
 };
 ```
@@ -43,10 +43,10 @@ import { IDocOptions, SurveyPDF } from "survey-pdf";
 
 const surveyJson = { /* ... */ };
 
-const exportToPdfOptions: IDocOptions = { /* ... */ };
+const pdfDocOptions: IDocOptions = { /* ... */ };
 
 const savePdf = function (surveyData: any) {
-  const surveyPdf = new SurveyPDF(surveyJson, exportToPdfOptions);
+  const surveyPdf = new SurveyPDF(surveyJson, pdfDocOptions);
   surveyPdf.data = surveyData;
   surveyPdf.save();
 };
@@ -99,12 +99,12 @@ const surveyJson = {
   // ...
 };
 
-const exportToPdfOptions: IDocOptions = {
+const pdfDocOptions: IDocOptions = {
   fontSize: 12
 };
 
 const savePdf = function (surveyData: any) {
-  const surveyPdf = new SurveyPDF(surveyJson, exportToPdfOptions);
+  const surveyPdf = new SurveyPDF(surveyJson, pdfDocOptions);
   surveyPdf.data = surveyData;
   surveyPdf.save();
 };

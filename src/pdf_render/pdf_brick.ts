@@ -64,6 +64,11 @@ export class PdfBrick implements IPdfBrick {
      * Default value: 14 (inherited from the parent PDF document)
      */
     public fontSize: number;
+    /**
+     * The color of text within the brick.
+     * 
+     * Default value: `"#404040"`
+     */
     public textColor: string = SurveyHelper.TEXT_COLOR;
     public formBorderColor: string = SurveyHelper.FORM_BORDER_COLOR;
     public isPageBreak: boolean = false;

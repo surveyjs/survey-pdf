@@ -97,7 +97,7 @@ export interface IDocOptions {
      * - `"ledger"`
      * - `"tabloid"`
      * - `"credit-card"`
-     * - Array<Number> - custom page size in millimeters, for example, `[210.0, 297.0]`.
+     * - Array<Number> - custom page size in millimeters, for example, `[210, 297]`.
      *
      * @see orientation
      */
@@ -122,7 +122,6 @@ export interface IDocOptions {
      * - `"Times"`
      * - `"Symbol"`
      * - `"ZapfDingbats"`
-     * - `"Segoe"` (requires [additional configuration](https://surveyjs.io/Documentation/Pdf-Export?id=Customization-ChangeFonts))
      * - [Custom font name](https://surveyjs.io/Documentation/Pdf-Export?id=Customization-ChangeFonts#use-custom-font)
      *
      * [View Demo](/pdf-generator/examples/change-font-in-pdf-form/ (linkStyle))
@@ -183,8 +182,8 @@ export interface IDocOptions {
      * Possible values:
      *
      * - `"text"` - Render read-only questions as plain text and custom primitives.
-     * - `"acroform"` - Use Acrobat Forms (AcroForms) to render questions that support them. Other questions are rendered in `"text"` mode.
-     * - `"auto"` (default) - Prefer the `"text"` mode but use `"acroform"` for File question type and links.
+     * - `"acroform"` - Use Adobe AcroForms to render questions that support them as interactive form elements switched to their native read-only state. Other questions are rendered in `"text"` mode.
+     * - `"auto"` (default) - Prefer the `"text"` mode but use `"acroform"` for [File Upload](https://surveyjs.io/form-library/documentation/api-reference/file-model) questions and links.
      */
     readonlyRenderAs?: 'auto' | 'text' | 'acroform';
 
@@ -198,7 +197,7 @@ export interface IDocOptions {
     compress?: boolean;
 
     /**
-     * Specifies whether to apply the [imageFit](https://surveyjs.io/Documentation/Library?id=questionimagemodel#imageFit) property to exported [Image](https://surveyjs.io/Documentation/Library?id=questionimagemodel) questions.
+     * Specifies whether to apply the [`imageFit`](https://surveyjs.io/Documentation/Library?id=questionimagemodel#imageFit) property to exported [Image](https://surveyjs.io/Documentation/Library?id=questionimagemodel) questions.
      *
      * If you enable the `applyImageFit` property, the quality of images may be lower because they pass through several conversions. If `applyImageFit` is disabled, exported images fill the entire container and do not preserve their aspect ratio, but their quality remains the same because they are exported as is.
      */
