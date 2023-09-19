@@ -8,8 +8,7 @@
     "customization-customrender-headerfooter": "add-header-and-footer-to-pdf-form",
     "customization-customrender-questionelements": "customize-survey-questions",
     "htmltopdf": "customize-survey-questions",
-    "matrixtopdf": "customize-survey-questions",
-    "save-pdf": "overview"
+    "matrixtopdf": "customize-survey-questions"
   },
   "classRename": {
   }

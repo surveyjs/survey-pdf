@@ -1,4 +1,4 @@
-# Add Header and Footer to a PDF Form
+# Add Header and Footer to PDF Form Pages
 
 A page header and footer is the content that appears consistently at the top and bottom of each page in a PDF form. Header and footer typically contain your brand logo, page numbers, or essential information about your document, such as its title, author, date of creation, or version number. This article describes how to customize header and footer in a PDF form created by SurveyJS PDF Generator.
 
