@@ -1,3 +1,8 @@
+---
+title: Customize PDF Forms with Brand Logo, Slogan, and Annotation | SurveyJS
+description: Boost your brand awareness with custom headers and footers in your PDF forms. This guide will show you how to add your brand logo, slogan, or annotations to give your PDF forms a professional and personalized look.
+---
+
 # Add Header and Footer to PDF Form Pages
 
 A page header and footer is the content that appears consistently at the top and bottom of each page in a PDF form. Header and footer typically contain your brand logo, page numbers, or essential information about your document, such as its title, author, date of creation, or version number. This article describes how to customize header and footer in a PDF form created by SurveyJS PDF Generator.
@@ -50,11 +55,11 @@ surveyPdf.onRenderHeader.add((_, canvas) => {
 });
 ```
 
-The width and height of the header and footer rectangles depend upon [PDF page settings](/pdf-generator/documentation/pdf-document-settings#page-settings) as follows:
+The width and height of the header and footer rectangles depend upon [PDF page settings](/pdf-generator/documentation/customize-pdf-form-settings#page-settings) as follows:
 
 - A header rectangle's height is specified by the [`margins.top`](https://surveyjs.io/pdf-generator/documentation/api-reference/idocoptions#margins) property.
 - A footer rectangle's width is specified by the [`margins.bot`](https://surveyjs.io/pdf-generator/documentation/api-reference/idocoptions#margins) property.
-- The width of both rectangles equals [page width](/pdf-generator/documentation/pdf-document-settings#page-size).
+- The width of both rectangles equals [page width](/pdf-generator/documentation/customize-pdf-form-settings#page-size).
 
 ### Draw Text
 

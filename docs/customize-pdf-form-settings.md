@@ -1,4 +1,9 @@
-# PDF Document Settings
+---
+title: Customize the Settings of Your SurveyJS PDF Forms | PDF Generator Library
+description: Learn how to configure PDF page settings, fonts, and create both editable and read-only PDF forms using SurveyJS PDF Generator. Explore options for page orientation, size, margins, standard and custom fonts, font size, and document compression to tailor your PDF forms to your specific needs.
+---
+
+# PDF Form Settings
 
 PDF forms created with SurveyJS PDF Generator can have various settings and configurations depending on your needs and requirements. This help topic describes how to specify PDF page settings (orientation, size, margins), change fonts, create a read-only PDF form, and compress a PDF document to reduce its size.
 

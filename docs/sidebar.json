@@ -31,15 +31,15 @@
       ]
     },
     {
-      "Name": "pdf-document-settings",
-      "Title": "PDF Document Settings"
+      "Name": "customize-pdf-form-settings",
+      "Title": "PDF Form Settings"
     },
     {
       "Name": "add-header-and-footer-to-pdf-form",
       "Title": "Add Header and Footer"
     },
     {
-      "Name": "customize-survey-questions",
+      "Name": "customize-survey-question-rendering-in-pdf-form",
       "Title": "Customize Survey Questions"
     },
     {

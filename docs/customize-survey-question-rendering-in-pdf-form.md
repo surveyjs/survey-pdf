@@ -1,3 +1,8 @@
+---
+title: Customize Survey Question Rendering in PDF Forms | SurveyJS PDF Generator
+description: Explore the APIs of SurveyJS PDF Generator to customize the rendering of survey questions in your PDF forms. Learn how to adjust HTML rendering, matrix rendering, image rendering, read-only question rendering, and even apply custom rendering for specific elements.
+---
+
 # Customize Survey Questions in PDF
 
 SurveyJS PDF Generator is designed to render survey questions into PDF optimally. At the same time, our tool includes APIs that allow you to adjust and customize question rendering to PDF as per your requirements. This help topic gives an overview of these APIs.
