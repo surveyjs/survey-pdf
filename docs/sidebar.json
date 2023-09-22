@@ -31,49 +31,23 @@
       ]
     },
     {
-      "Name": "Customization-Options",
-      "Title": "Customization Options",
-      "Items": [
-        {
-          "Name": "Customization-Options",
-          "Title": "Customization Options"
-        },
-        {
-          "Name": "Options-in-Constructor",
-          "Title": "Options in SurveyPDF Constructor"
-        },
-        {
-          "Name": "Customization-ChangeFonts",
-          "Title": "Change Fonts"
-        },
-        {
-          "Name": "Customization-CustomRender-HeaderFooter",
-          "Title": "Custom Render - Header/Footer"
-        },
-        {
-          "Name": "Customization-CustomRender-QuestionElements",
-          "Title": "Custom Render - Question Elements"
-        }        
-      ]
-    },    
-    {
-      "Name": "HtmlToPdf",
-      "Title": "HTML to PDF"
+      "Name": "customize-pdf-form-settings",
+      "Title": "PDF Form Settings"
     },
     {
-      "Name": "MatrixToPdf",
-      "Title": "Matrix to PDF"
+      "Name": "add-header-and-footer-to-pdf-form",
+      "Title": "Add Header and Footer"
     },
     {
-      "Name": "Save-Pdf",
-      "Title": "Save PDF"
+      "Name": "customize-survey-question-rendering-in-pdf-form",
+      "Title": "Customize Survey Questions"
     },
     {
       "Name": "export-custom-components",
       "Title": "Export Custom Questions and Third-Party Components"
     },
     {
-      "Name": "PDF-Export-API",
+      "Name": "pdf-generator-api",
       "Title": "PDF Generator API",
       "Items": [
         {
@@ -87,6 +61,14 @@
         {
           "Name": "drawcanvas",
           "Title": "DrawCanvas"
+        },
+        {
+          "Name": "idrawtextoptions",
+          "Title": "IDrawTextOptions"
+        },
+        {
+          "Name": "idrawimageoptions",
+          "Title": "IDrawImageOptions"
         },
         {
           "Name": "pdfbrick",

@@ -2,6 +2,13 @@
   "folders": [
   ],
   "rename": {
+    "customization-options": "customize-pdf-form-settings",
+    "options-in-constructor": "customize-pdf-form-settings",
+    "customization-changefonts": "customize-pdf-form-settings",
+    "customization-customrender-headerfooter": "add-header-and-footer-to-pdf-form",
+    "customization-customrender-questionelements": "customize-survey-question-rendering-in-pdf-form",
+    "htmltopdf": "customize-survey-question-rendering-in-pdf-form",
+    "matrixtopdf": "customize-survey-question-rendering-in-pdf-form"
   },
   "classRename": {
   }

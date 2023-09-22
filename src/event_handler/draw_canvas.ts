@@ -119,7 +119,7 @@ export class DrawCanvas {
         return this._pageNumber;
     }
     /**
-     * An object with coordinates of a rectangle that limits the drawing area.
+     * An object with coordinates of a rectangle that limits the drawing area. This object contain the following fields: `xLeft`, `xRight`, `yTop`, `yBot`.
      */
     public get rect(): IRect {
         return this._rect;
@@ -205,7 +205,7 @@ export class DrawCanvas {
     }
     /**
      * Draws a piece of text within the drawing area.
-     * @param textOptions An object that configures the drawing.
+     * @param textOptions An [`IDrawTextOptions`](https://surveyjs.io/pdf-generator/documentation/api-reference/idrawtextoptions) object that configures the drawing.
      */
     public drawText(textOptions: IDrawTextOptions): void {
         textOptions = SurveyHelper.clone(textOptions);
@@ -230,7 +230,7 @@ export class DrawCanvas {
     }
     /**
      * Draws an image within the drawing area.
-     * @param imageOptions An object that configures drawing.
+     * @param imageOptions An [`IDrawImageOptions`](https://surveyjs.io/pdf-generator/documentation/api-reference/idrawimageoptions) object that configures drawing.
      */
     public async drawImage(imageOptions: IDrawImageOptions): Promise<void> {
         imageOptions = SurveyHelper.clone(imageOptions);
