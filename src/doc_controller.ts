@@ -209,6 +209,7 @@ export interface IDocOptions {
      * Default value: `false`
      */
     isRTL?: boolean;
+    tagboxOnlySelectedChoices?: boolean;
 }
 
 export class DocOptions implements IDocOptions {
@@ -231,6 +232,7 @@ export class DocOptions implements IDocOptions {
     protected _applyImageFit: boolean;
     protected _useLegacyBooleanRendering: boolean
     protected _isRTL: boolean;
+    protected _tagboxOnlySelectedChoices: boolean;
     public constructor(options: IDocOptions) {
         if (typeof options.orientation === 'undefined') {
             if (typeof options.format === 'undefined' ||
@@ -292,6 +294,7 @@ export class DocOptions implements IDocOptions {
         this._applyImageFit = options.applyImageFit || false;
         this._useLegacyBooleanRendering = options.useLegacyBooleanRendering || false;
         this._isRTL = options.isRTL || false;
+        this._tagboxOnlySelectedChoices = options.tagboxOnlySelectedChoices || false;
     }
     public get leftTopPoint(): IPoint {
         return {
@@ -343,6 +346,9 @@ export class DocOptions implements IDocOptions {
     }
     public get isRTL(): boolean {
         return this._isRTL;
+    }
+    public get tagboxOnlySelectedChoices(): boolean {
+        return this._tagboxOnlySelectedChoices;
     }
 }
 

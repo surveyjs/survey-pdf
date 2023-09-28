@@ -231,7 +231,7 @@ test('Check tagbox', async () => {
     const controller: DocController = new DocController(TestHelper.defaultOptions);
     const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     const unfoldFlats: IRect[] = [];
-    unfoldFlats.push(...flats[0][0].unfold());
+    flats[0].forEach(brick => unfoldFlats.push(...brick.unfold()));
     controller.margins.left += controller.unitWidth;
     const assumetFlats: IRect[] = [];
     const currPoint: IPoint = controller.leftTopPoint;
@@ -246,5 +246,43 @@ test('Check tagbox', async () => {
         assumetFlats.push(itemRect, textRect);
         currPoint.yTop += controller.unitHeight + SurveyHelper.GAP_BETWEEN_ROWS * controller.unitHeight;
     }
-    TestHelper.equalRects(expect, unfoldFlats, assumetFlats);
+    TestHelper.equalRects(expect, unfoldFlats, assumetFlats, true);
+});
+
+test('Tagbox: print selected choices', async () => {
+    const json: any = {
+        questions: [
+            {
+                titleLocation: 'hidden',
+                name: 'tagbox',
+                type: 'tagbox',
+                defaultValue: ['item2', 'item3'],
+                choices: ['item1', 'item2', 'item3', 'item4'],
+            }
+        ]
+    };
+    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    const controller: DocController = new DocController(TestHelper.defaultOptions);
+    controller['_tagboxOnlySelectedChoices'] = true;
+    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    const unfoldFlats: IRect[] = [];
+    flats[0].forEach(brick => unfoldFlats.push(...brick.unfold()));
+    controller.margins.left += controller.unitWidth;
+    const assumetFlats: IRect[] = [];
+    const currPoint: IPoint = controller.leftTopPoint;
+    for (let i: number = 1; i < 3; i++) {
+        const itemRect: IRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(
+            SurveyHelper.createRect(currPoint, controller.unitWidth, controller.unitHeight),
+            SurveyHelper.SELECT_ITEM_FLAT_SCALE), currPoint.xLeft);
+        const textPoint: IPoint = SurveyHelper.clone(currPoint);
+        textPoint.xLeft = itemRect.xRight + controller.unitWidth * SurveyHelper.GAP_BETWEEN_ITEM_TEXT;
+        const textSize: ISize = controller.measureText(json.questions[0].choices[i]);
+        const textRect: IRect = SurveyHelper.createRect(textPoint, textSize.width, textSize.height);
+        assumetFlats.push(itemRect, textRect);
+        currPoint.yTop += controller.unitHeight + SurveyHelper.GAP_BETWEEN_ROWS * controller.unitHeight;
+    }
+    TestHelper.equalRects(expect, unfoldFlats, assumetFlats, true);
+    expect(unfoldFlats.length).toBe(4);
+    expect((unfoldFlats[1] as TextBrick)['text']).toBe('item2');
+    expect((unfoldFlats[3]as TextBrick)['text']).toBe('item3');
 });
