@@ -47,7 +47,10 @@ export class TestHelper {
     public static wrapRectsPage(rects: IRect[]): IPdfBrick[][] {
         return [TestHelper.wrapRects(rects)];
     }
-    public static equalRects(expect: any, rects1: IRect[], rects2: IRect[]) {
+    public static equalRects(expect: any, rects1: IRect[], rects2: IRect[], strictMode = false) {
+        if(strictMode) {
+            expect(rects1.length).toBe(rects2.length);
+        }
         for (let i: number = 0; i < rects1.length; i++) {
             this.equalRect(expect, rects1[i], rects2[i]);
         }
