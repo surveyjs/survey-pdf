@@ -25,7 +25,7 @@ export class FlatTagbox extends FlatCheckbox {
         this.question = <QuestionTagboxModel>question;
     }
     protected getVisibleChoices(): Array<ItemValue> {
-        if(this.controller.tagboxOnlySelectedChoices) {
+        if(this.controller.tagboxSelectedChoicesOnly) {
             return this.question.selectedChoices;
         } else {
             return super.getVisibleChoices();

@@ -209,7 +209,12 @@ export interface IDocOptions {
      * Default value: `false`
      */
     isRTL?: boolean;
-    tagboxOnlySelectedChoices?: boolean;
+    /**
+     * Specifies whether to include only selected choices when PDF Generator renders a [Multi-Select Dropdown (Tag Box)](https://surveyjs.io/form-library/examples/how-to-create-multiselect-tag-box/) question.
+     * 
+     * Default value: `false` (include all choices)
+     */
+    tagboxSelectedChoicesOnly?: boolean;
 }
 
 export class DocOptions implements IDocOptions {
@@ -232,7 +237,7 @@ export class DocOptions implements IDocOptions {
     protected _applyImageFit: boolean;
     protected _useLegacyBooleanRendering: boolean
     protected _isRTL: boolean;
-    protected _tagboxOnlySelectedChoices: boolean;
+    protected _tagboxSelectedChoicesOnly: boolean;
     public constructor(options: IDocOptions) {
         if (typeof options.orientation === 'undefined') {
             if (typeof options.format === 'undefined' ||
@@ -294,7 +299,7 @@ export class DocOptions implements IDocOptions {
         this._applyImageFit = options.applyImageFit || false;
         this._useLegacyBooleanRendering = options.useLegacyBooleanRendering || false;
         this._isRTL = options.isRTL || false;
-        this._tagboxOnlySelectedChoices = options.tagboxOnlySelectedChoices || false;
+        this._tagboxSelectedChoicesOnly = options.tagboxSelectedChoicesOnly || false;
     }
     public get leftTopPoint(): IPoint {
         return {
@@ -347,8 +352,8 @@ export class DocOptions implements IDocOptions {
     public get isRTL(): boolean {
         return this._isRTL;
     }
-    public get tagboxOnlySelectedChoices(): boolean {
-        return this._tagboxOnlySelectedChoices;
+    public get tagboxSelectedChoicesOnly(): boolean {
+        return this._tagboxSelectedChoicesOnly;
     }
 }
 

@@ -263,7 +263,7 @@ test('Tagbox: print selected choices', async () => {
     };
     const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     const controller: DocController = new DocController(TestHelper.defaultOptions);
-    controller['_tagboxOnlySelectedChoices'] = true;
+    controller['_tagboxSelectedChoicesOnly'] = true;
     const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     const unfoldFlats: IRect[] = [];
     flats[0].forEach(brick => unfoldFlats.push(...brick.unfold()));
