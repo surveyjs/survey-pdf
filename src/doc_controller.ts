@@ -97,7 +97,7 @@ export interface IDocOptions {
      * - `"ledger"`
      * - `"tabloid"`
      * - `"credit-card"`
-     * - Array<Number> - custom page size in millimeters, for example, `[210, 297]`.
+     * - Array<number> - custom page size in millimeters, for example, `[210, 297]`.
      *
      * @see orientation
      */
