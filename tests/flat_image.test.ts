@@ -101,6 +101,43 @@ test('Check image question with "auto"', async () => {
     SurveyHelper.getImageSize = getOldImageSize;
 });
 
+test('Check image question with "auto" and 100%', async () => {
+    const getOldImageSize = SurveyHelper.getImageSize;
+    SurveyHelper.getImageSize = async () => {
+        return { width: 100, height: 75 };
+    };
+    SurveyHelper.shouldConvertImageToPng = false;
+    const json: any = {
+        elements: [
+            {
+                type: 'image',
+                name: 'image_question',
+                titleLocation: 'hidden',
+                imageHeight: 'auto',
+                imageWidth: '100%',
+                imageLink: TestHelper.BASE64_IMAGE_100PX
+            }
+        ]
+    };
+    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    const controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    expect(flats.length).toBe(1);
+    expect(flats[0].length).toBe(1);
+    controller.margins.left += controller.unitWidth;
+    let width: string = (<any>survey.getAllQuestions()[0]).imageWidth;
+    let widthPt: number = SurveyHelper.parseWidth('100%', SurveyHelper.getPageAvailableWidth(controller));
+    let heightPt: number = 75 * widthPt / 100;
+    let assumeImage: IRect = {
+        xLeft: controller.leftTopPoint.xLeft,
+        xRight: controller.leftTopPoint.xLeft + widthPt,
+        yTop: controller.leftTopPoint.yTop,
+        yBot: controller.leftTopPoint.yTop + heightPt
+    };
+    TestHelper.equalRect(expect, flats[0][0], assumeImage);
+    SurveyHelper.getImageSize = getOldImageSize;
+});
+
 test('Check image question 100x100px with set size server-side', async () => {
     SurveyHelper.inBrowser = false;
     const json: any = {

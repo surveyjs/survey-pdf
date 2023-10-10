@@ -54,12 +54,12 @@ export class SurveyHelper {
     public static CUSTOM_FONT_ENCODING: string = 'Identity-H';
 
     public static parseWidth(width: string, maxWidth: number,
-        columnsCount: number = 1): number {
+        columnsCount: number = 1, defaultUnit?: string): number {
         if (width.indexOf('calc') === 0) {
             return maxWidth / columnsCount;
         }
         const value: number = parseFloat(width);
-        const unit: string = width.replace(/[^A-Za-z]/g, '');
+        const unit: string = width.replace(/[^A-Za-z%]/g, '') || defaultUnit;
         let k: number;
         switch (unit) {
             case 'pt':
@@ -721,5 +721,36 @@ export class SurveyHelper {
     public static shouldRenderReadOnly(question: IQuestion, controller: DocController, readOnly?: boolean): boolean {
         return ((!!question && question.isReadOnly || readOnly) && SurveyHelper.getReadonlyRenderAs(
             <Question>question, controller) !== 'acroform') || controller?.compress;
+    }
+    public static isSizeEmpty(val: any): boolean {
+        return !val || val === 'auto';
+    }
+    public static isHeightEmpty(val: any): boolean {
+        return this.isSizeEmpty(val) || val == '100%';
+    }
+    public static async getCorrectedImageSize(controller: DocController, imageOptions: { imageWidth: any, imageHeight: any, imageLink: string }): Promise<ISize> {
+        let { imageWidth, imageLink, imageHeight } = imageOptions;
+        imageWidth = typeof imageWidth === 'number' ? imageWidth.toString() : imageWidth;
+        imageHeight = typeof imageHeight === 'number' ? imageHeight.toString() : imageHeight;
+        let widthPt: number = imageWidth && SurveyHelper.parseWidth(imageWidth, SurveyHelper.getPageAvailableWidth(controller), 1, 'px');
+        let heightPt: number = imageHeight && SurveyHelper.parseWidth(imageHeight, SurveyHelper.getPageAvailableWidth(controller), 1, 'px');
+        if(SurveyHelper.isSizeEmpty(imageWidth) || SurveyHelper.isHeightEmpty(imageHeight)) {
+            const imageSize = await SurveyHelper.getImageSize(imageLink);
+            if(!SurveyHelper.isSizeEmpty(imageWidth)) {
+                if(imageSize && imageSize.width) {
+                    heightPt = imageSize.height * widthPt / imageSize.width;
+                } else {
+                    heightPt = 0;
+                }
+            }
+            if(!SurveyHelper.isHeightEmpty(imageHeight)) {
+                if(imageSize && imageSize.height) {
+                    widthPt = imageSize.width * heightPt / imageSize.height;
+                } else {
+                    widthPt = 0;
+                }
+            }
+        }
+        return { width: widthPt, height: heightPt };
     }
 }

@@ -129,9 +129,11 @@ export class FlatSurvey {
     }
     private static async generateFlatLogoImage(survey: SurveyPDF, controller: DocController,
         point: IPoint): Promise<IPdfBrick> {
+        const logoUrl = SurveyHelper.getLocString(survey.locLogo);
+        const logoSize = await SurveyHelper.getCorrectedImageSize(controller, { imageLink: logoUrl, imageHeight: survey.logoHeight, imageWidth: survey.logoWidth });
         const logoFlat: IPdfBrick = await SurveyHelper.createImageFlat(
-            point, null, controller, SurveyHelper.getLocString(survey.locLogo),
-            SurveyHelper.pxToPt(survey.logoWidth), SurveyHelper.pxToPt(survey.logoHeight));
+            point, null, controller, logoUrl,
+            logoSize.width, logoSize.height);
         let shift: number = 0;
         if (survey.logoPosition === 'right') {
             shift = SurveyHelper.getPageAvailableWidth(controller) - logoFlat.width;
