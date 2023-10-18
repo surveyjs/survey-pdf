@@ -66,7 +66,7 @@ export class PdfBrick implements IPdfBrick {
     public fontSize: number;
     /**
      * The color of text within the brick.
-     * 
+     *
      * Default value: `"#404040"`
      */
     public textColor: string = SurveyHelper.TEXT_COLOR;

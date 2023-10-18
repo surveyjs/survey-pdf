@@ -211,7 +211,7 @@ export interface IDocOptions {
     isRTL?: boolean;
     /**
      * Specifies whether to include only selected choices when PDF Generator renders a [Multi-Select Dropdown (Tag Box)](https://surveyjs.io/form-library/examples/how-to-create-multiselect-tag-box/) question.
-     * 
+     *
      * Default value: `false` (include all choices)
      */
     tagboxSelectedChoicesOnly?: boolean;
