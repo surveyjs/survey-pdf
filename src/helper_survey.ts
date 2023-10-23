@@ -739,18 +739,18 @@ export class SurveyHelper {
             if(!SurveyHelper.isSizeEmpty(imageWidth)) {
                 if(imageSize && imageSize.width) {
                     heightPt = imageSize.height * widthPt / imageSize.width;
-                } else {
-                    heightPt = 0;
                 }
             }
-            if(!SurveyHelper.isHeightEmpty(imageHeight)) {
+            else if(!SurveyHelper.isHeightEmpty(imageHeight)) {
                 if(imageSize && imageSize.height) {
                     widthPt = imageSize.width * heightPt / imageSize.height;
-                } else {
-                    widthPt = 0;
                 }
             }
+            else if(imageSize && imageSize.height && imageSize.width) {
+                heightPt = SurveyHelper.parseWidth(imageSize.height.toString(), SurveyHelper.getPageAvailableWidth(controller), 1, 'px');
+                widthPt = SurveyHelper.parseWidth(imageSize.width.toString(), SurveyHelper.getPageAvailableWidth(controller), 1, 'px');
+            }
         }
-        return { width: widthPt, height: heightPt };
+        return { width: widthPt || 0, height: heightPt || 0 };
     }
 }

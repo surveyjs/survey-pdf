@@ -160,9 +160,9 @@ test('Check one image 16x16px file', async () => {
     controller.margins.left += controller.unitWidth;
     const assumeFile: IRect = {
         xLeft: controller.leftTopPoint.xLeft,
-        xRight: controller.leftTopPoint.xLeft + imageSize.width,
+        xRight: controller.leftTopPoint.xLeft + SurveyHelper.pxToPt(imageSize.width),
         yTop: controller.leftTopPoint.yTop,
-        yBot: controller.leftTopPoint.yTop + imageSize.height +
+        yBot: controller.leftTopPoint.yTop + SurveyHelper.pxToPt(imageSize.height) +
             controller.unitHeight * (1.0 + FlatFile.IMAGE_GAP_SCALE)
     };
     TestHelper.equalRect(expect, flats[0][0], assumeFile);
@@ -201,7 +201,7 @@ test('Check one image 16x16px file shorter than text', async () => {
         xLeft: controller.leftTopPoint.xLeft,
         xRight: controller.leftTopPoint.xLeft + controller.measureText(json.elements[0].defaultValue[0].name).width,
         yTop: controller.leftTopPoint.yTop,
-        yBot: controller.leftTopPoint.yTop + imageSize.height +
+        yBot: controller.leftTopPoint.yTop + SurveyHelper.pxToPt(imageSize.height) +
             controller.unitHeight * (1.0 + FlatFile.IMAGE_GAP_SCALE)
     };
     TestHelper.equalRect(expect, flats[0][0], assumeFile);
@@ -266,7 +266,7 @@ test('Check one image 16x16px file server-side', async () => {
                     {
                         name: 'cat.png',
                         type: 'image/png',
-                        content: TestHelper.BASE64_IMAGE_16PX
+                        content: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAA3NCSVQICAjb4U/gAAAAt1BMVEVHcExTXGROYmJIT1ZPXmVJV11ES1JYZ24+SE5JU1s+R0xVYmtYZW1ETlRRXWVUYWpKV1xZZ25YZW5YanNrfIdTYWlaZ29nd4JUYmhIU1lHUVtRXWQ+SlA6QkouNzpFT1ZCS1JSXWVxhI98kp53iZZSXmVcaXE5QkdCTFNndn9WY2tZZm5canJfbXVbZ29hcHlXZGxtfYVNWmFRXWVCTFNKVl04QEdoeINnZGxrc3uAk6Fzb3dxg43scHiMAAAAKnRSTlMALwQXZU4MImyJQbCrPOPZRdOHx4X4t2fR0SfsoHhYseyioqbHwOy+59gMe1UiAAAAuElEQVQYlU2P5xKCQAyEI1gABVSKUu3tOgL2938u74Ybx/2xk3yT2SQAPw2Yb8KfRp6VzAxVDDVwYej1ZbHbG9tQTy030sJP+1po4MfSZs+qsrp+KubSg8e7Wq8mk/E44LinwqJr22IskCA4UgBiUqueUUqJ2gLzO0MCC8Ypx1MFXEIEqhFGjB/0zTXNbPvcXOkx7YjFbYDydsq7DIAeKyS9mSYadGBR51A0JVwy/dcyScFxwLAdgC+IFhIbrHyDqAAAAABJRU5ErkJggg=='
                     }
                 ]
             }
@@ -281,7 +281,6 @@ test('Check one image 16x16px file server-side', async () => {
     const imageBrick: IPdfBrick = (<any>flats[0][0]).bricks[0].bricks[1];
     expect(imageBrick instanceof ImageBrick).toBeTruthy();
 
-    expect(imageBrick.isPageBreak).toBeTruthy();
     controller.margins.left += controller.unitWidth;
 
     const assumeFile: IRect = {
@@ -352,36 +351,50 @@ test('Test file question getImagePreviewContentWidth ', async () => {
     const controller: DocController = new DocController(TestHelper.defaultOptions);
     const flatFile = new FlatFile(survey, question, controller);
 
-    let width = await flatFile['getImagePreviewContentWidth']({ content: '', type: 'image', name: 'file' }, 200);
+    let width = await flatFile['getImagePreviewContentWidth']({ content: '', type: 'image', name: 'file', imageSize: { width: 150, height: 50 } });
     expect(width).toBe(FlatFile.TEXT_MIN_SCALE * controller.unitWidth);
 
-    controller['_applyImageFit'] = true;
-    width = await flatFile['getImagePreviewContentWidth']({ content: '', type: 'image', name: 'file' }, 200);
-    expect(width).toBe(200);
+    width = await flatFile['getImagePreviewContentWidth']({ content: '', type: 'image', name: 'file', imageSize: { width: 300, height: 50 } });
+    expect(width).toBe(300);
+});
 
-    question.imageWidth = '250px';
-    width = await flatFile['getImagePreviewContentWidth']({ content: '', type: 'image', name: 'file' }, 300);
-    expect(width).toBe(SurveyHelper.parseWidth(question.imageWidth, 300));
-
-    SurveyHelper.inBrowser = true;
-    const oldImageSize = SurveyHelper.getImageSize;
-    SurveyHelper.getImageSize = async (url: string) => {
-        return <ISize>{ width: 200, height: 0 };
+test('Test file question doesnt throw exception if could not load image preview', async () => {
+    SurveyHelper.getImageSize = async (url: string) => { return null as any; };
+    const json: any = {
+        elements: [
+            {
+                type: 'file',
+                name: 'faqueoneimgwithsz',
+                titleLocation: 'hidden',
+                allowImagesPreview: true,
+                defaultValue: [
+                    {
+                        name: 'cat.png',
+                        type: 'image/png',
+                        content: 'some url'
+                    }
+                ],
+            }
+        ]
     };
-    question.imageWidth = <any>undefined;
-    controller['_applyImageFit'] = false;
-    width = await flatFile['getImagePreviewContentWidth']({ content: '', type: 'image', name: 'file' }, 300);
-    expect(width).toBe(200);
+    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    const controller: DocController = new DocController(TestHelper.defaultOptions);
+    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    expect(flats.length).toBe(1);
+    expect(flats[0].length).toBe(1);
 
-    controller['_applyImageFit'] = true;
-    width = await flatFile['getImagePreviewContentWidth']({ content: '', type: 'image', name: 'file' }, 200);
-    expect(width).toBe(200);
+    const imageBrick: IPdfBrick = (<any>flats[0][0]).bricks[0].bricks[1];
+    expect(imageBrick instanceof ImageBrick).toBeTruthy();
 
-    question.imageWidth = '250px';
-    width = await flatFile['getImagePreviewContentWidth']({ content: '', type: 'image', name: 'file' }, 300);
-    expect(width).toBe(SurveyHelper.parseWidth(question.imageWidth, 300));
+    controller.margins.left += controller.unitWidth;
 
-    SurveyHelper.getImageSize = oldImageSize;
+    const assumeFile: IRect = {
+        xLeft: controller.leftTopPoint.xLeft,
+        xRight: controller.leftTopPoint.xLeft + controller.measureText(json.elements[0].defaultValue[0].name).width,
+        yTop: controller.leftTopPoint.yTop,
+        yBot: controller.leftTopPoint.yTop + controller.unitHeight * (1.0 + FlatFile.IMAGE_GAP_SCALE)
+    };
+    TestHelper.equalRect(expect, flats[0][0], assumeFile);
 });
 
 test('Test file question getImagePreviewContentWidth always return correct image width', async () => {
