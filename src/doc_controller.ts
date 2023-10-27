@@ -146,10 +146,6 @@ export interface IDocOptions {
      */
     margins?: IMargin;
 
-    commercial?: boolean;
-
-    haveCommercialLicense?: boolean;
-
     /**
      * Specifies how to render [HTML questions](https://surveyjs.io/Documentation/Library?id=questionhtmlmodel) into PDF.
      *
