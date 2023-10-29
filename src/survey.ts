@@ -29,6 +29,10 @@ export class SurveyPDF extends SurveyModel {
         const f = SurveyCore.hasLicense;
         return !!f && f(2);
     }
+    public set haveCommercialLicense(val: boolean) {
+        // eslint-disable-next-line no-console
+        console.error('As of v1.9.101, the haveCommercialLicense property is not supported. To activate your license, use the setLicenseKey(key) method as shown on the following page: https://surveyjs.io/remove-alert-banner');
+    }
     /**
      * An event that is raised when SurveyJS PDF Generator renders a page header. Handle this event to customize the header.
      *
