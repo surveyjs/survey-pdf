@@ -124,7 +124,7 @@ export interface IDocOptions {
      * - `"ZapfDingbats"`
      * - [Custom font name](https://surveyjs.io/Documentation/Pdf-Export?id=Customization-ChangeFonts#use-custom-font)
      *
-     * [View Demo](/pdf-generator/examples/change-font-in-pdf-form/ (linkStyle))
+     * [View Demo](https://surveyjs.io/pdf-generator/examples/change-font-in-pdf-form/ (linkStyle))
      * @see fontSize
      */
     fontName?: string;
@@ -136,7 +136,7 @@ export interface IDocOptions {
      *
      * Default value: `false`
      *
-     * [View Demo](/pdf-generator/examples/change-font-in-pdf-form/ (linkStyle))
+     * [View Demo](https://surveyjs.io/pdf-generator/examples/change-font-in-pdf-form/ (linkStyle))
      * @see htmlRenderAs
      */
     useCustomFontInHtml?: boolean;
