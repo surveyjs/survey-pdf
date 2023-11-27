@@ -5,6 +5,7 @@ import { FlatRepository } from './flat_repository';
 import { IPoint, DocController } from '../doc_controller';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { SurveyHelper } from '../helper_survey';
+import { EmptyBrick } from '../pdf_render/pdf_empty';
 
 export class FlatSignaturePad extends FlatQuestion {
     protected question: QuestionSignaturePadModel;
@@ -14,11 +15,19 @@ export class FlatSignaturePad extends FlatQuestion {
         this.question = <QuestionSignaturePadModel>question;
     }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
-        let imageBrick = await SurveyHelper.createImageFlat(point,
-            this.question, this.controller, this.question.value,
-            SurveyHelper.pxToPt(<any>this.question.signatureWidth),
-            SurveyHelper.pxToPt(<any>this.question.signatureHeight)
-        );
+        const width = SurveyHelper.pxToPt(<any>this.question.signatureWidth);
+        const height = SurveyHelper.pxToPt(<any>this.question.signatureHeight);
+        let imageBrick: IPdfBrick;
+        if(this.question.value) {
+            imageBrick = await SurveyHelper.createImageFlat(point,
+                this.question, this.controller, this.question.value,
+                width,
+                height
+            );
+        } else {
+            imageBrick = new EmptyBrick(SurveyHelper.createRect(point, width, height));
+
+        }
         return [imageBrick];
     }
 }
