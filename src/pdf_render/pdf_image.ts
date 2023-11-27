@@ -16,7 +16,12 @@ export class ImageBrick extends PdfBrick {
     }
     public async renderInteractive(): Promise<void> {
         await new Promise<void>((resolve) => {
-            this.controller.doc.addImage(this.image, this.xLeft, this.yTop, this.originalWidth, this.originalHeight);
+            try {
+                this.controller.doc.addImage(this.image, 'PNG', this.xLeft, this.yTop, this.originalWidth, this.originalHeight);
+            } catch {
+                // eslint-disable-next-line no-console
+                console.warn('It is impossible to render an image whose url is not base64 in a non-browser environment');
+            }
             resolve();
         });
     }

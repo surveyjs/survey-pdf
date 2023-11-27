@@ -497,7 +497,6 @@ export class SurveyHelper {
             const html: string = `<img src='${await SurveyHelper.getImageLink(controller, imagelink, width, height, fitType)}' width='${width}' height='${height}'/>`;
             return new HTMLBrick(question, controller, this.createRect(point, width, height), html, true);
         }
-
         return new ImageBrick(question, controller, imagelink, point, width, height);
     }
     public static canPreviewImage(question: QuestionFileModel, item: { name: string, type: string, content: string }, url: string): boolean {
