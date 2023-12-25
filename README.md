@@ -1,7 +1,7 @@
 # SurveyJS PDF Generator
 
 
-https://github.com/surveyjs/survey-pdf/assets/22315929/c6df9c60-a3ed-40e4-82e7-d7be3fa83fae
+<video src="https://github.com/surveyjs/survey-pdf/assets/22315929/c6df9c60-a3ed-40e4-82e7-d7be3fa83fae"></video>
 
 
 [![Build Status](https://dev.azure.com/SurveyJS/SurveyJS%20Integration%20Tests/_apis/build/status/SurveyJS%20Library?branchName=master)](https://dev.azure.com/SurveyJS/SurveyJS%20Integration%20Tests/_build/latest?definitionId=7&branchName=master)
