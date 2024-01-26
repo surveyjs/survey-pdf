@@ -247,8 +247,8 @@ export class DrawCanvas {
         const imageRect: IRect = this.alignRect(imageOptions, imageSize);
         this.packs.push(await SurveyHelper.createImageFlat(
             SurveyHelper.createPoint(imageRect, true, true),
-            null, this.controller, imageOptions.base64,
-            imageRect.xRight - imageRect.xLeft,
-            imageRect.yBot - imageRect.yTop));
+            null, this.controller, { link: imageOptions.base64,
+                width: imageRect.xRight - imageRect.xLeft,
+                height: imageRect.yBot - imageRect.yTop }));
     }
 }
