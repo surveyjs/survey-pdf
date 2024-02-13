@@ -206,6 +206,7 @@ export class FlatSurvey {
             point.yTop += controller.unitHeight * FlatSurvey.PANEL_CONT_GAP_SCALE + SurveyHelper.EPSILON;
         }
         for (let i: number = 0; i < survey.visiblePages.length; i++) {
+            survey.currentPage = survey.visiblePages[i];
             let pageFlats: IPdfBrick[] = [];
             pageFlats.push(...await this.generateFlatsPagePanel(
                 survey, controller, survey.visiblePages[i], point));
