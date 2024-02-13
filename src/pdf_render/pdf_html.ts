@@ -27,11 +27,9 @@ export class HTMLBrick extends PdfBrick {
             this.controller.doc.fromHTML(this.html, this.xLeft, this.yTop, {
                 width: this.width, pagesplit: true,
             }, function () {
-                [].slice.call(document.querySelectorAll('iframe')).forEach(
-                    function (el: HTMLIFrameElement) {
-                        if (el.name.lastIndexOf('jsPDFhtmlText', 0) === 0) {
-                            el.parentNode.removeChild(el);
-                        }
+                [].slice.call(document.querySelectorAll('.sjs-pdf-hidden-html-div')).forEach(
+                    function (el: HTMLDivElement) {
+                        el.parentNode.removeChild(el);
                     }
                 );
                 resolve();
