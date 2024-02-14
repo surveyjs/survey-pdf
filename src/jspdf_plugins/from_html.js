@@ -678,6 +678,7 @@
           framename = "jsPDFhtmlText" + Date.now().toString() + (Math.random() * 1000).toFixed(0);
           visuallyhidden = "position: absolute !important;" + "clip: rect(1px 1px 1px 1px); /* IE6, IE7 */" + "clip: rect(1px, 1px, 1px, 1px);" + "padding:0 !important;" + "border:0 !important;" + "height: 1px !important;" + "width: 1px !important; " + "top:auto;" + "left:-100px;" + "overflow: hidden;";
           $hiddendiv = document.createElement('div');
+          $hiddendiv.className = "sjs-pdf-hidden-html-div";
           $hiddendiv.style.cssText = visuallyhidden;
           $hiddendiv.innerHTML = "<iframe style=\"height:1px;width:1px\" name=\"" + framename + "\" />";
           document.body.appendChild($hiddendiv);
