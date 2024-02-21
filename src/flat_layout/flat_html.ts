@@ -35,7 +35,7 @@ export class FlatHTML extends FlatQuestion {
             const { url, aspect }: { url: string, aspect: number } =
                 await SurveyHelper.htmlToImage(html, width, this.controller);
             const height: number = width / aspect;
-            return [await SurveyHelper.createImageFlat(point, this.question, this.controller, url, width, height)];
+            return [await SurveyHelper.createImageFlat(point, this.question, this.controller, { link: url, width, height })];
         }
         return [SurveyHelper.splitHtmlRect(this.controller, await SurveyHelper.createHTMLFlat(
             point, this.question, this.controller, html))];

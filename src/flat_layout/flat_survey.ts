@@ -132,8 +132,8 @@ export class FlatSurvey {
         const logoUrl = SurveyHelper.getLocString(survey.locLogo);
         const logoSize = await SurveyHelper.getCorrectedImageSize(controller, { imageLink: logoUrl, imageHeight: survey.logoHeight, imageWidth: survey.logoWidth });
         const logoFlat: IPdfBrick = await SurveyHelper.createImageFlat(
-            point, null, controller, logoUrl,
-            logoSize.width, logoSize.height);
+            point, null, controller, { link: logoUrl,
+                width: logoSize.width, height: logoSize.height });
         let shift: number = 0;
         if (survey.logoPosition === 'right') {
             shift = SurveyHelper.getPageAvailableWidth(controller) - logoFlat.width;
@@ -206,6 +206,7 @@ export class FlatSurvey {
             point.yTop += controller.unitHeight * FlatSurvey.PANEL_CONT_GAP_SCALE + SurveyHelper.EPSILON;
         }
         for (let i: number = 0; i < survey.visiblePages.length; i++) {
+            survey.currentPage = survey.visiblePages[i];
             let pageFlats: IPdfBrick[] = [];
             pageFlats.push(...await this.generateFlatsPagePanel(
                 survey, controller, survey.visiblePages[i], point));

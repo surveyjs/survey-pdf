@@ -471,33 +471,33 @@ export class SurveyHelper {
         });
     }
     public static shouldConvertImageToPng = true;
-    public static async getImageLink(controller: DocController, originalImageLink: string, width: number, height: number, fitType: string): Promise<string> {
+    public static async getImageLink(controller: DocController, imageOptions: { link: string, width: number, height: number, objectFit?: string }, applyImageFit: boolean): Promise<string> {
         const ptToPx: number = 96.0 / 72.0;
-        let url = this.shouldConvertImageToPng ? await SurveyHelper.getImageBase64(originalImageLink) : originalImageLink;
-        if(typeof XMLSerializer === 'function' && controller.applyImageFit) {
+        let url = this.shouldConvertImageToPng ? await SurveyHelper.getImageBase64(imageOptions.link) : imageOptions.link;
+        if(typeof XMLSerializer === 'function' && applyImageFit) {
             const canvasHtml: string =
-               `<div style='overflow: hidden; width: ${width * ptToPx}px; height: ${height * ptToPx}px;'>
-                   <img src='${url}' style='object-fit: ${fitType}; width: 100%; height: 100%;'/>
+               `<div style='overflow: hidden; width: ${imageOptions.width * ptToPx}px; height: ${imageOptions.height * ptToPx}px;'>
+                   <img src='${url}' style='object-fit: ${imageOptions.objectFit}; width: 100%; height: 100%;'/>
                </div>`;
-            url = (await SurveyHelper.htmlToImage(canvasHtml, width, controller)).url;
+            url = (await SurveyHelper.htmlToImage(canvasHtml, imageOptions.width, controller)).url;
         }
         return url;
     }
     public static async createImageFlat(point: IPoint, question: any,
-        controller: DocController, imagelink: string, width: number, height: number, imageFit?: string): Promise<IPdfBrick> {
+        controller: DocController, imageOptions: { link: string, width: number, height: number, objectFit?: string }, applyImageFit?: boolean): Promise<IPdfBrick> {
         if (SurveyHelper.inBrowser) {
-            const fitType = !!question && !!question.imageFit ? question.imageFit : (imageFit || 'contain');
-            if (controller.applyImageFit) {
-                if (width > controller.paperWidth - controller.margins.left - controller.margins.right) {
+            imageOptions.objectFit = !!question && !!question.imageFit ? question.imageFit : (imageOptions.objectFit || 'contain');
+            if (applyImageFit ?? controller.applyImageFit) {
+                if (imageOptions.width > controller.paperWidth - controller.margins.left - controller.margins.right) {
                     const newWidth: number = controller.paperWidth - controller.margins.left - controller.margins.right;
-                    height *= newWidth / width;
-                    width = newWidth;
+                    imageOptions.height *= newWidth / imageOptions.width;
+                    imageOptions.width = newWidth;
                 }
             }
-            const html: string = `<img src='${await SurveyHelper.getImageLink(controller, imagelink, width, height, fitType)}' width='${width}' height='${height}'/>`;
-            return new HTMLBrick(question, controller, this.createRect(point, width, height), html, true);
+            const html: string = `<img src='${await SurveyHelper.getImageLink(controller, imageOptions, applyImageFit ?? controller.applyImageFit)}' width='${imageOptions.width}' height='${imageOptions.height}'/>`;
+            return new HTMLBrick(question, controller, this.createRect(point, imageOptions.width, imageOptions.height), html, true);
         }
-        return new ImageBrick(question, controller, imagelink, point, width, height);
+        return new ImageBrick(question, controller, imageOptions.link, point, imageOptions.width, imageOptions.height);
     }
     public static canPreviewImage(question: QuestionFileModel, item: { name: string, type: string, content: string }, url: string): boolean {
         return question.canPreviewImage(item);

@@ -6,6 +6,7 @@ import { IPoint, DocController } from '../doc_controller';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { SurveyHelper } from '../helper_survey';
 import { EmptyBrick } from '../pdf_render/pdf_empty';
+import { CompositeBrick } from '../pdf_render/pdf_composite';
 
 export class FlatSignaturePad extends FlatQuestion {
     protected question: QuestionSignaturePadModel;
@@ -14,21 +15,31 @@ export class FlatSignaturePad extends FlatQuestion {
         super(survey, question, controller);
         this.question = <QuestionSignaturePadModel>question;
     }
-    public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
+
+    public async generateBackgroundImage(point: IPoint): Promise<IPdfBrick> {
+        return await SurveyHelper.createImageFlat(point, this.question, this.controller, { link: this.question.backgroundImage, width: SurveyHelper.pxToPt(<any>this.question.signatureWidth), height: SurveyHelper.pxToPt(<any>this.question.signatureHeight), objectFit: 'cover' }, true);
+    }
+    public async generateSign(point: IPoint): Promise<IPdfBrick> {
         const width = SurveyHelper.pxToPt(<any>this.question.signatureWidth);
         const height = SurveyHelper.pxToPt(<any>this.question.signatureHeight);
-        let imageBrick: IPdfBrick;
         if(this.question.value) {
-            imageBrick = await SurveyHelper.createImageFlat(point,
-                this.question, this.controller, this.question.value,
-                width,
-                height
+            return await SurveyHelper.createImageFlat(point,
+                this.question, this.controller, { link: this.question.value,
+                    width: SurveyHelper.pxToPt(<any>this.question.signatureWidth),
+                    height: SurveyHelper.pxToPt(<any>this.question.signatureHeight) }, false
             );
         } else {
-            imageBrick = new EmptyBrick(SurveyHelper.createRect(point, width, height));
-
+            return new EmptyBrick(SurveyHelper.createRect(point, width, height));
         }
-        return [imageBrick];
+    }
+
+    public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
+        const compositeBrick = new CompositeBrick();
+        if(this.question.backgroundImage) {
+            compositeBrick.addBrick(await this.generateBackgroundImage(point));
+        }
+        compositeBrick.addBrick(await this.generateSign(point));
+        return [compositeBrick];
     }
 }
 
