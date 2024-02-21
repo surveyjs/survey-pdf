@@ -25,8 +25,8 @@ export class FlatSignaturePad extends FlatQuestion {
         if(this.question.value) {
             return await SurveyHelper.createImageFlat(point,
                 this.question, this.controller, { link: this.question.value,
-                    width: SurveyHelper.pxToPt(<any>this.question.signatureWidth),
-                    height: SurveyHelper.pxToPt(<any>this.question.signatureHeight) }, false
+                    width: width,
+                    height: height }, false
             );
         } else {
             return new EmptyBrick(SurveyHelper.createRect(point, width, height));
