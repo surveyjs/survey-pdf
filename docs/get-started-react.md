@@ -55,9 +55,14 @@ const savePdf = function (surveyData) {
 };
 ```
 
-You can use any UI element to call this helper function. For instance, the following code adds a new [navigation button](/Documentation/Library?id=iaction) below the survey and calls the `savePdf` function when a user clicks this button:
+You can use any UI element to call this helper function. For instance, the code below adds a new [navigation button](/Documentation/Library?id=iaction) below the survey and calls the `savePdf` function when a user clicks this button.
+
+> If you are using [Next.js](https://nextjs.org) or another framework that [has adopted React Server Components](https://react.dev/learn/start-a-new-react-project#bleeding-edge-react-frameworks), you need to explicitly mark the React component that renders a SurveyJS component as client code using the ['use client'](https://react.dev/reference/react/use-client) directive.
 
 ```js
+// Uncomment the following line if you are using Next.js:
+// 'use client'
+
 import { Model } from 'survey-core';
 import { Survey } from 'survey-react-ui';
 // ...
@@ -88,6 +93,9 @@ To view the application, run `npm run start` in a command line and open [http://
     <summary>View Full Code</summary>  
 
 ```js
+// Uncomment the following line if you are using Next.js:
+// 'use client'
+
 import './App.css'
 
 import 'survey-core/defaultV2.min.css';
