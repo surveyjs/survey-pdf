@@ -451,6 +451,10 @@ export class SurveyHelper {
     }
     public static inBrowser = typeof Image === 'function';
 
+    public static get hasDocument(): boolean {
+        return typeof document !== 'undefined';
+    }
+
     public static async getImageBase64(imageLink: string): Promise<string> {
         const image = new Image();
         image.crossOrigin='anonymous';
