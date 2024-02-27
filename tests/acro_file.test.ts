@@ -1,5 +1,5 @@
 (<any>window)['HTMLCanvasElement'].prototype.getContext = () => {
-	return {};
+    return {};
 };
 
 import { SurveyPDF } from '../src/survey';
@@ -83,7 +83,7 @@ test('Check hyperlink underline color', async () => {
     expect(colorInfo[0]).toBe('0');
     expect(colorInfo[4]).toBe('0');
     expect(colorInfo[8]).toBe('0');
-    expect(colorInfo[10]).toBe('93');  
+    expect(colorInfo[10]).toBe('93');
 });
 test('Check hyperlink underline position', async () => {
     const json: any = {
@@ -107,7 +107,7 @@ test('Check hyperlink underline position', async () => {
     await survey['renderSurvey'](controller);
     const internal: any = controller.doc.internal;
     const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    const moveInfo: string[] = internal.pages[1][5].split(' ')
+    const moveInfo: string[] = internal.pages[1][5].split(' ');
     const assumeLeft: number = flats[0][0].xLeft;
     const actualLeft: number = +moveInfo[0];
     expect(actualLeft).toBe(assumeLeft);
@@ -119,6 +119,9 @@ test('Check hyperlink underline position', async () => {
     const bottomLine: number = +lineInfo[1];
     expect(bottomLine).toBe(bottomMove);
 });
+class SurveyPDFTester extends SurveyPDF {
+    public get haveCommercialLicense(): boolean { return true; }
+}
 test('Check that border does not exist when FORM_BORDER_VISIBLE is false', async () => {
     const json: any = {
         questions: [
@@ -131,7 +134,7 @@ test('Check that border does not exist when FORM_BORDER_VISIBLE is false', async
         ]
     };
     (<any>SurveyHelper).FORM_BORDER_VISIBLE = false;
-    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    const survey: SurveyPDF = new SurveyPDFTester(json, TestHelper.defaultOptions);
     const controller: DocController = new DocController(TestHelper.defaultOptions);
     await survey['renderSurvey'](controller);
     const internal: any = controller.doc.internal;

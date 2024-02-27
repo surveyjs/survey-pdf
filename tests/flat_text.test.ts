@@ -61,7 +61,9 @@ test('Check readonly text expends when textRenderAs option set', async () => {
     const assumeBrick: IPdfBrick = await SurveyHelper.createCommentFlat(textPoint, question, controller, true);
     TestHelper.equalRect(expect, flats[0][0], assumeBrick);
 });
-
+class SurveyPDFTester extends SurveyPDF {
+    public get haveCommercialLicense(): boolean { return true; }
+}
 test('Check readonly text with readOnlyTextRenderMode set to div', async () => {
     const oldRenderMode = Survey.settings.readOnlyTextRenderMode;
     Survey.settings.readOnlyTextRenderMode = 'div';
@@ -76,7 +78,7 @@ test('Check readonly text with readOnlyTextRenderMode set to div', async () => {
                 }
             ]
         };
-        const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+        const survey: SurveyPDF = new SurveyPDFTester(json, TestHelper.defaultOptions);
         const pdfAsString = await survey.raw();
         // Stream in result PDF document should be small - in this example 14
         expect(pdfAsString.indexOf('/Length 14\n') > 0).toBeTruthy();
