@@ -149,7 +149,7 @@ test('Event render footer center middle text', async () => {
             }
         ]
     };
-    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    let survey: SurveyPDF = new SurveyPDFTester(json, TestHelper.defaultOptions);
     let text: string = 'Exactly in the cendle';
     survey.onRenderFooter.add((_, canvas: DrawCanvas) => {
         canvas.drawText({
@@ -176,6 +176,9 @@ test('Event render footer center middle text', async () => {
     };
     TestHelper.equalRect(expect, packs[0][1], assumeText);
 });
+class SurveyPDFTester extends SurveyPDF {
+    public get haveCommercialLicense(): boolean { return true; }
+}
 test('Have commercial license: true', async () => {
     let json: any = {
         questions: [
@@ -186,8 +189,7 @@ test('Have commercial license: true', async () => {
             }
         ]
     };
-    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    survey.haveCommercialLicense = true;
+    let survey: SurveyPDF = new SurveyPDFTester(json, TestHelper.defaultOptions);
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
@@ -208,7 +210,6 @@ test('Have commercial license: false', async () => {
         ]
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    survey.haveCommercialLicense = false;
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);

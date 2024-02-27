@@ -30,8 +30,7 @@ export class TestHelper {
                 right: 10.0,
                 top: 10.0,
                 bot: 10.0
-            },
-            commercial: true
+            }
         };
     }
     public static wrapRect(rect: IRect): IPdfBrick {

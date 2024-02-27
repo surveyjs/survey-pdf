@@ -17,7 +17,6 @@ import { SurveyHelper } from './helper_survey';
 export class SurveyPDF extends SurveyModel {
     private static currentlySaving: boolean = false;
     private static saveQueue: any[] = [];
-    private _haveCommercialLicense: boolean;
     public options: IDocOptions;
     public constructor(jsonObject: any, options?: IDocOptions) {
         super(jsonObject);
@@ -25,15 +24,14 @@ export class SurveyPDF extends SurveyModel {
             options = {};
         }
         this.options = SurveyHelper.clone(options);
-        this._haveCommercialLicense = options.commercial || options.haveCommercialLicense;
     }
     public get haveCommercialLicense(): boolean {
         const f = SurveyCore.hasLicense;
-        if(!!f && f(2)) return true;
-        return this._haveCommercialLicense;
+        return !!f && f(2);
     }
     public set haveCommercialLicense(val: boolean) {
-        this._haveCommercialLicense = val;
+        // eslint-disable-next-line no-console
+        console.error('As of v1.9.101, the haveCommercialLicense property is not supported. To activate your license, use the setLicenseKey(key) method as shown on the following page: https://surveyjs.io/remove-alert-banner');
     }
     /**
      * An event that is raised when SurveyJS PDF Generator renders a page header. Handle this event to customize the header.

@@ -246,7 +246,9 @@ test('Check readonly comment with long text', async () => {
     assumeTextField.yBot = textFlat.yBot + padding;
     TestHelper.equalRect(expect, flats[0][0], assumeTextField);
 });
-
+class SurveyPDFTester extends SurveyPDF {
+    public get haveCommercialLicense(): boolean { return true; }
+}
 test('Check readonly text with readOnlyTextRenderMode set to div', async () => {
     const oldRenderMode = Survey.settings.readOnlyCommentRenderMode;
     Survey.settings.readOnlyCommentRenderMode = 'div';
@@ -261,7 +263,7 @@ test('Check readonly text with readOnlyTextRenderMode set to div', async () => {
                 }
             ]
         };
-        const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+        const survey: SurveyPDF = new SurveyPDFTester(json, TestHelper.defaultOptions);
         const pdfAsString = await survey.raw();
         // Stream in result PDF document should be small - in this example 14
         expect(pdfAsString.indexOf('/Length 14\n') > 0).toBeTruthy();
