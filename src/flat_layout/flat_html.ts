@@ -5,7 +5,7 @@ import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { SurveyHelper } from '../helper_survey';
-import { replace } from 'lodash';
+import { EmptyBrick } from '../pdf_render/pdf_empty';
 
 export type IHTMLRenderType = 'auto' | 'standard' | 'image';
 export class FlatHTML extends FlatQuestion {
@@ -34,6 +34,9 @@ export class FlatHTML extends FlatQuestion {
     }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         let renderAs: IHTMLRenderType = <IHTMLRenderType>this.question.renderAs;
+        if(!SurveyHelper.hasDocument) {
+            return [new EmptyBrick(SurveyHelper.createRect(point, 0, 0))];
+        }
         if (renderAs === 'auto') renderAs = this.controller.htmlRenderAs;
         if (renderAs === 'auto') renderAs = this.chooseRender(SurveyHelper.getLocString(this.question.locHtml));
         const html: string = SurveyHelper.createHtmlContainerBlock(SurveyHelper.getLocString(this.question.locHtml), this.controller, renderAs);

@@ -451,6 +451,10 @@ export class SurveyHelper {
     }
     public static inBrowser = typeof Image === 'function';
 
+    public static get hasDocument(): boolean {
+        return typeof document !== 'undefined';
+    }
+
     public static async getImageBase64(imageLink: string): Promise<string> {
         const image = new Image();
         image.crossOrigin='anonymous';
@@ -497,7 +501,6 @@ export class SurveyHelper {
             const html: string = `<img src='${await SurveyHelper.getImageLink(controller, imageOptions, applyImageFit ?? controller.applyImageFit)}' width='${imageOptions.width}' height='${imageOptions.height}'/>`;
             return new HTMLBrick(question, controller, this.createRect(point, imageOptions.width, imageOptions.height), html, true);
         }
-
         return new ImageBrick(question, controller, imageOptions.link, point, imageOptions.width, imageOptions.height);
     }
     public static canPreviewImage(question: QuestionFileModel, item: { name: string, type: string, content: string }, url: string): boolean {

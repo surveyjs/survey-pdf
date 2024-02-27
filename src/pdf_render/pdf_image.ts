@@ -16,8 +16,11 @@ export class ImageBrick extends PdfBrick {
     }
     public async renderInteractive(): Promise<void> {
         await new Promise<void>((resolve) => {
-            this.controller.doc.addImage(this.image, this.xLeft, this.yTop, this.originalWidth, this.originalHeight);
-            resolve();
+            try {
+                this.controller.doc.addImage(this.image, 'PNG', this.xLeft, this.yTop, this.originalWidth, this.originalHeight);
+            } finally {
+                resolve();
+            }
         });
     }
 }
