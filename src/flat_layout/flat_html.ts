@@ -5,6 +5,7 @@ import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { SurveyHelper } from '../helper_survey';
+import { replace } from 'lodash';
 
 export type IHTMLRenderType = 'auto' | 'standard' | 'image';
 export class FlatHTML extends FlatQuestion {
@@ -21,6 +22,16 @@ export class FlatHTML extends FlatQuestion {
         }
         return 'standard';
     }
+
+    private static correctHtmlRules: [{ searchRegExp: RegExp, replaceString: string }] = [
+        { searchRegExp: /(<\/?br\s*?\/?\s*?>\s*){2,}/, replaceString: '<br>' }
+    ]
+    protected correctHtml(html: string): string {
+        FlatHTML.correctHtmlRules.forEach((rule) => {
+            html = html.replace(rule.searchRegExp, rule.replaceString);
+        });
+        return html;
+    }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         let renderAs: IHTMLRenderType = <IHTMLRenderType>this.question.renderAs;
         if (renderAs === 'auto') renderAs = this.controller.htmlRenderAs;
@@ -29,12 +40,12 @@ export class FlatHTML extends FlatQuestion {
         if (renderAs === 'image') {
             const width: number = SurveyHelper.getPageAvailableWidth(this.controller);
             const { url, aspect }: { url: string, aspect: number } =
-                await SurveyHelper.htmlToImage(html, width, this.controller);
+            await SurveyHelper.htmlToImage(html, width, this.controller);
             const height: number = width / aspect;
             return [await SurveyHelper.createImageFlat(point, this.question, this.controller, { link: url, width, height })];
         }
         return [SurveyHelper.splitHtmlRect(this.controller, await SurveyHelper.createHTMLFlat(
-            point, this.question, this.controller, html))];
+            point, this.question, this.controller, this.correctHtml(html)))];
     }
 }
 
