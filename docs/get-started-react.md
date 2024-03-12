@@ -12,6 +12,12 @@ PDF Generator for SurveyJS allows your users to save surveys as interactive PDF 
 
 [View Full Code on GitHub](https://github.com/surveyjs/code-examples/tree/main/get-started-pdf/react (linkStyle))
 
+If you are looking for a quick-start application that includes all SurveyJS components, refer to the following GitHub repositories:
+
+- <a href="https://github.com/surveyjs/surveyjs_react_quickstart" target="_blank">SurveyJS + React Quickstart Template</a>
+- <a href="https://github.com/surveyjs/surveyjs-nextjs" target="_blank">SurveyJS + Next.js Quickstart Template</a>
+- <a href="https://github.com/surveyjs/surveyjs-remix" target="_blank">SurveyJS + Remix Quickstart Template</a>
+
 ## Install the `survey-pdf` npm package
 
 PDF Generator for SurveyJS is built upon the <a href="https://github.com/parallax/jsPDF#readme" target="_blank">jsPDF</a> library and is distributed as a <a href="https://www.npmjs.com/package/survey-pdf" target="_blank">`survey-pdf`</a> npm package. Run the following command to install the package and its dependencies, including jsPDF:
@@ -50,9 +56,14 @@ const savePdf = function (surveyData) {
 };
 ```
 
-You can use any UI element to call this helper function. For instance, the following code adds a new [navigation button](/Documentation/Library?id=iaction) below the survey and calls the `savePdf` function when a user clicks this button:
+You can use any UI element to call this helper function. For instance, the code below adds a new [navigation button](/Documentation/Library?id=iaction) below the survey and calls the `savePdf` function when a user clicks this button.
+
+> If you are using [Next.js](https://nextjs.org) or another framework that [has adopted React Server Components](https://react.dev/learn/start-a-new-react-project#bleeding-edge-react-frameworks), you need to explicitly mark the React component that renders a SurveyJS component as client code using the ['use client'](https://react.dev/reference/react/use-client) directive.
 
 ```js
+// Uncomment the following line if you are using Next.js:
+// 'use client'
+
 import { Model } from 'survey-core';
 import { Survey } from 'survey-react-ui';
 // ...
@@ -83,6 +94,9 @@ To view the application, run `npm run start` in a command line and open [http://
     <summary>View Full Code</summary>  
 
 ```js
+// Uncomment the following line if you are using Next.js:
+// 'use client'
+
 import './App.css'
 
 import 'survey-core/defaultV2.min.css';

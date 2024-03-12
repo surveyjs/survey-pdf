@@ -12,6 +12,8 @@ PDF Generator for SurveyJS allows your users to save surveys as interactive PDF 
 
 [View Full Code on GitHub](https://github.com/surveyjs/code-examples/tree/main/get-started-pdf/angular (linkStyle))
 
+If you are looking for a quick-start application that includes all SurveyJS components, refer to the following GitHub repository: <a href="https://github.com/surveyjs/surveyjs_angular_cli" target="_blank">SurveyJS + Angular CLI Quickstart Template</a>.
+
 ## Install the `survey-pdf` npm package
 
 PDF Generator for SurveyJS is built upon the <a href="https://github.com/parallax/jsPDF#readme" target="_blank">jsPDF</a> library and is distributed as a <a href="https://www.npmjs.com/package/survey-pdf" target="_blank">`survey-pdf`</a> npm package. Run the following command to install the package and its dependencies, including jsPDF:
