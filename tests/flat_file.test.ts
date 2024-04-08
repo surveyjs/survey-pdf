@@ -13,6 +13,7 @@ import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 import { ImageBrick } from '../src/pdf_render/pdf_image';
 import { CompositeBrick } from '../src/pdf_render/pdf_composite';
+import { LinkBrick } from '../src/pdf_render/pdf_link';
 let __dummy_fl = new FlatFile(null, null, null);
 
 test('Check no files', async () => {
@@ -460,4 +461,59 @@ test('Test file question getImagePreviewContentWidth always return correct image
             }
         });
     });
+});
+
+test('Test file question inside paneldynamic waits preview loading', async () => {
+    const json: any = {
+        'logoPosition': 'right',
+        'pages': [
+            {
+                'name': 'page1',
+                'elements': [
+                    {
+                        'type': 'text',
+                        'name': 'question1'
+                    }
+                ]
+            },
+            {
+                'name': 'page2',
+                'elements': [
+                    {
+                        'type': 'paneldynamic',
+                        'name': 'pd',
+                        'templateElements': [
+                            {
+                                'type': 'file',
+                                'storeDataAsText': false,
+                                'name': 'file'
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    };
+    SurveyHelper.inBrowser = false;
+    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    survey.onDownloadFile.add((_, options) => {
+        setTimeout(() => {
+            options.callback('success', 'data:image/jpeg;base64,FILECONTENT1');
+        });
+    });
+    let fileBricks: IPdfBrick[];
+    survey.onRenderQuestion.add((_, options) => {
+        fileBricks = options.bricks;
+    });
+    survey.data = { 'pd': [{ 'file': {
+        'name': 'name.jpeg',
+        'type': 'image/jpeg',
+        'content': 'url'
+    } }] };
+    await survey.raw();
+    const unFoldedBricks = fileBricks[0].unfold();
+    expect(unFoldedBricks.length).toBe(8);
+    expect(unFoldedBricks[5]).toBeInstanceOf(LinkBrick);
+    expect((<LinkBrick>unFoldedBricks[5])['link']).toBe('data:image/jpeg;base64,FILECONTENT1');
+
 });
