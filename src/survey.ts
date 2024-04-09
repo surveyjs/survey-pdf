@@ -205,6 +205,7 @@ export class SurveyPDF extends SurveyModel {
         }
     }
     protected async renderSurvey(controller: DocController): Promise<void> {
+        this.visiblePages.forEach(page => page.onFirstRendering());
         await this.waitForCoreIsReady();
         const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(this, controller);
         this.correctBricksPosition(controller, flats);
