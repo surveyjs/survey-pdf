@@ -33,7 +33,7 @@ test('Check no files', async () => {
     expect(flats[0].length).toBe(1);
     controller.margins.left += controller.unitWidth;
     let assumeFile: IRect = await SurveyHelper.createTextFlat(controller.leftTopPoint,
-        <Question>survey.getAllQuestions()[0], controller, 'No file chosen', TextBrick);
+        <Question>survey.getAllQuestions()[0], controller, 'No file selected', TextBrick);
     TestHelper.equalRect(expect, flats[0][0], assumeFile);
 });
 test('Check noFileChosen locale', async () => {
