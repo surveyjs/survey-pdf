@@ -1,0 +1,1 @@
+global.queueMicrotask = (cb) => { cb(); }
