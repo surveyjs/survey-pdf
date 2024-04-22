@@ -51,6 +51,8 @@ test('Check signaturepad', async () => {
 
 test('Check signaturepad with backgroundImage', async () => {
     SurveyHelper.shouldConvertImageToPng = false;
+    const oldXMLSerializer = window.XMLSerializer;
+    window.XMLSerializer = undefined as any;
     let json: any = {
         questions: [
             {
@@ -85,4 +87,5 @@ test('Check signaturepad with backgroundImage', async () => {
     TestHelper.equalRect(expect, htmlBrick, assumeHTML);
     TestHelper.equalRect(expect, backgroundImageBrick, assumeHTML);
     SurveyHelper.shouldConvertImageToPng = true;
+    window.XMLSerializer = oldXMLSerializer
 });
