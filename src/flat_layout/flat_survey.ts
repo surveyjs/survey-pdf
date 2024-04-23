@@ -70,12 +70,13 @@ export class FlatSurvey {
             const width: number = SurveyHelper.getPageAvailableWidth(controller);
             let nextMarginLeft: number = controller.margins.left;
             const rowFlats: IPdfBrick[] = [];
-            for (let i: number = 0; i < row.visibleElements.length; i++) {
-                let element: IElement = row.visibleElements[i];
+            const visibleElements = row.elements.filter(el => el.isVisible);
+            for (let i: number = 0; i < visibleElements.length; i++) {
+                let element: IElement = visibleElements[i];
                 if (!element.isVisible) continue;
                 const persWidth: number = SurveyHelper.parseWidth(element.renderWidth,
-                    width - (row.visibleElements.length - 1) * controller.unitWidth,
-                    row.visibleElements.length);
+                    width - (visibleElements.length - 1) * controller.unitWidth,
+                    visibleElements.length);
                 controller.margins.left = nextMarginLeft + ((i !== 0) ? controller.unitWidth : 0);
                 controller.margins.right = controller.paperWidth - controller.margins.left - persWidth;
                 currPoint.xLeft = controller.margins.left;

@@ -4,6 +4,7 @@ module.exports = {
       tsConfig: "tsconfig.test.json"
     }
   },
+  setupFiles: ["<rootDir>/setupFile.js"],
   reporters: [
     "default",
     [ "jest-junit", {
