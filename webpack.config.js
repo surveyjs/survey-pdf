@@ -42,9 +42,11 @@ var platformOptions = {
       }
     },
     keywords: ["pdf"],
+    peerDependencies: {
+      "survey-core": packageJson.version
+    },
     dependencies: {
       jspdf: "^2.3.0",
-      "survey-core": packageJson.version
     }
   }
 };
