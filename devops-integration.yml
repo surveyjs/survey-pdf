@@ -147,8 +147,12 @@ steps:
 - task: CopyFiles@2
   inputs:
     SourceFolder: '$(Build.SourcesDirectory)/survey-pdf/docs'
+    Contents: |
+      classes.json
+      pmes.json
+      surveyjs_definition.json
     TargetFolder: '$(Build.SourcesDirectory)/service/surveyjs.io/App_Data/DocsPdf'
-    CleanTargetFolder: true
+    CleanTargetFolder: false
   displayName: 'copy generated docs to the local surveyjs/service repo'
 
 - task: CopyFiles@2
