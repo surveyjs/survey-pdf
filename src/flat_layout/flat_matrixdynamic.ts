@@ -15,6 +15,7 @@ Serializer.removeProperty('matrixdynamic', 'renderAs');
 Serializer.addProperty('matrixdynamic', {
     name: 'renderAs',
     default: 'auto',
+    visible: false,
     choices: ['auto', 'list']
 });
 FlatRepository.getInstance().register('matrixdynamic', FlatMatrixDynamic);

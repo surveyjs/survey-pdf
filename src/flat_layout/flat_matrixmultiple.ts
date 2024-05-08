@@ -241,6 +241,7 @@ Serializer.removeProperty('matrixdropdown', 'renderAs');
 Serializer.addProperty('matrixdropdown', {
     name: 'renderAs',
     default: 'auto',
+    visible: false,
     choices: ['auto', 'list']
 });
 FlatRepository.getInstance().register('matrixdropdown', FlatMatrixMultiple);

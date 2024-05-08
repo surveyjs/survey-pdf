@@ -56,6 +56,7 @@ Serializer.removeProperty('html', 'renderAs');
 Serializer.addProperty('html', {
     name: 'renderAs',
     default: 'auto',
+    visible: false,
     choices: ['auto', 'standard', 'image']
 });
 FlatRepository.getInstance().register('html', FlatHTML);
