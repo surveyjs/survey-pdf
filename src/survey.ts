@@ -78,7 +78,7 @@ export class SurveyPDF extends SurveyModel {
      * An object with coordinates of the top-left corner of the element being rendered. This object contains the following properties: `{ xLeft: number, yTop: number }`.
      *
      * - `options.bricks`: [`PdfBrick[]`](https://surveyjs.io/pdf-generator/documentation/api-reference/pdfbrick)\
-     * An array of [bricks](https://surveyjs.io/pdf-generator/documentation/customization-customrender-questionelements#bricks) used to render the element.
+     * An array of [bricks](https://surveyjs.io/pdf-generator/documentation/customize-survey-question-rendering-in-pdf-form#custom-rendering) used to render the element.
      *
      * - `options.controller`: [`DocController`](https://surveyjs.io/pdf-generator/documentation/api-reference/doccontroller)\
      * An object that provides access to main PDF document properties (font, margins, page width and height) and allows you to modify them.
@@ -86,7 +86,7 @@ export class SurveyPDF extends SurveyModel {
      * - `options.repository`: `FlatRepository`\
      * A repository with classes that render elements to PDF. Use its `create` method if you need to create a new instance of a rendering class.
      *
-     * [View Demo](https://surveyjs.io/pdf-generator/examples/add-markup-to-customize-pdf-forms/ (linkStyle))
+     * [View Demo](https://surveyjs.io/pdf-generator/examples/how-to-use-adorners-in-pdf-forms/ (linkStyle))
      */
     public onRenderQuestion: EventAsync<SurveyPDF, AdornersOptions> =
         new EventAsync<SurveyPDF, AdornersOptions>();
@@ -105,13 +105,15 @@ export class SurveyPDF extends SurveyModel {
      * An object with coordinates of the top-left corner of the element being rendered. This object contains the following properties: `{ xLeft: number, yTop: number }`.
      *
      * - `options.bricks`: [`PdfBrick[]`](https://surveyjs.io/pdf-generator/documentation/api-reference/pdfbrick)\
-     * An array of [bricks](https://surveyjs.io/pdf-generator/documentation/customization-customrender-questionelements#bricks) used to render the element.
+     * An array of [bricks](https://surveyjs.io/pdf-generator/documentation/customize-survey-question-rendering-in-pdf-form#custom-rendering) used to render the element.
      *
      * - `options.controller`: [`DocController`](https://surveyjs.io/pdf-generator/documentation/api-reference/doccontroller)\
      * An object that provides access to main PDF document properties (font, margins, page width and height) and allows you to modify them.
      *
      * - `options.repository`: `FlatRepository`\
      * A repository with classes that render elements to PDF. Use its `create` method if you need to create a new instance of a rendering class.
+     * 
+     * [View Demo](https://surveyjs.io/pdf-generator/examples/how-to-use-adorners-in-pdf-forms/ (linkStyle))
      */
     public onRenderPanel: EventAsync<SurveyPDF, AdornersPanelOptions> =
         new EventAsync<SurveyPDF, AdornersPanelOptions>();
@@ -130,13 +132,15 @@ export class SurveyPDF extends SurveyModel {
      * An object with coordinates of the top-left corner of the element being rendered. This object contains the following properties: `{ xLeft: number, yTop: number }`.
      *
      * - `options.bricks`: [`PdfBrick[]`](https://surveyjs.io/pdf-generator/documentation/api-reference/pdfbrick)\
-     * An array of [bricks](https://surveyjs.io/pdf-generator/documentation/customization-customrender-questionelements#bricks) used to render the element.
+     * An array of [bricks](https://surveyjs.io/pdf-generator/documentation/customize-survey-question-rendering-in-pdf-form#custom-rendering) used to render the element.
      *
      * - `options.controller`: [`DocController`](https://surveyjs.io/pdf-generator/documentation/api-reference/doccontroller)\
      * An object that provides access to main PDF document properties (font, margins, page width and height) and allows you to modify them.
      *
      * - `options.repository`: `FlatRepository`\
      * A repository with classes that render elements to PDF. Use its `create` method if you need to create a new instance of a rendering class.
+     * 
+     * [View Demo](https://surveyjs.io/pdf-generator/examples/how-to-use-adorners-in-pdf-forms/ (linkStyle))
      */
     public onRenderPage: EventAsync<SurveyPDF, AdornersPageOptions> =
         new EventAsync<SurveyPDF, AdornersPageOptions>();
