@@ -17,6 +17,8 @@ import { CompositeBrick } from '../src/pdf_render/pdf_composite';
 import { RowlineBrick } from '../src/pdf_render/pdf_rowline';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
+import { assert } from 'console';
+import { TextBoxBrick } from '../src/pdf_render/pdf_textbox';
 const __dummy_tx = new FlatTextbox(null, null, null);
 const __dummy_cb = new FlatCheckbox(null, null, null);
 
@@ -25,19 +27,19 @@ export async function calcTitleTop(leftTopPoint: IPoint, controller: DocControll
     const assumeTitle: IRect = await SurveyHelper.createTitleFlat(leftTopPoint, titleQuestion, controller);
     let assumeDesc: IRect = assumeTitle;
     let rowLinePoint: IPoint = SurveyHelper.createPoint(assumeTitle);
-    let assumeRowLine: IRect = SurveyHelper.createRowlineFlat(rowLinePoint, controller); 
+    let assumeRowLine: IRect = SurveyHelper.createRowlineFlat(rowLinePoint, controller);
     let textboxPoint: IPoint = SurveyHelper.createPoint(assumeRowLine);
-    textboxPoint.xLeft += controller.unitWidth; 
+    textboxPoint.xLeft += controller.unitWidth;
     textboxPoint.yTop += controller.unitHeight * FlatQuestion.CONTENT_GAP_VERT_SCALE;
     let assumeTextbox: IRect = SurveyHelper.createTextFieldRect(textboxPoint, controller);
     if (isDesc) {
         const descPoint: IPoint = SurveyHelper.createPoint(assumeTitle);
         descPoint.xLeft += controller.unitWidth;
-        descPoint.yTop += FlatQuestion.DESC_GAP_SCALE * controller.unitHeight;  
+        descPoint.yTop += FlatQuestion.DESC_GAP_SCALE * controller.unitHeight;
         assumeDesc = await SurveyHelper.createDescFlat(descPoint, null, controller,
             SurveyHelper.getLocString(titleQuestion.locDescription));
         rowLinePoint = SurveyHelper.createPoint(assumeDesc);
-        rowLinePoint.xLeft = controller.leftTopPoint.xLeft;  
+        rowLinePoint.xLeft = controller.leftTopPoint.xLeft;
         assumeRowLine = SurveyHelper.createRowlineFlat(rowLinePoint, controller);
         textboxPoint = SurveyHelper.createPoint(assumeRowLine);
         textboxPoint.xLeft = assumeDesc.xLeft;
@@ -46,16 +48,16 @@ export async function calcTitleTop(leftTopPoint: IPoint, controller: DocControll
     }
     const unfoldFlats: IPdfBrick[] = compositeFlat.unfold();
     const titleWithDescriptionFlats: IPdfBrick[] = unfoldFlats.slice(0, -2);
-    const titleFlats: IPdfBrick[] = titleWithDescriptionFlats.filter(flat => flat instanceof TextBoldBrick)
+    const titleFlats: IPdfBrick[] = titleWithDescriptionFlats.filter(flat => flat instanceof TextBoldBrick);
     const actualTitle: IRect = SurveyHelper.mergeRects(...titleFlats);
-    TestHelper.equalRect(expect, actualTitle, assumeTitle);    
+    TestHelper.equalRect(expect, actualTitle, assumeTitle);
     if (isDesc) {
         const descFlats: IPdfBrick[] = titleWithDescriptionFlats.filter(flat => flat instanceof DescriptionBrick);
         const actualDesc: IRect = SurveyHelper.mergeRects(...descFlats);
-        TestHelper.equalRect(expect, actualDesc, assumeDesc);  
+        TestHelper.equalRect(expect, actualDesc, assumeDesc);
     }
     const actualRowLine: IRect = unfoldFlats[unfoldFlats.length - 2];
-    TestHelper.equalRect(expect, actualRowLine, assumeRowLine);  
+    TestHelper.equalRect(expect, actualRowLine, assumeRowLine);
     const actualTextBox: IRect = unfoldFlats[unfoldFlats.length - 1];
     TestHelper.equalRect(expect, actualTextBox, assumeTextbox);
     return SurveyHelper.createPoint(SurveyHelper.mergeRects(assumeTitle, assumeDesc, assumeRowLine, assumeTextbox));
@@ -136,7 +138,7 @@ export async function calcIndent(expect: any, leftTopPoint: IPoint, controller: 
     const assumeCheckbox: IRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(
         SurveyHelper.createRect(SurveyHelper.createPoint(assumeTitle),
             itemHeight, itemHeight), SurveyHelper.SELECT_ITEM_FLAT_SCALE),
-        leftTopPoint.xLeft + controller.unitWidth);
+    leftTopPoint.xLeft + controller.unitWidth);
     const textPoint: IPoint = SurveyHelper.createPoint(assumeTitle);
     textPoint.xLeft = assumeCheckbox.xRight + controller.unitWidth * SurveyHelper.GAP_BETWEEN_ITEM_TEXT;
     const assumeChecktext: IRect = await SurveyHelper.createTextFlat(textPoint,
@@ -189,7 +191,7 @@ test('Calc textbox boundaries title bottom', async () => {
 });
 test('Calc textbox boundaries title left', async () => {
     const json: any = {
-        showQuestionNumbers: "false",
+        showQuestionNumbers: 'false',
         questions: [
             {
                 type: 'text',
@@ -248,7 +250,7 @@ test('Calc boundaries with space between questions', async () => {
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(3);
     const titlePoint: IPoint = await calcTitleTop(controller.leftTopPoint,
-        controller, <Question>survey.getAllQuestions()[0], flats[0][0]);  
+        controller, <Question>survey.getAllQuestions()[0], flats[0][0]);
     titlePoint.yTop += controller.unitHeight * FlatSurvey.QUES_GAP_VERT_SCALE;
     expect(flats[0][1] instanceof RowlineBrick).toBe(true);
     await calcTitleTop(titlePoint, controller,
@@ -618,4 +620,88 @@ test('Check question\'s content indent with CONTENT_INDENT_SCALE', async () => {
     const bricks: IPdfBrick[] = flats[0][0].unfold();
     expect(bricks.length).toBe(3);
     expect(bricks[0].xLeft).toBeCloseTo(bricks[1].xLeft);
+});
+
+test('Check description under input', async () => {
+    const json = {
+        elements: [
+            {
+                type: 'text',
+                name: 'q1',
+                titleLocation: 'top',
+                description: 'description',
+                descriptionLocation: 'underInput'
+            }
+        ]
+    };
+    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    const controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    expect(flats.length).toBe(1);
+    expect(flats[0].length).toBe(2);
+    let unfoldedContentTitleBricks = (flats[0][0] as CompositeBrick).unfold();
+    expect(unfoldedContentTitleBricks.length).toBe(4);
+    expect((unfoldedContentTitleBricks[0] as any)['text']).toBe('1. ');
+    expect((unfoldedContentTitleBricks[1] as any)['text']).toBe('q1');
+    expect(unfoldedContentTitleBricks[2]).toBeInstanceOf(RowlineBrick);
+    expect(unfoldedContentTitleBricks[3]).toBeInstanceOf(TextBoxBrick);
+
+    let unfoldedDescriptionBricks = (flats[0][1] as CompositeBrick).unfold();
+    expect(unfoldedDescriptionBricks.length).toBe(1);
+    let descriptionBrick = unfoldedDescriptionBricks[0] as any;
+    expect(descriptionBrick['text']).toBe('description');
+    expect(descriptionBrick.xLeft).toBe(unfoldedContentTitleBricks[3].xLeft);
+    expect(descriptionBrick.yTop).toBe(unfoldedContentTitleBricks[3].yBot + SurveyHelper.GAP_BETWEEN_ROWS * controller.unitWidth);
+
+    survey.getAllQuestions()[0].titleLocation = 'left';
+    flats = await FlatSurvey.generateFlats(survey, controller);
+    expect(flats.length).toBe(1);
+    expect(flats[0].length).toBe(2);
+    unfoldedContentTitleBricks = (flats[0][0] as CompositeBrick).unfold();
+    expect(unfoldedContentTitleBricks.length).toBe(3);
+    expect((unfoldedContentTitleBricks[0] as any)['text']).toBe('1. ');
+    expect((unfoldedContentTitleBricks[1] as any)['text']).toBe('q1');
+    expect(unfoldedContentTitleBricks[2]).toBeInstanceOf(TextBoxBrick);
+
+    unfoldedDescriptionBricks = (flats[0][1] as CompositeBrick).unfold();
+    expect(unfoldedDescriptionBricks.length).toBe(1);
+    descriptionBrick = unfoldedDescriptionBricks[0] as any;
+    expect(descriptionBrick['text']).toBe('description');
+    expect(descriptionBrick.xLeft).toBe(unfoldedContentTitleBricks[2].xLeft);
+    expect(descriptionBrick.yTop).toBe(unfoldedContentTitleBricks[2].yBot + SurveyHelper.GAP_BETWEEN_ROWS * controller.unitWidth);
+
+    survey.getAllQuestions()[0].titleLocation = 'hidden';
+    flats = await FlatSurvey.generateFlats(survey, controller);
+    expect(flats.length).toBe(1);
+    expect(flats[0].length).toBe(2);
+    unfoldedContentTitleBricks = (flats[0][0] as CompositeBrick).unfold();
+    expect(unfoldedContentTitleBricks.length).toBe(1);
+    expect(unfoldedContentTitleBricks[0]).toBeInstanceOf(TextBoxBrick);
+
+    unfoldedDescriptionBricks = (flats[0][1] as CompositeBrick).unfold();
+    expect(unfoldedDescriptionBricks.length).toBe(1);
+    descriptionBrick = unfoldedDescriptionBricks[0] as any;
+    expect(descriptionBrick['text']).toBe('description');
+    expect(descriptionBrick.xLeft).toBe(unfoldedContentTitleBricks[0].xLeft);
+    expect(descriptionBrick.yTop).toBe(unfoldedContentTitleBricks[0].yBot + SurveyHelper.GAP_BETWEEN_ROWS * controller.unitWidth);
+
+    survey.getAllQuestions()[0].titleLocation = 'bottom';
+    flats = await FlatSurvey.generateFlats(survey, controller);
+    expect(flats.length).toBe(1);
+    expect(flats[0].length).toBe(3);
+    let unfoldedContentBricks = (flats[0][0] as CompositeBrick).unfold();
+    expect(unfoldedContentBricks.length).toBe(1);
+    expect(unfoldedContentBricks[0]).toBeInstanceOf(TextBoxBrick);
+
+    unfoldedDescriptionBricks = (flats[0][1] as CompositeBrick).unfold();
+    expect(unfoldedDescriptionBricks.length).toBe(1);
+    descriptionBrick = unfoldedDescriptionBricks[0] as any;
+    expect(descriptionBrick['text']).toBe('description');
+    expect(descriptionBrick.xLeft).toBe(unfoldedContentBricks[0].xLeft);
+    expect(descriptionBrick.yTop).toBe(unfoldedContentBricks[0].yBot + SurveyHelper.GAP_BETWEEN_ROWS * controller.unitWidth);
+
+    let unfoldedTitleBricks = (flats[0][2] as CompositeBrick).unfold();
+    expect(unfoldedTitleBricks.length).toBe(2);
+    expect((unfoldedTitleBricks[0] as any)['text']).toBe('1. ');
+    expect((unfoldedTitleBricks[1] as any)['text']).toBe('q1');
 });
