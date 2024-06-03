@@ -16,6 +16,7 @@ import { TestHelper } from '../src/helper_test';
 
 import * as Survey from 'survey-core';
 import { TextFieldBrick } from '../src/pdf_render/pdf_textfield';
+import { CompositeBrick } from '../src/pdf_render/pdf_composite';
 
 const __dummy_cm = new FlatComment(null, null, null);
 const __dummy_cb = new FlatCheckbox(null, null, null);
@@ -40,7 +41,7 @@ async function commentPointAfterTitle(titleLocation: string, resultRects: IPdfBr
     if (titleLocation === 'top') {
         commentAssumePoint.yTop += controller.unitHeight * FlatQuestion.CONTENT_GAP_VERT_SCALE;
     }
-    const commentResultPoint: IPoint = resultRects[0][1];
+    const commentResultPoint: IPoint = (resultRects[0][0] as any).bricks.pop();
     TestHelper.equalPoint(expect, commentResultPoint, commentAssumePoint);
     return commentAssumePoint;
 }
