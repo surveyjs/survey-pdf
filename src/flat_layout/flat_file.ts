@@ -50,13 +50,11 @@ export class FlatFile extends FlatQuestion {
         const rowsFlats: CompositeBrick[] = [new CompositeBrick()];
         const currPoint: IPoint = SurveyHelper.clone(point);
         let yBot: number = currPoint.yTop;
-        const fullAvailableWidth = this.controller.paperWidth -
-        this.controller.margins.right - currPoint.xLeft;
         for (let i: number = 0; i < this.question.previewValue.length; i++) {
             let item: { name: string, type: string, content: string, imageSize?: ISize } = { ...this.question.previewValue[i] };
             const canPreviewImage = SurveyHelper.canPreviewImage(this.question, item, item.content);
             if (canPreviewImage) {
-                item.imageSize = await SurveyHelper.getCorrectedImageSize(this.controller, { imageWidth: this.question.imageWidth, imageHeight: this.question.imageHeight, imageLink: this.question.previewValue[i].content });
+                item.imageSize = await SurveyHelper.getCorrectedImageSize(this.controller, { imageWidth: this.question.imageWidth, imageHeight: this.question.imageHeight, imageLink: this.question.previewValue[i].content, defaultImageWidth: 200, defaultImageHeight: 150 });
             }
             const availableWidth: number = this.controller.paperWidth -
                 this.controller.margins.right - currPoint.xLeft;

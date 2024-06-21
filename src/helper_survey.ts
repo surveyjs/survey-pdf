@@ -731,12 +731,17 @@ export class SurveyHelper {
     public static isHeightEmpty(val: any): boolean {
         return this.isSizeEmpty(val) || val == '100%';
     }
-    public static async getCorrectedImageSize(controller: DocController, imageOptions: { imageWidth: any, imageHeight: any, imageLink: string }): Promise<ISize> {
-        let { imageWidth, imageLink, imageHeight } = imageOptions;
+    public static async getCorrectedImageSize(controller: DocController, imageOptions: { imageWidth?: any, imageHeight?: any, imageLink: string, defaultImageWidth?: any, defaultImageHeight?: any }): Promise<ISize> {
+        let { imageWidth, imageLink, imageHeight, defaultImageWidth, defaultImageHeight } = imageOptions;
         imageWidth = typeof imageWidth === 'number' ? imageWidth.toString() : imageWidth;
         imageHeight = typeof imageHeight === 'number' ? imageHeight.toString() : imageHeight;
         let widthPt: number = imageWidth && SurveyHelper.parseWidth(imageWidth, SurveyHelper.getPageAvailableWidth(controller), 1, 'px');
         let heightPt: number = imageHeight && SurveyHelper.parseWidth(imageHeight, SurveyHelper.getPageAvailableWidth(controller), 1, 'px');
+        defaultImageWidth = typeof defaultImageWidth === 'number' ? defaultImageWidth.toString() : defaultImageWidth;
+        defaultImageHeight = typeof defaultImageHeight === 'number' ? defaultImageHeight.toString() : defaultImageHeight;
+        let defaultWidthPt: number = defaultImageWidth && SurveyHelper.parseWidth(defaultImageWidth, SurveyHelper.getPageAvailableWidth(controller), 1, 'px');
+        let defaultHeightPt: number = defaultImageHeight && SurveyHelper.parseWidth(defaultImageHeight, SurveyHelper.getPageAvailableWidth(controller), 1, 'px');
+
         if(SurveyHelper.isSizeEmpty(imageWidth) || SurveyHelper.isHeightEmpty(imageHeight)) {
             const imageSize = await SurveyHelper.getImageSize(imageLink);
             if(!SurveyHelper.isSizeEmpty(imageWidth)) {
@@ -754,6 +759,6 @@ export class SurveyHelper {
                 widthPt = SurveyHelper.parseWidth(imageSize.width.toString(), SurveyHelper.getPageAvailableWidth(controller), 1, 'px');
             }
         }
-        return { width: widthPt || 0, height: heightPt || 0 };
+        return { width: widthPt || defaultWidthPt || 0, height: heightPt || defaultHeightPt || 0 };
     }
 }

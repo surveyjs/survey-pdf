@@ -412,3 +412,24 @@ test('Check chooseHtmlFont method', async () => {
     );
     expect(SurveyHelper.chooseHtmlFont(controller)).toBe('custom_font2');
 });
+
+test('check getCorrectedImageSize works incorrectly if image could not be loaded', async () => {
+    const controller = new DocController(
+        { fontName: 'custom_font' }
+    );
+    const oldInBrowser = SurveyHelper.inBrowser;
+    SurveyHelper.inBrowser = false;
+    let imageSize = await SurveyHelper.getCorrectedImageSize(controller, { imageLink: '' });
+    expect(imageSize.width).toBe(0);
+    expect(imageSize.height).toBe(0);
+    imageSize = await SurveyHelper.getCorrectedImageSize(controller, { imageLink: '', imageWidth: 100, imageHeight: 200 });
+    expect(imageSize.width).toBe(75);
+    expect(imageSize.height).toBe(150);
+    imageSize = await SurveyHelper.getCorrectedImageSize(controller, { imageLink: '', imageWidth: 100, imageHeight: 200, defaultImageWidth: 300, defaultImageHeight: 400 });
+    expect(imageSize.width).toBe(75);
+    expect(imageSize.height).toBe(150);
+    imageSize = await SurveyHelper.getCorrectedImageSize(controller, { imageLink: '', defaultImageWidth: 300, defaultImageHeight: 400 });
+    expect(imageSize.width).toBe(225);
+    expect(imageSize.height).toBe(300);
+    SurveyHelper.inBrowser = oldInBrowser;
+});

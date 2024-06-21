@@ -286,9 +286,9 @@ test('Check one image 16x16px file server-side', async () => {
 
     const assumeFile: IRect = {
         xLeft: controller.leftTopPoint.xLeft,
-        xRight: controller.leftTopPoint.xLeft + controller.measureText(json.elements[0].defaultValue[0].name).width,
+        xRight: controller.leftTopPoint.xLeft + 150,
         yTop: controller.leftTopPoint.yTop,
-        yBot: controller.leftTopPoint.yTop + controller.unitHeight * (1.0 + FlatFile.IMAGE_GAP_SCALE)
+        yBot: controller.leftTopPoint.yTop + 112.5 + controller.unitHeight * (1.0 + FlatFile.IMAGE_GAP_SCALE)
     };
     TestHelper.equalRect(expect, flats[0][0], assumeFile);
     SurveyHelper.inBrowser = true;
@@ -391,9 +391,9 @@ test('Test file question doesnt throw exception if could not load image preview'
 
     const assumeFile: IRect = {
         xLeft: controller.leftTopPoint.xLeft,
-        xRight: controller.leftTopPoint.xLeft + controller.measureText(json.elements[0].defaultValue[0].name).width,
+        xRight: controller.leftTopPoint.xLeft + 150,
         yTop: controller.leftTopPoint.yTop,
-        yBot: controller.leftTopPoint.yTop + controller.unitHeight * (1.0 + FlatFile.IMAGE_GAP_SCALE)
+        yBot: controller.leftTopPoint.yTop + 112.5 + controller.unitHeight * (1.0 + FlatFile.IMAGE_GAP_SCALE)
     };
     TestHelper.equalRect(expect, flats[0][0], assumeFile);
 });
