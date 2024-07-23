@@ -27,6 +27,10 @@
         {
           "Name": "get-started-jquery",
           "Title": "jQuery"
+        },
+        {
+          "Name": "get-started-nodejs",
+          "Title": "Node.js"
         }
       ]
     },
