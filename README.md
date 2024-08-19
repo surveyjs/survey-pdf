@@ -34,8 +34,7 @@ SurveyJS PDF Generator allows you to save an unlimited number of custom-built su
 - [Angular](https://surveyjs.io/Documentation/Pdf-Export?id=get-started-angular)
 - [Vue](https://surveyjs.io/Documentation/Pdf-Export?id=get-started-vue)
 - [React](https://surveyjs.io/Documentation/Pdf-Export?id=get-started-react)
-- [Knockout](https://surveyjs.io/Documentation/Pdf-Export?id=get-started-knockout)
-- [jQuery](https://surveyjs.io/Documentation/Pdf-Export?id=get-started-jquery)
+- [HTML/CSS/JavaScript](https://surveyjs.io/pdf-generator/documentation/get-started-html-css-javascript)
 
 ## Resources
 
