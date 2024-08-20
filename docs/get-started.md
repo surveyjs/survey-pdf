@@ -5,5 +5,4 @@ Refer to one of the following tutorials to integrate the survey export functiona
 - [Angular](/Documentation/Pdf-Export?id=get-started-angular)
 - [Vue](/Documentation/Pdf-Export?id=get-started-vue)
 - [React](/Documentation/Pdf-Export?id=get-started-react)
-- [Knockout](/Documentation/Pdf-Export?id=get-started-knockout)
-- [jQuery](/Documentation/Pdf-Export?id=get-started-jquery)
+- [HTML/CSS/JavaScript](/pdf-generator/documentation/get-started-html-css-javascript)

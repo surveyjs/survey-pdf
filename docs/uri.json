@@ -8,7 +8,9 @@
     "customization-customrender-headerfooter": "add-header-and-footer-to-pdf-form",
     "customization-customrender-questionelements": "customize-survey-question-rendering-in-pdf-form",
     "htmltopdf": "customize-survey-question-rendering-in-pdf-form",
-    "matrixtopdf": "customize-survey-question-rendering-in-pdf-form"
+    "matrixtopdf": "customize-survey-question-rendering-in-pdf-form",
+    "get-started-knockout": "get-started-html-css-javascript",
+    "get-started-jquery": "get-started-html-css-javascript"
   },
   "classRename": {
   }

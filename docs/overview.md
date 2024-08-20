@@ -24,8 +24,7 @@ SurveyJS PDF Generator is a client-side extension over the [SurveyJS Form Librar
 - [Angular](/Documentation/Pdf-Export?id=get-started-angular)
 - [Vue](/Documentation/Pdf-Export?id=get-started-vue)
 - [React](/Documentation/Pdf-Export?id=get-started-react)
-- [Knockout](/Documentation/Pdf-Export?id=get-started-knockout)
-- [jQuery](/Documentation/Pdf-Export?id=get-started-jquery)
+- [HTML/CSS/JavaScript](/pdf-generator/documentation/get-started-html-css-javascript)
 
 We also include multiple [demo examples](/Examples/Pdf-Export) that allow you to edit and copy code.
 
