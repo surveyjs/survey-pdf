@@ -5,7 +5,6 @@ module.exports = {
     }
   },
   "setupTestFrameworkScriptFile": "jest-expect-message",
-  allowedOptions: ["update-snapshots"],
   setupFiles: ["<rootDir>/setupFile.js"],
   reporters: [
     "default",
