@@ -5,15 +5,19 @@
     "lib": [
       "DOM",
       "ES5",
-      "ES2015.Promise"
+      "ES2015"
     ],
     "sourceMap": true,
     "noImplicitAny": true,
     "importHelpers": false,
+    "baseUrl": ".",
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true
   },
+  "files": [
+    "./node_modules/jest-expect-message/types/index.d.ts"
+  ],
   "exclude": [
     "src/entries/**/*.ts"
   ],

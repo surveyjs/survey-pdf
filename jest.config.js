@@ -4,14 +4,16 @@ module.exports = {
       tsConfig: "tsconfig.test.json"
     }
   },
+  "setupTestFrameworkScriptFile": "jest-expect-message",
+  allowedOptions: ["update-snapshots"],
   setupFiles: ["<rootDir>/setupFile.js"],
   reporters: [
     "default",
-    [ "jest-junit", {
-    "suiteNameTemplate": "{filepath}",
-    "outputDirectory": ".",
-    "outputName": "junit.xml"
-    } ]
+    ["jest-junit", {
+      "suiteNameTemplate": "{filepath}",
+      "outputDirectory": ".",
+      "outputName": "junit.xml"
+    }]
   ],
   collectCoverage: true,
   coverageReporters: ["json", "lcov", "text", "html", "text-summary", "cobertura"],
@@ -22,6 +24,6 @@ module.exports = {
   moduleNameMapper: {
     "\\.(scss|html)$": "<rootDir>/tests/empty-module.js"
   },
-  testRegex: "(/tests/.*|(\\.|/)(test|spec))\\.(ts|tsx)?$",
+  testRegex: "(/tests/.*\\.(test))\\.ts$",
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"]
 };
