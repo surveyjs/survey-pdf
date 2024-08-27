@@ -37,7 +37,7 @@ We also include multiple [demo examples](/Examples/Pdf-Export) that allow you to
 - For Image Picker questions, [`imageFit`](/Documentation/Library?id=questionimagepickermodel#imageFit) is always `"fill"`.
 - HTML questions support only a restricted subset of HTML.
 - Panels cannot be collapsed.
-- Dynamic panels support only the `"list"` [`renderMode`](/Documentation/Library?id=questionpaneldynamicmodel#renderMode) and cannot be collapsed.
+- Dynamic panels support only the `"list"` [`displayMode`](/Documentation/Library?id=questionpaneldynamicmodel#displayMode) and cannot be collapsed.
 
 ## What's New
 
