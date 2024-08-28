@@ -90,6 +90,13 @@ export interface IDrawImageOptions extends IDrawRectOptions {
      * A string value with a base64-encoded image to be drawn.
      */
     base64: string;
+    /**
+     * Specifies how to resize the image to fit it into its container.
+     * 
+     * Default value: `"contain"` if [`applyImageFit`](https://surveyjs.io/pdf-generator/documentation/api-reference/idocoptions#applyImageFit) is enabled or `undefined` if not.
+     * 
+     * Refer to the [`object-fit`](https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit) CSS property description for information on accepted values.
+     */
     imageFit?: string;
 }
 
