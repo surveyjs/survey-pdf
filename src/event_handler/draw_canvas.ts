@@ -92,9 +92,9 @@ export interface IDrawImageOptions extends IDrawRectOptions {
     base64: string;
     /**
      * Specifies how to resize the image to fit it into its container.
-     * 
+     *
      * Default value: `"contain"` if [`applyImageFit`](https://surveyjs.io/pdf-generator/documentation/api-reference/idocoptions#applyImageFit) is enabled or `undefined` if not.
-     * 
+     *
      * Refer to the [`object-fit`](https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit) CSS property description for information on accepted values.
      */
     imageFit?: string;
@@ -258,7 +258,7 @@ export class DrawCanvas {
             SurveyHelper.createPoint(imageRect, true, true),
             null, this.controller, { link: imageOptions.base64,
                 width: imageRect.xRight - imageRect.xLeft,
-                height: imageRect.yBot - imageRect.yTop, objectFit: imageOptions.imageFit }));
+                height: imageRect.yBot - imageRect.yTop, objectFit: imageOptions.imageFit }, !!imageOptions.imageFit || this.controller.applyImageFit));
         this.controller.popMargins();
     }
 }
