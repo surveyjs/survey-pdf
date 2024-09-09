@@ -497,6 +497,9 @@ export class DocController extends DocOptions {
     public addPage(): void {
         this.doc.addPage();
     }
+    public getCurrentPageIndex(): number {
+        return this.doc.getCurrentPageInfo().pageNumber - 1;
+    }
     public setPage(index: number): void {
         this.doc.setPage(index + 1);
     }

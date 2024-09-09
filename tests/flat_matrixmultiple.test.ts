@@ -14,7 +14,7 @@ import { TestHelper } from '../src/helper_test';
 import { QuestionMatrixDropdownModel } from 'survey-core';
 import { FlatRepository } from '../src/flat_layout/flat_repository';
 import { CompositeBrick } from '../src/pdf_render/pdf_composite';
-import { checkFlatSnapshots } from './snapshot_helper';
+import { checkFlatSnapshot } from './snapshot_helper';
 import { AdornersOptions } from '../src/event_handler/adorners';
 let __dummy_dd = new FlatDropdown(null, null, null);
 let __dummy_mm = new FlatMatrixMultiple(null, null, null);
@@ -823,7 +823,7 @@ test('Check matrix multiple zero columns one row with detailPanel', async () => 
 test('Check matrix multiple with showInMulipleColumns - list mode', async () => {
     const controllerOptions = TestHelper.defaultOptions;
     controllerOptions.matrixRenderAs = 'list';
-    await checkFlatSnapshots({
+    await checkFlatSnapshot({
         questions: [
             {
                 'type': 'matrixdropdown',
@@ -861,7 +861,7 @@ test('Check matrix multiple with showInMulipleColumns - list mode', async () => 
 test('Check matrix multiple with showInMulipleColumns and totals - wide mode', async () => {
     const controllerOptions = TestHelper.defaultOptions;
     controllerOptions.format = 'a3';
-    await checkFlatSnapshots({
+    await checkFlatSnapshot({
         questions: [
             {
                 'type': 'matrixdropdown',
@@ -900,7 +900,7 @@ test('Check matrix multiple with showInMulipleColumns and totals - wide mode', a
 test('Check matrix multiple with showInMulipleColumns and totals - list mode', async () => {
     const controllerOptions = TestHelper.defaultOptions;
     controllerOptions.matrixRenderAs = 'list';
-    await checkFlatSnapshots({
+    await checkFlatSnapshot({
         questions: [
             {
                 'type': 'matrixdropdown',
@@ -939,7 +939,7 @@ test('Check matrix multiple with showInMulipleColumns and totals - list mode', a
 test('Check matrix multiple with empty totals - list mode', async () => {
     const controllerOptions = TestHelper.defaultOptions;
     controllerOptions.matrixRenderAs = 'list';
-    await checkFlatSnapshots({
+    await checkFlatSnapshot({
         questions: [
             {
                 'type': 'matrixdropdown',
@@ -972,7 +972,7 @@ test('Check matrix multiple with empty totals - list mode', async () => {
 test('Check matrix multiple with empty totals - wide mode', async () => {
     const controllerOptions = TestHelper.defaultOptions;
     controllerOptions.format = 'a3';
-    await checkFlatSnapshots({
+    await checkFlatSnapshot({
         questions: [
             {
                 'type': 'matrixdropdown',

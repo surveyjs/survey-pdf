@@ -1,24 +1,34 @@
 import { EventBase } from 'survey-core';
 import { DocController, FlatSurvey, IDocOptions, IPdfBrick } from '../src/entries/pdf';
-import { TestHelper } from '../src/helper_test';
+import { SurveyPDFTester, TestHelper } from '../src/helper_test';
 import { SurveyPDF } from '../src/survey';
 import { readFileSync, writeFileSync } from 'fs';
 
-// export async function checkPDFSnapshots(survey: SurveyPDF, snapshotName: string): Promise<void> {
-//     const actual = Buffer.from(await survey.raw('arraybuffer') as any as ArrayBuffer);
-//     if(updateSnapshots) {
-//         writeFileSync(`${__dirname}/snapshots/${snapshotName}.pdf`, actual);
-//     } else {
-//         const expected = readFileSync(`${__dirname}/snapshots/${snapshotName}.pdf`);
-//         survey.onDocControllerCreated.add((_, options) => {
-//             options.controller.doc.setCreationDate(new Date(0));
-//             options.controller.doc.setFileId('00000000000000000000000000000000');
-//         });
-//         expect(actual, `snapshot: "${snapshotName}" did not match`, { showMatcherMessage: false }).toEqual(expected);
-//     }
-// }
+interface IPDFSnapshotOptions {
+    snapshotName: string;
+    controllerOptions?: IDocOptions;
+    onSurveyCreated?: (survey: SurveyPDF) => void;
+}
 
-interface IFlatSnaphotsOptions {
+export async function checkPDFSnapshot(surveyJSON: any, snapshotOptions: IPDFSnapshotOptions): Promise<void> {
+    const survey = new SurveyPDFTester(surveyJSON, snapshotOptions.controllerOptions ?? TestHelper.defaultOptions);
+    snapshotOptions.onSurveyCreated && snapshotOptions.onSurveyCreated(survey);
+    survey.onDocControllerCreated.add((_, options) => {
+        options.controller.doc.setCreationDate(new Date(0));
+        options.controller.doc.setFileId('00000000000000000000000000000000');
+    });
+    const actual = Buffer.from(await survey.raw('arraybuffer') as any as ArrayBuffer);
+    const snapshotName = snapshotOptions.snapshotName;
+    const fileName = `${__dirname}/pdf_snapshots/${snapshotName}.pdf`;
+    if((global as any).updateSnapshots) {
+        writeFileSync(fileName, actual);
+    } else {
+        const expected = readFileSync(fileName);
+        expect(actual, `snapshot: "${snapshotName}" did not match`, { showMatcherMessage: false }).toEqual(expected);
+    }
+}
+
+interface IFlatSnaphotOptions {
     snapshotName: string;
     eventName?: string;
     isCorrectEvent?(options:any): boolean;
@@ -71,7 +81,7 @@ function processBricks(bricks: Array<IPdfBrick>, propertiesHash: PropertiesHash)
     return res;
 }
 
-export async function checkFlatSnapshots(surveyJSON: any, snapshotOptions: IFlatSnaphotsOptions): Promise<void> {
+export async function checkFlatSnapshot(surveyJSON: any, snapshotOptions: IFlatSnaphotOptions): Promise<void> {
     const survey = new SurveyPDF(surveyJSON);
     const controller = new DocController(snapshotOptions.controllerOptions ?? TestHelper.defaultOptions);
     (survey[snapshotOptions.eventName || 'onRenderQuestion'] as EventBase<SurveyPDF, any>).add((_, options) => {
