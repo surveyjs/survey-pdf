@@ -12,7 +12,7 @@ import { PagePacker } from '../src/page_layout/page_packer';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { TextBoldBrick } from '../src/pdf_render/pdf_textbold';
 import { SurveyHelper } from '../src/helper_survey';
-import { TestHelper } from '../src/helper_test';
+import { SurveyPDFTester, TestHelper } from '../src/helper_test';
 let __dummy_tx = new FlatTextbox(null, null, null);
 
 test('Event render header simple text', async () => {
@@ -176,9 +176,6 @@ test('Event render footer center middle text', async () => {
     };
     TestHelper.equalRect(expect, packs[0][1], assumeText);
 });
-class SurveyPDFTester extends SurveyPDF {
-    public get haveCommercialLicense(): boolean { return true; }
-}
 test('Have commercial license: true', async () => {
     let json: any = {
         questions: [

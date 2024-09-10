@@ -3,7 +3,7 @@
     "start": "npm run build_dev && live-server --port=7777",
     "serve": "live-server --port=7777",
     "test": "jest",
-    "test:update-snapshots": "jest --config './jest.update_snapshots.config.js'",
+    "test:update-snapshots": "jest --config ./jest.update_snapshots.config.js",
     "testDev": "jest --watch",
     "release": "standard-version --message \"Release: %s [azurepipelines skip]\" ",
     "doc_gen": "node doc_generator/lib_docgenerator.js src/entries/pdf.ts",

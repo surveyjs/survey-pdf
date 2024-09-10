@@ -439,7 +439,9 @@ export class SurveyHelper {
         if(options.readOnly !== null && options.readOnly !== undefined) {
             comment.isReadOnly = options.readOnly;
         }
-        comment.textBrick = textFlat;
+        if(textFlat) {
+            comment.textBrick = textFlat;
+        }
         return comment;
     }
     public static getQuestionOrCommentValue(question: Question, isQuestion: boolean = true): string {
@@ -573,7 +575,8 @@ export class SurveyHelper {
         controller.popMargins();
         return textFlat;
     }
-    public static renderFlatBorders(controller: DocController, flat: PdfBrick): void {
+
+    public static renderFlatBorders(controller: DocController, flat: IRect & ISize & Pick<PdfBrick, 'formBorderColor'>): void {
         if (!this.FORM_BORDER_VISIBLE) return;
         const minSide: number = Math.min(flat.width, flat.height);
         const visibleWidth: number = controller.unitHeight * this.VISIBLE_BORDER_SCALE * this.BORDER_SCALE;
@@ -679,7 +682,7 @@ export class SurveyHelper {
             yBot: rect.yBot - scaleWidth
         };
     }
-    public static formScale(controller: DocController, flat: PdfBrick): number {
+    public static formScale(controller: DocController, flat: ISize): number {
         const minSide: number = Math.min(flat.width, flat.height);
         const borderWidth: number = 2.0 * controller.unitWidth * this.BORDER_SCALE;
         return (minSide - borderWidth) / minSide;

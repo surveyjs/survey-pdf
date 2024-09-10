@@ -101,11 +101,13 @@ export class PdfBrick implements IPdfBrick {
     protected getShouldRenderReadOnly(): boolean {
         return SurveyHelper.shouldRenderReadOnly(this.question, this.controller);
     }
+    public afterRenderCallback: () => void;
     public async render(): Promise<void> {
         if (this.getShouldRenderReadOnly()) {
             await this.renderReadOnly();
         }
         else await this.renderInteractive();
+        this.afterRenderCallback && this.afterRenderCallback();
     }
     public async renderInteractive(): Promise<void> { }
     public async renderReadOnly(): Promise<void> {
