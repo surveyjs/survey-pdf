@@ -193,7 +193,15 @@ export interface IDocOptions {
     compress?: boolean;
 
     /**
-     * Specifies whether to apply the [`imageFit`](https://surveyjs.io/Documentation/Library?id=questionimagemodel#imageFit) property to exported [Image](https://surveyjs.io/Documentation/Library?id=questionimagemodel) questions.
+     * Specifies whether to apply `imageFit` settings specified in the survey JSON schema to exported images.
+     *
+     * Default value: `false`
+     *
+     * This property applies the following settings:
+     *
+     * - [`imageFit`](https://surveyjs.io/form-library/documentation/api-reference/add-image-to-survey#imageFit) to exported [Image](https://surveyjs.io/form-library/documentation/api-reference/add-image-to-survey) questions
+     * - [`imageFit`](https://surveyjs.io/form-library/documentation/api-reference/image-picker-question-model#imageFit) to exported [Image Picker](https://surveyjs.io/form-library/documentation/api-reference/image-picker-question-model) questions
+     * - [`logoFit`](https://surveyjs.io/form-library/documentation/api-reference/survey-data-model#logoFit) to an exported logo in the survey header
      *
      * If you enable the `applyImageFit` property, the quality of images may be lower because they pass through several conversions. If `applyImageFit` is disabled, exported images fill the entire container and do not preserve their aspect ratio, but their quality remains the same because they are exported as is.
      */
