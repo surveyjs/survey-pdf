@@ -3,7 +3,7 @@ import { DocController, FlatSurvey, IDocOptions, IPdfBrick } from '../src/entrie
 import { SurveyPDFTester, TestHelper } from '../src/helper_test';
 import { SurveyPDF } from '../src/survey';
 import { readFileSync, writeFileSync } from 'fs';
-
+import jsPDF from 'jspdf';
 interface IPDFSnapshotOptions {
     snapshotName: string;
     controllerOptions?: IDocOptions;
@@ -11,6 +11,8 @@ interface IPDFSnapshotOptions {
 }
 
 export async function checkPDFSnapshot(surveyJSON: any, snapshotOptions: IPDFSnapshotOptions): Promise<void> {
+    const jsPdfVersion = jsPDF.version;
+    jsPDF.version = 'test';
     const survey = new SurveyPDFTester(surveyJSON, snapshotOptions.controllerOptions ?? TestHelper.defaultOptions);
     snapshotOptions.onSurveyCreated && snapshotOptions.onSurveyCreated(survey);
     survey.onDocControllerCreated.add((_, options) => {
@@ -26,6 +28,7 @@ export async function checkPDFSnapshot(surveyJSON: any, snapshotOptions: IPDFSna
         const expected = readFileSync(fileName);
         expect(actual, `snapshot: "${snapshotName}" did not match`, { showMatcherMessage: false }).toEqual(expected);
     }
+    jsPDF.version = jsPdfVersion;
 }
 
 interface IFlatSnaphotOptions {
