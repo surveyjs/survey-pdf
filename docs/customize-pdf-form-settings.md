@@ -148,9 +148,11 @@ surveyPdf.mode = "display";
 surveyPdf.data = survey.data;
 ```
 
+[View Demo](/pdf-generator/examples/create-read-only-pdf-form/ (linkStyle))
+
 ## Document Compression
 
-If you need to reduce the size of a PDF document, you can compress it. Compressed documents do not support [AcroForms](#editable-and-read-only-pdf-documents) and [custom fonts](#custom-fonts). Enable the `compress` property to create a compressed PDF document:
+If you need to reduce the size of a PDF document, you can compress it. Compressed documents do not support [AcroForms](#editable-vs-read-only-pdf-documents) and [custom fonts](#custom-fonts). Enable the `compress` property to create a compressed PDF document:
 
 ```js
 const pdfDocOptions = {
