@@ -46,8 +46,9 @@ export interface IRadioGroupItemBrickContext {
 }
 
 export class RadioItemBrick extends PdfBrick {
-    private static readonly RADIOMARKER_READONLY_SYMBOL: string = '•';
-    private static readonly RADIOMARKER_READONLY_FONT_SIZE_SCALE: number = 1.575;
+    private static readonly RADIOMARKER_READONLY_SYMBOL: string = 'l';
+    private static readonly RADIOMARKER_READONLY_FONT: string = 'zapfdingbats';
+    public static readonly RADIOMARKER_READONLY_FONT_SIZE_SCALE: number = 1.0 - ((2.0 + Math.E) / 10.0);
     public constructor(controller: DocController,
         rect: IRect, private context: IRadioGroupItemBrickContext,
         private radioGroupWrap: RadioGroupWrap) {
@@ -99,20 +100,23 @@ export class RadioItemBrick extends PdfBrick {
     public async renderReadOnly(): Promise<void> {
         SurveyHelper.renderFlatBorders(this.controller, this);
         if (this.context.checked) {
-            let radiomarkerPoint: IPoint = SurveyHelper.createPoint(this, true, true);
-            let oldFontSize: number = this.controller.fontSize;
+            const radiomarkerPoint: IPoint = SurveyHelper.createPoint(this, true, true);
+            const oldFontSize: number = this.controller.fontSize;
+            const oldFontName: string = this.controller.fontName;
+            this.controller.fontName = RadioItemBrick.RADIOMARKER_READONLY_FONT;
             this.controller.fontSize = oldFontSize *
                 RadioItemBrick.RADIOMARKER_READONLY_FONT_SIZE_SCALE;
             let radiomarkerSize: ISize = this.controller.measureText(
                 RadioItemBrick.RADIOMARKER_READONLY_SYMBOL);
             radiomarkerPoint.xLeft += this.width / 2.0 - radiomarkerSize.width / 2.0;
-            radiomarkerPoint.yTop += this.height / 2.0 - radiomarkerSize.height / 1.925;
+            radiomarkerPoint.yTop += this.height / 2.0 - radiomarkerSize.height / 2.0;
             let radiomarkerFlat: IPdfBrick = await SurveyHelper.createTextFlat(
                 radiomarkerPoint, this.question, this.controller,
                 RadioItemBrick.RADIOMARKER_READONLY_SYMBOL, TextBrick);
             (<any>radiomarkerFlat.unfold()[0]).textColor = this.textColor;
-            this.controller.fontSize = oldFontSize;
             await radiomarkerFlat.render();
+            this.controller.fontSize = oldFontSize;
+            this.controller.fontName = oldFontName;
         }
     }
 }
