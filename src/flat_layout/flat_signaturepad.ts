@@ -24,7 +24,7 @@ export class FlatSignaturePad extends FlatQuestion {
         const height = SurveyHelper.pxToPt(<any>this.question.signatureHeight);
         if(this.question.value) {
             return await SurveyHelper.createImageFlat(point,
-                this.question, this.controller, { link: this.question.value,
+                this.question, this.controller, { link: this.question.storeDataAsText ? this.question.value : this.question.loadedData,
                     width: width,
                     height: height }, false
             );
