@@ -2,14 +2,15 @@ import { IQuestion, QuestionSignaturePadModel } from 'survey-core';
 import { SurveyPDF } from '../survey';
 import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
-import { IPoint, DocController } from '../doc_controller';
-import { IPdfBrick } from '../pdf_render/pdf_brick';
-import { SurveyHelper } from '../helper_survey';
+import { IPoint, DocController, IRect, ISize } from '../doc_controller';
+import { IPdfBrick, PdfBrick } from '../pdf_render/pdf_brick';
+import { IBorderDescription, SurveyHelper } from '../helper_survey';
 import { EmptyBrick } from '../pdf_render/pdf_empty';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 
 export class FlatSignaturePad extends FlatQuestion {
     protected question: QuestionSignaturePadModel;
+    public static BORDER_STYLE: 'dashed' | 'solid' | 'none' = 'dashed';
     public constructor(protected survey: SurveyPDF,
         question: IQuestion, controller: DocController) {
         super(survey, question, controller);
@@ -22,15 +23,38 @@ export class FlatSignaturePad extends FlatQuestion {
     public async generateSign(point: IPoint): Promise<IPdfBrick> {
         const width = SurveyHelper.pxToPt(<any>this.question.signatureWidth);
         const height = SurveyHelper.pxToPt(<any>this.question.signatureHeight);
+        let brick: PdfBrick;
         if(this.question.value) {
-            return await SurveyHelper.createImageFlat(point,
+            brick = await SurveyHelper.createImageFlat(point,
                 this.question, this.controller, { link: this.question.storeDataAsText ? this.question.value : this.question.loadedData,
                     width: width,
                     height: height }, false
-            );
+            ) as PdfBrick;
         } else {
-            return new EmptyBrick(SurveyHelper.createRect(point, width, height));
+            brick = new EmptyBrick(SurveyHelper.createRect(point, width, height));
         }
+        if(FlatSignaturePad.BORDER_STYLE !== 'none') {
+            brick.afterRenderCallback = () => {
+                const borderOptions: IBorderDescription = {
+                    height: brick.width,
+                    width: brick.width,
+                    yTop: brick.yTop,
+                    yBot: brick.yBot,
+                    xLeft: brick.xLeft,
+                    xRight: brick.xRight,
+                    formBorderColor: brick.formBorderColor,
+                    rounded: false,
+                    outside: true,
+                    dashStyle: FlatSignaturePad.BORDER_STYLE == 'dashed' ? {
+                        dashArray: [5],
+                        dashPhase: 0
+                    } : undefined
+                };
+                SurveyHelper.renderFlatBorders(this.controller, borderOptions);
+            };
+        }
+
+        return brick;
     }
 
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
