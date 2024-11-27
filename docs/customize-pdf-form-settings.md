@@ -148,7 +148,7 @@ surveyPdf.mode = "display";
 surveyPdf.data = survey.data;
 ```
 
-[View Demo](/pdf-generator/examples/create-read-only-pdf-form/ (linkStyle))
+[View Demo](/pdf-generator/examples/how-to-create-read-only-pdf-form/ (linkStyle))
 
 ## Document Compression
 
