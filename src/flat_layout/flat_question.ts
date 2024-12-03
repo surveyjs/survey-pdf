@@ -12,10 +12,10 @@ export interface IFlatQuestion {
     generateFlats(point: IPoint): Promise<IPdfBrick[]>;
 }
 export class FlatQuestion implements IFlatQuestion {
-    public static readonly CONTENT_GAP_VERT_SCALE: number = 0.5;
-    public static readonly CONTENT_GAP_HOR_SCALE: number = 1.0;
-    public static readonly CONTENT_INDENT_SCALE: number = 1.0;
-    public static readonly DESC_GAP_SCALE: number = 0.0625;
+    public static CONTENT_GAP_VERT_SCALE: number = 0.5;
+    public static CONTENT_GAP_HOR_SCALE: number = 1.0;
+    public static CONTENT_INDENT_SCALE: number = 1.0;
+    public static DESC_GAP_SCALE: number = 0.0625;
     protected question: Question;
     public constructor(protected survey: SurveyPDF,
         question: IQuestion, protected controller: DocController) {

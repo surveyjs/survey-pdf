@@ -86,6 +86,8 @@ test('Check correctHtml method with multiple br tags', async () => {
     const htmlFlat = new FlatHTML(survey, new QuestionHtmlModel('q1'), controller);
     expect(htmlFlat['correctHtml']('<span>Test</span><br>')).toEqual('<span>Test</span><br>');
     expect(htmlFlat['correctHtml']('<span>Test</span><br><br>')).toEqual('<span>Test</span><br>');
+    expect(htmlFlat['correctHtml']('<br><br><span>Test</span><br><br>')).toEqual('<br><span>Test</span><br>');
+    expect(htmlFlat['correctHtml']('<br><br><span>Test</span><br><br><br><span>Test</span><br><br>')).toEqual('<br><span>Test</span><br><span>Test</span><br>');
     expect(htmlFlat['correctHtml']('<span>Test</span><br>  <br>')).toEqual('<span>Test</span><br>');
     expect(htmlFlat['correctHtml']('<br><span>Test</span><br>')).toEqual('<br><span>Test</span><br>');
     expect(htmlFlat['correctHtml']('<br><br/>')).toEqual('<br>');

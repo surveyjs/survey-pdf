@@ -20,13 +20,16 @@ export class FlatSignaturePad extends FlatQuestion {
     public async generateBackgroundImage(point: IPoint): Promise<IPdfBrick> {
         return await SurveyHelper.createImageFlat(point, this.question, this.controller, { link: this.question.backgroundImage, width: SurveyHelper.pxToPt(<any>this.question.signatureWidth), height: SurveyHelper.pxToPt(<any>this.question.signatureHeight), objectFit: 'cover' }, true);
     }
+    private getSignImageUrl() {
+        return this.question.storeDataAsText || !this.question.loadedData ? this.question.value : this.question.loadedData;
+    }
     public async generateSign(point: IPoint): Promise<IPdfBrick> {
         const width = SurveyHelper.pxToPt(<any>this.question.signatureWidth);
         const height = SurveyHelper.pxToPt(<any>this.question.signatureHeight);
         let brick: PdfBrick;
         if(this.question.value) {
             brick = await SurveyHelper.createImageFlat(point,
-                this.question, this.controller, { link: this.question.storeDataAsText ? this.question.value : this.question.loadedData,
+                this.question, this.controller, { link: this.getSignImageUrl(),
                     width: width,
                     height: height }, false
             ) as PdfBrick;
