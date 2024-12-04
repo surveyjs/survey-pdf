@@ -27,6 +27,10 @@
         {
           "Name": "get-started-nodejs",
           "Title": "Node.js"
+        },
+        {
+          "Name": "supported-browsers",
+          "Title": "Supported Browsers"
         }
       ]
     },
