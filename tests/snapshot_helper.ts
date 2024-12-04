@@ -1,5 +1,7 @@
 import { EventBase } from 'survey-core';
-import { DocController, FlatSurvey, IDocOptions, IPdfBrick } from '../src/entries/pdf';
+import { FlatSurvey } from '../src/flat_layout/flat_survey';
+import { DocController, IDocOptions } from '../src/doc_controller';
+import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { SurveyPDFTester, TestHelper } from '../src/helper_test';
 import { SurveyPDF } from '../src/survey';
 import { readFileSync, writeFileSync } from 'fs';

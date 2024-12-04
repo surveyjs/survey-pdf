@@ -19,6 +19,8 @@ import { RowlineBrick } from './pdf_render/pdf_rowline';
 import { CompositeBrick } from './pdf_render/pdf_composite';
 import { AdornersOptions } from './event_handler/adorners';
 
+export type IBorderDescription = IRect & ISize & Pick<PdfBrick, 'formBorderColor'> & { rounded?: boolean, dashStyle?: { dashArray: [number, number] | [number], dashPhase: number }, outside?: boolean };
+
 export class SurveyHelper {
     public static EPSILON: number = 2.2204460492503130808472633361816e-15;
     public static TITLE_SURVEY_FONT_SIZE_SCALE: number = 1.7;
@@ -575,23 +577,43 @@ export class SurveyHelper {
         controller.popMargins();
         return textFlat;
     }
-
-    public static renderFlatBorders(controller: DocController, flat: IRect & ISize & Pick<PdfBrick, 'formBorderColor'>): void {
+    public static renderFlatBorders(controller: DocController, borderOptions: IBorderDescription): void {
         if (!this.FORM_BORDER_VISIBLE) return;
-        const minSide: number = Math.min(flat.width, flat.height);
+        borderOptions.rounded = borderOptions.rounded ?? true;
+        borderOptions.outside = borderOptions.outside ?? false;
+        const minSide: number = Math.min(borderOptions.width, borderOptions.height);
+        const borderWidth = this.getBorderWidth(controller);
         const visibleWidth: number = controller.unitHeight * this.VISIBLE_BORDER_SCALE * this.BORDER_SCALE;
-        const visibleScale: number = this.formScale(controller, flat) + visibleWidth / minSide;
-        const unvisibleWidth: number = controller.unitHeight * this.UNVISIBLE_BORDER_SCALE * this.BORDER_SCALE;
-        const unvisibleScale: number = 1.0 - unvisibleWidth / minSide;
-        const unvisibleRadius: number = this.RADIUS_SCALE * unvisibleWidth;
+        const visibleScale: number = borderOptions.outside ? (minSide + borderWidth) / minSide - visibleWidth / minSide : (minSide - borderWidth) / minSide + visibleWidth / minSide;
         const oldDrawColor: string = controller.doc.getDrawColor();
-        controller.doc.setDrawColor(flat.formBorderColor);
+        controller.doc.setDrawColor(borderOptions.formBorderColor);
         controller.doc.setLineWidth(visibleWidth);
-        controller.doc.rect(...this.createAcroformRect(this.scaleRect(flat, visibleScale)));
-        controller.doc.setDrawColor(this.BACKGROUND_COLOR);
-        controller.doc.setLineWidth(unvisibleWidth);
-        controller.doc.roundedRect(...this.createAcroformRect(
-            this.scaleRect(flat, unvisibleScale)), unvisibleRadius, unvisibleRadius);
+        const scaledRect = this.scaleRect(borderOptions, visibleScale);
+        if(borderOptions.dashStyle) {
+            const dashStyle = borderOptions.dashStyle;
+            const borderLength = (Math.abs(scaledRect.yTop - scaledRect.yBot) + Math.abs(scaledRect.xLeft - scaledRect.xRight)) * 2;
+            const dashWithSpaceSize = dashStyle.dashArray[0] + (dashStyle.dashArray[1] ?? dashStyle.dashArray[0]);
+            const dashSize = dashStyle.dashArray[0] + (borderLength % dashWithSpaceSize) / Math.floor(borderLength / dashWithSpaceSize);
+
+            controller.doc.setLineDashPattern(
+                [dashSize, dashStyle.dashArray[1] ?? dashStyle.dashArray[0]],
+                dashStyle.dashPhase
+            );
+        }
+
+        controller.doc.rect(...this.createAcroformRect(scaledRect));
+        if(borderOptions.rounded) {
+            const unvisibleWidth: number = controller.unitHeight * this.UNVISIBLE_BORDER_SCALE * this.BORDER_SCALE;
+            const unvisibleScale: number = 1.0 - unvisibleWidth / minSide;
+            const unvisibleRadius: number = this.RADIUS_SCALE * unvisibleWidth;
+            controller.doc.setDrawColor(this.BACKGROUND_COLOR);
+            controller.doc.setLineWidth(unvisibleWidth);
+            controller.doc.roundedRect(...this.createAcroformRect(
+                this.scaleRect(borderOptions, unvisibleScale)), unvisibleRadius, unvisibleRadius);
+        }
+        if(borderOptions.dashStyle) {
+            controller.doc.setLineDashPattern([]);
+        }
         controller.doc.setDrawColor(oldDrawColor);
     }
     public static getLocString(text: LocalizableString): string {
@@ -672,9 +694,7 @@ export class SurveyHelper {
         };
     }
     public static scaleRect(rect: IRect, scale: number): IRect {
-        const width: number = rect.xRight - rect.xLeft;
-        const height: number = rect.yBot - rect.yTop;
-        const scaleWidth: number = ((width < height) ? width : height) * (1.0 - scale) / 2.0;
+        const scaleWidth: number = Math.min(rect.xRight - rect.xLeft, rect.yBot - rect.yTop) * (1.0 - scale) / 2.0;
         return {
             xLeft: rect.xLeft + scaleWidth,
             yTop: rect.yTop + scaleWidth,
@@ -682,10 +702,12 @@ export class SurveyHelper {
             yBot: rect.yBot - scaleWidth
         };
     }
+    public static getBorderWidth(controller: DocController) {
+        return 2.0 * controller.unitWidth * this.BORDER_SCALE;
+    }
     public static formScale(controller: DocController, flat: ISize): number {
         const minSide: number = Math.min(flat.width, flat.height);
-        const borderWidth: number = 2.0 * controller.unitWidth * this.BORDER_SCALE;
-        return (minSide - borderWidth) / minSide;
+        return (minSide - this.getBorderWidth(controller)) / minSide;
     }
     public static async generateQuestionFlats(survey: SurveyPDF,
         controller: DocController, question: Question, point: IPoint): Promise<IPdfBrick[]> {
