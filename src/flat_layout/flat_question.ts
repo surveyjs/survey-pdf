@@ -170,5 +170,6 @@ export class FlatQuestion implements IFlatQuestion {
 Serializer.addProperty('question', {
     name: 'readonlyRenderAs',
     default: 'auto',
-    choices: ['auto', 'text', 'acroform']
+    choices: ['auto', 'text', 'acroform'],
+    visible: false
 });
