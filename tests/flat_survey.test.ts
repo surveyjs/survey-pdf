@@ -111,6 +111,8 @@ test('Survey with logo', async () => {
     SurveyHelper.shouldConvertImageToPng = false;
     const json: any = {
         logo: TestHelper.BASE64_IMAGE_16PX,
+        logoWidth: '300px',
+        logoHeight: '200px',
         pages: []
     };
     const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
@@ -134,6 +136,8 @@ test('Survey with left logo and title', async () => {
         title: 'TitleLogoLeft',
         logo: TestHelper.BASE64_IMAGE_16PX,
         logoPosition: 'left',
+        logoWidth: '300px',
+        logoHeight: '200px',
         questions: [
             {
                 type: 'text',
@@ -176,6 +180,8 @@ test('Survey with left logo and big title', async () => {
         title: 'TitleLogoLeftBiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiig',
         logo: TestHelper.BASE64_IMAGE_16PX,
         logoPosition: 'left',
+        logoWidth: '300px',
+        logoHeight: '200px',
         questions: [
             {
                 type: 'text',
@@ -218,6 +224,8 @@ test('Survey with right logo and title', async () => {
         title: 'TitleRight',
         logo: TestHelper.BASE64_IMAGE_16PX,
         logoPosition: 'right',
+        logoWidth: '300px',
+        logoHeight: '200px',
         questions: [
             {
                 type: 'text',
@@ -258,6 +266,8 @@ test('Survey with bottom logo and title', async () => {
     const json: any = {
         title: 'TitleLogoBottom',
         logo: TestHelper.BASE64_IMAGE_16PX,
+        logoWidth: '300px',
+        logoHeight: '200px',
         logoPosition: 'bottom',
         pages: []
     };
@@ -291,6 +301,8 @@ test('Survey with botton logo without title', async () => {
     const json: any = {
         logo: TestHelper.BASE64_IMAGE_16PX,
         logoPosition: 'bottom',
+        logoWidth: '300px',
+        logoHeight: '200px',
         pages: []
     };
     const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
@@ -343,6 +355,8 @@ test('Survey with logo server-side', async () => {
 test('Survey with logo and pages', async () => {
     const json: any = {
         logo: TestHelper.BASE64_IMAGE_16PX,
+        logoWidth: '300px',
+        logoHeight: '200px',
         pages: [
             {
                 name: 'page1',
