@@ -106,6 +106,7 @@ test('Check panel with title', async () => {
 });
 test('Check panel with title and number', async () => {
     const json: any = {
+        showQuestionNumbers: 'on',
         elements: [
             {
                 type: 'panel',

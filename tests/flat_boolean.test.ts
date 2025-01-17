@@ -150,6 +150,7 @@ test('Check boolean renderAs: radiogroup locales', async () => {
 });
 test('Check boolean renderAs: radiogroup question number', async () => {
     const survey = new Model({
+        showQuestionNumbers: 'on',
         elements: [
             {
                 type: 'boolean',

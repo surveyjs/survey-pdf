@@ -394,6 +394,7 @@ test('Survey with logo and pages', async () => {
 test('Check default renderer for custom questions', async () => {
     const CUSTOM_TYPE = 'test';
     const json = {
+        showQuestionNumbers: 'on',
         elements: [
             {
                 type: CUSTOM_TYPE,

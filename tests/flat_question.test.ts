@@ -464,6 +464,7 @@ test('Calc boundaries with indent', async () => {
 });
 test('Not visible question and visible question', async () => {
     const json: any = {
+        showQuestionNumbers: 'on',
         questions: [
             {
                 type: 'checkbox',
@@ -516,6 +517,7 @@ test('VisibleIf row', async () => {
 });
 test('Check title with number next raw position', async () => {
     const json: any = {
+        showQuestionNumbers: 'on',
         questions: [
             {
                 type: 'checkbox',
@@ -536,6 +538,7 @@ test('Check title with number next raw position', async () => {
 });
 test('Check equality of margins.left and contentPoint.xLeft with titleLocation: left', async () => {
     const json: any = {
+        showQuestionNumbers: 'on',
         questions: [
             {
                 type: 'checkbox',
@@ -624,6 +627,7 @@ test('Check question\'s content indent with CONTENT_INDENT_SCALE', async () => {
 
 test('Check description under input', async () => {
     const json = {
+        showQuestionNumbers: 'on',
         elements: [
             {
                 type: 'text',

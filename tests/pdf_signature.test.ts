@@ -2,6 +2,7 @@ import { checkPDFSnapshot } from './snapshot_helper';
 import { FlatSignaturePad } from '../src/flat_layout/flat_signaturepad';
 
 var json = {
+    showQuestionNumbers: 'on',
     elements: [
         {
             type: 'signaturepad',

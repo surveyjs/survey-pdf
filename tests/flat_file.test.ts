@@ -465,6 +465,7 @@ test('Test file question getImagePreviewContentWidth always return correct image
 
 test('Test file question inside paneldynamic waits preview loading', async () => {
     const json: any = {
+        showQuestionNumbers: 'on',
         'logoPosition': 'right',
         'pages': [
             {
