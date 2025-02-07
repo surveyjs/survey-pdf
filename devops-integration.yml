@@ -185,7 +185,7 @@ steps:
 
   - task: CopyFiles@2
     inputs:
-      SourceFolder: "$(Build.SourcesDirectory)/survey-pdf/packages/survey-pdf"
+      SourceFolder: "$(Build.SourcesDirectory)/survey-pdf/build"
       targetFolder: $(Build.ArtifactStagingDirectory)/SurveyjsPDFbuild/packages/survey-pdf
 
   - task: PublishBuildArtifacts@1
