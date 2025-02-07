@@ -14,35 +14,12 @@ var banner = [
   "License: MIT (http://www.opensource.org/licenses/mit-license.php)"
 ].join("\n");
 
-var platformOptions = {
-  pdf: {
-    externals: {
-      jspdf: {
-        root: "jspdf",
-        commonjs2: "jspdf",
-        commonjs: "jspdf",
-        amd: "jspdf"
-      },
-      "survey-core": {
-        root: "Survey",
-        commonjs2: "survey-core",
-        commonjs: "survey-core",
-        amd: "survey-core"
-      }
-    },
-    keywords: ["pdf"],
-  }
-}
-
-
 const buildPlatformJson = {
   name: "survey-pdf",
   version: packageJson.version,
   description:
     "survey.pdf.js is a SurveyJS PDF Library. It is a easy way to export SurveyJS surveys to PDF. It uses JSON for survey metadata.",
-  keywords: ["Survey", "JavaScript", "PDF", "Library"].concat(
-    platformOptions["pdf"].keywords
-  ),
+  keywords: ["Survey", "JavaScript", "PDF", "Library", "pdf"],
   homepage: "https://surveyjs.io/",
   license: "SEE LICENSE IN LICENSE",
   main: "survey.pdf.js",
@@ -56,6 +33,17 @@ const buildPlatformJson = {
   },
   dependencies: {
     jspdf: "^2.3.0"
+  },
+  exports: {
+    ".": {
+      "types": "./typings/entries/pdf.d.ts",
+      "import": "./fesm/survey.pdf.js",
+      "require": "./survey.pdf.js"
+    },
+    "./survey.pdf.fonts": {
+      "import": "./fesm/survey.pdf.fonts.js",
+      "require": "./survey.pdf.fonts.js"
+    },
   }
 }
 
@@ -104,6 +92,7 @@ module.exports = function (options) {
           use: {
             loader: "ts-loader",
             options: {
+              configFile: options.tsConfigFile || "tsconfig.json",
               compilerOptions: {
                 declaration: emitDeclarations,
                 declarationDir: emitDeclarations ? buildPath + "/typings/" : null
@@ -131,7 +120,20 @@ module.exports = function (options) {
       libraryTarget: "umd",
       umdNamedDefine: true
     },
-    externals: platformOptions["pdf"].externals,
+    externals: {
+      jspdf: {
+        root: "jspdf",
+        commonjs2: "jspdf",
+        commonjs: "jspdf",
+        amd: "jspdf"
+      },
+      "survey-core": {
+        root: "Survey",
+        commonjs2: "survey-core",
+        commonjs: "survey-core",
+        amd: "survey-core"
+      }
+    },
     plugins: [
       new webpack.ProgressPlugin(getPercentageHandler(emitNonSourceFiles, buildPath)),
       new webpack.DefinePlugin({
