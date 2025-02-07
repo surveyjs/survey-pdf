@@ -106,7 +106,7 @@ export interface IDrawImageOptions extends IDrawRectOptions {
  * [View Demo](https://surveyjs.io/pdf-generator/examples/customize-header-and-footer-of-pdf-form/ (linkStyle))
  */
 export class DrawCanvas {
-    public constructor(protected packs: IPdfBrick[],
+    public constructor(public packs: IPdfBrick[],
         public controller: DocController,
         protected _rect: IRect,
         protected _countPages: number,
