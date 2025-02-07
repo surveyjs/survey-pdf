@@ -8,6 +8,7 @@ tmp/*
 *.cmd
 .tsdrc
 .idea
+/build/**/*
 /packages/**/*
 /.gitattributes
 project.json
