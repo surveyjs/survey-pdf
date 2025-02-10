@@ -22,6 +22,7 @@ const buildPlatformJson = {
   keywords: ["Survey", "JavaScript", "PDF", "Library", "pdf"],
   homepage: "https://surveyjs.io/",
   license: "SEE LICENSE IN LICENSE",
+  module: "fesm/survey.pdf.js",
   main: "survey.pdf.js",
   repository: {
     type: "git",
