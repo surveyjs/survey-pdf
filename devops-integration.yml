@@ -120,12 +120,12 @@ steps:
 
   - script: |
       cd $(Build.SourcesDirectory)/survey-pdf
-      npm run build_fonts
+      npm run build:fonts
     displayName: "build fonts"
 
   - script: |
       cd $(Build.SourcesDirectory)/survey-pdf
-      npm run build_prod
+      npm run build
     displayName: "build"
 
   - script: |
