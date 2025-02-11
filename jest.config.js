@@ -1,12 +1,8 @@
 process.env.TZ = 'GMT';
 
 module.exports = {
-  globals: {
-    "ts-jest": {
-      tsConfig: "tsconfig.test.json"
-    }
-  },
-  "setupTestFrameworkScriptFile": "jest-expect-message",
+  testEnvironment: "jsdom",
+  "setupFilesAfterEnv": ["jest-expect-message"],
   setupFiles: ["<rootDir>/setupFile.js"],
   reporters: [
     "default",
@@ -20,7 +16,10 @@ module.exports = {
   coverageReporters: ["json", "lcov", "text", "html", "text-summary", "cobertura"],
   roots: ["tests"],
   transform: {
-    "^.+\\.(ts|tsx)?$": "ts-jest"
+    "^.+\\.(ts|tsx)?$": ["ts-jest", {
+      diagnostics: false,
+      tsconfig: "tsconfig.test.json"
+    }]
   },
   moduleNameMapper: {
     "\\.(scss|html)$": "<rootDir>/tests/empty-module.js"

@@ -1,5 +1,6 @@
 .git/*
 node_modules/*
+**/*.pdf
 src/**/*.js
 doc_generator/**/*.json
 docs/classes.json
@@ -8,6 +9,7 @@ tmp/*
 *.cmd
 .tsdrc
 .idea
+/build/**/*
 /packages/**/*
 /.gitattributes
 project.json

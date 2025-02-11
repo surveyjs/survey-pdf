@@ -85,7 +85,7 @@ test('check that save functions called sync if use correctly', async () => {
     expect(logger.log).toEqual('->rendered->saving->saved->rendered->saving->saved->rendered->saving->saved');
 });
 
-test('check that save functions called sync', async (done) => {
+test('check that save functions called sync', (done) => {
     const surveyPDF = new SurveyPDFSaveTester({});
     const logger = new Log();
     surveyPDF.setLog(logger);
@@ -98,7 +98,7 @@ test('check that save functions called sync', async (done) => {
     }, 1000);
 });
 
-test('Check surveyPDF onDocControllerCreated event', async (done) => {
+test('Check surveyPDF onDocControllerCreated event', (done) => {
     const surveyPDF = new SurveyPDF({});
     surveyPDF.onDocControllerCreated.add((sender, options) => {
         expect(sender).toBe(surveyPDF);
@@ -109,7 +109,7 @@ test('Check surveyPDF onDocControllerCreated event', async (done) => {
 
 });
 
-test('Check surveyPDF isRTL options', async (done) => {
+test('Check surveyPDF isRTL options', (done) => {
     let surveyPDF = new SurveyPDF({
         showQuestionNumbers: 'off',
         elements: [{

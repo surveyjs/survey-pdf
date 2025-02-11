@@ -121,12 +121,12 @@ steps:
 
   - script: |
       cd $(Build.SourcesDirectory)/survey-pdf
-      npm run build_fonts
+      npm run build:fonts
     displayName: "build fonts"
 
   - script: |
       cd $(Build.SourcesDirectory)/survey-pdf
-      npm run build_prod
+      npm run build
     displayName: "build"
 
   - script: |
@@ -196,7 +196,7 @@ steps:
 
   - task: CopyFiles@2
     inputs:
-      SourceFolder: "$(Build.SourcesDirectory)/survey-pdf/packages/survey-pdf"
+      SourceFolder: "$(Build.SourcesDirectory)/survey-pdf/build"
       targetFolder: $(Build.ArtifactStagingDirectory)/SurveyjsPDFbuild/packages/survey-pdf
 
   - task: PublishBuildArtifacts@1
