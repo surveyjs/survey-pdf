@@ -11,7 +11,7 @@
    * 
    * ====================================================================
    */
-  var jspdf = require("jspdf");
+  import { jsPDF } from "jspdf";
 
   (function (jsPDFAPI) {
     var clone, _DrillForContent, FontNameDB, FontStyleMap, TextAlignMap, FontWeightMap, FloatMap, ClearMap, GetCSS, PurgeWhiteSpace, Renderer, ResolveFont, ResolveUnitedNumber, UnitedNumberMap, elementHandledElsewhere, images, loadImgs, checkForFooter, process, tableToJson;
@@ -1227,4 +1227,4 @@
       if (!settings.elementHandlers) settings.elementHandlers = {};
       return process(this, HTML, isNaN(x) ? 4 : x, isNaN(y) ? 4 : y, settings, callback);
     };
-  })(jspdf.jsPDF.API);
+  })(jsPDF.API);
