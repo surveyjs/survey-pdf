@@ -3,7 +3,7 @@ import { IHTMLRenderType } from './flat_layout/flat_html';
 import { SurveyHelper } from './helper_survey';
 import { LocalizableString } from 'survey-core';
 // import Fonts from './fonts';
-import setRadioAppearance from './jspdf_plugins/acroform';
+import setRadioAppearance from './jspdf_plugins/acroform_radio';
 import './jspdf_plugins/acroform.js';
 import './jspdf_plugins/from_html.js';
 

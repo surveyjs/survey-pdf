@@ -16,7 +16,7 @@ module.exports = {
   coverageReporters: ["json", "lcov", "text", "html", "text-summary", "cobertura"],
   roots: ["tests"],
   transform: {
-    "^.+\\.(ts|tsx)?$": ["ts-jest", {
+    "^.+\\.(js|ts|tsx)?$": ["ts-jest", {
       diagnostics: false,
       tsconfig: "tsconfig.test.json"
     }]
