@@ -41,6 +41,8 @@ If none of the previous options is suitable for your scenario, you can implement
 
 
 ```js
+import { PdfBrick } from "survey-pdf";
+
 class CustomPdfBrick extends PdfBrick {
   async renderInteractive() {
     const doc = this.controller.doc;
@@ -55,7 +57,7 @@ class CustomPdfBrick extends PdfBrick {
 To use this custom PDF brick, you need to configure a custom renderer. Create a custom class that extends the `FlatQuestion` class and implement the `generateFlatsContent()` method within it. This method accepts a drawing start point and returns an array of PDF bricks. Register the custom class as a renderer for your custom question type (`"color-picker"` in the code below).
 
 ```js
-import { FlatRepository } from "survey-pdf";
+import { FlatRepository, FlatQuestion } from "survey-pdf";
 
 /** Custom PDF brick configuration goes here */
 
