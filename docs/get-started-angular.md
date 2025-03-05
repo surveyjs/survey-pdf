@@ -77,7 +77,7 @@ export class AppComponent implements OnInit {
 }
 ```
 
-The following image illustrates the resulting UI with the [Default V2 theme](/Documentation/Library?id=get-started-angular#configure-styles) applied:
+The following image illustrates the resulting UI with the [Default theme](https://surveyjs.io/form-library/documentation/manage-default-themes-and-styles) applied:
 
 ![Export Survey to PDF - Save as PDF navigation button](images/surveypdf-navigation-button.png)
 

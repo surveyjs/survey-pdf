@@ -12,10 +12,7 @@ PDF Generator for SurveyJS allows your users to save surveys as interactive PDF 
 
 [View Full Code on GitHub](https://github.com/surveyjs/code-examples/tree/main/get-started-pdf/vue (linkStyle))
 
-If you are looking for a quick-start application that includes all SurveyJS components, refer to the following GitHub repositories:
-
-- <a href="https://github.com/surveyjs/surveyjs_vue3_quickstart" target="_blank">SurveyJS + Vue 3 Quickstart Template</a>
-- <a href="https://github.com/surveyjs/surveyjs_vue_quickstart" target="_blank">SurveyJS + Vue 2 Quickstart Template</a>
+If you are looking for a quick-start application that includes all SurveyJS components, refer to the following GitHub repository: <a href="https://github.com/surveyjs/surveyjs_vue3_quickstart" target="_blank">SurveyJS + Vue 3 Quickstart Template</a>.
 
 ## Install the `survey-pdf` npm package
 
@@ -65,7 +62,7 @@ You can use any UI element to call this helper function. For instance, the follo
 </template>
 
 <script>
-import 'survey-core/defaultV2.min.css';
+import 'survey-core/survey-core.min.css';
 import { Model } from 'survey-core';
 import { Survey } from 'survey-vue-ui';
 // ...
@@ -91,7 +88,7 @@ export default {
 </script>
 ```
 
-The following image illustrates the resulting UI with the [Default V2 theme](/Documentation/Library?id=get-started-vue#configure-styles) applied:
+The following image illustrates the resulting UI with the [Default theme](https://surveyjs.io/form-library/documentation/manage-default-themes-and-styles) applied:
 
 ![Export Survey to PDF - Save as PDF navigation button](images/surveypdf-navigation-button.png)
 
@@ -108,7 +105,7 @@ To view the application, run `npm run serve` in a command line and open [http://
 </template>
 
 <script>
-import 'survey-core/defaultV2.min.css';
+import 'survey-core/survey-core.min.css';
 import { Model } from 'survey-core';
 import { Survey } from 'survey-vue-ui';
 import { SurveyPDF } from 'survey-pdf';

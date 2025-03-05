@@ -63,7 +63,7 @@ survey.addNavigationItem({
 });
 ```
 
-The following image illustrates the resulting UI with the [Default V2 theme](/form-library/documentation/get-started-html-css-javascript#link-surveyjs-resources) applied:
+The following image illustrates the resulting UI with the [Default theme](https://surveyjs.io/form-library/documentation/manage-default-themes-and-styles) applied:
 
 ![Export Survey to PDF - Save as PDF navigation button](images/surveypdf-navigation-button.png)
 
@@ -79,7 +79,7 @@ The following image illustrates the resulting UI with the [Default V2 theme](/fo
     <!-- jsPDF library -->
     <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
 
-    <link href="https://unpkg.com/survey-core/defaultV2.min.css" type="text/css" rel="stylesheet">
+    <link href="https://unpkg.com/survey-core/survey-core.min.css" type="text/css" rel="stylesheet">
     <script type="text/javascript" src="https://unpkg.com/survey-core/survey.core.min.js"></script>
     <script type="text/javascript" src="https://unpkg.com/survey-js-ui/survey-js-ui.min.js"></script>
 

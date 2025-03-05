@@ -84,7 +84,7 @@ function App() {
 export default App;
 ```
 
-The following image illustrates the resulting UI with the [Default V2 theme](/Documentation/Library?id=get-started-react#configure-styles) applied:
+The following image illustrates the resulting UI with the [Default theme](https://surveyjs.io/form-library/documentation/manage-default-themes-and-styles) applied:
 
 ![Export Survey to PDF - Save as PDF navigation button](images/surveypdf-navigation-button.png)
 
@@ -99,7 +99,7 @@ To view the application, run `npm run start` in a command line and open [http://
 
 import './App.css'
 
-import 'survey-core/defaultV2.min.css';
+import 'survey-core/survey-core.min.css';
 import { Model } from 'survey-core';
 import { Survey } from 'survey-react-ui';
 import { SurveyPDF } from 'survey-pdf';

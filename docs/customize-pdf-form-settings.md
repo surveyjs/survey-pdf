@@ -126,14 +126,14 @@ Editable PDF forms allow respondents to fill in form fields: enter text in text 
 
 If you do not want users to fill in your PDF form, generate it in read-only mode. In this mode, form fields are non-interactive. You can pre-fill a read-only PDF form with user responses if required. Read-only PDF documents have smaller size because they do not use Adobe AcroForms.
 
-To generate a read-only PDF form, set the `mode` property on a `SurveyPDF` instance to `"display"`. To pre-fill your form with user responses, assign a data object to `SurveyPDF`'s `data` property. This is the same object saved in the [`data`](https://surveyjs.io/form-library/documentation/api-reference/survey-data-model#data) property of a `SurveyModel` instance.
+To generate a read-only PDF form, enable the `readOnly` property on a `SurveyPDF` instance. To pre-fill your form with user responses, assign a data object to `SurveyPDF`'s `data` property. This is the same object saved in the [`data`](https://surveyjs.io/form-library/documentation/api-reference/survey-data-model#data) property of a `SurveyModel` instance.
 
 ```js
 const surveyJson = { ... };
 const survey = new Survey.Model(surveyJson);
 
 const surveyPdf = new SurveyPDF.SurveyPDF(surveyJson, pdfDocOptions);
-surveyPdf.mode = "display";
+surveyPdf.readOnly = true;
 surveyPdf.data = survey.data;
 
 // In modular applications:
@@ -144,7 +144,7 @@ const surveyJson = { ... };
 const survey = new Model(surveyJson);
 
 const surveyPdf = new SurveyPDF(surveyJson, pdfDocOptions);
-surveyPdf.mode = "display";
+surveyPdf.readOnly = true;
 surveyPdf.data = survey.data;
 ```
 
