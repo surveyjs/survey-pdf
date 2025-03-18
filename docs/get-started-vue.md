@@ -10,7 +10,7 @@ PDF Generator for SurveyJS allows your users to save surveys as interactive PDF 
 - [Configure Export Properties](#configure-export-properties)
 - [Export a Survey](#export-a-survey)
 
-[View Full Code on GitHub](https://github.com/surveyjs/code-examples/tree/main/get-started-pdf/vue (linkStyle))
+[View Full Code on GitHub](https://github.com/surveyjs/code-examples/tree/main/get-started-pdf/vue3 (linkStyle))
 
 If you are looking for a quick-start application that includes all SurveyJS components, refer to the following GitHub repository: <a href="https://github.com/surveyjs/surveyjs_vue3_quickstart" target="_blank">SurveyJS + Vue 3 Quickstart Template</a>.
 
@@ -41,11 +41,10 @@ The code below implements a `savePdf` helper function that instantiates `SurveyP
 ```js
 import { SurveyPDF } from "survey-pdf";
 
-const surveyJson = { /* ... */ };
+const surveyJson = { /* ... */ }
+const pdfDocOptions = { /* ... */ }
 
-const pdfDocOptions = { /* ... */ };
-
-const savePdf = function (surveyData) {
+const savePdf = function (surveyData: any) {
   const surveyPdf = new SurveyPDF(surveyJson, pdfDocOptions);
   surveyPdf.data = surveyData;
   surveyPdf.save();
@@ -54,100 +53,100 @@ const savePdf = function (surveyData) {
 
 You can use any UI element to call this helper function. For instance, the following code adds a new [navigation button](/Documentation/Library?id=iaction) below the survey and calls the `savePdf` function when a user clicks this button:
 
-```js
-<template>
-  <div>
-    <Survey :survey="survey" id="surveyContainer" />
-  </div>
-</template>
-
-<script>
-import 'survey-core/survey-core.min.css';
+```html
+<script setup lang="ts">
+import 'survey-core/survey-core.css';
 import { Model } from 'survey-core';
-import { Survey } from 'survey-vue-ui';
-// ...
-export default {
-  name: 'MySurvey',
-  components: {
-    Survey
-  },
-  data() {
-    const survey = new Model(surveyJson);
+import { SurveyComponent } from "survey-vue3-ui";
+import { SurveyPDF } from 'survey-pdf';
 
-    survey.addNavigationItem({
-      id: "pdf-export",
-      title: "Save as PDF",
-      action: () => savePdf(survey.data)
-    });
+const surveyJson = { /* ... */ }
+const pdfDocOptions = { /* ... */ }
+const savePdf = function (surveyData: any) { /* ... */ }
 
-    return {
-      survey
-    }
-  }
-}
+const survey = new Model(surveyJson);
+
+survey.addNavigationItem({
+  id: "pdf-export",
+  title: "Save as PDF",
+  action: () => savePdf(survey.data)
+});
 </script>
+
+<template>
+  <SurveyComponent :model="survey" />
+</template>
 ```
 
 The following image illustrates the resulting UI with the [Default theme](https://surveyjs.io/form-library/documentation/manage-default-themes-and-styles) applied:
 
 ![Export Survey to PDF - Save as PDF navigation button](images/surveypdf-navigation-button.png)
 
-To view the application, run `npm run serve` in a command line and open [http://localhost:8080/](http://localhost:8080/) in your browser.
+To view the application, run `npm run dev` in a command line and open [http://localhost:5713/](http://localhost:5173/) in your browser.
 
 <details>
     <summary>View Full Code</summary>  
 
-```js
-<template>
-  <div>
-    <Survey :survey="survey" id="surveyContainer" />
-  </div>
-</template>
-
-<script>
-import 'survey-core/survey-core.min.css';
+```html
+<script setup lang="ts">
+import 'survey-core/survey-core.css';
 import { Model } from 'survey-core';
-import { Survey } from 'survey-vue-ui';
+import { SurveyComponent } from "survey-vue3-ui";
 import { SurveyPDF } from 'survey-pdf';
 
 const surveyJson = {
-  // ...
-};
+  elements: [{
+    name: "satisfaction-score",
+    title: "How would you describe your experience with our product?",
+    type: "radiogroup",
+    choices: [
+      { value: 5, text: "Fully satisfying" },
+      { value: 4, text: "Generally satisfying" },
+      { value: 3, text: "Neutral" },
+      { value: 2, text: "Rather unsatisfying" },
+      { value: 1, text: "Not satisfying at all" }
+    ],
+    isRequired: true
+  }, {
+    name: "how-can-we-improve",
+    title: "In your opinion, how could we improve our product?",
+    type: "comment"
+  }, {
+    name: "nps-score",
+    title: "On a scale of zero to ten, how likely are you to recommend our product to a friend or colleague?",
+    type: "rating",
+    rateMin: 0,
+    rateMax: 10,
+  }],
+  completedHtml: "Thank you for your feedback!",
+}
 
 const pdfDocOptions = {
   fontSize: 12
-};
+}
 
-const savePdf = function (surveyData) {
+const savePdf = function (surveyData: any) {
   const surveyPdf = new SurveyPDF(surveyJson, pdfDocOptions);
   surveyPdf.data = surveyData;
   surveyPdf.save();
-};
-
-export default {
-  name: 'MySurvey',
-  components: {
-    Survey
-  },
-  data() {
-    const survey = new Model(surveyJson);
-
-    survey.addNavigationItem({
-      id: "pdf-export",
-      title: "Save as PDF",
-      action: () => savePdf(survey.data)
-    });
-
-    return {
-      survey
-    }
-  }
 }
+
+const survey = new Model(surveyJson);
+
+survey.addNavigationItem({
+  id: "pdf-export",
+  title: "Save as PDF",
+  action: () => savePdf(survey.data)
+});
 </script>
+
+<template>
+  <SurveyComponent :model="survey" />
+</template>
 ```
 </details>
 
-[View Full Code on GitHub](https://github.com/surveyjs/code-examples/tree/main/get-started-pdf/vue (linkStyle))
+[View Full Code on GitHub](https://github.com/surveyjs/code-examples/tree/main/get-started-pdf/vue3 (linkStyle))
 
 ## Further Reading
 
