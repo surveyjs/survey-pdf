@@ -156,8 +156,12 @@ export class SurveyPDF extends SurveyModel {
     public onRenderRadioItemAcroform: EventAsync<SurveyPDF, any> =
     new EventAsync<SurveyPDF, any>();
 
+    private ensureQuestionDisplayValue(question: Question): void {
+        const _displayValue = question.displayValue;
+    }
     private waitForQuestionIsReady(question: Question): Promise<void> {
         return new Promise((resolve: any) => {
+            this.ensureQuestionDisplayValue(question);
             if (question.isReady) {
                 resolve();
             }
