@@ -33,7 +33,7 @@ const buildPlatformJson = {
     "survey-core": packageJson.version
   },
   dependencies: {
-    jspdf: "^2.3.0"
+    jspdf: "^2.3.0 || ^3"
   },
   exports: {
     ".": {
