@@ -22,7 +22,7 @@ const buildPlatformJson = {
   keywords: ["Survey", "JavaScript", "PDF", "Library", "pdf"],
   homepage: "https://surveyjs.io/",
   license: "SEE LICENSE IN LICENSE",
-  module: "fesm/survey.pdf.js",
+  module: "fesm/survey.pdf.mjs",
   main: "survey.pdf.js",
   repository: {
     type: "git",
@@ -38,11 +38,11 @@ const buildPlatformJson = {
   exports: {
     ".": {
       "types": "./typings/entries/pdf.d.ts",
-      "import": "./fesm/survey.pdf.js",
+      "import": "./fesm/survey.pdf.mjs",
       "require": "./survey.pdf.js"
     },
     "./survey.pdf.fonts": {
-      "import": "./fesm/survey.pdf.fonts.js",
+      "import": "./fesm/survey.pdf.fonts.mjs",
       "require": "./survey.pdf.fonts.js"
     },
   }
