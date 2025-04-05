@@ -114,12 +114,13 @@ module.exports = function (options) {
     output: {
       path: buildPath,
       filename:
-        "[name]" +
-        (options.buildType === "prod" ? ".min" : "") +
-        ".js",
+      "[name]" +
+      (options.buildType === "prod" ? ".min" : "") +
+      ".js",
       library: options.libraryName || "SurveyPDF",
       libraryTarget: "umd",
-      umdNamedDefine: true
+      umdNamedDefine: true,
+      globalObject: "this",
     },
     externals: {
       jspdf: {
