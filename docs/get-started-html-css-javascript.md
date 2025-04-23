@@ -10,15 +10,18 @@ PDF Generator for SurveyJS allows your users to save surveys as interactive PDF 
 
 ## Link Resources
 
-PDF Generator for SurveyJS is built upon the <a href="https://github.com/parallax/jsPDF#readme" target="_blank">jsPDF</a> library. Insert links to the jsPDF and SurveyJS PDF Generator scripts within the `<head>` tag on your HTML page:
+PDF Generator for SurveyJS is built upon the <a href="https://github.com/parallax/jsPDF#readme" target="_blank">jsPDF</a> library. Insert links to the jsPDF and SurveyJS PDF Generator scripts within the `<head>` tag on your HTML page. Ensure the base script for all SurveyJS products, `survey-core`, is referenced as well:
 
 ```html
 <head>
     <!-- jsPDF library -->
-    <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+
+    <!-- `survey-core` -->
+    <script type="text/javascript" src="https://unpkg.com/survey-core/survey.core.min.js"></script>
 
     <!-- SurveyJS PDF Generator library -->
-    <script src="https://unpkg.com/survey-pdf/survey.pdf.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/survey-pdf/survey.pdf.min.js"></script>
     <!-- ... -->
 </head>
 ```
@@ -77,14 +80,14 @@ The following image illustrates the resulting UI with the [Default theme](https:
     <title>Export Survey to PDF - SurveyJS</title>
     <meta charset="utf-8">
     <!-- jsPDF library -->
-    <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
 
     <link href="https://unpkg.com/survey-core/survey-core.min.css" type="text/css" rel="stylesheet">
     <script type="text/javascript" src="https://unpkg.com/survey-core/survey.core.min.js"></script>
     <script type="text/javascript" src="https://unpkg.com/survey-js-ui/survey-js-ui.min.js"></script>
 
     <!-- SurveyJS PDF Generator library -->
-    <script src="https://unpkg.com/survey-pdf/survey.pdf.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/survey-pdf/survey.pdf.min.js"></script>
     
     <script type="text/javascript" src="index.js"></script>
 </head>
