@@ -1,3 +1,3 @@
 let defaultConfig = require("./jest.config.js");
-defaultConfig.globals["updateSnapshots"] = true;
+defaultConfig["updateSnapshots"] = true;
 module.exports = defaultConfig;

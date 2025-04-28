@@ -14,6 +14,8 @@ import { TestHelper } from '../src/helper_test';
 import { ImageBrick } from '../src/pdf_render/pdf_image';
 import { CompositeBrick } from '../src/pdf_render/pdf_composite';
 import { LinkBrick } from '../src/pdf_render/pdf_link';
+import { AdornersOptions } from '../src/event_handler/adorners';
+import { checkFlatSnapshot } from './snapshot_helper';
 let __dummy_fl = new FlatFile(null, null, null);
 
 test('Check no files', async () => {
@@ -515,5 +517,43 @@ test('Test file question inside paneldynamic waits preview loading', async () =>
     expect(unFoldedBricks.length).toBe(8);
     expect(unFoldedBricks[5]).toBeInstanceOf(LinkBrick);
     expect((<LinkBrick>unFoldedBricks[5])['link']).toBe('data:image/jpeg;base64,FILECONTENT1');
-
+});
+test('Test file question with show preview false', async () => {
+    await checkFlatSnapshot(
+        {
+            'elements': [
+                {
+                    'type': 'file',
+                    'titleLocation': 'hidden',
+                    'name': 'files',
+                    'allowMultiple': true,
+                    'showPreview': false,
+                }
+            ]
+        }, {
+            snapshotName: 'file-question-without-preview',
+            isCorrectEvent: (options: AdornersOptions) => {
+                return options.question.getType() == 'file';
+            },
+            allowedPropertiesHash: {
+                'LinkBrick': ['link']
+            },
+            onSurveyCreated: (survey: SurveyPDF) => {
+                survey.data = {
+                    files: [
+                        {
+                            content: 'test_url',
+                            name: 'test_name',
+                            type: ''
+                        },
+                        {
+                            content: 'test_url2',
+                            name: 'test_name2',
+                            type: ''
+                        }
+                    ]
+                };
+            }
+        },
+    );
 });
