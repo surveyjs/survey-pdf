@@ -1,0 +1,97 @@
+[
+	{
+		"brickType": "CompositeBrick",
+		"width": 329.4,
+		"height": 34.5,
+		"xLeft": 62.84645669291339,
+		"xRight": 392.2464566929134,
+		"yTop": 28.34645669291339,
+		"yBot": 62.84645669291339,
+		"bricks": [
+			{
+				"brickType": "CompositeBrick",
+				"width": 139.2,
+				"height": 34.5,
+				"xLeft": 62.84645669291339,
+				"xRight": 202.04645669291338,
+				"yTop": 28.34645669291339,
+				"yBot": 62.84645669291339,
+				"bricks": [
+					{
+						"brickType": "CompositeBrick",
+						"width": 139.2,
+						"height": 34.5,
+						"xLeft": 62.84645669291339,
+						"xRight": 202.04645669291338,
+						"yTop": 28.34645669291339,
+						"yBot": 62.84645669291339,
+						"bricks": [
+							{
+								"brickType": "LinkBrick",
+								"width": 139.2,
+								"height": 34.5,
+								"xLeft": 62.84645669291339,
+								"xRight": 202.04645669291338,
+								"yTop": 28.34645669291339,
+								"yBot": 62.84645669291339,
+								"link": "test_url",
+								"text": "test_name"
+							},
+							{
+								"brickType": "RowlineBrick",
+								"width": 139.2,
+								"height": 0,
+								"xLeft": 62.84645669291339,
+								"xRight": 202.04645669291338,
+								"yTop": 62.84645669291339,
+								"yBot": 62.84645669291339
+							}
+						]
+					}
+				]
+			},
+			{
+				"brickType": "CompositeBrick",
+				"width": 155.70000000000002,
+				"height": 34.5,
+				"xLeft": 236.54645669291338,
+				"xRight": 392.2464566929134,
+				"yTop": 28.34645669291339,
+				"yBot": 62.84645669291339,
+				"bricks": [
+					{
+						"brickType": "CompositeBrick",
+						"width": 155.70000000000002,
+						"height": 34.5,
+						"xLeft": 236.54645669291338,
+						"xRight": 392.2464566929134,
+						"yTop": 28.34645669291339,
+						"yBot": 62.84645669291339,
+						"bricks": [
+							{
+								"brickType": "LinkBrick",
+								"width": 155.70000000000002,
+								"height": 34.5,
+								"xLeft": 236.54645669291338,
+								"xRight": 392.2464566929134,
+								"yTop": 28.34645669291339,
+								"yBot": 62.84645669291339,
+								"link": "test_url2",
+								"text": "test_name2"
+							},
+							{
+								"brickType": "RowlineBrick",
+								"width": 155.70000000000002,
+								"height": 0,
+								"xLeft": 236.54645669291338,
+								"xRight": 392.2464566929134,
+								"yTop": 62.84645669291339,
+								"yBot": 62.84645669291339
+							}
+						]
+					}
+				]
+			}
+		]
+	}
+]
