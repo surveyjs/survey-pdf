@@ -57,7 +57,6 @@ function processBrick(brick: IPdfBrick, propertiesHash: PropertiesHash): any {
     }
     const res: any = {};
     res['brickType'] = (brick.constructor as any).name;
-    debugger;
     for (const allowedProperty of allowedProperties) {
         if(allowedProperty) {
             if(typeof allowedProperty === 'string') {
