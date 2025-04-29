@@ -23,14 +23,21 @@ export async function checkPDFSnapshot(surveyJSON: any, snapshotOptions: IPDFSna
         options.controller.doc.setCreationDate(new Date(0));
         options.controller.doc.setFileId('00000000000000000000000000000000');
     });
-    const actual = Buffer.from(await survey.raw('arraybuffer') as any as ArrayBuffer);
+    const actual = (await survey.raw()).replace(/\r\n/g, '\n');
     const snapshotName = snapshotOptions.snapshotName;
     const fileName = `${__dirname}/pdf_snapshots/${snapshotName}.pdf`;
-    if((global as any).updateSnapshots) {
-        writeFileSync(fileName, actual);
-    } else {
-        const expected = readFileSync(fileName);
+    const compare = () => {
+        const expected = readFileSync(fileName, 'utf8').replace(/\r\n/g, '\n');
         expect(actual, `snapshot: "${snapshotName}" did not match`, { showMatcherMessage: false }).toEqual(expected);
+    };
+    if((global as any).updateSnapshots) {
+        try {
+            compare();
+        } catch {
+            writeFileSync(fileName, actual);
+        }
+    } else {
+        compare();
     }
     jsPDF.version = jsPdfVersion;
 }
@@ -94,12 +101,19 @@ export async function checkFlatSnapshot(surveyJSON: any, snapshotOptions: IFlatS
             const allowedPropertiesHash = Object.assign({}, globalAllowedPropertiesHash, snapshotOptions.allowedPropertiesHash ?? {}) as PropertiesHash;
             const actual = processBricks(options.bricks, allowedPropertiesHash);
             const fileName = `${__dirname}/flat_snapshots/${snapshotOptions.snapshotName}.json`;
-            //eslint-disable-next-line
-            if((global as any).updateSnapshots) {
-                writeFileSync(fileName, JSON.stringify(actual, null, '\t'));
-            } else {
+            const compare = () => {
                 const expected = JSON.parse(readFileSync(fileName, 'utf8'));
                 expect(actual, `snapshot: "${snapshotOptions.snapshotName}" did not match`).toEqual(expected);
+            };
+            //eslint-disable-next-line
+            if((global as any).updateSnapshots) {
+                try {
+                    compare();
+                } catch {
+                    writeFileSync(fileName, JSON.stringify(actual, null, '\t'));
+                }
+            } else {
+                compare();
             }
         }
     });
