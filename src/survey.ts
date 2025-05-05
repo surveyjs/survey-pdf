@@ -237,8 +237,9 @@ export class SurveyPDF extends SurveyModel {
         }
     }
     /**
-     * An asynchronous method that starts download of the generated PDF file in the web browser.
+     * An asynchronous method that starts the download of the generated PDF file in the web browser.
      *
+     * [View Demo](https://surveyjs.io/pdf-generator/examples/save-completed-forms-as-pdf-files/ (linkStyle))
      * @param fileName *(Optional)* A file name with the ".pdf" extension. Default value: `"survey_result.pdf"`.
      */
     public async save(fileName: string = 'survey_result.pdf'): Promise<any> {

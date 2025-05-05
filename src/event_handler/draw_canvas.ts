@@ -213,6 +213,8 @@ export class DrawCanvas {
     }
     /**
      * Draws a piece of text within the drawing area.
+     * 
+     * [View Demo](https://surveyjs.io/pdf-generator/examples/customize-header-and-footer-of-pdf-form/ (linkStyle))
      * @param textOptions An [`IDrawTextOptions`](https://surveyjs.io/pdf-generator/documentation/api-reference/idrawtextoptions) object that configures the drawing.
      */
     public drawText(textOptions: IDrawTextOptions): void {
@@ -238,6 +240,8 @@ export class DrawCanvas {
     }
     /**
      * Draws an image within the drawing area.
+     * 
+     * [View Demo](https://surveyjs.io/pdf-generator/examples/customize-header-and-footer-of-pdf-form/ (linkStyle))
      * @param imageOptions An [`IDrawImageOptions`](https://surveyjs.io/pdf-generator/documentation/api-reference/idrawimageoptions) object that configures drawing.
      */
     public async drawImage(imageOptions: IDrawImageOptions): Promise<void> {

@@ -97,8 +97,9 @@ export interface IDocOptions {
      * - `"ledger"`
      * - `"tabloid"`
      * - `"credit-card"`
-     * - Array<number> - custom page size in millimeters, for example, `[210, 297]`.
+     * - `[width, height]` - Custom page size in millimeters, for example, `[210, 297]`.
      *
+     * [View Demo](https://surveyjs.io/pdf-generator/examples/save-completed-forms-as-pdf-files/ (linkStyle))
      * @see orientation
      */
     format?: string | number[];
@@ -122,7 +123,7 @@ export interface IDocOptions {
      * - `"Times"`
      * - `"Symbol"`
      * - `"ZapfDingbats"`
-     * - [Custom font name](https://surveyjs.io/Documentation/Pdf-Export?id=Customization-ChangeFonts#use-custom-font)
+     * - [Custom font name](https://surveyjs.io/pdf-generator/documentation/customize-pdf-form-settings#custom-fonts)
      *
      * [View Demo](https://surveyjs.io/pdf-generator/examples/change-font-in-pdf-form/ (linkStyle))
      * @see fontSize
@@ -142,7 +143,11 @@ export interface IDocOptions {
     useCustomFontInHtml?: boolean;
 
     /**
-     * Page margins. Set this property to an object with the following fields: `top`, `bot`, `left`, `right`.
+     * Page margins.
+     * 
+     * Set this property to an object with the following fields: `top`, `bot`, `left`, `right`.
+     * 
+     * [View Demo](https://surveyjs.io/pdf-generator/examples/save-completed-forms-as-pdf-files/ (linkStyle))
      */
     margins?: IMargin;
 
@@ -155,6 +160,8 @@ export interface IDocOptions {
      * - `"image"` - Render HTML questions as images.
      * - `"auto"` (default) - Select between the `"standard"` and `"image"` modes automatically based on the HTML content.
      *
+     * [View Demo](https://surveyjs.io/pdf-generator/examples/split-html-image-across-pages/ (linkStyle))
+     * 
      * You can override this property for an individual HTML question. Set the question's `renderAs` property to `"standard"` or `"image"` in the survey JSON schema.
      * @see useCustomFontInHtml
      */
@@ -362,9 +369,9 @@ export class DocOptions implements IDocOptions {
 }
 
 /**
- * The `DocController` object includes an API that allows you to configure the resulting PDF document. You can access this object within functions that handle the `SurveyPDF`'s [`onRender...`](https://surveyjs.io/pdf-generator/documentation/api-reference/surveypdf#onRenderFooter) events.
+ * The `DocController` object includes an API that allows you to configure main PDF document properties (font, margins, page width and height).
  *
- * [View Demo](https://surveyjs.io/pdf-generator/examples/how-to-use-adorners-in-pdf-forms/ (linkStyle))
+ * [View Demo](https://surveyjs.io/pdf-generator/examples/change-font-in-pdf-form/ (linkStyle))
  */
 export class DocController extends DocOptions {
     private _doc: jsPDF;
@@ -396,6 +403,14 @@ export class DocController extends DocOptions {
         this.marginsStack = [];
     }
     public static customFonts: { [name: string]: { normal: string, bold: string, italic: string, bolditalic: string } } = {};
+    /**
+     * Adds a custom font to the PDF Generator.
+     * 
+     * [View Demo](https://surveyjs.io/pdf-generator/examples/change-font-in-pdf-form/ (linkStyle))
+     * @param fontName A custom name that you will use to apply the custom font.
+     * @param base64 The custom font as a Base64-encoded string. To encode your font to Base64, obtain it as a TTF file and use any TTF-to-Base64 online converter.
+     * @param fontStyle The style of the custom font: `"normal"`, `"bold"`, `"italic"`, or `"bolditalic"`.
+     */
     public static addFont(fontName: string, base64: string, fontStyle: 'normal' | 'bold' | 'italic' | 'bolditalic') {
         let font = DocController.customFonts[fontName];
         if (!font) {
