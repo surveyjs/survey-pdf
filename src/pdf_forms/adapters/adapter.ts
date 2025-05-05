@@ -1,3 +1,3 @@
-export interface IFormAdapter {
-    fillForm(templateUrl: string, data: any): Promise<Uint8Array>;
+export interface IPDFFormAdapter {
+    fillForm(template: string, data: any): Promise<Uint8Array>;
 }

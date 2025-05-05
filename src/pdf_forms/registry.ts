@@ -1,9 +1,13 @@
-export class FormAdaptersFactory {
-    public static Instance: FormAdaptersFactory = new FormAdaptersFactory();
+export class PDFFormAdapterFactory {
+    public static Instance: PDFFormAdapterFactory = new PDFFormAdapterFactory();
     private adapters: any = {};
 
     public registerAdapter(id: string, adapter: any): void {
         this.adapters[id] = adapter;
+    }
+
+    public getAdapterIdsList() {
+        return Object.keys(this.adapters);
     }
 
     public createAdapter(id: string): any {

@@ -1,10 +1,8 @@
-import { IFormAdapter } from './adapter';
-export class PdfJsAdapter implements IFormAdapter {
+import { IPDFFormAdapter } from './adapter';
+export class PdfJsAdapter implements IPDFFormAdapter {
     public async fillForm(template: string, data: any) {
         const pdfjsLib = (window as any).pdfjsLib;
-        if(!pdfjsLib) {
-            throw new Error('PDF.js is not loaded!');
-        }
+        if(!pdfjsLib) return null;
         const doc = await pdfjsLib.getDocument(template).promise;
         const page = await doc.getPage(1);
         const annotations = await page.getAnnotations();

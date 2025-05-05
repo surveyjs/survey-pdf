@@ -1,10 +1,8 @@
-import { IFormAdapter } from './adapter';
-export class PdfLibAdapter implements IFormAdapter {
+import { IPDFFormAdapter } from './adapter';
+export class PdfLibAdapter implements IPDFFormAdapter {
     public async fillForm(template: string, data: any) {
         const PDFLib = (window as any).PDFLib;
-        if(!PDFLib) {
-            throw new Error('PDF-LIB is not loaded!');
-        }
+        if(!PDFLib) return null;
         const { PDFDocument, PDFTextField, PDFCheckBox, PDFRadioGroup, PDFDropdown } = PDFLib;
         const pdfDoc = await PDFDocument.load(template);
         const form = pdfDoc.getForm();
