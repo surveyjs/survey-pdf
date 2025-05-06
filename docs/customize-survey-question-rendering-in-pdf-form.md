@@ -32,8 +32,6 @@ import { SurveyPDF } from "survey-pdf";
 const surveyPdf = new SurveyPDF(surveyJson, pdfDocOptions);
 ```
 
-[View Demo](https://surveyjs.io/pdf-generator/examples/split-html-image-across-pages/ (linkStyle))
-
 You can override this property for individual HTML questions. Set the question's `renderAs` property to `"standard"` or `"image"` in the survey JSON schema:
 
 ```js
