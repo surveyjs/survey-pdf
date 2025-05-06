@@ -119,8 +119,5 @@ const fieldMap = {
   ]
 }
 
-let form = new SurveyPdfForms.Forms('pdf-lib');
-form.map = fieldMap;
-form.data = data;
-form.template = template;
+let form = new SurveyPdfForms.PDFFormFiller({data, fieldMap, pdfTemplate: template});
 form.save('result.pdf');
