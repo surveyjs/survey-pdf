@@ -1,7 +1,3 @@
-(<any>window)['HTMLCanvasElement'].prototype.getContext = () => {
-    return {};
-};
-
 import { PdfJsAdapter } from '../src/pdf_forms/adapters/pdfjs';
 
 // Mock PDF bytes
@@ -11,7 +7,7 @@ const mockPDFBytes = new Uint8Array([1, 2, 3, 4]);
 interface MockPDFDocument {
     getPage: (pageNumber: number) => Promise<MockPDFPage>;
     annotationStorage: {
-        setValue: (id: string, value: any) => void;
+        setValue: (id: string, value: any) => void,
     };
     saveDocument: () => Promise<Uint8Array>;
 }
@@ -197,4 +193,4 @@ describe('PdfJsAdapter', () => {
         const result = await adapter.fillForm(template, data);
         expect(result).toBe(mockPDFBytes);
     });
-}); 
+});

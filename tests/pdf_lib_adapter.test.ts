@@ -1,7 +1,3 @@
-(<any>window)['HTMLCanvasElement'].prototype.getContext = () => {
-    return {};
-};
-
 import { PdfLibAdapter } from '../src/pdf_forms/adapters/pdf-lib';
 
 // Mock PDFLib

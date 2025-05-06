@@ -1,5 +1,4 @@
 import FormMap from '../src/pdf_forms/map';
-import { IPDFFormAdapter as IPDFFormAdapter } from './pdf_forms/adapters/adapter';
 import { PdfLibAdapter } from './pdf_forms/adapters/pdf-lib';
 import { PdfJsAdapter } from './pdf_forms/adapters/pdfjs';
 import { PDFFormAdapterFactory as PDFFormAdapterFactory } from './pdf_forms/registry';

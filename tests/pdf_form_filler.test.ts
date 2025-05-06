@@ -1,13 +1,6 @@
-(<any>window)['HTMLCanvasElement'].prototype.getContext = () => {
-    return {};
-};
-
 import { PDFFormFiller } from '../src/forms';
-import { TestHelper } from '../src/helper_test';
 import { PDFFormAdapterFactory } from '../src/pdf_forms/registry';
 import FormMap from '../src/pdf_forms/map';
-
-let __dummy_ff = new PDFFormFiller({ fieldMap: {}, data: {}, pdfTemplate: '' });
 
 // Mock URL.createObjectURL
 const mockBlobUrl = 'blob:mock-url-123';
