@@ -10,10 +10,12 @@ interface IPDFFormFillerOptions{
     pdfTemplate: string;
 }
 export class PDFFormFiller {
-    constructor (options: IPDFFormFillerOptions) {
-        this.data = options.data;
-        this.fieldMap = options.fieldMap;
-        this.pdfTemplate = options.pdfTemplate;
+    constructor (options: IPDFFormFillerOptions = null) {
+        if(options) {
+            this.data = options.data;
+            this.fieldMap = options.fieldMap;
+            this.pdfTemplate = options.pdfTemplate;
+        }
     }
     private async fillFormWithAnyAdapter(plainData: any) {
         const adapters = PDFFormAdapterFactory.Instance.getAdapterIdsList();

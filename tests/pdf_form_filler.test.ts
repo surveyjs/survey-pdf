@@ -27,6 +27,19 @@ document.createElement = jest.fn().mockReturnValue(mockLink);
 document.body.appendChild = jest.fn();
 document.body.removeChild = jest.fn();
 
+test('Check constructor with no options', async () => {
+    const mockPDFBytes = new Uint8Array([1, 2, 3, 4]);
+    const formFiller = new PDFFormFiller();
+    formFiller.fieldMap = {};
+    formFiller.data = {};
+    formFiller.pdfTemplate = 'test-template';
+    const mockGetPDFBytes = jest.spyOn(formFiller as any, 'getPDFBytes').mockResolvedValue(mockPDFBytes);
+
+    const result = await formFiller.raw();
+    expect(result).toBe(mockPDFBytes);
+    expect(mockGetPDFBytes).toHaveBeenCalledTimes(1);
+});
+
 test('Check raw method returns PDF bytes when no type specified', async () => {
     const mockPDFBytes = new Uint8Array([1, 2, 3, 4]);
     const formFiller = new PDFFormFiller({
