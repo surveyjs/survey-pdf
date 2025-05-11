@@ -1,9 +1,8 @@
 import { IPDFFormAdapter } from './adapter';
-export class PdfLibAdapter implements IPDFFormAdapter {
+export class PDFLibAdapter implements IPDFFormAdapter {
+    constructor (private pdfLibrary: any) { }
     public async fillForm(template: string, data: any) {
-        const PDFLib = (window as any).PDFLib;
-        if(!PDFLib) return null;
-        const { PDFDocument, PDFTextField, PDFCheckBox, PDFRadioGroup, PDFDropdown } = PDFLib;
+        const { PDFDocument, PDFTextField, PDFCheckBox, PDFRadioGroup, PDFDropdown } = this.pdfLibrary;
         const pdfDoc = await PDFDocument.load(template);
         const form = pdfDoc.getForm();
         const fields = form.getFields();

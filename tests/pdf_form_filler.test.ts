@@ -1,5 +1,4 @@
-import { PDFFormFiller } from '../src/forms';
-import { PDFFormAdapterFactory } from '../src/pdf_forms/registry';
+import { PDFFormFiller } from '../src/pdf_forms/forms';
 import FormMap from '../src/pdf_forms/map';
 
 // Mock URL.createObjectURL
@@ -38,7 +37,8 @@ test('Check raw method returns PDF bytes when no type specified', async () => {
     const formFiller = new PDFFormFiller({
         fieldMap: {},
         data: {},
-        pdfTemplate: 'test-template'
+        pdfTemplate: 'test-template',
+        pdfLibraryAdapter: null as any
     });
     const mockGetPDFBytes = jest.spyOn(formFiller as any, 'getPDFBytes').mockResolvedValue(mockPDFBytes);
 
@@ -52,7 +52,8 @@ test('Check raw method returns blob when type is "blob"', async () => {
     const formFiller = new PDFFormFiller({
         fieldMap: {},
         data: {},
-        pdfTemplate: 'test-template'
+        pdfTemplate: 'test-template',
+        pdfLibraryAdapter: null as any
     });
     const mockGetPDFBytes = jest.spyOn(formFiller as any, 'getPDFBytes').mockResolvedValue(mockPDFBytes);
 
@@ -67,7 +68,8 @@ test('Check raw method returns blob URL when type is "bloburl"', async () => {
     const formFiller = new PDFFormFiller({
         fieldMap: {},
         data: {},
-        pdfTemplate: 'test-template'
+        pdfTemplate: 'test-template',
+        pdfLibraryAdapter: null as any
     });
     const mockGetPDFBytes = jest.spyOn(formFiller as any, 'getPDFBytes').mockResolvedValue(mockPDFBytes);
 
@@ -83,7 +85,8 @@ test('Check raw method returns data URL string when type is "dataurlstring"', as
     const formFiller = new PDFFormFiller({
         fieldMap: {},
         data: {},
-        pdfTemplate: 'test-template'
+        pdfTemplate: 'test-template',
+        pdfLibraryAdapter: null as any
     });
     const mockGetPDFBytes = jest.spyOn(formFiller as any, 'getPDFBytes').mockResolvedValue(mockPDFBytes);
 
@@ -97,7 +100,8 @@ test('Check raw method handles errors from getPDFBytes', async () => {
     const formFiller = new PDFFormFiller({
         fieldMap: {},
         data: {},
-        pdfTemplate: 'test-template'
+        pdfTemplate: 'test-template',
+        pdfLibraryAdapter: null as any
     });
     const mockGetPDFBytes = jest.spyOn(formFiller as any, 'getPDFBytes').mockRejectedValue(new Error('PDF generation failed'));
 
@@ -119,11 +123,6 @@ test('Check getPDFBytes maps data correctly', async () => {
         question1: 'answer1',
         question2: 'option1'
     };
-    const formFiller = new PDFFormFiller({
-        fieldMap,
-        data,
-        pdfTemplate: 'test-template'
-    });
 
     // Mock FormMap
     const mockMapData = jest.spyOn(FormMap.prototype, 'mapData').mockReturnValue({
@@ -135,69 +134,22 @@ test('Check getPDFBytes maps data correctly', async () => {
     const mockAdapter = {
         fillForm: jest.fn().mockResolvedValue(mockPDFBytes)
     };
-    const mockCreateAdapter = jest.spyOn(PDFFormAdapterFactory.Instance, 'createAdapter').mockReturnValue(mockAdapter);
-    const mockGetAdapterIdsList = jest.spyOn(PDFFormAdapterFactory.Instance, 'getAdapterIdsList').mockReturnValue(['test-adapter']);
+
+    const formFiller = new PDFFormFiller({
+        fieldMap,
+        data,
+        pdfTemplate: 'test-template',
+        pdfLibraryAdapter: mockAdapter
+    });
 
     const result = await (formFiller as any).getPDFBytes();
     expect(result).toBe(mockPDFBytes);
     expect(mockMapData).toHaveBeenCalledWith(data);
-    expect(mockCreateAdapter).toHaveBeenCalledWith('test-adapter');
+
     expect(mockAdapter.fillForm).toHaveBeenCalledWith('test-template', {
         field1: 'answer1',
         field2: 'value1'
     });
-});
-
-test('Check getPDFBytes tries next adapter if first fails', async () => {
-    const mockPDFBytes = new Uint8Array([1, 2, 3, 4]);
-    const formFiller = new PDFFormFiller({
-        fieldMap: {},
-        data: {},
-        pdfTemplate: 'test-template'
-    });
-
-    // Mock FormMap
-    const mockMapData = jest.spyOn(FormMap.prototype, 'mapData').mockReturnValue({});
-
-    // Mock adapters
-    const mockAdapter1 = {
-        fillForm: jest.fn().mockResolvedValue(null)
-    };
-    const mockAdapter2 = {
-        fillForm: jest.fn().mockResolvedValue(mockPDFBytes)
-    };
-    const mockCreateAdapter = jest.spyOn(PDFFormAdapterFactory.Instance, 'createAdapter')
-        .mockImplementation((id) => id === 'adapter1' ? mockAdapter1 : mockAdapter2);
-    const mockGetAdapterIdsList = jest.spyOn(PDFFormAdapterFactory.Instance, 'getAdapterIdsList')
-        .mockReturnValue(['adapter1', 'adapter2']);
-
-    const result = await (formFiller as any).getPDFBytes();
-    expect(result).toBe(mockPDFBytes);
-    expect(mockAdapter1.fillForm).toHaveBeenCalled();
-    expect(mockAdapter2.fillForm).toHaveBeenCalled();
-});
-
-test('Check getPDFBytes returns null if no adapter succeeds', async () => {
-    const formFiller = new PDFFormFiller({
-        fieldMap: {},
-        data: {},
-        pdfTemplate: 'test-template'
-    });
-
-    // Mock FormMap
-    const mockMapData = jest.spyOn(FormMap.prototype, 'mapData').mockReturnValue({});
-
-    // Mock adapters
-    const mockAdapter = {
-        fillForm: jest.fn().mockResolvedValue(null)
-    };
-    const mockCreateAdapter = jest.spyOn(PDFFormAdapterFactory.Instance, 'createAdapter').mockReturnValue(mockAdapter);
-    const mockGetAdapterIdsList = jest.spyOn(PDFFormAdapterFactory.Instance, 'getAdapterIdsList')
-        .mockReturnValue(['adapter1']);
-
-    const result = await (formFiller as any).getPDFBytes();
-    expect(result).toBeNull();
-    expect(mockAdapter.fillForm).toHaveBeenCalled();
 });
 
 test('Check save method downloads PDF with default filename', async () => {
@@ -205,7 +157,8 @@ test('Check save method downloads PDF with default filename', async () => {
     const formFiller = new PDFFormFiller({
         fieldMap: {},
         data: {},
-        pdfTemplate: 'test-template'
+        pdfTemplate: 'test-template',
+        pdfLibraryAdapter: null as any
     });
     const mockGetPDFBytes = jest.spyOn(formFiller as any, 'getPDFBytes').mockResolvedValue(mockPDFBytes);
 
@@ -227,7 +180,8 @@ test('Check save method downloads PDF with custom filename', async () => {
     const formFiller = new PDFFormFiller({
         fieldMap: {},
         data: {},
-        pdfTemplate: 'test-template'
+        pdfTemplate: 'test-template',
+        pdfLibraryAdapter: null as any
     });
     const mockGetPDFBytes = jest.spyOn(formFiller as any, 'getPDFBytes').mockResolvedValue(mockPDFBytes);
     const customFilename = 'custom-survey.pdf';

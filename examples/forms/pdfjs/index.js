@@ -119,13 +119,12 @@ const fieldMap = {
   ]
 }
 
-let form = new SurveyPdfForms.PDFFormFiller();
-form.fieldMap = fieldMap;
-form.data = data;
-form.pdfTemplate = template;
-
-
 document.addEventListener('DOMContentLoaded', function() {
+  let form = new PDFFormFiller.PDFFormFiller();
+  form.fieldMap = fieldMap;
+  form.data = data;
+  form.pdfTemplate = template;
+  form.pdfLibraryAdapter = new PDFFormFiller.PDFJSAdapter(window.pdfjsLib);
   form.save('result.pdf');
 }, false);
 

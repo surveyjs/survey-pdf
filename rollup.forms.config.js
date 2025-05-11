@@ -2,7 +2,7 @@ const defaultConfig = require("./rollup.config");
 const path = require("path");
 const fs = require("fs");
 const input = {
-    "survey.pdf.forms": path.resolve(__dirname, "./src/forms.ts"),
+    "survey.pdf.forms": path.resolve(__dirname, "./src/entries/forms.ts"),
 };
 
 module.exports = () => {

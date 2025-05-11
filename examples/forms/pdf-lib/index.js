@@ -118,6 +118,6 @@ const fieldMap = {
       }
   ]
 }
-
-let form = new SurveyPdfForms.PDFFormFiller({data, fieldMap, pdfTemplate: template});
+const adapter = new PDFFormFiller.PDFLibAdapter(window.PDFLib);
+const form = new PDFFormFiller.PDFFormFiller({data, fieldMap, pdfTemplate: template, pdfLibraryAdapter: adapter});
 form.save('result.pdf');

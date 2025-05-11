@@ -1,12 +1,11 @@
-import FormMap from '../src/pdf_forms/map';
-import { PdfLibAdapter } from './pdf_forms/adapters/pdf-lib';
-import { PdfJsAdapter } from './pdf_forms/adapters/pdfjs';
-import { PDFFormAdapterFactory as PDFFormAdapterFactory } from './pdf_forms/registry';
+import FormMap from './map';
+import { IPDFFormAdapter } from './adapters/adapter';
 
 interface IPDFFormFillerOptions{
     fieldMap: any;
     data: any;
     pdfTemplate: string;
+    pdfLibraryAdapter: IPDFFormAdapter;
 }
 export class PDFFormFiller {
     constructor (options: IPDFFormFillerOptions = null) {
@@ -14,25 +13,18 @@ export class PDFFormFiller {
             this.data = options.data;
             this.fieldMap = options.fieldMap;
             this.pdfTemplate = options.pdfTemplate;
+            this.pdfLibraryAdapter = options.pdfLibraryAdapter;
         }
-    }
-    private async fillFormWithAnyAdapter(plainData: any) {
-        const adapters = PDFFormAdapterFactory.Instance.getAdapterIdsList();
-        for (let i = 0; i < adapters.length; i++) {
-            const adapter = PDFFormAdapterFactory.Instance.createAdapter(adapters[i]);
-            const data = await adapter.fillForm(this.pdfTemplate, plainData);
-            if (data) return data;
-        }
-        return null;
     }
     public pdfTemplate: string;
     public fieldMap: any;
     public data: any;
+    public pdfLibraryAdapter: IPDFFormAdapter;
 
     private async getPDFBytes() {
         const map = new FormMap(this.fieldMap);
         const plainData = map.mapData(this.data);
-        return await this.fillFormWithAnyAdapter(plainData);
+        return await this.pdfLibraryAdapter.fillForm(this.pdfTemplate, plainData);
     }
     /**
      * An asynchronous method that allows you to get PDF content in different formats.
@@ -71,5 +63,3 @@ export class PDFFormFiller {
         URL.revokeObjectURL(link.href);
     }
 }
-PDFFormAdapterFactory.Instance.registerAdapter('pdf-lib', PdfLibAdapter);
-PDFFormAdapterFactory.Instance.registerAdapter('pdfjs', PdfJsAdapter);

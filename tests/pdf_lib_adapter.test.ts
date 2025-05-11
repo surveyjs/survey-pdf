@@ -1,4 +1,4 @@
-import { PdfLibAdapter } from '../src/pdf_forms/adapters/pdf-lib';
+import { PDFLibAdapter as PDFLibAdapter } from '../src/pdf_forms/adapters/pdf-lib';
 
 // Mock PDFLib
 const mockPDFBytes = new Uint8Array([1, 2, 3, 4]);
@@ -42,7 +42,7 @@ class MockPDFDropdown {
 }
 
 describe('PdfLibAdapter', () => {
-    let adapter: PdfLibAdapter;
+    let adapter: PDFLibAdapter;
     const template = 'test-template';
     const data = {
         textField: 'text value',
@@ -52,27 +52,21 @@ describe('PdfLibAdapter', () => {
     };
 
     beforeEach(() => {
-        adapter = new PdfLibAdapter();
         jest.clearAllMocks();
         // Reset PDFLib mock before each test
-        (global as any).PDFLib = {
+        const PDFLib = {
             PDFDocument: mockPDFDocument,
             PDFTextField: MockPDFTextField,
             PDFCheckBox: MockPDFCheckBox,
             PDFRadioGroup: MockPDFRadioGroup,
             PDFDropdown: MockPDFDropdown
         };
+        adapter = new PDFLibAdapter(PDFLib);
     });
 
     afterEach(() => {
         // Clean up PDFLib mock after each test
         (global as any).PDFLib = undefined;
-    });
-
-    test('Check fillForm returns null if PDFLib is not available', async () => {
-        (global as any).PDFLib = undefined;
-        const result = await adapter.fillForm(template, data);
-        expect(result).toBeNull();
     });
 
     test('Check fillForm loads PDF document', async () => {

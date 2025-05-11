@@ -7,20 +7,12 @@ var packageJson = require("./package.json");
 
 const config = {
   entry: {
-    "survey.pdf.forms": path.resolve(__dirname, "./src/forms.ts"),
-  },
-  externals: {
-    "survey-pdf": {
-      root: "SurveyPDF",
-      commonjs2: "survey-pdf",
-      commonjs: "survey-pdf",
-      amd: "survey-pdf"
-    }
+    "survey.pdf.forms": path.resolve(__dirname, "./src/entries/forms.ts"),
   }
 };
 
 module.exports = function (options) {
-  options.libraryName = "SurveyPdfForms";
+  options.libraryName = "PDFFormFiller";
 
   const mainConfig = webpackCommonConfigCreator(options);
   mainConfig.entry = {};

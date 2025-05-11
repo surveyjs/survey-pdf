@@ -1,4 +1,4 @@
-import { PdfJsAdapter } from '../src/pdf_forms/adapters/pdfjs';
+import { PDFJSAdapter as PDFJSAdapter } from '../src/pdf_forms/adapters/pdfjs';
 
 // Mock PDF bytes
 const mockPDFBytes = new Uint8Array([1, 2, 3, 4]);
@@ -25,7 +25,6 @@ interface MockPDFAnnotation {
 }
 
 describe('PdfJsAdapter', () => {
-    let adapter: PdfJsAdapter;
     const template = 'test-template';
     const data = {
         textField: 'text value',
@@ -35,7 +34,6 @@ describe('PdfJsAdapter', () => {
     };
 
     beforeEach(() => {
-        adapter = new PdfJsAdapter();
         jest.clearAllMocks();
     });
 
@@ -44,19 +42,13 @@ describe('PdfJsAdapter', () => {
         (global as any).pdfjsLib = undefined;
     });
 
-    test('Check fillForm returns null if pdfjsLib is not available', async () => {
-        (global as any).pdfjsLib = undefined;
-        const result = await adapter.fillForm(template, data);
-        expect(result).toBeNull();
-    });
-
     test('Check fillForm loads PDF document', async () => {
         const mockSetValue = jest.fn();
         const mockGetAnnotations = jest.fn().mockResolvedValue([]);
         const mockGetPage = jest.fn().mockResolvedValue({ getAnnotations: mockGetAnnotations });
         const mockSaveDocument = jest.fn().mockResolvedValue(mockPDFBytes);
 
-        (global as any).pdfjsLib = {
+        const pdfjsLib = {
             getDocument: jest.fn().mockImplementation(() => ({
                 promise: Promise.resolve({
                     getPage: mockGetPage,
@@ -65,9 +57,10 @@ describe('PdfJsAdapter', () => {
                 })
             }))
         };
+        let adapter: PDFJSAdapter = new PDFJSAdapter(pdfjsLib);
 
         await adapter.fillForm(template, data);
-        expect((global as any).pdfjsLib.getDocument).toHaveBeenCalledWith(template);
+        expect(pdfjsLib.getDocument).toHaveBeenCalledWith(template);
     });
 
     test('Check fillForm handles text field', async () => {
@@ -81,7 +74,7 @@ describe('PdfJsAdapter', () => {
         const mockGetPage = jest.fn().mockResolvedValue({ getAnnotations: mockGetAnnotations });
         const mockSaveDocument = jest.fn().mockResolvedValue(mockPDFBytes);
 
-        (global as any).pdfjsLib = {
+        const pdfjsLib = {
             getDocument: jest.fn().mockImplementation(() => ({
                 promise: Promise.resolve({
                     getPage: mockGetPage,
@@ -90,7 +83,7 @@ describe('PdfJsAdapter', () => {
                 })
             }))
         };
-
+        let adapter: PDFJSAdapter = new PDFJSAdapter(pdfjsLib);
         await adapter.fillForm(template, data);
         expect(mockSetValue).toHaveBeenCalledWith('1', { value: 'text value' });
     });
@@ -108,7 +101,7 @@ describe('PdfJsAdapter', () => {
         const mockGetPage = jest.fn().mockResolvedValue({ getAnnotations: mockGetAnnotations });
         const mockSaveDocument = jest.fn().mockResolvedValue(mockPDFBytes);
 
-        (global as any).pdfjsLib = {
+        const pdfjsLib = {
             getDocument: jest.fn().mockImplementation(() => ({
                 promise: Promise.resolve({
                     getPage: mockGetPage,
@@ -117,6 +110,7 @@ describe('PdfJsAdapter', () => {
                 })
             }))
         };
+        let adapter: PDFJSAdapter = new PDFJSAdapter(pdfjsLib);
 
         await adapter.fillForm(template, data);
         expect(mockSetValue).toHaveBeenCalledWith('1', { value: 'option1' });
@@ -135,7 +129,7 @@ describe('PdfJsAdapter', () => {
         const mockGetPage = jest.fn().mockResolvedValue({ getAnnotations: mockGetAnnotations });
         const mockSaveDocument = jest.fn().mockResolvedValue(mockPDFBytes);
 
-        (global as any).pdfjsLib = {
+        const pdfjsLib = {
             getDocument: jest.fn().mockImplementation(() => ({
                 promise: Promise.resolve({
                     getPage: mockGetPage,
@@ -144,7 +138,7 @@ describe('PdfJsAdapter', () => {
                 })
             }))
         };
-
+        let adapter: PDFJSAdapter = new PDFJSAdapter(pdfjsLib);
         await adapter.fillForm(template, data);
         expect(mockSetValue).not.toHaveBeenCalled();
     });
@@ -160,7 +154,7 @@ describe('PdfJsAdapter', () => {
         const mockGetPage = jest.fn().mockResolvedValue({ getAnnotations: mockGetAnnotations });
         const mockSaveDocument = jest.fn().mockResolvedValue(mockPDFBytes);
 
-        (global as any).pdfjsLib = {
+        const pdfjsLib = {
             getDocument: jest.fn().mockImplementation(() => ({
                 promise: Promise.resolve({
                     getPage: mockGetPage,
@@ -169,6 +163,7 @@ describe('PdfJsAdapter', () => {
                 })
             }))
         };
+        let adapter: PDFJSAdapter = new PDFJSAdapter(pdfjsLib);
 
         await adapter.fillForm(template, { emptyField: null });
         expect(mockSetValue).not.toHaveBeenCalled();
@@ -180,7 +175,7 @@ describe('PdfJsAdapter', () => {
         const mockGetPage = jest.fn().mockResolvedValue({ getAnnotations: mockGetAnnotations });
         const mockSaveDocument = jest.fn().mockResolvedValue(mockPDFBytes);
 
-        (global as any).pdfjsLib = {
+        const pdfjsLib = {
             getDocument: jest.fn().mockImplementation(() => ({
                 promise: Promise.resolve({
                     getPage: mockGetPage,
@@ -189,6 +184,7 @@ describe('PdfJsAdapter', () => {
                 })
             }))
         };
+        let adapter: PDFJSAdapter = new PDFJSAdapter(pdfjsLib);
 
         const result = await adapter.fillForm(template, data);
         expect(result).toBe(mockPDFBytes);

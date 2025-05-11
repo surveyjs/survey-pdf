@@ -1,8 +1,8 @@
 import { IPDFFormAdapter } from './adapter';
-export class PdfJsAdapter implements IPDFFormAdapter {
+export class PDFJSAdapter implements IPDFFormAdapter {
+    constructor (private pdfLibrary: any) { }
     public async fillForm(template: string, data: any) {
-        const pdfjsLib = (window as any).pdfjsLib;
-        if(!pdfjsLib) return null;
+        const pdfjsLib = this.pdfLibrary;
         const doc = await pdfjsLib.getDocument(template).promise;
         const page = await doc.getPage(1);
         const annotations = await page.getAnnotations();
