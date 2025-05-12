@@ -8,6 +8,5 @@ const input = {
 module.exports = () => {
   const config = defaultConfig();
   config.input = input;
-  config.external = ["survey-pdf"];
   return config;
 };
