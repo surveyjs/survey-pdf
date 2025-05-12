@@ -144,9 +144,9 @@ export interface IDocOptions {
 
     /**
      * Page margins.
-     * 
+     *
      * Set this property to an object with the following fields: `top`, `bot`, `left`, `right`.
-     * 
+     *
      * [View Demo](https://surveyjs.io/pdf-generator/examples/save-completed-forms-as-pdf-files/ (linkStyle))
      */
     margins?: IMargin;
@@ -161,7 +161,7 @@ export interface IDocOptions {
      * - `"auto"` (default) - Select between the `"standard"` and `"image"` modes automatically based on the HTML content.
      *
      * [View Demo](https://surveyjs.io/pdf-generator/examples/split-html-image-across-pages/ (linkStyle))
-     * 
+     *
      * You can override this property for an individual HTML question. Set the question's `renderAs` property to `"standard"` or `"image"` in the survey JSON schema.
      * @see useCustomFontInHtml
      */
@@ -405,7 +405,7 @@ export class DocController extends DocOptions {
     public static customFonts: { [name: string]: { normal: string, bold: string, italic: string, bolditalic: string } } = {};
     /**
      * Adds a custom font to the PDF Generator.
-     * 
+     *
      * [View Demo](https://surveyjs.io/pdf-generator/examples/change-font-in-pdf-form/ (linkStyle))
      * @param fontName A custom name that you will use to apply the custom font.
      * @param base64 The custom font as a Base64-encoded string. To encode your font to Base64, obtain it as a TTF file and use any TTF-to-Base64 online converter.
