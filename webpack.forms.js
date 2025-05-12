@@ -7,7 +7,7 @@ var packageJson = require("./package.json");
 
 const config = {
   entry: {
-    "survey.pdf.forms": path.resolve(__dirname, "./src/entries/forms.ts"),
+    "pdf-form-filler": path.resolve(__dirname, "./src/entries/forms.ts"),
   }
 };
 
