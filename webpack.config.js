@@ -45,6 +45,10 @@ const buildPlatformJson = {
       "import": "./fesm/survey.pdf.fonts.mjs",
       "require": "./survey.pdf.fonts.js"
     },
+    "./survey.pdf.forms": {
+      "import": "./fesm/survey.pdf.forms.mjs",
+      "require": "./survey.pdf.forms.js"
+    },
   }
 }
 
