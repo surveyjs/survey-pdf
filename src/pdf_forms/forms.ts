@@ -1,10 +1,8 @@
 import { PDFFormFillerBase } from './forms-base';
 
 export class PDFFormFiller extends PDFFormFillerBase {
-    public async save(fileName: string = 'survey_result.pdf') {
-        const pdfBytes = await this.getPDFBytes();
+    protected async saveToFile(pdfBytes: string, fileName: string) {
         const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
         link.download = fileName;

@@ -44,10 +44,15 @@ export abstract class PDFFormFillerBase {
         if (type == 'bloburl') return URL.createObjectURL(blob);
         return pdfBytes;
     }
+
+    protected abstract saveToFile(pdfBytes:string, fileName: string): Promise<void>;
     /**
      * An asynchronous method that starts download of the generated PDF file in the web browser.
      *
      * @param fileName *(Optional)* A file name with the ".pdf" extension. Default value: `"survey_result.pdf"`.
      */
-    public abstract save(filename: string): Promise<void>;
+    public async save(fileName: string = 'survey_result.pdf') {
+        const pdfBytes = await this.getPDFBytes();
+        await this.saveToFile(pdfBytes, fileName);
+    }
 }
