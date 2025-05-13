@@ -46,6 +46,10 @@ const buildPlatformJson = {
       "require": "./survey.pdf.fonts.js"
     },
     "./pdf-form-filler": {
+      "node": {
+        "import": "./fesm/pdf-form-filler.node.mjs",
+        "require": "./pdf-form-filler.node.js"  
+      },
       "import": "./fesm/pdf-form-filler.mjs",
       "require": "./pdf-form-filler.js"
     },

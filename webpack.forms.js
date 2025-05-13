@@ -8,6 +8,10 @@ var packageJson = require("./package.json");
 const config = {
   entry: {
     "pdf-form-filler": path.resolve(__dirname, "./src/entries/forms.ts"),
+    "pdf-form-filler.node": path.resolve(__dirname, "./src/entries/forms-node.ts"),
+  },
+  externals: {
+    "fs": "fs"
   }
 };
 

@@ -19,6 +19,15 @@ document.createElement = jest.fn().mockReturnValue(mockLink);
 document.body.appendChild = jest.fn();
 document.body.removeChild = jest.fn();
 
+// Mock fs.writeFile for Node.js tests
+const mockWriteFile = jest.fn();
+jest.mock('fs', () => ({
+    writeFile: (path: string, data: any, callback: (err: Error | null) => void) => mockWriteFile(path, data, callback)
+}));
+
+// Import Node.js version of PDFFormFiller
+import { PDFFormFiller as NodePDFFormFiller } from '../src/pdf_forms/forms-node';
+
 test('Check constructor with no options', async () => {
     const mockPDFBytes = new Uint8Array([1, 2, 3, 4]);
     const formFiller = new PDFFormFiller();
@@ -197,4 +206,80 @@ test('Check save method downloads PDF with custom filename', async () => {
     expect(document.body.appendChild).toHaveBeenCalledWith(mockLink);
     expect(document.body.removeChild).toHaveBeenCalledWith(mockLink);
     expect(URL.revokeObjectURL).toHaveBeenCalledWith(mockBlobUrl);
+});
+
+describe('Node.js PDFFormFiller save method', () => {
+    beforeEach(() => {
+        mockWriteFile.mockClear();
+    });
+
+    test('Check save method writes PDF to file with default filename', async () => {
+        const mockPDFBytes = new Uint8Array([1, 2, 3, 4]);
+        const formFiller = new NodePDFFormFiller({
+            fieldMap: {},
+            data: {},
+            pdfTemplate: 'test-template',
+            pdfLibraryAdapter: null as any
+        });
+        const mockGetPDFBytes = jest.spyOn(formFiller as any, 'getPDFBytes').mockResolvedValue(mockPDFBytes);
+
+        // Mock successful file write
+        mockWriteFile.mockImplementation((path, data, callback) => callback(null));
+
+        await formFiller.save();
+
+        expect(mockGetPDFBytes).toHaveBeenCalledTimes(1);
+        expect(mockWriteFile).toHaveBeenCalledWith(
+            'survey_result.pdf',
+            mockPDFBytes,
+            expect.any(Function)
+        );
+    });
+
+    test('Check save method writes PDF to file with custom filename', async () => {
+        const mockPDFBytes = new Uint8Array([1, 2, 3, 4]);
+        const formFiller = new NodePDFFormFiller({
+            fieldMap: {},
+            data: {},
+            pdfTemplate: 'test-template',
+            pdfLibraryAdapter: null as any
+        });
+        const mockGetPDFBytes = jest.spyOn(formFiller as any, 'getPDFBytes').mockResolvedValue(mockPDFBytes);
+        const customFilename = 'custom-survey.pdf';
+
+        // Mock successful file write
+        mockWriteFile.mockImplementation((path, data, callback) => callback(null));
+
+        await formFiller.save(customFilename);
+
+        expect(mockGetPDFBytes).toHaveBeenCalledTimes(1);
+        expect(mockWriteFile).toHaveBeenCalledWith(
+            customFilename,
+            mockPDFBytes,
+            expect.any(Function)
+        );
+    });
+
+    test('Check save method handles file write errors', async () => {
+        const mockPDFBytes = new Uint8Array([1, 2, 3, 4]);
+        const formFiller = new NodePDFFormFiller({
+            fieldMap: {},
+            data: {},
+            pdfTemplate: 'test-template',
+            pdfLibraryAdapter: null as any
+        });
+        const mockGetPDFBytes = jest.spyOn(formFiller as any, 'getPDFBytes').mockResolvedValue(mockPDFBytes);
+
+        // Mock file write error
+        const writeError = new Error('Failed to write file');
+        mockWriteFile.mockImplementation((path, data, callback) => callback(writeError));
+
+        await expect(formFiller.save()).rejects.toThrow('Failed to write file');
+        expect(mockGetPDFBytes).toHaveBeenCalledTimes(1);
+        expect(mockWriteFile).toHaveBeenCalledWith(
+            'survey_result.pdf',
+            mockPDFBytes,
+            expect.any(Function)
+        );
+    });
 });
