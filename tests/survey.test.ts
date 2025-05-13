@@ -163,3 +163,54 @@ test('Check dropdown isReady works correctly', async () => {
     await survey['waitForCoreIsReady']();
     expect(question.displayValue).toBe('TEST');
 });
+
+test('Check questionsOnPageMode: "inputPerPage"', async () => {
+    const survey = new SurveyPDF(
+        {
+            'questionsOnPageMode': 'inputPerPage',
+            'pages': [
+                {
+                    'name': 'page1',
+                    'elements': [
+                        {
+                            type: 'text',
+                            name: 'q1'
+                        },
+                        {
+                            type: 'text',
+                            name: 'q2'
+                        }
+                    ]
+                },
+                {
+                    'name': 'page3',
+                    'elements': [
+                        {
+                            type: 'text',
+                            name: 'q3'
+                        },
+                        {
+                            type: 'text',
+                            name: 'q4'
+                        }
+                    ]
+                }
+            ],
+        }
+    );
+    expect(survey.visiblePages.length).toBe(2);
+
+    expect(survey.visiblePages[0].visibleQuestions.length).toBe(2);
+    expect(survey.visiblePages[0].rows.length).toBe(2);
+    expect(survey.visiblePages[0].rows[0].elements.length).toBe(1);
+    expect(survey.visiblePages[0].rows[0].elements[0].name).toBe('q1');
+    expect(survey.visiblePages[0].rows[1].elements.length).toBe(1);
+    expect(survey.visiblePages[0].rows[1].elements[0].name).toBe('q2');
+
+    expect(survey.visiblePages[1].visibleQuestions.length).toBe(2);
+    expect(survey.visiblePages[1].rows.length).toBe(2);
+    expect(survey.visiblePages[1].rows[0].elements.length).toBe(1);
+    expect(survey.visiblePages[1].rows[0].elements[0].name).toBe('q3');
+    expect(survey.visiblePages[1].rows[1].elements.length).toBe(1);
+    expect(survey.visiblePages[1].rows[1].elements[0].name).toBe('q4');
+});
