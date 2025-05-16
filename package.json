@@ -8,6 +8,7 @@
     "release": "standard-version --message \"Release: %s [azurepipelines skip]\" ",
     "doc_gen": "node doc_generator/lib_docgenerator.js src/entries/pdf.ts",
     "doc_update": "chmod +x ./docupdate_npm.sh && ./docupdate_npm.sh",
+    "build:all": "npm run build && npm run build:fonts && npm run build:forms",
     "build": "webpack --env buildType=dev --env emitDeclarations --env emitNonSourceFiles && webpack --env buildType=prod && rollup -c",
     "build:fonts": "webpack --config ./webpack.fonts.js --env buildType=dev && webpack --config ./webpack.fonts.js --env buildType=prod && rollup -c rollup.fonts.config.js",
     "build:forms": "webpack --config ./webpack.forms.js --env buildType=dev && webpack --config ./webpack.forms.js --env buildType=prod && rollup -c rollup.forms.config.js",
@@ -19,7 +20,7 @@
     "type": "git",
     "url": "https://github.com/surveyjs/survey-pdf.git"
   },
-  "version": "2.0.8",
+  "version": "2.0.9",
   "name": "survey-pdf",
   "license": "SEE LICENSE IN LICENSE",
   "dependencies": {
