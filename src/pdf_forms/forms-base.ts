@@ -38,7 +38,7 @@ export abstract class PDFFormFillerBase {
     public async raw(type?: 'blob' | 'bloburl' | 'dataurlstring') {
         const pdfBytes = await this.getPDFBytes();
         if (!type) return pdfBytes;
-        if (type == 'dataurlstring') return 'data:text/plain;base64,' + btoa(pdfBytes);
+        if (type == 'dataurlstring') return 'data:application/pdf;base64,' + btoa(String.fromCharCode.apply(null, pdfBytes));
         const blob = new Blob([pdfBytes], { type: 'application/pdf' });
         if (type == 'blob') return blob;
         if (type == 'bloburl') return URL.createObjectURL(blob);
