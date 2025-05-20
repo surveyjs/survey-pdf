@@ -101,7 +101,7 @@ test('Check raw method returns data URL string when type is "dataurlstring"', as
 
     const result = await formFiller.raw('dataurlstring');
     expect(typeof result).toBe('string');
-    expect(result.startsWith('data:text/plain;base64,')).toBe(true);
+    expect(result).toBe('data:application/pdf;base64,AQIDBA==');
     expect(mockGetPDFBytes).toHaveBeenCalledTimes(1);
 });
 
