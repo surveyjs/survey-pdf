@@ -159,4 +159,122 @@ describe('PdfLibAdapter', () => {
         const result = await adapter.fillForm(template, data);
         expect(result).toBe(mockPDFBytes);
     });
+
+    describe('Multi-page document handling', () => {
+        test('Check fillForm processes fields from all pages', async () => {
+            // Create mock fields for different pages
+            const textField1 = new MockPDFTextField();
+            textField1.getName = jest.fn().mockReturnValue('textField1');
+            textField1.setText = jest.fn();
+
+            const checkbox1 = new MockPDFCheckBox();
+            checkbox1.getName = jest.fn().mockReturnValue('checkbox1');
+            checkbox1.check = jest.fn();
+
+            const radio1 = new MockPDFRadioGroup();
+            radio1.getName = jest.fn().mockReturnValue('radio1');
+            radio1.select = jest.fn();
+
+            const textField2 = new MockPDFTextField();
+            textField2.getName = jest.fn().mockReturnValue('textField2');
+            textField2.setText = jest.fn();
+
+            // Mock document with fields from multiple pages
+            mockPDFDocument.load.mockImplementation(() => Promise.resolve({
+                getForm: jest.fn().mockReturnValue({
+                    getFields: jest.fn().mockReturnValue([
+                        textField1,
+                        checkbox1,
+                        radio1,
+                        textField2
+                    ])
+                }),
+                save: jest.fn().mockResolvedValue(mockPDFBytes)
+            } as MockPDFDocument));
+
+            const multiPageData = {
+                textField1: 'value1',
+                checkbox1: true,
+                radio1: 'option1',
+                textField2: 'value2'
+            };
+
+            const result = await adapter.fillForm(template, multiPageData);
+
+            expect(result).toBe(mockPDFBytes);
+            expect(textField1.setText).toHaveBeenCalledWith('value1');
+            expect(checkbox1.check).toHaveBeenCalled();
+            expect(radio1.select).toHaveBeenCalledWith('option1');
+            expect(textField2.setText).toHaveBeenCalledWith('value2');
+        });
+
+        test('Check fillForm handles documents with empty pages', async () => {
+            const textField = new MockPDFTextField();
+            textField.getName = jest.fn().mockReturnValue('textField1');
+            textField.setText = jest.fn();
+
+            // Mock document with only one field
+            mockPDFDocument.load.mockImplementation(() => Promise.resolve({
+                getForm: jest.fn().mockReturnValue({
+                    getFields: jest.fn().mockReturnValue([textField])
+                }),
+                save: jest.fn().mockResolvedValue(mockPDFBytes)
+            } as MockPDFDocument));
+
+            const data = {
+                textField1: 'value1'
+            };
+
+            const result = await adapter.fillForm(template, data);
+
+            expect(result).toBe(mockPDFBytes);
+            expect(textField.setText).toHaveBeenCalledWith('value1');
+        });
+
+        test('Check fillForm handles documents with mixed field types across pages', async () => {
+            const textField = new MockPDFTextField();
+            textField.getName = jest.fn().mockReturnValue('textField1');
+            textField.setText = jest.fn();
+
+            const checkbox = new MockPDFCheckBox();
+            checkbox.getName = jest.fn().mockReturnValue('checkbox1');
+            checkbox.check = jest.fn();
+
+            const radio = new MockPDFRadioGroup();
+            radio.getName = jest.fn().mockReturnValue('radio1');
+            radio.select = jest.fn();
+
+            const dropdown = new MockPDFDropdown();
+            dropdown.getName = jest.fn().mockReturnValue('dropdown1');
+            dropdown.select = jest.fn();
+
+            // Mock document with different field types
+            mockPDFDocument.load.mockImplementation(() => Promise.resolve({
+                getForm: jest.fn().mockReturnValue({
+                    getFields: jest.fn().mockReturnValue([
+                        textField,
+                        checkbox,
+                        radio,
+                        dropdown
+                    ])
+                }),
+                save: jest.fn().mockResolvedValue(mockPDFBytes)
+            } as MockPDFDocument));
+
+            const mixedData = {
+                textField1: 'value1',
+                checkbox1: true,
+                radio1: 'option1',
+                dropdown1: 'option2'
+            };
+
+            const result = await adapter.fillForm(template, mixedData);
+
+            expect(result).toBe(mockPDFBytes);
+            expect(textField.setText).toHaveBeenCalledWith('value1');
+            expect(checkbox.check).toHaveBeenCalled();
+            expect(radio.select).toHaveBeenCalledWith('option1');
+            expect(dropdown.select).toHaveBeenCalledWith('option2');
+        });
+    });
 });
