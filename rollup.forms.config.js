@@ -7,7 +7,9 @@ const input = {
 };
 
 module.exports = () => {
-  const config = defaultConfig();
+  const config = defaultConfig({
+    tsconfig:  path.resolve(__dirname, "./tsconfig.forms.fesm.json")
+  });
   config.output[0].chunkFileNames =  (chunkInfo) => {
     if(!chunkInfo.isEntry) {
       return "pdf-form-filler-shared.mjs"

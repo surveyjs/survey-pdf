@@ -1,0 +1,12 @@
+{
+    "extends": [
+        "./tsconfig.json"
+    ],
+    "include": [
+        "src/entries/forms-node.ts",
+        "src/entries/forms.ts",
+    ],
+    "compilerOptions": {
+        "declarationDir": "build/forms-typings/",
+    },
+}

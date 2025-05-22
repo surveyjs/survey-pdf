@@ -46,6 +46,7 @@ const buildPlatformJson = {
       "require": "./survey.pdf.fonts.js"
     },
     "./pdf-form-filler": {
+      "types": "./forms-typings/entries/forms.d.ts",
       "node": {
         "import": "./fesm/pdf-form-filler.node.mjs",
         "require": "./pdf-form-filler.node.js"  
@@ -102,10 +103,10 @@ module.exports = function (options) {
             loader: "ts-loader",
             options: {
               configFile: options.tsConfigFile || "tsconfig.json",
-              compilerOptions: {
-                declaration: emitDeclarations,
-                declarationDir: emitDeclarations ? buildPath + "/typings/" : null
-              }
+              compilerOptions: emitDeclarations ? {} : {
+                declaration: false,
+                declarationDir: null
+              } 
             }
           }
         },

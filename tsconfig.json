@@ -2,7 +2,12 @@
   "compilerOptions": {
     "target": "es5",
     "module": "es2015",
-    "lib": ["dom", "es5", "es2015.promise", "es6"],
+    "lib": [
+      "dom",
+      "es5",
+      "es2015.promise",
+      "es6"
+    ],
     "sourceMap": true,
     "noImplicitAny": true,
     "importHelpers": true,
@@ -14,7 +19,12 @@
       "survey-pdf": [
         "./src/doc_controller.ts"
       ]
-    }
+    },
+    "declaration": true,
+    "declarationDir": "build/typings/",
   },
-  "include": ["src/**/*.ts"]
+  "include": [
+    "src/entries/pdf.ts",
+    "src/fonts.ts"
+  ]
 }

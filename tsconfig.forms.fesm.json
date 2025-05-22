@@ -1,0 +1,6 @@
+{
+    "extends": "./tsconfig.forms.json",
+    "compilerOptions": {
+        "target": "ES6"
+    }
+}
