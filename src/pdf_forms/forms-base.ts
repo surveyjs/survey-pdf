@@ -3,10 +3,10 @@ import { IPDFFormAdapter } from './adapters/adapter';
 import { writeFileSync } from 'fs';
 
 interface IPDFFormFillerOptions{
-    fieldMap: any;
-    data: any;
-    pdfTemplate: string;
-    pdfLibraryAdapter: IPDFFormAdapter;
+    fieldMap?: any;
+    data?: any;
+    pdfTemplate?: any;
+    pdfLibraryAdapter?: IPDFFormAdapter;
 }
 export abstract class PDFFormFillerBase {
     constructor (options: IPDFFormFillerOptions = null) {
@@ -17,7 +17,7 @@ export abstract class PDFFormFillerBase {
             this.pdfLibraryAdapter = options.pdfLibraryAdapter;
         }
     }
-    public pdfTemplate: string;
+    public pdfTemplate: any;
     public fieldMap: any;
     public data: any;
     public pdfLibraryAdapter: IPDFFormAdapter;

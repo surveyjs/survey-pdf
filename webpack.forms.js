@@ -17,7 +17,7 @@ const config = {
 
 module.exports = function (options) {
   options.libraryName = "PDFFormFiller";
-
+  options.tsConfigFile = path.resolve(__dirname, "./tsconfig.forms.json");
   const mainConfig = webpackCommonConfigCreator(options);
   mainConfig.entry = {};
   mainConfig.plugins.shift();

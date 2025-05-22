@@ -11,7 +11,7 @@
     "build:all": "npm run build && npm run build:fonts && npm run build:forms",
     "build": "webpack --env buildType=dev --env emitDeclarations --env emitNonSourceFiles && webpack --env buildType=prod && rollup -c",
     "build:fonts": "webpack --config ./webpack.fonts.js --env buildType=dev && webpack --config ./webpack.fonts.js --env buildType=prod && rollup -c rollup.fonts.config.js",
-    "build:forms": "webpack --config ./webpack.forms.js --env buildType=dev && webpack --config ./webpack.forms.js --env buildType=prod && rollup -c rollup.forms.config.js",
+    "build:forms": "webpack --config ./webpack.forms.js --env emitDeclarations --env buildType=dev && webpack --config ./webpack.forms.js --env buildType=prod && rollup -c rollup.forms.config.js",
     "watch:dev": "concurrently \"webpack --env buildType=dev --env emitDeclarations --watch\" \"rollup -c -w\" ",
     "lint": "eslint ./src --quiet",
     "pre-push-check": "npm run lint && npm run build && npm test"
