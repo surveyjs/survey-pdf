@@ -24,6 +24,7 @@
     "declarationDir": "build/typings/",
   },
   "include": [
-    "src/entries/pdf.ts"
+    "src/entries/pdf.ts",
+    "src/fonts.ts"
   ]
 }
