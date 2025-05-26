@@ -177,7 +177,7 @@ test('Check save method downloads PDF with default filename', async () => {
     expect(URL.createObjectURL).toHaveBeenCalledWith(expect.any(Blob));
     expect(document.createElement).toHaveBeenCalledWith('a');
     expect(mockLink.href).toBe(mockBlobUrl);
-    expect(mockLink.download).toBe('survey_result.pdf');
+    expect(mockLink.download).toBe('FilledForm.pdf');
     expect(mockClick).toHaveBeenCalled();
     expect(document.body.appendChild).toHaveBeenCalledWith(mockLink);
     expect(document.body.removeChild).toHaveBeenCalledWith(mockLink);
@@ -230,7 +230,7 @@ describe('Node.js PDFFormFiller save method', () => {
 
         expect(mockGetPDFBytes).toHaveBeenCalledTimes(1);
         expect(mockWriteFile).toHaveBeenCalledWith(
-            'survey_result.pdf',
+            'FilledForm.pdf',
             mockPDFBytes,
             expect.any(Function)
         );
@@ -277,7 +277,7 @@ describe('Node.js PDFFormFiller save method', () => {
         await expect(formFiller.save()).rejects.toThrow('Failed to write file');
         expect(mockGetPDFBytes).toHaveBeenCalledTimes(1);
         expect(mockWriteFile).toHaveBeenCalledWith(
-            'survey_result.pdf',
+            'FilledForm.pdf',
             mockPDFBytes,
             expect.any(Function)
         );

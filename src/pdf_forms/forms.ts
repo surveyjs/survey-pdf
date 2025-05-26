@@ -1,5 +1,14 @@
 import { PDFFormFillerBase } from './forms-base';
 
+/**
+ * A plugin that enables you to fill interactive fields in existing PDF forms.
+ *
+ * This plugin requires a third-party library, such as [`pdf-lib`](https://pdf-lib.js.org/) or [PDF.js](https://mozilla.github.io/pdf.js/):
+ *
+ * [View pdf-lib Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-using-pdflib/ (linkStyle))
+ *
+ * [View PDF.js Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-using-pdfjs/ (linkStyle))
+ */
 export class PDFFormFiller extends PDFFormFillerBase {
     protected async saveToFile(pdfBytes: string, fileName: string) {
         const blob = new Blob([pdfBytes], { type: 'application/pdf' });
