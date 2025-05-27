@@ -14,9 +14,9 @@ import { IPDFFormAdapter } from './adapters/adapter';
  * const form = new PDFFormFiller(pdfFormFillerOptions);
  * ```
  *
- * [View pdf-lib Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-using-pdflib/ (linkStyle))
+ * [View pdf-lib Demo](https://surveyjs.io/pdf-generator/examples/map-survey-responses-to-pdf-fields-using-pdflib/ (linkStyle))
  *
- * [View PDF.js Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-using-pdfjs/ (linkStyle))
+ * [View PDF.js Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-with-dynamic-survey-data-using-pdfjs/ (linkStyle))
  */
 interface IPDFFormFillerOptions {
     /**
@@ -24,9 +24,9 @@ interface IPDFFormFillerOptions {
      *
      * The easiest way to build a field map is to access the data object with respondent answers using the `SurveyModel`'s `data` property and replace the values with the PDF form field IDs. To find the IDs, open your PDF document in any editor that allows viewing them. Note that certain field types, such as [Checkboxes](https://surveyjs.io/form-library/examples/create-checkboxes-question-in-javascript/), [Dynamic Matrix](https://surveyjs.io/form-library/examples/dynamic-matrix-add-new-rows/), and [Dynamic Panel](https://surveyjs.io/form-library/examples/duplicate-group-of-fields-in-form/) require a different configuration. Refer to the following demos for code examples.
      *
-     * [View pdf-lib Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-using-pdflib/ (linkStyle))
+     * [View pdf-lib Demo](https://surveyjs.io/pdf-generator/examples/map-survey-responses-to-pdf-fields-using-pdflib/ (linkStyle))
      *
-     * [View PDF.js Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-using-pdfjs/ (linkStyle))
+     * [View PDF.js Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-with-dynamic-survey-data-using-pdfjs/ (linkStyle))
      */
     fieldMap?: any;
     /**
@@ -34,9 +34,9 @@ interface IPDFFormFillerOptions {
      *
      * Use the [`SurveyModel`](https://surveyjs.io/form-library/documentation/api-reference/survey-data-model)'s [`data`](https://surveyjs.io/form-library/documentation/api-reference/survey-data-model#data) property to access this data object.
      *
-     * [View pdf-lib Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-using-pdflib/ (linkStyle))
+     * [View pdf-lib Demo](https://surveyjs.io/pdf-generator/examples/map-survey-responses-to-pdf-fields-using-pdflib/ (linkStyle))
      *
-     * [View PDF.js Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-using-pdfjs/ (linkStyle))
+     * [View PDF.js Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-with-dynamic-survey-data-using-pdfjs/ (linkStyle))
      */
     data?: any;
     /**
@@ -44,9 +44,9 @@ interface IPDFFormFillerOptions {
      *
      * Because this document is passed on to a third-party library, the type of accepted values depends on this library.
      *
-     * [View pdf-lib Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-using-pdflib/ (linkStyle))
+     * [View pdf-lib Demo](https://surveyjs.io/pdf-generator/examples/map-survey-responses-to-pdf-fields-using-pdflib/ (linkStyle))
      *
-     * [View PDF.js Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-using-pdfjs/ (linkStyle))
+     * [View PDF.js Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-with-dynamic-survey-data-using-pdfjs/ (linkStyle))
      */
     pdfTemplate?: any;
     /**
@@ -54,9 +54,9 @@ interface IPDFFormFillerOptions {
      *
      * SurveyJS PDF Generator provides adapters for [`pdf-lib`](https://pdf-lib.js.org/) and [PDF.js](https://mozilla.github.io/pdf.js/) out of the box. Pass the libraries to the `PDFLibAdapter` or `PDFJSAdapter` constructor and assign the resulting instance to the `pdfLibraryAdapter` property.
      *
-     * [View pdf-lib Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-using-pdflib/ (linkStyle))
+     * [View pdf-lib Demo](https://surveyjs.io/pdf-generator/examples/map-survey-responses-to-pdf-fields-using-pdflib/ (linkStyle))
      *
-     * [View PDF.js Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-using-pdfjs/ (linkStyle))
+     * [View PDF.js Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-with-dynamic-survey-data-using-pdfjs/ (linkStyle))
      */
     pdfLibraryAdapter?: IPDFFormAdapter;
 }
@@ -77,9 +77,9 @@ export abstract class PDFFormFillerBase {
      *
      * Because this document is passed on to a third-party library, the type of accepted values depends on this library.
      *
-     * [View pdf-lib Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-using-pdflib/ (linkStyle))
+     * [View pdf-lib Demo](https://surveyjs.io/pdf-generator/examples/map-survey-responses-to-pdf-fields-using-pdflib/ (linkStyle))
      *
-     * [View PDF.js Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-using-pdfjs/ (linkStyle))
+     * [View PDF.js Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-with-dynamic-survey-data-using-pdfjs/ (linkStyle))
      */
     public pdfTemplate: any;
     /**
@@ -87,9 +87,9 @@ export abstract class PDFFormFillerBase {
      *
      * The easiest way to build a field map is to access the data object with respondent answers using the `SurveyModel`'s `data` property and replace the values with the PDF form field IDs. To find the IDs, open your PDF document in any editor that allows viewing them. Note that certain field types, such as [Checkboxes](https://surveyjs.io/form-library/examples/create-checkboxes-question-in-javascript/), [Dynamic Matrix](https://surveyjs.io/form-library/examples/dynamic-matrix-add-new-rows/), and [Dynamic Panel](https://surveyjs.io/form-library/examples/duplicate-group-of-fields-in-form/) require a different configuration. Refer to the following demos for code examples.
      *
-     * [View pdf-lib Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-using-pdflib/ (linkStyle))
+     * [View pdf-lib Demo](https://surveyjs.io/pdf-generator/examples/map-survey-responses-to-pdf-fields-using-pdflib/ (linkStyle))
      *
-     * [View PDF.js Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-using-pdfjs/ (linkStyle))
+     * [View PDF.js Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-with-dynamic-survey-data-using-pdfjs/ (linkStyle))
      */
     public fieldMap: any;
     /**
@@ -97,9 +97,9 @@ export abstract class PDFFormFillerBase {
      *
      * Use the [`SurveyModel`](https://surveyjs.io/form-library/documentation/api-reference/survey-data-model)'s [`data`](https://surveyjs.io/form-library/documentation/api-reference/survey-data-model#data) property to access this data object.
      *
-     * [View pdf-lib Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-using-pdflib/ (linkStyle))
+     * [View pdf-lib Demo](https://surveyjs.io/pdf-generator/examples/map-survey-responses-to-pdf-fields-using-pdflib/ (linkStyle))
      *
-     * [View PDF.js Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-using-pdfjs/ (linkStyle))
+     * [View PDF.js Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-with-dynamic-survey-data-using-pdfjs/ (linkStyle))
      */
     public data: any;
     /**
@@ -107,9 +107,9 @@ export abstract class PDFFormFillerBase {
      *
      * SurveyJS PDF Generator provides adapters for [`pdf-lib`](https://pdf-lib.js.org/) and [PDF.js](https://mozilla.github.io/pdf.js/) out of the box. Pass the libraries to the `PDFLibAdapter` or `PDFJSAdapter` constructor and assign the resulting instance to the `pdfLibraryAdapter` property.
      *
-     * [View pdf-lib Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-using-pdflib/ (linkStyle))
+     * [View pdf-lib Demo](https://surveyjs.io/pdf-generator/examples/map-survey-responses-to-pdf-fields-using-pdflib/ (linkStyle))
      *
-     * [View PDF.js Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-using-pdfjs/ (linkStyle))
+     * [View PDF.js Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-with-dynamic-survey-data-using-pdfjs/ (linkStyle))
      */
     public pdfLibraryAdapter?: IPDFFormAdapter;
 
@@ -136,9 +136,9 @@ export abstract class PDFFormFillerBase {
     /**
      * An asynchronous method that starts to download the filled PDF form in the web browser.
      *
-     * [View pdf-lib Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-using-pdflib/ (linkStyle))
+     * [View pdf-lib Demo](https://surveyjs.io/pdf-generator/examples/map-survey-responses-to-pdf-fields-using-pdflib/ (linkStyle))
      *
-     * [View PDF.js Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-using-pdfjs/ (linkStyle))
+     * [View PDF.js Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-with-dynamic-survey-data-using-pdfjs/ (linkStyle))
      * @param fileName *(Optional)* A file name with the ".pdf" extension. Default value: `"FilledForm.pdf"`.
      */
     public async save(fileName: string = 'FilledForm.pdf') {
