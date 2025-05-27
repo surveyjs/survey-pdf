@@ -124,9 +124,9 @@ export abstract class PDFFormFillerBase {
      */
     public async raw(type?: 'blob' | 'bloburl' | 'dataurlstring') {
         const pdfBytes = await this.getPDFBytes();
-        if (!type) return pdfBytes;
+        if (!type || !pdfBytes) return pdfBytes;
         if (type == 'dataurlstring') return 'data:application/pdf;base64,' + btoa(String.fromCharCode.apply(null, pdfBytes));
-        const blob = new Blob([pdfBytes as BlobPart], { type: 'application/pdf' });
+        const blob = new Blob([pdfBytes], { type: 'application/pdf' });
         if (type == 'blob') return blob;
         if (type == 'bloburl') return URL.createObjectURL(blob);
         return pdfBytes;
@@ -143,6 +143,7 @@ export abstract class PDFFormFillerBase {
      */
     public async save(fileName: string = 'FilledForm.pdf') {
         const pdfBytes = await this.getPDFBytes();
-        await this.saveToFile(pdfBytes as string, fileName);
+        if(!pdfBytes) return;
+        await this.saveToFile(pdfBytes, fileName);
     }
 }
