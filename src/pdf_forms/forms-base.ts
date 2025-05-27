@@ -64,7 +64,7 @@ interface IPDFFormFillerOptions {
  * A base class for the `PDFFormFiller` plugin.
  */
 export abstract class PDFFormFillerBase {
-    constructor (options: IPDFFormFillerOptions = null) {
+    constructor (options?: IPDFFormFillerOptions) {
         if(options) {
             this.data = options.data;
             this.fieldMap = options.fieldMap;
@@ -111,12 +111,12 @@ export abstract class PDFFormFillerBase {
      *
      * [View PDF.js Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-using-pdfjs/ (linkStyle))
      */
-    public pdfLibraryAdapter: IPDFFormAdapter;
+    public pdfLibraryAdapter?: IPDFFormAdapter;
 
     protected async getPDFBytes() {
         const map = new FormMap(this.fieldMap);
         const plainData = map.mapData(this.data);
-        return await this.pdfLibraryAdapter.fillForm(this.pdfTemplate, plainData);
+        return await this.pdfLibraryAdapter?.fillForm(this.pdfTemplate, plainData);
     }
     /**
      * An asynchronous method that allows you to get PDF content in different formats.
@@ -126,7 +126,7 @@ export abstract class PDFFormFillerBase {
         const pdfBytes = await this.getPDFBytes();
         if (!type) return pdfBytes;
         if (type == 'dataurlstring') return 'data:application/pdf;base64,' + btoa(String.fromCharCode.apply(null, pdfBytes));
-        const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+        const blob = new Blob([pdfBytes as BlobPart], { type: 'application/pdf' });
         if (type == 'blob') return blob;
         if (type == 'bloburl') return URL.createObjectURL(blob);
         return pdfBytes;
@@ -143,6 +143,6 @@ export abstract class PDFFormFillerBase {
      */
     public async save(fileName: string = 'FilledForm.pdf') {
         const pdfBytes = await this.getPDFBytes();
-        await this.saveToFile(pdfBytes, fileName);
+        await this.saveToFile(pdfBytes as string, fileName);
     }
 }
