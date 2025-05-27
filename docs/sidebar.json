@@ -39,6 +39,10 @@
       "Title": "PDF Form Settings"
     },
     {
+      "Name": "fill-pdf-form-with-web-form-responses",
+      "Title": "Fill PDF Form with Web Form Responses"
+    },
+    {
       "Name": "add-header-and-footer-to-pdf-form",
       "Title": "Add Header and Footer"
     },
@@ -61,6 +65,14 @@
         {
           "Name": "IDocOptions",
           "Title": "IDocOptions"
+        },
+        {
+          "Name": "pdfformfiller",
+          "Title": "PDFFormFiller"
+        },
+        {
+          "Name": "ipdfformfilleroptions",
+          "Title": "IPDFFormFillerOptions"
         },
         {
           "Name": "drawcanvas",
