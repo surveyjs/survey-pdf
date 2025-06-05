@@ -62,10 +62,10 @@ Make sure that you have Node.js v6.0.0 or later and npm v2.7.0 or later installe
 1. **Build the library**
 
     ```
-    npm run build_prod
+    npm run build:all
     ```
 
-    You can find the built scripts and style sheets in the `survey-pdf` folder under the `packages` directory.
+    You can find the built scripts in folders under the `build` directory.
 
 1. **Run test examples**
 
