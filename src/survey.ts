@@ -159,41 +159,6 @@ export class SurveyPDF extends SurveyModel {
     public onRenderRadioItemAcroform: EventAsync<SurveyPDF, any> =
     new EventAsync<SurveyPDF, any>();
 
-    private ensureQuestionDisplayValue(question: Question): void {
-        const _displayValue = question.displayValue;
-    }
-    private waitForQuestionIsReady(question: Question): Promise<void> {
-        return new Promise((resolve: any) => {
-            this.ensureQuestionDisplayValue(question);
-            if (question.isReady) {
-                resolve();
-            }
-            else {
-                const readyCallback: (sender: Question, options: any) => void =
-                (_, options: any) => {
-                    if (options.isReady) {
-                        question.onReadyChanged.remove(readyCallback);
-                        resolve();
-                    }
-                };
-                question.onReadyChanged.add(readyCallback);
-            }
-        });
-    }
-    private async waitForCoreIsReady(): Promise<void> {
-        for (const question of this.getAllQuestions()) {
-            if (!!(<any>question).contentPanel) {
-                const list: Question[] = [];
-                (<any>question).contentPanel.addQuestionsToList(list);
-                for (const innerQuestion of list) {
-                    await this.waitForQuestionIsReady(innerQuestion);
-                }
-                continue;
-            }
-            else await this.waitForQuestionIsReady(
-                SurveyHelper.getContentQuestion(<Question>question));
-        }
-    }
     public getUpdatedCheckItemAcroformOptions(options: any): void {
         this.onRenderCheckItemAcroform.fire(this, options);
     }
@@ -217,7 +182,6 @@ export class SurveyPDF extends SurveyModel {
     }
     protected async renderSurvey(controller: DocController): Promise<void> {
         this.visiblePages.forEach(page => page.onFirstRendering());
-        await this.waitForCoreIsReady();
         const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(this, controller);
         this.correctBricksPosition(controller, flats);
         const packs: IPdfBrick[][] = PagePacker.pack(flats, controller);

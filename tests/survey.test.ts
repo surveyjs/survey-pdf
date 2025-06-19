@@ -143,27 +143,6 @@ test('Check FlatRepository static methods', () => {
     expect(FlatRepository.getRenderer('custom-question')).toBe(FlatTextbox);
 });
 
-test('Check dropdown isReady works correctly', async () => {
-    const survey = new SurveyPDF({
-        'elements': [
-            {
-                'type': 'dropdown',
-                'name': 'test',
-                'defaultValue': 'test',
-                'choicesLazyLoadEnabled': true,
-            }
-        ]
-    });
-    const question = survey.getQuestionByName('test');
-    survey.onGetChoiceDisplayValue.add((_, options) => {
-        setTimeout(() => {
-            options.setItems(options.values.map((value: string) => value.toUpperCase()));
-        });
-    });
-    await survey['waitForCoreIsReady']();
-    expect(question.displayValue).toBe('TEST');
-});
-
 test('Check questionsOnPageMode: "inputPerPage"', async () => {
     const survey = new SurveyPDF(
         {
