@@ -86,6 +86,7 @@ export class FlatSurvey {
                         survey, controller, element, currPoint));
                 }
                 else {
+                    await (<Question>element).waitForQuestionIsReady();
                     rowFlats.push(...await SurveyHelper.generateQuestionFlats(survey,
                         controller, <Question>element, currPoint));
                 }
