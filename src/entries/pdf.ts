@@ -33,7 +33,6 @@ export { IPdfBrick, PdfBrick } from '../pdf_render/pdf_brick';
 export { BooleanItemBrick } from '../pdf_render/pdf_booleanitem';
 export { CheckboxItemBrick } from '../pdf_render/pdf_checkboxitem';
 export { CheckItemBrick } from '../pdf_render/pdf_checkitem';
-export { CommentBrick } from '../pdf_render/pdf_comment';
 export { CompositeBrick } from '../pdf_render/pdf_composite';
 export { CustomBrick } from '../pdf_render/pdf_custom';
 export { DropdownBrick } from '../pdf_render/pdf_dropdown';
@@ -46,7 +45,6 @@ export { RankingItemBrick } from '../pdf_render/pdf_rankingitem';
 export { RowlineBrick } from '../pdf_render/pdf_rowline';
 export { TextFieldBrick } from '../pdf_render/pdf_textfield';
 export { TextBoldBrick } from '../pdf_render/pdf_textbold';
-export { TextBoxBrick } from '../pdf_render/pdf_textbox';
 export { TextBrick } from '../pdf_render/pdf_text';
 export { TitlePanelBrick } from '../pdf_render/pdf_titlepanel';
 

@@ -1,4 +1,4 @@
-import { IQuestion, ItemValue, QuestionCheckboxBase } from 'survey-core';
+import { IQuestion, ItemValue, QuestionCheckboxBase, settings } from 'survey-core';
 import { SurveyPDF } from '../survey';
 import { IPoint, IRect, DocController } from '../doc_controller';
 import { FlatQuestion } from './flat_question';
@@ -34,7 +34,14 @@ export abstract class FlatSelectBase extends FlatQuestion {
             const otherPoint: IPoint = SurveyHelper.createPoint(compositeFlat);
             otherPoint.yTop += this.controller.unitHeight * SurveyHelper.GAP_BETWEEN_ROWS;
             compositeFlat.addBrick(await SurveyHelper.createCommentFlat(
-                otherPoint, this.question, this.controller, false, { index, rows: SurveyHelper.OTHER_ROWS_COUNT }));
+                otherPoint, this.question, this.controller, {
+                    fieldName: this.question.id + '_comment' + index,
+                    rows: SurveyHelper.OTHER_ROWS_COUNT,
+                    value: this.question.comment !== undefined && this.question.comment !== null ? this.question.comment : '',
+                    shouldRenderBorders: settings.readOnlyCommentRenderMode === 'textarea',
+                    isReadOnly: this.question.isReadOnly,
+                    isMultiline: true,
+                }));
         }
         return compositeFlat;
     }
