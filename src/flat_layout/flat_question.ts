@@ -1,4 +1,4 @@
-import { IQuestion, Question, LocalizableString, Serializer } from 'survey-core';
+import { IQuestion, Question, LocalizableString, Serializer, settings } from 'survey-core';
 import { SurveyPDF } from '../survey';
 import { IPoint, DocController } from '../doc_controller';
 import { FlatSurvey } from './flat_survey';
@@ -46,7 +46,15 @@ export class FlatQuestion implements IFlatQuestion {
         const otherPoint: IPoint = SurveyHelper.createPoint(otherTextFlat);
         otherPoint.yTop += this.controller.unitHeight * SurveyHelper.GAP_BETWEEN_ROWS;
         return new CompositeBrick(otherTextFlat, await SurveyHelper.createCommentFlat(
-            otherPoint, this.question, this.controller, false, { rows: SurveyHelper.OTHER_ROWS_COUNT }));
+            otherPoint, this.question, this.controller, {
+                fieldName: this.question.id + '_comment',
+                rows: SurveyHelper.OTHER_ROWS_COUNT,
+                value: this.question.comment !== undefined && this.question.comment !== null ? this.question.comment : '',
+                shouldRenderBorders: settings.readOnlyCommentRenderMode === 'textarea',
+                isReadOnly: this.question.isReadOnly,
+                isMultiline: true,
+                placeholder: ''
+            }));
     }
     public async generateFlatsComposite(point: IPoint): Promise<IPdfBrick[]> {
         const contentPanel = (<any>this.question).contentPanel;

@@ -4,14 +4,25 @@ import { IPdfBrick, PdfBrick, TranslateXFunction } from './pdf_brick';
 import { SurveyHelper } from '../helper_survey';
 import { CompositeBrick } from './pdf_composite';
 
+export interface ITextFieldBrickOptions {
+    isReadOnly: boolean;
+    fieldName: string;
+    shouldRenderBorders: boolean;
+    value?: string;
+    placeholder?: string;
+    inputType?: string;
+    isMultiline?: boolean;
+}
+
 export class TextFieldBrick extends PdfBrick {
-    protected question: QuestionTextModel;
-    public constructor(question: IQuestion, controller: DocController,
-        rect: IRect, protected isQuestion: boolean,
-        protected fieldName: string, protected value: string,
-        protected placeholder: string, public isReadOnly: boolean,
-        protected isMultiline: boolean, protected inputType: string) {
+    public constructor(protected question: IQuestion, controller: DocController,
+        rect: IRect, protected options: ITextFieldBrickOptions
+    ) {
         super(question, controller, rect);
+        options.isMultiline = options.isMultiline ?? false;
+        options.placeholder = options.placeholder ?? '';
+        options.inputType = options.inputType ?? '';
+        options.value = options.value ?? '';
         this.question = <QuestionTextModel>question;
     }
     private renderColorQuestion(): void {
@@ -22,25 +33,25 @@ export class TextFieldBrick extends PdfBrick {
         this.controller.doc.setFillColor(oldFillColor);
     }
     public async renderInteractive(): Promise<void> {
-        if (this.inputType === 'color') {
+        if (this.options.inputType === 'color') {
             this.renderColorQuestion();
             return;
         }
-        const inputField: any = this.inputType === 'password' ?
+        const inputField: any = this.options.inputType === 'password' ?
             new (<any>this.controller.doc.AcroFormPasswordField)() :
             new (<any>this.controller.doc.AcroFormTextField)();
-        inputField.fieldName = this.fieldName;
+        inputField.fieldName = this.options.fieldName;
         inputField.fontName = this.controller.fontName;
         inputField.fontSize = this.fontSize;
         inputField.isUnicode = SurveyHelper.isCustomFont(
             this.controller, inputField.fontName);
-        if (this.inputType !== 'password') {
-            inputField.V = ' ' + this.getCorrectedText(this.value);
-            inputField.DV = ' ' + this.getCorrectedText(this.placeholder);
+        if (this.options.inputType !== 'password') {
+            inputField.V = ' ' + this.getCorrectedText(this.options.value);
+            inputField.DV = ' ' + this.getCorrectedText(this.options.placeholder);
         }
         else inputField.value = '';
-        inputField.multiline = this.isMultiline;
-        inputField.readOnly = this.isReadOnly;
+        inputField.multiline = this.options.isMultiline;
+        inputField.readOnly = this.options.isReadOnly;
         inputField.color = this.textColor;
         let formScale: number = SurveyHelper.formScale(this.controller, this);
         inputField.maxFontSize = this.controller.fontSize * formScale;
@@ -50,10 +61,10 @@ export class TextFieldBrick extends PdfBrick {
         SurveyHelper.renderFlatBorders(this.controller, this);
     }
     protected shouldRenderFlatBorders(): boolean {
-        return settings.readOnlyTextRenderMode === 'input';
+        return this.options.shouldRenderBorders;
     }
     protected getShouldRenderReadOnly(): boolean {
-        return SurveyHelper.shouldRenderReadOnly(this.question, this.controller, this.isReadOnly);
+        return SurveyHelper.shouldRenderReadOnly(this.question, this.controller, this.options.isReadOnly);
     }
     private _textBrick: IPdfBrick;
     public get textBrick(): IPdfBrick {
@@ -105,7 +116,7 @@ export class TextFieldBrick extends PdfBrick {
     public async renderReadOnly(): Promise<void> {
         this.controller.pushMargins(this.xLeft,
             this.controller.paperWidth - this.xRight);
-        if (this.inputType === 'color') {
+        if (this.options.inputType === 'color') {
             this.renderColorQuestion();
         } else {
             await this.textBrick.render();
@@ -113,7 +124,7 @@ export class TextFieldBrick extends PdfBrick {
         this.controller.popMargins();
     }
     public unfold(): IPdfBrick[] {
-        if (this.getShouldRenderReadOnly() && this.inputType !== 'color') {
+        if (this.getShouldRenderReadOnly() && this.options.inputType !== 'color') {
             return this.textBrick.unfold();
         } else {
             return super.unfold();
