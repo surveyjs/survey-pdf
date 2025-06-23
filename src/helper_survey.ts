@@ -10,7 +10,6 @@ import { TextBrick } from './pdf_render/pdf_text';
 import { TextBoldBrick } from './pdf_render/pdf_textbold';
 import { TitlePanelBrick } from './pdf_render/pdf_titlepanel';
 import { DescriptionBrick } from './pdf_render/pdf_description';
-import { CommentBrick } from './pdf_render/pdf_comment';
 import { LinkBrick } from './pdf_render/pdf_link';
 import { HTMLBrick } from './pdf_render/pdf_html';
 import { ImageBrick } from './pdf_render/pdf_image';
@@ -18,6 +17,7 @@ import { EmptyBrick } from './pdf_render/pdf_empty';
 import { RowlineBrick } from './pdf_render/pdf_rowline';
 import { CompositeBrick } from './pdf_render/pdf_composite';
 import { AdornersOptions } from './event_handler/adorners';
+import { ITextFieldBrickOptions, TextFieldBrick } from './pdf_render/pdf_textfield';
 
 export type IBorderDescription = IRect & ISize & Pick<PdfBrick, 'formBorderColor'> & { rounded?: boolean, dashStyle?: { dashArray: [number, number] | [number], dashPhase: number }, outside?: boolean };
 
@@ -427,31 +427,22 @@ export class SurveyHelper {
         return (<any>question).readonlyRenderAs === 'auto' ? controller.readonlyRenderAs : (<any>question).readonlyRenderAs;
     }
     public static async createCommentFlat(point: IPoint, question: Question,
-        controller: DocController, isQuestion: boolean, options: { rows?: number, index?: number, value?: string, readOnly?: boolean } = {}): Promise<IPdfBrick> {
-        const rect: IRect = this.createTextFieldRect(point, controller, options.rows ?? 1);
+        controller: DocController, options: { rows?: number } & ITextFieldBrickOptions): Promise<IPdfBrick> {
+        options.rows = options.rows ?? 1;
+        options.value = options.value ?? '';
+        const rect: IRect = this.createTextFieldRect(point, controller, options.rows);
         let textFlat;
-        if (options.readOnly ?? SurveyHelper.shouldRenderReadOnly(question, controller)) {
-            const renderedValue = options.value ?? this.getQuestionOrCommentValue(question, isQuestion);
+        if (SurveyHelper.shouldRenderReadOnly(question, controller, options.isReadOnly)) {
             textFlat = await this.createReadOnlyTextFieldTextFlat(
-                point, controller, question, renderedValue);
+                point, controller, question, options.value);
             const padding: number = controller.unitHeight * this.VALUE_READONLY_PADDING_SCALE;
             if (textFlat.yBot + padding > rect.yBot) rect.yBot = textFlat.yBot + padding;
         }
-        const comment = new CommentBrick(question, controller, rect, isQuestion, options.index);
-        if(options.readOnly !== null && options.readOnly !== undefined) {
-            comment.isReadOnly = options.readOnly;
-        }
+        const comment = new TextFieldBrick(question, controller, rect, options);
         if(textFlat) {
             comment.textBrick = textFlat;
         }
         return comment;
-    }
-    public static getQuestionOrCommentValue(question: Question, isQuestion: boolean = true): string {
-        return isQuestion ? (question.value !== undefined && question.value !== null ? question.value : '') :
-            (question.comment !== undefined && question.comment !== null ? question.comment : '');
-    }
-    public static getQuestionOrCommentDisplayValue(question: Question, isQuestion: boolean = true): string {
-        return isQuestion ? question.displayValue : SurveyHelper.getQuestionOrCommentValue(question, isQuestion);
     }
     public static inBrowser = typeof Image === 'function';
 

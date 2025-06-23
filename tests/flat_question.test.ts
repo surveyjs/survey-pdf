@@ -17,8 +17,7 @@ import { CompositeBrick } from '../src/pdf_render/pdf_composite';
 import { RowlineBrick } from '../src/pdf_render/pdf_rowline';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
-import { assert } from 'console';
-import { TextBoxBrick } from '../src/pdf_render/pdf_textbox';
+import { TextFieldBrick } from '../src/pdf_render/pdf_textfield';
 const __dummy_tx = new FlatTextbox(null, null, null);
 const __dummy_cb = new FlatCheckbox(null, null, null);
 
@@ -644,7 +643,7 @@ test('Check description under input', async () => {
     expect((unfoldedContentTitleBricks[0] as any)['text']).toBe('1. ');
     expect((unfoldedContentTitleBricks[1] as any)['text']).toBe('q1');
     expect(unfoldedContentTitleBricks[2]).toBeInstanceOf(RowlineBrick);
-    expect(unfoldedContentTitleBricks[3]).toBeInstanceOf(TextBoxBrick);
+    expect(unfoldedContentTitleBricks[3]).toBeInstanceOf(TextFieldBrick);
 
     let unfoldedDescriptionBricks = (flats[0][1] as CompositeBrick).unfold();
     expect(unfoldedDescriptionBricks.length).toBe(1);
@@ -661,7 +660,7 @@ test('Check description under input', async () => {
     expect(unfoldedContentTitleBricks.length).toBe(3);
     expect((unfoldedContentTitleBricks[0] as any)['text']).toBe('1. ');
     expect((unfoldedContentTitleBricks[1] as any)['text']).toBe('q1');
-    expect(unfoldedContentTitleBricks[2]).toBeInstanceOf(TextBoxBrick);
+    expect(unfoldedContentTitleBricks[2]).toBeInstanceOf(TextFieldBrick);
 
     unfoldedDescriptionBricks = (flats[0][1] as CompositeBrick).unfold();
     expect(unfoldedDescriptionBricks.length).toBe(1);
@@ -676,7 +675,7 @@ test('Check description under input', async () => {
     expect(flats[0].length).toBe(2);
     unfoldedContentTitleBricks = (flats[0][0] as CompositeBrick).unfold();
     expect(unfoldedContentTitleBricks.length).toBe(1);
-    expect(unfoldedContentTitleBricks[0]).toBeInstanceOf(TextBoxBrick);
+    expect(unfoldedContentTitleBricks[0]).toBeInstanceOf(TextFieldBrick);
 
     unfoldedDescriptionBricks = (flats[0][1] as CompositeBrick).unfold();
     expect(unfoldedDescriptionBricks.length).toBe(1);
@@ -691,7 +690,7 @@ test('Check description under input', async () => {
     expect(flats[0].length).toBe(3);
     let unfoldedContentBricks = (flats[0][0] as CompositeBrick).unfold();
     expect(unfoldedContentBricks.length).toBe(1);
-    expect(unfoldedContentBricks[0]).toBeInstanceOf(TextBoxBrick);
+    expect(unfoldedContentBricks[0]).toBeInstanceOf(TextFieldBrick);
 
     unfoldedDescriptionBricks = (flats[0][1] as CompositeBrick).unfold();
     expect(unfoldedDescriptionBricks.length).toBe(1);

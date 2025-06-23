@@ -73,6 +73,7 @@ test('Check dropdown with other answered', async () => {
         ]
     };
     const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    const question = survey.getAllQuestions()[0];
     const controller: DocController = new DocController(TestHelper.defaultOptions);
     const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
@@ -83,7 +84,7 @@ test('Check dropdown with other answered', async () => {
     otherPoint.xLeft += controller.unitWidth;
     otherPoint.yTop += controller.unitHeight * SurveyHelper.GAP_BETWEEN_ROWS;
     TestHelper.equalRect(expect, flats[0][0].unfold()[3], await SurveyHelper.createCommentFlat(
-        otherPoint, survey.getAllQuestions()[0], controller, false, { rows: SurveyHelper.OTHER_ROWS_COUNT }));
+        otherPoint, survey.getAllQuestions()[0], controller, { rows: SurveyHelper.OTHER_ROWS_COUNT, value: question.comment, isMultiline: true } as any));
 });
 test('Check readonly text expends when textFieldRenderAs option set', async () => {
     const json = {

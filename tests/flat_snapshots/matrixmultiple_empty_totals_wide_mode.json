@@ -248,7 +248,7 @@
 				"yBot": 187.04645669291338,
 				"bricks": [
 					{
-						"brickType": "CommentBrick",
+						"brickType": "TextFieldBrick",
 						"width": 331.9523622047245,
 						"height": 55.19999999999999,
 						"xLeft": 830.2511811023624,
