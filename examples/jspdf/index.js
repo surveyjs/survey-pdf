@@ -263,4 +263,15 @@ survey.onRenderFooter.add((_, canvas) => {
 // 		options.html = str;
 // 	});
 
-survey.save();
+survey.save().then(function(){
+  const pdfEmbedElement = document.createElement("embed");
+  pdfEmbedElement.id = "pdfResultContent";
+  pdfEmbedElement.setAttribute("style", "width:100%;height:100%");
+  pdfEmbedElement.setAttribute("type", "application/pdf");
+  survey.raw("dataurlstring").then(function (dataurl) {
+    const resultElement = document.getElementById("result");
+    resultElement.innerHTML = "";
+    pdfEmbedElement.setAttribute("src", dataurl);
+    resultElement.appendChild(pdfEmbedElement);
+  });
+});
