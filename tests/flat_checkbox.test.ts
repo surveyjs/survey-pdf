@@ -11,6 +11,9 @@ import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { TextBrick } from '../src/pdf_render/pdf_text';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
+import { checkFlatSnapshot } from './snapshot_helper';
+import { settings } from 'survey-core';
+
 const __dummy_tx: FlatTextbox = new FlatTextbox(null, null, null);
 const __dummy_cb: FlatCheckbox = new FlatCheckbox(null, null, null);
 
@@ -285,4 +288,104 @@ test('Tagbox: print selected choices', async () => {
     expect(unfoldFlats.length).toBe(4);
     expect((unfoldFlats[1] as TextBrick)['text']).toBe('item2');
     expect((unfoldFlats[3]as TextBrick)['text']).toBe('item3');
+});
+
+test('Check columns 5 with itemFlowDirection', async() => {
+    const oldItemFlowDirection = settings.itemFlowDirection;
+    settings.itemFlowDirection = 'row';
+    await checkFlatSnapshot({
+        elements: [
+            {
+                name: 'q1',
+                type: 'checkbox',
+                colCount: 5,
+                choices: [
+                    'item1',
+                    'item2',
+                    'item3',
+                    'item4',
+                    'item5',
+                    'item6',
+                    'item7',
+                    'item8'
+                ]
+            }
+        ]
+    }, { snapshotName: 'checkbox-col-count-5-row-flow', controllerOptions: { fontSize: 10 } });
+    settings.itemFlowDirection = oldItemFlowDirection;
+});
+
+test('Check columns 5 with itemFlowDirection:row', async() => {
+    const oldItemFlowDirection = settings.itemFlowDirection;
+    settings.itemFlowDirection = 'column';
+    checkFlatSnapshot({
+        elements: [
+            {
+                name: 'q1',
+                type: 'checkbox',
+                colCount: 5,
+                choices: [
+                    'item1',
+                    'item2',
+                    'item3',
+                    'item4',
+                    'item5',
+                    'item6',
+                    'item7',
+                    'item8'
+                ]
+            }
+        ]
+    }, { snapshotName: 'checkbox-col-count-5-column-flow', controllerOptions: { fontSize: 10 } });
+    settings.itemFlowDirection = oldItemFlowDirection;
+});
+
+test('Check columns 4 with itemFlowDirection', async() => {
+    const oldItemFlowDirection = settings.itemFlowDirection;
+    settings.itemFlowDirection = 'row';
+    await checkFlatSnapshot({
+        elements: [
+            {
+                name: 'q1',
+                type: 'checkbox',
+                colCount: 4,
+                choices: [
+                    'item1',
+                    'item2',
+                    'item3',
+                    'item4',
+                    'item5',
+                    'item6',
+                    'item7',
+                    'item8'
+                ]
+            }
+        ]
+    }, { snapshotName: 'checkbox-col-count-4-row-flow', controllerOptions: { fontSize: 10 } });
+    settings.itemFlowDirection = oldItemFlowDirection;
+});
+
+test('Check columns 4 with itemFlowDirection:row', async() => {
+    const oldItemFlowDirection = settings.itemFlowDirection;
+    settings.itemFlowDirection = 'column';
+    checkFlatSnapshot({
+        elements: [
+            {
+                name: 'q1',
+                type: 'checkbox',
+                colCount: 4,
+                choices: [
+                    'item1',
+                    'item2',
+                    'item3',
+                    'item4',
+                    'item5',
+                    'item6',
+                    'item7',
+                    'item8'
+                ]
+            }
+        ]
+    }, { snapshotName: 'checkbox-col-count-4-column-flow', controllerOptions: { fontSize: 10 } });
+    settings.itemFlowDirection = oldItemFlowDirection;
 });

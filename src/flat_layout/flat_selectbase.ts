@@ -58,6 +58,9 @@ export abstract class FlatSelectBase extends FlatQuestion {
         else if (colCount > 1) {
             currentColCount = (SurveyHelper.getColumnWidth(this.controller, colCount) <
                 this.controller.measureText(SurveyHelper.MATRIX_COLUMN_WIDTH).width) ? 1 : colCount;
+            if(currentColCount == colCount) {
+                return await this.generateColumns(point);
+            }
         }
         return (currentColCount == 1) ? await this.generateVerticallyItems(point, visibleChoices) :
             await this.generateHorisontallyItems(point, currentColCount);
@@ -73,6 +76,35 @@ export abstract class FlatSelectBase extends FlatQuestion {
         }
         return flats;
     }
+
+    protected async generateColumns(point: IPoint): Promise<IPdfBrick[]> {
+        const visibleChoices = this.getVisibleChoices();
+        const columns = this.question.columns as Array<Array<ItemValue>>;
+        const rowsCount = columns.reduce((max, column) => Math.max(max, column.length), 0);
+        const currPoint: IPoint = SurveyHelper.clone(point);
+        const flats: IPdfBrick[] = [];
+        for (let i = 0; i < rowsCount; i++) {
+            const row = new CompositeBrick();
+            for (let colNumber = 0; colNumber < columns.length; colNumber ++) {
+                const item = columns[colNumber][i];
+                if(item) {
+                    this.controller.pushMargins(this.controller.margins.left, this.controller.margins.right);
+                    SurveyHelper.setColumnMargins(this.controller, columns.length, colNumber);
+                    currPoint.xLeft = this.controller.margins.left;
+                    const itemFlat: IPdfBrick = await this.generateFlatComposite(currPoint, item, visibleChoices.indexOf(item));
+                    row.addBrick(itemFlat);
+                    this.controller.popMargins();
+                }
+            }
+            const rowLineFlat: IPdfBrick = SurveyHelper.createRowlineFlat(
+                SurveyHelper.createPoint(row), this.controller);
+            currPoint.yTop = rowLineFlat.yBot +
+                    SurveyHelper.GAP_BETWEEN_ROWS * this.controller.unitHeight;
+            flats.push(row, rowLineFlat);
+        }
+        return flats;
+    }
+
     protected async generateHorisontallyItems(point: IPoint, colCount: number): Promise<IPdfBrick[]> {
         const visibleChoices = this.getVisibleChoices();
         const currPoint: IPoint = SurveyHelper.clone(point);
