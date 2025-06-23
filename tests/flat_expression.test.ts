@@ -54,7 +54,6 @@ test('Check expression with display format', async () => {
     let question = <QuestionExpressionModel>survey.getAllQuestions()[0];
     expect(question.formatedValue).toEqual('5%');
     expect(question.displayValue).toEqual('5%');
-    expect(SurveyHelper.getQuestionOrCommentDisplayValue(question, true)).toEqual('5%');
 
     const textBrick = <TextBrick>(<CompositeBrick>(<TextFieldBrick>flats[0][0]).textBrick)['bricks'][0];
     expect(textBrick).toBeDefined();

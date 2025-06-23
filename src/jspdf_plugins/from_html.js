@@ -759,13 +759,11 @@
     };
 
     Renderer.prototype.splitFragmentsIntoLines = function (fragments, styles) {
-      var currentLineLength, defaultFontSize, ff, fontMetrics, fontMetricsCache, fragment, fragmentChopped, fragmentLength, fragmentSpecificMetrics, fs, k, line, lines, maxLineLength, style;
+      var currentLineLength, defaultFontSize, ff, fragment, fragmentChopped, fragmentLength, fragmentSpecificMetrics, fs, k, line, lines, maxLineLength, style;
       defaultFontSize = 12;
       k = this.pdf.internal.scaleFactor;
-      fontMetricsCache = {};
       ff = void 0;
       fs = void 0;
-      fontMetrics = void 0;
       fragment = void 0;
       style = void 0;
       fragmentSpecificMetrics = void 0;
@@ -775,7 +773,8 @@
       lines = [line];
       currentLineLength = 0;
       maxLineLength = this.settings.width;
-
+      const oldFontName = this.pdf.getFont().fontName;
+      const oldFontStyle = this.pdf.getFont().fontStyle;
       while (fragments.length) {
         fragment = fragments.shift();
         style = styles.shift();
@@ -783,18 +782,10 @@
         if (fragment) {
           ff = style["font-family"];
           fs = style["font-style"];
-          fontMetrics = fontMetricsCache[ff + fs];
-
-          if (!fontMetrics) {
-            fontMetrics = this.pdf.internal.getFont(ff, fs).metadata.Unicode;
-            fontMetricsCache[ff + fs] = fontMetrics;
-          }
-
+          this.pdf.setFont(ff, fs);
           fragmentSpecificMetrics = {
-            widths: fontMetrics.widths,
-            kerning: fontMetrics.kerning,
-            fontSize: style["font-size"] * defaultFontSize,
-            textIndent: currentLineLength
+            textIndent: currentLineLength,
+            fontSize: style["font-size"] * defaultFontSize
           };
           fragmentLength = this.pdf.getStringUnitWidth(fragment, fragmentSpecificMetrics) * fragmentSpecificMetrics.fontSize / k;
 
@@ -843,7 +834,7 @@
           }
         }
       }
-
+      this.pdf.setFont(oldFontName, oldFontStyle)
       return lines;
     };
 
