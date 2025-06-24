@@ -1,6 +1,7 @@
 .git/*
 node_modules/*
 **/*.pdf
+!tests/pdf_snapshots/*.pdf
 src/**/*.js
 doc_generator/**/*.json
 docs/classes.json
