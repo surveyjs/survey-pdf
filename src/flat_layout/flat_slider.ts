@@ -6,6 +6,7 @@ import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { SurveyHelper } from '../helper_survey';
 import { ITextFieldBrickOptions, TextFieldBrick } from '../pdf_render/pdf_textfield';
+import { CompositeBrick } from '../pdf_render/pdf_composite';
 
 export class FlatSlider extends FlatQuestion {
     protected question: QuestionSliderModel;
@@ -23,15 +24,35 @@ export class FlatSlider extends FlatQuestion {
                 isReadOnly: this.question.isReadOnly,
                 shouldRenderBorders: true,
             };
-            if (!this.shouldRenderAsComment) {
-                const rect: IRect = SurveyHelper.createTextFieldRect(point, this.controller);
-                return [new TextFieldBrick(this.question, this.controller, rect, { ...options })];
-            }
+            const rect: IRect = SurveyHelper.createTextFieldRect(point, this.controller);
+            return [new TextFieldBrick(this.question, this.controller, rect, { ...options })];
         }
 
-        // if (this.question.sliderType === 'range') {
-        //     return;
-        // }
+        if (this.question.sliderType === 'range') {
+            const options1: Omit<ITextFieldBrickOptions, 'isMultiline'> = {
+                fieldName: this.question.id,
+                inputType: 'number',
+                value: this.question.value[0],
+                isReadOnly: this.question.isReadOnly,
+                shouldRenderBorders: true,
+            };
+            const options2: Omit<ITextFieldBrickOptions, 'isMultiline'> = {
+                fieldName: this.question.id,
+                inputType: 'number',
+                value: this.question.value[1],
+                isReadOnly: this.question.isReadOnly,
+                shouldRenderBorders: true,
+            };
+
+            const rect1: IRect = SurveyHelper.createTextFieldRect(point, this.controller);
+            const compositeBrick: CompositeBrick = new CompositeBrick(...[new TextFieldBrick(this.question, this.controller, rect1, { ...options1 })]);
+
+            const otherPoint: IPoint = SurveyHelper.createPoint(compositeBrick);
+            otherPoint.yTop += this.controller.unitHeight* SurveyHelper.GAP_BETWEEN_ROWS;
+            const rect2: IRect = SurveyHelper.createTextFieldRect(otherPoint, this.controller);
+            compositeBrick.addBrick(new TextFieldBrick(this.question, this.controller, rect2, { ...options2 }));
+            return [compositeBrick];
+        }
     }
 }
 
