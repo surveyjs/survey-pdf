@@ -45,7 +45,7 @@ export class FlatSlider extends FlatQuestion {
             };
 
             const rect1: IRect = SurveyHelper.createTextFieldRect(point, this.controller);
-            const compositeBrick: CompositeBrick = new CompositeBrick(...[new TextFieldBrick(this.question, this.controller, rect1, { ...options1 })]);
+            const compositeBrick: CompositeBrick = new CompositeBrick(new TextFieldBrick(this.question, this.controller, rect1, { ...options1 }));
 
             const otherPoint: IPoint = SurveyHelper.createPoint(compositeBrick);
             otherPoint.yTop += this.controller.unitHeight* SurveyHelper.GAP_BETWEEN_ROWS;
