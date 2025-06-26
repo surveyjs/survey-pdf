@@ -16,43 +16,26 @@ export class FlatSlider extends FlatQuestion {
         this.question = <QuestionSliderModel>question;
     }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
+        let currentPoint: IPoint = SurveyHelper.clone(point);
+
         if (this.question.sliderType === 'single') {
             const options = this.getOptionsByValue(this.question.value);
-
-            if (!this.shouldRenderAsComment) {
-                const rect: IRect = SurveyHelper.createTextFieldRect(point, this.controller);
-                return [new TextFieldBrick(this.question, this.controller, rect, { ...options })];
-            }
-            return [await SurveyHelper.createCommentFlat(point, this.question,
-                this.controller, { ...options })];
+            const inputBrick: IPdfBrick = await this.generateInputBrick(currentPoint, options);
+            return [inputBrick];
         }
 
         if (this.question.sliderType === 'range') {
-            const options1 = this.getOptionsByValue(this.question.value[0]);
-            const options2 = this.getOptionsByValue(this.question.value[1]);
-
-            if (!this.shouldRenderAsComment) {
-                const rect1: IRect = SurveyHelper.createTextFieldRect(point, this.controller);
-                const compositeBrick: CompositeBrick = new CompositeBrick(new TextFieldBrick(this.question, this.controller, rect1, { ...options1 }));
-                const otherPoint: IPoint = SurveyHelper.createPoint(compositeBrick);
-                otherPoint.yTop += this.controller.unitHeight * SurveyHelper.GAP_BETWEEN_ROWS;
-                const rect2: IRect = SurveyHelper.createTextFieldRect(otherPoint, this.controller);
-                compositeBrick.addBrick(new TextFieldBrick(this.question, this.controller, rect2, { ...options2 }));
-                return [compositeBrick];
-            } else {
-                const commentBrick1: IPdfBrick = await SurveyHelper.createCommentFlat(point, this.question,
-                    this.controller, { ...options1 });
-                const compositeBrick: CompositeBrick = new CompositeBrick(commentBrick1);
-                const otherPoint: IPoint = SurveyHelper.createPoint(compositeBrick);
-                otherPoint.yTop += this.controller.unitHeight * SurveyHelper.GAP_BETWEEN_ROWS;
-                const commentBrick2: IPdfBrick = await SurveyHelper.createCommentFlat(otherPoint, this.question,
-                    this.controller, { ...options2 });
-                compositeBrick.addBrick(commentBrick2);
-                return [compositeBrick];
+            const compositeBrick: CompositeBrick = new CompositeBrick();
+            for (let i = 0; i < this.question.value.length; i++) {
+                const valueItem = this.question.value[i];
+                const options = this.getOptionsByValue(valueItem);
+                const columnInput = await this.generateColumnInput(currentPoint, options, 2, i);
+                compositeBrick.addBrick(columnInput);
             }
+            return [compositeBrick];
         }
     }
-    private getOptionsByValue(value: string):Omit<ITextFieldBrickOptions, 'isMultiline'> {
+    private getOptionsByValue(value: string):ITextFieldBrickOptions {
         const { id, isReadOnly } = this.question;
         return {
             fieldName: id,
@@ -61,6 +44,26 @@ export class FlatSlider extends FlatQuestion {
             isReadOnly,
             shouldRenderBorders: true,
         };
+    }
+
+    private async generateInputBrick(point: IPoint, options:ITextFieldBrickOptions): Promise<IPdfBrick> {
+        if (!this.shouldRenderAsComment) {
+            const rect1: IRect = SurveyHelper.createTextFieldRect(point, this.controller);
+            return new TextFieldBrick(this.question, this.controller, rect1, { ...options });
+        }
+        else {
+            return await SurveyHelper.createCommentFlat(point, this.question, this.controller, { ...options });
+        }
+    }
+
+    private async generateColumnInput(point: IPoint, options:ITextFieldBrickOptions, colCount: number, colNumber: number): Promise<IPdfBrick> {
+        this.controller.pushMargins();
+        SurveyHelper.setColumnMargins(this.controller, colCount, colNumber);
+        const currentPoint = SurveyHelper.clone(point);
+        currentPoint.xLeft = this.controller.margins.left;
+        const inputBrick = await this.generateInputBrick(currentPoint, options);
+        this.controller.popMargins();
+        return inputBrick;
     }
 }
 
