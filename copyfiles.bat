@@ -1,0 +1,1 @@
+xcopy /s /e "..\survey-library\packages\survey-core\build" "node_modules\survey-core\" /y

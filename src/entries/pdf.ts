@@ -18,6 +18,7 @@ export { FlatPanelDynamic } from '../flat_layout/flat_paneldynamic';
 export { FlatRadiogroup } from '../flat_layout/flat_radiogroup';
 export { FlatRanking } from '../flat_layout/flat_ranking';
 export { FlatRating } from '../flat_layout/flat_rating';
+export { FlatSlider } from '../flat_layout/flat_slider';
 export { FlatSelectBase } from '../flat_layout/flat_selectbase';
 export { FlatSignaturePad } from '../flat_layout/flat_signaturepad';
 export { FlatTextbox } from '../flat_layout/flat_textbox';
