@@ -6,6 +6,15 @@
 		"xLeft": 62.84645669291339,
 		"xRight": 566.9291338582677,
 		"yTop": 28.34645669291339,
-		"yBot": 62.84645669291339
+		"yBot": 62.84645669291339,
+		"options": {
+			"fieldName": "testId",
+			"inputType": "number",
+			"value": 50,
+			"isReadOnly": false,
+			"shouldRenderBorders": true,
+			"isMultiline": false,
+			"placeholder": ""
+		}
 	}
 ]
