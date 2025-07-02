@@ -13,6 +13,9 @@ import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 import { ImageBrick } from '../src/pdf_render/pdf_image';
 import { CompositeBrick } from '../src/pdf_render/pdf_composite';
+import { LinkBrick } from '../src/pdf_render/pdf_link';
+import { AdornersOptions } from '../src/event_handler/adorners';
+import { checkFlatSnapshot } from './snapshot_helper';
 let __dummy_fl = new FlatFile(null, null, null);
 
 test('Check no files', async () => {
@@ -32,8 +35,30 @@ test('Check no files', async () => {
     expect(flats[0].length).toBe(1);
     controller.margins.left += controller.unitWidth;
     let assumeFile: IRect = await SurveyHelper.createTextFlat(controller.leftTopPoint,
-        <Question>survey.getAllQuestions()[0], controller, 'No file chosen', TextBrick);
+        <Question>survey.getAllQuestions()[0], controller, 'No file selected', TextBrick);
     TestHelper.equalRect(expect, flats[0][0], assumeFile);
+});
+test('Check noFileChosen locale', async () => {
+    let json: any = {
+        elements: [
+            {
+                type: 'file',
+                name: 'faque',
+                titleLocation: 'hidden'
+            }
+        ]
+    };
+    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    survey.getAllQuestions()[0].noFileChosenCaption = 'test';
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    expect(flats.length).toBe(1);
+    expect(flats[0].length).toBe(1);
+    controller.margins.left += controller.unitWidth;
+    let assumeFile: IRect = await SurveyHelper.createTextFlat(controller.leftTopPoint,
+        <Question>survey.getAllQuestions()[0], controller, 'test', TextBrick);
+    TestHelper.equalRect(expect, flats[0][0], assumeFile);
+    expect((<TextBrick>(<CompositeBrick>flats[0][0])['bricks'][0])['text']).toEqual('test');
 });
 test('Check one text file', async () => {
     let json: any = {
@@ -138,9 +163,9 @@ test('Check one image 16x16px file', async () => {
     controller.margins.left += controller.unitWidth;
     const assumeFile: IRect = {
         xLeft: controller.leftTopPoint.xLeft,
-        xRight: controller.leftTopPoint.xLeft + imageSize.width,
+        xRight: controller.leftTopPoint.xLeft + SurveyHelper.pxToPt(imageSize.width),
         yTop: controller.leftTopPoint.yTop,
-        yBot: controller.leftTopPoint.yTop + imageSize.height +
+        yBot: controller.leftTopPoint.yTop + SurveyHelper.pxToPt(imageSize.height) +
             controller.unitHeight * (1.0 + FlatFile.IMAGE_GAP_SCALE)
     };
     TestHelper.equalRect(expect, flats[0][0], assumeFile);
@@ -179,7 +204,7 @@ test('Check one image 16x16px file shorter than text', async () => {
         xLeft: controller.leftTopPoint.xLeft,
         xRight: controller.leftTopPoint.xLeft + controller.measureText(json.elements[0].defaultValue[0].name).width,
         yTop: controller.leftTopPoint.yTop,
-        yBot: controller.leftTopPoint.yTop + imageSize.height +
+        yBot: controller.leftTopPoint.yTop + SurveyHelper.pxToPt(imageSize.height) +
             controller.unitHeight * (1.0 + FlatFile.IMAGE_GAP_SCALE)
     };
     TestHelper.equalRect(expect, flats[0][0], assumeFile);
@@ -259,14 +284,13 @@ test('Check one image 16x16px file server-side', async () => {
     const imageBrick: IPdfBrick = (<any>flats[0][0]).bricks[0].bricks[1];
     expect(imageBrick instanceof ImageBrick).toBeTruthy();
 
-    expect(imageBrick.isPageBreak).toBeTruthy();
     controller.margins.left += controller.unitWidth;
 
     const assumeFile: IRect = {
         xLeft: controller.leftTopPoint.xLeft,
-        xRight: controller.leftTopPoint.xLeft + controller.measureText(json.elements[0].defaultValue[0].name).width,
+        xRight: controller.leftTopPoint.xLeft + 150,
         yTop: controller.leftTopPoint.yTop,
-        yBot: controller.leftTopPoint.yTop + controller.unitHeight * (1.0 + FlatFile.IMAGE_GAP_SCALE)
+        yBot: controller.leftTopPoint.yTop + 112.5 + controller.unitHeight * (1.0 + FlatFile.IMAGE_GAP_SCALE)
     };
     TestHelper.equalRect(expect, flats[0][0], assumeFile);
     SurveyHelper.inBrowser = true;
@@ -330,36 +354,50 @@ test('Test file question getImagePreviewContentWidth ', async () => {
     const controller: DocController = new DocController(TestHelper.defaultOptions);
     const flatFile = new FlatFile(survey, question, controller);
 
-    let width = await flatFile['getImagePreviewContentWidth']({ content: '', type: 'image', name: 'file' }, 200);
+    let width = await flatFile['getImagePreviewContentWidth']({ content: '', type: 'image', name: 'file', imageSize: { width: 150, height: 50 } });
     expect(width).toBe(FlatFile.TEXT_MIN_SCALE * controller.unitWidth);
 
-    controller['_applyImageFit'] = true;
-    width = await flatFile['getImagePreviewContentWidth']({ content: '', type: 'image', name: 'file' }, 200);
-    expect(width).toBe(200);
+    width = await flatFile['getImagePreviewContentWidth']({ content: '', type: 'image', name: 'file', imageSize: { width: 300, height: 50 } });
+    expect(width).toBe(300);
+});
 
-    question.imageWidth = '250px';
-    width = await flatFile['getImagePreviewContentWidth']({ content: '', type: 'image', name: 'file' }, 300);
-    expect(width).toBe(SurveyHelper.parseWidth(question.imageWidth, 300));
-
-    SurveyHelper.inBrowser = true;
-    const oldImageSize = SurveyHelper.getImageSize;
-    SurveyHelper.getImageSize = async (url: string) => {
-        return <ISize>{ width: 200, height: 0 };
+test('Test file question doesnt throw exception if could not load image preview', async () => {
+    SurveyHelper.getImageSize = async (url: string) => { return null as any; };
+    const json: any = {
+        elements: [
+            {
+                type: 'file',
+                name: 'faqueoneimgwithsz',
+                titleLocation: 'hidden',
+                allowImagesPreview: true,
+                defaultValue: [
+                    {
+                        name: 'cat.png',
+                        type: 'image/png',
+                        content: 'some url'
+                    }
+                ],
+            }
+        ]
     };
-    question.imageWidth = <any>undefined;
-    controller['_applyImageFit'] = false;
-    width = await flatFile['getImagePreviewContentWidth']({ content: '', type: 'image', name: 'file' }, 300);
-    expect(width).toBe(200);
+    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    const controller: DocController = new DocController(TestHelper.defaultOptions);
+    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    expect(flats.length).toBe(1);
+    expect(flats[0].length).toBe(1);
 
-    controller['_applyImageFit'] = true;
-    width = await flatFile['getImagePreviewContentWidth']({ content: '', type: 'image', name: 'file' }, 200);
-    expect(width).toBe(200);
+    const imageBrick: IPdfBrick = (<any>flats[0][0]).bricks[0].bricks[1];
+    expect(imageBrick instanceof ImageBrick).toBeTruthy();
 
-    question.imageWidth = '250px';
-    width = await flatFile['getImagePreviewContentWidth']({ content: '', type: 'image', name: 'file' }, 300);
-    expect(width).toBe(SurveyHelper.parseWidth(question.imageWidth, 300));
+    controller.margins.left += controller.unitWidth;
 
-    SurveyHelper.getImageSize = oldImageSize;
+    const assumeFile: IRect = {
+        xLeft: controller.leftTopPoint.xLeft,
+        xRight: controller.leftTopPoint.xLeft + 150,
+        yTop: controller.leftTopPoint.yTop,
+        yBot: controller.leftTopPoint.yTop + 112.5 + controller.unitHeight * (1.0 + FlatFile.IMAGE_GAP_SCALE)
+    };
+    TestHelper.equalRect(expect, flats[0][0], assumeFile);
 });
 
 test('Test file question getImagePreviewContentWidth always return correct image width', async () => {
@@ -425,4 +463,98 @@ test('Test file question getImagePreviewContentWidth always return correct image
             }
         });
     });
+});
+
+test('Test file question inside paneldynamic waits preview loading', async () => {
+    const json: any = {
+        showQuestionNumbers: 'on',
+        'logoPosition': 'right',
+        'pages': [
+            {
+                'name': 'page1',
+                'elements': [
+                    {
+                        'type': 'text',
+                        'name': 'question1'
+                    }
+                ]
+            },
+            {
+                'name': 'page2',
+                'elements': [
+                    {
+                        'type': 'paneldynamic',
+                        'name': 'pd',
+                        'templateElements': [
+                            {
+                                'type': 'file',
+                                'storeDataAsText': false,
+                                'name': 'file'
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    };
+    SurveyHelper.inBrowser = false;
+    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    survey.onDownloadFile.add((_, options) => {
+        setTimeout(() => {
+            options.callback('success', 'data:image/jpeg;base64,FILECONTENT1');
+        });
+    });
+    let fileBricks: IPdfBrick[];
+    survey.onRenderQuestion.add((_, options) => {
+        fileBricks = options.bricks;
+    });
+    survey.data = { 'pd': [{ 'file': {
+        'name': 'name.jpeg',
+        'type': 'image/jpeg',
+        'content': 'url'
+    } }] };
+    await survey.raw();
+    const unFoldedBricks = fileBricks[0].unfold();
+    expect(unFoldedBricks.length).toBe(8);
+    expect(unFoldedBricks[5]).toBeInstanceOf(LinkBrick);
+    expect((<LinkBrick>unFoldedBricks[5])['link']).toBe('data:image/jpeg;base64,FILECONTENT1');
+});
+test('Test file question with show preview false', async () => {
+    await checkFlatSnapshot(
+        {
+            'elements': [
+                {
+                    'type': 'file',
+                    'titleLocation': 'hidden',
+                    'name': 'files',
+                    'allowMultiple': true,
+                    'showPreview': false,
+                }
+            ]
+        }, {
+            snapshotName: 'file-question-without-preview',
+            isCorrectEvent: (options: AdornersOptions) => {
+                return options.question.getType() == 'file';
+            },
+            allowedPropertiesHash: {
+                'LinkBrick': ['link']
+            },
+            onSurveyCreated: (survey: SurveyPDF) => {
+                survey.data = {
+                    files: [
+                        {
+                            content: 'test_url',
+                            name: 'test_name',
+                            type: ''
+                        },
+                        {
+                            content: 'test_url2',
+                            name: 'test_name2',
+                            type: ''
+                        }
+                    ]
+                };
+            }
+        },
+    );
 });

@@ -11,6 +11,8 @@ import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 import { QuestionTextModel } from 'survey-core';
+import { assert } from 'console';
+import { TextFieldBrick } from '../src/pdf_render/pdf_textfield';
 const __dummy_tb = new FlatTextbox(null, null, null);
 
 test('Check readonly text', async () => {
@@ -32,7 +34,7 @@ test('Check readonly text', async () => {
     expect(flats[0].length).toBe(1);
     const textPoint: IPoint = controller.leftTopPoint;
     textPoint.xLeft += controller.unitWidth;
-    const assumeText: IRect = await SurveyHelper.createCommentFlat(textPoint, question, controller, true);
+    const assumeText: IRect = await SurveyHelper.createCommentFlat(textPoint, question, controller, { });
     TestHelper.equalRect(expect, flats[0][0], assumeText);
 });
 
@@ -58,10 +60,12 @@ test('Check readonly text expends when textRenderAs option set', async () => {
     const question = survey.getAllQuestions()[0];
     const textPoint: IPoint = controller.leftTopPoint;
     textPoint.xLeft += controller.unitWidth;
-    const assumeBrick: IPdfBrick = await SurveyHelper.createCommentFlat(textPoint, question, controller, true);
+    const assumeBrick: IPdfBrick = await SurveyHelper.createCommentFlat(textPoint, question, controller, { isReadOnly: true, value: question.value, isMultiline: true });
     TestHelper.equalRect(expect, flats[0][0], assumeBrick);
 });
-
+class SurveyPDFTester extends SurveyPDF {
+    public get haveCommercialLicense(): boolean { return true; }
+}
 test('Check readonly text with readOnlyTextRenderMode set to div', async () => {
     const oldRenderMode = Survey.settings.readOnlyTextRenderMode;
     Survey.settings.readOnlyTextRenderMode = 'div';
@@ -76,7 +80,7 @@ test('Check readonly text with readOnlyTextRenderMode set to div', async () => {
                 }
             ]
         };
-        const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+        const survey: SurveyPDF = new SurveyPDFTester(json, TestHelper.defaultOptions);
         const pdfAsString = await survey.raw();
         // Stream in result PDF document should be small - in this example 14
         expect(pdfAsString.indexOf('/Length 14\n') > 0).toBeTruthy();
@@ -95,4 +99,25 @@ test('Check shouldRenderAsComment flag for text flat', async () => {
     expect(flat['shouldRenderAsComment']).toBeTruthy();
     question.readonlyRenderAs = 'acroform';
     expect(flat['shouldRenderAsComment']).toBeFalsy();
+});
+
+test('Check text field value when mask is applied', async () => {
+    let question = new QuestionTextModel('');
+    const controller = new DocController({});
+    question.value = 39.015;
+    let brick = (await (new FlatTextbox(<any>undefined, question, controller)).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0].unfold()[0] as TextFieldBrick;
+    expect(brick['options'].value).toBe(39.015);
+    question = new QuestionTextModel('');
+    question.fromJSON({
+        maskType: 'numeric',
+        maskSettings: {
+            'saveMaskedValue': true,
+            'decimalSeparator': ',',
+            'thousandsSeparator': '.'
+        }
+    });
+    question.value = 39.015;
+    brick = (await (new FlatTextbox(<any>undefined, question, controller)).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0].unfold()[0] as TextFieldBrick;
+    expect(brick['options'].value).toBe('39,01');
+
 });

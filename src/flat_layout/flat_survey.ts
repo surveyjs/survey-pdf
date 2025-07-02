@@ -70,12 +70,13 @@ export class FlatSurvey {
             const width: number = SurveyHelper.getPageAvailableWidth(controller);
             let nextMarginLeft: number = controller.margins.left;
             const rowFlats: IPdfBrick[] = [];
-            for (let i: number = 0; i < row.visibleElements.length; i++) {
-                let element: IElement = row.visibleElements[i];
+            const visibleElements = row.elements.filter(el => el.isVisible);
+            for (let i: number = 0; i < visibleElements.length; i++) {
+                let element: IElement = visibleElements[i];
                 if (!element.isVisible) continue;
                 const persWidth: number = SurveyHelper.parseWidth(element.renderWidth,
-                    width - (row.visibleElements.length - 1) * controller.unitWidth,
-                    row.visibleElements.length);
+                    width - (visibleElements.length - 1) * controller.unitWidth,
+                    visibleElements.length);
                 controller.margins.left = nextMarginLeft + ((i !== 0) ? controller.unitWidth : 0);
                 controller.margins.right = controller.paperWidth - controller.margins.left - persWidth;
                 currPoint.xLeft = controller.margins.left;
@@ -85,6 +86,7 @@ export class FlatSurvey {
                         survey, controller, element, currPoint));
                 }
                 else {
+                    await (<Question>element).waitForQuestionIsReady();
                     rowFlats.push(...await SurveyHelper.generateQuestionFlats(survey,
                         controller, <Question>element, currPoint));
                 }
@@ -129,9 +131,11 @@ export class FlatSurvey {
     }
     private static async generateFlatLogoImage(survey: SurveyPDF, controller: DocController,
         point: IPoint): Promise<IPdfBrick> {
+        const logoUrl = SurveyHelper.getLocString(survey.locLogo);
+        const logoSize = await SurveyHelper.getCorrectedImageSize(controller, { imageLink: logoUrl, imageHeight: survey.logoHeight, imageWidth: survey.logoWidth, defaultImageWidth: '300px', defaultImageHeight: '200px' });
         const logoFlat: IPdfBrick = await SurveyHelper.createImageFlat(
-            point, null, controller, SurveyHelper.getLocString(survey.locLogo),
-            SurveyHelper.pxToPt(survey.logoWidth), SurveyHelper.pxToPt(survey.logoHeight));
+            point, null, controller, { link: logoUrl,
+                width: logoSize.width, height: logoSize.height });
         let shift: number = 0;
         if (survey.logoPosition === 'right') {
             shift = SurveyHelper.getPageAvailableWidth(controller) - logoFlat.width;
@@ -204,6 +208,7 @@ export class FlatSurvey {
             point.yTop += controller.unitHeight * FlatSurvey.PANEL_CONT_GAP_SCALE + SurveyHelper.EPSILON;
         }
         for (let i: number = 0; i < survey.visiblePages.length; i++) {
+            survey.currentPage = survey.visiblePages[i];
             let pageFlats: IPdfBrick[] = [];
             pageFlats.push(...await this.generateFlatsPagePanel(
                 survey, controller, survey.visiblePages[i], point));

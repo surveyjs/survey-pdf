@@ -64,6 +64,11 @@ export class PdfBrick implements IPdfBrick {
      * Default value: 14 (inherited from the parent PDF document)
      */
     public fontSize: number;
+    /**
+     * The color of text within the brick.
+     *
+     * Default value: `"#404040"`
+     */
     public textColor: string = SurveyHelper.TEXT_COLOR;
     public formBorderColor: string = SurveyHelper.FORM_BORDER_COLOR;
     public isPageBreak: boolean = false;
@@ -96,11 +101,13 @@ export class PdfBrick implements IPdfBrick {
     protected getShouldRenderReadOnly(): boolean {
         return SurveyHelper.shouldRenderReadOnly(this.question, this.controller);
     }
+    public afterRenderCallback: () => void;
     public async render(): Promise<void> {
         if (this.getShouldRenderReadOnly()) {
             await this.renderReadOnly();
         }
         else await this.renderInteractive();
+        this.afterRenderCallback && this.afterRenderCallback();
     }
     public async renderInteractive(): Promise<void> { }
     public async renderReadOnly(): Promise<void> {

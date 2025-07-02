@@ -1,5 +1,7 @@
 .git/*
 node_modules/*
+**/*.pdf
+!tests/pdf_snapshots/*.pdf
 src/**/*.js
 doc_generator/**/*.json
 docs/classes.json
@@ -8,6 +10,7 @@ tmp/*
 *.cmd
 .tsdrc
 .idea
+/build/**/*
 /packages/**/*
 /.gitattributes
 project.json
@@ -31,3 +34,4 @@ Gemfile.lock
 *.env
 package-lock.json
 coverage/**/*
+junit.xml

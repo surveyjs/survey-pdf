@@ -3,7 +3,7 @@ import { IHTMLRenderType } from './flat_layout/flat_html';
 import { SurveyHelper } from './helper_survey';
 import { LocalizableString } from 'survey-core';
 // import Fonts from './fonts';
-import setRadioAppearance from './jspdf_plugins/acroform';
+import setRadioAppearance from './jspdf_plugins/acroform_radio';
 import './jspdf_plugins/acroform.js';
 import './jspdf_plugins/from_html.js';
 
@@ -105,8 +105,9 @@ export interface IDocOptions {
      * - `"ledger"`
      * - `"tabloid"`
      * - `"credit-card"`
-     * - Array<Number> - custom page size in millimeters, for example, `[210.0, 297.0]`.
+     * - `[width, height]` - Custom page size in millimeters, for example, `[210, 297]`.
      *
+     * [View Demo](https://surveyjs.io/pdf-generator/examples/save-completed-forms-as-pdf-files/ (linkStyle))
      * @see orientation
      */
     format?: string | number[];
@@ -130,10 +131,9 @@ export interface IDocOptions {
      * - `"Times"`
      * - `"Symbol"`
      * - `"ZapfDingbats"`
-     * - `"Segoe"` (requires [additional configuration](https://surveyjs.io/Documentation/Pdf-Export?id=Customization-ChangeFonts))
-     * - [Custom font name](https://surveyjs.io/Documentation/Pdf-Export?id=Customization-ChangeFonts#use-custom-font)
+     * - [Custom font name](https://surveyjs.io/pdf-generator/documentation/customize-pdf-form-settings#custom-fonts)
      *
-     * [View Demo](/pdf-generator/examples/change-font-in-pdf-form/ (linkStyle))
+     * [View Demo](https://surveyjs.io/pdf-generator/examples/change-font-in-pdf-form/ (linkStyle))
      * @see fontSize
      */
     fontName?: string;
@@ -145,24 +145,19 @@ export interface IDocOptions {
      *
      * Default value: `false`
      *
-     * [View Demo](/pdf-generator/examples/change-font-in-pdf-form/ (linkStyle))
+     * [View Demo](https://surveyjs.io/pdf-generator/examples/change-font-in-pdf-form/ (linkStyle))
      * @see htmlRenderAs
      */
     useCustomFontInHtml?: boolean;
 
     /**
-     * Page margins. Set this property to an object with the following fields: `top`, `bot`, `left`, `right`.
+     * Page margins.
+     *
+     * Set this property to an object with the following fields: `top`, `bot`, `left`, `right`.
+     *
+     * [View Demo](https://surveyjs.io/pdf-generator/examples/save-completed-forms-as-pdf-files/ (linkStyle))
      */
     margins?: IMargin;
-
-    commercial?: boolean;
-
-    /**
-     * Removes watermarks from the exported document.
-     *
-     * > You can enable this property only if you have a SurveyJS PDF Generator [commercial license](https://surveyjs.io/pricing). It is illegal to enable this property without a license.
-     */
-    haveCommercialLicense?: boolean;
 
     /**
      * Specifies how to render [HTML questions](https://surveyjs.io/Documentation/Library?id=questionhtmlmodel) into PDF.
@@ -172,6 +167,8 @@ export interface IDocOptions {
      * - `"standard"` - Render HTML questions as selectable text.
      * - `"image"` - Render HTML questions as images.
      * - `"auto"` (default) - Select between the `"standard"` and `"image"` modes automatically based on the HTML content.
+     *
+     * [View Demo](https://surveyjs.io/pdf-generator/examples/split-html-image-across-pages/ (linkStyle))
      *
      * You can override this property for an individual HTML question. Set the question's `renderAs` property to `"standard"` or `"image"` in the survey JSON schema.
      * @see useCustomFontInHtml
@@ -196,8 +193,8 @@ export interface IDocOptions {
      * Possible values:
      *
      * - `"text"` - Render read-only questions as plain text and custom primitives.
-     * - `"acroform"` - Use Acrobat Forms (AcroForms) to render questions that support them. Other questions are rendered in `"text"` mode.
-     * - `"auto"` (default) - Prefer the `"text"` mode but use `"acroform"` for File question type and links.
+     * - `"acroform"` - Use Adobe AcroForms to render questions that support them as interactive form elements switched to their native read-only state. Other questions are rendered in `"text"` mode.
+     * - `"auto"` (default) - Prefer the `"text"` mode but use `"acroform"` for [File Upload](https://surveyjs.io/form-library/documentation/api-reference/file-model) questions and links.
      */
     readonlyRenderAs?: 'auto' | 'text' | 'acroform';
 
@@ -211,7 +208,15 @@ export interface IDocOptions {
     compress?: boolean;
 
     /**
-     * Specifies whether to apply the [imageFit](https://surveyjs.io/Documentation/Library?id=questionimagemodel#imageFit) property to exported [Image](https://surveyjs.io/Documentation/Library?id=questionimagemodel) questions.
+     * Specifies whether to apply `imageFit` settings specified in the survey JSON schema to exported images.
+     *
+     * Default value: `false`
+     *
+     * This property applies the following settings:
+     *
+     * - [`imageFit`](https://surveyjs.io/form-library/documentation/api-reference/add-image-to-survey#imageFit) to exported [Image](https://surveyjs.io/form-library/documentation/api-reference/add-image-to-survey) questions
+     * - [`imageFit`](https://surveyjs.io/form-library/documentation/api-reference/image-picker-question-model#imageFit) to exported [Image Picker](https://surveyjs.io/form-library/documentation/api-reference/image-picker-question-model) questions
+     * - [`logoFit`](https://surveyjs.io/form-library/documentation/api-reference/survey-data-model#logoFit) to an exported logo in the survey header
      *
      * If you enable the `applyImageFit` property, the quality of images may be lower because they pass through several conversions. If `applyImageFit` is disabled, exported images fill the entire container and do not preserve their aspect ratio, but their quality remains the same because they are exported as is.
      */
@@ -223,8 +228,13 @@ export interface IDocOptions {
      * Default value: `false`
      */
     isRTL?: boolean;
-
     /**
+     * Specifies whether to include only selected choices when PDF Generator renders a [Multi-Select Dropdown (Tag Box)](https://surveyjs.io/form-library/examples/how-to-create-multiselect-tag-box/) question.
+     *
+     * Default value: `false` (include all choices)
+     */
+    tagboxSelectedChoicesOnly?: boolean;
+     /**
      * Specifies settings to password protect document.
      */
     encryption?: IEncryptionSettings;
@@ -250,7 +260,9 @@ export class DocOptions implements IDocOptions {
     protected _applyImageFit: boolean;
     protected _useLegacyBooleanRendering: boolean
     protected _isRTL: boolean;
+    protected _tagboxSelectedChoicesOnly: boolean;
     protected _encryption: IEncryptionSettings;
+
     public constructor(options: IDocOptions) {
         if (typeof options.orientation === 'undefined') {
             if (typeof options.format === 'undefined' ||
@@ -312,6 +324,7 @@ export class DocOptions implements IDocOptions {
         this._applyImageFit = options.applyImageFit || false;
         this._useLegacyBooleanRendering = options.useLegacyBooleanRendering || false;
         this._isRTL = options.isRTL || false;
+        this._tagboxSelectedChoicesOnly = options.tagboxSelectedChoicesOnly || false;
         this._encryption = options.encryption;
     }
     public get leftTopPoint(): IPoint {
@@ -365,15 +378,18 @@ export class DocOptions implements IDocOptions {
     public get isRTL(): boolean {
         return this._isRTL;
     }
+    public get tagboxSelectedChoicesOnly(): boolean {
+        return this._tagboxSelectedChoicesOnly;
+    }
     public get encryption(): IEncryptionSettings {
         return this._encryption;
     }
 }
 
 /**
- * The `DocController` object includes an API that allows you to configure the resulting PDF document. You can access this object within functions that handle the `SurveyPDF`'s [`onRender...`](https://surveyjs.io/pdf-generator/documentation/api-reference/surveypdf#onRenderFooter) events.
+ * The `DocController` object includes an API that allows you to configure main PDF document properties (font, margins, page width and height).
  *
- * [View Demo](https://surveyjs.io/pdf-generator/examples/how-to-use-adorners-in-pdf-forms/ (linkStyle))
+ * [View Demo](https://surveyjs.io/pdf-generator/examples/change-font-in-pdf-form/ (linkStyle))
  */
 export class DocController extends DocOptions {
     private _doc: jsPDF;
@@ -406,6 +422,14 @@ export class DocController extends DocOptions {
         this.marginsStack = [];
     }
     public static customFonts: { [name: string]: { normal: string, bold: string, italic: string, bolditalic: string } } = {};
+    /**
+     * Adds a custom font to the PDF Generator.
+     *
+     * [View Demo](https://surveyjs.io/pdf-generator/examples/change-font-in-pdf-form/ (linkStyle))
+     * @param fontName A custom name that you will use to apply the custom font.
+     * @param base64 The custom font as a Base64-encoded string. To encode your font to Base64, obtain it as a TTF file and use any TTF-to-Base64 online converter.
+     * @param fontStyle The style of the custom font: `"normal"`, `"bold"`, `"italic"`, or `"bolditalic"`.
+     */
     public static addFont(fontName: string, base64: string, fontStyle: 'normal' | 'bold' | 'italic' | 'bolditalic') {
         let font = DocController.customFonts[fontName];
         if (!font) {
@@ -514,6 +538,9 @@ export class DocController extends DocOptions {
     }
     public addPage(): void {
         this.doc.addPage();
+    }
+    public getCurrentPageIndex(): number {
+        return this.doc.getCurrentPageInfo().pageNumber - 1;
     }
     public setPage(index: number): void {
         this.doc.setPage(index + 1);

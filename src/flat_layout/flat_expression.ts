@@ -1,10 +1,9 @@
-import { IQuestion, QuestionExpressionModel } from 'survey-core';
+import { IQuestion, QuestionExpressionModel, settings } from 'survey-core';
 import { SurveyPDF } from '../survey';
 import { IPoint, IRect, DocController } from '../doc_controller';
 import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
-import { TextFieldBrick } from '../pdf_render/pdf_textfield';
 import { SurveyHelper } from '../helper_survey';
 
 export class FlatExpression extends FlatQuestion {
@@ -15,7 +14,12 @@ export class FlatExpression extends FlatQuestion {
         this.question = <QuestionExpressionModel>question;
     }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
-        return [await SurveyHelper.createCommentFlat(point, this.question, this.controller, true, { value: this.question.displayValue, readOnly: true })];
+        return [await SurveyHelper.createCommentFlat(point, this.question, this.controller, {
+            value: this.question.displayValue,
+            isReadOnly: true,
+            fieldName: this.question.id,
+            shouldRenderBorders: settings.readOnlyTextRenderMode === 'input',
+        })];
     }
 }
 

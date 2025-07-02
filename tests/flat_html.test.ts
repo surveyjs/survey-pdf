@@ -2,7 +2,7 @@
     return {};
 };
 
-import { Question } from 'survey-core';
+import { Question, QuestionHtmlModel } from 'survey-core';
 import { SurveyPDF } from '../src/survey';
 import { IPoint, IRect, DocController, IDocOptions } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
@@ -77,4 +77,20 @@ test('Check createHTMLRect method with long html', async () => {
     controller.helperDoc.addPage();
     actualRect = SurveyHelper.createHTMLRect(descPoint, controller, margins, result);
     expect(actualRect.yBot - actualRect.yTop).toBeCloseTo(427.2, 8);
+});
+
+test('Check correctHtml method with multiple br tags', async () => {
+    let survey: SurveyPDF = new SurveyPDF({}, TestHelper.defaultOptions);
+    SurveyHelper.shouldConvertImageToPng = false;
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    const htmlFlat = new FlatHTML(survey, new QuestionHtmlModel('q1'), controller);
+    expect(htmlFlat['correctHtml']('<span>Test</span><br>')).toEqual('<span>Test</span><br>');
+    expect(htmlFlat['correctHtml']('<span>Test</span><br><br>')).toEqual('<span>Test</span><br>');
+    expect(htmlFlat['correctHtml']('<br><br><span>Test</span><br><br>')).toEqual('<br><span>Test</span><br>');
+    expect(htmlFlat['correctHtml']('<br><br><span>Test</span><br><br><br><span>Test</span><br><br>')).toEqual('<br><span>Test</span><br><span>Test</span><br>');
+    expect(htmlFlat['correctHtml']('<span>Test</span><br>  <br>')).toEqual('<span>Test</span><br>');
+    expect(htmlFlat['correctHtml']('<br><span>Test</span><br>')).toEqual('<br><span>Test</span><br>');
+    expect(htmlFlat['correctHtml']('<br><br/>')).toEqual('<br>');
+    expect(htmlFlat['correctHtml']('<br / ><br>')).toEqual('<br>');
+    expect(htmlFlat['correctHtml']('<br></br>')).toEqual('<br>');
 });

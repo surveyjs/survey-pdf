@@ -9,10 +9,10 @@ import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { FlatTextbox } from '../src/flat_layout/flat_textbox';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { TextBoldBrick } from '../src/pdf_render/pdf_textbold';
-import { TextBoxBrick } from '../src/pdf_render/pdf_textbox';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 import { calcTitleTop } from './flat_question.test';
+import { TextFieldBrick } from '../src/pdf_render/pdf_textfield';
 let __dummy_tx = new FlatTextbox(null, null, null);
 
 test('Check two pages start point', async () => {
@@ -106,6 +106,7 @@ test('Check panel with title', async () => {
 });
 test('Check panel with title and number', async () => {
     const json: any = {
+        showQuestionNumbers: 'on',
         elements: [
             {
                 type: 'panel',
@@ -229,7 +230,7 @@ test('Check question title location in panel', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(2);
-    expect(flats[0][0] instanceof TextBoxBrick).toBe(true);
+    expect(flats[0][0] instanceof TextFieldBrick).toBe(true);
     expect(flats[0][1].unfold()[0] instanceof TextBoldBrick).toBe(true);
 });
 test('Check not rendering invisible questions', async () => {

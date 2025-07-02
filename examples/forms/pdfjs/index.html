@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Welcome to SurveyPDF</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://unpkg.com/pdfjs-dist@5.1.91/build/pdf.min.mjs"></script>
+  <script src="../../../node_modules/survey-core/survey.core.min.js"></script>
+  <script src="../../../build/pdf-form-filler.js"></script>
+  
+  
+  <style>
+    body {
+      background-color: #1d2529;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="surveyElement"></div>
+  <script type="module">
+    import * as pdfjsLib from 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/5.0.375/pdf.min.mjs';
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 
+      'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/5.0.375/pdf.worker.min.mjs';
+  </script>
+  <script src="../template.js"></script>
+  <script src="./index.js"></script>
+</body>
+
+</html>

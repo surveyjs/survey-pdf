@@ -14,6 +14,8 @@ import { RowlineBrick } from '../src/pdf_render/pdf_rowline';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 import { CompositeBrick } from '../src/pdf_render/pdf_composite';
+import { checkFlatSnapshot } from './snapshot_helper';
+import { AdornersOptions } from '../src/event_handler/adorners';
 let __dummy_dd = new FlatDropdown(null, null, null);
 let __dummy_md = new FlatMatrixDynamic(null, null, null);
 let __dummy_tx = new FlatExpression(null, null, null);
@@ -481,60 +483,31 @@ test('Check matrix dynamic two columns one row narrow width', async () => {
     TestHelper.equalRect(expect, flats[0][0], assumeMatrix);
 });
 test('Check matrixdynamic with totals', async () => {
-    let json: any = {
-        showQuestionNumbers: 'off',
-        elements: [
-            {
+    await checkFlatSnapshot(
+        {
+            showQuestionNumbers: 'off',
+            elements: [
+                {
 
-                type: 'matrixdynamic',
-                name: 'madintotals',
-                showHeader: false,
-                rowCount: 1,
-                titleLocation: 'hidden',
-                columns: [
-                    {
-                        totalType: 'sum',
-                        totalFormat: 'test',
-                        name: 'id'
-                    }
-                ]
-            }
-        ]
-    };
-    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let controller: DocController = new DocController(TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(2);
-    controller.margins.left += controller.unitWidth;
-    let unfoldRow1Flats: IPdfBrick[] = await flats[0][0].unfold();
-    expect(unfoldRow1Flats.length).toBe(2);
-    let unfolFooterFlats: IPdfBrick[] = flats[0][1].unfold();
-    expect(unfolFooterFlats.length).toBe(1);
-    let assumeQuestion1: IRect = {
-        xLeft: controller.leftTopPoint.xLeft,
-        xRight: controller.paperWidth - controller.margins.right,
-        yTop: controller.leftTopPoint.yTop + SurveyHelper.EPSILON,
-        yBot: controller.leftTopPoint.yTop + SurveyHelper.EPSILON +
-            controller.unitHeight
-    };
-    expect(unfoldRow1Flats[1] instanceof RowlineBrick).toBe(true);
-    TestHelper.equalRect(expect, unfoldRow1Flats[0], assumeQuestion1);
-    let assumeFooter: IRect = {
-        xLeft: controller.leftTopPoint.xLeft,
-        xRight: controller.paperWidth - controller.margins.right,
-        yTop: assumeQuestion1.yBot + SurveyHelper.EPSILON + FlatMatrixDynamic.GAP_BETWEEN_ROWS * controller.unitHeight,
-        yBot: assumeQuestion1.yBot + SurveyHelper.EPSILON +
-            controller.unitHeight * (1 + FlatMatrixDynamic.GAP_BETWEEN_ROWS + 2 * SurveyHelper.VALUE_READONLY_PADDING_SCALE)
-    };
-    TestHelper.equalRect(expect, unfolFooterFlats[0], assumeFooter);
-    let assumeMatrix: IRect = {
-        xLeft: controller.leftTopPoint.xLeft,
-        xRight: controller.paperWidth - controller.margins.right,
-        yTop: controller.leftTopPoint.yTop,
-        yBot: assumeFooter.yBot
-    };
-    TestHelper.equalRect(expect, SurveyHelper.mergeRects(...flats[0]), assumeMatrix);
+                    type: 'matrixdynamic',
+                    name: 'madintotals',
+                    showHeader: false,
+                    rowCount: 1,
+                    titleLocation: 'hidden',
+                    columns: [
+                        {
+                            totalType: 'sum',
+                            totalFormat: 'test',
+                            name: 'id'
+                        }
+                    ]
+                }
+            ]
+        }, {
+            snapshotName: 'matrixdynamic_with_totals',
+            isCorrectEvent: (options: AdornersOptions) => {
+                return options.question.getType() == 'matrixdynamic';
+            } });
 });
 test('Check matrix dynamic column width', async () => {
     let json: any = {

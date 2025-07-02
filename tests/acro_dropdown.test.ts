@@ -12,6 +12,7 @@ let __dummy_dd = new FlatDropdown(null, null, null);
 
 test('Check dropdown readonly', async () => {
     let json: any = {
+        showQuestionNumbers: 'on',
         questions: [
             {
                 name: 'dropdown_readonly',

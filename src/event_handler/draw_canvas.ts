@@ -90,6 +90,14 @@ export interface IDrawImageOptions extends IDrawRectOptions {
      * A string value with a base64-encoded image to be drawn.
      */
     base64: string;
+    /**
+     * Specifies how to resize the image to fit it into its container.
+     *
+     * Default value: `"contain"` if [`applyImageFit`](https://surveyjs.io/pdf-generator/documentation/api-reference/idocoptions#applyImageFit) is enabled or `undefined` if not.
+     *
+     * Refer to the [`object-fit`](https://developer.mozilla.org/en-US/docs/Web/CSS/object-fit) CSS property description for information on accepted values.
+     */
+    imageFit?: string;
 }
 
 /**
@@ -98,7 +106,7 @@ export interface IDrawImageOptions extends IDrawRectOptions {
  * [View Demo](https://surveyjs.io/pdf-generator/examples/customize-header-and-footer-of-pdf-form/ (linkStyle))
  */
 export class DrawCanvas {
-    public constructor(protected packs: IPdfBrick[],
+    public constructor(public packs: IPdfBrick[],
         public controller: DocController,
         protected _rect: IRect,
         protected _countPages: number,
@@ -119,7 +127,7 @@ export class DrawCanvas {
         return this._pageNumber;
     }
     /**
-     * An object with coordinates of a rectangle that limits the drawing area.
+     * An object with coordinates of a rectangle that limits the drawing area. This object contain the following fields: `xLeft`, `xRight`, `yTop`, `yBot`.
      */
     public get rect(): IRect {
         return this._rect;
@@ -205,7 +213,9 @@ export class DrawCanvas {
     }
     /**
      * Draws a piece of text within the drawing area.
-     * @param textOptions An object that configures the drawing.
+     *
+     * [View Demo](https://surveyjs.io/pdf-generator/examples/customize-header-and-footer-of-pdf-form/ (linkStyle))
+     * @param textOptions An [`IDrawTextOptions`](https://surveyjs.io/pdf-generator/documentation/api-reference/idrawtextoptions) object that configures the drawing.
      */
     public drawText(textOptions: IDrawTextOptions): void {
         textOptions = SurveyHelper.clone(textOptions);
@@ -230,7 +240,9 @@ export class DrawCanvas {
     }
     /**
      * Draws an image within the drawing area.
-     * @param imageOptions An object that configures drawing.
+     *
+     * [View Demo](https://surveyjs.io/pdf-generator/examples/customize-header-and-footer-of-pdf-form/ (linkStyle))
+     * @param imageOptions An [`IDrawImageOptions`](https://surveyjs.io/pdf-generator/documentation/api-reference/idrawimageoptions) object that configures drawing.
      */
     public async drawImage(imageOptions: IDrawImageOptions): Promise<void> {
         imageOptions = SurveyHelper.clone(imageOptions);
@@ -245,10 +257,12 @@ export class DrawCanvas {
             height: imageOptions.height
         };
         const imageRect: IRect = this.alignRect(imageOptions, imageSize);
+        this.controller.pushMargins(0, 0);
         this.packs.push(await SurveyHelper.createImageFlat(
             SurveyHelper.createPoint(imageRect, true, true),
-            null, this.controller, imageOptions.base64,
-            imageRect.xRight - imageRect.xLeft,
-            imageRect.yBot - imageRect.yTop));
+            null, this.controller, { link: imageOptions.base64,
+                width: imageRect.xRight - imageRect.xLeft,
+                height: imageRect.yBot - imageRect.yTop, objectFit: imageOptions.imageFit }, !!imageOptions.imageFit || this.controller.applyImageFit));
+        this.controller.popMargins();
     }
 }

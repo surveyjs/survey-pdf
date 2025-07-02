@@ -2,9 +2,6 @@
 
 var webpack = require("webpack");
 var path = require("path");
-var dts = require("dts-bundle");
-var rimraf = require("rimraf");
-var GenerateJsonPlugin = require("generate-json-webpack-plugin");
 var packageJson = require("./package.json");
 var fs = require("fs");
 
@@ -17,100 +14,80 @@ var banner = [
   "License: MIT (http://www.opensource.org/licenses/mit-license.php)"
 ].join("\n");
 
-// TODO add to dts_bundler
-var dts_banner = [
-  "Type definitions for SurveyJS PDF library v" + packageJson.version,
-  "Copyright (c) 2015-" + year + " Devsoft Baltic OÜ  - http://surveyjs.io/",
-  "Definitions by: Devsoft Baltic OÜ <https://github.com/surveyjs/>",
-  ""
-].join("\n");
-
-var platformOptions = {
-  pdf: {
-    externals: {
-      jspdf: {
-        root: "jspdf",
-        commonjs2: "jspdf",
-        commonjs: "jspdf",
-        amd: "jspdf"
-      },
-      "survey-core": {
-        root: "Survey",
-        commonjs2: "survey-core",
-        commonjs: "survey-core",
-        amd: "survey-core"
-      }
+const buildPlatformJson = {
+  name: "survey-pdf",
+  version: packageJson.version,
+  description:
+    "survey.pdf.js is a SurveyJS PDF Library. It is a easy way to export SurveyJS surveys to PDF. It uses JSON for survey metadata.",
+  keywords: ["Survey", "JavaScript", "PDF", "Library", "pdf"],
+  homepage: "https://surveyjs.io/",
+  license: "SEE LICENSE IN LICENSE",
+  module: "fesm/survey.pdf.mjs",
+  main: "survey.pdf.js",
+  repository: {
+    type: "git",
+    url: "https://github.com/surveyjs/survey-pdf.git"
+  },
+  typings: "./typings/entries/pdf.d.ts",
+  peerDependencies: {
+    "survey-core": packageJson.version
+  },
+  dependencies: {
+    jspdf: "^2.3.0 || ^3"
+  },
+  exports: {
+    ".": {
+      "types": "./typings/entries/pdf.d.ts",
+      "import": "./fesm/survey.pdf.mjs",
+      "require": "./survey.pdf.js"
     },
-    keywords: ["pdf"],
-    dependencies: {
-      jspdf: "^2.3.0",
-      "survey-core": packageJson.version
-    }
+    "./survey.pdf.fonts": {
+      "import": "./fesm/survey.pdf.fonts.mjs",
+      "require": "./survey.pdf.fonts.js"
+    },
+    "./pdf-form-filler": {
+      "types": "./forms-typings/entries/forms.d.ts",
+      "node": {
+        "import": "./fesm/pdf-form-filler.node.mjs",
+        "require": "./pdf-form-filler.node.js"  
+      },
+      "import": "./fesm/pdf-form-filler.mjs",
+      "require": "./pdf-form-filler.js"
+    },
   }
-};
+}
 
-module.exports = function(options) {
-  //TODO
-  options.platformPrefix = options.platform;
-  var packagePath = "./packages/survey-" + options.platform + "/";
-
-  var percentage_handler = function handler(percentage, msg) {
+function getPercentageHandler(emitNonSourceFiles, buildPath) {
+  return function (percentage, msg) {
     if (0 === percentage) {
       console.log("Build started... good luck!");
     } else if (1 === percentage) {
-      if (options.buildType === "prod") {
-        dts.bundle({
-          name: "../../survey." + options.platformPrefix,
-          main: packagePath + "typings/entries/" + options.platform + ".d.ts",
-          outputAsModuleFolder: true,
-          headerText: dts_banner
-        });
-        rimraf.sync(packagePath + "typings");
+      if (emitNonSourceFiles) {
         fs.createReadStream("./LICENSE").pipe(
-          fs.createWriteStream(packagePath + "LICENSE")
+          fs.createWriteStream(buildPath + "/LICENSE")
         );
         fs.createReadStream("./README.md").pipe(
-          fs.createWriteStream(packagePath + "README.md")
+          fs.createWriteStream(buildPath + "/README.md")
+        );
+        fs.writeFileSync(
+          buildPath + "/package.json",
+          JSON.stringify(buildPlatformJson, null, 2),
+          "utf8"
         );
       }
     }
   };
+}
 
-  var mainFile = "survey." + options.platformPrefix + ".js";
-  var packagePlatformJson = {
-    name: "survey-" + options.platform,
-    version: packageJson.version,
-    description:
-      "survey.pdf.js is a SurveyJS PDF Library. It is a easy way to export SurveyJS surveys to PDF. It uses JSON for survey metadata.",
-    keywords: ["Survey", "JavaScript", "PDF", "Library"].concat(
-      platformOptions[options.platform].keywords
-    ),
-    homepage: "https://surveyjs.io/",
-    license: "SEE LICENSE IN LICENSE",
-    files: [
-      "survey." + options.platformPrefix + ".d.ts",
-      "survey." + options.platformPrefix + ".js",
-      "survey." + options.platformPrefix + ".min.js",
-      "survey." + options.platformPrefix + ".fonts.js",
-      "survey." + options.platformPrefix + ".fonts.min.js"    ],
-    main: mainFile,
-    repository: {
-      type: "git",
-      url: "https://github.com/surveyjs/survey-pdf.git"
-    },
-    typings: "survey." + options.platformPrefix + ".d.ts"
-  };
 
-  if (!!platformOptions[options.platform].dependencies) {
-    packagePlatformJson.dependencies =
-      platformOptions[options.platform].dependencies;
-  }
-  if (!!platformOptions[options.platform].peerDependencies) {
-    packagePlatformJson.peerDependencies =
-      platformOptions[options.platform].peerDependencies;
-  }
+
+module.exports = function (options) {
+  const emitDeclarations = !!options.emitDeclarations;
+  const emitNonSourceFiles = !!options.emitNonSourceFiles;
+  var buildPath = path.resolve(__dirname, "./build");
 
   var config = {
+    mode: options.buildType === "prod" ? "production" : "development",
     entry: {},
     resolve: {
       extensions: [".ts", ".js", ".tsx"],
@@ -125,10 +102,11 @@ module.exports = function(options) {
           use: {
             loader: "ts-loader",
             options: {
-              compilerOptions: {
-                declaration: options.buildType === "prod",
-                outDir: packagePath + "typings/"
-              }
+              configFile: options.tsConfigFile || "tsconfig.json",
+              compilerOptions: emitDeclarations ? {} : {
+                declaration: false,
+                declarationDir: null
+              } 
             }
           }
         },
@@ -143,18 +121,32 @@ module.exports = function(options) {
       ]
     },
     output: {
+      path: buildPath,
       filename:
-        packagePath +
-        "[name]" +
-        (options.buildType === "prod" ? ".min" : "") +
-        ".js",
+      "[name]" +
+      (options.buildType === "prod" ? ".min" : "") +
+      ".js",
       library: options.libraryName || "SurveyPDF",
       libraryTarget: "umd",
-      umdNamedDefine: true
+      umdNamedDefine: true,
+      globalObject: "this",
     },
-    externals: platformOptions[options.platform].externals,
+    externals: {
+      jspdf: {
+        root: "jspdf",
+        commonjs2: "jspdf",
+        commonjs: "jspdf",
+        amd: "jspdf"
+      },
+      "survey-core": {
+        root: "Survey",
+        commonjs2: "survey-core",
+        commonjs: "survey-core",
+        amd: "survey-core"
+      }
+    },
     plugins: [
-      new webpack.ProgressPlugin(percentage_handler),
+      new webpack.ProgressPlugin(getPercentageHandler(emitNonSourceFiles, buildPath)),
       new webpack.DefinePlugin({
         "process.env.ENVIRONMENT": JSON.stringify(options.buildType),
         "process.env.VERSION": JSON.stringify(packageJson.version)
@@ -163,20 +155,14 @@ module.exports = function(options) {
         banner: banner
       })
     ],
-    devtool: "inline-source-map"
+    devtool: "source-map"
   };
 
   if (options.buildType === "prod") {
     config.devtool = false;
-    config.plugins = config.plugins.concat([
-      new webpack.optimize.UglifyJsPlugin(),
-      new GenerateJsonPlugin(
-        packagePath + "package.json",
-        packagePlatformJson,
-        undefined,
-        2
-      )
-    ]);
+    config.optimization = {
+      minimize: options.buildType === "prod",
+    };
   }
 
   if (options.buildType === "dev") {
@@ -185,9 +171,9 @@ module.exports = function(options) {
     ]);
   }
 
-  config.entry["survey." + options.platform] = path.resolve(
+  config.entry["survey." + "pdf"] = path.resolve(
     __dirname,
-    "./src/entries/" + options.platform
+    "./src/entries/" + "pdf"
   );
 
   return config;

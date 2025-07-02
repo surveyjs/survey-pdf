@@ -1,0 +1,49 @@
+[
+	{
+		"brickType": "CompositeBrick",
+		"width": 504.0826771653543,
+		"height": 34.5,
+		"xLeft": 62.84645669291339,
+		"xRight": 566.9291338582677,
+		"yTop": 28.34645669291339,
+		"yBot": 62.84645669291339,
+		"bricks": [
+			{
+				"brickType": "TextFieldBrick",
+				"width": 226.16633858267713,
+				"height": 34.5,
+				"xLeft": 62.84645669291339,
+				"xRight": 289.0127952755905,
+				"yTop": 28.34645669291339,
+				"yBot": 62.84645669291339,
+				"options": {
+					"fieldName": "testId",
+					"inputType": "number",
+					"value": 30,
+					"isReadOnly": false,
+					"shouldRenderBorders": true,
+					"isMultiline": false,
+					"placeholder": ""
+				}
+			},
+			{
+				"brickType": "TextFieldBrick",
+				"width": 226.1663385826772,
+				"height": 34.5,
+				"xLeft": 340.7627952755905,
+				"xRight": 566.9291338582677,
+				"yTop": 28.34645669291339,
+				"yBot": 62.84645669291339,
+				"options": {
+					"fieldName": "testId",
+					"inputType": "number",
+					"value": 60,
+					"isReadOnly": false,
+					"shouldRenderBorders": true,
+					"isMultiline": false,
+					"placeholder": ""
+				}
+			}
+		]
+	}
+]

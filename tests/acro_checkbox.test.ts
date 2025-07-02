@@ -132,6 +132,7 @@ test('Check two equal values checkbox', async () => {
 });
 test('Check readonly checkbox symbol', async () => {
     let json: any = {
+        showQuestionNumbers: 'on',
         questions: [
             {
                 name: 'checkbox_readonly_symbol',

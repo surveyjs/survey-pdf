@@ -12,6 +12,11 @@ PDF Generator for SurveyJS allows your users to save surveys as interactive PDF 
 
 [View Full Code on GitHub](https://github.com/surveyjs/code-examples/tree/main/get-started-pdf/react (linkStyle))
 
+If you are looking for a quick-start application that includes all SurveyJS components, refer to the following GitHub repositories:
+
+- <a href="https://github.com/surveyjs/surveyjs-nextjs" target="_blank">SurveyJS + Next.js Quickstart Template</a>
+- <a href="https://github.com/surveyjs/surveyjs-remix" target="_blank">SurveyJS + Remix Quickstart Template</a>
+
 ## Install the `survey-pdf` npm package
 
 PDF Generator for SurveyJS is built upon the <a href="https://github.com/parallax/jsPDF#readme" target="_blank">jsPDF</a> library and is distributed as a <a href="https://www.npmjs.com/package/survey-pdf" target="_blank">`survey-pdf`</a> npm package. Run the following command to install the package and its dependencies, including jsPDF:
@@ -25,7 +30,9 @@ npm install survey-pdf --save
 Export properties allow you to customize the page format, orientation, margins, font, and other parameters. Refer to the [`IDocOptions`](/Documentation/Pdf-Export?id=idocoptions) interface for a full list of properties. The following code changes the [`fontSize`](/Documentation/Pdf-Export?id=idocoptions#fontSize) property:
 
 ```js
-const exportToPdfOptions = {
+import { IDocOptions } from 'survey-pdf';
+
+const pdfDocOptions: IDocOptions = {
   fontSize: 12
 };
 ```
@@ -37,26 +44,29 @@ To export a survey, you need to create a `SurveyPDF` instance. Its constructor a
 The code below implements a `savePdf` helper function that instantiates `SurveyPDF`, assigns survey data (user responses) to this instance, and calls the `save(fileName)` method. If you want to export the survey without user responses, do not specify the `SurveyPDF`'s `data` property.
 
 ```js
-import { SurveyPDF } from "survey-pdf";
+import { IDocOptions, SurveyPDF } from "survey-pdf";
 
 const surveyJson = { /* ... */ };
-
-const exportToPdfOptions = { /* ... */ };
+const pdfDocOptions: IDocOptions = { /* ... */ };
 
 const savePdf = function (surveyData) {
-  const surveyPdf = new SurveyPDF(surveyJson, exportToPdfOptions);
+  const surveyPdf = new SurveyPDF(surveyJson, pdfDocOptions);
   surveyPdf.data = surveyData;
   surveyPdf.save();
 };
 ```
 
-You can use any UI element to call this helper function. For instance, the following code adds a new [navigation button](/Documentation/Library?id=iaction) below the survey and calls the `savePdf` function when a user clicks this button:
+You can use any UI element to call this helper function. For instance, the code below adds a new [navigation button](/Documentation/Library?id=iaction) below the survey and calls the `savePdf` function when a user clicks this button.
+
+> If you are using [Next.js](https://nextjs.org) or another framework that [has adopted React Server Components](https://react.dev/learn/start-a-new-react-project#bleeding-edge-react-frameworks), you need to explicitly mark the React component that renders a SurveyJS component as client code using the ['use client'](https://react.dev/reference/react/use-client) directive.
 
 ```js
+'use client'
+
 import { Model } from 'survey-core';
 import { Survey } from 'survey-react-ui';
 // ...
-function App() {
+export default function SurveyComponent() {
   const survey = new Model(surveyJson);
   
   survey.addNavigationItem({
@@ -69,42 +79,64 @@ function App() {
     <Survey model={survey} id="surveyContainer" />
   );
 }
-
-export default App;
 ```
 
-The following image illustrates the resulting UI with the [Default V2 theme](/Documentation/Library?id=get-started-react#configure-styles) applied:
+The following image illustrates the resulting UI with the [Default theme](https://surveyjs.io/form-library/documentation/manage-default-themes-and-styles) applied:
 
 ![Export Survey to PDF - Save as PDF navigation button](images/surveypdf-navigation-button.png)
 
-To view the application, run `npm run start` in a command line and open [http://localhost:3000/](http://localhost:3000/) in your browser.
+To view the application, run `npm run dev` in a command line and open [http://localhost:3000/](http://localhost:3000/) in your browser.
 
 <details>
     <summary>View Full Code</summary>  
 
 ```js
-import './App.css'
+// components/Survey.tsx
+'use client'
 
-import 'survey-core/defaultV2.min.css';
+import 'survey-core/survey-core.css';
 import { Model } from 'survey-core';
 import { Survey } from 'survey-react-ui';
-import { SurveyPDF } from 'survey-pdf';
+import { IDocOptions, SurveyPDF } from 'survey-pdf';
 
 const surveyJson = {
-  // ...
+  elements: [{
+    name: "satisfaction-score",
+    title: "How would you describe your experience with our product?",
+    type: "radiogroup",
+    choices: [
+      { value: 5, text: "Fully satisfying" },
+      { value: 4, text: "Generally satisfying" },
+      { value: 3, text: "Neutral" },
+      { value: 2, text: "Rather unsatisfying" },
+      { value: 1, text: "Not satisfying at all" }
+    ],
+    isRequired: true
+  }, {
+    name: "how-can-we-improve",
+    title: "In your opinion, how could we improve our product?",
+    type: "comment"
+  }, {
+    name: "nps-score",
+    title: "On a scale of zero to ten, how likely are you to recommend our product to a friend or colleague?",
+    type: "rating",
+    rateMin: 0,
+    rateMax: 10,
+  }],
+  completedHtml: "Thank you for your feedback!",
 };
 
-const exportToPdfOptions = {
+const pdfDocOptions: IDocOptions = {
   fontSize: 12
 };
 
-const savePdf = function (surveyData) {
-  const surveyPdf = new SurveyPDF(surveyJson, exportToPdfOptions);
+const savePdf = (surveyData: any) => {
+  const surveyPdf = new SurveyPDF(surveyJson, pdfDocOptions);
   surveyPdf.data = surveyData;
   surveyPdf.save();
 };
 
-function App() {
+export default function SurveyComponent() {
   const survey = new Model(surveyJson);
   
   survey.addNavigationItem({
@@ -117,12 +149,41 @@ function App() {
     <Survey model={survey} id="surveyContainer" />
   );
 }
-
-export default App;
 ```
+
+```js
+// survey/page.tsx
+import dynamic from 'next/dynamic';
+
+const SurveyComponent = dynamic(() => import("@/components/Survey"), {
+  ssr: false
+});
+
+export default function Survey() {
+  return (
+    <SurveyComponent />
+  );
+}
+
+```
+
 </details>
 
 [View Full Code on GitHub](https://github.com/surveyjs/code-examples/tree/main/get-started-pdf/react (linkStyle))
+
+## Activate a SurveyJS License
+
+SurveyJS PDF Generator is not available for free commercial use. To integrate it into your application, you must purchase a [commercial license](https://surveyjs.io/licensing) for the software developer(s) who will be working with the PDF Generator APIs and implementing the integration. If you use SurveyJS PDF Generator without a license, an alert banner will appear at the top of each page in an exported PDF document:
+
+<img src="./images/alert-banner-pdf.png" alt="SurveyJS PDF Generator: Alert banner" width="772" height="494">
+
+After purchasing a license, follow the steps below to activate it and remove the alert banner:
+
+1. [Log in](https://surveyjs.io/login) to the SurveyJS website using your email address and password. If you've forgotten your password, [request a reset](https://surveyjs.io/reset-password) and check your inbox for the reset link.
+2. Open the following page: [How to Remove the Alert Banner](https://surveyjs.io/remove-alert-banner). You can also access it by clicking **Set up your license key** in the alert banner itself.
+3. Follow the instructions on that page.
+
+Once you've completed the setup correctly, the alert banner will no longer appear.
 
 ## Further Reading
 

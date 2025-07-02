@@ -10,7 +10,6 @@ import { TextBrick } from './pdf_render/pdf_text';
 import { TextBoldBrick } from './pdf_render/pdf_textbold';
 import { TitlePanelBrick } from './pdf_render/pdf_titlepanel';
 import { DescriptionBrick } from './pdf_render/pdf_description';
-import { CommentBrick } from './pdf_render/pdf_comment';
 import { LinkBrick } from './pdf_render/pdf_link';
 import { HTMLBrick } from './pdf_render/pdf_html';
 import { ImageBrick } from './pdf_render/pdf_image';
@@ -18,6 +17,9 @@ import { EmptyBrick } from './pdf_render/pdf_empty';
 import { RowlineBrick } from './pdf_render/pdf_rowline';
 import { CompositeBrick } from './pdf_render/pdf_composite';
 import { AdornersOptions } from './event_handler/adorners';
+import { ITextFieldBrickOptions, TextFieldBrick } from './pdf_render/pdf_textfield';
+
+export type IBorderDescription = IRect & ISize & Pick<PdfBrick, 'formBorderColor'> & { rounded?: boolean, dashStyle?: { dashArray: [number, number] | [number], dashPhase: number }, outside?: boolean };
 
 export class SurveyHelper {
     public static EPSILON: number = 2.2204460492503130808472633361816e-15;
@@ -54,12 +56,12 @@ export class SurveyHelper {
     public static CUSTOM_FONT_ENCODING: string = 'Identity-H';
 
     public static parseWidth(width: string, maxWidth: number,
-        columnsCount: number = 1): number {
+        columnsCount: number = 1, defaultUnit?: string): number {
         if (width.indexOf('calc') === 0) {
             return maxWidth / columnsCount;
         }
         const value: number = parseFloat(width);
-        const unit: string = width.replace(/[^A-Za-z]/g, '');
+        const unit: string = width.replace(/[^A-Za-z%]/g, '') || defaultUnit;
         let k: number;
         switch (unit) {
             case 'pt':
@@ -425,31 +427,28 @@ export class SurveyHelper {
         return (<any>question).readonlyRenderAs === 'auto' ? controller.readonlyRenderAs : (<any>question).readonlyRenderAs;
     }
     public static async createCommentFlat(point: IPoint, question: Question,
-        controller: DocController, isQuestion: boolean, options: { rows?: number, index?: number, value?: string, readOnly?: boolean } = {}): Promise<IPdfBrick> {
-        const rect: IRect = this.createTextFieldRect(point, controller, options.rows ?? 1);
+        controller: DocController, options: { rows?: number } & ITextFieldBrickOptions): Promise<IPdfBrick> {
+        options.rows = options.rows ?? 1;
+        options.value = options.value ?? '';
+        const rect: IRect = this.createTextFieldRect(point, controller, options.rows);
         let textFlat;
-        if (options.readOnly ?? SurveyHelper.shouldRenderReadOnly(question, controller)) {
-            const renderedValue = options.value ?? this.getQuestionOrCommentValue(question, isQuestion);
+        if (SurveyHelper.shouldRenderReadOnly(question, controller, options.isReadOnly)) {
             textFlat = await this.createReadOnlyTextFieldTextFlat(
-                point, controller, question, renderedValue);
+                point, controller, question, options.value);
             const padding: number = controller.unitHeight * this.VALUE_READONLY_PADDING_SCALE;
             if (textFlat.yBot + padding > rect.yBot) rect.yBot = textFlat.yBot + padding;
         }
-        const comment = new CommentBrick(question, controller, rect, isQuestion, options.index);
-        if(options.readOnly !== null && options.readOnly !== undefined) {
-            comment.isReadOnly = options.readOnly;
+        const comment = new TextFieldBrick(question, controller, rect, options);
+        if(textFlat) {
+            comment.textBrick = textFlat;
         }
-        comment.textBrick = textFlat;
         return comment;
     }
-    public static getQuestionOrCommentValue(question: Question, isQuestion: boolean = true): string {
-        return isQuestion ? (question.value !== undefined && question.value !== null ? question.value : '') :
-            (question.comment !== undefined && question.comment !== null ? question.comment : '');
-    }
-    public static getQuestionOrCommentDisplayValue(question: Question, isQuestion: boolean = true): string {
-        return isQuestion ? question.displayValue : SurveyHelper.getQuestionOrCommentValue(question, isQuestion);
-    }
     public static inBrowser = typeof Image === 'function';
+
+    public static get hasDocument(): boolean {
+        return typeof document !== 'undefined';
+    }
 
     public static async getImageBase64(imageLink: string): Promise<string> {
         const image = new Image();
@@ -471,34 +470,33 @@ export class SurveyHelper {
         });
     }
     public static shouldConvertImageToPng = true;
-    public static async getImageLink(controller: DocController, originalImageLink: string, width: number, height: number, fitType: string): Promise<string> {
+    public static async getImageLink(controller: DocController, imageOptions: { link: string, width: number, height: number, objectFit?: string }, applyImageFit: boolean): Promise<string> {
         const ptToPx: number = 96.0 / 72.0;
-        let url = this.shouldConvertImageToPng ? await SurveyHelper.getImageBase64(originalImageLink) : originalImageLink;
-        if(typeof XMLSerializer === 'function' && controller.applyImageFit) {
+        let url = this.shouldConvertImageToPng ? await SurveyHelper.getImageBase64(imageOptions.link) : imageOptions.link;
+        if(typeof XMLSerializer === 'function' && applyImageFit) {
             const canvasHtml: string =
-               `<div style='overflow: hidden; width: ${width * ptToPx}px; height: ${height * ptToPx}px;'>
-                   <img src='${url}' style='object-fit: ${fitType}; width: 100%; height: 100%;'/>
+               `<div style='overflow: hidden; width: ${imageOptions.width * ptToPx}px; height: ${imageOptions.height * ptToPx}px;'>
+                   <img src='${url}' style='object-fit: ${imageOptions.objectFit}; width: 100%; height: 100%;'/>
                </div>`;
-            url = (await SurveyHelper.htmlToImage(canvasHtml, width, controller)).url;
+            url = (await SurveyHelper.htmlToImage(canvasHtml, imageOptions.width, controller)).url;
         }
         return url;
     }
     public static async createImageFlat(point: IPoint, question: any,
-        controller: DocController, imagelink: string, width: number, height: number, imageFit?: string): Promise<IPdfBrick> {
+        controller: DocController, imageOptions: { link: string, width: number, height: number, objectFit?: string }, applyImageFit?: boolean): Promise<IPdfBrick> {
         if (SurveyHelper.inBrowser) {
-            const fitType = !!question && !!question.imageFit ? question.imageFit : (imageFit || 'contain');
-            if (controller.applyImageFit) {
-                if (width > controller.paperWidth - controller.margins.left - controller.margins.right) {
+            imageOptions.objectFit = !!question && !!question.imageFit ? question.imageFit : (imageOptions.objectFit || 'contain');
+            if (applyImageFit ?? controller.applyImageFit) {
+                if (imageOptions.width > controller.paperWidth - controller.margins.left - controller.margins.right) {
                     const newWidth: number = controller.paperWidth - controller.margins.left - controller.margins.right;
-                    height *= newWidth / width;
-                    width = newWidth;
+                    imageOptions.height *= newWidth / imageOptions.width;
+                    imageOptions.width = newWidth;
                 }
             }
-            const html: string = `<img src='${await SurveyHelper.getImageLink(controller, imagelink, width, height, fitType)}' width='${width}' height='${height}'/>`;
-            return new HTMLBrick(question, controller, this.createRect(point, width, height), html, true);
+            const html: string = `<img src='${await SurveyHelper.getImageLink(controller, imageOptions, applyImageFit ?? controller.applyImageFit)}' width='${imageOptions.width}' height='${imageOptions.height}'/>`;
+            return new HTMLBrick(question, controller, this.createRect(point, imageOptions.width, imageOptions.height), html, true);
         }
-
-        return new ImageBrick(question, controller, imagelink, point, width, height);
+        return new ImageBrick(question, controller, imageOptions.link, point, imageOptions.width, imageOptions.height);
     }
     public static canPreviewImage(question: QuestionFileModel, item: { name: string, type: string, content: string }, url: string): boolean {
         return question.canPreviewImage(item);
@@ -570,22 +568,43 @@ export class SurveyHelper {
         controller.popMargins();
         return textFlat;
     }
-    public static renderFlatBorders(controller: DocController, flat: PdfBrick): void {
+    public static renderFlatBorders(controller: DocController, borderOptions: IBorderDescription): void {
         if (!this.FORM_BORDER_VISIBLE) return;
-        const minSide: number = Math.min(flat.width, flat.height);
+        borderOptions.rounded = borderOptions.rounded ?? true;
+        borderOptions.outside = borderOptions.outside ?? false;
+        const minSide: number = Math.min(borderOptions.width, borderOptions.height);
+        const borderWidth = this.getBorderWidth(controller);
         const visibleWidth: number = controller.unitHeight * this.VISIBLE_BORDER_SCALE * this.BORDER_SCALE;
-        const visibleScale: number = this.formScale(controller, flat) + visibleWidth / minSide;
-        const unvisibleWidth: number = controller.unitHeight * this.UNVISIBLE_BORDER_SCALE * this.BORDER_SCALE;
-        const unvisibleScale: number = 1.0 - unvisibleWidth / minSide;
-        const unvisibleRadius: number = this.RADIUS_SCALE * unvisibleWidth;
+        const visibleScale: number = borderOptions.outside ? (minSide + borderWidth) / minSide - visibleWidth / minSide : (minSide - borderWidth) / minSide + visibleWidth / minSide;
         const oldDrawColor: string = controller.doc.getDrawColor();
-        controller.doc.setDrawColor(flat.formBorderColor);
+        controller.doc.setDrawColor(borderOptions.formBorderColor);
         controller.doc.setLineWidth(visibleWidth);
-        controller.doc.rect(...this.createAcroformRect(this.scaleRect(flat, visibleScale)));
-        controller.doc.setDrawColor(this.BACKGROUND_COLOR);
-        controller.doc.setLineWidth(unvisibleWidth);
-        controller.doc.roundedRect(...this.createAcroformRect(
-            this.scaleRect(flat, unvisibleScale)), unvisibleRadius, unvisibleRadius);
+        const scaledRect = this.scaleRect(borderOptions, visibleScale);
+        if(borderOptions.dashStyle) {
+            const dashStyle = borderOptions.dashStyle;
+            const borderLength = (Math.abs(scaledRect.yTop - scaledRect.yBot) + Math.abs(scaledRect.xLeft - scaledRect.xRight)) * 2;
+            const dashWithSpaceSize = dashStyle.dashArray[0] + (dashStyle.dashArray[1] ?? dashStyle.dashArray[0]);
+            const dashSize = dashStyle.dashArray[0] + (borderLength % dashWithSpaceSize) / Math.floor(borderLength / dashWithSpaceSize);
+
+            controller.doc.setLineDashPattern(
+                [dashSize, dashStyle.dashArray[1] ?? dashStyle.dashArray[0]],
+                dashStyle.dashPhase
+            );
+        }
+
+        controller.doc.rect(...this.createAcroformRect(scaledRect));
+        if(borderOptions.rounded) {
+            const unvisibleWidth: number = controller.unitHeight * this.UNVISIBLE_BORDER_SCALE * this.BORDER_SCALE;
+            const unvisibleScale: number = 1.0 - unvisibleWidth / minSide;
+            const unvisibleRadius: number = this.RADIUS_SCALE * unvisibleWidth;
+            controller.doc.setDrawColor(this.BACKGROUND_COLOR);
+            controller.doc.setLineWidth(unvisibleWidth);
+            controller.doc.roundedRect(...this.createAcroformRect(
+                this.scaleRect(borderOptions, unvisibleScale)), unvisibleRadius, unvisibleRadius);
+        }
+        if(borderOptions.dashStyle) {
+            controller.doc.setLineDashPattern([]);
+        }
         controller.doc.setDrawColor(oldDrawColor);
     }
     public static getLocString(text: LocalizableString): string {
@@ -666,9 +685,7 @@ export class SurveyHelper {
         };
     }
     public static scaleRect(rect: IRect, scale: number): IRect {
-        const width: number = rect.xRight - rect.xLeft;
-        const height: number = rect.yBot - rect.yTop;
-        const scaleWidth: number = ((width < height) ? width : height) * (1.0 - scale) / 2.0;
+        const scaleWidth: number = Math.min(rect.xRight - rect.xLeft, rect.yBot - rect.yTop) * (1.0 - scale) / 2.0;
         return {
             xLeft: rect.xLeft + scaleWidth,
             yTop: rect.yTop + scaleWidth,
@@ -676,10 +693,12 @@ export class SurveyHelper {
             yBot: rect.yBot - scaleWidth
         };
     }
-    public static formScale(controller: DocController, flat: PdfBrick): number {
+    public static getBorderWidth(controller: DocController) {
+        return 2.0 * controller.unitWidth * this.BORDER_SCALE;
+    }
+    public static formScale(controller: DocController, flat: ISize): number {
         const minSide: number = Math.min(flat.width, flat.height);
-        const borderWidth: number = 2.0 * controller.unitWidth * this.BORDER_SCALE;
-        return (minSide - borderWidth) / minSide;
+        return (minSide - this.getBorderWidth(controller)) / minSide;
     }
     public static async generateQuestionFlats(survey: SurveyPDF,
         controller: DocController, question: Question, point: IPoint): Promise<IPdfBrick[]> {
@@ -721,5 +740,41 @@ export class SurveyHelper {
     public static shouldRenderReadOnly(question: IQuestion, controller: DocController, readOnly?: boolean): boolean {
         return ((!!question && question.isReadOnly || readOnly) && SurveyHelper.getReadonlyRenderAs(
             <Question>question, controller) !== 'acroform') || controller?.compress;
+    }
+    public static isSizeEmpty(val: any): boolean {
+        return !val || val === 'auto';
+    }
+    public static isHeightEmpty(val: any): boolean {
+        return this.isSizeEmpty(val) || val == '100%';
+    }
+    public static async getCorrectedImageSize(controller: DocController, imageOptions: { imageWidth?: any, imageHeight?: any, imageLink: string, defaultImageWidth?: any, defaultImageHeight?: any }): Promise<ISize> {
+        let { imageWidth, imageLink, imageHeight, defaultImageWidth, defaultImageHeight } = imageOptions;
+        imageWidth = typeof imageWidth === 'number' ? imageWidth.toString() : imageWidth;
+        imageHeight = typeof imageHeight === 'number' ? imageHeight.toString() : imageHeight;
+        let widthPt: number = imageWidth && SurveyHelper.parseWidth(imageWidth, SurveyHelper.getPageAvailableWidth(controller), 1, 'px');
+        let heightPt: number = imageHeight && SurveyHelper.parseWidth(imageHeight, SurveyHelper.getPageAvailableWidth(controller), 1, 'px');
+        defaultImageWidth = typeof defaultImageWidth === 'number' ? defaultImageWidth.toString() : defaultImageWidth;
+        defaultImageHeight = typeof defaultImageHeight === 'number' ? defaultImageHeight.toString() : defaultImageHeight;
+        let defaultWidthPt: number = defaultImageWidth && SurveyHelper.parseWidth(defaultImageWidth, SurveyHelper.getPageAvailableWidth(controller), 1, 'px');
+        let defaultHeightPt: number = defaultImageHeight && SurveyHelper.parseWidth(defaultImageHeight, SurveyHelper.getPageAvailableWidth(controller), 1, 'px');
+
+        if(SurveyHelper.isSizeEmpty(imageWidth) || SurveyHelper.isHeightEmpty(imageHeight)) {
+            const imageSize = await SurveyHelper.getImageSize(imageLink);
+            if(!SurveyHelper.isSizeEmpty(imageWidth)) {
+                if(imageSize && imageSize.width) {
+                    heightPt = imageSize.height * widthPt / imageSize.width;
+                }
+            }
+            else if(!SurveyHelper.isHeightEmpty(imageHeight)) {
+                if(imageSize && imageSize.height) {
+                    widthPt = imageSize.width * heightPt / imageSize.height;
+                }
+            }
+            else if(imageSize && imageSize.height && imageSize.width) {
+                heightPt = SurveyHelper.parseWidth(imageSize.height.toString(), SurveyHelper.getPageAvailableWidth(controller), 1, 'px');
+                widthPt = SurveyHelper.parseWidth(imageSize.width.toString(), SurveyHelper.getPageAvailableWidth(controller), 1, 'px');
+            }
+        }
+        return { width: widthPt || defaultWidthPt || 0, height: heightPt || defaultHeightPt || 0 };
     }
 }

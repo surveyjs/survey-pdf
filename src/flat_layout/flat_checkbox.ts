@@ -1,4 +1,4 @@
-import { IQuestion, ItemValue, QuestionCheckboxModel } from 'survey-core';
+import { IQuestion, ItemValue, QuestionCheckboxModel, QuestionTagboxModel } from 'survey-core';
 import { SurveyPDF } from '../survey';
 import { IRect, DocController } from '../doc_controller';
 import { FlatSelectBase } from './flat_selectbase';
@@ -17,5 +17,20 @@ export class FlatCheckbox extends FlatSelectBase {
         return new CheckboxItemBrick(this.question, this.controller, rect, item, index);
     }
 }
-FlatRepository.getInstance().register('tagbox', FlatCheckbox);
+export class FlatTagbox extends FlatCheckbox {
+    protected question: QuestionTagboxModel;
+    public constructor(protected survey: SurveyPDF,
+        question: IQuestion, protected controller: DocController) {
+        super(survey, question, controller);
+        this.question = <QuestionTagboxModel>question;
+    }
+    protected getVisibleChoices(): Array<ItemValue> {
+        if(this.controller.tagboxSelectedChoicesOnly) {
+            return this.question.selectedChoices;
+        } else {
+            return super.getVisibleChoices();
+        }
+    }
+}
+FlatRepository.getInstance().register('tagbox', FlatTagbox);
 FlatRepository.getInstance().register('checkbox', FlatCheckbox);

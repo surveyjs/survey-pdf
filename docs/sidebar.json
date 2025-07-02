@@ -1,5 +1,5 @@
 {
-  "Categories": [
+  "Items": [
     {
       "Name": "overview",
       "Title": "Overview"
@@ -21,59 +21,41 @@
           "Title": "React"
         },
         {
-          "Name": "get-started-knockout",
-          "Title": "Knockout"
+          "Name": "get-started-html-css-javascript",
+          "Title": "HTML/CSS/JavaScript"
         },
         {
-          "Name": "get-started-jquery",
-          "Title": "jQuery"
+          "Name": "get-started-nodejs",
+          "Title": "Node.js"
+        },
+        {
+          "Name": "supported-browsers",
+          "Title": "Supported Browsers"
         }
       ]
     },
     {
-      "Name": "Customization-Options",
-      "Title": "Customization Options",
-      "Items": [
-        {
-          "Name": "Customization-Options",
-          "Title": "Customization Options"
-        },
-        {
-          "Name": "Options-in-Constructor",
-          "Title": "Options in SurveyPDF Constructor"
-        },
-        {
-          "Name": "Customization-ChangeFonts",
-          "Title": "Change Fonts"
-        },
-        {
-          "Name": "Customization-CustomRender-HeaderFooter",
-          "Title": "Custom Render - Header/Footer"
-        },
-        {
-          "Name": "Customization-CustomRender-QuestionElements",
-          "Title": "Custom Render - Question Elements"
-        }        
-      ]
-    },    
-    {
-      "Name": "HtmlToPdf",
-      "Title": "HTML to PDF"
+      "Name": "customize-pdf-form-settings",
+      "Title": "PDF Form Settings"
     },
     {
-      "Name": "MatrixToPdf",
-      "Title": "Matrix to PDF"
+      "Name": "fill-pdf-form-with-web-form-responses",
+      "Title": "Fill PDF Form with Web Form Responses"
     },
     {
-      "Name": "Save-Pdf",
-      "Title": "Save PDF"
+      "Name": "add-header-and-footer-to-pdf-form",
+      "Title": "Add Header and Footer"
+    },
+    {
+      "Name": "customize-survey-question-rendering-in-pdf-form",
+      "Title": "Customize Survey Questions"
     },
     {
       "Name": "export-custom-components",
       "Title": "Export Custom Questions and Third-Party Components"
     },
     {
-      "Name": "PDF-Export-API",
+      "Name": "pdf-generator-api",
       "Title": "PDF Generator API",
       "Items": [
         {
@@ -85,8 +67,24 @@
           "Title": "IDocOptions"
         },
         {
+          "Name": "pdfformfiller",
+          "Title": "PDFFormFiller"
+        },
+        {
+          "Name": "ipdfformfilleroptions",
+          "Title": "IPDFFormFillerOptions"
+        },
+        {
           "Name": "drawcanvas",
           "Title": "DrawCanvas"
+        },
+        {
+          "Name": "idrawtextoptions",
+          "Title": "IDrawTextOptions"
+        },
+        {
+          "Name": "idrawimageoptions",
+          "Title": "IDrawImageOptions"
         },
         {
           "Name": "pdfbrick",

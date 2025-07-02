@@ -20,12 +20,10 @@ const config = {
 };
 
 module.exports = function (options) {
-  options.platform = "pdf";
   options.libraryName = "SurveyPdfFonts";
 
   const mainConfig = webpackCommonConfigCreator(options);
-  delete mainConfig.entry["survey.pdf"];
+  mainConfig.entry = {};
   mainConfig.plugins.shift();
- 
   return merge(mainConfig, config);
 };

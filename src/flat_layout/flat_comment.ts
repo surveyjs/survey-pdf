@@ -1,4 +1,4 @@
-import { IQuestion, QuestionCommentModel } from 'survey-core';
+import { IQuestion, QuestionCommentModel, settings } from 'survey-core';
 import { SurveyPDF } from '../survey';
 import { IPoint, DocController } from '../doc_controller';
 import { FlatQuestion } from './flat_question';
@@ -15,7 +15,16 @@ export class FlatComment extends FlatQuestion {
     }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         return [await SurveyHelper.createCommentFlat(
-            point, this.question, this.controller, true, { rows: this.question.rows })];
+            point, this.question, this.controller,
+            {
+                rows: this.question.rows,
+                isReadOnly: this.question.isReadOnly,
+                isMultiline: true,
+                fieldName: this.question.id,
+                placeholder: SurveyHelper.getLocString(this.question.locPlaceHolder),
+                shouldRenderBorders: settings.readOnlyCommentRenderMode === 'textarea',
+                value: this.question.value
+            })];
     }
 }
 

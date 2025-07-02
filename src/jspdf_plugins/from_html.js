@@ -11,7 +11,7 @@
    * 
    * ====================================================================
    */
-  var jspdf = require("jspdf");
+  import { jsPDF } from "jspdf";
 
   (function (jsPDFAPI) {
     var clone, _DrillForContent, FontNameDB, FontStyleMap, TextAlignMap, FontWeightMap, FloatMap, ClearMap, GetCSS, PurgeWhiteSpace, Renderer, ResolveFont, ResolveUnitedNumber, UnitedNumberMap, elementHandledElsewhere, images, loadImgs, checkForFooter, process, tableToJson;
@@ -678,6 +678,7 @@
           framename = "jsPDFhtmlText" + Date.now().toString() + (Math.random() * 1000).toFixed(0);
           visuallyhidden = "position: absolute !important;" + "clip: rect(1px 1px 1px 1px); /* IE6, IE7 */" + "clip: rect(1px, 1px, 1px, 1px);" + "padding:0 !important;" + "border:0 !important;" + "height: 1px !important;" + "width: 1px !important; " + "top:auto;" + "left:-100px;" + "overflow: hidden;";
           $hiddendiv = document.createElement('div');
+          $hiddendiv.className = "sjs-pdf-hidden-html-div";
           $hiddendiv.style.cssText = visuallyhidden;
           $hiddendiv.innerHTML = "<iframe style=\"height:1px;width:1px\" name=\"" + framename + "\" />";
           document.body.appendChild($hiddendiv);
@@ -758,13 +759,11 @@
     };
 
     Renderer.prototype.splitFragmentsIntoLines = function (fragments, styles) {
-      var currentLineLength, defaultFontSize, ff, fontMetrics, fontMetricsCache, fragment, fragmentChopped, fragmentLength, fragmentSpecificMetrics, fs, k, line, lines, maxLineLength, style;
+      var currentLineLength, defaultFontSize, ff, fragment, fragmentChopped, fragmentLength, fragmentSpecificMetrics, fs, k, line, lines, maxLineLength, style;
       defaultFontSize = 12;
       k = this.pdf.internal.scaleFactor;
-      fontMetricsCache = {};
       ff = void 0;
       fs = void 0;
-      fontMetrics = void 0;
       fragment = void 0;
       style = void 0;
       fragmentSpecificMetrics = void 0;
@@ -774,7 +773,8 @@
       lines = [line];
       currentLineLength = 0;
       maxLineLength = this.settings.width;
-
+      const oldFontName = this.pdf.getFont().fontName;
+      const oldFontStyle = this.pdf.getFont().fontStyle;
       while (fragments.length) {
         fragment = fragments.shift();
         style = styles.shift();
@@ -782,18 +782,10 @@
         if (fragment) {
           ff = style["font-family"];
           fs = style["font-style"];
-          fontMetrics = fontMetricsCache[ff + fs];
-
-          if (!fontMetrics) {
-            fontMetrics = this.pdf.internal.getFont(ff, fs).metadata.Unicode;
-            fontMetricsCache[ff + fs] = fontMetrics;
-          }
-
+          this.pdf.setFont(ff, fs);
           fragmentSpecificMetrics = {
-            widths: fontMetrics.widths,
-            kerning: fontMetrics.kerning,
-            fontSize: style["font-size"] * defaultFontSize,
-            textIndent: currentLineLength
+            textIndent: currentLineLength,
+            fontSize: style["font-size"] * defaultFontSize
           };
           fragmentLength = this.pdf.getStringUnitWidth(fragment, fragmentSpecificMetrics) * fragmentSpecificMetrics.fontSize / k;
 
@@ -842,7 +834,7 @@
           }
         }
       }
-
+      this.pdf.setFont(oldFontName, oldFontStyle)
       return lines;
     };
 
@@ -1226,4 +1218,4 @@
       if (!settings.elementHandlers) settings.elementHandlers = {};
       return process(this, HTML, isNaN(x) ? 4 : x, isNaN(y) ? 4 : y, settings, callback);
     };
-  })(jspdf.jsPDF.API);
+  })(jsPDF.API);

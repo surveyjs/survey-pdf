@@ -2,8 +2,8 @@
 
 Refer to one of the following tutorials to integrate the survey export functionality into applications on your platform:
 
-- [Angular](/Documentation/Pdf-Export?id=get-started-angular)
-- [Vue](/Documentation/Pdf-Export?id=get-started-vue)
-- [React](/Documentation/Pdf-Export?id=get-started-react)
-- [Knockout](/Documentation/Pdf-Export?id=get-started-knockout)
-- [jQuery](/Documentation/Pdf-Export?id=get-started-jquery)
+- [Angular](https://surveyjs.io/pdf-generator/documentation/get-started-angular)
+- [Vue](https://surveyjs.io/pdf-generator/documentation/get-started-vue)
+- [React](https://surveyjs.io/pdf-generator/documentation/get-started-react)
+- [HTML/CSS/JavaScript](https://surveyjs.io/pdf-generator/documentation/get-started-html-css-javascript)
+- [Node.js](https://surveyjs.io/pdf-generator/documentation/get-started-nodejs)

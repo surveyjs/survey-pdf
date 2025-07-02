@@ -12,6 +12,8 @@ PDF Generator for SurveyJS allows your users to save surveys as interactive PDF 
 
 [View Full Code on GitHub](https://github.com/surveyjs/code-examples/tree/main/get-started-pdf/angular (linkStyle))
 
+If you are looking for a quick-start application that includes all SurveyJS components, refer to the following GitHub repository: <a href="https://github.com/surveyjs/surveyjs_angular_cli" target="_blank">SurveyJS + Angular CLI Quickstart Template</a>.
+
 ## Install the `survey-pdf` npm package
 
 PDF Generator for SurveyJS is built upon the <a href="https://github.com/parallax/jsPDF#readme" target="_blank">jsPDF</a> library and is distributed as a <a href="https://www.npmjs.com/package/survey-pdf" target="_blank">`survey-pdf`</a> npm package. Run the following command to install the package and its dependencies, including jsPDF:
@@ -27,7 +29,7 @@ Export properties allow you to customize the page format, orientation, margins, 
 ```js
 import { IDocOptions } from "survey-pdf";
 
-const exportToPdfOptions: IDocOptions = {
+const pdfDocOptions: IDocOptions = {
   fontSize: 12
 };
 ```
@@ -43,10 +45,10 @@ import { IDocOptions, SurveyPDF } from "survey-pdf";
 
 const surveyJson = { /* ... */ };
 
-const exportToPdfOptions: IDocOptions = { /* ... */ };
+const pdfDocOptions: IDocOptions = { /* ... */ };
 
 const savePdf = function (surveyData: any) {
-  const surveyPdf = new SurveyPDF(surveyJson, exportToPdfOptions);
+  const surveyPdf = new SurveyPDF(surveyJson, pdfDocOptions);
   surveyPdf.data = surveyData;
   surveyPdf.save();
 };
@@ -75,7 +77,7 @@ export class AppComponent implements OnInit {
 }
 ```
 
-The following image illustrates the resulting UI with the [Default V2 theme](/Documentation/Library?id=get-started-angular#configure-styles) applied:
+The following image illustrates the resulting UI with the [Default theme](https://surveyjs.io/form-library/documentation/manage-default-themes-and-styles) applied:
 
 ![Export Survey to PDF - Save as PDF navigation button](images/surveypdf-navigation-button.png)
 
@@ -99,12 +101,12 @@ const surveyJson = {
   // ...
 };
 
-const exportToPdfOptions: IDocOptions = {
+const pdfDocOptions: IDocOptions = {
   fontSize: 12
 };
 
 const savePdf = function (surveyData: any) {
-  const surveyPdf = new SurveyPDF(surveyJson, exportToPdfOptions);
+  const surveyPdf = new SurveyPDF(surveyJson, pdfDocOptions);
   surveyPdf.data = surveyData;
   surveyPdf.save();
 };
@@ -155,6 +157,20 @@ export class AppModule { }
 </details>
 
 [View Full Code on GitHub](https://github.com/surveyjs/code-examples/tree/main/get-started-pdf/angular (linkStyle))
+
+## Activate a SurveyJS License
+
+SurveyJS PDF Generator is not available for free commercial use. To integrate it into your application, you must purchase a [commercial license](https://surveyjs.io/licensing) for the software developer(s) who will be working with the PDF Generator APIs and implementing the integration. If you use SurveyJS PDF Generator without a license, an alert banner will appear at the top of each page in an exported PDF document:
+
+<img src="./images/alert-banner-pdf.png" alt="SurveyJS PDF Generator: Alert banner" width="772" height="494">
+
+After purchasing a license, follow the steps below to activate it and remove the alert banner:
+
+1. [Log in](https://surveyjs.io/login) to the SurveyJS website using your email address and password. If you've forgotten your password, [request a reset](https://surveyjs.io/reset-password) and check your inbox for the reset link.
+2. Open the following page: [How to Remove the Alert Banner](https://surveyjs.io/remove-alert-banner). You can also access it by clicking **Set up your license key** in the alert banner itself.
+3. Follow the instructions on that page.
+
+Once you've completed the setup correctly, the alert banner will no longer appear.
 
 ## Further Reading
 

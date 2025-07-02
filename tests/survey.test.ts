@@ -85,7 +85,7 @@ test('check that save functions called sync if use correctly', async () => {
     expect(logger.log).toEqual('->rendered->saving->saved->rendered->saving->saved->rendered->saving->saved');
 });
 
-test('check that save functions called sync', async (done) => {
+test('check that save functions called sync', (done) => {
     const surveyPDF = new SurveyPDFSaveTester({});
     const logger = new Log();
     surveyPDF.setLog(logger);
@@ -98,7 +98,7 @@ test('check that save functions called sync', async (done) => {
     }, 1000);
 });
 
-test('Check surveyPDF onDocControllerCreated event', async (done) => {
+test('Check surveyPDF onDocControllerCreated event', (done) => {
     const surveyPDF = new SurveyPDF({});
     surveyPDF.onDocControllerCreated.add((sender, options) => {
         expect(sender).toBe(surveyPDF);
@@ -109,7 +109,7 @@ test('Check surveyPDF onDocControllerCreated event', async (done) => {
 
 });
 
-test('Check surveyPDF isRTL options', async (done) => {
+test('Check surveyPDF isRTL options', (done) => {
     let surveyPDF = new SurveyPDF({
         showQuestionNumbers: 'off',
         elements: [{
@@ -141,4 +141,55 @@ test('Check FlatRepository static methods', () => {
     expect(FlatRepository.getRenderer('text')).toBe(FlatTextbox);
     FlatRepository.register('custom-question', FlatRepository.getRenderer('text'));
     expect(FlatRepository.getRenderer('custom-question')).toBe(FlatTextbox);
+});
+
+test('Check questionsOnPageMode: "inputPerPage"', async () => {
+    const survey = new SurveyPDF(
+        {
+            'questionsOnPageMode': 'inputPerPage',
+            'pages': [
+                {
+                    'name': 'page1',
+                    'elements': [
+                        {
+                            type: 'text',
+                            name: 'q1'
+                        },
+                        {
+                            type: 'text',
+                            name: 'q2'
+                        }
+                    ]
+                },
+                {
+                    'name': 'page3',
+                    'elements': [
+                        {
+                            type: 'text',
+                            name: 'q3'
+                        },
+                        {
+                            type: 'text',
+                            name: 'q4'
+                        }
+                    ]
+                }
+            ],
+        }
+    );
+    expect(survey.visiblePages.length).toBe(2);
+
+    expect(survey.visiblePages[0].visibleQuestions.length).toBe(2);
+    expect(survey.visiblePages[0].rows.length).toBe(2);
+    expect(survey.visiblePages[0].rows[0].elements.length).toBe(1);
+    expect(survey.visiblePages[0].rows[0].elements[0].name).toBe('q1');
+    expect(survey.visiblePages[0].rows[1].elements.length).toBe(1);
+    expect(survey.visiblePages[0].rows[1].elements[0].name).toBe('q2');
+
+    expect(survey.visiblePages[1].visibleQuestions.length).toBe(2);
+    expect(survey.visiblePages[1].rows.length).toBe(2);
+    expect(survey.visiblePages[1].rows[0].elements.length).toBe(1);
+    expect(survey.visiblePages[1].rows[0].elements[0].name).toBe('q3');
+    expect(survey.visiblePages[1].rows[1].elements.length).toBe(1);
+    expect(survey.visiblePages[1].rows[1].elements[0].name).toBe('q4');
 });

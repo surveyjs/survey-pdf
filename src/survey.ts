@@ -1,4 +1,5 @@
 import { SurveyModel, Question, EventBase } from 'survey-core';
+import * as SurveyCore from 'survey-core';
 import { IDocOptions, DocController } from './doc_controller';
 import { FlatSurvey } from './flat_layout/flat_survey';
 import { PagePacker } from './page_layout/page_packer';
@@ -16,26 +17,24 @@ import { SurveyHelper } from './helper_survey';
 export class SurveyPDF extends SurveyModel {
     private static currentlySaving: boolean = false;
     private static saveQueue: any[] = [];
-    private _haveCommercialLicense: boolean;
     public options: IDocOptions;
     public constructor(jsonObject: any, options?: IDocOptions) {
         super(jsonObject);
         if (typeof options === 'undefined') {
             options = {};
         }
+        if(this.questionsOnPageMode == 'inputPerPage') {
+            this.questionsOnPageMode = 'standard';
+        }
         this.options = SurveyHelper.clone(options);
-        this._haveCommercialLicense = options.commercial || options.haveCommercialLicense;
     }
-    /**
-     * Removes watermarks from the exported document.
-     *
-     * > You can enable this property only if you have a SurveyJS PDF Generator [commercial license](https://surveyjs.io/pricing). It is illegal to enable this property without a license.
-     */
     public get haveCommercialLicense(): boolean {
-        return this._haveCommercialLicense;
+        const f = SurveyCore.hasLicense;
+        return !!f && f(2);
     }
     public set haveCommercialLicense(val: boolean) {
-        this._haveCommercialLicense = val;
+        // eslint-disable-next-line no-console
+        console.error('As of v1.9.101, the haveCommercialLicense property is not supported. To activate your license, use the setLicenseKey(key) method as shown on the following page: https://surveyjs.io/remove-alert-banner');
     }
     /**
      * An event that is raised when SurveyJS PDF Generator renders a page header. Handle this event to customize the header.
@@ -82,7 +81,7 @@ export class SurveyPDF extends SurveyModel {
      * An object with coordinates of the top-left corner of the element being rendered. This object contains the following properties: `{ xLeft: number, yTop: number }`.
      *
      * - `options.bricks`: [`PdfBrick[]`](https://surveyjs.io/pdf-generator/documentation/api-reference/pdfbrick)\
-     * An array of [bricks](https://surveyjs.io/pdf-generator/documentation/customization-customrender-questionelements#bricks) used to render the element.
+     * An array of [bricks](https://surveyjs.io/pdf-generator/documentation/customize-survey-question-rendering-in-pdf-form#custom-rendering) used to render the element.
      *
      * - `options.controller`: [`DocController`](https://surveyjs.io/pdf-generator/documentation/api-reference/doccontroller)\
      * An object that provides access to main PDF document properties (font, margins, page width and height) and allows you to modify them.
@@ -90,7 +89,7 @@ export class SurveyPDF extends SurveyModel {
      * - `options.repository`: `FlatRepository`\
      * A repository with classes that render elements to PDF. Use its `create` method if you need to create a new instance of a rendering class.
      *
-     * [View Demo](https://surveyjs.io/pdf-generator/examples/add-markup-to-customize-pdf-forms/ (linkStyle))
+     * [View Demo](https://surveyjs.io/pdf-generator/examples/how-to-use-adorners-in-pdf-forms/ (linkStyle))
      */
     public onRenderQuestion: EventAsync<SurveyPDF, AdornersOptions> =
         new EventAsync<SurveyPDF, AdornersOptions>();
@@ -109,13 +108,15 @@ export class SurveyPDF extends SurveyModel {
      * An object with coordinates of the top-left corner of the element being rendered. This object contains the following properties: `{ xLeft: number, yTop: number }`.
      *
      * - `options.bricks`: [`PdfBrick[]`](https://surveyjs.io/pdf-generator/documentation/api-reference/pdfbrick)\
-     * An array of [bricks](https://surveyjs.io/pdf-generator/documentation/customization-customrender-questionelements#bricks) used to render the element.
+     * An array of [bricks](https://surveyjs.io/pdf-generator/documentation/customize-survey-question-rendering-in-pdf-form#custom-rendering) used to render the element.
      *
      * - `options.controller`: [`DocController`](https://surveyjs.io/pdf-generator/documentation/api-reference/doccontroller)\
      * An object that provides access to main PDF document properties (font, margins, page width and height) and allows you to modify them.
      *
      * - `options.repository`: `FlatRepository`\
      * A repository with classes that render elements to PDF. Use its `create` method if you need to create a new instance of a rendering class.
+     *
+     * [View Demo](https://surveyjs.io/pdf-generator/examples/how-to-use-adorners-in-pdf-forms/ (linkStyle))
      */
     public onRenderPanel: EventAsync<SurveyPDF, AdornersPanelOptions> =
         new EventAsync<SurveyPDF, AdornersPanelOptions>();
@@ -134,13 +135,15 @@ export class SurveyPDF extends SurveyModel {
      * An object with coordinates of the top-left corner of the element being rendered. This object contains the following properties: `{ xLeft: number, yTop: number }`.
      *
      * - `options.bricks`: [`PdfBrick[]`](https://surveyjs.io/pdf-generator/documentation/api-reference/pdfbrick)\
-     * An array of [bricks](https://surveyjs.io/pdf-generator/documentation/customization-customrender-questionelements#bricks) used to render the element.
+     * An array of [bricks](https://surveyjs.io/pdf-generator/documentation/customize-survey-question-rendering-in-pdf-form#custom-rendering) used to render the element.
      *
      * - `options.controller`: [`DocController`](https://surveyjs.io/pdf-generator/documentation/api-reference/doccontroller)\
      * An object that provides access to main PDF document properties (font, margins, page width and height) and allows you to modify them.
      *
      * - `options.repository`: `FlatRepository`\
      * A repository with classes that render elements to PDF. Use its `create` method if you need to create a new instance of a rendering class.
+     *
+     * [View Demo](https://surveyjs.io/pdf-generator/examples/how-to-use-adorners-in-pdf-forms/ (linkStyle))
      */
     public onRenderPage: EventAsync<SurveyPDF, AdornersPageOptions> =
         new EventAsync<SurveyPDF, AdornersPageOptions>();
@@ -156,37 +159,6 @@ export class SurveyPDF extends SurveyModel {
     public onRenderRadioItemAcroform: EventAsync<SurveyPDF, any> =
     new EventAsync<SurveyPDF, any>();
 
-    private waitForQuestionIsReady(question: Question): Promise<void> {
-        return new Promise((resolve: any) => {
-            if (question.isReady) {
-                resolve();
-            }
-            else {
-                const readyCallback: (sender: Question, options: any) => void =
-                (_, options: any) => {
-                    if (options.isReady) {
-                        question.onReadyChanged.remove(readyCallback);
-                        resolve();
-                    }
-                };
-                question.onReadyChanged.add(readyCallback);
-            }
-        });
-    }
-    private async waitForCoreIsReady(): Promise<void> {
-        for (const question of this.getAllQuestions()) {
-            if (!!(<any>question).contentPanel) {
-                const list: Question[] = [];
-                (<any>question).contentPanel.addQuestionsToList(list);
-                for (const innerQuestion of list) {
-                    await this.waitForQuestionIsReady(innerQuestion);
-                }
-                continue;
-            }
-            else await this.waitForQuestionIsReady(
-                SurveyHelper.getContentQuestion(<Question>question));
-        }
-    }
     public getUpdatedCheckItemAcroformOptions(options: any): void {
         this.onRenderCheckItemAcroform.fire(this, options);
     }
@@ -209,7 +181,7 @@ export class SurveyPDF extends SurveyModel {
         }
     }
     protected async renderSurvey(controller: DocController): Promise<void> {
-        await this.waitForCoreIsReady();
+        this.visiblePages.forEach(page => page.onFirstRendering());
         const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(this, controller);
         this.correctBricksPosition(controller, flats);
         const packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
@@ -232,8 +204,9 @@ export class SurveyPDF extends SurveyModel {
         }
     }
     /**
-     * An asynchronous method that starts download of the generated PDF file in the web browser.
+     * An asynchronous method that starts to download the generated PDF file in the web browser.
      *
+     * [View Demo](https://surveyjs.io/pdf-generator/examples/save-completed-forms-as-pdf-files/ (linkStyle))
      * @param fileName *(Optional)* A file name with the ".pdf" extension. Default value: `"survey_result.pdf"`.
      */
     public async save(fileName: string = 'survey_result.pdf'): Promise<any> {

@@ -16,6 +16,7 @@ import { TestHelper } from '../src/helper_test';
 
 import * as Survey from 'survey-core';
 import { TextFieldBrick } from '../src/pdf_render/pdf_textfield';
+import { CompositeBrick } from '../src/pdf_render/pdf_composite';
 
 const __dummy_cm = new FlatComment(null, null, null);
 const __dummy_cb = new FlatCheckbox(null, null, null);
@@ -40,7 +41,7 @@ async function commentPointAfterTitle(titleLocation: string, resultRects: IPdfBr
     if (titleLocation === 'top') {
         commentAssumePoint.yTop += controller.unitHeight * FlatQuestion.CONTENT_GAP_VERT_SCALE;
     }
-    const commentResultPoint: IPoint = resultRects[0][1];
+    const commentResultPoint: IPoint = (resultRects[0][0] as any).bricks.pop();
     TestHelper.equalPoint(expect, commentResultPoint, commentAssumePoint);
     return commentAssumePoint;
 }
@@ -188,7 +189,8 @@ test('Check readonly comment', async () => {
                 type: 'comment',
                 name: 'comment_readonly',
                 readOnly: true,
-                titleLocation: 'hidden'
+                titleLocation: 'hidden',
+                defaultValue: ''
             }
         ]
     };
@@ -246,7 +248,9 @@ test('Check readonly comment with long text', async () => {
     assumeTextField.yBot = textFlat.yBot + padding;
     TestHelper.equalRect(expect, flats[0][0], assumeTextField);
 });
-
+class SurveyPDFTester extends SurveyPDF {
+    public get haveCommercialLicense(): boolean { return true; }
+}
 test('Check readonly text with readOnlyTextRenderMode set to div', async () => {
     const oldRenderMode = Survey.settings.readOnlyCommentRenderMode;
     Survey.settings.readOnlyCommentRenderMode = 'div';
@@ -261,7 +265,7 @@ test('Check readonly text with readOnlyTextRenderMode set to div', async () => {
                 }
             ]
         };
-        const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+        const survey: SurveyPDF = new SurveyPDFTester(json, TestHelper.defaultOptions);
         const pdfAsString = await survey.raw();
         // Stream in result PDF document should be small - in this example 14
         expect(pdfAsString.indexOf('/Length 14\n') > 0).toBeTruthy();
@@ -285,7 +289,7 @@ test('Check readOnly comment flat is moving text bruck inside', async () => {
     const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     const controller: DocController = new DocController(TestHelper.defaultOptions);
     const question = survey.getAllQuestions()[0];
-    const comment = <TextFieldBrick>await SurveyHelper.createCommentFlat({ xLeft: 0, yTop: 0 }, question, controller, true);
+    const comment = <TextFieldBrick>await SurveyHelper.createCommentFlat({ xLeft: 0, yTop: 0 }, question, controller, { isMultiline: true, value: question.value, rows: question.rows });
     const textBrick = comment['textBrick'];
     expect(textBrick).toBeDefined();
     const initialXLeft = textBrick.xLeft;

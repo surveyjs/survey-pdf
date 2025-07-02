@@ -1,5 +1,9 @@
 # SurveyJS PDF Generator
 
+
+<video src="https://github.com/surveyjs/survey-pdf/assets/22315929/c6df9c60-a3ed-40e4-82e7-d7be3fa83fae"></video>
+
+
 [![Build Status](https://dev.azure.com/SurveyJS/SurveyJS%20Integration%20Tests/_apis/build/status/SurveyJS%20Library?branchName=master)](https://dev.azure.com/SurveyJS/SurveyJS%20Integration%20Tests/_build/latest?definitionId=7&branchName=master)
 <a href="https://github.com/surveyjs/survey-pdf/issues">
 <img alt="Issues" title="Open Issues" src="https://img.shields.io/github/issues/surveyjs/survey-pdf.svg">
@@ -9,8 +13,6 @@
 </a>
 
 SurveyJS PDF Generator allows you to save an unlimited number of custom-built survey forms to PDF (both blank and filled-in) and generate fillable PDF forms that your end users can edit. The PDF Generator library surves as a client-side extension for the [SurveyJS Form Library](https://github.com/surveyjs/survey-library).
-
-![Survey PDF Generator](docs/images/survey-pdf-export-overview.png)
 
 ### Features
 
@@ -25,20 +27,21 @@ SurveyJS PDF Generator allows you to save an unlimited number of custom-built su
 - An API to download a fillable survey form as a document file in a traditional PDF format
 - PDF Form conversion to Blob, Base64 URL, or Raw PDF
 
+![Survey PDF Generator](docs/images/survey-pdf-export-overview.png)
+
 ## Get Started
 
 - [Angular](https://surveyjs.io/Documentation/Pdf-Export?id=get-started-angular)
 - [Vue](https://surveyjs.io/Documentation/Pdf-Export?id=get-started-vue)
 - [React](https://surveyjs.io/Documentation/Pdf-Export?id=get-started-react)
-- [Knockout](https://surveyjs.io/Documentation/Pdf-Export?id=get-started-knockout)
-- [jQuery](https://surveyjs.io/Documentation/Pdf-Export?id=get-started-jquery)
+- [HTML/CSS/JavaScript](https://surveyjs.io/pdf-generator/documentation/get-started-html-css-javascript)
 
 ## Resources
 
 - [Website](https://surveyjs.io/)
-- [Documentation](https://surveyjs.io/Documentation/Pdf-Export)
-- [Live Examples](https://surveyjs.io/Examples/Pdf-Export)
-- [What's New](https://surveyjs.io/WhatsNew)
+- [Documentation](https://surveyjs.io/pdf-generator/documentation/overview)
+- [Live Examples](https://surveyjs.io/pdf-generator/examples/)
+- [What's New](https://surveyjs.io/stay-updated/major-updates/2024)
 
 ## Build SurveyJS PDF Generator from Sources
 
@@ -59,10 +62,10 @@ Make sure that you have Node.js v6.0.0 or later and npm v2.7.0 or later installe
 1. **Build the library**
 
     ```
-    npm run build_prod
+    npm run build:all
     ```
 
-    You can find the built scripts and style sheets in the `survey-pdf` folder under the `packages` directory.
+    You can find the built scripts in folders under the `build` directory.
 
 1. **Run test examples**
 

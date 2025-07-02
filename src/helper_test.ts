@@ -2,6 +2,7 @@ import { Question } from 'survey-core';
 import { IPoint, IRect, IDocOptions, DocOptions } from './doc_controller';
 import { IPdfBrick, PdfBrick } from './pdf_render/pdf_brick';
 import { SurveyHelper } from './helper_survey';
+import { SurveyPDF } from './survey';
 
 export class TestHelper {
     public static readonly BASE64_IMAGE_16PX: string = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAA3NCSVQICAjb4U/gAAAAt1BMVEVHcExTXGROYmJIT1ZPXmVJV11ES1JYZ24+SE5JU1s+R0xVYmtYZW1ETlRRXWVUYWpKV1xZZ25YZW5YanNrfIdTYWlaZ29nd4JUYmhIU1lHUVtRXWQ+SlA6QkouNzpFT1ZCS1JSXWVxhI98kp53iZZSXmVcaXE5QkdCTFNndn9WY2tZZm5canJfbXVbZ29hcHlXZGxtfYVNWmFRXWVCTFNKVl04QEdoeINnZGxrc3uAk6Fzb3dxg43scHiMAAAAKnRSTlMALwQXZU4MImyJQbCrPOPZRdOHx4X4t2fR0SfsoHhYseyioqbHwOy+59gMe1UiAAAAuElEQVQYlU2P5xKCQAyEI1gABVSKUu3tOgL2938u74Ybx/2xk3yT2SQAPw2Yb8KfRp6VzAxVDDVwYej1ZbHbG9tQTy030sJP+1po4MfSZs+qsrp+KubSg8e7Wq8mk/E44LinwqJr22IskCA4UgBiUqueUUqJ2gLzO0MCC8Ypx1MFXEIEqhFGjB/0zTXNbPvcXOkx7YjFbYDydsq7DIAeKyS9mSYadGBR51A0JVwy/dcyScFxwLAdgC+IFhIbrHyDqAAAAABJRU5ErkJggg==';
@@ -30,8 +31,7 @@ export class TestHelper {
                 right: 10.0,
                 top: 10.0,
                 bot: 10.0
-            },
-            commercial: true
+            }
         };
     }
     public static wrapRect(rect: IRect): IPdfBrick {
@@ -47,7 +47,10 @@ export class TestHelper {
     public static wrapRectsPage(rects: IRect[]): IPdfBrick[][] {
         return [TestHelper.wrapRects(rects)];
     }
-    public static equalRects(expect: any, rects1: IRect[], rects2: IRect[]) {
+    public static equalRects(expect: any, rects1: IRect[], rects2: IRect[], strictMode = false) {
+        if(strictMode) {
+            expect(rects1.length).toBe(rects2.length);
+        }
         for (let i: number = 0; i < rects1.length; i++) {
             this.equalRect(expect, rects1[i], rects2[i]);
         }
@@ -67,4 +70,8 @@ export class TestHelper {
             SurveyHelper.getLocString(question.locTitle) +
             (question.isRequired ? question.requiredText : '');
     }
+}
+
+export class SurveyPDFTester extends SurveyPDF {
+    public get haveCommercialLicense(): boolean { return true; }
 }

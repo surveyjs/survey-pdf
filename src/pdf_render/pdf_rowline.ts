@@ -8,7 +8,7 @@ export class RowlineBrick implements IPdfBrick {
     yBot: number;
     public isPageBreak: boolean = false;
     public constructor(protected controller: DocController,
-        rect: IRect, protected color: string) {
+        rect: IRect, public color: string) {
         this.xLeft = rect.xLeft;
         this.xRight = rect.xRight;
         this.yTop = rect.yTop;

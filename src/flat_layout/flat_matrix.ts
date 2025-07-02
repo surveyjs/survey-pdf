@@ -167,6 +167,7 @@ Serializer.removeProperty('matrix', 'renderAs');
 Serializer.addProperty('matrix', {
     name: 'renderAs',
     default: 'auto',
+    visible: false,
     choices: ['auto', 'list']
 });
 FlatRepository.getInstance().register('matrix', FlatMatrix);
