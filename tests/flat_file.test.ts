@@ -17,6 +17,7 @@ import { LinkBrick } from '../src/pdf_render/pdf_link';
 import { AdornersOptions } from '../src/event_handler/adorners';
 import { checkFlatSnapshot } from './snapshot_helper';
 let __dummy_fl = new FlatFile(null, null, null);
+import '../src/entries/pdf';
 
 test('Check no files', async () => {
     let json: any = {

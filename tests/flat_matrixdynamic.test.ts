@@ -19,6 +19,7 @@ import { AdornersOptions } from '../src/event_handler/adorners';
 let __dummy_dd = new FlatDropdown(null, null, null);
 let __dummy_md = new FlatMatrixDynamic(null, null, null);
 let __dummy_tx = new FlatExpression(null, null, null);
+import '../src/entries/pdf';
 
 test('Check matrix dynamic one column no rows', async () => {
     let json: any = {

@@ -6,8 +6,7 @@ import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { RowlineBrick } from '../pdf_render/pdf_rowline';
 import { SurveyHelper } from '../helper_survey';
 import { AdornersPanelOptions, AdornersPageOptions } from '../event_handler/adorners';
-import { FlatRepository } from '../entries/pdf';
-import * as SurveyPDFModule from '../entries/pdf';
+import { FlatRepository } from '../flat_layout/flat_repository';
 
 export class FlatSurvey {
     public static QUES_GAP_VERT_SCALE: number = 1.5;
@@ -24,7 +23,7 @@ export class FlatSurvey {
             controller, panel, panelContentPoint));
         controller.popMargins();
         const adornersOptions: AdornersPanelOptions = new AdornersPanelOptions(point,
-            panelFlats, panel, controller, FlatRepository.getInstance(), SurveyPDFModule);
+            panelFlats, panel, controller, FlatRepository.getInstance());
         await survey.onRenderPanel.fire(survey, adornersOptions);
         return [...adornersOptions.bricks];
     }
@@ -213,7 +212,7 @@ export class FlatSurvey {
             pageFlats.push(...await this.generateFlatsPagePanel(
                 survey, controller, survey.visiblePages[i], point));
             const adornersOptions: AdornersPageOptions = new AdornersPageOptions(point,
-                pageFlats, survey.visiblePages[i], controller, FlatRepository.getInstance(), SurveyPDFModule);
+                pageFlats, survey.visiblePages[i], controller, FlatRepository.getInstance());
             await survey.onRenderPage.fire(survey, adornersOptions);
             pageFlats = [...adornersOptions.bricks];
             if (i === 0 && flats.length !== 0) {

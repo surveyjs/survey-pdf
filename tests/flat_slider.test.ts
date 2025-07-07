@@ -1,4 +1,5 @@
 import { checkFlatSnapshot } from './snapshot_helper';
+import '../src/entries/pdf';
 
 var jsonSingle = {
     elements: [

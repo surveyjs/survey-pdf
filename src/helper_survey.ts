@@ -707,7 +707,7 @@ export class SurveyHelper {
             create(survey, question, controller, questionType);
         const questionFlats: IPdfBrick[] = await flatQuestion.generateFlats(point);
         const adornersOptions: AdornersOptions = new AdornersOptions(point,
-            questionFlats, question, controller, FlatRepository.getInstance(), SurveyPDFModule);
+            questionFlats, question, controller, FlatRepository.getInstance());
         if (question.customWidget && question.customWidget.isFit(question) &&
             question.customWidget.pdfRender) {
             survey.onRenderQuestion.unshift(question.customWidget.pdfRender);

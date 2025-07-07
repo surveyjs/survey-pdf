@@ -17,6 +17,7 @@ import { CompositeBrick } from '../src/pdf_render/pdf_composite';
 import { RowlineBrick } from '../src/pdf_render/pdf_rowline';
 import { TestHelper } from '../src/helper_test';
 import { TextFieldBrick } from '../src/pdf_render/pdf_textfield';
+import { SurveyHelper } from '../src/helper_survey';
 let __dummy_sh = SurveyPDFModule_dummy.SurveyHelper;
 let __dummy_tx = new FlatTextbox(null, null, null);
 let __dummy_cb = new FlatCheckbox(null, null, null);
@@ -53,9 +54,9 @@ test('Event render questions simple textbox add bottom description', async () =>
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     survey.onRenderQuestion.add(async (_, options: AdornersOptions) => {
-        let point: IPoint = options.module.SurveyHelper.createPoint(
+        let point: IPoint = SurveyHelper.createPoint(
             options.bricks[options.bricks.length - 1]);
-        let descBrick: IPdfBrick = await options.module.SurveyHelper.createDescFlat(point,
+        let descBrick: IPdfBrick = await SurveyHelper.createDescFlat(point,
             options.question, options.controller, 'Some description');
         options.bricks.push(descBrick);
     });
@@ -136,9 +137,9 @@ test('Event render panel simple panel add bottom description', async () => {
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     survey.onRenderPanel.add(async (_, options: AdornersPanelOptions) => {
-        let point: IPoint = options.module.SurveyHelper.createPoint(
+        let point: IPoint = SurveyHelper.createPoint(
             options.bricks[options.bricks.length - 1]);
-        let descBrick: IPdfBrick = await options.module.SurveyHelper.createDescFlat(point,
+        let descBrick: IPdfBrick = await SurveyHelper.createDescFlat(point,
             options.panel, options.controller, 'Some description');
         options.bricks.push(descBrick);
     });
@@ -195,9 +196,9 @@ test('Event render panel simple panel add bottom description', async () => {
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     survey.onRenderPanel.add(async (_, options: AdornersPanelOptions) => {
-        let point: IPoint = options.module.SurveyHelper.createPoint(
+        let point: IPoint = SurveyHelper.createPoint(
             options.bricks[options.bricks.length - 1]);
-        let descBrick: IPdfBrick = await options.module.SurveyHelper.createDescFlat(point,
+        let descBrick: IPdfBrick = await SurveyHelper.createDescFlat(point,
             options.panel, options.controller, 'Some description');
         options.bricks.push(descBrick);
     });
@@ -248,9 +249,9 @@ test('Event render page simple page add bottom description', async () => {
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     survey.onRenderPage.add(async (_, options: AdornersPageOptions) => {
-        let point: IPoint = options.module.SurveyHelper.createPoint(
+        let point: IPoint = SurveyHelper.createPoint(
             options.bricks[options.bricks.length - 1]);
-        let descBrick: IPdfBrick = await options.module.SurveyHelper.createDescFlat(point,
+        let descBrick: IPdfBrick = await SurveyHelper.createDescFlat(point,
             options.page, options.controller, 'Some description');
         options.bricks.push(descBrick);
     });

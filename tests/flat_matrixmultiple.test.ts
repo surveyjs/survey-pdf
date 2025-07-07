@@ -18,6 +18,7 @@ import { checkFlatSnapshot } from './snapshot_helper';
 import { AdornersOptions } from '../src/event_handler/adorners';
 let __dummy_dd = new FlatDropdown(null, null, null);
 let __dummy_mm = new FlatMatrixMultiple(null, null, null);
+import '../src/entries/pdf';
 
 test('Check matrix multiple one column no rows', async () => {
     const json: any = {

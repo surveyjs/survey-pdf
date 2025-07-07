@@ -9,6 +9,8 @@ import { FlatMultipleText } from '../src/flat_layout/flat_multipletext';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
+import '../src/entries/pdf';
+
 const __dummy_mt = new FlatMultipleText(null, null, null);
 
 test('Check multiple text one item', async () => {
@@ -45,7 +47,7 @@ test('Check multiple text one item', async () => {
             controller.measureText(json.elements[0].items[0].name, 'bold').width,
         yTop: controller.leftTopPoint.yTop,
         yBot: controller.leftTopPoint.yTop + controller.unitHeight
-    }
+    };
     TestHelper.equalRect(expect, flats[0][0].unfold()[0], assumeText);
     const assumeBox: IRect = {
         xLeft: controller.leftTopPoint.xLeft +
@@ -53,7 +55,7 @@ test('Check multiple text one item', async () => {
         xRight: assumeMultipleText.xRight,
         yTop: controller.leftTopPoint.yTop,
         yBot: controller.leftTopPoint.yTop + controller.unitHeight
-    }
+    };
     TestHelper.equalRect(expect, flats[0][0].unfold()[1], assumeBox);
 });
 test('Check multiple text two items', async () => {
@@ -168,7 +170,7 @@ test('Check multiple text where columns in last row fewer than columns in colCou
     controller.margins.left += controller.unitWidth;
     const row1Column1: IRect = {
         xLeft: controller.margins.left,
-        xRight: controller.margins.left + SurveyHelper.getPageAvailableWidth(controller) / 2.0 - 
+        xRight: controller.margins.left + SurveyHelper.getPageAvailableWidth(controller) / 2.0 -
             SurveyHelper.GAP_BETWEEN_COLUMNS * controller.unitWidth / 2.0,
         yTop: controller.leftTopPoint.yTop,
         yBot: controller.leftTopPoint.yTop + controller.unitHeight
@@ -176,7 +178,7 @@ test('Check multiple text where columns in last row fewer than columns in colCou
     const actualRow1Column1: IRect = SurveyHelper.mergeRects(unfoldRow1Flats[0], unfoldRow1Flats[1]);
     TestHelper.equalRect(expect, actualRow1Column1, row1Column1);
     const row1Column2: IRect = {
-        xLeft: controller.margins.left + SurveyHelper.getPageAvailableWidth(controller) / 2.0 + 
+        xLeft: controller.margins.left + SurveyHelper.getPageAvailableWidth(controller) / 2.0 +
             SurveyHelper.GAP_BETWEEN_COLUMNS * controller.unitWidth / 2.0,
         xRight: controller.paperWidth - controller.margins.right,
         yTop: controller.leftTopPoint.yTop,
@@ -187,7 +189,7 @@ test('Check multiple text where columns in last row fewer than columns in colCou
     const unfoldRow2Flats: IPdfBrick[] = flats[0][1].unfold();
     const row2Column1: IRect = {
         xLeft: controller.margins.left,
-        xRight: controller.margins.left + SurveyHelper.getPageAvailableWidth(controller) / 2.0 - 
+        xRight: controller.margins.left + SurveyHelper.getPageAvailableWidth(controller) / 2.0 -
             SurveyHelper.GAP_BETWEEN_COLUMNS * controller.unitWidth / 2.0,
         yTop: controller.leftTopPoint.yTop + controller.unitHeight +
             controller.unitHeight * FlatMultipleText.ROWS_GAP_SCALE,
