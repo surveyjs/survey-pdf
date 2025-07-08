@@ -2,10 +2,17 @@ import { IQuestion, } from 'survey-core';
 import { IPoint, IRect, DocController } from '../doc_controller';
 import { PdfBrick } from './pdf_brick';
 
+export interface ITextOptions {
+    fontStyle: string;
+    fontSize: number;
+    fontName: string;
+    fontColor: string;
+}
+
 export class TextBrick extends PdfBrick {
     protected align: any;
     public constructor(question: IQuestion, controller: DocController,
-        rect: IRect, protected text: string) {
+        rect: IRect, protected text: string, protected options: ITextOptions) {
         super(question, controller, rect);
         this.align = {
             isInputRtl: false,
@@ -21,14 +28,20 @@ export class TextBrick extends PdfBrick {
         return this.text;
     }
     public async renderInteractive(): Promise<void> {
-        let alignPoint: IPoint = this.alignPoint(this);
-        let oldFontSize: number = this.controller.fontSize;
-        this.controller.fontSize = this.fontSize;
-        let oldTextColor: string = this.controller.doc.getTextColor();
-        this.controller.doc.setTextColor(this.textColor);
+        const alignPoint: IPoint = this.alignPoint(this);
+        const oldFontSize: number = this.controller.fontSize;
+        const oldFontStyle: string = this.controller.fontStyle;
+        const oldFontName: string = this.controller.fontName;
+        const oldFontColor: string = this.controller.doc.getTextColor();
+        this.controller.fontSize = this.options.fontSize;
+        this.controller.fontStyle = this.options.fontStyle;
+        this.controller.fontName = this.options.fontName;
+        this.controller.doc.setTextColor(this.options.fontColor);
         this.controller.doc.text(this.escapeText(), alignPoint.xLeft, alignPoint.yTop, this.align);
-        this.controller.doc.setTextColor(oldTextColor);
+        this.controller.doc.setTextColor(oldFontColor);
         this.controller.fontSize = oldFontSize;
+        this.controller.fontStyle = oldFontStyle;
+        this.controller.fontName = oldFontName;
     }
     protected alignPoint(rect: IRect): IPoint {
         return {

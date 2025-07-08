@@ -1,7 +1,6 @@
 import { IRect, IMargin, ISize, DocOptions, DocController } from '../doc_controller';
 import { IPdfBrick, PdfBrick } from '../pdf_render/pdf_brick';
 import { TextBrick } from '../pdf_render/pdf_text';
-import { TextBoldBrick } from '../pdf_render/pdf_textbold';
 import { SurveyHelper } from '../helper_survey';
 
 /**

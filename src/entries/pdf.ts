@@ -45,9 +45,7 @@ export { RadioItemBrick } from '../pdf_render/pdf_radioitem';
 export { RankingItemBrick } from '../pdf_render/pdf_rankingitem';
 export { RowlineBrick } from '../pdf_render/pdf_rowline';
 export { TextFieldBrick } from '../pdf_render/pdf_textfield';
-export { TextBoldBrick } from '../pdf_render/pdf_textbold';
 export { TextBrick } from '../pdf_render/pdf_text';
-export { TitlePanelBrick } from '../pdf_render/pdf_titlepanel';
 
 import { checkLibraryVersion } from 'survey-core';
 checkLibraryVersion(`${process.env.VERSION}`, 'survey-pdf');

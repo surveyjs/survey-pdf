@@ -23,8 +23,57 @@ export class FlatQuestion<T extends Question = Question> implements IFlatQuestio
         protected question: T, protected controller: DocController, protected styles: IStyles) {
     }
     private async generateFlatTitle(point: IPoint): Promise<IPdfBrick> {
-        return await SurveyHelper.createTitleFlat(point,
-            this.question, this.controller);
+        const composite: CompositeBrick = new CompositeBrick();
+        let currPoint: IPoint = SurveyHelper.clone(point);
+        const oldFontSize: number = this.controller.fontSize;
+        this.controller.fontSize *= SurveyHelper.TITLE_FONT_SCALE;
+        if (this.question.no) {
+            const noText: string = this.question.no + ' ';
+            let noFlat: IPdfBrick;
+            if (SurveyHelper.hasHtml(this.question.locTitle)) {
+                // controller.fontStyle = 'bold'; TODO
+                this.controller.pushMargins();
+                this.controller.margins.right = this.controller.paperWidth -
+                        this.controller.margins.left - this.controller.measureText(noText, 'bold').width;
+                noFlat = await SurveyHelper.createHTMLFlat(currPoint, this.question, this.controller,
+                    SurveyHelper.createHtmlContainerBlock(noText, this.controller, 'standard'));
+                this.controller.popMargins();
+                // controller.fontStyle = 'normal'; TODO
+            }
+            else {
+                noFlat = await SurveyHelper.createTextFlat(currPoint,
+                    this.question, this.controller, noText/*, options* TODO*/);
+            }
+            composite.addBrick(noFlat);
+            currPoint.xLeft = noFlat.xRight;
+        }
+        this.controller.pushMargins();
+        this.controller.margins.left = currPoint.xLeft;
+        const textFlat: CompositeBrick = <CompositeBrick>await SurveyHelper.createTextFlat(
+            currPoint, this.question, this.controller, this.question.locTitle/*, options* TODO*/);
+        composite.addBrick(textFlat);
+        this.controller.popMargins();
+        if (this.question.isRequired) {
+            const requiredText: string = this.question.requiredText;
+            if (SurveyHelper.hasHtml(this.question.locTitle)) {
+                currPoint = SurveyHelper.createPoint(textFlat.unfold()[0], false, false);
+                this.controller.fontStyle = 'bold';
+                this.controller.pushMargins();
+                this.controller.margins.right = this.controller.paperWidth -
+                        this.controller.margins.left - this.controller.measureText(requiredText, 'bold').width;
+                composite.addBrick(await SurveyHelper.createHTMLFlat(currPoint, this.question, this.controller,
+                    SurveyHelper.createHtmlContainerBlock(requiredText, this.controller, 'standard')));
+                this.controller.popMargins();
+                this.controller.fontStyle = 'normal';
+            }
+            else {
+                currPoint = SurveyHelper.createPoint(textFlat.unfold().pop(), false, true);
+                composite.addBrick(await SurveyHelper.createTextFlat(currPoint,
+                    this.question, this.controller, requiredText/*, options* TODO*/));
+            }
+        }
+        this.controller.fontSize = oldFontSize;
+        return composite;
     }
     private async generateFlatDescription(point: IPoint): Promise<IPdfBrick> {
         return await SurveyHelper.createDescFlat(point, this.question, this.controller, this.question.locDescription);
@@ -43,7 +92,7 @@ export class FlatQuestion<T extends Question = Question> implements IFlatQuestio
     private async generateFlatsComment(point: IPoint): Promise<IPdfBrick> {
         const text: LocalizableString = this.question.locCommentText;
         const otherTextFlat: IPdfBrick = await SurveyHelper.createTextFlat(
-            point, this.question, this.controller, text, TextBrick);
+            point, this.question, this.controller, text);
         const otherPoint: IPoint = SurveyHelper.createPoint(otherTextFlat);
         otherPoint.yTop += this.controller.unitHeight * SurveyHelper.GAP_BETWEEN_ROWS;
         return new CompositeBrick(otherTextFlat, await SurveyHelper.createCommentFlat(
