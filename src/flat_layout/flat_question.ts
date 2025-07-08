@@ -1,11 +1,13 @@
 import { IQuestion, Question, LocalizableString, Serializer, settings } from 'survey-core';
 import { SurveyPDF } from '../survey';
 import { IPoint, DocController } from '../doc_controller';
-import { FlatSurvey } from './flat_survey';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { TextBrick } from '../pdf_render/pdf_text';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
+import { AdornersOptions } from '../event_handler/adorners';
+import { FlatRepository } from './flat_repository';
+import { FlatPanel } from './flat_panel';
 
 export interface IFlatQuestion {
     generateFlatsContent(point: IPoint): Promise<IPdfBrick[]>;
@@ -59,8 +61,7 @@ export class FlatQuestion implements IFlatQuestion {
     public async generateFlatsComposite(point: IPoint): Promise<IPdfBrick[]> {
         const contentPanel = (<any>this.question).contentPanel;
         if (!!contentPanel) {
-            return await FlatSurvey.generateFlatsPanel(this.survey,
-                this.controller, contentPanel, point);
+            return await new FlatPanel(this.survey, contentPanel, this.controller).generateFlats(point);
         }
         this.question = SurveyHelper.getContentQuestion(this.question);
         return await this.generateFlatsContent(point);
@@ -168,6 +169,13 @@ export class FlatQuestion implements IFlatQuestion {
             }
         }
         this.controller.popMargins();
+        const adornersOptions: AdornersOptions = new AdornersOptions(point,
+            flats, this.question, this.controller, FlatRepository.getInstance());
+        if (this.question.customWidget && this.question.customWidget.isFit(this.question) &&
+            this.question.customWidget.pdfRender) {
+            this.survey.onRenderQuestion.unshift(this.question.customWidget.pdfRender);
+        }
+        await this.survey.onRenderQuestion.fire(this.survey, adornersOptions);
         return flats;
     }
     protected get shouldRenderAsComment(): boolean {

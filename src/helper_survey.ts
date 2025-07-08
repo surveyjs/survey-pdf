@@ -706,14 +706,7 @@ export class SurveyHelper {
         const flatQuestion: IFlatQuestion = FlatRepository.getInstance().
             create(survey, question, controller, questionType);
         const questionFlats: IPdfBrick[] = await flatQuestion.generateFlats(point);
-        const adornersOptions: AdornersOptions = new AdornersOptions(point,
-            questionFlats, question, controller, FlatRepository.getInstance());
-        if (question.customWidget && question.customWidget.isFit(question) &&
-            question.customWidget.pdfRender) {
-            survey.onRenderQuestion.unshift(question.customWidget.pdfRender);
-        }
-        await survey.onRenderQuestion.fire(survey, adornersOptions);
-        return [...adornersOptions.bricks];
+        return [...questionFlats];
     }
     public static isFontExist(controller: DocController, fontName: string): boolean {
         return controller.doc.internal.getFont(fontName).fontName === fontName;

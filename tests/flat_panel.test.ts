@@ -13,6 +13,7 @@ import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 import { calcTitleTop } from './flat_question.test';
 import { TextFieldBrick } from '../src/pdf_render/pdf_textfield';
+import { FlatPanel } from '../src/flat_layout/flat_panel';
 let __dummy_tx = new FlatTextbox(null, null, null);
 
 test('Check two pages start point', async () => {
@@ -168,7 +169,7 @@ test('Check panel with title and description', async () => {
     const panelTitleFlat: IPdfBrick = await SurveyHelper.createTitlePanelFlat(
         controller.leftTopPoint, controller, json.elements[0].title);
     const descPoint: IPoint = SurveyHelper.createPoint(panelTitleFlat);
-    descPoint.yTop += FlatSurvey.PANEL_DESC_GAP_SCALE * controller.unitHeight;
+    descPoint.yTop += FlatPanel.PANEL_DESC_GAP_SCALE * controller.unitHeight;
     const panelDescFlat: IPdfBrick = await SurveyHelper.createDescFlat(
         descPoint, null, controller, json.elements[0].description);
     const titleUnfoldFlats: IPdfBrick[] = flats[0][0].unfold();

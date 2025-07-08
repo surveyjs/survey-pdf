@@ -93,7 +93,7 @@ test('Survey with title and description', async () => {
     const assumeTitle: IRect = await SurveyHelper.createTitleSurveyFlat(
         controller.leftTopPoint, controller, json.title);
     const descriptionPoint: IPoint = SurveyHelper.createPoint(assumeTitle);
-    descriptionPoint.yTop += controller.unitHeight * FlatSurvey.PANEL_DESC_GAP_SCALE;
+    descriptionPoint.yTop += controller.unitHeight * FlatSurvey.DESC_GAP_SCALE;
     const assumeDescription: IRect = await SurveyHelper.createDescFlat(
         descriptionPoint, null, controller, json.description);
     const assumeTitleWithDescription: IRect = SurveyHelper.mergeRects(assumeTitle, assumeDescription);

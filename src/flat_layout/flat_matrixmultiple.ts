@@ -13,6 +13,7 @@ import { TextBrick } from '../pdf_render/pdf_text';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
 import { FlatSurvey } from './flat_survey';
+import { FlatPanel } from './flat_panel';
 
 export class FlatMatrixMultiple extends FlatQuestion {
     public static readonly GAP_BETWEEN_ROWS: number = 0.5;
@@ -186,8 +187,7 @@ export class FlatMatrixMultiple extends FlatQuestion {
                 for (let j = 0; j < currentDetailPanel.questions.length; j++) {
                     currentDetailPanel.questions[j].id += '_' + i;
                 }
-                const panelBricks: IPdfBrick[] = await FlatSurvey.generateFlatsPanel(
-                    this.survey, this.controller, currentDetailPanel, currPoint);
+                const panelBricks: IPdfBrick[] = await new FlatPanel(this.survey, currentDetailPanel, this.controller).generateFlats(currPoint);
 
                 const currComposite: CompositeBrick = new CompositeBrick();
                 currComposite.addBrick(...panelBricks);

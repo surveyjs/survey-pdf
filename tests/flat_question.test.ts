@@ -18,6 +18,7 @@ import { RowlineBrick } from '../src/pdf_render/pdf_rowline';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 import { TextFieldBrick } from '../src/pdf_render/pdf_textfield';
+import { FlatPanel } from '../src/flat_layout/flat_panel';
 const __dummy_tx = new FlatTextbox(null, null, null);
 const __dummy_cb = new FlatCheckbox(null, null, null);
 
@@ -250,7 +251,7 @@ test('Calc boundaries with space between questions', async () => {
     expect(flats[0].length).toBe(3);
     const titlePoint: IPoint = await calcTitleTop(controller.leftTopPoint,
         controller, <Question>survey.getAllQuestions()[0], flats[0][0]);
-    titlePoint.yTop += controller.unitHeight * FlatSurvey.QUES_GAP_VERT_SCALE;
+    titlePoint.yTop += controller.unitHeight * FlatPanel.QUES_GAP_VERT_SCALE;
     expect(flats[0][1] instanceof RowlineBrick).toBe(true);
     await calcTitleTop(titlePoint, controller,
         <Question>survey.getAllQuestions()[1], flats[0][2]);

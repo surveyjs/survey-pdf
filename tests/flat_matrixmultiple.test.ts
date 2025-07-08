@@ -19,6 +19,7 @@ import { AdornersOptions } from '../src/event_handler/adorners';
 let __dummy_dd = new FlatDropdown(null, null, null);
 let __dummy_mm = new FlatMatrixMultiple(null, null, null);
 import '../src/entries/pdf';
+import { FlatPanel } from '../src/flat_layout/flat_panel';
 
 test('Check matrix multiple one column no rows', async () => {
     const json: any = {
@@ -767,8 +768,7 @@ test('Check matrix multiple one column one row with detailPanel', async () => {
     TestHelper.equalRect(expect, unfoldRowFlats[1], assumeRowQuestion);
     question.visibleRows[0].showDetailPanel();
     const panel = question.visibleRows[0].detailPanel;
-    const assumePanelBricks = await FlatSurvey.generateFlatsPanel(
-        survey, controller, panel, { xLeft: assumeRowText.xLeft, yTop: assumeRowQuestion.yBot + SurveyHelper.EPSILON
+    const assumePanelBricks = await new FlatPanel(survey, panel, controller).generateFlats({ xLeft: assumeRowText.xLeft, yTop: assumeRowQuestion.yBot + SurveyHelper.EPSILON
             + controller.unitHeight * FlatMatrixMultiple.GAP_BETWEEN_ROWS });
     const assumePanelCompositeBrick = new CompositeBrick(...assumePanelBricks);
     TestHelper.equalRect(expect, flats[0][2], assumePanelCompositeBrick);
@@ -815,8 +815,7 @@ test('Check matrix multiple zero columns one row with detailPanel', async () => 
     TestHelper.equalRect(expect, unfoldRowFlats[0], assumeRowText);
     question.visibleRows[0].showDetailPanel();
     const panel = question.visibleRows[0].detailPanel;
-    const assumePanelBricks = await FlatSurvey.generateFlatsPanel(
-        survey, controller, panel, { xLeft: assumeRowText.xLeft, yTop: assumeRowText.yBot + SurveyHelper.EPSILON
+    const assumePanelBricks = await new FlatPanel(survey, panel, controller).generateFlats({ xLeft: assumeRowText.xLeft, yTop: assumeRowText.yBot + SurveyHelper.EPSILON
             + controller.unitHeight * FlatMatrixMultiple.GAP_BETWEEN_ROWS });
     const assumePanelCompositeBrick = new CompositeBrick(...assumePanelBricks);
     TestHelper.equalRect(expect, flats[0][1], assumePanelCompositeBrick);

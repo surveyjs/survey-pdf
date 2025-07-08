@@ -9,6 +9,7 @@ import { FlatTextbox } from '../src/flat_layout/flat_textbox';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
+import { FlatPanel } from '../src/flat_layout/flat_panel';
 let __dummy_tx = new FlatTextbox(null, null, null);
 
 test('Check no invisible page', async () => {
@@ -132,7 +133,7 @@ test('Page with title and description', async () => {
     let assumeTitle: IRect = await SurveyHelper.createTitlePanelFlat(
         controller.leftTopPoint, controller, json.pages[0].title, true);
     let descriptionPoint: IPoint = SurveyHelper.createPoint(assumeTitle);
-    descriptionPoint.yTop += controller.unitHeight * FlatSurvey.PANEL_DESC_GAP_SCALE;
+    descriptionPoint.yTop += controller.unitHeight * FlatPanel.PANEL_DESC_GAP_SCALE;
     let assumeDescription: IRect = await SurveyHelper.createDescFlat(
         descriptionPoint, null, controller, json.pages[0].description);
     const titleUnfoldFlats: IPdfBrick[] = flats[0][0].unfold();

@@ -6,6 +6,7 @@ import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { SurveyHelper } from '../helper_survey';
+import { FlatPanel } from './flat_panel';
 
 export class FlatPanelDynamic extends FlatQuestion {
     protected question: QuestionPanelDynamicModel;
@@ -19,8 +20,8 @@ export class FlatPanelDynamic extends FlatQuestion {
         const flats: IPdfBrick[] = [];
         const currPoint: IPoint = SurveyHelper.clone(point);
         for (const panel of this.question.panels) {
-            const panelFlats: IPdfBrick[] = await FlatSurvey.generateFlatsPanel(
-                this.survey, this.controller, panel, currPoint);
+            const panelFlats: IPdfBrick[] = await new FlatPanel(
+                this.survey, panel, this.controller).generateFlats(currPoint);
             if (panelFlats.length !== 0) {
                 currPoint.yTop = SurveyHelper.mergeRects(...panelFlats).yBot;
                 currPoint.yTop += this.controller.unitHeight * FlatPanelDynamic.GAP_BETWEEN_PANELS;
