@@ -6,13 +6,8 @@ import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { SurveyHelper } from '../helper_survey';
 
-export class FlatImage extends FlatQuestion {
+export class FlatImage extends FlatQuestion<QuestionImageModel> {
     protected question: QuestionImageModel;
-    public constructor(protected survey: SurveyPDF,
-        question: IQuestion, controller: DocController) {
-        super(survey, question, controller);
-        this.question = <QuestionImageModel>question;
-    }
     private async getCorrectImageSize(): Promise<ISize> {
         return await SurveyHelper.getCorrectedImageSize(this.controller, { imageWidth: this.question.imageWidth, imageHeight: this.question.imageHeight, imageLink: this.question.imageLink });
     }

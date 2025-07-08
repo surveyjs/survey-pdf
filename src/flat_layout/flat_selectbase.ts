@@ -1,4 +1,4 @@
-import { IQuestion, ItemValue, QuestionCheckboxBase, settings } from 'survey-core';
+import { IQuestion, ItemValue, QuestionCheckboxBase, QuestionSelectBase, settings } from 'survey-core';
 import { SurveyPDF } from '../survey';
 import { IPoint, IRect, DocController } from '../doc_controller';
 import { FlatQuestion } from './flat_question';
@@ -7,13 +7,7 @@ import { TextBrick } from '../pdf_render/pdf_text';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
 
-export abstract class FlatSelectBase extends FlatQuestion {
-    protected question: QuestionCheckboxBase;
-    public constructor(protected survey: SurveyPDF,
-        question: IQuestion, protected controller: DocController) {
-        super(survey, question, controller);
-        this.question = <QuestionCheckboxBase>question;
-    }
+export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSelectBase> extends FlatQuestion<T> {
     public abstract generateFlatItem(rect: IRect, item: ItemValue, index: number): IPdfBrick;
     protected async generateFlatComposite(point: IPoint, item: ItemValue, index: number): Promise<IPdfBrick> {
         const compositeFlat: CompositeBrick = new CompositeBrick();

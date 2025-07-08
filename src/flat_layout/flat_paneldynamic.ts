@@ -8,14 +8,8 @@ import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { SurveyHelper } from '../helper_survey';
 import { FlatPanel } from './flat_panel';
 
-export class FlatPanelDynamic extends FlatQuestion {
-    protected question: QuestionPanelDynamicModel;
+export class FlatPanelDynamic extends FlatQuestion<QuestionPanelDynamicModel> {
     public static readonly GAP_BETWEEN_PANELS: number = 0.75;
-    public constructor(protected survey: SurveyPDF,
-        question: IQuestion, protected controller: DocController) {
-        super(survey, question, controller);
-        this.question = <QuestionPanelDynamicModel>question;
-    }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         const flats: IPdfBrick[] = [];
         const currPoint: IPoint = SurveyHelper.clone(point);

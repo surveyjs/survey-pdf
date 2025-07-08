@@ -1,4 +1,4 @@
-import { IQuestion, ItemValue, QuestionRatingModel, LocalizableString } from 'survey-core';
+import { IQuestion, ItemValue, QuestionRatingModel, LocalizableString, QuestionRadiogroupModel } from 'survey-core';
 import { SurveyPDF } from '../survey';
 import { IPoint, IRect, DocController } from '../doc_controller';
 import { FlatRadiogroup } from './flat_radiogroup';
@@ -12,7 +12,7 @@ export class FlatRating extends FlatRadiogroup {
     protected questionRating: QuestionRatingModel;
     public constructor(protected survey: SurveyPDF,
         question: IQuestion, protected controller: DocController) {
-        super(survey, question, controller);
+        super(survey, question as QuestionRadiogroupModel, controller);
         this.questionRating = <QuestionRatingModel>question;
     }
     protected async generateFlatHorisontalComposite(point: IPoint, item: ItemValue, index: number): Promise<IPdfBrick> {

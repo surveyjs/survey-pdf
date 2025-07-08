@@ -10,13 +10,7 @@ import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
 import { ColoredBrick } from '../pdf_render/pdf_coloredbrick';
 
-export class FlatRanking extends FlatQuestion {
-    protected question: QuestionRankingModel;
-    public constructor(protected survey: SurveyPDF,
-        question: IQuestion, protected controller: DocController) {
-        super(survey, question, controller);
-        this.question = <QuestionRankingModel>question;
-    }
+export class FlatRanking extends FlatQuestion<QuestionRankingModel> {
     protected async generateFlatComposite(point: IPoint, item: ItemValue, index: number, unrankedItem: boolean = false): Promise<IPdfBrick> {
         const itemRect: IRect = SurveyHelper.createRect(point,
             this.controller.unitWidth, this.controller.unitHeight);

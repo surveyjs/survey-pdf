@@ -8,12 +8,7 @@ import { SurveyHelper } from '../helper_survey';
 import { EmptyBrick } from '../pdf_render/pdf_empty';
 
 export type IHTMLRenderType = 'auto' | 'standard' | 'image';
-export class FlatHTML extends FlatQuestion {
-    protected question: QuestionHtmlModel;
-    public constructor(protected survey: SurveyPDF,
-        question: IQuestion, controller: DocController) {
-        super(survey, question, controller);
-    }
+export class FlatHTML extends FlatQuestion<QuestionHtmlModel> {
     private chooseRender(html: string): IHTMLRenderType {
         if (/<[^>]*style[^<]*>/.test(html) ||
             /<[^>]*table[^<]*>/.test(html) ||

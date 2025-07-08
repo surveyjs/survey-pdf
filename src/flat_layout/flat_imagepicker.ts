@@ -1,4 +1,4 @@
-import { IQuestion, ItemValue, QuestionImagePickerModel } from 'survey-core';
+import { IQuestion, ItemValue, QuestionImagePickerModel, QuestionRadiogroupModel } from 'survey-core';
 import { SurveyPDF } from '../survey';
 import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
@@ -10,14 +10,8 @@ import { CheckItemBrick } from '../pdf_render/pdf_checkitem';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
 
-export class FlatImagePicker extends FlatQuestion {
-    protected question: QuestionImagePickerModel;
+export class FlatImagePicker extends FlatQuestion<QuestionImagePickerModel> {
     protected radio: FlatRadiogroup;
-    public constructor(protected survey: SurveyPDF,
-        question: IQuestion, controller: DocController) {
-        super(survey, question, controller);
-        this.question = <QuestionImagePickerModel>question;
-    }
     private async generateFlatItem(point: IPoint, item: ItemValue, index: number): Promise<IPdfBrick> {
         const pageAvailableWidth = SurveyHelper.getPageAvailableWidth(this.controller);
         const imageFlat = await SurveyHelper.createImageFlat(point, this.question, this.controller, { link: (<any>item).imageLink, width: pageAvailableWidth, height: pageAvailableWidth / SurveyHelper.IMAGEPICKER_RATIO });
@@ -41,7 +35,7 @@ export class FlatImagePicker extends FlatQuestion {
     }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         this.radio = this.question.multiSelect ? null :
-            new FlatRadiogroup(this.survey, this.question, this.controller);
+            new FlatRadiogroup(this.survey, this.question as any as QuestionRadiogroupModel, this.controller);
         const rowsFlats: CompositeBrick[] = [new CompositeBrick()];
         const colWidth: number = SurveyHelper.getImagePickerAvailableWidth(
             this.controller) / SurveyHelper.IMAGEPICKER_COUNT;

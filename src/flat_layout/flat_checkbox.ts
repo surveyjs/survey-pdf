@@ -6,24 +6,12 @@ import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { CheckboxItemBrick } from '../pdf_render/pdf_checkboxitem';
 
-export class FlatCheckbox extends FlatSelectBase {
-    protected question: QuestionCheckboxModel;
-    public constructor(protected survey: SurveyPDF,
-        question: IQuestion, protected controller: DocController) {
-        super(survey, question, controller);
-        this.question = <QuestionCheckboxModel>question;
-    }
+export class FlatCheckbox<T extends QuestionCheckboxModel = QuestionCheckboxModel> extends FlatSelectBase<T> {
     public generateFlatItem(rect: IRect, item: ItemValue, index: number): IPdfBrick {
         return new CheckboxItemBrick(this.question, this.controller, rect, item, index);
     }
 }
-export class FlatTagbox extends FlatCheckbox {
-    protected question: QuestionTagboxModel;
-    public constructor(protected survey: SurveyPDF,
-        question: IQuestion, protected controller: DocController) {
-        super(survey, question, controller);
-        this.question = <QuestionTagboxModel>question;
-    }
+export class FlatTagbox extends FlatCheckbox<QuestionTagboxModel> {
     protected getVisibleChoices(): Array<ItemValue> {
         if(this.controller.tagboxSelectedChoicesOnly) {
             return this.question.selectedChoices;

@@ -7,7 +7,7 @@ import { FlatQuestionDefault } from './flat_default';
 export type FlatConstructor = new (
     survey: SurveyPDF,
     question: IQuestion,
-    controller: DocController
+    controller: DocController,
 ) => IFlatQuestion;
 export class FlatRepository {
     private questions: { [index: string]: FlatConstructor } = {};

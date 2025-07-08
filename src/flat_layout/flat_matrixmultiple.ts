@@ -15,13 +15,11 @@ import { SurveyHelper } from '../helper_survey';
 import { FlatSurvey } from './flat_survey';
 import { FlatPanel } from './flat_panel';
 
-export class FlatMatrixMultiple extends FlatQuestion {
+export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = QuestionMatrixDropdownModelBase> extends FlatQuestion<T> {
     public static readonly GAP_BETWEEN_ROWS: number = 0.5;
-    protected question: QuestionMatrixDropdownModelBase;
-    public constructor(protected survey: SurveyPDF, question: IQuestion, controller: DocController,
+    constructor(protected survey: SurveyPDF, question: T, controller: DocController,
         protected isMultiple: boolean = true) {
         super(survey, question, controller);
-        this.question = <QuestionMatrixDropdownModelBase>question;
     }
     private visibleRowsValue: QuestionMatrixDropdownRenderedRow[];
     private get visibleRows() {

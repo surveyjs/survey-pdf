@@ -9,15 +9,11 @@ import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { TextBrick } from '../pdf_render/pdf_text';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
+import { FlatSelectBase } from './flat_selectbase';
 
-export class FlatMatrix extends FlatQuestion {
+export class FlatMatrix extends FlatQuestion<QuestionMatrixModel> {
     public static readonly GAP_BETWEEN_ROWS: number = 0.5;
     protected question: QuestionMatrixModel;
-    constructor(protected survey: SurveyPDF,
-        question: IQuestion, protected controller: DocController) {
-        super(survey, <QuestionRadiogroupModel>question, controller);
-        this.question = <QuestionMatrixModel>question;
-    }
     protected async generateFlatsHeader(point: IPoint): Promise<IPdfBrick[]> {
         const headers: IPdfBrick[] = [];
         const currPoint: IPoint = SurveyHelper.clone(point);
@@ -85,8 +81,8 @@ export class FlatMatrixRow extends FlatRadiogroup {
     public constructor(protected survey: SurveyPDF,
         question: IQuestion, protected controller: DocController, private row: MatrixRowModel, private rowIndex: number,
         private key: string, protected isFirst: boolean = false, protected isVertical: boolean = false, private rowTitleWidth: number, private columnWidth: number) {
-        super(survey, question, controller);
-        this.questionMatrix = <QuestionMatrixModel>question;
+        super(survey, question as any as QuestionRadiogroupModel, controller);
+        this.questionMatrix = question as QuestionMatrixModel;
     }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         return this.isVertical ?

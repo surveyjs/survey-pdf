@@ -10,13 +10,7 @@ import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
 import { FlatRadiogroup } from './flat_radiogroup';
 
-export class FlatBooleanCheckbox extends FlatQuestion {
-    protected question: QuestionBooleanModel;
-    constructor(protected survey: SurveyPDF,
-        question: IQuestion, protected controller: DocController) {
-        super(survey, question, controller);
-        this.question = <QuestionBooleanModel>question;
-    }
+export class FlatBooleanCheckbox extends FlatQuestion<QuestionBooleanModel> {
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         const compositeFlat: CompositeBrick = new CompositeBrick();
         const height: number = this.controller.unitHeight;
@@ -39,18 +33,18 @@ export class FlatBooleanCheckbox extends FlatQuestion {
 export class FlatBoolean extends FlatRadiogroup {
     private items: Array<ItemValue>;
     constructor(protected survey: SurveyPDF,
-        question: IQuestion, protected controller: DocController) {
+        question: QuestionRadiogroupModel, protected controller: DocController) {
         super(survey, question, controller);
         this.buildItems();
     }
     private buildItems() {
-        const question = <QuestionBooleanModel>(<any>this.question);
-        const falseChoice = new ItemValue((<QuestionBooleanModel>question).valueFalse !== undefined ? (<QuestionBooleanModel>question).valueFalse : false);
-        const trueChoice = new ItemValue((<QuestionBooleanModel>question).valueTrue !== undefined ? (<QuestionBooleanModel>question).valueTrue : true);
+        const question = this.question as any as QuestionBooleanModel;
+        const falseChoice = new ItemValue(question.valueFalse !== undefined ? question.valueFalse : false);
+        const trueChoice = new ItemValue(question.valueTrue !== undefined ? question.valueTrue : true);
         falseChoice.locOwner = question;
-        falseChoice.setLocText((<QuestionBooleanModel>question).locLabelFalse);
+        falseChoice.setLocText(question.locLabelFalse);
         trueChoice.locOwner = question;
-        trueChoice.setLocText((<QuestionBooleanModel>question).locLabelTrue);
+        trueChoice.setLocText(question.locLabelTrue);
         this.items = [falseChoice, trueChoice];
     }
     protected getVisibleChoices(): Array<ItemValue> {

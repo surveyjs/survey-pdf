@@ -8,13 +8,7 @@ import { SurveyHelper } from '../helper_survey';
 import { ITextFieldBrickOptions, TextFieldBrick } from '../pdf_render/pdf_textfield';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 
-export class FlatSlider extends FlatQuestion {
-    protected question: QuestionSliderModel;
-    public constructor(protected survey: SurveyPDF,
-        question: IQuestion, protected controller: DocController) {
-        super(survey, question, controller);
-        this.question = <QuestionSliderModel>question;
-    }
+export class FlatSlider extends FlatQuestion<QuestionSliderModel> {
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         let currentPoint: IPoint = SurveyHelper.clone(point);
 

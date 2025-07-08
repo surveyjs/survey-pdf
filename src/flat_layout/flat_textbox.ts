@@ -9,12 +9,6 @@ import { ITextFieldBrickOptions, TextFieldBrick } from '../pdf_render/pdf_textfi
 
 export class FlatTextbox extends FlatQuestion {
     public static readonly MULTILINE_TEXT_ROWS_COUNT: number = 1;
-    protected question: QuestionTextModel;
-    public constructor(protected survey: SurveyPDF,
-        question: IQuestion, controller: DocController) {
-        super(survey, question, controller);
-        this.question = <QuestionTextModel>question;
-    }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         const options: Omit<ITextFieldBrickOptions, 'isMultiline'> = {
             fieldName: this.question.id,

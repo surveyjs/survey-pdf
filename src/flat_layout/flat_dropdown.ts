@@ -8,13 +8,7 @@ import { DropdownBrick } from '../pdf_render/pdf_dropdown';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
 
-export class FlatDropdown extends FlatQuestion {
-    protected question: QuestionDropdownModel;
-    public constructor(protected survey: SurveyPDF,
-        question: IQuestion, protected controller: DocController) {
-        super(survey, question, controller);
-        this.question = <QuestionDropdownModel>question;
-    }
+export class FlatDropdown extends FlatQuestion<QuestionDropdownModel> {
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         const valueBrick = !this.shouldRenderAsComment ? new DropdownBrick(this.question, this.controller, SurveyHelper.createTextFieldRect(point, this.controller)) : await SurveyHelper.createCommentFlat(point, this.question, this.controller,
             {

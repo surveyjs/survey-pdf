@@ -8,14 +8,8 @@ import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
 import { FlatTextbox } from './flat_textbox';
 
-export class FlatMultipleText extends FlatQuestion {
+export class FlatMultipleText extends FlatQuestion<QuestionMultipleTextModel> {
     public static readonly ROWS_GAP_SCALE: number = 0.195;
-    protected question: QuestionMultipleTextModel;
-    public constructor(protected survey: SurveyPDF,
-        question: IQuestion, protected controller: DocController) {
-        super(survey, question, controller);
-        this.question = <QuestionMultipleTextModel>question;
-    }
     private getVisibleRows() {
         return this.question.getRows().filter(row => row.isVisible);
     }
