@@ -40,7 +40,7 @@ export class FlatFile extends FlatQuestion<QuestionFileModel> {
         const previewValue = this.question.showPreview ? this.question.previewValue : this.question.value;
         if (!previewValue || previewValue.length === 0) {
             return [await SurveyHelper.createTextFlat(point, this.question,
-                this.controller, this.question.noFileChosenCaption, TextBrick)];
+                this.controller, this.question.noFileChosenCaption)];
         }
         const rowsFlats: CompositeBrick[] = [new CompositeBrick()];
         const currPoint: IPoint = SurveyHelper.clone(point);

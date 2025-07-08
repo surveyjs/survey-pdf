@@ -21,7 +21,7 @@ export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSele
         textPoint.xLeft = itemFlat.xRight + this.controller.unitWidth * SurveyHelper.GAP_BETWEEN_ITEM_TEXT;
         if (item.locText.renderedHtml !== null) {
             compositeFlat.addBrick(await SurveyHelper.createTextFlat(
-                textPoint, this.question, this.controller, item.locText, TextBrick));
+                textPoint, this.question, this.controller, item.locText));
         }
         if (item === this.question.otherItem && (item.value === this.question.value ||
             (typeof this.question.isOtherSelected !== 'undefined' && this.question.isOtherSelected))) {

@@ -227,14 +227,8 @@ export class DrawCanvas {
         const textSize: ISize = this.controller.measureText(textOptions.text,
             textOptions.isBold ? 'bold' : 'normal', textOptions.fontSize);
         const textRect: IRect = this.alignRect(textOptions, textSize);
-        if (!textOptions.isBold) {
-            this.packs.push(new TextBrick(null, this.controller,
-                textRect, textOptions.text));
-        }
-        else {
-            this.packs.push(new TextBoldBrick(null, this.controller,
-                textRect, textOptions.text));
-        }
+        this.packs.push(new TextBrick(null, this.controller,
+            textRect, textOptions.text, { fontStyle: textOptions.isBold ? 'bold' : 'normal', fontSize: textOptions.fontSize ?? this.controller.fontSize, fontName: this.controller.fontName, fontColor: SurveyHelper.TEXT_COLOR }));
         (<PdfBrick>this.packs[this.packs.length - 1]).fontSize = textOptions.fontSize;
     }
     /**

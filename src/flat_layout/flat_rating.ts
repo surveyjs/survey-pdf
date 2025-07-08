@@ -26,7 +26,7 @@ export class FlatRating extends FlatRadiogroup {
         const textPoint: IPoint = SurveyHelper.clone(point);
         textPoint.xLeft += halfWidth;
         const compositeFlat: CompositeBrick = new CompositeBrick(await SurveyHelper.
-            createBoldTextFlat(textPoint, this.questionRating, this.controller, itemText));
+            createTextFlat(textPoint, this.questionRating, this.controller, itemText, { fontStyle: 'bold' }));
         this.controller.popMargins();
         let textWidth: number = compositeFlat.width;
         if (textWidth < SurveyHelper.getRatingMinWidth(this.controller)) {
@@ -55,7 +55,7 @@ export class FlatRating extends FlatRadiogroup {
         textPoint.xLeft = itemFlat.xRight + this.controller.unitWidth * SurveyHelper.GAP_BETWEEN_ITEM_TEXT;
         const itemText: LocalizableString = SurveyHelper.getRatingItemText(this.questionRating, index, item.locText);
         itemText == null || compositeFlat.addBrick(await SurveyHelper.createTextFlat(
-            textPoint, this.question, this.controller, itemText, TextBrick));
+            textPoint, this.question, this.controller, itemText));
         return compositeFlat;
     }
     protected async generateHorisontallyItems(point: IPoint) {

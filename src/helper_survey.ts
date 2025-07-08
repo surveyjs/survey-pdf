@@ -196,9 +196,9 @@ export class SurveyHelper {
         const oldFontSize: number = controller.fontSize;
         const oldFontStyle: string = controller.fontStyle;
         const oldFontName: string = controller.fontName;
-        controller.fontSize = options.fontSize;
-        controller.fontStyle = options.fontStyle;
-        controller.fontName = options.fontName;
+        controller.fontSize = newOptions.fontSize;
+        controller.fontStyle = newOptions.fontStyle;
+        controller.fontName = newOptions.fontName;
         let result: IPdfBrick;
         if (typeof text === 'string' || !this.hasHtml(text)) {
             result = this.createPlainTextFlat(point, question, controller, typeof text === 'string' ?
@@ -218,7 +218,7 @@ export class SurveyHelper {
             fontSize: controller.fontSize,
             fontName: controller.fontName,
             fontStyle: controller.fontStyle,
-            fontColor: controller.doc.getTextColor()
+            fontColor: SurveyHelper.TEXT_COLOR
         };
     }
     public static hasHtml(text: LocalizableString): boolean {
@@ -349,42 +349,6 @@ export class SurveyHelper {
             };
         });
     }
-    public static async createBoldTextFlat(point: IPoint, question: Question,
-        controller: DocController, text: string | LocalizableString): Promise<IPdfBrick> {
-        controller.fontStyle = 'bold';
-        const composite: IPdfBrick = await this.createTextFlat(
-            point, question, controller, text, TextBoldBrick);
-        controller.fontStyle = 'normal';
-        return composite;
-    }
-    private static async createTitleSurveyPanelFlat(point: IPoint, controller: DocController,
-        text: string | LocalizableString, fontSizeScale: number): Promise<IPdfBrick> {
-        const oldFontSize: number = controller.fontSize;
-        controller.fontSize = oldFontSize * fontSizeScale;
-        controller.fontStyle = 'bold';
-        const titleFlat: IPdfBrick = await this.createTextFlat(point, null, controller, text, TitlePanelBrick); // TODO get fontSize from titlePanelBrick
-        controller.fontStyle = 'normal';
-        controller.fontSize = oldFontSize;
-        return titleFlat;
-    }
-    public static async createTitleSurveyFlat(point: IPoint, controller: DocController,
-        text: string | LocalizableString): Promise<IPdfBrick> {
-        return await this.createTitleSurveyPanelFlat(point, controller, text, this.TITLE_SURVEY_FONT_SIZE_SCALE);
-    }
-    public static async createTitlePanelFlat(point: IPoint, controller: DocController,
-        text: string | LocalizableString, isPage: boolean = false): Promise<IPdfBrick> {
-        return await this.createTitleSurveyPanelFlat(point, controller, text,
-            isPage ? this.TITLE_PAGE_FONT_SIZE_SCALE : this.TITLE_PANEL_FONT_SIZE_SCALE);
-    }
-    public static async createDescFlat(point: IPoint, question: IQuestion,
-        controller: DocController, text: string | LocalizableString): Promise<IPdfBrick> {
-        const oldFontSize: number = controller.fontSize;
-        controller.fontSize = oldFontSize * this.DESCRIPTION_FONT_SIZE_SCALE;
-        const composite: IPdfBrick = await this.createTextFlat(
-            point, question, controller, text, DescriptionBrick);
-        controller.fontSize = oldFontSize;
-        return composite;
-    }
     public static getReadonlyRenderAs(question: Question, controller: DocController): 'auto' | 'text' | 'acroform' {
         return (<any>question).readonlyRenderAs === 'auto' ? controller.readonlyRenderAs : (<any>question).readonlyRenderAs;
     }
@@ -495,7 +459,7 @@ export class SurveyHelper {
     public static async createLinkFlat(point: IPoint, question: Question,
         controller: DocController, text: string, link: string): Promise<IPdfBrick> {
         const compositeText: CompositeBrick = <CompositeBrick>await this.
-            createTextFlat(point, question, controller, text, TextBrick);
+            createTextFlat(point, question, controller, text);
         const compositeLink: CompositeBrick = new CompositeBrick();
         compositeText.unfold().forEach((text: TextBrick) => {
             compositeLink.addBrick(new LinkBrick(text, link));
@@ -526,7 +490,7 @@ export class SurveyHelper {
         point.xLeft += padding;
         controller.pushMargins(point.xLeft, controller.margins.right + padding);
         const textFlat: IPdfBrick = await this.createTextFlat(
-            point, question, controller, value.toString(), TextBrick);
+            point, question, controller, value.toString());
         controller.popMargins();
         return textFlat;
     }

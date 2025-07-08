@@ -18,7 +18,7 @@ export class FlatImagePicker extends FlatQuestion<QuestionImagePickerModel> {
         const compositeFlat: CompositeBrick = new CompositeBrick(imageFlat);
         let buttonPoint: IPoint = SurveyHelper.createPoint(compositeFlat);
         if (this.question.showLabel) {
-            let labelFlat: IPdfBrick = await SurveyHelper.createTextFlat(buttonPoint, this.question, this.controller, item.text || item.value, TextBrick);
+            let labelFlat: IPdfBrick = await SurveyHelper.createTextFlat(buttonPoint, this.question, this.controller, item.text || item.value);
             compositeFlat.addBrick(labelFlat);
             buttonPoint = SurveyHelper.createPoint(labelFlat);
         }

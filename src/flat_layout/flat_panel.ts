@@ -6,6 +6,7 @@ import { SurveyHelper } from '../helper_survey';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { AdornersPanelOptions } from '../event_handler/adorners';
 import { FlatRepository } from './flat_repository';
+import { title } from 'process';
 
 export class FlatPanel<T extends PanelModel = PanelModel> {
     public static QUES_GAP_VERT_SCALE: number = 1.5;
@@ -40,27 +41,40 @@ export class FlatPanel<T extends PanelModel = PanelModel> {
         panelFlats.push(...await this.generateRowsFlats(currPoint));
         return panelFlats;
     }
+    protected async generateTitleFlat(point: IPoint): Promise<IPdfBrick> {
+        const composite: CompositeBrick = new CompositeBrick();
+        let currPoint = SurveyHelper.clone(point);
+        if (this.panel.no) {
+            const noFlat: IPdfBrick = await SurveyHelper.createTextFlat(
+                currPoint, null, this.controller, this.panel.no, {
+                    fontStyle: 'bold',
+                    fontSize: this.controller.fontSize * SurveyHelper.TITLE_PANEL_FONT_SIZE_SCALE
+                });
+            composite.addBrick(noFlat);
+            currPoint.xLeft = noFlat.xRight + this.controller.measureText(' ').width;
+        }
+        const panelTitleFlat: IPdfBrick = await SurveyHelper.createTextFlat(
+            currPoint, null, this.controller, this.panel.locTitle, {
+                fontStyle: 'bold',
+                fontSize: this.controller.fontSize * SurveyHelper.TITLE_PANEL_FONT_SIZE_SCALE
+            });
+        composite.addBrick(panelTitleFlat);
+        return composite;
+    }
     protected async createHeaderFlats(point: IPoint): Promise<Array<IPdfBrick>> {
         const compositeFlat: CompositeBrick = new CompositeBrick();
         let currPoint = SurveyHelper.clone(point);
         if (this.panel.hasTitle) {
-            if (this.panel instanceof PanelModel && this.panel.no) {
-                const noFlat: IPdfBrick = await SurveyHelper.createTitlePanelFlat(
-                    currPoint, this.controller, this.panel.no, this.panel.getType() === 'page');
-                compositeFlat.addBrick(noFlat);
-                currPoint.xLeft = noFlat.xRight + this.controller.measureText(' ').width;
-            }
-            const pagelPanelTitleFlat: IPdfBrick = await SurveyHelper.createTitlePanelFlat(
-                currPoint, this.controller, this.panel.locTitle, this.panel.getType() === 'page');
-            compositeFlat.addBrick(pagelPanelTitleFlat);
-            currPoint = SurveyHelper.createPoint(pagelPanelTitleFlat);
+            const titleFlat = await this.generateTitleFlat(currPoint);
+            compositeFlat.addBrick(titleFlat);
+            currPoint = SurveyHelper.createPoint(titleFlat);
         }
         if (this.panel.description) {
             if (this.panel.title) {
                 currPoint.yTop += this.controller.unitWidth * FlatPanel.PANEL_DESC_GAP_SCALE;
             }
-            const panelDescFlat: IPdfBrick = await SurveyHelper.createDescFlat(
-                currPoint, null, this.controller, this.panel.locDescription);
+            const panelDescFlat: IPdfBrick = await SurveyHelper.createTextFlat(
+                currPoint, null, this.controller, this.panel.locDescription, { fontSize: this.controller.fontSize * SurveyHelper.DESCRIPTION_FONT_SIZE_SCALE });
             compositeFlat.addBrick(panelDescFlat);
             currPoint = SurveyHelper.createPoint(panelDescFlat);
         }

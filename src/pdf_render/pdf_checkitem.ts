@@ -74,7 +74,7 @@ export class CheckItemBrick extends PdfBrick {
             checkmarkPoint.yTop += this.height / 2.0 - checkmarkSize.height / 2.0;
             const checkmarkFlat: IPdfBrick = await SurveyHelper.createTextFlat(
                 checkmarkPoint, this.question, this.controller,
-                CheckItemBrick.CHECKMARK_READONLY_SYMBOL, TextBrick);
+                CheckItemBrick.CHECKMARK_READONLY_SYMBOL);
             (<any>checkmarkFlat.unfold()[0]).textColor = this.textColor;
             this.controller.fontSize = oldFontSize;
             await checkmarkFlat.render();

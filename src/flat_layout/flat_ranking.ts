@@ -21,7 +21,7 @@ export class FlatRanking extends FlatQuestion<QuestionRankingModel> {
         const textPoint: IPoint = SurveyHelper.clone(point);
         textPoint.xLeft = itemFlat.xRight + this.controller.unitWidth * SurveyHelper.GAP_BETWEEN_ITEM_TEXT;
         const textFlat: IPdfBrick = await SurveyHelper.createTextFlat(
-            textPoint, this.question, this.controller, item.locText, TextBrick);
+            textPoint, this.question, this.controller, item.locText);
         return new CompositeBrick(itemFlat, textFlat);
     }
     public async generateChoicesColumn(point: IPoint, choices: ItemValue[], unrankedChoices: boolean = false): Promise<IPdfBrick[]> {

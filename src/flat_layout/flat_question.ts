@@ -42,7 +42,9 @@ export class FlatQuestion<T extends Question = Question> implements IFlatQuestio
             }
             else {
                 noFlat = await SurveyHelper.createTextFlat(currPoint,
-                    this.question, this.controller, noText/*, options* TODO*/);
+                    this.question, this.controller, noText, {
+                        fontStyle: 'bold'
+                    });
             }
             composite.addBrick(noFlat);
             currPoint.xLeft = noFlat.xRight;
@@ -50,7 +52,9 @@ export class FlatQuestion<T extends Question = Question> implements IFlatQuestio
         this.controller.pushMargins();
         this.controller.margins.left = currPoint.xLeft;
         const textFlat: CompositeBrick = <CompositeBrick>await SurveyHelper.createTextFlat(
-            currPoint, this.question, this.controller, this.question.locTitle/*, options* TODO*/);
+            currPoint, this.question, this.controller, this.question.locTitle, {
+                fontStyle: 'bold'
+            });
         composite.addBrick(textFlat);
         this.controller.popMargins();
         if (this.question.isRequired) {
@@ -69,14 +73,16 @@ export class FlatQuestion<T extends Question = Question> implements IFlatQuestio
             else {
                 currPoint = SurveyHelper.createPoint(textFlat.unfold().pop(), false, true);
                 composite.addBrick(await SurveyHelper.createTextFlat(currPoint,
-                    this.question, this.controller, requiredText/*, options* TODO*/));
+                    this.question, this.controller, requiredText, {
+                        fontStyle: 'bold'
+                    }));
             }
         }
         this.controller.fontSize = oldFontSize;
         return composite;
     }
     private async generateFlatDescription(point: IPoint): Promise<IPdfBrick> {
-        return await SurveyHelper.createDescFlat(point, this.question, this.controller, this.question.locDescription);
+        return await SurveyHelper.createTextFlat(point, this.question, this.controller, this.question.locDescription, { fontSize: this.controller.fontSize * SurveyHelper.DESCRIPTION_FONT_SIZE_SCALE });
     }
     private async generateFlatHeader(point: IPoint): Promise<CompositeBrick> {
         const titleFlat: IPdfBrick = await this.generateFlatTitle(point);

@@ -26,7 +26,7 @@ export class FlatBooleanCheckbox extends FlatQuestion<QuestionBooleanModel> {
             this.question.checkedValue ? this.question.locLabelTrue : this.question.locLabelFalse;
         if (locLabelText !== null && locLabelText.renderedHtml !== null) {
             compositeFlat.addBrick(await SurveyHelper.createTextFlat(
-                textPoint, this.question, this.controller, locLabelText, TextBrick));
+                textPoint, this.question, this.controller, locLabelText));
         }
         return [compositeFlat];
     }

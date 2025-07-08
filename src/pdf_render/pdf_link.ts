@@ -8,8 +8,12 @@ export class LinkBrick extends TextBrick {
     public constructor(textFlat: TextBrick, protected link: string) {
         super((<LinkBrick>textFlat).question,
             (<LinkBrick>textFlat).controller,
-            textFlat, (<LinkBrick>textFlat).text);
-        this.textColor = LinkBrick.COLOR;
+            textFlat, (<LinkBrick>textFlat).text, {
+                fontSize: (<LinkBrick>textFlat).controller.fontSize,
+                fontColor: LinkBrick.COLOR,
+                fontStyle: (<LinkBrick>textFlat).controller.fontStyle,
+                fontName: (<LinkBrick>textFlat).controller.fontName
+            });
     }
     public async renderInteractive(): Promise<void> {
         let oldTextColor: string = this.controller.doc.getTextColor();

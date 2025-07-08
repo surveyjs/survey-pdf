@@ -19,8 +19,10 @@ export class FlatSurvey {
         const compositeFlat: CompositeBrick = new CompositeBrick();
         if (survey.showTitle) {
             if (survey.title) {
-                const surveyTitleFlat: IPdfBrick = await SurveyHelper.createTitleSurveyFlat(
-                    point, controller, survey.locTitle);
+                const surveyTitleFlat: IPdfBrick = await SurveyHelper.createTextFlat(point, null, controller, survey.locTitle, {
+                    fontStyle: 'bold',
+                    fontSize: controller.fontSize * SurveyHelper.TITLE_SURVEY_FONT_SIZE_SCALE
+                });
                 compositeFlat.addBrick(surveyTitleFlat);
                 point = SurveyHelper.createPoint(surveyTitleFlat);
             }
@@ -28,8 +30,8 @@ export class FlatSurvey {
                 if (survey.title) {
                     point.yTop += controller.unitWidth * FlatSurvey.DESC_GAP_SCALE;
                 }
-                compositeFlat.addBrick(await SurveyHelper.createDescFlat(
-                    point, null, controller, survey.locDescription));
+                compositeFlat.addBrick(await SurveyHelper.createTextFlat(
+                    point, null, controller, survey.locDescription, { fontSize: controller.fontSize * SurveyHelper.DESCRIPTION_FONT_SIZE_SCALE }));
             }
         }
         return compositeFlat;
