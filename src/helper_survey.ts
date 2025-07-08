@@ -362,7 +362,7 @@ export class SurveyHelper {
         const oldFontSize: number = controller.fontSize;
         controller.fontSize = oldFontSize * fontSizeScale;
         controller.fontStyle = 'bold';
-        const titleFlat: IPdfBrick = await this.createTextFlat(point, null, controller, text, TitlePanelBrick);
+        const titleFlat: IPdfBrick = await this.createTextFlat(point, null, controller, text, TitlePanelBrick); // TODO get fontSize from titlePanelBrick
         controller.fontStyle = 'normal';
         controller.fontSize = oldFontSize;
         return titleFlat;
