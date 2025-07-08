@@ -14,12 +14,13 @@ import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
 import { FlatSurvey } from './flat_survey';
 import { FlatPanel } from './flat_panel';
+import { IStyles } from '../styles';
 
 export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = QuestionMatrixDropdownModelBase> extends FlatQuestion<T> {
     public static readonly GAP_BETWEEN_ROWS: number = 0.5;
-    constructor(protected survey: SurveyPDF, question: T, controller: DocController,
+    constructor(protected survey: SurveyPDF, question: T, controller: DocController, styles: IStyles,
         protected isMultiple: boolean = true) {
-        super(survey, question, controller);
+        super(survey, question, controller, styles);
     }
     private visibleRowsValue: QuestionMatrixDropdownRenderedRow[];
     private get visibleRows() {

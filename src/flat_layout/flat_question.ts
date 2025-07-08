@@ -8,6 +8,7 @@ import { SurveyHelper } from '../helper_survey';
 import { AdornersOptions } from '../event_handler/adorners';
 import { FlatRepository } from './flat_repository';
 import { FlatPanel } from './flat_panel';
+import { IStyles } from '../styles';
 
 export interface IFlatQuestion {
     generateFlatsContent(point: IPoint): Promise<IPdfBrick[]>;
@@ -19,7 +20,7 @@ export class FlatQuestion<T extends Question = Question> implements IFlatQuestio
     public static CONTENT_INDENT_SCALE: number = 1.0;
     public static DESC_GAP_SCALE: number = 0.0625;
     public constructor(protected survey: SurveyPDF,
-        protected question: T, protected controller: DocController) {
+        protected question: T, protected controller: DocController, protected styles: IStyles) {
     }
     private async generateFlatTitle(point: IPoint): Promise<IPdfBrick> {
         return await SurveyHelper.createTitleFlat(point,

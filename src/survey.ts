@@ -1,5 +1,5 @@
-import { SurveyModel, Question, EventBase } from 'survey-core';
-import * as SurveyCore from 'survey-core';
+import { SurveyModel, Question, EventBase, SurveyElement, Serializer } from 'survey-core';
+import { hasLicense } from 'survey-core';
 import { IDocOptions, DocController } from './doc_controller';
 import { FlatSurvey } from './flat_layout/flat_survey';
 import { PagePacker } from './page_layout/page_packer';
@@ -8,6 +8,7 @@ import { EventAsync, EventHandler } from './event_handler/event_handler';
 import { DrawCanvas } from './event_handler/draw_canvas';
 import { AdornersOptions, AdornersPanelOptions, AdornersPageOptions } from './event_handler/adorners';
 import { SurveyHelper } from './helper_survey';
+import { IStyles, styles } from './styles';
 
 /**
  * The `SurveyPDF` object enables you to export your surveys and forms to PDF documents.
@@ -29,7 +30,7 @@ export class SurveyPDF extends SurveyModel {
         this.options = SurveyHelper.clone(options);
     }
     public get haveCommercialLicense(): boolean {
-        const f = SurveyCore.hasLicense;
+        const f = hasLicense;
         return !!f && f(2);
     }
     public set haveCommercialLicense(val: boolean) {
@@ -167,6 +168,19 @@ export class SurveyPDF extends SurveyModel {
     }
     public getUpdatedRadioItemAcroformOptions(options: any): void {
         this.onRenderRadioItemAcroform.fire(this, options);
+    }
+    public getStylesForElement(element: SurveyElement): IStyles {
+        const types = [element.getType()];
+        let currentClass = Serializer.findClass(element.getType());
+        while(!!currentClass.parentName) {
+            currentClass = Serializer.findClass(currentClass.parentName);
+            types.unshift(currentClass.parentName);
+        }
+        const res = {};
+        types.forEach(type => {
+            Object.assign(res, styles[type] ?? {});
+        });
+        return res;
     }
     private correctBricksPosition(controller: DocController, flats: IPdfBrick[][]) {
         if(controller.isRTL) {

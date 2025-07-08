@@ -3,11 +3,13 @@ import { SurveyPDF } from '../survey';
 import { DocController } from '../doc_controller';
 import { IFlatQuestion, FlatQuestion } from './flat_question';
 import { FlatQuestionDefault } from './flat_default';
+import { IStyles } from '../styles';
 
 export type FlatConstructor = new (
     survey: SurveyPDF,
     question: IQuestion,
     controller: DocController,
+    styles: IStyles
 ) => IFlatQuestion;
 export class FlatRepository {
     private questions: { [index: string]: FlatConstructor } = {};
@@ -35,7 +37,8 @@ export class FlatRepository {
                 rendererConstructor = FlatQuestionDefault;
             }
         }
-        return new rendererConstructor(survey, question, docController);
+        const styles = survey.getStylesForElement(question);
+        return new rendererConstructor(survey, question, docController, styles);
     }
     public static register(type: string, rendererConstructor: FlatConstructor): void {
         this.getInstance().register(type, rendererConstructor);

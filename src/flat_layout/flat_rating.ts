@@ -7,12 +7,13 @@ import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { TextBrick } from '../pdf_render/pdf_text';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
+import { IStyles } from '../styles';
 
 export class FlatRating extends FlatRadiogroup {
     protected questionRating: QuestionRatingModel;
     public constructor(protected survey: SurveyPDF,
-        question: IQuestion, protected controller: DocController) {
-        super(survey, question as QuestionRadiogroupModel, controller);
+        question: IQuestion, protected controller: DocController, styles: IStyles) {
+        super(survey, question as QuestionRadiogroupModel, controller, styles);
         this.questionRating = <QuestionRatingModel>question;
     }
     protected async generateFlatHorisontalComposite(point: IPoint, item: ItemValue, index: number): Promise<IPdfBrick> {

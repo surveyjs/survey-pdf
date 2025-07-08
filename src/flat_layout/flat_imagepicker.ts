@@ -35,7 +35,7 @@ export class FlatImagePicker extends FlatQuestion<QuestionImagePickerModel> {
     }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         this.radio = this.question.multiSelect ? null :
-            new FlatRadiogroup(this.survey, this.question as any as QuestionRadiogroupModel, this.controller);
+            new FlatRadiogroup(this.survey, this.question as any as QuestionRadiogroupModel, this.controller, this.styles);
         const rowsFlats: CompositeBrick[] = [new CompositeBrick()];
         const colWidth: number = SurveyHelper.getImagePickerAvailableWidth(
             this.controller) / SurveyHelper.IMAGEPICKER_COUNT;

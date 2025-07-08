@@ -10,6 +10,7 @@ import { TextBrick } from '../pdf_render/pdf_text';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
 import { FlatSelectBase } from './flat_selectbase';
+import { IStyles } from '../styles';
 
 export class FlatMatrix extends FlatQuestion<QuestionMatrixModel> {
     public static readonly GAP_BETWEEN_ROWS: number = 0.5;
@@ -37,7 +38,7 @@ export class FlatMatrix extends FlatQuestion<QuestionMatrixModel> {
         let currPoint: IPoint = SurveyHelper.clone(point);
         for (let i: number = 0; i < this.question.visibleRows.length; i++) {
             const key: string = 'row' + i;
-            const flatsRow: IPdfBrick[] = await new FlatMatrixRow(this.survey, this.question, this.controller,
+            const flatsRow: IPdfBrick[] = await new FlatMatrixRow(this.survey, this.question, this.controller, this.styles,
                 this.question.visibleRows[i], i, key, i == 0, isVertical, this.rowTitleWidth, this.columnWidth).generateFlatsContent(currPoint);
             currPoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(...flatsRow));
             currPoint.yTop += this.controller.unitHeight * FlatMatrix.GAP_BETWEEN_ROWS;
@@ -79,9 +80,9 @@ export class FlatMatrix extends FlatQuestion<QuestionMatrixModel> {
 export class FlatMatrixRow extends FlatRadiogroup {
     protected questionMatrix: QuestionMatrixModel;
     public constructor(protected survey: SurveyPDF,
-        question: IQuestion, protected controller: DocController, private row: MatrixRowModel, private rowIndex: number,
+        question: IQuestion, protected controller: DocController, styles: IStyles, private row: MatrixRowModel, private rowIndex: number,
         private key: string, protected isFirst: boolean = false, protected isVertical: boolean = false, private rowTitleWidth: number, private columnWidth: number) {
-        super(survey, question as any as QuestionRadiogroupModel, controller);
+        super(survey, question as any as QuestionRadiogroupModel, controller, styles);
         this.questionMatrix = question as QuestionMatrixModel;
     }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {

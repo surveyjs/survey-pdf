@@ -9,6 +9,7 @@ import { BooleanItemBrick } from '../pdf_render/pdf_booleanitem';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
 import { FlatRadiogroup } from './flat_radiogroup';
+import { IStyles } from '../styles';
 
 export class FlatBooleanCheckbox extends FlatQuestion<QuestionBooleanModel> {
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
@@ -33,8 +34,8 @@ export class FlatBooleanCheckbox extends FlatQuestion<QuestionBooleanModel> {
 export class FlatBoolean extends FlatRadiogroup {
     private items: Array<ItemValue>;
     constructor(protected survey: SurveyPDF,
-        question: QuestionRadiogroupModel, protected controller: DocController) {
-        super(survey, question, controller);
+        question: QuestionRadiogroupModel, protected controller: DocController, styles: IStyles) {
+        super(survey, question, controller, styles);
         this.buildItems();
     }
     private buildItems() {
