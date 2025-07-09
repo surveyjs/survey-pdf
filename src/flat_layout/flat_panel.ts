@@ -43,21 +43,19 @@ export class FlatPanel<T extends PanelModel = PanelModel> {
     }
     protected async generateTitleFlat(point: IPoint): Promise<IPdfBrick> {
         const composite: CompositeBrick = new CompositeBrick();
+        const textOptions = {
+            fontStyle: 'bold',
+            fontSize: this.controller.fontSize * SurveyHelper.TITLE_PANEL_FONT_SIZE_SCALE
+        };
         let currPoint = SurveyHelper.clone(point);
         if (this.panel.no) {
             const noFlat: IPdfBrick = await SurveyHelper.createTextFlat(
-                currPoint, null, this.controller, this.panel.no, {
-                    fontStyle: 'bold',
-                    fontSize: this.controller.fontSize * SurveyHelper.TITLE_PANEL_FONT_SIZE_SCALE
-                });
+                currPoint, null, this.controller, this.panel.no, textOptions);
             composite.addBrick(noFlat);
             currPoint.xLeft = noFlat.xRight + this.controller.measureText(' ').width;
         }
         const panelTitleFlat: IPdfBrick = await SurveyHelper.createTextFlat(
-            currPoint, null, this.controller, this.panel.locTitle, {
-                fontStyle: 'bold',
-                fontSize: this.controller.fontSize * SurveyHelper.TITLE_PANEL_FONT_SIZE_SCALE
-            });
+            currPoint, null, this.controller, this.panel.locTitle, textOptions);
         composite.addBrick(panelTitleFlat);
         return composite;
     }

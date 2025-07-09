@@ -224,14 +224,16 @@ export class DrawCanvas {
         if (typeof textOptions.isBold === 'undefined') {
             textOptions.isBold = false;
         }
-        const textSize: ISize = this.controller.measureText(textOptions.text, {
+        const options = {
             fontStyle: textOptions.isBold ? 'bold' : 'normal',
-            fontSize: textOptions.fontSize
-        });
+            fontSize: textOptions.fontSize,
+            fontName: this.controller.fontName,
+            fontColor: SurveyHelper.TEXT_COLOR
+        };
+        const textSize: ISize = this.controller.measureText(textOptions.text, options);
         const textRect: IRect = this.alignRect(textOptions, textSize);
         this.packs.push(new TextBrick(null, this.controller,
-            textRect, textOptions.text, { fontStyle: textOptions.isBold ? 'bold' : 'normal', fontSize: textOptions.fontSize, fontName: this.controller.fontName, fontColor: SurveyHelper.TEXT_COLOR }));
-        (<PdfBrick>this.packs[this.packs.length - 1]).fontSize = textOptions.fontSize;
+            textRect, textOptions.text, options));
     }
     /**
      * Draws an image within the drawing area.

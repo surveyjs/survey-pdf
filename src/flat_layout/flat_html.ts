@@ -34,7 +34,7 @@ export class FlatHTML extends FlatQuestion<QuestionHtmlModel> {
         }
         if (renderAs === 'auto') renderAs = this.controller.htmlRenderAs;
         if (renderAs === 'auto') renderAs = this.chooseRender(SurveyHelper.getLocString(this.question.locHtml));
-        const html: string = SurveyHelper.createHtmlContainerBlock(SurveyHelper.getLocString(this.question.locHtml), this.controller, renderAs);
+        const html: string = SurveyHelper.createHtmlContainerBlock(SurveyHelper.getLocString(this.question.locHtml), this.controller);
         if (renderAs === 'image') {
             const width: number = SurveyHelper.getPageAvailableWidth(this.controller);
             const { url, aspect }: { url: string, aspect: number } =

@@ -146,16 +146,17 @@ export class SurveyHelper {
             yBot: controller.paperHeight
         };
     }
-    public static chooseHtmlFont(controller: DocController): string {
-        return controller.useCustomFontInHtml ? controller.fontName : this.STANDARD_FONT;
+    public static chooseHtmlFont(controller: DocController, fontName: string): string {
+        return controller.useCustomFontInHtml ? fontName : this.STANDARD_FONT;
     }
     public static generateCssTextRule(fontSize: number, fontStyle: string, fontName: string): string {
         return `"font-size: ${fontSize}pt; font-weight: ${fontStyle}; font-family: ${fontName}; color: ${this.TEXT_COLOR};"`;
     }
-    public static createHtmlContainerBlock(html: string, controller: DocController, renderAs: IHTMLRenderType): string {
-        const font = this.chooseHtmlFont(controller);
+    public static createHtmlContainerBlock(html: string, controller: DocController, options?: Partial<ITextOptions>): string {
+        const newOptions = Object.assign(this.getDefaultTextOptions(controller), options ?? {});
+        const font = this.chooseHtmlFont(controller, newOptions.fontName);
         return `<div class="__surveypdf_html" style=${this.generateCssTextRule(
-            controller.fontSize, controller.fontStyle, font)}>` +
+            newOptions.fontSize, newOptions.fontStyle, newOptions.fontName)}>` +
             `<style>.__surveypdf_html p { margin: 0; line-height: ${controller.fontSize}pt } body { margin: 0; }</style>${html}</div>`;
     }
     public static splitHtmlRect(controller: DocController, htmlBrick: IPdfBrick): IPdfBrick {
@@ -206,7 +207,7 @@ export class SurveyHelper {
         }
         else {
             result = this.splitHtmlRect(controller, await this.createHTMLFlat(point, <Question>question, controller,
-                this.createHtmlContainerBlock(this.getLocString(text), controller, 'standard')));
+                this.createHtmlContainerBlock(this.getLocString(text), controller)));
         }
         controller.fontSize = oldFontSize;
         controller.fontStyle = oldFontStyle;
