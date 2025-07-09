@@ -1,6 +1,5 @@
-import { IQuestion, QuestionMultipleTextModel, MultipleTextItemModel } from 'survey-core';
-import { SurveyPDF } from '../survey';
-import { IPoint, DocController } from '../doc_controller';
+import { QuestionMultipleTextModel, MultipleTextItemModel } from 'survey-core';
+import { IPoint } from '../doc_controller';
 import { FlatQuestion, IFlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';

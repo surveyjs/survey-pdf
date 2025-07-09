@@ -1,6 +1,5 @@
-import { IQuestion, QuestionExpressionModel, settings } from 'survey-core';
-import { SurveyPDF } from '../survey';
-import { IPoint, IRect, DocController } from '../doc_controller';
+import { QuestionExpressionModel, settings } from 'survey-core';
+import { IPoint } from '../doc_controller';
 import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';

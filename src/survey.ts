@@ -1,4 +1,4 @@
-import { SurveyModel, Question, EventBase, SurveyElement, Serializer } from 'survey-core';
+import { SurveyModel, EventBase, SurveyElement, Serializer } from 'survey-core';
 import { hasLicense } from 'survey-core';
 import { IDocOptions, DocController } from './doc_controller';
 import { FlatSurvey } from './flat_layout/flat_survey';

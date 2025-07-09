@@ -1,4 +1,4 @@
-import { IQuestion, QuestionMatrixDynamicModel, Serializer } from 'survey-core';
+import { QuestionMatrixDynamicModel, Serializer } from 'survey-core';
 import { SurveyPDF } from '../survey';
 import { DocController } from '../doc_controller';
 import { FlatRepository } from './flat_repository';

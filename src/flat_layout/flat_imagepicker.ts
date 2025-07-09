@@ -1,10 +1,8 @@
-import { IQuestion, ItemValue, QuestionImagePickerModel, QuestionRadiogroupModel } from 'survey-core';
-import { SurveyPDF } from '../survey';
+import { ItemValue, QuestionImagePickerModel, QuestionRadiogroupModel } from 'survey-core';
 import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
-import { IPoint, IRect, DocController } from '../doc_controller';
+import { IPoint, IRect } from '../doc_controller';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
-import { TextBrick } from '../pdf_render/pdf_text';
 import { FlatRadiogroup } from './flat_radiogroup';
 import { CheckItemBrick } from '../pdf_render/pdf_checkitem';
 import { CompositeBrick } from '../pdf_render/pdf_composite';

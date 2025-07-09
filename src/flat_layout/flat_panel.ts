@@ -6,7 +6,6 @@ import { SurveyHelper } from '../helper_survey';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { AdornersPanelOptions } from '../event_handler/adorners';
 import { FlatRepository } from './flat_repository';
-import { title } from 'process';
 
 export class FlatPanel<T extends PanelModel = PanelModel> {
     public static QUES_GAP_VERT_SCALE: number = 1.5;

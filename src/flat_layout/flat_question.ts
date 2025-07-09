@@ -1,8 +1,7 @@
-import { IQuestion, Question, LocalizableString, Serializer, settings } from 'survey-core';
+import { Question, LocalizableString, Serializer, settings } from 'survey-core';
 import { SurveyPDF } from '../survey';
 import { IPoint, DocController } from '../doc_controller';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
-import { TextBrick } from '../pdf_render/pdf_text';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
 import { AdornersOptions } from '../event_handler/adorners';

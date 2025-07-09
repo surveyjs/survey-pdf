@@ -1,10 +1,9 @@
-import { IQuestion, ItemValue, LocalizableString, QuestionBooleanModel, QuestionRadiogroupModel, SurveyModel } from 'survey-core';
+import { ItemValue, LocalizableString, QuestionBooleanModel, QuestionRadiogroupModel } from 'survey-core';
 import { SurveyPDF } from '../survey';
 import { IPoint, DocController } from '../doc_controller';
 import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
-import { TextBrick } from '../pdf_render/pdf_text';
 import { BooleanItemBrick } from '../pdf_render/pdf_booleanitem';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';

@@ -1,6 +1,5 @@
-import { IQuestion, ItemValue, QuestionCheckboxModel, QuestionTagboxModel } from 'survey-core';
-import { SurveyPDF } from '../survey';
-import { IRect, DocController } from '../doc_controller';
+import { ItemValue, QuestionCheckboxModel, QuestionTagboxModel } from 'survey-core';
+import { IRect } from '../doc_controller';
 import { FlatSelectBase } from './flat_selectbase';
 import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';

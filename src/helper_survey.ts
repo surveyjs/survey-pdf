@@ -1,10 +1,8 @@
-import { IQuestion, Question, QuestionRatingModel, QuestionFileModel, LocalizableString, QuestionSelectBase, QuestionDropdownModel, settings } from 'survey-core';
-import * as SurveyPDFModule from './entries/pdf';
+import { IQuestion, Question, QuestionRatingModel, QuestionFileModel, LocalizableString, QuestionDropdownModel } from 'survey-core';
 import { SurveyPDF } from './survey';
 import { IPoint, IRect, ISize, DocController } from './doc_controller';
 import { FlatRepository } from './flat_layout/flat_repository';
 import { IFlatQuestion } from './flat_layout/flat_question';
-import { IHTMLRenderType } from './flat_layout/flat_html';
 import { IPdfBrick, PdfBrick } from './pdf_render/pdf_brick';
 import { TextBrick, ITextOptions } from './pdf_render/pdf_text';
 import { LinkBrick } from './pdf_render/pdf_link';
@@ -13,7 +11,6 @@ import { ImageBrick } from './pdf_render/pdf_image';
 import { EmptyBrick } from './pdf_render/pdf_empty';
 import { RowlineBrick } from './pdf_render/pdf_rowline';
 import { CompositeBrick } from './pdf_render/pdf_composite';
-import { AdornersOptions } from './event_handler/adorners';
 import { ITextFieldBrickOptions, TextFieldBrick } from './pdf_render/pdf_textfield';
 
 export type IBorderDescription = IRect & ISize & Pick<PdfBrick, 'formBorderColor'> & { rounded?: boolean, dashStyle?: { dashArray: [number, number] | [number], dashPhase: number }, outside?: boolean };

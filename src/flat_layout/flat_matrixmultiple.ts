@@ -1,6 +1,6 @@
 import {
-    IQuestion, QuestionMatrixDropdownModelBase, QuestionMatrixDropdownRenderedTable,
-    QuestionMatrixDropdownRenderedRow, QuestionMatrixDropdownRenderedCell, Serializer, PanelModel, QuestionMatrixDynamicModel,
+    QuestionMatrixDropdownModelBase, QuestionMatrixDropdownRenderedTable,
+    QuestionMatrixDropdownRenderedRow, QuestionMatrixDropdownRenderedCell, Serializer, PanelModel,
     LocalizableString
 } from 'survey-core';
 import { SurveyPDF } from '../survey';
@@ -9,10 +9,8 @@ import { IFlatQuestion, FlatQuestion } from './flat_question';
 import { FlatSelectBase } from './flat_selectbase';
 import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
-import { TextBrick } from '../pdf_render/pdf_text';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
-import { FlatSurvey } from './flat_survey';
 import { FlatPanel } from './flat_panel';
 import { IStyles } from '../styles';
 

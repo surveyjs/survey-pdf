@@ -6,10 +6,8 @@ import { FlatQuestion } from './flat_question';
 import { FlatRadiogroup } from './flat_radiogroup';
 import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
-import { TextBrick } from '../pdf_render/pdf_text';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
-import { FlatSelectBase } from './flat_selectbase';
 import { IStyles } from '../styles';
 
 export class FlatMatrix extends FlatQuestion<QuestionMatrixModel> {
