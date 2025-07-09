@@ -100,23 +100,21 @@ export class RadioItemBrick extends PdfBrick {
     public async renderReadOnly(): Promise<void> {
         SurveyHelper.renderFlatBorders(this.controller, this);
         if (this.context.checked) {
+            const textOptions = {
+                fontName: RadioItemBrick.RADIOMARKER_READONLY_FONT,
+                fontSize: this.controller.fontSize * RadioItemBrick.RADIOMARKER_READONLY_FONT_SIZE_SCALE,
+                fontColor: this.textColor
+            };
             const radiomarkerPoint: IPoint = SurveyHelper.createPoint(this, true, true);
-            const oldFontSize: number = this.controller.fontSize;
-            const oldFontName: string = this.controller.fontName;
             this.controller.fontName = RadioItemBrick.RADIOMARKER_READONLY_FONT;
-            this.controller.fontSize = oldFontSize *
-                RadioItemBrick.RADIOMARKER_READONLY_FONT_SIZE_SCALE;
             let radiomarkerSize: ISize = this.controller.measureText(
-                RadioItemBrick.RADIOMARKER_READONLY_SYMBOL);
+                RadioItemBrick.RADIOMARKER_READONLY_SYMBOL, textOptions);
             radiomarkerPoint.xLeft += this.width / 2.0 - radiomarkerSize.width / 2.0;
             radiomarkerPoint.yTop += this.height / 2.0 - radiomarkerSize.height / 2.0;
             let radiomarkerFlat: IPdfBrick = await SurveyHelper.createTextFlat(
                 radiomarkerPoint, this.question, this.controller,
-                RadioItemBrick.RADIOMARKER_READONLY_SYMBOL);
-            (<any>radiomarkerFlat.unfold()[0]).textColor = this.textColor;
+                RadioItemBrick.RADIOMARKER_READONLY_SYMBOL, textOptions);
             await radiomarkerFlat.render();
-            this.controller.fontSize = oldFontSize;
-            this.controller.fontName = oldFontName;
         }
     }
 }

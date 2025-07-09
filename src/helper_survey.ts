@@ -213,7 +213,7 @@ export class SurveyHelper {
         controller.fontName = oldFontName;
         return result;
     }
-    private static getDefaultTextOptions(controller: DocController):ITextOptions {
+    public static getDefaultTextOptions(controller: DocController):ITextOptions {
         return {
             fontSize: controller.fontSize,
             fontName: controller.fontName,

@@ -34,7 +34,7 @@ export class FlatQuestion<T extends Question = Question> implements IFlatQuestio
                 // controller.fontStyle = 'bold'; TODO
                 this.controller.pushMargins();
                 this.controller.margins.right = this.controller.paperWidth -
-                        this.controller.margins.left - this.controller.measureText(noText, 'bold').width;
+                        this.controller.margins.left - this.controller.measureText(noText, { fontStyle: 'bold' }).width;
                 noFlat = await SurveyHelper.createHTMLFlat(currPoint, this.question, this.controller,
                     SurveyHelper.createHtmlContainerBlock(noText, this.controller, 'standard'));
                 this.controller.popMargins();
@@ -64,7 +64,7 @@ export class FlatQuestion<T extends Question = Question> implements IFlatQuestio
                 this.controller.fontStyle = 'bold';
                 this.controller.pushMargins();
                 this.controller.margins.right = this.controller.paperWidth -
-                        this.controller.margins.left - this.controller.measureText(requiredText, 'bold').width;
+                        this.controller.margins.left - this.controller.measureText(requiredText, { fontStyle: 'bold' }).width;
                 composite.addBrick(await SurveyHelper.createHTMLFlat(currPoint, this.question, this.controller,
                     SurveyHelper.createHtmlContainerBlock(requiredText, this.controller, 'standard')));
                 this.controller.popMargins();

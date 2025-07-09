@@ -6,6 +6,7 @@ import { LocalizableString } from 'survey-core';
 import setRadioAppearance from './jspdf_plugins/acroform_radio';
 import './jspdf_plugins/acroform.js';
 import './jspdf_plugins/from_html.js';
+import { ITextOptions } from './pdf_render/pdf_text';
 
 export interface IPoint {
     /**
@@ -458,11 +459,13 @@ export class DocController extends DocOptions {
         this._doc.setFont(this._fontName, fontStyle);
         this._helperDoc.setFont(this._fontName, fontStyle);
     }
-    public measureText(text: string | LocalizableString | number = 1, fontStyle: string = this._fontStyle,
-        fontSize: number = this._fontSize): ISize {
+    public measureText(text: string | LocalizableString | number = 1, options?: Partial<ITextOptions>): ISize {
+        const newOptions = Object.assign(SurveyHelper.getDefaultTextOptions(this), options ?? {});
         const oldFontSize: number = this._helperDoc.getFontSize();
-        this._helperDoc.setFontSize(fontSize);
-        this._helperDoc.setFont(this._fontName, fontStyle);
+        const oldFontName: string = this._helperDoc.getFont().fontName;
+        const oldFontStyle: string = this._helperDoc.getFont().fontStyle;
+        this._helperDoc.setFontSize(newOptions.fontSize);
+        this._helperDoc.setFont(newOptions.fontName, newOptions.fontStyle);
         const height: number = this._helperDoc.getLineHeight() / this._helperDoc.internal.scaleFactor;
         let width: number = 0.0;
         if (typeof text === 'number') {
@@ -474,7 +477,7 @@ export class DocController extends DocOptions {
                 sm + this._helperDoc.getTextWidth(cr), 0.0);
         }
         this._helperDoc.setFontSize(oldFontSize);
-        this._helperDoc.setFont(this._fontName, 'normal');
+        this._helperDoc.setFont(oldFontName, oldFontStyle);
         return {
             width: width,
             height: height

@@ -63,22 +63,20 @@ export class CheckItemBrick extends PdfBrick {
         SurveyHelper.renderFlatBorders(this.controller, this);
         if (this.context.checked) {
             const checkmarkPoint: IPoint = SurveyHelper.createPoint(this, true, true);
-            const oldFontName: string = this.controller.fontName;
-            this.controller.fontName = CheckItemBrick.CHECKMARK_READONLY_FONT;
-            const oldFontSize: number = this.controller.fontSize;
-            this.controller.fontSize = oldFontSize *
-                CheckItemBrick.CHECKMARK_READONLY_FONT_SIZE_SCALE;
+            const textOptions = {
+                fontName: CheckItemBrick.CHECKMARK_READONLY_FONT,
+                fontSize: this.controller.fontSize * CheckItemBrick.CHECKMARK_READONLY_FONT_SIZE_SCALE,
+                fontColor: this.textColor
+            };
             const checkmarkSize: ISize = this.controller.measureText(
-                CheckItemBrick.CHECKMARK_READONLY_SYMBOL);
+                CheckItemBrick.CHECKMARK_READONLY_SYMBOL, textOptions);
             checkmarkPoint.xLeft += this.width / 2.0 - checkmarkSize.width / 2.0;
             checkmarkPoint.yTop += this.height / 2.0 - checkmarkSize.height / 2.0;
             const checkmarkFlat: IPdfBrick = await SurveyHelper.createTextFlat(
                 checkmarkPoint, this.question, this.controller,
-                CheckItemBrick.CHECKMARK_READONLY_SYMBOL);
+                CheckItemBrick.CHECKMARK_READONLY_SYMBOL, textOptions);
             (<any>checkmarkFlat.unfold()[0]).textColor = this.textColor;
-            this.controller.fontSize = oldFontSize;
             await checkmarkFlat.render();
-            this.controller.fontName = oldFontName;
         }
     }
 }
