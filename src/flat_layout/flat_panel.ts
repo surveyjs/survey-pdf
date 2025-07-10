@@ -6,12 +6,14 @@ import { SurveyHelper } from '../helper_survey';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { AdornersPanelOptions } from '../event_handler/adorners';
 import { FlatRepository } from './flat_repository';
+import { IStyles } from '../styles';
+import { ITextOptions } from '../pdf_render/pdf_text';
 
 export class FlatPanel<T extends PanelModel = PanelModel> {
     public static QUES_GAP_VERT_SCALE: number = 1.5;
     public static PANEL_CONT_GAP_SCALE: number = 1.0;
     public static PANEL_DESC_GAP_SCALE: number = 0.25;
-    constructor(protected survey: SurveyPDF, protected panel: T, protected controller: DocController) {
+    constructor(protected survey: SurveyPDF, protected panel: T, protected controller: DocController, protected styles: IStyles) {
 
     }
     public async generateFlats(point: IPoint): Promise<IPdfBrick[]> {
@@ -42,9 +44,10 @@ export class FlatPanel<T extends PanelModel = PanelModel> {
     }
     protected async generateTitleFlat(point: IPoint): Promise<IPdfBrick> {
         const composite: CompositeBrick = new CompositeBrick();
-        const textOptions = {
-            fontStyle: 'bold',
-            fontSize: this.controller.fontSize * SurveyHelper.TITLE_PANEL_FONT_SIZE_SCALE
+        const textOptions:Partial<ITextOptions> = {
+            fontSize: this.controller.fontSize * (this.styles.titleFontSizeScale ?? 1),
+            fontStyle: this.styles.titleFontStyle,
+            fontColor: this.styles.titleFontColor
         };
         let currPoint = SurveyHelper.clone(point);
         if (this.panel.no) {
@@ -100,7 +103,7 @@ export class FlatPanel<T extends PanelModel = PanelModel> {
                 currPoint.xLeft = this.controller.margins.left;
                 nextMarginLeft = this.controller.margins.left + persWidth;
                 if (element instanceof PanelModel) {
-                    rowFlats.push(...await new FlatPanel(this.survey, element, this.controller).generateFlats(currPoint));
+                    rowFlats.push(...await SurveyHelper.generatePanelFlats(this.survey, this.controller, element, currPoint));
                 }
                 else {
                     await (<Question>element).waitForQuestionIsReady();

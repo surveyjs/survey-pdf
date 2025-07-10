@@ -6,7 +6,6 @@ import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
 import { AdornersOptions } from '../event_handler/adorners';
 import { FlatRepository } from './flat_repository';
-import { FlatPanel } from './flat_panel';
 import { IStyles } from '../styles';
 import { ITextOptions } from 'src/pdf_render/pdf_text';
 
@@ -107,7 +106,7 @@ export class FlatQuestion<T extends Question = Question> implements IFlatQuestio
     public async generateFlatsComposite(point: IPoint): Promise<IPdfBrick[]> {
         const contentPanel = (<any>this.question).contentPanel;
         if (!!contentPanel) {
-            return await new FlatPanel(this.survey, contentPanel, this.controller).generateFlats(point);
+            return await SurveyHelper.generatePanelFlats(this.survey, this.controller, contentPanel, point);
         }
         this.question = SurveyHelper.getContentQuestion(this.question) as T;
         return await this.generateFlatsContent(point);

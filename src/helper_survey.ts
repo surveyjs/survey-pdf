@@ -1,4 +1,4 @@
-import { IQuestion, Question, QuestionRatingModel, QuestionFileModel, LocalizableString, QuestionDropdownModel } from 'survey-core';
+import { IQuestion, Question, QuestionRatingModel, QuestionFileModel, LocalizableString, QuestionDropdownModel, PanelModel, PageModel } from 'survey-core';
 import { SurveyPDF } from './survey';
 import { IPoint, IRect, ISize, DocController } from './doc_controller';
 import { FlatRepository } from './flat_layout/flat_repository';
@@ -12,6 +12,7 @@ import { EmptyBrick } from './pdf_render/pdf_empty';
 import { RowlineBrick } from './pdf_render/pdf_rowline';
 import { CompositeBrick } from './pdf_render/pdf_composite';
 import { ITextFieldBrickOptions, TextFieldBrick } from './pdf_render/pdf_textfield';
+import { FlatPanel } from './flat_layout/flat_panel';
 
 export type IBorderDescription = IRect & ISize & Pick<PdfBrick, 'formBorderColor'> & { rounded?: boolean, dashStyle?: { dashArray: [number, number] | [number], dashPhase: number }, outside?: boolean };
 
@@ -639,6 +640,18 @@ export class SurveyHelper {
             create(survey, question, controller, questionType);
         const questionFlats: IPdfBrick[] = await flatQuestion.generateFlats(point);
         return [...questionFlats];
+    }
+    public static async generatePanelFlats(survey: SurveyPDF,
+        controller: DocController, panel: PanelModel, point: IPoint): Promise<IPdfBrick[]> {
+        const styles = survey.getStylesForElement(panel);
+        const panelFlats = await new FlatPanel(survey, panel, controller, styles).generateFlats(point);
+        return [...panelFlats];
+    }
+    public static async generatePageFlats(survey: SurveyPDF,
+        controller: DocController, page: PageModel, point: IPoint): Promise<IPdfBrick[]> {
+        const styles = survey.getStylesForElement(page);
+        const pageFlats = await new FlatPanel(survey, page, controller, styles).generateFlats(point);
+        return [...pageFlats];
     }
     public static isFontExist(controller: DocController, fontName: string): boolean {
         return controller.doc.internal.getFont(fontName).fontName === fontName;

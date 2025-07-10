@@ -4,7 +4,7 @@ import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { RowlineBrick } from '../pdf_render/pdf_rowline';
 import { SurveyHelper } from '../helper_survey';
-import { FlatPage } from './flat_page';
+import { ITextOptions } from '../pdf_render/pdf_text';
 
 export class FlatSurvey {
     public static DESC_GAP_SCALE= 0.25;
@@ -19,10 +19,13 @@ export class FlatSurvey {
         const compositeFlat: CompositeBrick = new CompositeBrick();
         if (survey.showTitle) {
             if (survey.title) {
-                const surveyTitleFlat: IPdfBrick = await SurveyHelper.createTextFlat(point, null, controller, survey.locTitle, {
-                    fontStyle: 'bold',
-                    fontSize: controller.fontSize * SurveyHelper.TITLE_SURVEY_FONT_SIZE_SCALE
-                });
+                const styles = survey.getStyles();
+                const textOptions:Partial<ITextOptions> = {
+                    fontSize: controller.fontSize * (styles.titleFontSizeScale ?? 1),
+                    fontStyle: styles.titleFontStyle,
+                    fontColor: styles.titleFontColor
+                };
+                const surveyTitleFlat: IPdfBrick = await SurveyHelper.createTextFlat(point, null, controller, survey.locTitle, textOptions);
                 compositeFlat.addBrick(surveyTitleFlat);
                 point = SurveyHelper.createPoint(surveyTitleFlat);
             }
@@ -116,7 +119,7 @@ export class FlatSurvey {
         }
         for (let i: number = 0; i < survey.visiblePages.length; i++) {
             survey.currentPage = survey.visiblePages[i];
-            let pageFlats: IPdfBrick[] = await new FlatPage(survey, survey.currentPage, controller).generateFlats(point);
+            let pageFlats: IPdfBrick[] = await SurveyHelper.generatePageFlats(survey, controller, survey.currentPage, point);
             if (i === 0 && flats.length !== 0) {
                 flats[0].push(...pageFlats);
             }

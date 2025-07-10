@@ -11,7 +11,6 @@ import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
-import { FlatPanel } from './flat_panel';
 import { IStyles } from '../styles';
 
 export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = QuestionMatrixDropdownModelBase> extends FlatQuestion<T> {
@@ -184,7 +183,7 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
                 for (let j = 0; j < currentDetailPanel.questions.length; j++) {
                     currentDetailPanel.questions[j].id += '_' + i;
                 }
-                const panelBricks: IPdfBrick[] = await new FlatPanel(this.survey, currentDetailPanel, this.controller).generateFlats(currPoint);
+                const panelBricks: IPdfBrick[] = await SurveyHelper.generatePanelFlats(this.survey, this.controller, currentDetailPanel, currPoint);
 
                 const currComposite: CompositeBrick = new CompositeBrick();
                 currComposite.addBrick(...panelBricks);

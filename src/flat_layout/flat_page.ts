@@ -5,14 +5,17 @@ import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { AdornersPageOptions } from '../event_handler/adorners';
 import { SurveyHelper } from '../helper_survey';
+import { ITextOptions } from '../pdf_render/pdf_text';
 
 export class FlatPage extends FlatPanel<PageModel> {
     protected async generateTitleFlat(point: IPoint): Promise<IPdfBrick> {
+        const textOptions:Partial<ITextOptions> = {
+            fontSize: this.controller.fontSize * (this.styles.titleFontSizeScale ?? 1),
+            fontStyle: this.styles.titleFontStyle,
+            fontColor: this.styles.titleFontColor
+        };
         return await SurveyHelper.createTextFlat(
-            point, null, this.controller, this.panel.locTitle, {
-                fontStyle: 'bold',
-                fontSize: this.controller.fontSize * SurveyHelper.TITLE_PAGE_FONT_SIZE_SCALE
-            });
+            point, null, this.controller, this.panel.locTitle, textOptions);
     }
     async generateFlats(point: IPoint): Promise<IPdfBrick[]> {
         const pageFlats: IPdfBrick[] = [];
