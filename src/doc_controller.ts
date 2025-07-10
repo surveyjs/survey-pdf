@@ -460,7 +460,7 @@ export class DocController extends DocOptions {
         this._helperDoc.setFont(this._fontName, fontStyle);
     }
     public measureText(text: string | LocalizableString | number = 1, options?: Partial<ITextOptions>): ISize {
-        const newOptions = Object.assign(SurveyHelper.getDefaultTextOptions(this), options ?? {});
+        const newOptions = SurveyHelper.mergeObjects(SurveyHelper.getDefaultTextOptions(this), options ?? {});
         const oldFontSize: number = this._helperDoc.getFontSize();
         const oldFontName: string = this._helperDoc.getFont().fontName;
         const oldFontStyle: string = this._helperDoc.getFont().fontStyle;

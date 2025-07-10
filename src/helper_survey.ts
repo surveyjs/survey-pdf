@@ -150,7 +150,7 @@ export class SurveyHelper {
         return `"font-size: ${fontSize}pt; font-weight: ${fontStyle}; font-family: ${fontName}; color: ${this.TEXT_COLOR};"`;
     }
     public static createHtmlContainerBlock(html: string, controller: DocController, options?: Partial<ITextOptions>): string {
-        const newOptions = Object.assign(this.getDefaultTextOptions(controller), options ?? {});
+        const newOptions = this.mergeObjects(this.getDefaultTextOptions(controller), options ?? {});
         const font = this.chooseHtmlFont(controller, newOptions.fontName);
         return `<div class="__surveypdf_html" style=${this.generateCssTextRule(
             newOptions.fontSize, newOptions.fontStyle, newOptions.fontName)}>` +
@@ -190,7 +190,7 @@ export class SurveyHelper {
     }
     public static async createTextFlat(point: IPoint, question: IQuestion,
         controller: DocController, text: string | LocalizableString, options?: Partial<ITextOptions>): Promise<IPdfBrick> {
-        const newOptions = Object.assign(this.getDefaultTextOptions(controller), options ?? {});
+        const newOptions = this.mergeObjects(this.getDefaultTextOptions(controller), options ?? {});
         const oldFontSize: number = controller.fontSize;
         const oldFontStyle: string = controller.fontStyle;
         const oldFontName: string = controller.fontName;
@@ -210,6 +210,14 @@ export class SurveyHelper {
         controller.fontStyle = oldFontStyle;
         controller.fontName = oldFontName;
         return result;
+    }
+    public static mergeObjects(obj1:any, obj2:any):any {
+        Object.keys(obj2).forEach(key=>{
+            if (obj2[key] !== undefined && obj2[key] !== null) {
+                obj1[key] = obj2[key];
+            }
+        });
+        return obj1;
     }
     public static getDefaultTextOptions(controller: DocController):ITextOptions {
         return {

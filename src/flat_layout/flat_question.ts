@@ -8,6 +8,7 @@ import { AdornersOptions } from '../event_handler/adorners';
 import { FlatRepository } from './flat_repository';
 import { FlatPanel } from './flat_panel';
 import { IStyles } from '../styles';
+import { ITextOptions } from 'src/pdf_render/pdf_text';
 
 export interface IFlatQuestion {
     generateFlatsContent(point: IPoint): Promise<IPdfBrick[]>;
@@ -24,9 +25,10 @@ export class FlatQuestion<T extends Question = Question> implements IFlatQuestio
     private async generateFlatTitle(point: IPoint): Promise<IPdfBrick> {
         const composite: CompositeBrick = new CompositeBrick();
         let currPoint: IPoint = SurveyHelper.clone(point);
-        const textOptions = {
-            fontSize: this.controller.fontSize * SurveyHelper.TITLE_FONT_SCALE,
-            fontStyle: 'bold'
+        const textOptions:Partial<ITextOptions> = {
+            fontSize: this.controller.fontSize * (this.styles.titleFontSizeScale ?? 1),
+            fontStyle: this.styles.titleFontStyle,
+            fontColor: this.styles.titleFontColor
         };
         if (this.question.no) {
             const noText: string = this.question.no + ' ';
