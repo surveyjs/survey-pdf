@@ -52,7 +52,7 @@ interface IFlatSnaphotOptions extends ISnapshotOptions {
 export const globalAllowedPropertiesHash: PropertiesHash = {
     'default': ['width', 'height', 'xLeft', 'xRight', 'yTop', 'yBot'],
     'CompositeBrick': [{ name: 'bricks', deep: true }],
-    'TextBrick': ['text'],
+    'TextBrick': ['text', 'options'],
 };
 
 function processBrick(brick: IPdfBrick, propertiesHash: PropertiesHash): any {
