@@ -45,7 +45,7 @@ export class FlatPanel<T extends PanelModel = PanelModel> {
     protected async generateTitleFlat(point: IPoint): Promise<IPdfBrick> {
         const composite: CompositeBrick = new CompositeBrick();
         const textOptions:Partial<ITextOptions> = {
-            fontSize: this.controller.fontSize * (this.styles.titleFontSizeScale ?? 1),
+            fontSize: SurveyHelper.getScaledFontSize(this.controller, this.styles.titleFontSizeScale),
             fontStyle: this.styles.titleFontStyle,
             fontColor: this.styles.titleFontColor
         };

@@ -50,6 +50,26 @@ export class SurveyHelper {
     public static STANDARD_FONT: string = 'helvetica';
     public static CUSTOM_FONT_ENCODING: string = 'Identity-H';
 
+    public static getScaledVerticalSize(controller: DocController, scale: number = 0.5) {
+        return controller.unitHeight * scale;
+    }
+
+    public static getScaledHorizontalSize(controller: DocController, scale: number = 1) {
+        return controller.unitWidth * scale;
+    }
+
+    public static getScaledIndentSize(controller: DocController, scale: number = 1) {
+        return controller.unitWidth * scale;
+    }
+
+    public static getScaledDescriptionGap(controller: DocController, scale: number = 0.0625) {
+        return controller.unitWidth * scale;
+    }
+
+    public static getScaledFontSize(controller: DocController, scale: number = 1) {
+        return controller.fontSize * scale;
+    }
+
     public static parseWidth(width: string, maxWidth: number,
         columnsCount: number = 1, defaultUnit?: string): number {
         if (width.indexOf('calc') === 0) {

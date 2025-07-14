@@ -148,7 +148,7 @@ export class FlatMatrixRow extends FlatRadiogroup {
         if (this.questionMatrix.hasRows) {
             const rowTextFlat = await SurveyHelper.createTextFlat(currPoint, this.questionMatrix,
                 this.controller, this.row.locText);
-            currPoint.yTop = rowTextFlat.yBot + FlatQuestion.CONTENT_GAP_VERT_SCALE * this.controller.unitHeight;
+            currPoint.yTop = rowTextFlat.yBot + SurveyHelper.getScaledVerticalSize(this.controller, this.styles.contentGapScaleVertical);
             cells.push(rowTextFlat);
         }
         this.generateFlatComposite = (this.questionMatrix.hasCellText) ? this.generateTextComposite : this.generateItemCompoiste;
