@@ -1,0 +1,32 @@
+[
+	{
+		"brickType": "CompositeBrick",
+		"width": 522.487086614173,
+		"height": 41.859999999999985,
+		"xLeft": 44.44645669291339,
+		"xRight": 566.9335433070864,
+		"yTop": 28.34645669291339,
+		"yBot": 70.20645669291338,
+		"bricks": [
+			{
+				"brickType": "TextFieldBrick",
+				"width": 522.487086614173,
+				"height": 41.859999999999985,
+				"xLeft": 44.44645669291339,
+				"xRight": 566.9335433070864,
+				"yTop": 28.34645669291339,
+				"yBot": 70.20645669291338,
+				"options": {
+					"fieldName": "sq_104",
+					"shouldRenderBorders": true,
+					"value": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
+					"isReadOnly": true,
+					"placeholder": "Select...",
+					"rows": 1,
+					"isMultiline": false,
+					"inputType": ""
+				}
+			}
+		]
+	}
+]
