@@ -1,0 +1,107 @@
+[
+	{
+		"brickType": "CompositeBrick",
+		"width": 302.4,
+		"height": 69,
+		"xLeft": 62.84645669291339,
+		"xRight": 365.2464566929134,
+		"yTop": 28.34645669291339,
+		"yBot": 97.34645669291339,
+		"bricks": [
+			{
+				"brickType": "CompositeBrick",
+				"width": 103.5,
+				"height": 69,
+				"xLeft": 62.84645669291339,
+				"xRight": 166.3464566929134,
+				"yTop": 28.34645669291339,
+				"yBot": 97.34645669291339,
+				"bricks": [
+					{
+						"brickType": "CompositeBrick",
+						"width": -9.75,
+						"height": 34.5,
+						"xLeft": 106.34645669291339,
+						"xRight": 96.59645669291339,
+						"yTop": 28.34645669291339,
+						"yBot": 62.84645669291339,
+						"bricks": [
+							{
+								"brickType": "TextBrick",
+								"width": -9.75,
+								"height": 34.5,
+								"xLeft": 106.34645669291339,
+								"xRight": 96.59645669291339,
+								"yTop": 28.34645669291339,
+								"yBot": 62.84645669291339,
+								"text": "1",
+								"options": {
+									"fontSize": 30,
+									"fontName": "helvetica",
+									"fontStyle": "bold",
+									"fontColor": "#404040"
+								}
+							}
+						]
+					},
+					{
+						"brickType": "RadioItemBrick",
+						"width": 103.5,
+						"height": 34.5,
+						"xLeft": 62.84645669291339,
+						"xRight": 166.3464566929134,
+						"yTop": 62.84645669291339,
+						"yBot": 97.34645669291339
+					}
+				]
+			},
+			{
+				"brickType": "CompositeBrick",
+				"width": 198.9,
+				"height": 69,
+				"xLeft": 166.3464566929134,
+				"xRight": 365.2464566929134,
+				"yTop": 28.34645669291339,
+				"yBot": 97.34645669291339,
+				"bricks": [
+					{
+						"brickType": "CompositeBrick",
+						"width": 164.4,
+						"height": 34.5,
+						"xLeft": 183.5964566929134,
+						"xRight": 347.9964566929134,
+						"yTop": 28.34645669291339,
+						"yBot": 62.84645669291339,
+						"bricks": [
+							{
+								"brickType": "TextBrick",
+								"width": 164.4,
+								"height": 34.5,
+								"xLeft": 183.5964566929134,
+								"xRight": 347.9964566929134,
+								"yTop": 28.34645669291339,
+								"yBot": 62.84645669291339,
+								"text": "2 High rate!",
+								"options": {
+									"fontSize": 30,
+									"fontName": "helvetica",
+									"fontStyle": "bold",
+									"fontColor": "#404040"
+								}
+							}
+						]
+					},
+					{
+						"brickType": "RadioItemBrick",
+						"width": 198.9,
+						"height": 34.5,
+						"xLeft": 166.3464566929134,
+						"xRight": 365.2464566929134,
+						"yTop": 62.84645669291339,
+						"yBot": 97.34645669291339
+					}
+				]
+			}
+		]
+	}
+]
