@@ -321,7 +321,17 @@
 						"xLeft": 62.84645669291339,
 						"xRight": 566.9291338582677,
 						"yTop": 287.0964566929134,
-						"yBot": 342.29645669291347
+						"yBot": 342.29645669291347,
+						"options": {
+							"value": "0",
+							"isReadOnly": true,
+							"fieldName": "sq_201",
+							"shouldRenderBorders": true,
+							"rows": 1,
+							"isMultiline": false,
+							"placeholder": "",
+							"inputType": ""
+						}
 					}
 				]
 			}

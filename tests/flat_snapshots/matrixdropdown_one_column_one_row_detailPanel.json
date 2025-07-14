@@ -153,7 +153,17 @@
 				"xLeft": 97.34645669291339,
 				"xRight": 566.9291338582677,
 				"yTop": 131.8464566929134,
-				"yBot": 269.8464566929134
+				"yBot": 269.8464566929134,
+				"options": {
+					"rows": 4,
+					"isReadOnly": false,
+					"isMultiline": true,
+					"fieldName": "sq_185_1",
+					"placeholder": "",
+					"shouldRenderBorders": true,
+					"value": "",
+					"inputType": ""
+				}
 			},
 			{
 				"brickType": "RowlineBrick",

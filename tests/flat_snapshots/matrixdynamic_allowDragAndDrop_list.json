@@ -62,7 +62,16 @@
 						"xLeft": 62.84645669291339,
 						"xRight": 566.9291338582677,
 						"yTop": 80.09645669291339,
-						"yBot": 114.59645669291339
+						"yBot": 114.59645669291339,
+						"options": {
+							"fieldName": "sq_181",
+							"inputType": "text",
+							"value": "",
+							"isReadOnly": false,
+							"shouldRenderBorders": true,
+							"placeholder": "",
+							"isMultiline": false
+						}
 					}
 				]
 			},
@@ -120,7 +129,16 @@
 						"xLeft": 62.84645669291339,
 						"xRight": 566.9291338582677,
 						"yTop": 183.5964566929134,
-						"yBot": 218.0964566929134
+						"yBot": 218.0964566929134,
+						"options": {
+							"fieldName": "sq_182",
+							"inputType": "text",
+							"value": "",
+							"isReadOnly": false,
+							"shouldRenderBorders": true,
+							"placeholder": "",
+							"isMultiline": false
+						}
 					}
 				]
 			},
@@ -178,7 +196,16 @@
 						"xLeft": 62.84645669291339,
 						"xRight": 566.9291338582677,
 						"yTop": 287.0964566929134,
-						"yBot": 321.5964566929134
+						"yBot": 321.5964566929134,
+						"options": {
+							"fieldName": "sq_183",
+							"inputType": "text",
+							"value": "",
+							"isReadOnly": false,
+							"shouldRenderBorders": true,
+							"placeholder": "",
+							"isMultiline": false
+						}
 					}
 				]
 			},
@@ -236,7 +263,16 @@
 						"xLeft": 62.84645669291339,
 						"xRight": 566.9291338582677,
 						"yTop": 390.5964566929134,
-						"yBot": 425.0964566929134
+						"yBot": 425.0964566929134,
+						"options": {
+							"fieldName": "sq_184",
+							"inputType": "text",
+							"value": "",
+							"isReadOnly": false,
+							"shouldRenderBorders": true,
+							"placeholder": "",
+							"isMultiline": false
+						}
 					}
 				]
 			},
@@ -294,7 +330,16 @@
 						"xLeft": 62.84645669291339,
 						"xRight": 566.9291338582677,
 						"yTop": 494.0964566929134,
-						"yBot": 528.5964566929134
+						"yBot": 528.5964566929134,
+						"options": {
+							"fieldName": "sq_185",
+							"inputType": "text",
+							"value": "",
+							"isReadOnly": false,
+							"shouldRenderBorders": true,
+							"placeholder": "",
+							"isMultiline": false
+						}
 					}
 				]
 			},
@@ -352,7 +397,16 @@
 						"xLeft": 62.84645669291339,
 						"xRight": 566.9291338582677,
 						"yTop": 597.5964566929134,
-						"yBot": 632.0964566929134
+						"yBot": 632.0964566929134,
+						"options": {
+							"fieldName": "sq_186",
+							"inputType": "text",
+							"value": "",
+							"isReadOnly": false,
+							"shouldRenderBorders": true,
+							"placeholder": "",
+							"isMultiline": false
+						}
 					}
 				]
 			}

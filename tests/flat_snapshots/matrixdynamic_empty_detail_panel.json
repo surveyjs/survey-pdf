@@ -82,7 +82,16 @@
 						"xLeft": 62.84645669291342,
 						"xRight": 566.9291338582677,
 						"yTop": 80.09645669291339,
-						"yBot": 114.59645669291339
+						"yBot": 114.59645669291339,
+						"options": {
+							"fieldName": "sq_156",
+							"inputType": "text",
+							"value": "",
+							"isReadOnly": false,
+							"shouldRenderBorders": true,
+							"placeholder": "",
+							"isMultiline": false
+						}
 					}
 				]
 			}

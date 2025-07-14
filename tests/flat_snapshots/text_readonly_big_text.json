@@ -1,0 +1,21 @@
+[
+	{
+		"brickType": "TextFieldBrick",
+		"width": 504.0826771653543,
+		"height": 193.2,
+		"xLeft": 62.84645669291339,
+		"xRight": 566.9291338582677,
+		"yTop": 28.34645669291339,
+		"yBot": 221.54645669291338,
+		"options": {
+			"rows": 1,
+			"isMultiline": true,
+			"fieldName": "sq_101",
+			"inputType": "text",
+			"value": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
+			"isReadOnly": true,
+			"shouldRenderBorders": true,
+			"placeholder": ""
+		}
+	}
+]

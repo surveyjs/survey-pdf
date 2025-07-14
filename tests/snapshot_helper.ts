@@ -53,6 +53,7 @@ export const globalAllowedPropertiesHash: PropertiesHash = {
     'default': ['width', 'height', 'xLeft', 'xRight', 'yTop', 'yBot'],
     'CompositeBrick': [{ name: 'bricks', deep: true }],
     'TextBrick': ['text', 'options'],
+    'TextFieldBrick': ['options'],
 };
 
 function processBrick(brick: IPdfBrick, propertiesHash: PropertiesHash): any {
