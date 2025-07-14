@@ -2,16 +2,15 @@
     return {};
 };
 
+import { checkFlatSnapshot } from './snapshot_helper';
 import { Question, QuestionHtmlModel } from 'survey-core';
 import { SurveyPDF } from '../src/survey';
 import { IPoint, IRect, DocController, IDocOptions } from '../src/doc_controller';
-import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { FlatHTML } from '../src/flat_layout/flat_html';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { HTMLBrick } from '../src/pdf_render/pdf_html';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
-let __dummy_hl = new FlatHTML(null, null, null);
 
 SurveyHelper.createHTMLFlat = async function(
     point: IPoint, question: Question,
@@ -37,6 +36,10 @@ test('Check choose auto render', async () => {
                 name: 'html_chooserender_standard',
                 html: '<b>STRONG POWER</b>'
             },
+        ]
+    };
+    let json2: any = {
+        elements: [
             {
                 type: 'html',
                 name: 'html_chooserender_image',
@@ -44,16 +47,19 @@ test('Check choose auto render', async () => {
             }
         ]
     };
-    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     SurveyHelper.shouldConvertImageToPng = false;
-    let controller: DocController = new DocController(TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(3);
-    expect(flats[0][0].unfold()[0] instanceof HTMLBrick).toBe(true);
-    expect((<any>flats[0][0].unfold())[0]['html'].startsWith('<img')).toBe(false);
-    expect(flats[0][2].unfold()[0] instanceof HTMLBrick).toBe(true);
-    expect((<any>flats[0][2])['html'].startsWith('<img')).toBe(true);
+    await checkFlatSnapshot(json, {
+        snapshotName: 'html_auto_render_html',
+        allowedPropertiesHash: {
+            'HTMLBrick': ['html']
+        }
+    });
+    await checkFlatSnapshot(json2, {
+        snapshotName: 'html_auto_render_image',
+        allowedPropertiesHash: {
+            'HTMLBrick': ['html']
+        }
+    });
     SurveyHelper.shouldConvertImageToPng = true;
 });
 
@@ -83,7 +89,7 @@ test('Check correctHtml method with multiple br tags', async () => {
     let survey: SurveyPDF = new SurveyPDF({}, TestHelper.defaultOptions);
     SurveyHelper.shouldConvertImageToPng = false;
     let controller: DocController = new DocController(TestHelper.defaultOptions);
-    const htmlFlat = new FlatHTML(survey, new QuestionHtmlModel('q1'), controller);
+    const htmlFlat = new FlatHTML(survey, new QuestionHtmlModel('q1'), controller, {});
     expect(htmlFlat['correctHtml']('<span>Test</span><br>')).toEqual('<span>Test</span><br>');
     expect(htmlFlat['correctHtml']('<span>Test</span><br><br>')).toEqual('<span>Test</span><br>');
     expect(htmlFlat['correctHtml']('<br><br><span>Test</span><br><br>')).toEqual('<br><span>Test</span><br>');
