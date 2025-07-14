@@ -103,7 +103,7 @@ function processBricks(bricks: Array<Array<IPdfBrick>> | Array<IPdfBrick>, prope
 }
 
 export async function checkFlatSnapshot(surveyJSON: any, snapshotOptions: IFlatSnaphotOptions): Promise<void> {
-    const survey = new SurveyPDF(surveyJSON);
+    const survey = new SurveyPDF(surveyJSON, snapshotOptions.controllerOptions ?? TestHelper.defaultOptions);
     snapshotOptions.onSurveyCreated && snapshotOptions.onSurveyCreated(survey);
     const controller = new DocController(snapshotOptions.controllerOptions ?? TestHelper.defaultOptions);
     const compareCallback = (bricks: Array<Array<IPdfBrick>> | Array<IPdfBrick>) => {
