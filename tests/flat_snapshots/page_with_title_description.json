@@ -1,0 +1,103 @@
+[
+	{
+		"brickType": "CompositeBrick",
+		"width": 538.5826771653543,
+		"height": 76.475,
+		"xLeft": 28.34645669291339,
+		"xRight": 566.9291338582677,
+		"yTop": 28.34645669291339,
+		"yBot": 104.82145669291339,
+		"bricks": [
+			{
+				"brickType": "CompositeBrick",
+				"width": 250.3799999999999,
+				"height": 44.849999999999994,
+				"xLeft": 28.34645669291339,
+				"xRight": 278.7264566929133,
+				"yTop": 28.34645669291339,
+				"yBot": 73.19645669291339,
+				"bricks": [
+					{
+						"brickType": "TextBrick",
+						"width": 250.3799999999999,
+						"height": 44.849999999999994,
+						"xLeft": 28.34645669291339,
+						"xRight": 278.7264566929133,
+						"yTop": 28.34645669291339,
+						"yBot": 73.19645669291339,
+						"text": "The sun rises",
+						"options": {
+							"fontSize": 39,
+							"fontName": "helvetica",
+							"fontStyle": "bold",
+							"fontColor": "#404040"
+						}
+					}
+				]
+			},
+			{
+				"brickType": "CompositeBrick",
+				"width": 206.6,
+				"height": 23,
+				"xLeft": 28.34645669291339,
+				"xRight": 234.9464566929134,
+				"yTop": 81.82145669291339,
+				"yBot": 104.82145669291339,
+				"bricks": [
+					{
+						"brickType": "TextBrick",
+						"width": 206.6,
+						"height": 23,
+						"xLeft": 28.34645669291339,
+						"xRight": 234.9464566929134,
+						"yTop": 81.82145669291339,
+						"yBot": 104.82145669291339,
+						"text": "Over the Huanghe river",
+						"options": {
+							"fontSize": 20,
+							"fontName": "helvetica",
+							"fontStyle": "normal",
+							"fontColor": "#404040"
+						}
+					}
+				]
+			},
+			{
+				"brickType": "RowlineBrick",
+				"width": 538.5826771653543,
+				"height": 0,
+				"xLeft": 28.34645669291339,
+				"xRight": 566.9291338582677,
+				"yTop": 104.82145669291339,
+				"yBot": 104.82145669291339
+			}
+		]
+	},
+	{
+		"brickType": "TextFieldBrick",
+		"width": 504.0826771653543,
+		"height": 34.5,
+		"xLeft": 62.84645669291339,
+		"xRight": 566.9291338582677,
+		"yTop": 139.3214566929134,
+		"yBot": 173.8214566929134,
+		"options": {
+			"fieldName": "sq_106",
+			"inputType": "text",
+			"value": "",
+			"isReadOnly": false,
+			"shouldRenderBorders": true,
+			"placeholder": "",
+			"isMultiline": false
+		}
+	},
+	{
+		"brickType": "RowlineBrick",
+		"width": 538.5826771653543,
+		"height": 0,
+		"xLeft": 28.34645669291339,
+		"xRight": 566.9291338582677,
+		"yTop": 225.5714566929134,
+		"yBot": 225.5714566929134
+	}
+]
