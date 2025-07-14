@@ -1,0 +1,108 @@
+[
+	{
+		"brickType": "CompositeBrick",
+		"width": 538.5826771653543,
+		"height": 112.125,
+		"xLeft": 28.34645669291339,
+		"xRight": 566.9291338582677,
+		"yTop": 28.34645669291339,
+		"yBot": 140.4714566929134,
+		"bricks": [
+			{
+				"brickType": "CompositeBrick",
+				"width": 58.08,
+				"height": 37.94999999999999,
+				"xLeft": 28.34645669291339,
+				"xRight": 86.42645669291339,
+				"yTop": 28.34645669291339,
+				"yBot": 66.29645669291338,
+				"bricks": [
+					{
+						"brickType": "CompositeBrick",
+						"width": 58.08,
+						"height": 37.94999999999999,
+						"xLeft": 28.34645669291339,
+						"xRight": 86.42645669291339,
+						"yTop": 28.34645669291339,
+						"yBot": 66.29645669291338,
+						"bricks": [
+							{
+								"brickType": "TextBrick",
+								"width": 58.08,
+								"height": 37.94999999999999,
+								"xLeft": 28.34645669291339,
+								"xRight": 86.42645669291339,
+								"yTop": 28.34645669291339,
+								"yBot": 66.29645669291338,
+								"text": "test",
+								"options": {
+									"fontSize": 33,
+									"fontName": "helvetica",
+									"fontStyle": "bold",
+									"fontColor": "#404040"
+								}
+							}
+						]
+					}
+				]
+			},
+			{
+				"brickType": "CompositeBrick",
+				"width": 446.0026771653543,
+				"height": 112.125,
+				"xLeft": 120.92645669291339,
+				"xRight": 566.9291338582677,
+				"yTop": 28.34645669291339,
+				"yBot": 140.4714566929134,
+				"bricks": [
+					{
+						"brickType": "CompositeBrick",
+						"width": 326.4,
+						"height": 34.5,
+						"xLeft": 120.92645669291339,
+						"xRight": 447.3264566929134,
+						"yTop": 28.34645669291339,
+						"yBot": 62.84645669291339,
+						"bricks": [
+							{
+								"brickType": "TextBrick",
+								"width": 326.4,
+								"height": 34.5,
+								"xLeft": 120.92645669291339,
+								"xRight": 447.3264566929134,
+								"yTop": 28.34645669291339,
+								"yBot": 62.84645669291339,
+								"text": "Please leave a comment",
+								"options": {
+									"fontSize": 30,
+									"fontName": "helvetica",
+									"fontStyle": "normal",
+									"fontColor": "#404040"
+								}
+							}
+						]
+					},
+					{
+						"brickType": "TextFieldBrick",
+						"width": 446.0026771653543,
+						"height": 69,
+						"xLeft": 120.92645669291339,
+						"xRight": 566.9291338582677,
+						"yTop": 71.47145669291339,
+						"yBot": 140.4714566929134,
+						"options": {
+							"fieldName": "sq_102_comment",
+							"rows": 2,
+							"value": "",
+							"shouldRenderBorders": true,
+							"isReadOnly": false,
+							"isMultiline": true,
+							"placeholder": "",
+							"inputType": ""
+						}
+					}
+				]
+			}
+		]
+	}
+]

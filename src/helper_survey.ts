@@ -164,8 +164,8 @@ export class SurveyHelper {
             yBot: controller.paperHeight
         };
     }
-    public static chooseHtmlFont(controller: DocController, fontName: string): string {
-        return controller.useCustomFontInHtml ? fontName : this.STANDARD_FONT;
+    public static chooseHtmlFont(controller: DocController, fontName?: string): string {
+        return controller.useCustomFontInHtml ? fontName ?? controller.fontName : this.STANDARD_FONT;
     }
     public static generateCssTextRule(fontSize: number, fontStyle: string, fontName: string): string {
         return `"font-size: ${fontSize}pt; font-weight: ${fontStyle}; font-family: ${fontName}; color: ${this.TEXT_COLOR};"`;

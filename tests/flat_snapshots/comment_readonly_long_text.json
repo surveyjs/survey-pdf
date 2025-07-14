@@ -1,0 +1,21 @@
+[
+	{
+		"brickType": "TextFieldBrick",
+		"width": 504.0826771653543,
+		"height": 779.7,
+		"xLeft": 62.84645669291339,
+		"xRight": 566.9291338582677,
+		"yTop": 28.34645669291339,
+		"yBot": 808.0464566929135,
+		"options": {
+			"rows": 4,
+			"isReadOnly": true,
+			"isMultiline": true,
+			"fieldName": "sq_111",
+			"placeholder": "",
+			"shouldRenderBorders": true,
+			"value": "Loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong",
+			"inputType": ""
+		}
+	}
+]

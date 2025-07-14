@@ -179,8 +179,11 @@ test('Unfold compose brick', async () => {
     expect(packs.length).toBe(3);
     expect(packs[0].length).toBe(1);
     expect(packs[1].length).toBe(1);
-    TestHelper.equalRect(expect, packs[0][0], await SurveyHelper.createTitleFlat(
-        controller.leftTopPoint, <Question>survey.getAllQuestions()[0], controller));
+    TestHelper.equalRect(expect, packs[0][0], await SurveyHelper.createTextFlat(
+        controller.leftTopPoint, <Question>survey.getAllQuestions()[0], controller, survey.getAllQuestions()[0].locTitle, {
+            fontSize: 1.1 * controller.fontSize,
+            fontStyle: 'bold'
+        }));
     let textBoxPoint: IPoint = controller.leftTopPoint;
     textBoxPoint.xLeft += controller.unitWidth;
     TestHelper.equalRect(expect, packs[2][0],
@@ -210,8 +213,11 @@ test('Pack to little page', async () => {
     expect(packs.length).toBe(2);
     expect(packs[0].length).toBe(2);
     expect(packs[1].length).toBe(1);
-    TestHelper.equalRect(expect, packs[0][0], await SurveyHelper.createTitleFlat(
-        controller.leftTopPoint, <Question>survey.getAllQuestions()[0], controller));
+    TestHelper.equalRect(expect, packs[0][0], await SurveyHelper.createTextFlat(
+        controller.leftTopPoint, <Question>survey.getAllQuestions()[0], controller, survey.getAllQuestions()[0].locTitle, {
+            fontSize: 1.1 * controller.fontSize,
+            fontStyle: 'bold'
+        }));
     let textBoxPoint: IPoint = controller.leftTopPoint;
     textBoxPoint.xLeft += controller.unitWidth;
     TestHelper.equalRect(expect, packs[1][0],
@@ -360,7 +366,7 @@ test('Check isPageBreak property of IPdfBrick', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(3);
-    flats[0][1].isPageBreak = true; 
+    flats[0][1].isPageBreak = true;
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
     expect(packs.length).toBe(2);
     expect(packs[0].length).toBe(1);

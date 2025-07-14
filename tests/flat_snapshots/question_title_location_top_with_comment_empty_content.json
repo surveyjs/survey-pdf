@@ -1,0 +1,117 @@
+[
+	{
+		"brickType": "CompositeBrick",
+		"width": 538.5826771653543,
+		"height": 167.325,
+		"xLeft": 28.34645669291339,
+		"xRight": 566.9291338582677,
+		"yTop": 28.34645669291339,
+		"yBot": 195.67145669291338,
+		"bricks": [
+			{
+				"brickType": "CompositeBrick",
+				"width": 58.08,
+				"height": 37.94999999999999,
+				"xLeft": 28.34645669291339,
+				"xRight": 86.42645669291339,
+				"yTop": 28.34645669291339,
+				"yBot": 66.29645669291338,
+				"bricks": [
+					{
+						"brickType": "CompositeBrick",
+						"width": 58.08,
+						"height": 37.94999999999999,
+						"xLeft": 28.34645669291339,
+						"xRight": 86.42645669291339,
+						"yTop": 28.34645669291339,
+						"yBot": 66.29645669291338,
+						"bricks": [
+							{
+								"brickType": "TextBrick",
+								"width": 58.08,
+								"height": 37.94999999999999,
+								"xLeft": 28.34645669291339,
+								"xRight": 86.42645669291339,
+								"yTop": 28.34645669291339,
+								"yBot": 66.29645669291338,
+								"text": "test",
+								"options": {
+									"fontSize": 33,
+									"fontName": "helvetica",
+									"fontStyle": "bold",
+									"fontColor": "#404040"
+								}
+							}
+						]
+					}
+				]
+			},
+			{
+				"brickType": "RowlineBrick",
+				"width": 538.5826771653543,
+				"height": 0,
+				"xLeft": 28.34645669291339,
+				"xRight": 566.9291338582677,
+				"yTop": 66.29645669291338,
+				"yBot": 66.29645669291338
+			},
+			{
+				"brickType": "CompositeBrick",
+				"width": 504.0826771653543,
+				"height": 112.125,
+				"xLeft": 62.84645669291339,
+				"xRight": 566.9291338582677,
+				"yTop": 83.54645669291338,
+				"yBot": 195.67145669291338,
+				"bricks": [
+					{
+						"brickType": "CompositeBrick",
+						"width": 326.4,
+						"height": 34.5,
+						"xLeft": 62.84645669291339,
+						"xRight": 389.2464566929134,
+						"yTop": 83.54645669291338,
+						"yBot": 118.04645669291338,
+						"bricks": [
+							{
+								"brickType": "TextBrick",
+								"width": 326.4,
+								"height": 34.5,
+								"xLeft": 62.84645669291339,
+								"xRight": 389.2464566929134,
+								"yTop": 83.54645669291338,
+								"yBot": 118.04645669291338,
+								"text": "Please leave a comment",
+								"options": {
+									"fontSize": 30,
+									"fontName": "helvetica",
+									"fontStyle": "normal",
+									"fontColor": "#404040"
+								}
+							}
+						]
+					},
+					{
+						"brickType": "TextFieldBrick",
+						"width": 504.0826771653543,
+						"height": 69,
+						"xLeft": 62.84645669291339,
+						"xRight": 566.9291338582677,
+						"yTop": 126.67145669291338,
+						"yBot": 195.67145669291338,
+						"options": {
+							"fieldName": "sq_100_comment",
+							"rows": 2,
+							"value": "",
+							"shouldRenderBorders": true,
+							"isReadOnly": false,
+							"isMultiline": true,
+							"placeholder": "",
+							"inputType": ""
+						}
+					}
+				]
+			}
+		]
+	}
+]
