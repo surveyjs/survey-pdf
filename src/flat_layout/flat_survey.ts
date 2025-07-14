@@ -19,7 +19,7 @@ export class FlatSurvey {
         const compositeFlat: CompositeBrick = new CompositeBrick();
         if (survey.showTitle) {
             if (survey.title) {
-                const styles = survey.getStyles();
+                const styles = survey.styles;
                 const textOptions:Partial<ITextOptions> = {
                     fontSize: SurveyHelper.getScaledFontSize(controller, styles.titleFontSizeScale),
                     fontStyle: styles.titleFontStyle,

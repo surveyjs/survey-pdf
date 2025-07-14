@@ -169,10 +169,21 @@ export class SurveyPDF extends SurveyModel {
     public getUpdatedRadioItemAcroformOptions(options: any): void {
         this.onRenderRadioItemAcroform.fire(this, options);
     }
-    public getStyles(): IStyles {
-        return styles;
+
+    private _styles: IStyles;
+
+    public get styles(): IStyles {
+        if(!this._styles) {
+            this._styles = SurveyHelper.mergeObjects({}, styles);
+        }
+        return this._styles;
     }
+    public set styles(styles: IStyles) {
+        SurveyHelper.mergeObjects(this.styles, styles);
+    }
+
     public getStylesForElement(element: SurveyElement): IStyles {
+        const styles = this.styles;
         const types = [element.getType()];
         let currentClass = Serializer.findClass(element.getType());
         while(!!currentClass.parentName) {

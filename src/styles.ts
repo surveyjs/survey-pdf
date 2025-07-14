@@ -21,8 +21,5 @@ export const styles: IStyles = {
         titleFontSizeScale: 1.3,
         titleFontStyle: 'bold',
         titleFontColor: '#404040'
-    },
-    checkbox: {
-        titleFontColor: '#404040d'
     }
 };

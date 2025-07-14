@@ -13,6 +13,7 @@ import { RowlineBrick } from './pdf_render/pdf_rowline';
 import { CompositeBrick } from './pdf_render/pdf_composite';
 import { ITextFieldBrickOptions, TextFieldBrick } from './pdf_render/pdf_textfield';
 import { FlatPanel } from './flat_layout/flat_panel';
+import { FlatPage } from './flat_layout/flat_page';
 
 export type IBorderDescription = IRect & ISize & Pick<PdfBrick, 'formBorderColor'> & { rounded?: boolean, dashStyle?: { dashArray: [number, number] | [number], dashPhase: number }, outside?: boolean };
 
@@ -232,13 +233,20 @@ export class SurveyHelper {
         controller.fontName = oldFontName;
         return result;
     }
-    public static mergeObjects(obj1:any, obj2:any):any {
-        Object.keys(obj2).forEach(key=>{
-            if (obj2[key] !== undefined && obj2[key] !== null) {
-                obj1[key] = obj2[key];
-            }
+    public static mergeObjects(dest:any, ...sources:Array<any>):any {
+        sources.forEach(source => {
+            Object.keys(source).forEach(key=>{
+                if (source[key] !== undefined && source[key] !== null) {
+                    if(typeof source[key] == 'object') {
+                        dest[key] = SurveyHelper.mergeObjects(dest[key] ?? {}, source[key]);
+                    } else {
+                        dest[key] = source[key];
+                    }
+                }
+
+            });
         });
-        return obj1;
+        return dest;
     }
     public static getDefaultTextOptions(controller: DocController):ITextOptions {
         return {
@@ -670,7 +678,7 @@ export class SurveyHelper {
     public static async generatePageFlats(survey: SurveyPDF,
         controller: DocController, page: PageModel, point: IPoint): Promise<IPdfBrick[]> {
         const styles = survey.getStylesForElement(page);
-        const pageFlats = await new FlatPanel(survey, page, controller, styles).generateFlats(point);
+        const pageFlats = await new FlatPage(survey, page, controller, styles).generateFlats(point);
         return [...pageFlats];
     }
     public static isFontExist(controller: DocController, fontName: string): boolean {

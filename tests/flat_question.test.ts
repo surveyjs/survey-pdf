@@ -362,12 +362,16 @@ test('Check question\'s content indent with CONTENT_INDENT_SCALE', async () => {
             }
         ]
     };
-    const oldContentIndent: number = FlatQuestion.CONTENT_INDENT_SCALE;
-    (<any>FlatQuestion.CONTENT_INDENT_SCALE) = 0;
     await checkFlatSnapshot(json, {
         snapshotName: 'question_content_indent_scale_0',
+        onSurveyCreated(survey) {
+            survey.styles = {
+                question: {
+                    contentIndentScale: 0
+                }
+            };
+        },
     });
-    (<any>FlatQuestion.CONTENT_INDENT_SCALE) = oldContentIndent;
 });
 
 test('Check description under input', async () => {
