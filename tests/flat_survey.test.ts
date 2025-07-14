@@ -15,8 +15,8 @@ import { ImageBrick } from '../src/pdf_render/pdf_image';
 import { ElementFactory, Question, Serializer } from 'survey-core';
 import { FlatRepository } from '../src/flat_layout/flat_repository';
 import { FlatQuestionDefault } from '../src/flat_layout/flat_default';
-const __dummy_tx = new FlatTextbox(null, null, null);
-
+import { checkFlatSnapshot } from './snapshot_helper';
+import '../src/flat_layout/flat_textbox';
 test('Survey with title', async () => {
     const json: any = {
         title: 'One small step for man',
@@ -28,22 +28,10 @@ test('Survey with title', async () => {
             }
         ]
     };
-    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    const controller: DocController = new DocController(TestHelper.defaultOptions);
-    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(3);
-    const assumeTitle: IRect = await SurveyHelper.createTitleSurveyFlat(
-        controller.leftTopPoint, controller, json.title);
-    TestHelper.equalRect(expect, flats[0][0], assumeTitle);
-    const rowLinePoint: IPoint = SurveyHelper.createPoint(assumeTitle);
-    const assumeRowLine: IRect = SurveyHelper.createRowlineFlat(rowLinePoint, controller);
-    TestHelper.equalRect(expect, flats[0][1], assumeRowLine);
-    const textBoxPoint: IPoint = rowLinePoint;
-    textBoxPoint.yTop += controller.unitHeight * FlatSurvey.PANEL_CONT_GAP_SCALE + SurveyHelper.EPSILON;
-    textBoxPoint.xLeft += controller.unitWidth;
-    const assumeTextBox: IRect = SurveyHelper.createTextFieldRect(textBoxPoint, controller);
-    TestHelper.equalRect(expect, flats[0][2], assumeTextBox);
+    await checkFlatSnapshot(json, {
+        eventName: 'onRenderSurvey',
+        snapshotName: 'survey_with_title'
+    });
 });
 test('Survey with description', async () => {
     const json: any = {
@@ -56,22 +44,10 @@ test('Survey with description', async () => {
             }
         ]
     };
-    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    const controller: DocController = new DocController(TestHelper.defaultOptions);
-    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(3);
-    const assumeDescription: IRect = await SurveyHelper.createDescFlat(
-        controller.leftTopPoint, null, controller, json.description);
-    TestHelper.equalRect(expect, flats[0][0], assumeDescription);
-    const rowLinePoint: IPoint = SurveyHelper.createPoint(assumeDescription);
-    const assumeRowLine: IRect = SurveyHelper.createRowlineFlat(rowLinePoint, controller);
-    TestHelper.equalRect(expect, flats[0][1], assumeRowLine);
-    const textBoxPoint: IPoint = rowLinePoint;
-    textBoxPoint.yTop += controller.unitHeight * FlatSurvey.PANEL_CONT_GAP_SCALE + SurveyHelper.EPSILON;
-    textBoxPoint.xLeft += controller.unitWidth;
-    const assumeTextBox: IRect = SurveyHelper.createTextFieldRect(textBoxPoint, controller);
-    TestHelper.equalRect(expect, flats[0][2], assumeTextBox);
+    await checkFlatSnapshot(json, {
+        eventName: 'onRenderSurvey',
+        snapshotName: 'survey_with_description'
+    });
 });
 test('Survey with title and description', async () => {
     const json: any = {
@@ -85,27 +61,10 @@ test('Survey with title and description', async () => {
             }
         ]
     };
-    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    const controller: DocController = new DocController(TestHelper.defaultOptions);
-    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(3);
-    const assumeTitle: IRect = await SurveyHelper.createTitleSurveyFlat(
-        controller.leftTopPoint, controller, json.title);
-    const descriptionPoint: IPoint = SurveyHelper.createPoint(assumeTitle);
-    descriptionPoint.yTop += controller.unitHeight * FlatSurvey.DESC_GAP_SCALE;
-    const assumeDescription: IRect = await SurveyHelper.createDescFlat(
-        descriptionPoint, null, controller, json.description);
-    const assumeTitleWithDescription: IRect = SurveyHelper.mergeRects(assumeTitle, assumeDescription);
-    TestHelper.equalRect(expect, flats[0][0], assumeTitleWithDescription);
-    const rowLinePoint: IPoint = SurveyHelper.createPoint(assumeTitleWithDescription);
-    const assumeRowLine: IRect = SurveyHelper.createRowlineFlat(rowLinePoint, controller);
-    TestHelper.equalRect(expect, flats[0][1], assumeRowLine);
-    const textBoxPoint: IPoint = rowLinePoint;
-    textBoxPoint.yTop += controller.unitHeight * FlatSurvey.PANEL_CONT_GAP_SCALE + SurveyHelper.EPSILON;
-    textBoxPoint.xLeft += controller.unitWidth;
-    const assumeTextBox: IRect = SurveyHelper.createTextFieldRect(textBoxPoint, controller);
-    TestHelper.equalRect(expect, flats[0][2], assumeTextBox);
+    await checkFlatSnapshot(json, {
+        eventName: 'onRenderSurvey',
+        snapshotName: 'survey_with_title_description'
+    });
 });
 test('Survey with logo', async () => {
     SurveyHelper.shouldConvertImageToPng = false;
@@ -115,19 +74,10 @@ test('Survey with logo', async () => {
         logoHeight: '200px',
         pages: []
     };
-    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    const controller: DocController = new DocController(TestHelper.defaultOptions);
-    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(2);
-    expect(flats[0][0] instanceof HTMLBrick);
-    const assumeLogo: IRect = {
-        xLeft: controller.leftTopPoint.xLeft,
-        xRight: controller.leftTopPoint.xLeft + SurveyHelper.pxToPt(survey.logoWidth),
-        yTop: controller.leftTopPoint.yTop,
-        yBot: controller.leftTopPoint.yTop + SurveyHelper.pxToPt(survey.logoHeight)
-    };
-    TestHelper.equalRect(expect, flats[0][0], assumeLogo);
+    await checkFlatSnapshot(json, {
+        eventName: 'onRenderSurvey',
+        snapshotName: 'survey_with_logo'
+    });
     SurveyHelper.shouldConvertImageToPng = true;
 });
 test('Survey with left logo and title', async () => {
@@ -146,33 +96,12 @@ test('Survey with left logo and title', async () => {
             }
         ]
     };
-    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    const controller: DocController = new DocController(TestHelper.defaultOptions);
-    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(4);
-    expect(flats[0][0] instanceof HTMLBrick);
-    const assumeLogo: IRect = {
-        xLeft: controller.leftTopPoint.xLeft,
-        xRight: controller.leftTopPoint.xLeft + SurveyHelper.pxToPt(survey.logoWidth),
-        yTop: controller.leftTopPoint.yTop,
-        yBot: controller.leftTopPoint.yTop + SurveyHelper.pxToPt(survey.logoHeight)
-    };
-    TestHelper.equalRect(expect, flats[0][0], assumeLogo);
-    const titlePoint: IPoint = SurveyHelper.createPoint(assumeLogo, false, true);
-    titlePoint.xLeft += controller.unitWidth;
-    const assumeTitle: IRect = await SurveyHelper.createTitleSurveyFlat(
-        titlePoint, controller, json.title);
-    TestHelper.equalRect(expect, flats[0][1], assumeTitle);
-    const rowLinePoint: IPoint = SurveyHelper.createPoint(assumeLogo);
-    const assumeRowLine: IRect = SurveyHelper.createRowlineFlat(rowLinePoint, controller);
-    TestHelper.equalRect(expect, flats[0][2], assumeRowLine);
-    const textBoxPoint: IPoint = rowLinePoint;
-    textBoxPoint.xLeft += controller.unitWidth;
-    textBoxPoint.yTop += controller.unitHeight * FlatSurvey.PANEL_CONT_GAP_SCALE + SurveyHelper.EPSILON;
-    const assumeTextBox: IRect = SurveyHelper.createTextFieldRect(textBoxPoint, controller);
-    TestHelper.equalRect(expect, flats[0][3], assumeTextBox);
+    await checkFlatSnapshot(json, {
+        eventName: 'onRenderSurvey',
+        snapshotName: 'survey_with_left_logo_title'
+    });
     SurveyHelper.shouldConvertImageToPng = true;
+
 });
 test('Survey with left logo and big title', async () => {
     SurveyHelper.shouldConvertImageToPng = false;
@@ -190,33 +119,12 @@ test('Survey with left logo and big title', async () => {
             }
         ]
     };
-    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    const controller: DocController = new DocController(TestHelper.defaultOptions);
-    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(4);
-    expect(flats[0][0] instanceof HTMLBrick);
-    const assumeLogo: IRect = {
-        xLeft: controller.leftTopPoint.xLeft,
-        xRight: controller.leftTopPoint.xLeft + SurveyHelper.pxToPt(survey.logoWidth),
-        yTop: controller.leftTopPoint.yTop,
-        yBot: controller.leftTopPoint.yTop + SurveyHelper.pxToPt(survey.logoHeight)
-    };
-    TestHelper.equalRect(expect, flats[0][0], assumeLogo);
-    const titlePoint: IPoint = SurveyHelper.createPoint(assumeLogo, false, true);
-    titlePoint.xLeft += controller.unitWidth;
-    const assumeTitle: IRect = await SurveyHelper.createTitleSurveyFlat(
-        titlePoint, controller, json.title);
-    TestHelper.equalRect(expect, flats[0][1], assumeTitle);
-    const rowLinePoint: IPoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(assumeLogo, assumeTitle));
-    const assumeRowLine: IRect = SurveyHelper.createRowlineFlat(rowLinePoint, controller);
-    TestHelper.equalRect(expect, flats[0][2], assumeRowLine);
-    const textBoxPoint: IPoint = rowLinePoint;
-    textBoxPoint.xLeft += controller.unitWidth;
-    textBoxPoint.yTop += controller.unitHeight * FlatSurvey.PANEL_CONT_GAP_SCALE + SurveyHelper.EPSILON;
-    const assumeTextBox: IRect = SurveyHelper.createTextFieldRect(textBoxPoint, controller);
-    TestHelper.equalRect(expect, flats[0][3], assumeTextBox);
+    await checkFlatSnapshot(json, {
+        eventName: 'onRenderSurvey',
+        snapshotName: 'survey_with_left_logo_big_title'
+    });
     SurveyHelper.shouldConvertImageToPng = true;
+
 });
 test('Survey with right logo and title', async () => {
     SurveyHelper.shouldConvertImageToPng = false;
@@ -234,32 +142,12 @@ test('Survey with right logo and title', async () => {
             }
         ]
     };
-    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    const controller: DocController = new DocController(TestHelper.defaultOptions);
-    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(4);
-    const assumeTitle: IRect = await SurveyHelper.createTitleSurveyFlat(
-        controller.leftTopPoint, controller, json.title);
-    TestHelper.equalRect(expect, flats[0][0], assumeTitle);
-    expect(flats[0][1] instanceof HTMLBrick);
-    const assumeLogo: IRect = {
-        xLeft: controller.paperWidth - controller.margins.right -
-            SurveyHelper.pxToPt(survey.logoWidth),
-        xRight: controller.paperWidth - controller.margins.right,
-        yTop: controller.leftTopPoint.yTop,
-        yBot: controller.leftTopPoint.yTop + SurveyHelper.pxToPt(survey.logoHeight)
-    };
-    TestHelper.equalRect(expect, flats[0][1], assumeLogo);
-    const rowLinePoint: IPoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(assumeTitle, assumeLogo));
-    const assumeRowLine: IRect = SurveyHelper.createRowlineFlat(rowLinePoint, controller);
-    TestHelper.equalRect(expect, flats[0][2], assumeRowLine);
-    const textBoxPoint: IPoint = rowLinePoint;
-    textBoxPoint.xLeft += controller.unitWidth;
-    textBoxPoint.yTop += controller.unitHeight * FlatSurvey.PANEL_CONT_GAP_SCALE + SurveyHelper.EPSILON;
-    const assumeTextBox: IRect = SurveyHelper.createTextFieldRect(textBoxPoint, controller);
-    TestHelper.equalRect(expect, flats[0][3], assumeTextBox);
+    await checkFlatSnapshot(json, {
+        eventName: 'onRenderSurvey',
+        snapshotName: 'survey_with_right_logo_title',
+    });
     SurveyHelper.shouldConvertImageToPng = true;
+
 });
 test('Survey with bottom logo and title', async () => {
     SurveyHelper.shouldConvertImageToPng = false;
@@ -271,30 +159,13 @@ test('Survey with bottom logo and title', async () => {
         logoPosition: 'bottom',
         pages: []
     };
-    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    const controller: DocController = new DocController(TestHelper.defaultOptions);
-    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(3);
-    const assumeTitle: IRect = await SurveyHelper.createTitleSurveyFlat(
-        controller.leftTopPoint, controller, json.title);
-    TestHelper.equalRect(expect, flats[0][0], assumeTitle);
-    expect(flats[0][1] instanceof HTMLBrick);
-    const assumeLogo: IRect = {
-        xLeft: controller.leftTopPoint.xLeft +
-            SurveyHelper.getPageAvailableWidth(controller) / 2.0 -
-            SurveyHelper.pxToPt(survey.logoWidth) / 2.0,
-        xRight: controller.leftTopPoint.xLeft +
-            SurveyHelper.getPageAvailableWidth(controller) / 2.0 -
-            SurveyHelper.pxToPt(survey.logoWidth) / 2.0 +
-            SurveyHelper.pxToPt(survey.logoWidth),
-        yTop: assumeTitle.yBot + controller.unitHeight / 2.0,
-        yBot: assumeTitle.yBot + controller.unitHeight / 2.0 +
-            SurveyHelper.pxToPt(survey.logoHeight)
-    };
-    TestHelper.equalRect(expect, flats[0][1], assumeLogo);
-    expect(flats[0][2] instanceof RowlineBrick);
+
+    await checkFlatSnapshot(json, {
+        eventName: 'onRenderSurvey',
+        snapshotName: 'survey_with_bottom_logo_title'
+    });
     SurveyHelper.shouldConvertImageToPng = true;
+
 });
 test('Survey with botton logo without title', async () => {
     SurveyHelper.shouldConvertImageToPng = false;
@@ -305,25 +176,10 @@ test('Survey with botton logo without title', async () => {
         logoHeight: '200px',
         pages: []
     };
-    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    const controller: DocController = new DocController(TestHelper.defaultOptions);
-    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(2);
-    expect(flats[0][0] instanceof HTMLBrick);
-    const assumeLogo: IRect = {
-        xLeft: controller.leftTopPoint.xLeft +
-            SurveyHelper.getPageAvailableWidth(controller) / 2.0 -
-            SurveyHelper.pxToPt(survey.logoWidth) / 2.0,
-        xRight: controller.leftTopPoint.xLeft +
-            SurveyHelper.getPageAvailableWidth(controller) / 2.0 -
-            SurveyHelper.pxToPt(survey.logoWidth) / 2.0 +
-            SurveyHelper.pxToPt(survey.logoWidth),
-        yTop: controller.leftTopPoint.yTop,
-        yBot: controller.leftTopPoint.yTop +
-            SurveyHelper.pxToPt(survey.logoHeight)
-    };
-    TestHelper.equalRect(expect, flats[0][0], assumeLogo);
+    await checkFlatSnapshot(json, {
+        eventName: 'onRenderSurvey',
+        snapshotName: 'survey_with_bottom_logo'
+    });
     SurveyHelper.shouldConvertImageToPng = true;
 });
 
@@ -335,20 +191,10 @@ test('Survey with logo server-side', async () => {
         logoHeight: '320px',
         pages: []
     };
-    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    const controller: DocController = new DocController(TestHelper.defaultOptions);
-    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(2);
-    expect(flats[0][0] instanceof ImageBrick);
-    expect(flats[0][0].isPageBreak).toBeFalsy();
-    const assumeLogo: IRect = {
-        xLeft: controller.leftTopPoint.xLeft,
-        xRight: controller.leftTopPoint.xLeft + SurveyHelper.pxToPt(survey.logoWidth),
-        yTop: controller.leftTopPoint.yTop,
-        yBot: controller.leftTopPoint.yTop + SurveyHelper.pxToPt(survey.logoHeight)
-    };
-    TestHelper.equalRect(expect, flats[0][0], assumeLogo);
+    await checkFlatSnapshot(json, {
+        eventName: 'onRenderSurvey',
+        snapshotName: 'survey_with_logo_server_side'
+    });
     SurveyHelper.inBrowser = true;
 });
 
@@ -379,15 +225,10 @@ test('Survey with logo and pages', async () => {
         ]
     };
     SurveyHelper.shouldConvertImageToPng = false;
-    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    const controller: DocController = new DocController(TestHelper.defaultOptions);
-    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect(flats.length).toBe(2);
-    expect(flats[0].length).toBe(3);
-
-    expect(flats[1].length).toBe(1);
-    expect(flats[1][0].yTop).toBe(controller.leftTopPoint.yTop);
-    expect(flats[1][0].xLeft).toBe(controller.leftTopPoint.xLeft);
+    await checkFlatSnapshot(json, {
+        eventName: 'onRenderSurvey',
+        snapshotName: 'survey_with_logo_pages'
+    });
     SurveyHelper.shouldConvertImageToPng = true;
 });
 

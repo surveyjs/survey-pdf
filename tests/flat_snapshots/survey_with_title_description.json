@@ -1,0 +1,112 @@
+[
+	[
+		{
+			"brickType": "CompositeBrick",
+			"width": 443.7000000000001,
+			"height": 148.92499999999998,
+			"xLeft": 28.34645669291339,
+			"xRight": 472.04645669291347,
+			"yTop": 28.34645669291339,
+			"yBot": 177.27145669291338,
+			"bricks": [
+				{
+					"brickType": "CompositeBrick",
+					"width": 443.7000000000001,
+					"height": 117.29999999999998,
+					"xLeft": 28.34645669291339,
+					"xRight": 472.04645669291347,
+					"yTop": 28.34645669291339,
+					"yBot": 145.64645669291338,
+					"bricks": [
+						{
+							"brickType": "TextBrick",
+							"width": 443.7000000000001,
+							"height": 58.64999999999999,
+							"xLeft": 28.34645669291339,
+							"xRight": 472.04645669291347,
+							"yTop": 28.34645669291339,
+							"yBot": 86.99645669291338,
+							"text": "One small step for",
+							"options": {
+								"fontSize": 51,
+								"fontName": "helvetica",
+								"fontStyle": "bold",
+								"fontColor": "#404040"
+							}
+						},
+						{
+							"brickType": "TextBrick",
+							"width": 104.54999999999998,
+							"height": 58.64999999999999,
+							"xLeft": 28.34645669291339,
+							"xRight": 132.89645669291338,
+							"yTop": 86.99645669291338,
+							"yBot": 145.64645669291338,
+							"text": "man",
+							"options": {
+								"fontSize": 51,
+								"fontName": "helvetica",
+								"fontStyle": "bold",
+								"fontColor": "#404040"
+							}
+						}
+					]
+				},
+				{
+					"brickType": "CompositeBrick",
+					"width": 238.59999999999994,
+					"height": 23,
+					"xLeft": 28.34645669291339,
+					"xRight": 266.94645669291333,
+					"yTop": 154.27145669291338,
+					"yBot": 177.27145669291338,
+					"bricks": [
+						{
+							"brickType": "TextBrick",
+							"width": 238.59999999999994,
+							"height": 23,
+							"xLeft": 28.34645669291339,
+							"xRight": 266.94645669291333,
+							"yTop": 154.27145669291338,
+							"yBot": 177.27145669291338,
+							"text": "One giant leap for mankind",
+							"options": {
+								"fontSize": 20,
+								"fontName": "helvetica",
+								"fontStyle": "normal",
+								"fontColor": "#404040"
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"brickType": "RowlineBrick",
+			"width": 538.5826771653543,
+			"height": 0,
+			"xLeft": 28.34645669291339,
+			"xRight": 566.9291338582677,
+			"yTop": 177.27145669291338,
+			"yBot": 177.27145669291338
+		},
+		{
+			"brickType": "TextFieldBrick",
+			"width": 504.0826771653543,
+			"height": 34.5,
+			"xLeft": 62.84645669291339,
+			"xRight": 566.9291338582677,
+			"yTop": 211.77145669291338,
+			"yBot": 246.27145669291338,
+			"options": {
+				"fieldName": "sq_102",
+				"inputType": "text",
+				"value": "",
+				"isReadOnly": false,
+				"shouldRenderBorders": true,
+				"placeholder": "",
+				"isMultiline": false
+			}
+		}
+	]
+]

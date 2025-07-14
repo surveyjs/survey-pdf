@@ -1,0 +1,69 @@
+[
+	[
+		{
+			"brickType": "CompositeBrick",
+			"width": 238.59999999999994,
+			"height": 23.000000000000004,
+			"xLeft": 28.34645669291339,
+			"xRight": 266.94645669291333,
+			"yTop": 28.34645669291339,
+			"yBot": 51.34645669291339,
+			"bricks": [
+				{
+					"brickType": "CompositeBrick",
+					"width": 238.59999999999994,
+					"height": 23.000000000000004,
+					"xLeft": 28.34645669291339,
+					"xRight": 266.94645669291333,
+					"yTop": 28.34645669291339,
+					"yBot": 51.34645669291339,
+					"bricks": [
+						{
+							"brickType": "TextBrick",
+							"width": 238.59999999999994,
+							"height": 23.000000000000004,
+							"xLeft": 28.34645669291339,
+							"xRight": 266.94645669291333,
+							"yTop": 28.34645669291339,
+							"yBot": 51.34645669291339,
+							"text": "One giant leap for mankind",
+							"options": {
+								"fontSize": 20,
+								"fontName": "helvetica",
+								"fontStyle": "normal",
+								"fontColor": "#404040"
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"brickType": "RowlineBrick",
+			"width": 538.5826771653543,
+			"height": 0,
+			"xLeft": 28.34645669291339,
+			"xRight": 566.9291338582677,
+			"yTop": 51.34645669291339,
+			"yBot": 51.34645669291339
+		},
+		{
+			"brickType": "TextFieldBrick",
+			"width": 504.0826771653543,
+			"height": 34.5,
+			"xLeft": 62.84645669291339,
+			"xRight": 566.9291338582677,
+			"yTop": 85.84645669291339,
+			"yBot": 120.34645669291339,
+			"options": {
+				"fieldName": "sq_101",
+				"inputType": "text",
+				"value": "",
+				"isReadOnly": false,
+				"shouldRenderBorders": true,
+				"placeholder": "",
+				"isMultiline": false
+			}
+		}
+	]
+]

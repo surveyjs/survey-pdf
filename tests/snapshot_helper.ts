@@ -85,10 +85,19 @@ function processBrick(brick: IPdfBrick, propertiesHash: PropertiesHash): any {
     return res;
 }
 
-function processBricks(bricks: Array<IPdfBrick>, propertiesHash: PropertiesHash) {
+function processBricks(bricks: Array<Array<IPdfBrick>> | Array<IPdfBrick>, propertiesHash: PropertiesHash) {
     const res: Array<any> = [];
-    bricks.forEach((brick) => {
-        res.push(processBrick(brick, propertiesHash));
+    bricks.forEach((bricks: Array<IPdfBrick> | IPdfBrick) => {
+        if(Array.isArray(bricks)) {
+            const result: Array<IPdfBrick> = [];
+            bricks.forEach(brick => {
+                result.push(processBrick(brick, propertiesHash));
+
+            });
+            res.push(result);
+        } else {
+            res.push(processBrick(bricks, propertiesHash));
+        }
     });
     return res;
 }
@@ -97,26 +106,35 @@ export async function checkFlatSnapshot(surveyJSON: any, snapshotOptions: IFlatS
     const survey = new SurveyPDF(surveyJSON);
     snapshotOptions.onSurveyCreated && snapshotOptions.onSurveyCreated(survey);
     const controller = new DocController(snapshotOptions.controllerOptions ?? TestHelper.defaultOptions);
-    (survey[snapshotOptions.eventName || 'onRenderQuestion'] as EventBase<SurveyPDF, any>).add((_, options) => {
-        if(!snapshotOptions.isCorrectEvent || snapshotOptions.isCorrectEvent(options)) {
-            const allowedPropertiesHash = Object.assign({}, globalAllowedPropertiesHash, snapshotOptions.allowedPropertiesHash ?? {}) as PropertiesHash;
-            const actual = processBricks(options.bricks, allowedPropertiesHash);
-            const fileName = `${__dirname}/flat_snapshots/${snapshotOptions.snapshotName}.json`;
-            const compare = () => {
-                const expected = JSON.parse(readFileSync(fileName, 'utf8'));
-                expect(actual, `snapshot: "${snapshotOptions.snapshotName}" did not match`).toEqual(expected);
-            };
+    const compareCallback = (bricks: Array<Array<IPdfBrick>> | Array<IPdfBrick>) => {
+        const allowedPropertiesHash = Object.assign({}, globalAllowedPropertiesHash, snapshotOptions.allowedPropertiesHash ?? {}) as PropertiesHash;
+        const actual = processBricks(bricks, allowedPropertiesHash);
+        const fileName = `${__dirname}/flat_snapshots/${snapshotOptions.snapshotName}.json`;
+        const compare = () => {
+            const expected = JSON.parse(readFileSync(fileName, 'utf8'));
+            expect(actual, `snapshot: "${snapshotOptions.snapshotName}" did not match`).toEqual(expected);
+        };
             //eslint-disable-next-line
             if((global as any).updateSnapshots) {
-                try {
-                    compare();
-                } catch {
-                    writeFileSync(fileName, JSON.stringify(actual, null, '\t'));
-                }
-            } else {
+            try {
                 compare();
+            } catch {
+                writeFileSync(fileName, JSON.stringify(actual, null, '\t'));
             }
+        } else {
+            compare();
         }
-    });
-    await FlatSurvey.generateFlats(survey, controller);
+    };
+    if(snapshotOptions.eventName !== 'onRenderSurvey') {
+        (survey[snapshotOptions.eventName || 'onRenderQuestion'] as EventBase<SurveyPDF, any>).add((_, options) => {
+            if(!snapshotOptions.isCorrectEvent || snapshotOptions.isCorrectEvent(options)) {
+                compareCallback(options.bricks);
+            }
+        });
+    }
+    const res = await FlatSurvey.generateFlats(survey, controller);
+    if(snapshotOptions.eventName == 'onRenderSurvey') {
+        compareCallback(res);
+
+    }
 }
