@@ -44,7 +44,7 @@
 				"yTop": 71.47145669291339,
 				"yBot": 140.4714566929134,
 				"options": {
-					"fieldName": "sq_109_comment",
+					"fieldName": "testidquestion_comment_comment",
 					"rows": 2,
 					"value": "",
 					"shouldRenderBorders": true,

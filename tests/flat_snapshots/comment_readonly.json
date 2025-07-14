@@ -11,7 +11,7 @@
 			"rows": 4,
 			"isReadOnly": true,
 			"isMultiline": true,
-			"fieldName": "sq_110",
+			"fieldName": "testidquestion_comment_readonly",
 			"placeholder": "",
 			"shouldRenderBorders": true,
 			"value": "",

@@ -10,7 +10,7 @@
 		"options": {
 			"value": "5%",
 			"isReadOnly": true,
-			"fieldName": "sq_101",
+			"fieldName": "testidquestion_exp",
 			"shouldRenderBorders": true,
 			"rows": 1,
 			"isMultiline": false,

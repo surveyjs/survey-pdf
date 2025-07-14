@@ -84,7 +84,7 @@
 						"yTop": 80.09645669291339,
 						"yBot": 114.59645669291339,
 						"options": {
-							"fieldName": "sq_156",
+							"fieldName": "testidquestion_detailPanelChecker_row1_cell_0",
 							"inputType": "text",
 							"value": "",
 							"isReadOnly": false,

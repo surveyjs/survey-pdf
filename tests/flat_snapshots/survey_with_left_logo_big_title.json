@@ -129,7 +129,7 @@
 			"yTop": 356.09645669291336,
 			"yBot": 390.59645669291336,
 			"options": {
-				"fieldName": "sq_104",
+				"fieldName": "testidquestion_logoleftbig",
 				"inputType": "text",
 				"value": "",
 				"isReadOnly": false,

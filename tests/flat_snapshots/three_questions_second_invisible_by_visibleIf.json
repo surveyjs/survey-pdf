@@ -65,7 +65,7 @@
 					"yTop": 83.54645669291338,
 					"yBot": 118.04645669291338,
 					"options": {
-						"fieldName": "sq_126",
+						"fieldName": "testidquestion_Look at visible me",
 						"inputType": "text",
 						"value": "",
 						"isReadOnly": false,
@@ -150,7 +150,7 @@
 					"yTop": 224.99645669291337,
 					"yBot": 259.4964566929134,
 					"options": {
-						"fieldName": "sq_128",
+						"fieldName": "testidquestion_I'm here",
 						"inputType": "text",
 						"value": "",
 						"isReadOnly": false,

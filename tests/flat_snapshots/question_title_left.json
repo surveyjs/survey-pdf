@@ -55,7 +55,7 @@
 				"yTop": 28.34645669291339,
 				"yBot": 62.84645669291339,
 				"options": {
-					"fieldName": "sq_102",
+					"fieldName": "testidquestion_textbox left bound",
 					"inputType": "text",
 					"value": "",
 					"isReadOnly": false,

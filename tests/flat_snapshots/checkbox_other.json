@@ -133,7 +133,7 @@
 				"yTop": 128.97145669291336,
 				"yBot": 161.17145669291335,
 				"options": {
-					"fieldName": "sq_100_comment0",
+					"fieldName": "testidquestion_checkbox_comment0",
 					"rows": 2,
 					"value": "",
 					"shouldRenderBorders": true,

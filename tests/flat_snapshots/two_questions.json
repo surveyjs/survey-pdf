@@ -65,7 +65,7 @@
 					"yTop": 83.54645669291338,
 					"yBot": 118.04645669291338,
 					"options": {
-						"fieldName": "sq_104",
+						"fieldName": "testidquestion_textbox1",
 						"inputType": "text",
 						"value": "",
 						"isReadOnly": false,
@@ -150,7 +150,7 @@
 					"yTop": 224.99645669291337,
 					"yBot": 259.4964566929134,
 					"options": {
-						"fieldName": "sq_105",
+						"fieldName": "testidquestion_textbox2",
 						"inputType": "text",
 						"value": "",
 						"isReadOnly": false,
