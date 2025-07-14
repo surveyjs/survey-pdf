@@ -1,0 +1,107 @@
+[
+	{
+		"brickType": "CompositeBrick",
+		"width": 331.5826771653543,
+		"height": 89.69999999999999,
+		"xLeft": 235.3464566929134,
+		"xRight": 566.9291338582677,
+		"yTop": 28.34645669291339,
+		"yBot": 118.04645669291338,
+		"bricks": [
+			{
+				"brickType": "CompositeBrick",
+				"width": 235.62000000000003,
+				"height": 37.94999999999999,
+				"xLeft": 235.3464566929134,
+				"xRight": 470.9664566929134,
+				"yTop": 28.34645669291339,
+				"yBot": 66.29645669291338,
+				"bricks": [
+					{
+						"brickType": "CompositeBrick",
+						"width": 235.62000000000003,
+						"height": 37.94999999999999,
+						"xLeft": 235.3464566929134,
+						"xRight": 470.9664566929134,
+						"yTop": 28.34645669291339,
+						"yBot": 66.29645669291338,
+						"bricks": [
+							{
+								"brickType": "TextBrick",
+								"width": 235.62000000000003,
+								"height": 37.94999999999999,
+								"xLeft": 235.3464566929134,
+								"xRight": 470.9664566929134,
+								"yTop": 28.34645669291339,
+								"yBot": 66.29645669291338,
+								"text": "I stand straight",
+								"options": {
+									"fontSize": 33,
+									"fontName": "helvetica",
+									"fontStyle": "bold",
+									"fontColor": "#404040"
+								}
+							}
+						]
+					}
+				]
+			},
+			{
+				"brickType": "RowlineBrick",
+				"width": 331.5826771653543,
+				"height": 0,
+				"xLeft": 235.3464566929134,
+				"xRight": 566.9291338582677,
+				"yTop": 66.29645669291338,
+				"yBot": 66.29645669291338
+			},
+			{
+				"brickType": "CompositeBrick",
+				"width": 205.5,
+				"height": 34.5,
+				"xLeft": 269.8464566929134,
+				"xRight": 475.3464566929134,
+				"yTop": 83.54645669291338,
+				"yBot": 118.04645669291338,
+				"bricks": [
+					{
+						"brickType": "CheckboxItemBrick",
+						"width": 32.775000000000034,
+						"height": 32.775000000000006,
+						"xLeft": 269.8464566929134,
+						"xRight": 302.62145669291345,
+						"yTop": 84.40895669291338,
+						"yBot": 117.18395669291338
+					},
+					{
+						"brickType": "CompositeBrick",
+						"width": 164.09999999999997,
+						"height": 34.5,
+						"xLeft": 311.24645669291345,
+						"xRight": 475.3464566929134,
+						"yTop": 83.54645669291338,
+						"yBot": 118.04645669291338,
+						"bricks": [
+							{
+								"brickType": "TextBrick",
+								"width": 164.09999999999997,
+								"height": 34.5,
+								"xLeft": 311.24645669291345,
+								"xRight": 475.3464566929134,
+								"yTop": 83.54645669291338,
+								"yBot": 118.04645669291338,
+								"text": "Right choice",
+								"options": {
+									"fontSize": 30,
+									"fontName": "helvetica",
+									"fontStyle": "normal",
+									"fontColor": "#404040"
+								}
+							}
+						]
+					}
+				]
+			}
+		]
+	}
+]

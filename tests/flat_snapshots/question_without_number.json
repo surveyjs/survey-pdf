@@ -1,0 +1,78 @@
+[
+	{
+		"brickType": "CompositeBrick",
+		"width": 538.5826771653543,
+		"height": 89.69999999999999,
+		"xLeft": 28.34645669291339,
+		"xRight": 566.9291338582677,
+		"yTop": 28.34645669291339,
+		"yBot": 118.04645669291338,
+		"bricks": [
+			{
+				"brickType": "CompositeBrick",
+				"width": 362.34,
+				"height": 37.94999999999999,
+				"xLeft": 28.34645669291339,
+				"xRight": 390.68645669291334,
+				"yTop": 28.34645669291339,
+				"yBot": 66.29645669291338,
+				"bricks": [
+					{
+						"brickType": "CompositeBrick",
+						"width": 362.34,
+						"height": 37.94999999999999,
+						"xLeft": 28.34645669291339,
+						"xRight": 390.68645669291334,
+						"yTop": 28.34645669291339,
+						"yBot": 66.29645669291338,
+						"bricks": [
+							{
+								"brickType": "TextBrick",
+								"width": 362.34,
+								"height": 37.94999999999999,
+								"xLeft": 28.34645669291339,
+								"xRight": 390.68645669291334,
+								"yTop": 28.34645669291339,
+								"yBot": 66.29645669291338,
+								"text": "I do not need a number",
+								"options": {
+									"fontSize": 33,
+									"fontName": "helvetica",
+									"fontStyle": "bold",
+									"fontColor": "#404040"
+								}
+							}
+						]
+					}
+				]
+			},
+			{
+				"brickType": "RowlineBrick",
+				"width": 538.5826771653543,
+				"height": 0,
+				"xLeft": 28.34645669291339,
+				"xRight": 566.9291338582677,
+				"yTop": 66.29645669291338,
+				"yBot": 66.29645669291338
+			},
+			{
+				"brickType": "TextFieldBrick",
+				"width": 504.0826771653543,
+				"height": 34.5,
+				"xLeft": 62.84645669291339,
+				"xRight": 566.9291338582677,
+				"yTop": 83.54645669291338,
+				"yBot": 118.04645669291338,
+				"options": {
+					"fieldName": "sq_106",
+					"inputType": "text",
+					"value": "",
+					"isReadOnly": false,
+					"shouldRenderBorders": true,
+					"placeholder": "",
+					"isMultiline": false
+				}
+			}
+		]
+	}
+]

@@ -1,0 +1,96 @@
+[
+	{
+		"brickType": "CompositeBrick",
+		"width": 538.5826771653543,
+		"height": 63.10624999999999,
+		"xLeft": 28.34645669291339,
+		"xRight": 566.9291338582677,
+		"yTop": 28.34645669291339,
+		"yBot": 91.45270669291338,
+		"bricks": [
+			{
+				"brickType": "CompositeBrick",
+				"width": 23.759999999999994,
+				"height": 37.94999999999999,
+				"xLeft": 28.34645669291339,
+				"xRight": 52.10645669291338,
+				"yTop": 28.34645669291339,
+				"yBot": 66.29645669291338,
+				"bricks": [
+					{
+						"brickType": "CompositeBrick",
+						"width": 23.759999999999994,
+						"height": 37.94999999999999,
+						"xLeft": 28.34645669291339,
+						"xRight": 52.10645669291338,
+						"yTop": 28.34645669291339,
+						"yBot": 66.29645669291338,
+						"bricks": [
+							{
+								"brickType": "TextBrick",
+								"width": 23.759999999999994,
+								"height": 37.94999999999999,
+								"xLeft": 28.34645669291339,
+								"xRight": 52.10645669291338,
+								"yTop": 28.34645669291339,
+								"yBot": 66.29645669291338,
+								"text": "A",
+								"options": {
+									"fontSize": 33,
+									"fontName": "helvetica",
+									"fontStyle": "bold",
+									"fontColor": "#404040"
+								}
+							}
+						]
+					}
+				]
+			},
+			{
+				"brickType": "CompositeBrick",
+				"width": 94.80000000000001,
+				"height": 23,
+				"xLeft": 62.84645669291339,
+				"xRight": 157.6464566929134,
+				"yTop": 68.45270669291338,
+				"yBot": 91.45270669291338,
+				"bricks": [
+					{
+						"brickType": "TextBrick",
+						"width": 94.80000000000001,
+						"height": 23,
+						"xLeft": 62.84645669291339,
+						"xRight": 157.6464566929134,
+						"yTop": 68.45270669291338,
+						"yBot": 91.45270669291338,
+						"text": "Major Pain",
+						"options": {
+							"fontSize": 20,
+							"fontName": "helvetica",
+							"fontStyle": "normal",
+							"fontColor": "#404040"
+						}
+					}
+				]
+			},
+			{
+				"brickType": "TextFieldBrick",
+				"width": 374.78267716535436,
+				"height": 34.5,
+				"xLeft": 192.1464566929134,
+				"xRight": 566.9291338582677,
+				"yTop": 28.34645669291339,
+				"yBot": 62.84645669291339,
+				"options": {
+					"fieldName": "sq_113",
+					"inputType": "text",
+					"value": "",
+					"isReadOnly": false,
+					"shouldRenderBorders": true,
+					"placeholder": "",
+					"isMultiline": false
+				}
+			}
+		]
+	}
+]
