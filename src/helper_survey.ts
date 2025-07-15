@@ -51,19 +51,11 @@ export class SurveyHelper {
     public static STANDARD_FONT: string = 'helvetica';
     public static CUSTOM_FONT_ENCODING: string = 'Identity-H';
 
-    public static getScaledVerticalSize(controller: DocController, scale: number = 0.5) {
+    public static getScaledVerticalSize(controller: DocController, scale: number = 1) {
         return controller.unitHeight * scale;
     }
 
     public static getScaledHorizontalSize(controller: DocController, scale: number = 1) {
-        return controller.unitWidth * scale;
-    }
-
-    public static getScaledIndentSize(controller: DocController, scale: number = 1) {
-        return controller.unitWidth * scale;
-    }
-
-    public static getScaledDescriptionGap(controller: DocController, scale: number = 0.0625) {
         return controller.unitWidth * scale;
     }
 
@@ -626,16 +618,16 @@ export class SurveyHelper {
             (this.IMAGEPICKER_COUNT - 1) * controller.unitHeight);
         return width > 0 ? width : controller.unitHeight;
     }
-    public static getColumnWidth(controller: DocController, colCount: number) {
+    public static getColumnWidth(controller: DocController, colCount: number, gapBetweenColumns: number) {
         return (this.getPageAvailableWidth(controller) - (colCount - 1) *
-            controller.unitWidth * this.GAP_BETWEEN_COLUMNS) / colCount;
+            SurveyHelper.getScaledHorizontalSize(controller, gapBetweenColumns)) / colCount;
     }
-    public static setColumnMargins(controller: DocController, colCount: number, column: number) {
-        const cellWidth: number = this.getColumnWidth(controller, colCount);
+    public static setColumnMargins(controller: DocController, colCount: number, column: number, gapBetweenColumns: number) {
+        const cellWidth: number = this.getColumnWidth(controller, colCount, gapBetweenColumns);
         controller.margins.left = controller.margins.left + column *
-            (cellWidth + controller.unitWidth * this.GAP_BETWEEN_COLUMNS);
+            (cellWidth + SurveyHelper.getScaledHorizontalSize(controller, gapBetweenColumns));
         controller.margins.right = controller.margins.right + (colCount - column - 1) *
-            (cellWidth + controller.unitWidth * this.GAP_BETWEEN_COLUMNS);
+            (cellWidth + SurveyHelper.getScaledHorizontalSize(controller, gapBetweenColumns));
     }
     public static moveRect(rect: IRect, left: number = rect.xLeft, top: number = rect.yTop): IRect {
         return {

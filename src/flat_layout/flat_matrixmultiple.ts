@@ -78,14 +78,14 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
         const composite: CompositeBrick = new CompositeBrick();
         const currPoint: IPoint = SurveyHelper.clone(point);
         let lastRightMargin: number = this.controller.paperWidth - this.controller.margins.left +
-            this.controller.unitWidth * SurveyHelper.GAP_BETWEEN_COLUMNS;
+            SurveyHelper.getScaledHorizontalSize(this.controller, this.styles.gapBetweenColumns);
         this.controller.pushMargins();
         let cnt = 0;
         const rowLocation = this.getRowLocation(row);
         for (let i = 0; i < row.cells.length; i++) {
             if (this.ignoreCell(row.cells[i], i, rowLocation)) continue;
             this.controller.margins.left = this.controller.paperWidth - lastRightMargin +
-                this.controller.unitWidth * SurveyHelper.GAP_BETWEEN_COLUMNS;
+                SurveyHelper.getScaledHorizontalSize(this.controller, this.styles.gapBetweenColumns);
             this.controller.margins.right = this.controller.paperWidth -
                 this.controller.margins.left - columnWidth[cnt];
             lastRightMargin = this.controller.margins.right;
@@ -117,7 +117,7 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
     }
     private getAvalableWidth(colCount: number): number {
         return SurveyHelper.getPageAvailableWidth(this.controller) -
-        (colCount - 1) * this.controller.unitWidth * SurveyHelper.GAP_BETWEEN_COLUMNS;
+        (colCount - 1) * SurveyHelper.getScaledHorizontalSize(this.controller, this.styles.gapBetweenColumns);
     }
     private calculateColumnWidth(rows: QuestionMatrixDropdownRenderedRow[], colCount: number): number[] {
         const availableWidth: number = this.getAvalableWidth(colCount);

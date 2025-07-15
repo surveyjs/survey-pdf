@@ -17,7 +17,7 @@ export class FlatRanking extends FlatQuestion<QuestionRankingModel> {
         const itemFlat: IPdfBrick = new RankingItemBrick(this.question, this.controller,
             itemScaledRect, unrankedItem ? '-' : this.question.getNumberByIndex(index));
         const textPoint: IPoint = SurveyHelper.clone(point);
-        textPoint.xLeft = itemFlat.xRight + this.controller.unitWidth * SurveyHelper.GAP_BETWEEN_ITEM_TEXT;
+        textPoint.xLeft = itemFlat.xRight + SurveyHelper.getScaledHorizontalSize(this.controller, this.styles.gapBetweenItemText);
         const textFlat: IPdfBrick = await SurveyHelper.createTextFlat(
             textPoint, this.question, this.controller, item.locText);
         return new CompositeBrick(itemFlat, textFlat);
@@ -59,7 +59,7 @@ export class FlatRanking extends FlatQuestion<QuestionRankingModel> {
             for (let item of [this.question.unRankingChoices[i], this.question.rankingChoices[i]]) {
                 if(!!item) {
                     this.controller.pushMargins(this.controller.margins.left, this.controller.margins.right);
-                    SurveyHelper.setColumnMargins(this.controller, colCount, colIndex);
+                    SurveyHelper.setColumnMargins(this.controller, colCount, colIndex, this.styles.gapBetweenColumns);
                     currPoint.xLeft = this.controller.margins.left;
                     const itemFlat: IPdfBrick = await this.generateFlatComposite(
                         currPoint, item, i, colIndex == 0);

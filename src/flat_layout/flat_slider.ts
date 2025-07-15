@@ -51,7 +51,7 @@ export class FlatSlider extends FlatQuestion<QuestionSliderModel> {
 
     private async generateColumnInput(point: IPoint, options:ITextFieldBrickOptions, colCount: number, colNumber: number): Promise<IPdfBrick> {
         this.controller.pushMargins();
-        SurveyHelper.setColumnMargins(this.controller, colCount, colNumber);
+        SurveyHelper.setColumnMargins(this.controller, colCount, colNumber, this.styles.gapBetweenColumns);
         const currentPoint = SurveyHelper.clone(point);
         currentPoint.xLeft = this.controller.margins.left;
         const inputBrick = await this.generateInputBrick(currentPoint, options);

@@ -41,7 +41,7 @@ export class FlatMultipleText extends FlatQuestion<QuestionMultipleTextModel> {
             this.controller.pushMargins();
             for (let j: number = 0; j < rows[i].cells.length; j++) {
                 this.controller.pushMargins();
-                SurveyHelper.setColumnMargins(this.controller, this.question.colCount, j);
+                SurveyHelper.setColumnMargins(this.controller, this.question.colCount, j, this.styles.gapBetweenColumns);
                 currPoint.xLeft = this.controller.margins.left;
                 const itemFlat: IPdfBrick = await this.generateFlatItem(
                     currPoint, i, j, rows[i].cells[j].item);

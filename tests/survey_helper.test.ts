@@ -241,19 +241,19 @@ test('Check set column width', () => {
         }
     };
     let controller: DocController = new DocController(options);
-    let columnWidth: number = SurveyHelper.getColumnWidth(controller, 3);
+    let columnWidth: number = SurveyHelper.getColumnWidth(controller, 3, SurveyHelper.GAP_BETWEEN_COLUMNS);
     let gap: number = controller.unitWidth * SurveyHelper.GAP_BETWEEN_COLUMNS;
     controller.pushMargins();
-    SurveyHelper.setColumnMargins(controller, 3, 0);
+    SurveyHelper.setColumnMargins(controller, 3, 0, SurveyHelper.GAP_BETWEEN_COLUMNS);
     expect(controller.margins.left).toBe(0);
     expect(controller.margins.right).toBe(2 * (columnWidth + gap));
     controller.popMargins();
     controller.pushMargins();
-    SurveyHelper.setColumnMargins(controller, 3, 1);
+    SurveyHelper.setColumnMargins(controller, 3, 1, SurveyHelper.GAP_BETWEEN_COLUMNS);
     expect(controller.margins.left).toBe(columnWidth + gap);
     expect(controller.margins.right).toBe(columnWidth + gap);
     controller.popMargins();
-    SurveyHelper.setColumnMargins(controller, 3, 2);
+    SurveyHelper.setColumnMargins(controller, 3, 2, SurveyHelper.GAP_BETWEEN_COLUMNS);
     expect(controller.margins.left).toBe(2 * (columnWidth + gap));
     expect(controller.margins.right).toBe(0);
 });

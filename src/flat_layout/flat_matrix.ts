@@ -17,7 +17,7 @@ export class FlatMatrix extends FlatQuestion<QuestionMatrixModel> {
         const headers: IPdfBrick[] = [];
         const currPoint: IPoint = SurveyHelper.clone(point);
         if(this.question.hasRows) {
-            currPoint.xLeft += this.rowTitleWidth + this.controller.unitWidth * SurveyHelper.GAP_BETWEEN_COLUMNS;
+            currPoint.xLeft += this.rowTitleWidth + SurveyHelper.getScaledHorizontalSize(this.controller, this.styles.gapBetweenColumns);
         }
         for (let i: number = 0; i < this.question.visibleColumns.length; i++) {
             this.controller.pushMargins();
@@ -25,7 +25,7 @@ export class FlatMatrix extends FlatQuestion<QuestionMatrixModel> {
             this.controller.margins.right += (SurveyHelper.getPageAvailableWidth(this.controller) - this.columnWidth);
             headers.push(await SurveyHelper.createTextFlat(currPoint,
                 this.question, this.controller, this.question.visibleColumns[i].locText, { fontStyle: 'bold' }));
-            currPoint.xLeft += this.columnWidth + this.controller.unitWidth * SurveyHelper.GAP_BETWEEN_COLUMNS;
+            currPoint.xLeft += this.columnWidth + SurveyHelper.getScaledHorizontalSize(this.controller, this.styles.gapBetweenColumns);
             this.controller.popMargins();
         }
         const compositeBrick: CompositeBrick = new CompositeBrick(...headers);
@@ -48,14 +48,15 @@ export class FlatMatrix extends FlatQuestion<QuestionMatrixModel> {
     private columnWidth: number;
     private calculateColumnsWidthes() {
         const availableWidth = SurveyHelper.getPageAvailableWidth(this.controller);
+        const gapBetweenColumns = this.styles.gapBetweenColumns;
         if(this.question.hasRows && this.question.rowTitleWidth) {
             this.controller.pushMargins();
             this.rowTitleWidth = SurveyHelper.parseWidth(this.question.rowTitleWidth, availableWidth);
-            this.controller.margins.left += (this.rowTitleWidth + this.controller.unitWidth * SurveyHelper.GAP_BETWEEN_COLUMNS);
-            this.columnWidth = SurveyHelper.getColumnWidth(this.controller, this.question.visibleColumns.length);
+            this.controller.margins.left += (this.rowTitleWidth + SurveyHelper.getScaledHorizontalSize(this.controller, gapBetweenColumns));
+            this.columnWidth = SurveyHelper.getColumnWidth(this.controller, this.question.visibleColumns.length, gapBetweenColumns);
             this.controller.popMargins();
         } else {
-            this.columnWidth = this.rowTitleWidth = SurveyHelper.getColumnWidth(this.controller, this.question.visibleColumns.length + (this.question.hasRows ? 1 : 0));
+            this.columnWidth = this.rowTitleWidth = SurveyHelper.getColumnWidth(this.controller, this.question.visibleColumns.length + (this.question.hasRows ? 1 : 0), gapBetweenColumns);
         }
     }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
@@ -94,7 +95,7 @@ export class FlatMatrixRow extends FlatRadiogroup {
         const itemRect = SurveyHelper.createRect(currPoint,
             SurveyHelper.getPageAvailableWidth(this.controller), this.controller.unitHeight);
         const radioFlat: IPdfBrick = this.generateFlatItem(itemRect, column, index, this.key, checked, { row: this.row, rowIndex: this.rowIndex });
-        currPoint.yTop = radioFlat.yBot + this.controller.unitHeight * SurveyHelper.GAP_BETWEEN_ITEM_TEXT;
+        currPoint.yTop = radioFlat.yBot + SurveyHelper.getScaledVerticalSize(this.controller, this.styles.gapBetweenItemText);
         const cellTextFlat = await SurveyHelper.createTextFlat(currPoint, this.questionMatrix, this.controller,
             this.questionMatrix.getCellDisplayLocText(this.row.name, column));
         return new CompositeBrick(radioFlat, cellTextFlat);
@@ -106,7 +107,7 @@ export class FlatMatrixRow extends FlatRadiogroup {
             this.controller.unitHeight, this.controller.unitHeight);
         const radioFlat: IPdfBrick = this.generateFlatItem(SurveyHelper.moveRect(
             SurveyHelper.scaleRect(itemRect, SurveyHelper.SELECT_ITEM_FLAT_SCALE), itemRect.xLeft), column, index, this.key, checked, { row: this.row, rowIndex: this.rowIndex });
-        currPoint.xLeft = radioFlat.xRight + this.controller.unitWidth * SurveyHelper.GAP_BETWEEN_ITEM_TEXT;
+        currPoint.xLeft = radioFlat.xRight + SurveyHelper.getScaledHorizontalSize(this.controller, this.styles.gapBetweenItemText);
         const radioText: IPdfBrick = await SurveyHelper.createTextFlat(currPoint, this.questionMatrix,
             this.controller, column.locText);
         return new CompositeBrick(radioFlat, radioText);
@@ -119,7 +120,7 @@ export class FlatMatrixRow extends FlatRadiogroup {
             currPoint.xLeft = this.controller.margins.left;
             this.controller.margins.right += (SurveyHelper.getPageAvailableWidth(this.controller) - this.rowTitleWidth);
             cells.push(await SurveyHelper.createTextFlat(currPoint, this.questionMatrix, this.controller, this.row.locText));
-            currPoint.xLeft += this.rowTitleWidth + this.controller.unitWidth * SurveyHelper.GAP_BETWEEN_COLUMNS;
+            currPoint.xLeft += this.rowTitleWidth + SurveyHelper.getScaledHorizontalSize(this.controller, this.styles.gapBetweenColumns);
             this.controller.popMargins();
         }
         for (let i: number = 0; i < this.questionMatrix.visibleColumns.length; i++) {
@@ -136,7 +137,7 @@ export class FlatMatrixRow extends FlatRadiogroup {
                 cells.push(this.generateFlatItem(SurveyHelper.moveRect(
                     SurveyHelper.scaleRect(itemRect, SurveyHelper.SELECT_ITEM_FLAT_SCALE), currPoint.xLeft), column, i, this.key, checked, { row: this.row, rowIndex: this.rowIndex }));
             }
-            currPoint.xLeft += this.columnWidth + this.controller.unitWidth * SurveyHelper.GAP_BETWEEN_COLUMNS;
+            currPoint.xLeft += this.columnWidth + SurveyHelper.getScaledHorizontalSize(this.controller, this.styles.gapBetweenColumns);
             this.controller.popMargins();
         }
         const compositeBrick = new CompositeBrick(...cells);

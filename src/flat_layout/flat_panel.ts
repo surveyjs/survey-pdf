@@ -10,12 +10,7 @@ import { IStyles } from '../styles';
 import { ITextOptions } from '../pdf_render/pdf_text';
 
 export class FlatPanel<T extends PanelModel = PanelModel> {
-    public static QUES_GAP_VERT_SCALE: number = 1.5;
-    public static PANEL_CONT_GAP_SCALE: number = 1.0;
-    public static PANEL_DESC_GAP_SCALE: number = 0.25;
-    constructor(protected survey: SurveyPDF, protected panel: T, protected controller: DocController, protected styles: IStyles) {
-
-    }
+    constructor(protected survey: SurveyPDF, protected panel: T, protected controller: DocController, protected styles: IStyles) {}
     public async generateFlats(point: IPoint): Promise<IPdfBrick[]> {
         const panelFlats: IPdfBrick[] = [];
         const panelContentPoint: IPoint = SurveyHelper.clone(point);
@@ -37,7 +32,7 @@ export class FlatPanel<T extends PanelModel = PanelModel> {
         if(this.panel.hasDescriptionUnderTitle || this.panel.hasTitle) {
             const headerFlats = await this.createHeaderFlats(currPoint);
             panelFlats.push(...headerFlats);
-            currPoint.yTop = headerFlats[headerFlats.length - 1].yBot + this.controller.unitHeight * FlatPanel.PANEL_CONT_GAP_SCALE + SurveyHelper.EPSILON;
+            currPoint.yTop = headerFlats[headerFlats.length - 1].yBot + SurveyHelper.getScaledVerticalSize(this.controller, this.styles.panelContGapScale) + SurveyHelper.EPSILON;
         }
         panelFlats.push(...await this.generateRowsFlats(currPoint));
         return panelFlats;
@@ -71,7 +66,7 @@ export class FlatPanel<T extends PanelModel = PanelModel> {
         }
         if (this.panel.description) {
             if (this.panel.title) {
-                currPoint.yTop += this.controller.unitWidth * FlatPanel.PANEL_DESC_GAP_SCALE;
+                currPoint.yTop += SurveyHelper.getScaledHorizontalSize(this.controller, this.styles.panelDescriptionGapScale);
             }
             const panelDescFlat: IPdfBrick = await SurveyHelper.createTextFlat(
                 currPoint, null, this.controller, this.panel.locDescription, { fontSize: this.controller.fontSize * SurveyHelper.DESCRIPTION_FONT_SIZE_SCALE });
@@ -116,7 +111,7 @@ export class FlatPanel<T extends PanelModel = PanelModel> {
             if (rowFlats.length !== 0) {
                 currPoint.yTop = SurveyHelper.mergeRects(...rowFlats).yBot;
                 currPoint.xLeft = point.xLeft;
-                currPoint.yTop += this.controller.unitHeight * FlatPanel.QUES_GAP_VERT_SCALE;
+                currPoint.yTop += SurveyHelper.getScaledVerticalSize(this.controller, this.styles.questionGapVerticalScale);
                 rowsFlats.push(...rowFlats);
                 rowsFlats.push(SurveyHelper.createRowlineFlat(currPoint, this.controller));
                 currPoint.yTop += SurveyHelper.EPSILON;

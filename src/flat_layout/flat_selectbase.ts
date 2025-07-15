@@ -16,7 +16,7 @@ export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSele
             point.xLeft), item, index);
         compositeFlat.addBrick(itemFlat);
         const textPoint: IPoint = SurveyHelper.clone(point);
-        textPoint.xLeft = itemFlat.xRight + this.controller.unitWidth * SurveyHelper.GAP_BETWEEN_ITEM_TEXT;
+        textPoint.xLeft = itemFlat.xRight + SurveyHelper.getScaledHorizontalSize(this.controller, this.styles.gapBetweenItemText);
         if (item.locText.renderedHtml !== null) {
             compositeFlat.addBrick(await SurveyHelper.createTextFlat(
                 textPoint, this.question, this.controller, item.locText));
@@ -55,7 +55,7 @@ export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSele
             }
         }
         else if (colCount > 1) {
-            currentColCount = (SurveyHelper.getColumnWidth(this.controller, colCount) <
+            currentColCount = (SurveyHelper.getColumnWidth(this.controller, colCount, this.styles.gapBetweenColumns) <
                 this.controller.measureText(SurveyHelper.MATRIX_COLUMN_WIDTH).width) ? 1 : colCount;
             if(currentColCount == colCount) {
                 return await this.generateColumns(point);
@@ -77,7 +77,7 @@ export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSele
             for (let colIndex = 0; colIndex < row.length; colIndex ++) {
                 const item = row[colIndex];
                 this.controller.pushMargins(this.controller.margins.left, this.controller.margins.right);
-                SurveyHelper.setColumnMargins(this.controller, colCount, colIndex);
+                SurveyHelper.setColumnMargins(this.controller, colCount, colIndex, this.styles.gapBetweenColumns);
                 currPoint.xLeft = this.controller.margins.left;
                 const itemFlat: IPdfBrick = await this.generateFlatComposite(
                     currPoint, item, visibleChoices.indexOf(item));

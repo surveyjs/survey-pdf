@@ -7,8 +7,6 @@ import { SurveyHelper } from '../helper_survey';
 import { ITextOptions } from '../pdf_render/pdf_text';
 
 export class FlatSurvey {
-    public static DESC_GAP_SCALE= 0.25;
-    public static PANEL_CONT_GAP_SCALE = 1.0;
     private static popRowlines(flats: IPdfBrick[]) {
         while (flats.length > 0 && flats[flats.length - 1] instanceof RowlineBrick) {
             flats.pop();
@@ -18,8 +16,8 @@ export class FlatSurvey {
         point: IPoint): Promise<CompositeBrick> {
         const compositeFlat: CompositeBrick = new CompositeBrick();
         if (survey.showTitle) {
+            const styles = survey.styles;
             if (survey.title) {
-                const styles = survey.styles;
                 const textOptions:Partial<ITextOptions> = {
                     fontSize: SurveyHelper.getScaledFontSize(controller, styles.titleFontSizeScale),
                     fontStyle: styles.titleFontStyle,
@@ -31,7 +29,7 @@ export class FlatSurvey {
             }
             if (survey.description) {
                 if (survey.title) {
-                    point.yTop += controller.unitWidth * FlatSurvey.DESC_GAP_SCALE;
+                    point.yTop += SurveyHelper.getScaledHorizontalSize(controller, styles.descriptionGapScale);
                 }
                 compositeFlat.addBrick(await SurveyHelper.createTextFlat(
                     point, null, controller, survey.locDescription, { fontSize: controller.fontSize * SurveyHelper.DESCRIPTION_FONT_SIZE_SCALE }));
@@ -115,7 +113,8 @@ export class FlatSurvey {
         if (flats.length !== 0) {
             point.yTop = SurveyHelper.createPoint(SurveyHelper.mergeRects(...flats[0])).yTop;
             flats[0].push(SurveyHelper.createRowlineFlat(point, controller));
-            point.yTop += controller.unitHeight * FlatSurvey.PANEL_CONT_GAP_SCALE + SurveyHelper.EPSILON;
+            const styles = survey.styles;
+            point.yTop += SurveyHelper.getScaledVerticalSize(controller, styles.panelContGapScale) + SurveyHelper.EPSILON;
         }
         for (let i: number = 0; i < survey.visiblePages.length; i++) {
             survey.currentPage = survey.visiblePages[i];

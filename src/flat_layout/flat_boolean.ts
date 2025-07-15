@@ -20,7 +20,7 @@ export class FlatBooleanCheckbox extends FlatQuestion<QuestionBooleanModel> {
                     SurveyHelper.SELECT_ITEM_FLAT_SCALE), point.xLeft));
         compositeFlat.addBrick(itemFlat);
         const textPoint: IPoint = SurveyHelper.clone(point);
-        textPoint.xLeft = itemFlat.xRight + this.controller.unitWidth * SurveyHelper.GAP_BETWEEN_ITEM_TEXT;
+        textPoint.xLeft = itemFlat.xRight + SurveyHelper.getScaledHorizontalSize(this.controller, this.styles.gapBetweenItemText);
         const locLabelText: LocalizableString = this.question.isIndeterminate ? null :
             this.question.checkedValue ? this.question.locLabelTrue : this.question.locLabelFalse;
         if (locLabelText !== null && locLabelText.renderedHtml !== null) {
