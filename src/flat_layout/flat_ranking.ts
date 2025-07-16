@@ -27,7 +27,7 @@ export class FlatRanking extends FlatQuestion<QuestionRankingModel> {
         const flats: IPdfBrick[] = [];
         for (let i: number = 0; i < choices.length; i++) {
             const itemFlat: IPdfBrick = await this.generateFlatComposite(currPoint, choices[i], i, unrankedChoices);
-            currPoint.yTop = itemFlat.yBot + SurveyHelper.GAP_BETWEEN_ROWS * this.controller.unitHeight;
+            currPoint.yTop = itemFlat.yBot + SurveyHelper.getScaledVerticalSize(this.controller, this.styles.gapBetweenRows);
             flats.push(itemFlat);
         }
         return flats;
@@ -37,11 +37,11 @@ export class FlatRanking extends FlatQuestion<QuestionRankingModel> {
         const flats: IPdfBrick[] = [];
         if(this.question.rankingChoices.length !== 0) {
             flats.push(...await this.generateChoicesColumn(currPoint, this.question.rankingChoices));
-            currPoint.yTop = flats[flats.length - 1].yBot + 2 * (SurveyHelper.GAP_BETWEEN_ROWS * this.controller.unitHeight);
+            currPoint.yTop = flats[flats.length - 1].yBot + 2 * SurveyHelper.getScaledVerticalSize(this.controller, this.styles.gapBetweenRows);
         }
         const separatorRect = SurveyHelper.createRect({
             xLeft: currPoint.xLeft,
-            yTop: currPoint.yTop - (SurveyHelper.GAP_BETWEEN_ROWS * this.controller.unitHeight) - 0.5,
+            yTop: currPoint.yTop - SurveyHelper.getScaledVerticalSize(this.controller, this.styles.gapBetweenRows) - 0.5,
         }, this.controller.paperWidth - this.controller.margins.right - currPoint.xLeft, 1);
         flats.push(new ColoredBrick(this.controller, separatorRect, SurveyHelper.FORM_BORDER_COLOR));
 
@@ -75,11 +75,11 @@ export class FlatRanking extends FlatQuestion<QuestionRankingModel> {
                 xLeft: this.controller.margins.left + SurveyHelper.getPageAvailableWidth(this.controller) / 2 - 0.5,
                 yTop: currPoint.yTop,
             }, 0, 0);
+            const gapBetweenRows = SurveyHelper.getScaledVerticalSize(this.controller, this.styles.gapBetweenRows);
             row.addBrick(new ColoredBrick(this.controller, separatorRect, SurveyHelper.FORM_BORDER_COLOR, 1, rowLineFlat.yBot - currPoint.yTop + (i !== rowsCount - 1 ?
-                SurveyHelper.GAP_BETWEEN_ROWS * this.controller.unitHeight : 0)));
+                gapBetweenRows : 0)));
 
-            currPoint.yTop = rowLineFlat.yBot +
-                SurveyHelper.GAP_BETWEEN_ROWS * this.controller.unitHeight;
+            currPoint.yTop = rowLineFlat.yBot + gapBetweenRows;
             row = new CompositeBrick();
         }
         return flats;

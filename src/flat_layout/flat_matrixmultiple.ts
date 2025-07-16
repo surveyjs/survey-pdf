@@ -14,7 +14,6 @@ import { SurveyHelper } from '../helper_survey';
 import { IStyles } from '../styles';
 
 export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = QuestionMatrixDropdownModelBase> extends FlatQuestion<T> {
-    public static readonly GAP_BETWEEN_ROWS: number = 0.5;
     constructor(protected survey: SurveyPDF, question: T, controller: DocController, styles: IStyles,
         protected isMultiple: boolean = true) {
         super(survey, question, controller, styles);
@@ -108,10 +107,10 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
             if (this.ignoreCell(row.cells[i], i, rowLocation, false)) continue;
             if (this.question.renderedTable.showHeader && (!this.isMultiple || i > 0) && row.cells[i].cell?.column?.locTitle) {
                 composite.addBrick(await this.generateFlatsCellTitle(currPoint, row.cells[i].cell.column.locTitle));
-                currPoint.yTop = composite.yBot + FlatMatrixMultiple.GAP_BETWEEN_ROWS * this.controller.unitHeight;
+                currPoint.yTop = composite.yBot + SurveyHelper.getScaledVerticalSize(this.controller, this.styles.gapBetweenRows);
             }
             composite.addBrick(await this.generateFlatsCell(currPoint, row.cells[i], rowLocation, false));
-            currPoint.yTop = composite.yBot + FlatMatrixMultiple.GAP_BETWEEN_ROWS * this.controller.unitHeight;
+            currPoint.yTop = composite.yBot + SurveyHelper.getScaledVerticalSize(this.controller, this.styles.gapBetweenRows);
         }
         return composite;
     }
@@ -174,7 +173,7 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
                     rowFlat.addBrick(SurveyHelper.createRowlineFlat(currPoint, this.controller));
                 }
                 rowsFlats.push(rowFlat);
-                currPoint.yTop = rowFlat.yBot + FlatMatrixMultiple.GAP_BETWEEN_ROWS * this.controller.unitHeight;
+                currPoint.yTop = rowFlat.yBot + SurveyHelper.getScaledVerticalSize(this.controller, this.styles.gapBetweenRows);
             }
 
             if (!!rows[i].row && rows[i].row.hasPanel) {
@@ -187,7 +186,7 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
 
                 const currComposite: CompositeBrick = new CompositeBrick();
                 currComposite.addBrick(...panelBricks);
-                currPoint.yTop = currComposite.yBot + FlatMatrixMultiple.GAP_BETWEEN_ROWS * this.controller.unitHeight;
+                currPoint.yTop = currComposite.yBot + SurveyHelper.getScaledVerticalSize(this.controller, this.styles.gapBetweenRows);
 
                 rowsFlats.push(currComposite);
                 if (i !== rows.length - 1 && this.question.renderedTable.showHeader && isWide) {
@@ -198,7 +197,7 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
                         currYTop = header.yBot;
                         rowsFlats.push(header);
                     }
-                    currPoint.yTop = currYTop + FlatMatrixMultiple.GAP_BETWEEN_ROWS * this.controller.unitHeight;
+                    currPoint.yTop = currYTop + SurveyHelper.getScaledVerticalSize(this.controller, this.styles.gapBetweenRows);
                 }
             }
         }

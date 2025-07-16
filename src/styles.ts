@@ -15,6 +15,7 @@ export const styles: IStyles = {
         descriptionGapScale: 0.0625,
         gapBetweenItemText: 0.25,
         gapBetweenColumns: 1.5,
+        gapBetweenRows: 0.25
     },
     panel: {
         titleFontSizeScale: 1.3,
@@ -29,19 +30,32 @@ export const styles: IStyles = {
         titleFontStyle: 'bold',
         titleFontColor: '#404040'
     },
-    matrixbase: {
-        gapBetweenColumns: 1.5,
-    },
     selectbase: {
         gapBetweenColumns: 1.5,
+        gapBetweenRows: 0.25
+    },
+    matrixbase: {
+        gapBetweenColumns: 1.5,
+        gapBetweenRows: 0.5
+    },
+    matrix: {
+        gapBetweenRows: 0.5,
+        vertivalGapBetweenCells: 0.25
     },
     multipletext: {
         gapBetweenColumns: 1.5,
     },
+    rating: {
+        gapBetweenRows: 0.25
+    },
     ranking: {
         gapBetweenColumns: 1.5,
+        gapBetweenRows: 0.25
     },
     slider: {
         gapBetweenColumns: 1.5,
+    },
+    dropdown: {
+        gapBetweenRows: 0.25
     }
 };

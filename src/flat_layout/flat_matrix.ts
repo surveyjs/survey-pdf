@@ -11,7 +11,6 @@ import { SurveyHelper } from '../helper_survey';
 import { IStyles } from '../styles';
 
 export class FlatMatrix extends FlatQuestion<QuestionMatrixModel> {
-    public static readonly GAP_BETWEEN_ROWS: number = 0.5;
     protected question: QuestionMatrixModel;
     protected async generateFlatsHeader(point: IPoint): Promise<IPdfBrick[]> {
         const headers: IPdfBrick[] = [];
@@ -39,7 +38,7 @@ export class FlatMatrix extends FlatQuestion<QuestionMatrixModel> {
             const flatsRow: IPdfBrick[] = await new FlatMatrixRow(this.survey, this.question, this.controller, this.styles,
                 this.question.visibleRows[i], i, key, i == 0, isVertical, this.rowTitleWidth, this.columnWidth).generateFlatsContent(currPoint);
             currPoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(...flatsRow));
-            currPoint.yTop += this.controller.unitHeight * FlatMatrix.GAP_BETWEEN_ROWS;
+            currPoint.yTop += SurveyHelper.getScaledVerticalSize(this.controller, this.styles.gapBetweenRows);
             cells.push(...flatsRow);
         }
         return cells;
@@ -68,7 +67,7 @@ export class FlatMatrix extends FlatQuestion<QuestionMatrixModel> {
         if (!isVertical && this.question.showHeader && this.question.visibleColumns.length != 0) {
             let headers: IPdfBrick[] = await this.generateFlatsHeader(currPoint);
             currPoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(...headers));
-            currPoint.yTop += FlatMatrix.GAP_BETWEEN_ROWS * this.controller.unitHeight;
+            currPoint.yTop += SurveyHelper.getScaledVerticalSize(this.controller, this.styles.gapBetweenRows);
             cells.push(...headers);
         }
         cells.push(...await this.generateFlatsRows(currPoint, isVertical));
@@ -153,7 +152,7 @@ export class FlatMatrixRow extends FlatRadiogroup {
             cells.push(rowTextFlat);
         }
         this.generateFlatComposite = (this.questionMatrix.hasCellText) ? this.generateTextComposite : this.generateItemCompoiste;
-        cells.push(...await this.generateVerticallyItems(currPoint, this.questionMatrix.visibleColumns));
+        cells.push(...await this.generateVerticallyItems(currPoint, this.questionMatrix.visibleColumns, this.styles.vertivalGapBetweenCells));
         const compositeBrick: CompositeBrick = new CompositeBrick(...cells);
         return [compositeBrick, SurveyHelper.createRowlineFlat(SurveyHelper.createPoint(compositeBrick), this.controller)];
     }

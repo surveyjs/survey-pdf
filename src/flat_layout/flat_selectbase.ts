@@ -24,7 +24,7 @@ export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSele
         if (item === this.question.otherItem && (item.value === this.question.value ||
             (typeof this.question.isOtherSelected !== 'undefined' && this.question.isOtherSelected))) {
             const otherPoint: IPoint = SurveyHelper.createPoint(compositeFlat);
-            otherPoint.yTop += this.controller.unitHeight * SurveyHelper.GAP_BETWEEN_ROWS;
+            otherPoint.yTop += SurveyHelper.getScaledVerticalSize(this.controller, this.styles.gapBetweenRows);
             compositeFlat.addBrick(await SurveyHelper.createCommentFlat(
                 otherPoint, this.question, this.controller, {
                     fieldName: this.question.id + '_comment' + index,
@@ -86,19 +86,18 @@ export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSele
             }
             const rowLineFlat: IPdfBrick = SurveyHelper.createRowlineFlat(
                 SurveyHelper.createPoint(rowFlat), this.controller);
-            currPoint.yTop = rowLineFlat.yBot +
-                    SurveyHelper.GAP_BETWEEN_ROWS * this.controller.unitHeight;
+            currPoint.yTop = rowLineFlat.yBot + SurveyHelper.getScaledVerticalSize(this.controller, this.styles.gapBetweenRows);
             flats.push(rowFlat, rowLineFlat);
         }
         return flats;
     }
 
-    protected async generateVerticallyItems(point: IPoint, itemValues: ItemValue[]): Promise<IPdfBrick[]> {
+    protected generateVerticallyItems = async (point: IPoint, itemValues: ItemValue[], customGap?: number): Promise<IPdfBrick[]> => {
         const currPoint: IPoint = SurveyHelper.clone(point);
         const flats: IPdfBrick[] = [];
         for (let i: number = 0; i < itemValues.length; i++) {
             const itemFlat: IPdfBrick = await this.generateFlatComposite(currPoint, itemValues[i], i);
-            currPoint.yTop = itemFlat.yBot + SurveyHelper.GAP_BETWEEN_ROWS * this.controller.unitHeight;
+            currPoint.yTop = itemFlat.yBot + SurveyHelper.getScaledVerticalSize(this.controller, customGap || this.styles.gapBetweenRows);
             flats.push(itemFlat);
         }
         return flats;

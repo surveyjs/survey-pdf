@@ -87,7 +87,7 @@ export class FlatQuestion<T extends Question = Question> implements IFlatQuestio
         const otherTextFlat: IPdfBrick = await SurveyHelper.createTextFlat(
             point, this.question, this.controller, text);
         const otherPoint: IPoint = SurveyHelper.createPoint(otherTextFlat);
-        otherPoint.yTop += this.controller.unitHeight * SurveyHelper.GAP_BETWEEN_ROWS;
+        otherPoint.yTop += SurveyHelper.getScaledVerticalSize(this.controller, this.styles.gapBetweenRows);
         return new CompositeBrick(otherTextFlat, await SurveyHelper.createCommentFlat(
             otherPoint, this.question, this.controller, {
                 fieldName: this.question.id + '_comment',
@@ -117,7 +117,7 @@ export class FlatQuestion<T extends Question = Question> implements IFlatQuestio
         const getLatestPoint = (): IPoint => {
             const res = SurveyHelper.clone(point);
             if(contentFlats !== null && contentFlats.length !== 0) {
-                res.yTop = SurveyHelper.mergeRects(...flats).yBot + this.controller.unitHeight * SurveyHelper.GAP_BETWEEN_ROWS;
+                res.yTop = SurveyHelper.mergeRects(...flats).yBot + SurveyHelper.getScaledVerticalSize(this.controller, this.styles.gapBetweenRows);
             }
             return res;
         };
