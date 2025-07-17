@@ -1,18 +1,18 @@
-import { IQuestion, ItemValue, QuestionRatingModel, LocalizableString } from 'survey-core';
+import { IQuestion, ItemValue, QuestionRatingModel, LocalizableString, QuestionRadiogroupModel } from 'survey-core';
 import { SurveyPDF } from '../survey';
 import { IPoint, IRect, DocController } from '../doc_controller';
 import { FlatRadiogroup } from './flat_radiogroup';
 import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
-import { TextBrick } from '../pdf_render/pdf_text';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
+import { IStyles } from '../styles';
 
 export class FlatRating extends FlatRadiogroup {
     protected questionRating: QuestionRatingModel;
     public constructor(protected survey: SurveyPDF,
-        question: IQuestion, protected controller: DocController) {
-        super(survey, question, controller);
+        question: IQuestion, protected controller: DocController, styles: IStyles) {
+        super(survey, question as QuestionRadiogroupModel, controller, styles);
         this.questionRating = <QuestionRatingModel>question;
     }
     protected async generateFlatHorisontalComposite(point: IPoint, item: ItemValue, index: number): Promise<IPdfBrick> {
@@ -25,7 +25,7 @@ export class FlatRating extends FlatRadiogroup {
         const textPoint: IPoint = SurveyHelper.clone(point);
         textPoint.xLeft += halfWidth;
         const compositeFlat: CompositeBrick = new CompositeBrick(await SurveyHelper.
-            createBoldTextFlat(textPoint, this.questionRating, this.controller, itemText));
+            createTextFlat(textPoint, this.questionRating, this.controller, itemText, { fontStyle: 'bold' }));
         this.controller.popMargins();
         let textWidth: number = compositeFlat.width;
         if (textWidth < SurveyHelper.getRatingMinWidth(this.controller)) {
@@ -51,10 +51,10 @@ export class FlatRating extends FlatRadiogroup {
             point.xLeft), item, index, undefined, this.question.value == item.value);
         compositeFlat.addBrick(itemFlat);
         const textPoint: IPoint = SurveyHelper.clone(point);
-        textPoint.xLeft = itemFlat.xRight + this.controller.unitWidth * SurveyHelper.GAP_BETWEEN_ITEM_TEXT;
+        textPoint.xLeft = itemFlat.xRight + SurveyHelper.getScaledHorizontalSize(this.controller, this.styles.gapBetweenItemText);
         const itemText: LocalizableString = SurveyHelper.getRatingItemText(this.questionRating, index, item.locText);
         itemText == null || compositeFlat.addBrick(await SurveyHelper.createTextFlat(
-            textPoint, this.question, this.controller, itemText, TextBrick));
+            textPoint, this.question, this.controller, itemText));
         return compositeFlat;
     }
     protected async generateHorisontallyItems(point: IPoint) {

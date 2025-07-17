@@ -17,7 +17,7 @@
 				"yTop": 28.34645669291339,
 				"yBot": 62.84645669291339,
 				"options": {
-					"fieldName": "testId",
+					"fieldName": "testidquestion_q2",
 					"inputType": "number",
 					"value": 30,
 					"isReadOnly": false,
@@ -35,7 +35,7 @@
 				"yTop": 28.34645669291339,
 				"yBot": 62.84645669291339,
 				"options": {
-					"fieldName": "testId",
+					"fieldName": "testidquestion_q2",
 					"inputType": "number",
 					"value": 60,
 					"isReadOnly": false,

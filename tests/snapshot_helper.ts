@@ -1,4 +1,4 @@
-import { EventBase } from 'survey-core';
+import { EventBase, PanelModel } from 'survey-core';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { DocController, IDocOptions } from '../src/doc_controller';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
@@ -14,11 +14,56 @@ interface ISnapshotOptions {
 }
 interface IPDFSnapshotOptions extends ISnapshotOptions {}
 
+function correctSurveyElementIds(survey: SurveyPDF) {
+    survey.getAllQuestions().forEach((q) => {
+        q.id = `testidquestion_${q.name}`;
+        if (q.getType() === 'paneldynamic') {
+            q.panels.forEach((p, i) => {
+                p.id = `${q.id}_panel_${i}`;
+                p.questions.forEach((pq)=> {
+                    pq.id = `${p.id}_${q.name}`;
+                });
+            });
+        }
+        if (q.getType() === 'matrixdynamic' || q.getType() === 'matrixdropdown') {
+            q.renderedTable.rows.forEach((row: any, rowIndex: number) => {
+                if (row.row) {
+                    row.row.idValue = `${q.id}row${rowIndex}`;
+                }
+                row.cells.forEach((cell: any, cellIndex: number) => {
+                    if (cell.hasQuestion) {
+                        cell.question.id = `${q.id}_row${rowIndex}_cell_${cellIndex}`;
+                    }
+                    if (cell.hasPanel) {
+                        cell.panel.id = `${q.id}row${rowIndex}cell${cellIndex}detailPanel`;
+                        cell.panel.questions.forEach((detailQuestion) => {
+                            detailQuestion.id = `${q.id}_row${rowIndex}_cell${cellIndex}_detailPanelQuestion_${detailQuestion.name}`;
+                        });
+                    }
+                });
+            });
+        }
+        if (q.getType() === 'file') {
+            q.pages.forEach((p, j) => {
+                p.id = q.id + 'page' + j;
+            });
+        }
+    });
+    survey.getAllPanels().map((p: PanelModel) => {
+        p.id = `testidpanel_${p.name}`;
+
+    });
+    survey.pages.map((p: PanelModel) => {
+        p.id = `testidpage_${p.name}`;
+    });
+}
+
 export async function checkPDFSnapshot(surveyJSON: any, snapshotOptions: IPDFSnapshotOptions): Promise<void> {
     const jsPdfVersion = jsPDF.version;
     jsPDF.version = 'test';
     const survey = new SurveyPDFTester(surveyJSON, snapshotOptions.controllerOptions ?? TestHelper.defaultOptions);
     snapshotOptions.onSurveyCreated && snapshotOptions.onSurveyCreated(survey);
+    correctSurveyElementIds(survey);
     survey.onDocControllerCreated.add((_, options) => {
         options.controller.doc.setCreationDate(new Date(0));
         options.controller.doc.setFileId('00000000000000000000000000000000');
@@ -52,7 +97,8 @@ interface IFlatSnaphotOptions extends ISnapshotOptions {
 export const globalAllowedPropertiesHash: PropertiesHash = {
     'default': ['width', 'height', 'xLeft', 'xRight', 'yTop', 'yBot'],
     'CompositeBrick': [{ name: 'bricks', deep: true }],
-    'TextBrick': ['text'],
+    'TextBrick': ['text', 'options'],
+    'TextFieldBrick': ['options'],
 };
 
 function processBrick(brick: IPdfBrick, propertiesHash: PropertiesHash): any {
@@ -84,38 +130,57 @@ function processBrick(brick: IPdfBrick, propertiesHash: PropertiesHash): any {
     return res;
 }
 
-function processBricks(bricks: Array<IPdfBrick>, propertiesHash: PropertiesHash) {
+function processBricks(bricks: Array<Array<IPdfBrick>> | Array<IPdfBrick>, propertiesHash: PropertiesHash) {
     const res: Array<any> = [];
-    bricks.forEach((brick) => {
-        res.push(processBrick(brick, propertiesHash));
+    bricks.forEach((bricks: Array<IPdfBrick> | IPdfBrick) => {
+        if(Array.isArray(bricks)) {
+            const result: Array<IPdfBrick> = [];
+            bricks.forEach(brick => {
+                result.push(processBrick(brick, propertiesHash));
+
+            });
+            res.push(result);
+        } else {
+            res.push(processBrick(bricks, propertiesHash));
+        }
     });
     return res;
 }
 
 export async function checkFlatSnapshot(surveyJSON: any, snapshotOptions: IFlatSnaphotOptions): Promise<void> {
-    const survey = new SurveyPDF(surveyJSON);
+    const survey = new SurveyPDF(surveyJSON, snapshotOptions.controllerOptions ?? TestHelper.defaultOptions);
     snapshotOptions.onSurveyCreated && snapshotOptions.onSurveyCreated(survey);
+    correctSurveyElementIds(survey);
     const controller = new DocController(snapshotOptions.controllerOptions ?? TestHelper.defaultOptions);
-    (survey[snapshotOptions.eventName || 'onRenderQuestion'] as EventBase<SurveyPDF, any>).add((_, options) => {
-        if(!snapshotOptions.isCorrectEvent || snapshotOptions.isCorrectEvent(options)) {
-            const allowedPropertiesHash = Object.assign({}, globalAllowedPropertiesHash, snapshotOptions.allowedPropertiesHash ?? {}) as PropertiesHash;
-            const actual = processBricks(options.bricks, allowedPropertiesHash);
-            const fileName = `${__dirname}/flat_snapshots/${snapshotOptions.snapshotName}.json`;
-            const compare = () => {
-                const expected = JSON.parse(readFileSync(fileName, 'utf8'));
-                expect(actual, `snapshot: "${snapshotOptions.snapshotName}" did not match`).toEqual(expected);
-            };
-            //eslint-disable-next-line
-            if((global as any).updateSnapshots) {
-                try {
-                    compare();
-                } catch {
-                    writeFileSync(fileName, JSON.stringify(actual, null, '\t'));
-                }
-            } else {
+    const compareCallback = (bricks: Array<Array<IPdfBrick>> | Array<IPdfBrick>) => {
+        const allowedPropertiesHash = Object.assign({}, globalAllowedPropertiesHash, snapshotOptions.allowedPropertiesHash ?? {}) as PropertiesHash;
+        const actual = processBricks(bricks, allowedPropertiesHash);
+        const fileName = `${__dirname}/flat_snapshots/${snapshotOptions.snapshotName}.json`;
+        const compare = () => {
+            const expected = JSON.parse(readFileSync(fileName, 'utf8'));
+            expect(actual, `snapshot: "${snapshotOptions.snapshotName}" did not match`).toEqual(expected);
+        };
+        //eslint-disable-next-line
+        if((global as any).updateSnapshots) {
+            try {
                 compare();
+            } catch {
+                writeFileSync(fileName, JSON.stringify(actual, null, '\t'));
             }
+        } else {
+            compare();
         }
-    });
-    await FlatSurvey.generateFlats(survey, controller);
+    };
+    if(snapshotOptions.eventName !== 'onRenderSurvey') {
+        (survey[snapshotOptions.eventName || 'onRenderQuestion'] as EventBase<SurveyPDF, any>).add((_, options) => {
+            if(!snapshotOptions.isCorrectEvent || snapshotOptions.isCorrectEvent(options)) {
+                compareCallback(options.bricks);
+            }
+        });
+    }
+    const res = await FlatSurvey.generateFlats(survey, controller);
+    if(snapshotOptions.eventName == 'onRenderSurvey') {
+        compareCallback(res);
+
+    }
 }

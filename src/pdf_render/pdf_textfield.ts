@@ -1,4 +1,4 @@
-import { IQuestion, QuestionTextModel, settings } from 'survey-core';
+import { IQuestion, QuestionTextModel } from 'survey-core';
 import { IRect, DocController } from '../doc_controller';
 import { IPdfBrick, PdfBrick, TranslateXFunction } from './pdf_brick';
 import { SurveyHelper } from '../helper_survey';

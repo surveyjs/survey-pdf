@@ -1,5 +1,5 @@
 import { IRect, ISize, DocController } from '../doc_controller';
-import { IQuestion, Question } from 'survey-core';
+import { IQuestion } from 'survey-core';
 import { SurveyHelper } from '../helper_survey';
 
 export type TranslateXFunction = (xLeft: number, xRight : number) => { xLeft: number, xRight: number};

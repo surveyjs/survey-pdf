@@ -1,23 +1,15 @@
-import { IQuestion, QuestionFileModel, surveyLocalization } from 'survey-core';
-import { SurveyPDF } from '../survey';
-import { IPoint, ISize, DocController } from '../doc_controller';
+import { QuestionFileModel } from 'survey-core';
+import { IPoint, ISize } from '../doc_controller';
 import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
-import { TextBrick } from '../pdf_render/pdf_text';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
 
-export class FlatFile extends FlatQuestion {
+export class FlatFile extends FlatQuestion<QuestionFileModel> {
     public static readonly IMAGE_GAP_SCALE: number = 0.195;
     public static readonly TEXT_MIN_SCALE: number = 5.0;
     public static DEFAULT_IMAGE_FIT: string = 'contain';
-    protected question: QuestionFileModel;
-    public constructor(protected survey: SurveyPDF,
-        question: IQuestion, controller: DocController) {
-        super(survey, question, controller);
-        this.question = <QuestionFileModel>question;
-    }
     private async generateFlatItem(point: IPoint, item: {
         name: string, type: string, content: string, imageSize?: ISize,
     }): Promise<IPdfBrick> {
@@ -46,7 +38,7 @@ export class FlatFile extends FlatQuestion {
         const previewValue = this.question.showPreview ? this.question.previewValue : this.question.value;
         if (!previewValue || previewValue.length === 0) {
             return [await SurveyHelper.createTextFlat(point, this.question,
-                this.controller, this.question.noFileChosenCaption, TextBrick)];
+                this.controller, this.question.noFileChosenCaption)];
         }
         const rowsFlats: CompositeBrick[] = [new CompositeBrick()];
         const currPoint: IPoint = SurveyHelper.clone(point);

@@ -1,22 +1,13 @@
-import { IQuestion, QuestionSignaturePadModel } from 'survey-core';
-import { SurveyPDF } from '../survey';
 import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
-import { IPoint, DocController, IRect, ISize } from '../doc_controller';
+import { IPoint } from '../doc_controller';
 import { IPdfBrick, PdfBrick } from '../pdf_render/pdf_brick';
 import { IBorderDescription, SurveyHelper } from '../helper_survey';
 import { EmptyBrick } from '../pdf_render/pdf_empty';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 
 export class FlatSignaturePad extends FlatQuestion {
-    protected question: QuestionSignaturePadModel;
     public static BORDER_STYLE: 'dashed' | 'solid' | 'none' = 'dashed';
-    public constructor(protected survey: SurveyPDF,
-        question: IQuestion, controller: DocController) {
-        super(survey, question, controller);
-        this.question = <QuestionSignaturePadModel>question;
-    }
-
     public async generateBackgroundImage(point: IPoint): Promise<IPdfBrick> {
         return await SurveyHelper.createImageFlat(point, this.question, this.controller, { link: this.question.backgroundImage, width: SurveyHelper.pxToPt(<any>this.question.signatureWidth), height: SurveyHelper.pxToPt(<any>this.question.signatureHeight), objectFit: 'cover' }, true);
     }

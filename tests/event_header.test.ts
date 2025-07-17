@@ -7,13 +7,12 @@ import { IRect, ISize, DocOptions, DocController } from '../src/doc_controller';
 import { EventHandler } from '../src/event_handler/event_handler';
 import { DrawCanvas, HorizontalAlign, VerticalAlign } from '../src/event_handler/draw_canvas';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
-import { FlatTextbox } from '../src/flat_layout/flat_textbox';
 import { PagePacker } from '../src/page_layout/page_packer';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
-import { TextBoldBrick } from '../src/pdf_render/pdf_textbold';
 import { SurveyHelper } from '../src/helper_survey';
 import { SurveyPDFTester, TestHelper } from '../src/helper_test';
-let __dummy_tx = new FlatTextbox(null, null, null);
+import { TextBrick } from '../src/pdf_render/pdf_text';
+import '../src/flat_layout/flat_textbox';
 
 test('Event render header simple text', async () => {
     let json: any = {
@@ -69,7 +68,8 @@ test('Event render header bold text', async () => {
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(2);
     TestHelper.equalRect(expect, packs[0][1], SurveyHelper.createHeaderRect(controller));
-    expect(packs[0][1] instanceof TextBoldBrick).toBe(true);
+    expect(packs[0][1] instanceof TextBrick).toBe(true);
+    expect((packs[0][1] as TextBrick)['options'].fontStyle).toBe('bold');
 });
 test('Event render header left top text', async () => {
     let json: any = {
@@ -98,7 +98,7 @@ test('Event render header left top text', async () => {
     EventHandler.process_header_events(survey, controller, packs);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(2);
-    let textSize: ISize = controller.measureText(text, 'normal', DocOptions.FONT_SIZE);
+    let textSize: ISize = controller.measureText(text, { fontStyle: 'normal', fontSize: DocOptions.FONT_SIZE });
     TestHelper.equalRect(expect, packs[0][1], SurveyHelper.createRect(
         { xLeft: 0, yTop: 0 }, textSize.width, textSize.height));
 });
@@ -129,7 +129,7 @@ test('Event render header center middle text', async () => {
     EventHandler.process_header_events(survey, controller, packs);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(2);
-    let textSize: ISize = controller.measureText(text, 'normal', DocOptions.FONT_SIZE);
+    let textSize: ISize = controller.measureText(text, { fontStyle: 'normal', fontSize: DocOptions.FONT_SIZE });
     let headerRect: IRect = SurveyHelper.createHeaderRect(controller);
     let assumeText: IRect = {
         xLeft: (headerRect.xRight - headerRect.xLeft - textSize.width) / 2.0,
@@ -166,7 +166,7 @@ test('Event render footer center middle text', async () => {
     await EventHandler.process_header_events(survey, controller, packs);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(2);
-    let textSize: ISize = controller.measureText(text, 'normal', DocOptions.FONT_SIZE);
+    let textSize: ISize = controller.measureText(text, { fontStyle: 'normal', fontSize: DocOptions.FONT_SIZE });
     let footerRect: IRect = SurveyHelper.createFooterRect(controller);
     let assumeText: IRect = {
         xLeft: (footerRect.xLeft + footerRect.xRight - textSize.width) / 2.0,

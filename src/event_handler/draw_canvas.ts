@@ -1,7 +1,6 @@
 import { IRect, IMargin, ISize, DocOptions, DocController } from '../doc_controller';
-import { IPdfBrick, PdfBrick } from '../pdf_render/pdf_brick';
+import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { TextBrick } from '../pdf_render/pdf_text';
-import { TextBoldBrick } from '../pdf_render/pdf_textbold';
 import { SurveyHelper } from '../helper_survey';
 
 /**
@@ -225,18 +224,16 @@ export class DrawCanvas {
         if (typeof textOptions.isBold === 'undefined') {
             textOptions.isBold = false;
         }
-        const textSize: ISize = this.controller.measureText(textOptions.text,
-            textOptions.isBold ? 'bold' : 'normal', textOptions.fontSize);
+        const options = {
+            fontStyle: textOptions.isBold ? 'bold' : 'normal',
+            fontSize: textOptions.fontSize,
+            fontName: this.controller.fontName,
+            fontColor: SurveyHelper.TEXT_COLOR
+        };
+        const textSize: ISize = this.controller.measureText(textOptions.text, options);
         const textRect: IRect = this.alignRect(textOptions, textSize);
-        if (!textOptions.isBold) {
-            this.packs.push(new TextBrick(null, this.controller,
-                textRect, textOptions.text));
-        }
-        else {
-            this.packs.push(new TextBoldBrick(null, this.controller,
-                textRect, textOptions.text));
-        }
-        (<PdfBrick>this.packs[this.packs.length - 1]).fontSize = textOptions.fontSize;
+        this.packs.push(new TextBrick(null, this.controller,
+            textRect, textOptions.text, options));
     }
     /**
      * Draws an image within the drawing area.

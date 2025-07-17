@@ -1,0 +1,32 @@
+[
+	{
+		"brickType": "CompositeBrick",
+		"width": 0,
+		"height": 30.000000000000004,
+		"xLeft": 62.84645669291339,
+		"xRight": 62.84645669291339,
+		"yTop": 28.34645669291339,
+		"yBot": 58.34645669291339,
+		"bricks": [
+			{
+				"brickType": "HTMLBrick",
+				"width": 0,
+				"height": 30.000000000000004,
+				"xLeft": 62.84645669291339,
+				"xRight": 62.84645669291339,
+				"yTop": 28.34645669291339,
+				"yBot": 58.34645669291339,
+				"html": "<div class=\"__surveypdf_html\" style=\"font-size: 30pt; font-weight: normal; font-family: helvetica; color: #404040;\"><style>.__surveypdf_html p { margin: 0; line-height: 30pt } body { margin: 0; }</style><b>STRONG POWER</b></div>"
+			},
+			{
+				"brickType": "EmptyBrick",
+				"width": 0,
+				"height": 0,
+				"xLeft": 62.84645669291339,
+				"xRight": 62.84645669291339,
+				"yTop": 58.34645669291339,
+				"yBot": 58.34645669291339
+			}
+		]
+	}
+]

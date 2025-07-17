@@ -35,7 +35,13 @@
 								"yTop": 28.34645669291339,
 								"yBot": 62.84645669291339,
 								"link": "test_url",
-								"text": "test_name"
+								"text": "test_name",
+								"options": {
+									"fontSize": 30,
+									"fontColor": "#0000EE",
+									"fontStyle": "normal",
+									"fontName": "helvetica"
+								}
 							},
 							{
 								"brickType": "RowlineBrick",
@@ -77,7 +83,13 @@
 								"yTop": 28.34645669291339,
 								"yBot": 62.84645669291339,
 								"link": "test_url2",
-								"text": "test_name2"
+								"text": "test_name2",
+								"options": {
+									"fontSize": 30,
+									"fontColor": "#0000EE",
+									"fontStyle": "normal",
+									"fontName": "helvetica"
+								}
 							},
 							{
 								"brickType": "RowlineBrick",
