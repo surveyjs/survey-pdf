@@ -243,40 +243,40 @@ test('Check comment shouldRenderBoders method', async () => {
     dropdownQuestion.value = 'other';
     const controller = new DocController();
     expect(
-        (await (new FlatComment(undefined as any, commentQuestion, controller)).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0]['shouldRenderFlatBorders']()).toBeTruthy();
+        (await (new FlatComment(undefined as any, commentQuestion, controller, {})).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0]['shouldRenderFlatBorders']()).toBeTruthy();
     expect(
-        (await (new FlatTextbox(undefined as any, textQuestion, controller)).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0]['shouldRenderFlatBorders']()).toBeTruthy();
+        (await (new FlatTextbox(undefined as any, textQuestion, controller, {})).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0]['shouldRenderFlatBorders']()).toBeTruthy();
     expect(
-        (await (new FlatDropdown(undefined as any, dropdownQuestion, controller)).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0]['bricks'][1]['shouldRenderFlatBorders']()).toBeTruthy();
+        (await (new FlatDropdown(undefined as any, dropdownQuestion, controller, {})).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0]['bricks'][1]['shouldRenderFlatBorders']()).toBeTruthy();
 
     const oldReadOnlyCommentRenderMode = settings.readOnlyCommentRenderMode;
     const oldReadOnlyTextRenderMode = settings.readOnlyTextRenderMode;
 
     settings.readOnlyCommentRenderMode = 'div';
     expect(
-        (await (new FlatComment(undefined as any, commentQuestion, controller)).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0]['shouldRenderFlatBorders']()).toBeFalsy();
+        (await (new FlatComment(undefined as any, commentQuestion, controller, {})).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0]['shouldRenderFlatBorders']()).toBeFalsy();
     expect(
-        (await (new FlatTextbox(undefined as any, textQuestion, controller)).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0]['shouldRenderFlatBorders']()).toBeTruthy();
+        (await (new FlatTextbox(undefined as any, textQuestion, controller, {})).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0]['shouldRenderFlatBorders']()).toBeTruthy();
     expect(
-        (await (new FlatDropdown(undefined as any, dropdownQuestion, controller)).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0]['bricks'][1]['shouldRenderFlatBorders']()).toBeFalsy();
+        (await (new FlatDropdown(undefined as any, dropdownQuestion, controller, {})).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0]['bricks'][1]['shouldRenderFlatBorders']()).toBeFalsy();
 
     settings.readOnlyCommentRenderMode = 'textarea';
     settings.readOnlyTextRenderMode = 'div';
     expect(
-        (await (new FlatComment(undefined as any, commentQuestion, controller)).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0]['shouldRenderFlatBorders']()).toBeTruthy();
+        (await (new FlatComment(undefined as any, commentQuestion, controller, {})).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0]['shouldRenderFlatBorders']()).toBeTruthy();
     expect(
-        (await (new FlatTextbox(undefined as any, textQuestion, controller)).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0]['shouldRenderFlatBorders']()).toBeFalsy();
+        (await (new FlatTextbox(undefined as any, textQuestion, controller, {})).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0]['shouldRenderFlatBorders']()).toBeFalsy();
     expect(
-        (await (new FlatDropdown(undefined as any, dropdownQuestion, controller)).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0]['bricks'][1]['shouldRenderFlatBorders']()).toBeTruthy();
+        (await (new FlatDropdown(undefined as any, dropdownQuestion, controller, {})).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0]['bricks'][1]['shouldRenderFlatBorders']()).toBeTruthy();
 
     settings.readOnlyCommentRenderMode = 'div';
 
     expect(
-        (await (new FlatComment(undefined as any, commentQuestion, controller)).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0]['shouldRenderFlatBorders']()).toBeFalsy();
+        (await (new FlatComment(undefined as any, commentQuestion, controller, {})).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0]['shouldRenderFlatBorders']()).toBeFalsy();
     expect(
-        (await (new FlatTextbox(undefined as any, textQuestion, controller)).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0]['shouldRenderFlatBorders']()).toBeFalsy();
+        (await (new FlatTextbox(undefined as any, textQuestion, controller, {})).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0]['shouldRenderFlatBorders']()).toBeFalsy();
     expect(
-        (await (new FlatDropdown(undefined as any, dropdownQuestion, controller)).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0]['bricks'][1]['shouldRenderFlatBorders']()).toBeFalsy();
+        (await (new FlatDropdown(undefined as any, dropdownQuestion, controller, {})).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0]['bricks'][1]['shouldRenderFlatBorders']()).toBeFalsy();
 
     settings.readOnlyTextRenderMode = oldReadOnlyTextRenderMode;
     settings.readOnlyCommentRenderMode = oldReadOnlyCommentRenderMode;
