@@ -389,3 +389,35 @@ test('Check columns 4 with itemFlowDirection:row', async() => {
     }, { snapshotName: 'checkbox-col-count-4-column-flow', controllerOptions: { fontSize: 10 } });
     settings.itemFlowDirection = oldItemFlowDirection;
 });
+
+test('Check margins are correct after generating content', async() => {
+    const json = {
+        elements: [
+            {
+                name: 'q1',
+                type: 'checkbox',
+                colCount: 4,
+                titleLocation: 'left',
+                choices: [
+                    'item1',
+                    'item2',
+                    'item3',
+                    'item4',
+                    'item5',
+                    'item6',
+                    'item7',
+                    'item8'
+                ]
+            }
+        ]
+    };
+    const options = TestHelper.defaultOptions;
+    options.fontSize = 14;
+    const survey: SurveyPDF = new SurveyPDF(json, options);
+    const controller: DocController = new DocController(options);
+    const oldMarginLeft: number = controller.margins.left as number;
+    const oldMarginRight: number = controller.margins.right as number;
+    await new FlatCheckbox(survey, survey.getAllQuestions()[0], controller).generateFlats({ xLeft: oldMarginLeft, yTop: controller.margins.top as number });
+    expect(controller.margins.left).toBe(oldMarginLeft);
+    expect(controller.margins.right).toBe(oldMarginRight);
+});
