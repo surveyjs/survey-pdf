@@ -7,9 +7,6 @@ import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
 
 export class FlatFile extends FlatQuestion<QuestionFileModel> {
-    public static readonly IMAGE_GAP_SCALE: number = 0.195;
-    public static readonly TEXT_MIN_SCALE: number = 5.0;
-    public static DEFAULT_IMAGE_FIT: string = 'contain';
     private async generateFlatItem(point: IPoint, item: {
         name: string, type: string, content: string, imageSize?: ISize,
     }): Promise<IPdfBrick> {
@@ -17,8 +14,8 @@ export class FlatFile extends FlatQuestion<QuestionFileModel> {
             point, this.question, this.controller, item.name === undefined ? 'image' : item.name, item.content));
         if (SurveyHelper.canPreviewImage(this.question, item, item.content)) {
             const imagePoint: IPoint = SurveyHelper.createPoint(compositeFlat);
-            imagePoint.yTop += this.controller.unitHeight * FlatFile.IMAGE_GAP_SCALE;
-            compositeFlat.addBrick(await SurveyHelper.createImageFlat(imagePoint, this.question, this.controller, { link: item.content, width: item.imageSize.width, height: item.imageSize.height, objectFit: FlatFile.DEFAULT_IMAGE_FIT }));
+            imagePoint.yTop += SurveyHelper.getScaledVerticalSize(this.controller, this.styles.imageGapScale);
+            compositeFlat.addBrick(await SurveyHelper.createImageFlat(imagePoint, this.question, this.controller, { link: item.content, width: item.imageSize.width, height: item.imageSize.height, objectFit: this.styles.defaultImageFit }));
         }
         return compositeFlat;
     }
@@ -32,7 +29,7 @@ export class FlatFile extends FlatQuestion<QuestionFileModel> {
     }
 
     private async getImagePreviewContentWidth(item: { name: string, type: string, content: string, imageSize?: ISize }) {
-        return Math.max(item.imageSize.width, FlatFile.TEXT_MIN_SCALE * this.controller.unitWidth);
+        return Math.max(item.imageSize.width, SurveyHelper.getScaledHorizontalSize(this.controller, this.styles.textMinScale));
     }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         const previewValue = this.question.showPreview ? this.question.previewValue : this.question.value;

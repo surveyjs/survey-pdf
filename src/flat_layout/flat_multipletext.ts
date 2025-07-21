@@ -8,7 +8,6 @@ import { SurveyHelper } from '../helper_survey';
 import { FlatTextbox } from './flat_textbox';
 
 export class FlatMultipleText extends FlatQuestion<QuestionMultipleTextModel> {
-    public static readonly ROWS_GAP_SCALE: number = 0.195;
     private getVisibleRows() {
         return this.question.getRows().filter(row => row.isVisible);
     }
@@ -55,7 +54,7 @@ export class FlatMultipleText extends FlatQuestion<QuestionMultipleTextModel> {
             rowsFlats[rowsFlats.length - 1].addBrick(
                 SurveyHelper.createRowlineFlat(currPoint, this.controller));
             currPoint.yTop += SurveyHelper.EPSILON;
-            currPoint.yTop += this.controller.unitHeight * FlatMultipleText.ROWS_GAP_SCALE;
+            currPoint.yTop += SurveyHelper.getScaledVerticalSize(this.controller, this.styles.rowsGapScale);
         }
         return rowsFlats;
     }

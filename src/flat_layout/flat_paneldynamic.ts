@@ -6,7 +6,6 @@ import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { SurveyHelper } from '../helper_survey';
 
 export class FlatPanelDynamic extends FlatQuestion<QuestionPanelDynamicModel> {
-    public static readonly GAP_BETWEEN_PANELS: number = 0.75;
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         const flats: IPdfBrick[] = [];
         const currPoint: IPoint = SurveyHelper.clone(point);
@@ -15,7 +14,7 @@ export class FlatPanelDynamic extends FlatQuestion<QuestionPanelDynamicModel> {
 
             if (panelFlats.length !== 0) {
                 currPoint.yTop = SurveyHelper.mergeRects(...panelFlats).yBot;
-                currPoint.yTop += this.controller.unitHeight * FlatPanelDynamic.GAP_BETWEEN_PANELS;
+                currPoint.yTop += SurveyHelper.getScaledVerticalSize(this.controller, this.styles.gapBetweenPanels);
                 flats.push(...panelFlats);
             }
         }

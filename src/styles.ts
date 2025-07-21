@@ -44,6 +44,7 @@ export const styles: IStyles = {
     },
     multipletext: {
         gapBetweenColumns: 1.5,
+        rowsGapScale: 0.195
     },
     rating: {
         gapBetweenRows: 0.25
@@ -57,5 +58,13 @@ export const styles: IStyles = {
     },
     dropdown: {
         gapBetweenRows: 0.25
+    },
+    file: {
+        imageGapScale: 0.195,
+        textMinScale: 5,
+        defaultImageFit: 'contain'
+    },
+    paneldynamic: {
+        gapBetweenPanels: 0.75
     }
 };
