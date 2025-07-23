@@ -73,10 +73,9 @@ export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSele
         const flats: IPdfBrick[] = [];
         for (let row of rows) {
             const rowFlat: CompositeBrick = new CompositeBrick();
-            this.controller.pushMargins(this.controller.margins.left, this.controller.margins.right);
             for (let colIndex = 0; colIndex < row.length; colIndex ++) {
                 const item = row[colIndex];
-                this.controller.pushMargins(this.controller.margins.left, this.controller.margins.right);
+                this.controller.pushMargins();
                 SurveyHelper.setColumnMargins(this.controller, colCount, colIndex, this.styles.gapBetweenColumns);
                 currPoint.xLeft = this.controller.margins.left;
                 const itemFlat: IPdfBrick = await this.generateFlatComposite(
