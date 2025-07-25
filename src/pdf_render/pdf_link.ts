@@ -1,6 +1,6 @@
 import { ITextAppearanceOptions, ITextBrickOptions, TextBrick } from './pdf_text';
 import { SurveyHelper } from '../helper_survey';
-import { DocController, IRect } from '../entries/pdf';
+import { IRect, DocController } from '../doc_controller';
 
 export interface ILinkOptions extends ITextBrickOptions {
     link: string;

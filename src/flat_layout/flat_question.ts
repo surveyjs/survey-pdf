@@ -7,7 +7,7 @@ import { SurveyHelper } from '../helper_survey';
 import { AdornersOptions } from '../event_handler/adorners';
 import { FlatRepository } from './flat_repository';
 import { IStyles } from '../styles';
-import { ITextAppearanceOptions } from 'src/pdf_render/pdf_text';
+import { ITextAppearanceOptions } from '../pdf_render/pdf_text';
 
 export interface IFlatQuestion {
     generateFlatsContent(point: IPoint): Promise<IPdfBrick[]>;

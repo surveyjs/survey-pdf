@@ -1,7 +1,6 @@
-import { IQuestion } from 'survey-core';
-import { IPdfBrick, IPdfBrickOptions, PdfBrick } from './pdf_brick';
-import { DocController, IRect } from '../doc_controller';
-import { IPoint } from '../entries/pdf';
+import { IPdfBrickOptions, PdfBrick } from './pdf_brick';
+import { DocController } from '../doc_controller';
+import { IPoint } from '../doc_controller';
 
 export interface IImageBrickOptions extends IPdfBrickOptions {
     link: string;
