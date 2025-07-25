@@ -34,12 +34,14 @@
 								"xRight": 222.56645669291342,
 								"yTop": 28.34645669291339,
 								"yBot": 73.19645669291339,
-								"text": "Panel Title",
-								"options": {
+								"appearance": {
 									"fontSize": 39,
 									"fontName": "helvetica",
 									"fontStyle": "bold",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "Panel Title"
 								}
 							}
 						]
@@ -63,12 +65,14 @@
 						"xRight": 180.54645669291338,
 						"yTop": 81.82145669291339,
 						"yBot": 104.82145669291339,
-						"text": "Panel description",
-						"options": {
+						"appearance": {
 							"fontSize": 20,
 							"fontName": "helvetica",
 							"fontStyle": "normal",
 							"fontColor": "#404040"
+						},
+						"options": {
+							"text": "Panel description"
 						}
 					}
 				]
@@ -119,12 +123,14 @@
 								"xRight": 286.40645669291337,
 								"yTop": 139.3214566929134,
 								"yBot": 177.27145669291338,
-								"text": "I am in the panel",
-								"options": {
+								"appearance": {
 									"fontSize": 33,
 									"fontName": "helvetica",
 									"fontStyle": "bold",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "I am in the panel"
 								}
 							}
 						]
@@ -148,11 +154,18 @@
 				"xRight": 566.9291338582677,
 				"yTop": 194.52145669291338,
 				"yBot": 229.02145669291338,
+				"appearance": {
+					"fontName": "helvetica",
+					"fontColor": "#404040",
+					"fontSize": 30,
+					"fontStyle": "normal"
+				},
 				"options": {
 					"fieldName": "testidquestion_I am in the panel",
 					"inputType": "text",
 					"value": "",
 					"isReadOnly": false,
+					"shouldRenderReadOnly": false,
 					"shouldRenderBorders": true,
 					"placeholder": "",
 					"isMultiline": false

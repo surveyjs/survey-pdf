@@ -34,12 +34,17 @@
 								"xRight": 151.3464566929134,
 								"yTop": 28.34645669291339,
 								"yBot": 62.84645669291339,
-								"text": "text.txt",
-								"options": {
+								"appearance": {
 									"fontSize": 30,
-									"fontColor": "#0000EE",
+									"fontName": "helvetica",
 									"fontStyle": "normal",
-									"fontName": "helvetica"
+									"fontColor": "#0000EE"
+								},
+								"options": {
+									"link": "data:text/plain;base64,aGVsbG8=",
+									"text": "text.txt",
+									"readOnlyShowLink": false,
+									"shouldRenderReadOnly": false
 								}
 							},
 							{
@@ -81,12 +86,17 @@
 								"xRight": 292.3464566929134,
 								"yTop": 28.34645669291339,
 								"yBot": 62.84645669291339,
-								"text": "letter.txt",
-								"options": {
+								"appearance": {
 									"fontSize": 30,
-									"fontColor": "#0000EE",
+									"fontName": "helvetica",
 									"fontStyle": "normal",
-									"fontName": "helvetica"
+									"fontColor": "#0000EE"
+								},
+								"options": {
+									"link": "data:text/plain;base64,dG8gaG9tZQ==",
+									"text": "letter.txt",
+									"readOnlyShowLink": false,
+									"shouldRenderReadOnly": false
 								}
 							},
 							{

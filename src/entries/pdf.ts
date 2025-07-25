@@ -31,8 +31,6 @@ export { PagePacker } from '../page_layout/page_packer';
 export { EventHandler } from '../event_handler/event_handler';
 export { HorizontalAlign, VerticalAlign, IDrawRectOptions, IDrawTextOptions, IDrawImageOptions, DrawCanvas } from '../event_handler/draw_canvas';
 export { IPdfBrick, PdfBrick } from '../pdf_render/pdf_brick';
-export { BooleanItemBrick } from '../pdf_render/pdf_booleanitem';
-export { CheckboxItemBrick } from '../pdf_render/pdf_checkboxitem';
 export { CheckItemBrick } from '../pdf_render/pdf_checkitem';
 export { CompositeBrick } from '../pdf_render/pdf_composite';
 export { CustomBrick } from '../pdf_render/pdf_custom';

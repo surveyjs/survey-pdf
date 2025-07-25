@@ -25,12 +25,14 @@
 						"xRight": 72.30645669291339,
 						"yTop": 28.34645669291339,
 						"yBot": 44.44645669291339,
-						"text": "Row",
-						"options": {
+						"appearance": {
 							"fontSize": 14,
 							"fontName": "helvetica",
 							"fontStyle": "normal",
 							"fontColor": "#404040"
+						},
+						"options": {
+							"text": "Row"
 						}
 					}
 				]
@@ -51,7 +53,19 @@
 						"xLeft": 44.44645669291339,
 						"xRight": 59.741456692913374,
 						"yTop": 52.89895669291339,
-						"yBot": 68.19395669291337
+						"yBot": 68.19395669291337,
+						"appearance": {
+							"fontName": "zapfdingbats",
+							"fontSize": 7.394405440157338,
+							"fontColor": "#9f9f9f",
+							"fontStyle": "normal",
+							"checkMark": "l"
+						},
+						"options": {
+							"index": 0,
+							"checked": false,
+							"shouldRenderReadOnly": false
+						}
 					},
 					{
 						"brickType": "CompositeBrick",
@@ -70,12 +84,14 @@
 								"xRight": 123.26645669291338,
 								"yTop": 52.496456692913384,
 								"yBot": 68.59645669291338,
-								"text": "Column 1",
-								"options": {
+								"appearance": {
 									"fontSize": 14,
 									"fontName": "helvetica",
 									"fontStyle": "normal",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "Column 1"
 								}
 							}
 						]
@@ -98,7 +114,19 @@
 						"xLeft": 44.44645669291339,
 						"xRight": 59.741456692913374,
 						"yTop": 73.02395669291339,
-						"yBot": 88.31895669291337
+						"yBot": 88.31895669291337,
+						"appearance": {
+							"fontName": "zapfdingbats",
+							"fontSize": 7.394405440157338,
+							"fontColor": "#9f9f9f",
+							"fontStyle": "normal",
+							"checkMark": "l"
+						},
+						"options": {
+							"index": 1,
+							"checked": false,
+							"shouldRenderReadOnly": false
+						}
 					},
 					{
 						"brickType": "CompositeBrick",
@@ -117,12 +145,14 @@
 								"xRight": 123.26645669291338,
 								"yTop": 72.62145669291338,
 								"yBot": 88.72145669291338,
-								"text": "Column 2",
-								"options": {
+								"appearance": {
 									"fontSize": 14,
 									"fontName": "helvetica",
 									"fontStyle": "normal",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "Column 2"
 								}
 							}
 						]

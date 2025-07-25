@@ -34,12 +34,14 @@
 								"xRight": 121.04645669291342,
 								"yTop": 28.34645669291339,
 								"yBot": 62.84645669291339,
-								"text": "One",
-								"options": {
+								"appearance": {
 									"fontSize": 30,
 									"fontName": "helvetica",
 									"fontStyle": "bold",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "One"
 								}
 							}
 						]
@@ -72,12 +74,14 @@
 								"xRight": 287.67962598425197,
 								"yTop": 28.34645669291339,
 								"yBot": 62.84645669291339,
-								"text": "Two",
-								"options": {
+								"appearance": {
 									"fontSize": 30,
 									"fontName": "helvetica",
 									"fontStyle": "bold",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "Two"
 								}
 							}
 						]
@@ -129,7 +133,21 @@
 								"xLeft": 62.84645669291342,
 								"xRight": 175.92962598425197,
 								"yTop": 80.09645669291339,
-								"yBot": 114.59645669291339
+								"yBot": 114.59645669291339,
+								"appearance": {
+									"fontColor": "#404040",
+									"fontName": "helvetica",
+									"fontSize": 30,
+									"fontStyle": "normal"
+								},
+								"options": {
+									"fieldName": "testidquestion_madincolwidth_row1_cell_0",
+									"value": "Select...",
+									"isReadOnly": false,
+									"optionsCaption": "Select...",
+									"showOptionsCaption": true,
+									"items": []
+								}
 							}
 						]
 					}
@@ -160,7 +178,21 @@
 								"xLeft": 227.67962598425197,
 								"xRight": 566.9291338582677,
 								"yTop": 80.09645669291339,
-								"yBot": 114.59645669291339
+								"yBot": 114.59645669291339,
+								"appearance": {
+									"fontColor": "#404040",
+									"fontName": "helvetica",
+									"fontSize": 30,
+									"fontStyle": "normal"
+								},
+								"options": {
+									"fieldName": "testidquestion_madincolwidth_row1_cell_1",
+									"value": "Select...",
+									"isReadOnly": false,
+									"optionsCaption": "Select...",
+									"showOptionsCaption": true,
+									"items": []
+								}
 							}
 						]
 					}

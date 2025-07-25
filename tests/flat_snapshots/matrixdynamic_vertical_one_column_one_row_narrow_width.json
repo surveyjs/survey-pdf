@@ -34,12 +34,14 @@
 								"xRight": 76.78645669291339,
 								"yTop": 28.34645669291339,
 								"yBot": 44.44645669291339,
-								"text": "Boop",
-								"options": {
+								"appearance": {
 									"fontSize": 14,
 									"fontName": "helvetica",
 									"fontStyle": "normal",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "Boop"
 								}
 							}
 						]
@@ -71,7 +73,21 @@
 								"xLeft": 151.9714566929134,
 								"xRight": 235.34645669291336,
 								"yTop": 28.34645669291339,
-								"yBot": 44.44645669291339
+								"yBot": 44.44645669291339,
+								"appearance": {
+									"fontColor": "#404040",
+									"fontName": "helvetica",
+									"fontSize": 14,
+									"fontStyle": "normal"
+								},
+								"options": {
+									"fieldName": "testidquestion_madivertnar_row1_cell_1",
+									"value": "Select...",
+									"isReadOnly": false,
+									"optionsCaption": "Select...",
+									"showOptionsCaption": true,
+									"items": []
+								}
 							}
 						]
 					}

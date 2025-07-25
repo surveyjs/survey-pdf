@@ -3,11 +3,29 @@ import { IRect } from '../doc_controller';
 import { FlatSelectBase } from './flat_selectbase';
 import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
-import { CheckboxItemBrick } from '../pdf_render/pdf_checkboxitem';
+import { CheckItemBrick } from '../pdf_render/pdf_checkitem';
+import { SurveyHelper } from '../helper_survey';
 
 export class FlatCheckbox<T extends QuestionCheckboxModel = QuestionCheckboxModel> extends FlatSelectBase<T> {
     public generateFlatItem(rect: IRect, item: ItemValue, index: number): IPdfBrick {
-        return new CheckboxItemBrick(this.question, this.controller, rect, item, index);
+        const isReadOnly = this.question.isReadOnly || !item.isEnabled;
+        return new CheckItemBrick(this.controller, rect,
+            {
+                shouldRenderReadOnly: isReadOnly && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform' || this.controller.compress,
+                readOnly: isReadOnly,
+                checked: this.question.isItemSelected(item),
+                fieldName: this.question.id + 'index' + index,
+                updateOptions: (options) => {
+                    this.survey.updateCheckItemAcroformOptions(options, this.question, item);
+                }
+            },
+            {
+                fontName: CheckItemBrick.CHECKMARK_READONLY_FONT,
+                fontColor: SurveyHelper.FORM_BORDER_COLOR,
+                fontSize: this.controller.fontSize * CheckItemBrick.CHECKMARK_READONLY_FONT_SIZE_SCALE,
+                checkMark: CheckItemBrick.CHECKMARK_READONLY_SYMBOL,
+                fontStyle: 'normal'
+            });
     }
 }
 export class FlatTagbox extends FlatCheckbox<QuestionTagboxModel> {

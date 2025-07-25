@@ -1,23 +1,28 @@
 import { IQuestion } from 'survey-core';
-import { PdfBrick } from './pdf_brick';
-import { DocController } from '../doc_controller';
+import { IPdfBrick, IPdfBrickOptions, PdfBrick } from './pdf_brick';
+import { DocController, IRect } from '../doc_controller';
 import { IPoint } from '../entries/pdf';
 
+export interface IImageBrickOptions extends IPdfBrickOptions {
+    link: string;
+    width: number;
+    height: number;
+}
+
 export class ImageBrick extends PdfBrick {
-    public constructor(question: IQuestion, controller: DocController, protected image: string,
-        point: IPoint, protected originalWidth: number, protected originalHeight: number) {
-        super(question, controller, {
+    public constructor(controller: DocController, point: IPoint, protected options: IImageBrickOptions) {
+        super(controller, {
             xLeft: point.xLeft,
-            xRight: point.xLeft + (originalWidth || 0),
+            xRight: point.xLeft + (options.width || 0),
             yTop: point.yTop,
-            yBot: point.yTop + (originalHeight || 0)
+            yBot: point.yTop + (options.height || 0)
         });
-        this.isPageBreak = this.originalHeight === undefined;
+        this.isPageBreak = this.options.height === undefined;
     }
     public async renderInteractive(): Promise<void> {
         await new Promise<void>((resolve) => {
             try {
-                this.controller.doc.addImage(this.image, 'PNG', this.xLeft, this.yTop, this.originalWidth, this.originalHeight);
+                this.controller.doc.addImage(this.options.link, 'PNG', this.xLeft, this.yTop, this.options.width, this.options.height);
             } finally {
                 resolve();
             }

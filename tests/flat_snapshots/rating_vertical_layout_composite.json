@@ -15,7 +15,19 @@
 				"xLeft": 62.84645669291339,
 				"xRight": 95.62145669291338,
 				"yTop": 29.20895669291339,
-				"yBot": 61.983956692913395
+				"yBot": 61.983956692913395,
+				"appearance": {
+					"fontName": "zapfdingbats",
+					"fontSize": 15.845154514622866,
+					"fontColor": "#9f9f9f",
+					"fontStyle": "normal",
+					"checkMark": "l"
+				},
+				"options": {
+					"index": 0,
+					"checked": false,
+					"shouldRenderReadOnly": false
+				}
 			},
 			{
 				"brickType": "CompositeBrick",
@@ -34,12 +46,14 @@
 						"xRight": 298.34645669291336,
 						"yTop": 28.34645669291339,
 						"yBot": 62.84645669291339,
-						"text": "Not Satisfied 1",
-						"options": {
+						"appearance": {
 							"fontSize": 30,
 							"fontName": "helvetica",
 							"fontStyle": "normal",
 							"fontColor": "#404040"
+						},
+						"options": {
+							"text": "Not Satisfied 1"
 						}
 					}
 				]

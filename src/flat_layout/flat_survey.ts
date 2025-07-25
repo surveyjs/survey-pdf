@@ -4,7 +4,7 @@ import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { RowlineBrick } from '../pdf_render/pdf_rowline';
 import { SurveyHelper } from '../helper_survey';
-import { ITextOptions } from '../pdf_render/pdf_text';
+import { ITextAppearanceOptions } from '../pdf_render/pdf_text';
 
 export class FlatSurvey {
     private static popRowlines(flats: IPdfBrick[]) {
@@ -18,12 +18,12 @@ export class FlatSurvey {
         if (survey.showTitle) {
             const styles = survey.styles;
             if (survey.title) {
-                const textOptions:Partial<ITextOptions> = {
+                const textOptions:Partial<ITextAppearanceOptions> = {
                     fontSize: SurveyHelper.getScaledFontSize(controller, styles.titleFontSizeScale),
                     fontStyle: styles.titleFontStyle,
                     fontColor: styles.titleFontColor
                 };
-                const surveyTitleFlat: IPdfBrick = await SurveyHelper.createTextFlat(point, null, controller, survey.locTitle, textOptions);
+                const surveyTitleFlat: IPdfBrick = await SurveyHelper.createTextFlat(point, controller, survey.locTitle, textOptions);
                 compositeFlat.addBrick(surveyTitleFlat);
                 point = SurveyHelper.createPoint(surveyTitleFlat);
             }
@@ -32,7 +32,7 @@ export class FlatSurvey {
                     point.yTop += SurveyHelper.getScaledHorizontalSize(controller, styles.descriptionGapScale);
                 }
                 compositeFlat.addBrick(await SurveyHelper.createTextFlat(
-                    point, null, controller, survey.locDescription, { fontSize: controller.fontSize * SurveyHelper.DESCRIPTION_FONT_SIZE_SCALE }));
+                    point, controller, survey.locDescription, { fontSize: controller.fontSize * SurveyHelper.DESCRIPTION_FONT_SIZE_SCALE }));
             }
         }
         return compositeFlat;

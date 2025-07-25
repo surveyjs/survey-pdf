@@ -96,9 +96,8 @@ interface IFlatSnaphotOptions extends ISnapshotOptions {
 
 export const globalAllowedPropertiesHash: PropertiesHash = {
     'default': ['width', 'height', 'xLeft', 'xRight', 'yTop', 'yBot'],
-    'CompositeBrick': [{ name: 'bricks', deep: true }],
-    'TextBrick': ['text', 'options'],
-    'TextFieldBrick': ['options'],
+    'PdfBrick': ['appearance', 'options'],
+    'CompositeBrick': [{ name: 'bricks', deep: true }]
 };
 
 function processBrick(brick: IPdfBrick, propertiesHash: PropertiesHash): any {
@@ -154,7 +153,7 @@ export async function checkFlatSnapshot(surveyJSON: any, snapshotOptions: IFlatS
     const controller = new DocController(snapshotOptions.controllerOptions ?? TestHelper.defaultOptions);
     const compareCallback = (bricks: Array<Array<IPdfBrick>> | Array<IPdfBrick>) => {
         const allowedPropertiesHash = Object.assign({}, globalAllowedPropertiesHash, snapshotOptions.allowedPropertiesHash ?? {}) as PropertiesHash;
-        const actual = processBricks(bricks, allowedPropertiesHash);
+        const actual = JSON.parse(JSON.stringify(processBricks(bricks, allowedPropertiesHash), null, '\t'));
         const fileName = `${__dirname}/flat_snapshots/${snapshotOptions.snapshotName}.json`;
         const compare = () => {
             const expected = JSON.parse(readFileSync(fileName, 'utf8'));

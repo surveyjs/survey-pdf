@@ -34,12 +34,14 @@
 								"xRight": 210.44645669291342,
 								"yTop": 28.34645669291339,
 								"yBot": 62.84645669291339,
-								"text": "First power",
-								"options": {
+								"appearance": {
 									"fontSize": 30,
 									"fontName": "helvetica",
 									"fontStyle": "normal",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "First power"
 								}
 							}
 						]

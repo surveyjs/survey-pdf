@@ -34,12 +34,17 @@
 								"xRight": 160.64645669291338,
 								"yTop": 28.34645669291339,
 								"yBot": 62.84645669291339,
-								"text": "cat.png",
-								"options": {
+								"appearance": {
 									"fontSize": 30,
-									"fontColor": "#0000EE",
+									"fontName": "helvetica",
 									"fontStyle": "normal",
-									"fontName": "helvetica"
+									"fontColor": "#0000EE"
+								},
+								"options": {
+									"link": "some url",
+									"text": "cat.png",
+									"readOnlyShowLink": false,
+									"shouldRenderReadOnly": false
 								}
 							},
 							{
@@ -60,7 +65,13 @@
 						"xLeft": 62.84645669291339,
 						"xRight": 212.8464566929134,
 						"yTop": 69.5739566929134,
-						"yBot": 182.07395669291338
+						"yBot": 182.07395669291338,
+						"options": {
+							"link": "some url",
+							"width": 150,
+							"height": 112.5,
+							"objectFit": "contain"
+						}
 					}
 				]
 			}

@@ -51,8 +51,7 @@ test('Event render questions simple textbox add bottom description', async () =>
     survey.onRenderQuestion.add(async (_, options: AdornersOptions) => {
         let point: IPoint = SurveyHelper.createPoint(
             options.bricks[options.bricks.length - 1]);
-        let descBrick: IPdfBrick = await SurveyHelper.createTextFlat(point,
-            options.question, options.controller, 'Some description', { fontSize: 2.0 / 3.0 * controller.fontSize });
+        let descBrick: IPdfBrick = await SurveyHelper.createTextFlat(point, options.controller, 'Some description', { fontSize: 2.0 / 3.0 * controller.fontSize });
         options.bricks.push(descBrick);
     });
     let controller: DocController = new DocController(TestHelper.defaultOptions);
@@ -134,8 +133,7 @@ test('Event render panel simple panel add bottom description', async () => {
     survey.onRenderPanel.add(async (_, options: AdornersPanelOptions) => {
         let point: IPoint = SurveyHelper.createPoint(
             options.bricks[options.bricks.length - 1]);
-        let descBrick: IPdfBrick = await SurveyHelper.createTextFlat(point,
-            null, options.controller, 'Some description', { fontSize: 2.0 / 3.0 * controller.fontSize, fontStyle: 'bold' });
+        let descBrick: IPdfBrick = await SurveyHelper.createTextFlat(point, options.controller, 'Some description', { fontSize: 2.0 / 3.0 * controller.fontSize, fontStyle: 'bold' });
         options.bricks.push(descBrick);
     });
     let controller: DocController = new DocController(TestHelper.defaultOptions);
@@ -193,8 +191,7 @@ test('Event render panel simple panel add bottom description', async () => {
     survey.onRenderPanel.add(async (_, options: AdornersPanelOptions) => {
         let point: IPoint = SurveyHelper.createPoint(
             options.bricks[options.bricks.length - 1]);
-        let descBrick: IPdfBrick = await SurveyHelper.createTextFlat(point,
-            null, options.controller, 'Some description', { fontSize: 2.0 / 3.0 * controller.fontSize, fontStyle: 'bold' });
+        let descBrick: IPdfBrick = await SurveyHelper.createTextFlat(point, options.controller, 'Some description', { fontSize: 2.0 / 3.0 * controller.fontSize, fontStyle: 'bold' });
         options.bricks.push(descBrick);
     });
     let controller: DocController = new DocController(TestHelper.defaultOptions);
@@ -246,8 +243,7 @@ test('Event render page simple page add bottom description', async () => {
     survey.onRenderPage.add(async (_, options: AdornersPageOptions) => {
         let point: IPoint = SurveyHelper.createPoint(
             options.bricks[options.bricks.length - 1]);
-        let descBrick: IPdfBrick = await SurveyHelper.createTextFlat(point,
-            null, options.controller, 'Some description', { fontSize: 2.0 / 3.0 * controller.fontSize, fontStyle: 'bold' });
+        let descBrick: IPdfBrick = await SurveyHelper.createTextFlat(point, options.controller, 'Some description', { fontSize: 2.0 / 3.0 * controller.fontSize, fontStyle: 'bold' });
         options.bricks.push(descBrick);
     });
     let controller: DocController = new DocController(TestHelper.defaultOptions);

@@ -5,7 +5,7 @@ import { FlatQuestion } from './flat_question';
 
 export class FlatQuestionDefault extends FlatQuestion {
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
-        const valueBrick = await SurveyHelper.createTextFlat(point, this.question, this.controller, `${this.question.displayValue}`);
+        const valueBrick = await SurveyHelper.createTextFlat(point, this.controller, `${this.question.displayValue}`);
         return [valueBrick];
     }
 }

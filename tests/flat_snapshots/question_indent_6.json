@@ -34,12 +34,14 @@
 								"xRight": 470.9664566929134,
 								"yTop": 28.34645669291339,
 								"yBot": 66.29645669291338,
-								"text": "I stand straight",
-								"options": {
+								"appearance": {
 									"fontSize": 33,
 									"fontName": "helvetica",
 									"fontStyle": "bold",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "I stand straight"
 								}
 							}
 						]
@@ -65,13 +67,26 @@
 				"yBot": 118.04645669291338,
 				"bricks": [
 					{
-						"brickType": "CheckboxItemBrick",
+						"brickType": "CheckItemBrick",
 						"width": 32.775000000000034,
 						"height": 32.775000000000006,
 						"xLeft": 269.8464566929134,
 						"xRight": 302.62145669291345,
 						"yTop": 84.40895669291338,
-						"yBot": 117.18395669291338
+						"yBot": 117.18395669291338,
+						"appearance": {
+							"fontName": "zapfdingbats",
+							"fontColor": "#9f9f9f",
+							"fontSize": 21.845154514622866,
+							"checkMark": "3",
+							"fontStyle": "normal"
+						},
+						"options": {
+							"shouldRenderReadOnly": false,
+							"readOnly": false,
+							"checked": false,
+							"fieldName": "testidquestion_checkbox_cycle_indentindex0"
+						}
 					},
 					{
 						"brickType": "CompositeBrick",
@@ -90,12 +105,14 @@
 								"xRight": 475.3464566929134,
 								"yTop": 83.54645669291338,
 								"yBot": 118.04645669291338,
-								"text": "Right choice",
-								"options": {
+								"appearance": {
 									"fontSize": 30,
 									"fontName": "helvetica",
 									"fontStyle": "normal",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "Right choice"
 								}
 							}
 						]

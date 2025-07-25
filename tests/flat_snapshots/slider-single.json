@@ -12,9 +12,16 @@
 			"inputType": "number",
 			"value": 50,
 			"isReadOnly": false,
+			"shouldRenderReadOnly": false,
 			"shouldRenderBorders": true,
 			"isMultiline": false,
 			"placeholder": ""
+		},
+		"appearance": {
+			"fontName": "helvetica",
+			"fontColor": "#404040",
+			"fontSize": 30,
+			"fontStyle": "normal"
 		}
 	}
 ]

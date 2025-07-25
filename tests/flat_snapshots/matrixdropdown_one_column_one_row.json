@@ -34,12 +34,14 @@
 								"xRight": 502.1627952755906,
 								"yTop": 28.34645669291339,
 								"yBot": 62.84645669291339,
-								"text": "First power",
-								"options": {
+								"appearance": {
 									"fontSize": 30,
 									"fontName": "helvetica",
 									"fontStyle": "bold",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "First power"
 								}
 							}
 						]
@@ -92,12 +94,14 @@
 								"xRight": 140.5464566929134,
 								"yTop": 80.09645669291339,
 								"yBot": 114.59645669291339,
-								"text": "Arrow",
-								"options": {
+								"appearance": {
 									"fontSize": 30,
 									"fontName": "helvetica",
 									"fontStyle": "normal",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "Arrow"
 								}
 							}
 						]
@@ -129,7 +133,21 @@
 								"xLeft": 340.7627952755906,
 								"xRight": 566.9291338582677,
 								"yTop": 80.09645669291339,
-								"yBot": 114.59645669291339
+								"yBot": 114.59645669291339,
+								"appearance": {
+									"fontColor": "#404040",
+									"fontName": "helvetica",
+									"fontSize": 30,
+									"fontStyle": "normal"
+								},
+								"options": {
+									"fieldName": "testidquestion_matrixmultiple_onecolumnonerow_row1_cell_1",
+									"value": "Select...",
+									"isReadOnly": false,
+									"optionsCaption": "Select...",
+									"showOptionsCaption": true,
+									"items": []
+								}
 							}
 						]
 					}

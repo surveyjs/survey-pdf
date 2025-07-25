@@ -34,12 +34,14 @@
 								"xRight": 95.9964566929134,
 								"yTop": 28.34645669291339,
 								"yBot": 66.29645669291338,
-								"text": "Title",
-								"options": {
+								"appearance": {
 									"fontSize": 33,
 									"fontName": "helvetica",
 									"fontStyle": "bold",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "Title"
 								}
 							}
 						]
@@ -54,11 +56,18 @@
 				"xRight": 566.9291338582677,
 				"yTop": 28.34645669291339,
 				"yBot": 62.84645669291339,
+				"appearance": {
+					"fontName": "helvetica",
+					"fontColor": "#404040",
+					"fontSize": 30,
+					"fontStyle": "normal"
+				},
 				"options": {
 					"fieldName": "testidquestion_textbox left bound",
 					"inputType": "text",
 					"value": "",
 					"isReadOnly": false,
+					"shouldRenderReadOnly": false,
 					"shouldRenderBorders": true,
 					"placeholder": "",
 					"isMultiline": false

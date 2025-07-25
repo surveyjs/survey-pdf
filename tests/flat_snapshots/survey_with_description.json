@@ -26,12 +26,14 @@
 							"xRight": 266.94645669291333,
 							"yTop": 28.34645669291339,
 							"yBot": 51.34645669291339,
-							"text": "One giant leap for mankind",
-							"options": {
+							"appearance": {
 								"fontSize": 20,
 								"fontName": "helvetica",
 								"fontStyle": "normal",
 								"fontColor": "#404040"
+							},
+							"options": {
+								"text": "One giant leap for mankind"
 							}
 						}
 					]
@@ -55,11 +57,18 @@
 			"xRight": 566.9291338582677,
 			"yTop": 85.84645669291339,
 			"yBot": 120.34645669291339,
+			"appearance": {
+				"fontName": "helvetica",
+				"fontColor": "#404040",
+				"fontSize": 30,
+				"fontStyle": "normal"
+			},
 			"options": {
 				"fieldName": "testidquestion_MissText",
 				"inputType": "text",
 				"value": "",
 				"isReadOnly": false,
+				"shouldRenderReadOnly": false,
 				"shouldRenderBorders": true,
 				"placeholder": "",
 				"isMultiline": false

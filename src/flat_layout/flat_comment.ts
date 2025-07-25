@@ -17,6 +17,11 @@ export class FlatComment extends FlatQuestion<QuestionCommentModel> {
                 placeholder: SurveyHelper.getLocString(this.question.locPlaceHolder),
                 shouldRenderBorders: settings.readOnlyCommentRenderMode === 'textarea',
                 value: this.question.value
+            }, {
+                fontName: this.controller.fontName,
+                fontColor: SurveyHelper.TEXT_COLOR,
+                fontSize: this.controller.fontSize,
+                fontStyle: 'normal'
             })];
     }
 }

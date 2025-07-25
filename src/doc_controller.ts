@@ -6,7 +6,7 @@ import { LocalizableString } from 'survey-core';
 import setRadioAppearance from './jspdf_plugins/acroform_radio';
 import './jspdf_plugins/acroform.js';
 import './jspdf_plugins/from_html.js';
-import { ITextOptions } from './pdf_render/pdf_text';
+import { ITextAppearanceOptions } from './pdf_render/pdf_text';
 
 export interface IPoint {
     /**
@@ -459,8 +459,8 @@ export class DocController extends DocOptions {
         this._doc.setFont(this._fontName, fontStyle);
         this._helperDoc.setFont(this._fontName, fontStyle);
     }
-    public measureText(text: string | LocalizableString | number = 1, options?: Partial<ITextOptions>): ISize {
-        const newOptions = SurveyHelper.mergeObjects(SurveyHelper.getDefaultTextOptions(this), options ?? {});
+    public measureText(text: string | LocalizableString | number = 1, options?: Partial<ITextAppearanceOptions>): ISize {
+        const newOptions = SurveyHelper.mergeObjects(SurveyHelper.getDefaultTextAppearanceOptions(this), options ?? {});
         const oldFontSize: number = this._helperDoc.getFontSize();
         const oldFontName: string = this._helperDoc.getFont().fontName;
         const oldFontStyle: string = this._helperDoc.getFont().fontStyle;

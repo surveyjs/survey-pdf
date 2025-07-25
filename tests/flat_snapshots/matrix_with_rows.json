@@ -25,12 +25,14 @@
 						"xRight": 410.06279527559053,
 						"yTop": 28.34645669291339,
 						"yBot": 62.84645669291339,
-						"text": "test1",
-						"options": {
+						"appearance": {
 							"fontSize": 30,
 							"fontName": "helvetica",
 							"fontStyle": "bold",
 							"fontColor": "#404040"
+						},
+						"options": {
+							"text": "test1"
 						}
 					}
 				]
@@ -72,12 +74,14 @@
 						"xRight": 127.64645669291339,
 						"yTop": 80.09645669291339,
 						"yBot": 114.59645669291339,
-						"text": "test2",
-						"options": {
+						"appearance": {
 							"fontSize": 30,
 							"fontName": "helvetica",
 							"fontStyle": "normal",
 							"fontColor": "#404040"
+						},
+						"options": {
+							"text": "test2"
 						}
 					}
 				]
@@ -89,7 +93,19 @@
 				"xLeft": 340.7627952755905,
 				"xRight": 373.53779527559055,
 				"yTop": 80.95895669291339,
-				"yBot": 113.7339566929134
+				"yBot": 113.7339566929134,
+				"appearance": {
+					"fontName": "zapfdingbats",
+					"fontSize": 15.845154514622866,
+					"fontColor": "#9f9f9f",
+					"fontStyle": "normal",
+					"checkMark": "l"
+				},
+				"options": {
+					"index": 0,
+					"checked": false,
+					"shouldRenderReadOnly": false
+				}
 			}
 		]
 	},

@@ -34,12 +34,14 @@
 								"xRight": 62.84645669291342,
 								"yTop": 28.34645669291339,
 								"yBot": 62.84645669291339,
-								"text": "",
-								"options": {
+								"appearance": {
 									"fontSize": 30,
 									"fontName": "helvetica",
 									"fontStyle": "bold",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": ""
 								}
 							}
 						]
@@ -83,11 +85,18 @@
 						"xRight": 566.9291338582677,
 						"yTop": 80.09645669291339,
 						"yBot": 114.59645669291339,
+						"appearance": {
+							"fontName": "helvetica",
+							"fontColor": "#404040",
+							"fontSize": 30,
+							"fontStyle": "normal"
+						},
 						"options": {
 							"fieldName": "testidquestion_panel_row1_cell_1",
 							"inputType": "text",
 							"value": "",
 							"isReadOnly": false,
+							"shouldRenderReadOnly": false,
 							"shouldRenderBorders": true,
 							"placeholder": "",
 							"isMultiline": false

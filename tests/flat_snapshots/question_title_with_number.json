@@ -34,12 +34,14 @@
 								"xRight": 64.97645669291339,
 								"yTop": 28.34645669291339,
 								"yBot": 66.29645669291338,
-								"text": "1. ",
-								"options": {
+								"appearance": {
 									"fontSize": 33,
 									"fontName": "helvetica",
 									"fontStyle": "bold",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "1. "
 								}
 							}
 						]
@@ -61,12 +63,14 @@
 								"xRight": 543.8064566929135,
 								"yTop": 28.34645669291339,
 								"yBot": 66.29645669291338,
-								"text": "Eeeeeeeeeemmmmmmmmmm",
-								"options": {
+								"appearance": {
 									"fontSize": 33,
 									"fontName": "helvetica",
 									"fontStyle": "bold",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "Eeeeeeeeeemmmmmmmmmm"
 								}
 							},
 							{
@@ -77,12 +81,14 @@
 								"xRight": 498.5964566929133,
 								"yTop": 66.29645669291338,
 								"yBot": 104.24645669291337,
-								"text": "mptttttyyyy chhhheeeckbox",
-								"options": {
+								"appearance": {
 									"fontSize": 33,
 									"fontName": "helvetica",
 									"fontStyle": "bold",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "mptttttyyyy chhhheeeckbox"
 								}
 							}
 						]

@@ -29,6 +29,7 @@ SurveyHelper.htmlToImage = async function(_: string, width: number):
 };
 
 test('Check choose auto render', async () => {
+    SurveyHelper.shouldConvertImageToPng = false;
     let json: any = {
         elements: [
             {
@@ -51,13 +52,13 @@ test('Check choose auto render', async () => {
     await checkFlatSnapshot(json, {
         snapshotName: 'html_auto_render_html',
         allowedPropertiesHash: {
-            'HTMLBrick': ['html']
+            'HTMLBrick': ['options']
         }
     });
     await checkFlatSnapshot(json2, {
         snapshotName: 'html_auto_render_image',
         allowedPropertiesHash: {
-            'HTMLBrick': ['html']
+            'HTMLBrick': ['options']
         }
     });
     SurveyHelper.shouldConvertImageToPng = true;
@@ -99,4 +100,5 @@ test('Check correctHtml method with multiple br tags', async () => {
     expect(htmlFlat['correctHtml']('<br><br/>')).toEqual('<br>');
     expect(htmlFlat['correctHtml']('<br / ><br>')).toEqual('<br>');
     expect(htmlFlat['correctHtml']('<br></br>')).toEqual('<br>');
+    SurveyHelper.shouldConvertImageToPng = true;
 });

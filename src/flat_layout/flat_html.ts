@@ -42,7 +42,7 @@ export class FlatHTML extends FlatQuestion<QuestionHtmlModel> {
             return [await SurveyHelper.createImageFlat(point, this.question, this.controller, { link: url, width, height })];
         }
         return [SurveyHelper.splitHtmlRect(this.controller, await SurveyHelper.createHTMLFlat(
-            point, this.question, this.controller, this.correctHtml(html)))];
+            point, this.controller, this.correctHtml(html)))];
     }
 }
 

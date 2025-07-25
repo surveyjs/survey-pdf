@@ -7,11 +7,18 @@
 		"xRight": 566.9291338582677,
 		"yTop": 28.34645669291339,
 		"yBot": 62.84645669291339,
+		"appearance": {
+			"fontName": "helvetica",
+			"fontColor": "#404040",
+			"fontSize": 30,
+			"fontStyle": "normal"
+		},
 		"options": {
 			"fieldName": "testidquestion_q1",
 			"inputType": "text",
 			"value": "",
 			"isReadOnly": false,
+			"shouldRenderReadOnly": false,
 			"shouldRenderBorders": true,
 			"placeholder": "",
 			"isMultiline": false
@@ -34,12 +41,14 @@
 				"xRight": 158.8464566929134,
 				"yTop": 71.47145669291339,
 				"yBot": 94.47145669291339,
-				"text": "description",
-				"options": {
+				"appearance": {
 					"fontSize": 20,
 					"fontName": "helvetica",
 					"fontStyle": "normal",
 					"fontColor": "#404040"
+				},
+				"options": {
+					"text": "description"
 				}
 			}
 		]
@@ -79,12 +88,14 @@
 								"xRight": 64.97645669291339,
 								"yTop": 111.72145669291339,
 								"yBot": 149.67145669291338,
-								"text": "1. ",
-								"options": {
+								"appearance": {
 									"fontSize": 33,
 									"fontName": "helvetica",
 									"fontStyle": "bold",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "1. "
 								}
 							}
 						]
@@ -106,12 +117,14 @@
 								"xRight": 103.25645669291339,
 								"yTop": 111.72145669291339,
 								"yBot": 149.67145669291338,
-								"text": "q1",
-								"options": {
+								"appearance": {
 									"fontSize": 33,
 									"fontName": "helvetica",
 									"fontStyle": "bold",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "q1"
 								}
 							}
 						]

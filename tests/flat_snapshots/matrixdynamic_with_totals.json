@@ -33,7 +33,21 @@
 								"xLeft": 62.84645669291342,
 								"xRight": 566.9291338582677,
 								"yTop": 28.34645669291339,
-								"yBot": 62.84645669291339
+								"yBot": 62.84645669291339,
+								"appearance": {
+									"fontColor": "#404040",
+									"fontName": "helvetica",
+									"fontSize": 30,
+									"fontStyle": "normal"
+								},
+								"options": {
+									"fieldName": "testidquestion_madintotals_row1_cell_0",
+									"value": "Select...",
+									"isReadOnly": false,
+									"optionsCaption": "Select...",
+									"showOptionsCaption": true,
+									"items": []
+								}
 							}
 						]
 					}
@@ -76,12 +90,19 @@
 						"xRight": 566.9291338582677,
 						"yTop": 80.09645669291339,
 						"yBot": 135.29645669291338,
+						"appearance": {
+							"fontName": "helvetica",
+							"fontColor": "#404040",
+							"fontSize": 30,
+							"fontStyle": "normal"
+						},
 						"options": {
 							"value": "test",
 							"isReadOnly": true,
 							"fieldName": "sq_134",
 							"shouldRenderBorders": true,
 							"rows": 1,
+							"shouldRenderReadOnly": true,
 							"isMultiline": false,
 							"placeholder": "",
 							"inputType": ""

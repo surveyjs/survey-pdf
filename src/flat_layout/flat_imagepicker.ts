@@ -16,15 +16,30 @@ export class FlatImagePicker extends FlatQuestion<QuestionImagePickerModel> {
         const compositeFlat: CompositeBrick = new CompositeBrick(imageFlat);
         let buttonPoint: IPoint = SurveyHelper.createPoint(compositeFlat);
         if (this.question.showLabel) {
-            let labelFlat: IPdfBrick = await SurveyHelper.createTextFlat(buttonPoint, this.question, this.controller, item.text || item.value);
+            let labelFlat: IPdfBrick = await SurveyHelper.createTextFlat(buttonPoint, this.controller, item.text || item.value);
             compositeFlat.addBrick(labelFlat);
             buttonPoint = SurveyHelper.createPoint(labelFlat);
         }
         const height: number = this.controller.unitHeight;
         const buttonRect: IRect = SurveyHelper.createRect(buttonPoint, pageAvailableWidth, height);
         if (this.question.multiSelect) {
+            const isReadOnly = this.question.isReadOnly || !item.isEnabled;
             compositeFlat.addBrick(new CheckItemBrick(this.controller,
-                buttonRect, this.question.id + 'index' + index, { readOnly: this.question.isReadOnly || !item.isEnabled, question: this.question, item: item, checked: this.question.value.indexOf(item.value) !== -1, index: index }));
+                buttonRect,
+                {
+                    fieldName: this.question.id + 'index' + index,
+                    readOnly: isReadOnly,
+                    checked: this.question.value.indexOf(item.value) !== -1,
+                    shouldRenderReadOnly: isReadOnly && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform' || this.controller.compress,
+                    updateOptions: (options) => this.survey.updateCheckItemAcroformOptions(options, this.question, item),
+                },
+                {
+                    fontName: CheckItemBrick.CHECKMARK_READONLY_FONT,
+                    fontColor: SurveyHelper.FORM_BORDER_COLOR,
+                    fontSize: this.controller.fontSize * CheckItemBrick.CHECKMARK_READONLY_FONT_SIZE_SCALE,
+                    checkMark: CheckItemBrick.CHECKMARK_READONLY_SYMBOL,
+                    fontStyle: 'normal'
+                }));
         }
         else {
             compositeFlat.addBrick(this.radio.generateFlatItem(buttonRect, item, index));

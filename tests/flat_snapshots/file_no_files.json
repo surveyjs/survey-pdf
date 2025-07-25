@@ -16,12 +16,14 @@
 				"xRight": 266.8464566929134,
 				"yTop": 28.34645669291339,
 				"yBot": 62.84645669291339,
-				"text": "No file selected",
-				"options": {
+				"appearance": {
 					"fontSize": 30,
 					"fontName": "helvetica",
 					"fontStyle": "normal",
 					"fontColor": "#404040"
+				},
+				"options": {
+					"text": "No file selected"
 				}
 			}
 		]

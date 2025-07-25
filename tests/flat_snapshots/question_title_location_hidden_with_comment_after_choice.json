@@ -9,13 +9,26 @@
 		"yBot": 62.84645669291339,
 		"bricks": [
 			{
-				"brickType": "CheckboxItemBrick",
+				"brickType": "CheckItemBrick",
 				"width": 32.77499999999999,
 				"height": 32.775000000000006,
 				"xLeft": 62.84645669291339,
 				"xRight": 95.62145669291338,
 				"yTop": 29.20895669291339,
-				"yBot": 61.983956692913395
+				"yBot": 61.983956692913395,
+				"appearance": {
+					"fontName": "zapfdingbats",
+					"fontColor": "#9f9f9f",
+					"fontSize": 21.845154514622866,
+					"checkMark": "3",
+					"fontStyle": "normal"
+				},
+				"options": {
+					"shouldRenderReadOnly": false,
+					"readOnly": false,
+					"checked": false,
+					"fieldName": "testidquestion_checkboxindex0"
+				}
 			},
 			{
 				"brickType": "CompositeBrick",
@@ -34,12 +47,14 @@
 						"xRight": 152.54645669291338,
 						"yTop": 28.34645669291339,
 						"yBot": 62.84645669291339,
-						"text": "test",
-						"options": {
+						"appearance": {
 							"fontSize": 30,
 							"fontName": "helvetica",
 							"fontStyle": "normal",
 							"fontColor": "#404040"
+						},
+						"options": {
+							"text": "test"
 						}
 					}
 				]
@@ -72,12 +87,14 @@
 						"xRight": 389.2464566929134,
 						"yTop": 71.47145669291339,
 						"yBot": 105.97145669291339,
-						"text": "Please leave a comment",
-						"options": {
+						"appearance": {
 							"fontSize": 30,
 							"fontName": "helvetica",
 							"fontStyle": "normal",
 							"fontColor": "#404040"
+						},
+						"options": {
+							"text": "Please leave a comment"
 						}
 					}
 				]
@@ -90,6 +107,12 @@
 				"xRight": 566.9291338582677,
 				"yTop": 114.59645669291339,
 				"yBot": 183.5964566929134,
+				"appearance": {
+					"fontName": "helvetica",
+					"fontColor": "#404040",
+					"fontSize": 30,
+					"fontStyle": "normal"
+				},
 				"options": {
 					"fieldName": "testidquestion_checkbox_comment",
 					"rows": 2,
@@ -98,6 +121,7 @@
 					"isReadOnly": false,
 					"isMultiline": true,
 					"placeholder": "",
+					"shouldRenderReadOnly": false,
 					"inputType": ""
 				}
 			}

@@ -83,7 +83,7 @@ test('Check matrix onRender* events', async () => {
         opt.fieldName = opt.context.question.id + '_row_' + opt.context.row.name;
     });
     survey.onRenderRadioItemAcroform.add((_, opt) => {
-        opt.fieldName = opt.context.item.value;
+        opt.options.fieldName = opt.item.value;
     });
     await survey['renderSurvey'](controller);
     const acroFormFields = controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields;

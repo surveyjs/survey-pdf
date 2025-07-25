@@ -69,7 +69,7 @@ test('Event render header bold text', async () => {
     expect(packs[0].length).toBe(2);
     TestHelper.equalRect(expect, packs[0][1], SurveyHelper.createHeaderRect(controller));
     expect(packs[0][1] instanceof TextBrick).toBe(true);
-    expect((packs[0][1] as TextBrick)['options'].fontStyle).toBe('bold');
+    expect((packs[0][1] as TextBrick)['appearance'].fontStyle).toBe('bold');
 });
 test('Event render header left top text', async () => {
     let json: any = {

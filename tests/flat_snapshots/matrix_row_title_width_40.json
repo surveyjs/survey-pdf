@@ -25,12 +25,14 @@
 						"xRight": 162.2964566929134,
 						"yTop": 28.34645669291339,
 						"yBot": 44.44645669291339,
-						"text": "Column 1",
-						"options": {
+						"appearance": {
 							"fontSize": 14,
 							"fontName": "helvetica",
 							"fontStyle": "bold",
 							"fontColor": "#404040"
+						},
+						"options": {
+							"text": "Column 1"
 						}
 					}
 				]
@@ -52,12 +54,14 @@
 						"xRight": 408.53999999999996,
 						"yTop": 28.34645669291339,
 						"yBot": 44.44645669291339,
-						"text": "Column 2",
-						"options": {
+						"appearance": {
 							"fontSize": 14,
 							"fontName": "helvetica",
 							"fontStyle": "bold",
 							"fontColor": "#404040"
+						},
+						"options": {
+							"text": "Column 2"
 						}
 					}
 				]
@@ -99,12 +103,14 @@
 						"xRight": 72.30645669291339,
 						"yTop": 52.496456692913384,
 						"yBot": 68.59645669291338,
-						"text": "Row",
-						"options": {
+						"appearance": {
 							"fontSize": 14,
 							"fontName": "helvetica",
 							"fontStyle": "normal",
 							"fontColor": "#404040"
+						},
+						"options": {
+							"text": "Row"
 						}
 					}
 				]
@@ -116,7 +122,19 @@
 				"xLeft": 98.59645669291339,
 				"xRight": 113.89145669291338,
 				"yTop": 52.89895669291339,
-				"yBot": 68.19395669291337
+				"yBot": 68.19395669291337,
+				"appearance": {
+					"fontName": "zapfdingbats",
+					"fontSize": 7.394405440157338,
+					"fontColor": "#9f9f9f",
+					"fontStyle": "normal",
+					"checkMark": "l"
+				},
+				"options": {
+					"index": 0,
+					"checked": false,
+					"shouldRenderReadOnly": false
+				}
 			},
 			{
 				"brickType": "RadioItemBrick",
@@ -125,7 +143,19 @@
 				"xLeft": 344.84,
 				"xRight": 360.1350000000001,
 				"yTop": 52.89895669291339,
-				"yBot": 68.19395669291337
+				"yBot": 68.19395669291337,
+				"appearance": {
+					"fontName": "zapfdingbats",
+					"fontSize": 7.394405440157338,
+					"fontColor": "#9f9f9f",
+					"fontStyle": "normal",
+					"checkMark": "l"
+				},
+				"options": {
+					"index": 1,
+					"checked": false,
+					"shouldRenderReadOnly": false
+				}
 			}
 		]
 	},

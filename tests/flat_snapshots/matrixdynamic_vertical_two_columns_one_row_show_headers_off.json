@@ -33,7 +33,21 @@
 								"xLeft": 62.84645669291342,
 								"xRight": 566.9291338582677,
 								"yTop": 28.34645669291339,
-								"yBot": 62.84645669291339
+								"yBot": 62.84645669291339,
+								"appearance": {
+									"fontColor": "#404040",
+									"fontName": "helvetica",
+									"fontSize": 30,
+									"fontStyle": "normal"
+								},
+								"options": {
+									"fieldName": "testidquestion_matrix not multiple text_row1_cell_0",
+									"value": "Select...",
+									"isReadOnly": false,
+									"optionsCaption": "Select...",
+									"showOptionsCaption": true,
+									"items": []
+								}
 							}
 						]
 					}
@@ -84,7 +98,21 @@
 								"xLeft": 62.84645669291342,
 								"xRight": 566.9291338582677,
 								"yTop": 80.09645669291339,
-								"yBot": 114.59645669291339
+								"yBot": 114.59645669291339,
+								"appearance": {
+									"fontColor": "#404040",
+									"fontName": "helvetica",
+									"fontSize": 30,
+									"fontStyle": "normal"
+								},
+								"options": {
+									"fieldName": "testidquestion_matrix not multiple text_row3_cell_0",
+									"value": "Select...",
+									"isReadOnly": false,
+									"optionsCaption": "Select...",
+									"showOptionsCaption": true,
+									"items": []
+								}
 							}
 						]
 					}

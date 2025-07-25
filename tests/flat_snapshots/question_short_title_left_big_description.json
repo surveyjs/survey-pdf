@@ -34,12 +34,14 @@
 								"xRight": 52.10645669291338,
 								"yTop": 28.34645669291339,
 								"yBot": 66.29645669291338,
-								"text": "A",
-								"options": {
+								"appearance": {
 									"fontSize": 33,
 									"fontName": "helvetica",
 									"fontStyle": "bold",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "A"
 								}
 							}
 						]
@@ -63,12 +65,14 @@
 						"xRight": 157.6464566929134,
 						"yTop": 68.45270669291338,
 						"yBot": 91.45270669291338,
-						"text": "Major Pain",
-						"options": {
+						"appearance": {
 							"fontSize": 20,
 							"fontName": "helvetica",
 							"fontStyle": "normal",
 							"fontColor": "#404040"
+						},
+						"options": {
+							"text": "Major Pain"
 						}
 					}
 				]
@@ -81,11 +85,18 @@
 				"xRight": 566.9291338582677,
 				"yTop": 28.34645669291339,
 				"yBot": 62.84645669291339,
+				"appearance": {
+					"fontName": "helvetica",
+					"fontColor": "#404040",
+					"fontSize": 30,
+					"fontStyle": "normal"
+				},
 				"options": {
 					"fieldName": "testidquestion_box",
 					"inputType": "text",
 					"value": "",
 					"isReadOnly": false,
+					"shouldRenderReadOnly": false,
 					"shouldRenderBorders": true,
 					"placeholder": "",
 					"isMultiline": false

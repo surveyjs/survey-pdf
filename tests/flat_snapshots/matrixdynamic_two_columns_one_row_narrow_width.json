@@ -34,12 +34,14 @@
 								"xRight": 80.14645669291338,
 								"yTop": 28.34645669291339,
 								"yBot": 44.44645669291339,
-								"text": "Boop",
-								"options": {
+								"appearance": {
 									"fontSize": 14,
 									"fontName": "helvetica",
 									"fontStyle": "bold",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "Boop"
 								}
 							}
 						]
@@ -72,12 +74,14 @@
 								"xRight": 189.21145669291337,
 								"yTop": 28.34645669291339,
 								"yBot": 44.44645669291339,
-								"text": "Moop",
-								"options": {
+								"appearance": {
 									"fontSize": 14,
 									"fontName": "helvetica",
 									"fontStyle": "bold",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "Moop"
 								}
 							}
 						]
@@ -129,7 +133,21 @@
 								"xLeft": 44.44645669291338,
 								"xRight": 127.82145669291339,
 								"yTop": 52.496456692913384,
-								"yBot": 68.59645669291338
+								"yBot": 68.59645669291338,
+								"appearance": {
+									"fontColor": "#404040",
+									"fontName": "helvetica",
+									"fontSize": 14,
+									"fontStyle": "normal"
+								},
+								"options": {
+									"fieldName": "testidquestion_madinartwocol_row1_cell_0",
+									"value": "Select...",
+									"isReadOnly": false,
+									"optionsCaption": "Select...",
+									"showOptionsCaption": true,
+									"items": []
+								}
 							}
 						]
 					}
@@ -160,7 +178,21 @@
 								"xLeft": 151.9714566929134,
 								"xRight": 235.34645669291336,
 								"yTop": 52.496456692913384,
-								"yBot": 68.59645669291338
+								"yBot": 68.59645669291338,
+								"appearance": {
+									"fontColor": "#404040",
+									"fontName": "helvetica",
+									"fontSize": 14,
+									"fontStyle": "normal"
+								},
+								"options": {
+									"fieldName": "testidquestion_madinartwocol_row1_cell_1",
+									"value": "Select...",
+									"isReadOnly": false,
+									"optionsCaption": "Select...",
+									"showOptionsCaption": true,
+									"items": []
+								}
 							}
 						]
 					}

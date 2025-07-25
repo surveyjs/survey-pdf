@@ -7,12 +7,19 @@
 		"xRight": 566.9291338582677,
 		"yTop": 28.34645669291339,
 		"yBot": 83.54645669291338,
+		"appearance": {
+			"fontName": "helvetica",
+			"fontColor": "#404040",
+			"fontSize": 30,
+			"fontStyle": "normal"
+		},
 		"options": {
 			"value": "5%",
 			"isReadOnly": true,
 			"fieldName": "testidquestion_exp",
 			"shouldRenderBorders": true,
 			"rows": 1,
+			"shouldRenderReadOnly": true,
 			"isMultiline": false,
 			"placeholder": "",
 			"inputType": ""

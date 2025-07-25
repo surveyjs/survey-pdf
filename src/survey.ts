@@ -1,4 +1,4 @@
-import { SurveyModel, EventBase, SurveyElement, Serializer } from 'survey-core';
+import { SurveyModel, EventBase, SurveyElement, Serializer, Question, ItemValue } from 'survey-core';
 import { hasLicense } from 'survey-core';
 import { IDocOptions, DocController } from './doc_controller';
 import { FlatSurvey } from './flat_layout/flat_survey';
@@ -160,14 +160,22 @@ export class SurveyPDF extends SurveyModel {
     public onRenderRadioItemAcroform: EventAsync<SurveyPDF, any> =
     new EventAsync<SurveyPDF, any>();
 
-    public getUpdatedCheckItemAcroformOptions(options: any): void {
-        this.onRenderCheckItemAcroform.fire(this, options);
+    public updateCheckItemAcroformOptions(options: any, question: Question, item?: ItemValue): void {
+        this.onRenderCheckItemAcroform.fire(this, {
+            options: options,
+            question: question,
+            item: item
+        });
     }
     public getUpdatedRadioGroupWrapOptions(options: any): void {
         this.onRenderRadioGroupWrapAcroform.fire(this, options);
     }
-    public getUpdatedRadioItemAcroformOptions(options: any): void {
-        this.onRenderRadioItemAcroform.fire(this, options);
+    public updateRadioItemAcroformOptions(options: any, question: Question, item?: ItemValue): void {
+        this.onRenderRadioItemAcroform.fire(this, {
+            options: options,
+            question: question,
+            item: item
+        });
     }
 
     private _styles: IStyles;

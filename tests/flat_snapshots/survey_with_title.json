@@ -26,12 +26,14 @@
 							"xRight": 472.04645669291347,
 							"yTop": 28.34645669291339,
 							"yBot": 86.99645669291338,
-							"text": "One small step for",
-							"options": {
+							"appearance": {
 								"fontSize": 51,
 								"fontName": "helvetica",
 								"fontStyle": "bold",
 								"fontColor": "#404040"
+							},
+							"options": {
+								"text": "One small step for"
 							}
 						},
 						{
@@ -42,12 +44,14 @@
 							"xRight": 132.89645669291338,
 							"yTop": 86.99645669291338,
 							"yBot": 145.64645669291338,
-							"text": "man",
-							"options": {
+							"appearance": {
 								"fontSize": 51,
 								"fontName": "helvetica",
 								"fontStyle": "bold",
 								"fontColor": "#404040"
+							},
+							"options": {
+								"text": "man"
 							}
 						}
 					]
@@ -71,11 +75,18 @@
 			"xRight": 566.9291338582677,
 			"yTop": 180.14645669291338,
 			"yBot": 214.64645669291338,
+			"appearance": {
+				"fontName": "helvetica",
+				"fontColor": "#404040",
+				"fontSize": 30,
+				"fontStyle": "normal"
+			},
 			"options": {
 				"fieldName": "testidquestion_MissText",
 				"inputType": "text",
 				"value": "",
 				"isReadOnly": false,
+				"shouldRenderReadOnly": false,
 				"shouldRenderBorders": true,
 				"placeholder": "",
 				"isMultiline": false

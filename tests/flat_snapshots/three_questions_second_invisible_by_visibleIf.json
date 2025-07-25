@@ -35,12 +35,14 @@
 									"xRight": 313.46645669291337,
 									"yTop": 28.34645669291339,
 									"yBot": 66.29645669291338,
-									"text": "Look at visible me",
-									"options": {
+									"appearance": {
 										"fontSize": 33,
 										"fontName": "helvetica",
 										"fontStyle": "bold",
 										"fontColor": "#404040"
+									},
+									"options": {
+										"text": "Look at visible me"
 									}
 								}
 							]
@@ -64,11 +66,18 @@
 					"xRight": 566.9291338582677,
 					"yTop": 83.54645669291338,
 					"yBot": 118.04645669291338,
+					"appearance": {
+						"fontName": "helvetica",
+						"fontColor": "#404040",
+						"fontSize": 30,
+						"fontStyle": "normal"
+					},
 					"options": {
 						"fieldName": "testidquestion_Look at visible me",
 						"inputType": "text",
 						"value": "",
 						"isReadOnly": false,
+						"shouldRenderReadOnly": false,
 						"shouldRenderBorders": true,
 						"placeholder": "",
 						"isMultiline": false
@@ -120,12 +129,14 @@
 									"xRight": 153.4164566929134,
 									"yTop": 169.79645669291338,
 									"yBot": 207.74645669291337,
-									"text": "I'm here",
-									"options": {
+									"appearance": {
 										"fontSize": 33,
 										"fontName": "helvetica",
 										"fontStyle": "bold",
 										"fontColor": "#404040"
+									},
+									"options": {
+										"text": "I'm here"
 									}
 								}
 							]
@@ -149,11 +160,18 @@
 					"xRight": 566.9291338582677,
 					"yTop": 224.99645669291337,
 					"yBot": 259.4964566929134,
+					"appearance": {
+						"fontName": "helvetica",
+						"fontColor": "#404040",
+						"fontSize": 30,
+						"fontStyle": "normal"
+					},
 					"options": {
 						"fieldName": "testidquestion_I'm here",
 						"inputType": "text",
 						"value": "",
 						"isReadOnly": false,
+						"shouldRenderReadOnly": false,
 						"shouldRenderBorders": true,
 						"placeholder": "",
 						"isMultiline": false

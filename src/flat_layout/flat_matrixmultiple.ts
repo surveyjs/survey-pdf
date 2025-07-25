@@ -27,8 +27,7 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
     }
     private async generateFlatsCellTitle(point: IPoint, locTitle: LocalizableString): Promise<CompositeBrick> {
         const composite: CompositeBrick = new CompositeBrick();
-        composite.addBrick(await SurveyHelper.createTextFlat(point,
-            this.question, this.controller, locTitle));
+        composite.addBrick(await SurveyHelper.createTextFlat(point, this.controller, locTitle));
         return composite;
     }
     private async generateFlatsCell(point: IPoint, cell: QuestionMatrixDropdownRenderedCell,
@@ -53,12 +52,10 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
         }
         else if (cell.hasTitle) {
             if (location == 'header') {
-                composite.addBrick(await SurveyHelper.createTextFlat(point,
-                    this.question, this.controller, cell.locTitle, { fontStyle: 'bold' }));
+                composite.addBrick(await SurveyHelper.createTextFlat(point, this.controller, cell.locTitle, { fontStyle: 'bold' }));
             }
             else {
-                composite.addBrick(await SurveyHelper.createTextFlat(point,
-                    this.question, this.controller, cell.locTitle));
+                composite.addBrick(await SurveyHelper.createTextFlat(point, this.controller, cell.locTitle));
             }
         }
         return composite;

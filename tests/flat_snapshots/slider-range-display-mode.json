@@ -21,10 +21,17 @@
 					"inputType": "number",
 					"value": 30,
 					"isReadOnly": true,
+					"shouldRenderReadOnly": true,
 					"shouldRenderBorders": true,
 					"rows": 1,
 					"isMultiline": false,
 					"placeholder": ""
+				},
+				"appearance": {
+					"fontName": "helvetica",
+					"fontColor": "#404040",
+					"fontSize": 30,
+					"fontStyle": "normal"
 				}
 			},
 			{
@@ -40,10 +47,17 @@
 					"inputType": "number",
 					"value": 60,
 					"isReadOnly": true,
+					"shouldRenderReadOnly": true,
 					"shouldRenderBorders": true,
 					"rows": 1,
 					"isMultiline": false,
 					"placeholder": ""
+				},
+				"appearance": {
+					"fontName": "helvetica",
+					"fontColor": "#404040",
+					"fontSize": 30,
+					"fontStyle": "normal"
 				}
 			}
 		]

@@ -7,7 +7,7 @@ import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { AdornersPanelOptions } from '../event_handler/adorners';
 import { FlatRepository } from './flat_repository';
 import { IStyles } from '../styles';
-import { ITextOptions } from '../pdf_render/pdf_text';
+import { ITextAppearanceOptions } from '../pdf_render/pdf_text';
 
 export class FlatPanel<T extends PanelModel = PanelModel> {
     constructor(protected survey: SurveyPDF, protected panel: T, protected controller: DocController, protected styles: IStyles) {}
@@ -39,7 +39,7 @@ export class FlatPanel<T extends PanelModel = PanelModel> {
     }
     protected async generateTitleFlat(point: IPoint): Promise<IPdfBrick> {
         const composite: CompositeBrick = new CompositeBrick();
-        const textOptions:Partial<ITextOptions> = {
+        const textOptions:Partial<ITextAppearanceOptions> = {
             fontSize: SurveyHelper.getScaledFontSize(this.controller, this.styles.titleFontSizeScale),
             fontStyle: this.styles.titleFontStyle,
             fontColor: this.styles.titleFontColor
@@ -47,12 +47,12 @@ export class FlatPanel<T extends PanelModel = PanelModel> {
         let currPoint = SurveyHelper.clone(point);
         if (this.panel.no) {
             const noFlat: IPdfBrick = await SurveyHelper.createTextFlat(
-                currPoint, null, this.controller, this.panel.no, textOptions);
+                currPoint, this.controller, this.panel.no, textOptions);
             composite.addBrick(noFlat);
             currPoint.xLeft = noFlat.xRight + this.controller.measureText(' ').width;
         }
         const panelTitleFlat: IPdfBrick = await SurveyHelper.createTextFlat(
-            currPoint, null, this.controller, this.panel.locTitle, textOptions);
+            currPoint, this.controller, this.panel.locTitle, textOptions);
         composite.addBrick(panelTitleFlat);
         return composite;
     }
@@ -69,7 +69,7 @@ export class FlatPanel<T extends PanelModel = PanelModel> {
                 currPoint.yTop += SurveyHelper.getScaledHorizontalSize(this.controller, this.styles.panelDescriptionGapScale);
             }
             const panelDescFlat: IPdfBrick = await SurveyHelper.createTextFlat(
-                currPoint, null, this.controller, this.panel.locDescription, { fontSize: this.controller.fontSize * SurveyHelper.DESCRIPTION_FONT_SIZE_SCALE });
+                currPoint, this.controller, this.panel.locDescription, { fontSize: this.controller.fontSize * SurveyHelper.DESCRIPTION_FONT_SIZE_SCALE });
             compositeFlat.addBrick(panelDescFlat);
             currPoint = SurveyHelper.createPoint(panelDescFlat);
         }

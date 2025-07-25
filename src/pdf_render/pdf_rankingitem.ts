@@ -1,29 +1,32 @@
-import { IQuestion, QuestionRankingModel } from 'survey-core';
 import { IRect, ISize, DocController, IPoint } from '../doc_controller';
-import { IPdfBrick, PdfBrick } from './pdf_brick';
-import { CheckItemBrick } from './pdf_checkitem';
+import { IPdfBrick, IPdfBrickOptions, PdfBrick } from './pdf_brick';
 import { SurveyHelper } from '../helper_survey';
+import { ITextAppearanceOptions } from './pdf_text';
+
+export interface IRankingItemBrickOptions extends IPdfBrickOptions {
+        mark: string;
+}
+export interface IRankingItemBrickAppearanceOptions extends ITextAppearanceOptions {}
 
 export class RankingItemBrick extends PdfBrick {
-    protected question: QuestionRankingModel;
-    public constructor(question: IQuestion, controller: DocController,
-        rect: IRect, protected mark: string) {
-        super(question, controller, rect);
-        this.question = <QuestionRankingModel>question;
-        this.textColor = this.formBorderColor;
+    public constructor(controller: DocController,
+        rect: IRect, protected options: IRankingItemBrickOptions, protected appearance: IRankingItemBrickAppearanceOptions) {
+        super(controller, rect);
     }
     public async renderInteractive(): Promise<void> {
         SurveyHelper.renderFlatBorders(this.controller, this);
         const markPoint: IPoint = SurveyHelper.createPoint(this, true, true);
         const textOptions = {
-            fontSize: this.controller.fontSize * CheckItemBrick.CHECKMARK_READONLY_FONT_SIZE_SCALE,
+            fontSize: this.appearance.fontSize,
+            fontColor: this.appearance.fontColor,
+            fontName: this.appearance.fontName,
+            fontStyle: this.appearance.fontStyle
         };
-        const markSize: ISize = this.controller.measureText(this.mark, textOptions);
+        const markSize: ISize = this.controller.measureText(this.options.mark, textOptions);
         markPoint.xLeft += this.width / 2.0 - markSize.width / 2.0;
         markPoint.yTop += this.height / 2.0 - markSize.height / 2.0;
         const markFlat: IPdfBrick = await SurveyHelper.createTextFlat(
-            markPoint, this.question, this.controller, this.mark, textOptions);
-        (<any>markFlat.unfold()[0]).textColor = this.textColor;
+            markPoint, this.controller, this.options.mark, textOptions);
         await markFlat.render();
     }
 }

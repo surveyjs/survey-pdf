@@ -4,6 +4,7 @@ import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { RadioGroupWrap, RadioItemBrick } from '../pdf_render/pdf_radioitem';
 import { FlatSelectBase } from './flat_selectbase';
+import { SurveyHelper } from '../helper_survey';
 
 export class FlatRadiogroup extends FlatSelectBase<QuestionRadiogroupModel> {
     protected question: QuestionRadiogroupModel;
@@ -26,8 +27,19 @@ export class FlatRadiogroup extends FlatSelectBase<QuestionRadiogroupModel> {
             this.radioGroupWrap = (<any>this.question).pdfRadioGroupWrap;
         }
         const isChecked: boolean = this.isItemSelected(item, checked);
-        return new RadioItemBrick(this.controller, rect,
-            { question: this.question, index: index, checked: isChecked, item: item }, this.radioGroupWrap);
+        return new RadioItemBrick(this.controller, rect, this.radioGroupWrap, {
+            index,
+            checked: isChecked,
+            shouldRenderReadOnly: this.radioGroupWrap.readOnly && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform' || this.controller.compress,
+            updateOptions: options => this.survey.updateRadioItemAcroformOptions(options, this.question, item),
+        },
+        {
+            fontName: RadioItemBrick.RADIOMARKER_READONLY_FONT,
+            fontSize: this.controller.fontSize * RadioItemBrick.RADIOMARKER_READONLY_FONT_SIZE_SCALE,
+            fontColor: SurveyHelper.FORM_BORDER_COLOR,
+            fontStyle: 'normal',
+            checkMark: RadioItemBrick.RADIOMARKER_READONLY_SYMBOL
+        });
     }
 }
 

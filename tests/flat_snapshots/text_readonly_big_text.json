@@ -7,6 +7,12 @@
 		"xRight": 566.9291338582677,
 		"yTop": 28.34645669291339,
 		"yBot": 221.54645669291338,
+		"appearance": {
+			"fontName": "helvetica",
+			"fontColor": "#404040",
+			"fontSize": 30,
+			"fontStyle": "normal"
+		},
 		"options": {
 			"rows": 1,
 			"isMultiline": true,
@@ -14,6 +20,7 @@
 			"inputType": "text",
 			"value": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
 			"isReadOnly": true,
+			"shouldRenderReadOnly": true,
 			"shouldRenderBorders": true,
 			"placeholder": ""
 		}

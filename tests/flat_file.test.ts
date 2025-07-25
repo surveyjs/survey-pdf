@@ -400,7 +400,7 @@ test('Test file question inside paneldynamic waits preview loading', async () =>
     const unFoldedBricks = fileBricks[0].unfold();
     expect(unFoldedBricks.length).toBe(8);
     expect(unFoldedBricks[5]).toBeInstanceOf(LinkBrick);
-    expect((<LinkBrick>unFoldedBricks[5])['link']).toBe('data:image/jpeg;base64,FILECONTENT1');
+    expect((<LinkBrick>unFoldedBricks[5])['options']['link']).toBe('data:image/jpeg;base64,FILECONTENT1');
 });
 test('Test file question with show preview false', async () => {
     await checkFlatSnapshot(
@@ -420,7 +420,7 @@ test('Test file question with show preview false', async () => {
                 return options.question.getType() == 'file';
             },
             allowedPropertiesHash: {
-                'LinkBrick': ['link']
+                'LinkBrick': ['options']
             },
             onSurveyCreated: (survey: SurveyPDF) => {
                 survey.data = {

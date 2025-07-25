@@ -4,20 +4,33 @@ import { IPoint, DocController } from '../doc_controller';
 import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
-import { BooleanItemBrick } from '../pdf_render/pdf_booleanitem';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
 import { FlatRadiogroup } from './flat_radiogroup';
 import { IStyles } from '../styles';
+import { CheckItemBrick } from '../pdf_render/pdf_checkitem';
 
 export class FlatBooleanCheckbox extends FlatQuestion<QuestionBooleanModel> {
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         const compositeFlat: CompositeBrick = new CompositeBrick();
         const height: number = this.controller.unitHeight;
-        const itemFlat: IPdfBrick = new BooleanItemBrick(this.question, this.controller,
+        const isReadOnly = this.question.isReadOnly;
+        const itemFlat: IPdfBrick = new CheckItemBrick(this.controller,
             SurveyHelper.moveRect(
                 SurveyHelper.scaleRect(SurveyHelper.createRect(point, height, height),
-                    SurveyHelper.SELECT_ITEM_FLAT_SCALE), point.xLeft));
+                    SurveyHelper.SELECT_ITEM_FLAT_SCALE), point.xLeft), {
+                fieldName: this.question.id,
+                readOnly: isReadOnly,
+                updateOptions: (options) => this.survey.updateCheckItemAcroformOptions(options, this.question),
+                shouldRenderReadOnly: isReadOnly && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform' || this.controller.compress,
+                checked: this.question.checkedValue
+            }, {
+                fontName: CheckItemBrick.CHECKMARK_READONLY_FONT,
+                fontColor: SurveyHelper.FORM_BORDER_COLOR,
+                fontSize: this.controller.fontSize * CheckItemBrick.CHECKMARK_READONLY_FONT_SIZE_SCALE,
+                checkMark: CheckItemBrick.CHECKMARK_READONLY_SYMBOL,
+                fontStyle: 'normal'
+            });
         compositeFlat.addBrick(itemFlat);
         const textPoint: IPoint = SurveyHelper.clone(point);
         textPoint.xLeft = itemFlat.xRight + SurveyHelper.getScaledHorizontalSize(this.controller, this.styles.gapBetweenItemText);
@@ -25,7 +38,7 @@ export class FlatBooleanCheckbox extends FlatQuestion<QuestionBooleanModel> {
             this.question.checkedValue ? this.question.locLabelTrue : this.question.locLabelFalse;
         if (locLabelText !== null && locLabelText.renderedHtml !== null) {
             compositeFlat.addBrick(await SurveyHelper.createTextFlat(
-                textPoint, this.question, this.controller, locLabelText));
+                textPoint, this.controller, locLabelText));
         }
         return [compositeFlat];
     }

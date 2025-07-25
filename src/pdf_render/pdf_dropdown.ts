@@ -1,39 +1,46 @@
-import { IQuestion, QuestionDropdownModel, ItemValue } from 'survey-core';
+import { QuestionDropdownModel, ItemValue } from 'survey-core';
 import { IRect, DocController } from '../doc_controller';
-import { PdfBrick } from './pdf_brick';
+import { IPdfBrickOptions, PdfBrick } from './pdf_brick';
 import { SurveyHelper } from '../helper_survey';
+import { ITextAppearanceOptions } from './pdf_text';
+
+export interface IDropdownBrickOptions extends IPdfBrickOptions {
+    fieldName: string;
+    isReadOnly: boolean;
+    items: Array<string>;
+    showOptionsCaption: boolean;
+    optionsCaption: string;
+    value: string;
+}
+export interface IDropdownBrickAppearanceOptions extends ITextAppearanceOptions {
+}
 
 export class DropdownBrick extends PdfBrick {
-    protected question: QuestionDropdownModel;
-    protected isQuestion: boolean;
-    protected isMultiline: boolean;
-    public constructor(question: IQuestion,
-        protected controller: DocController, rect: IRect) {
-        super(question, controller, rect);
-        this.question = <QuestionDropdownModel>question;
+    public constructor(protected controller: DocController, rect: IRect, protected options: IDropdownBrickOptions, protected appearance: IDropdownBrickAppearanceOptions) {
+        super(controller, rect);
     }
     public async renderInteractive(): Promise<void> {
         const comboBox = new (<any>this.controller.doc.AcroFormComboBox)();
-        comboBox.fieldName = this.question.id;
+        comboBox.fieldName = this.options.fieldName;
         comboBox.Rect = SurveyHelper.createAcroformRect(
             SurveyHelper.scaleRect(this,
                 SurveyHelper.formScale(this.controller, this)));
         comboBox.edit = false;
-        comboBox.color = this.textColor;
+        comboBox.color = this.appearance.fontColor;
         const options: string[] = [];
-        if (this.question.showOptionsCaption) {
-            options.push(this.getCorrectedText(this.question.optionsCaption));
+        if (this.options.showOptionsCaption) {
+            options.push(this.getCorrectedText(this.options.optionsCaption));
         }
-        this.question.visibleChoices.forEach((item: ItemValue) => {
-            options.push(this.getCorrectedText(SurveyHelper.getLocString(item.locText)));
+        this.options.items.forEach((item: string) => {
+            options.push(this.getCorrectedText(item));
         });
         comboBox.setOptions(options);
-        comboBox.fontName = this.controller.fontName;
-        comboBox.fontSize = this.fontSize;
-        comboBox.readOnly = this.question.isReadOnly;
+        comboBox.fontName = this.appearance.fontName;
+        comboBox.fontSize = this.appearance.fontSize;
+        comboBox.readOnly = this.options.isReadOnly;
         comboBox.isUnicode = SurveyHelper.isCustomFont(
             this.controller, comboBox.fontName);
-        comboBox.V = this.getCorrectedText(SurveyHelper.getDropdownQuestionValue(this.question));
+        comboBox.V = this.getCorrectedText(this.options.value);
         this.controller.doc.addField(comboBox);
         SurveyHelper.renderFlatBorders(this.controller, this);
     }

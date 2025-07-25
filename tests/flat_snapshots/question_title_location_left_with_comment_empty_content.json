@@ -34,12 +34,14 @@
 								"xRight": 86.42645669291339,
 								"yTop": 28.34645669291339,
 								"yBot": 66.29645669291338,
-								"text": "test",
-								"options": {
+								"appearance": {
 									"fontSize": 33,
 									"fontName": "helvetica",
 									"fontStyle": "bold",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "test"
 								}
 							}
 						]
@@ -72,12 +74,14 @@
 								"xRight": 447.3264566929134,
 								"yTop": 28.34645669291339,
 								"yBot": 62.84645669291339,
-								"text": "Please leave a comment",
-								"options": {
+								"appearance": {
 									"fontSize": 30,
 									"fontName": "helvetica",
 									"fontStyle": "normal",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "Please leave a comment"
 								}
 							}
 						]
@@ -90,6 +94,12 @@
 						"xRight": 566.9291338582677,
 						"yTop": 71.47145669291339,
 						"yBot": 140.4714566929134,
+						"appearance": {
+							"fontName": "helvetica",
+							"fontColor": "#404040",
+							"fontSize": 30,
+							"fontStyle": "normal"
+						},
 						"options": {
 							"fieldName": "testidquestion_checkbox_comment",
 							"rows": 2,
@@ -98,6 +108,7 @@
 							"isReadOnly": false,
 							"isMultiline": true,
 							"placeholder": "",
+							"shouldRenderReadOnly": false,
 							"inputType": ""
 						}
 					}

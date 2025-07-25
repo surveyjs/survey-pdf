@@ -34,7 +34,7 @@ export class FlatFile extends FlatQuestion<QuestionFileModel> {
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         const previewValue = this.question.showPreview ? this.question.previewValue : this.question.value;
         if (!previewValue || previewValue.length === 0) {
-            return [await SurveyHelper.createTextFlat(point, this.question,
+            return [await SurveyHelper.createTextFlat(point,
                 this.controller, this.question.noFileChosenCaption)];
         }
         const rowsFlats: CompositeBrick[] = [new CompositeBrick()];

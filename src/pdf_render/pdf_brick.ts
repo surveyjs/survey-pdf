@@ -16,6 +16,11 @@ export interface IPdfBrick extends IRect, ISize {
  *
  * [View Demo](https://surveyjs.io/pdf-generator/examples/add-markup-to-customize-pdf-forms/ (linkStyle))
  */
+
+export interface IPdfBrickOptions {
+    shouldRenderReadOnly?: boolean;
+}
+
 export class PdfBrick implements IPdfBrick {
     protected _xLeft: number;
     protected _xRight: number;
@@ -72,8 +77,7 @@ export class PdfBrick implements IPdfBrick {
     public textColor: string = SurveyHelper.TEXT_COLOR;
     public formBorderColor: string = SurveyHelper.FORM_BORDER_COLOR;
     public isPageBreak: boolean = false;
-    public constructor(protected question: IQuestion,
-        protected controller: DocController, rect: IRect) {
+    public constructor(protected controller: DocController, rect: IRect, protected options: IPdfBrickOptions = {}) {
         this.xLeft = rect.xLeft;
         this.xRight = rect.xRight;
         this.yTop = rect.yTop;
@@ -99,7 +103,7 @@ export class PdfBrick implements IPdfBrick {
         return this.yBot - this.yTop;
     }
     protected getShouldRenderReadOnly(): boolean {
-        return SurveyHelper.shouldRenderReadOnly(this.question, this.controller);
+        return this.options.shouldRenderReadOnly;
     }
     public afterRenderCallback: () => void;
     public async render(): Promise<void> {

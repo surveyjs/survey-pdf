@@ -12,6 +12,11 @@ export class FlatExpression extends FlatQuestion<QuestionExpressionModel> {
             isReadOnly: true,
             fieldName: this.question.id,
             shouldRenderBorders: settings.readOnlyTextRenderMode === 'input',
+        }, {
+            fontName: this.controller.fontName,
+            fontColor: SurveyHelper.TEXT_COLOR,
+            fontSize: this.controller.fontSize,
+            fontStyle: 'normal'
         })];
     }
 }

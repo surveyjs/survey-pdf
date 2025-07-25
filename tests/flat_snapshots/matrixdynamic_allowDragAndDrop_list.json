@@ -34,12 +34,14 @@
 								"xRight": 62.84645669291339,
 								"yTop": 28.34645669291339,
 								"yBot": 62.84645669291339,
-								"text": "",
-								"options": {
+								"appearance": {
 									"fontSize": 30,
 									"fontName": "helvetica",
 									"fontStyle": "normal",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": ""
 								}
 							}
 						]
@@ -63,11 +65,18 @@
 						"xRight": 566.9291338582677,
 						"yTop": 80.09645669291339,
 						"yBot": 114.59645669291339,
+						"appearance": {
+							"fontName": "helvetica",
+							"fontColor": "#404040",
+							"fontSize": 30,
+							"fontStyle": "normal"
+						},
 						"options": {
 							"fieldName": "testidquestion_panel_row1_cell_1",
 							"inputType": "text",
 							"value": "",
 							"isReadOnly": false,
+							"shouldRenderReadOnly": false,
 							"shouldRenderBorders": true,
 							"placeholder": "",
 							"isMultiline": false
@@ -101,12 +110,14 @@
 								"xRight": 62.84645669291339,
 								"yTop": 131.8464566929134,
 								"yBot": 166.3464566929134,
-								"text": "",
-								"options": {
+								"appearance": {
 									"fontSize": 30,
 									"fontName": "helvetica",
 									"fontStyle": "normal",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": ""
 								}
 							}
 						]
@@ -130,11 +141,18 @@
 						"xRight": 566.9291338582677,
 						"yTop": 183.5964566929134,
 						"yBot": 218.0964566929134,
+						"appearance": {
+							"fontName": "helvetica",
+							"fontColor": "#404040",
+							"fontSize": 30,
+							"fontStyle": "normal"
+						},
 						"options": {
 							"fieldName": "testidquestion_panel_row1_cell_2",
 							"inputType": "text",
 							"value": "",
 							"isReadOnly": false,
+							"shouldRenderReadOnly": false,
 							"shouldRenderBorders": true,
 							"placeholder": "",
 							"isMultiline": false
@@ -168,12 +186,14 @@
 								"xRight": 62.84645669291339,
 								"yTop": 235.3464566929134,
 								"yBot": 269.8464566929134,
-								"text": "",
-								"options": {
+								"appearance": {
 									"fontSize": 30,
 									"fontName": "helvetica",
 									"fontStyle": "normal",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": ""
 								}
 							}
 						]
@@ -197,11 +217,18 @@
 						"xRight": 566.9291338582677,
 						"yTop": 287.0964566929134,
 						"yBot": 321.5964566929134,
+						"appearance": {
+							"fontName": "helvetica",
+							"fontColor": "#404040",
+							"fontSize": 30,
+							"fontStyle": "normal"
+						},
 						"options": {
 							"fieldName": "testidquestion_panel_row1_cell_3",
 							"inputType": "text",
 							"value": "",
 							"isReadOnly": false,
+							"shouldRenderReadOnly": false,
 							"shouldRenderBorders": true,
 							"placeholder": "",
 							"isMultiline": false
@@ -235,12 +262,14 @@
 								"xRight": 62.84645669291339,
 								"yTop": 338.8464566929134,
 								"yBot": 373.3464566929134,
-								"text": "",
-								"options": {
+								"appearance": {
 									"fontSize": 30,
 									"fontName": "helvetica",
 									"fontStyle": "normal",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": ""
 								}
 							}
 						]
@@ -264,11 +293,18 @@
 						"xRight": 566.9291338582677,
 						"yTop": 390.5964566929134,
 						"yBot": 425.0964566929134,
+						"appearance": {
+							"fontName": "helvetica",
+							"fontColor": "#404040",
+							"fontSize": 30,
+							"fontStyle": "normal"
+						},
 						"options": {
 							"fieldName": "testidquestion_panel_row1_cell_4",
 							"inputType": "text",
 							"value": "",
 							"isReadOnly": false,
+							"shouldRenderReadOnly": false,
 							"shouldRenderBorders": true,
 							"placeholder": "",
 							"isMultiline": false
@@ -302,12 +338,14 @@
 								"xRight": 62.84645669291339,
 								"yTop": 442.3464566929134,
 								"yBot": 476.8464566929134,
-								"text": "",
-								"options": {
+								"appearance": {
 									"fontSize": 30,
 									"fontName": "helvetica",
 									"fontStyle": "normal",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": ""
 								}
 							}
 						]
@@ -331,11 +369,18 @@
 						"xRight": 566.9291338582677,
 						"yTop": 494.0964566929134,
 						"yBot": 528.5964566929134,
+						"appearance": {
+							"fontName": "helvetica",
+							"fontColor": "#404040",
+							"fontSize": 30,
+							"fontStyle": "normal"
+						},
 						"options": {
 							"fieldName": "testidquestion_panel_row1_cell_5",
 							"inputType": "text",
 							"value": "",
 							"isReadOnly": false,
+							"shouldRenderReadOnly": false,
 							"shouldRenderBorders": true,
 							"placeholder": "",
 							"isMultiline": false
@@ -369,12 +414,14 @@
 								"xRight": 62.84645669291339,
 								"yTop": 545.8464566929134,
 								"yBot": 580.3464566929134,
-								"text": "",
-								"options": {
+								"appearance": {
 									"fontSize": 30,
 									"fontName": "helvetica",
 									"fontStyle": "normal",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": ""
 								}
 							}
 						]
@@ -398,11 +445,18 @@
 						"xRight": 566.9291338582677,
 						"yTop": 597.5964566929134,
 						"yBot": 632.0964566929134,
+						"appearance": {
+							"fontName": "helvetica",
+							"fontColor": "#404040",
+							"fontSize": 30,
+							"fontStyle": "normal"
+						},
 						"options": {
 							"fieldName": "testidquestion_panel_row1_cell_6",
 							"inputType": "text",
 							"value": "",
 							"isReadOnly": false,
+							"shouldRenderReadOnly": false,
 							"shouldRenderBorders": true,
 							"placeholder": "",
 							"isMultiline": false

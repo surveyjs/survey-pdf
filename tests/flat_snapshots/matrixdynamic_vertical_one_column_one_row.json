@@ -34,12 +34,14 @@
 								"xRight": 180.74645669291343,
 								"yTop": 28.34645669291339,
 								"yBot": 62.84645669291339,
-								"text": "Left front",
-								"options": {
+								"appearance": {
 									"fontSize": 30,
 									"fontName": "helvetica",
 									"fontStyle": "normal",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "Left front"
 								}
 							}
 						]
@@ -71,7 +73,21 @@
 								"xLeft": 340.7627952755906,
 								"xRight": 566.9291338582677,
 								"yTop": 28.34645669291339,
-								"yBot": 62.84645669291339
+								"yBot": 62.84645669291339,
+								"appearance": {
+									"fontColor": "#404040",
+									"fontName": "helvetica",
+									"fontSize": 30,
+									"fontStyle": "normal"
+								},
+								"options": {
+									"fieldName": "testidquestion_Not the same list_row1_cell_1",
+									"value": "Select...",
+									"isReadOnly": false,
+									"optionsCaption": "Select...",
+									"showOptionsCaption": true,
+									"items": []
+								}
 							}
 						]
 					}

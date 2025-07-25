@@ -96,7 +96,7 @@ test('Check onRenderRadio* events', async () => {
     });
 
     survey.onRenderRadioItemAcroform.add((_, opt) => {
-        opt.fieldName = opt.context.item.value;
+        opt.options.fieldName = opt.item.value;
     });
     await survey['renderSurvey'](controller);
     const fields: any = controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields;

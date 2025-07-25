@@ -180,7 +180,7 @@ test('Unfold compose brick', async () => {
     expect(packs[0].length).toBe(1);
     expect(packs[1].length).toBe(1);
     TestHelper.equalRect(expect, packs[0][0], await SurveyHelper.createTextFlat(
-        controller.leftTopPoint, <Question>survey.getAllQuestions()[0], controller, survey.getAllQuestions()[0].locTitle, {
+        controller.leftTopPoint, controller, survey.getAllQuestions()[0].locTitle, {
             fontSize: 1.1 * controller.fontSize,
             fontStyle: 'bold'
         }));
@@ -214,7 +214,7 @@ test('Pack to little page', async () => {
     expect(packs[0].length).toBe(2);
     expect(packs[1].length).toBe(1);
     TestHelper.equalRect(expect, packs[0][0], await SurveyHelper.createTextFlat(
-        controller.leftTopPoint, <Question>survey.getAllQuestions()[0], controller, survey.getAllQuestions()[0].locTitle, {
+        controller.leftTopPoint, controller, survey.getAllQuestions()[0].locTitle, {
             fontSize: 1.1 * controller.fontSize,
             fontStyle: 'bold'
         }));

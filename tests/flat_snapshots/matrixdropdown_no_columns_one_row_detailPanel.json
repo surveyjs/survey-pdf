@@ -34,12 +34,14 @@
 								"xRight": 139.0464566929134,
 								"yTop": 28.34645669291339,
 								"yBot": 62.84645669291339,
-								"text": "Row1",
-								"options": {
+								"appearance": {
 									"fontSize": 30,
 									"fontName": "helvetica",
 									"fontStyle": "normal",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "Row1"
 								}
 							}
 						]
@@ -65,6 +67,12 @@
 				"xRight": 566.9291338582677,
 				"yTop": 80.09645669291339,
 				"yBot": 218.0964566929134,
+				"appearance": {
+					"fontName": "helvetica",
+					"fontColor": "#404040",
+					"fontSize": 30,
+					"fontStyle": "normal"
+				},
 				"options": {
 					"rows": 4,
 					"isReadOnly": false,
@@ -73,6 +81,7 @@
 					"placeholder": "",
 					"shouldRenderBorders": true,
 					"value": "",
+					"shouldRenderReadOnly": false,
 					"inputType": ""
 				}
 			},

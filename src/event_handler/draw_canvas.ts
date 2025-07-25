@@ -232,8 +232,8 @@ export class DrawCanvas {
         };
         const textSize: ISize = this.controller.measureText(textOptions.text, options);
         const textRect: IRect = this.alignRect(textOptions, textSize);
-        this.packs.push(new TextBrick(null, this.controller,
-            textRect, textOptions.text, options));
+        this.packs.push(new TextBrick(this.controller,
+            textRect, textOptions, options));
     }
     /**
      * Draws an image within the drawing area.

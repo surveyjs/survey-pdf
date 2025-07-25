@@ -34,12 +34,14 @@
 								"xRight": 147.4464566929134,
 								"yTop": 28.34645669291339,
 								"yBot": 62.84645669291339,
-								"text": "Row 1",
-								"options": {
+								"appearance": {
 									"fontSize": 30,
 									"fontName": "helvetica",
 									"fontStyle": "normal",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "Row 1"
 								}
 							}
 						]
@@ -72,12 +74,14 @@
 								"xRight": 117.44645669291339,
 								"yTop": 80.09645669291339,
 								"yBot": 114.59645669291339,
-								"text": "col1",
-								"options": {
+								"appearance": {
 									"fontSize": 30,
 									"fontName": "helvetica",
 									"fontStyle": "normal",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "col1"
 								}
 							}
 						]
@@ -109,7 +113,23 @@
 								"xLeft": 62.84645669291339,
 								"xRight": 566.9291338582677,
 								"yTop": 131.8464566929134,
-								"yBot": 166.3464566929134
+								"yBot": 166.3464566929134,
+								"appearance": {
+									"fontColor": "#404040",
+									"fontName": "helvetica",
+									"fontSize": 30,
+									"fontStyle": "normal"
+								},
+								"options": {
+									"fieldName": "testidquestion_matrix_row1_cell_1",
+									"value": "Select...",
+									"isReadOnly": false,
+									"optionsCaption": "Select...",
+									"showOptionsCaption": true,
+									"items": [
+										"1"
+									]
+								}
 							}
 						]
 					}
@@ -141,12 +161,14 @@
 								"xRight": 117.44645669291339,
 								"yTop": 183.5964566929134,
 								"yBot": 218.0964566929134,
-								"text": "col2",
-								"options": {
+								"appearance": {
 									"fontSize": 30,
 									"fontName": "helvetica",
 									"fontStyle": "normal",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "col2"
 								}
 							}
 						]
@@ -178,7 +200,23 @@
 								"xLeft": 62.84645669291339,
 								"xRight": 566.9291338582677,
 								"yTop": 235.3464566929134,
-								"yBot": 269.8464566929134
+								"yBot": 269.8464566929134,
+								"appearance": {
+									"fontColor": "#404040",
+									"fontName": "helvetica",
+									"fontSize": 30,
+									"fontStyle": "normal"
+								},
+								"options": {
+									"fieldName": "testidquestion_matrix_row1_cell_2",
+									"value": "Select...",
+									"isReadOnly": false,
+									"optionsCaption": "Select...",
+									"showOptionsCaption": true,
+									"items": [
+										"1"
+									]
+								}
 							}
 						]
 					}
@@ -230,12 +268,14 @@
 								"xRight": 62.84645669291339,
 								"yTop": 287.0964566929134,
 								"yBot": 321.5964566929134,
-								"text": "",
-								"options": {
+								"appearance": {
 									"fontSize": 30,
 									"fontName": "helvetica",
 									"fontStyle": "normal",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": ""
 								}
 							}
 						]
@@ -268,12 +308,14 @@
 								"xRight": 117.44645669291339,
 								"yTop": 338.8464566929134,
 								"yBot": 373.3464566929134,
-								"text": "col2",
-								"options": {
+								"appearance": {
 									"fontSize": 30,
 									"fontName": "helvetica",
 									"fontStyle": "normal",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "col2"
 								}
 							}
 						]
@@ -297,12 +339,19 @@
 						"xRight": 566.9291338582677,
 						"yTop": 390.5964566929134,
 						"yBot": 445.79645669291347,
+						"appearance": {
+							"fontName": "helvetica",
+							"fontColor": "#404040",
+							"fontSize": 30,
+							"fontStyle": "normal"
+						},
 						"options": {
 							"value": "0",
 							"isReadOnly": true,
 							"fieldName": "sq_207",
 							"shouldRenderBorders": true,
 							"rows": 1,
+							"shouldRenderReadOnly": true,
 							"isMultiline": false,
 							"placeholder": "",
 							"inputType": ""

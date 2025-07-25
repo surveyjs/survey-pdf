@@ -34,12 +34,14 @@
 								"xRight": 76.22645669291337,
 								"yTop": 28.34645669291339,
 								"yBot": 44.44645669291339,
-								"text": "Prop",
-								"options": {
+								"appearance": {
 									"fontSize": 14,
 									"fontName": "helvetica",
 									"fontStyle": "bold",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "Prop"
 								}
 							}
 						]

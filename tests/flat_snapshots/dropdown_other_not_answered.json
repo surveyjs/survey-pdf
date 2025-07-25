@@ -34,12 +34,14 @@
 								"xRight": 526.9764566929132,
 								"yTop": 28.34645669291339,
 								"yBot": 66.29645669291338,
-								"text": "dropdown_other_not_answered",
-								"options": {
+								"appearance": {
 									"fontSize": 33,
 									"fontName": "helvetica",
 									"fontStyle": "bold",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "dropdown_other_not_answered"
 								}
 							}
 						]
@@ -71,7 +73,24 @@
 						"xLeft": 62.84645669291339,
 						"xRight": 566.9291338582677,
 						"yTop": 83.54645669291338,
-						"yBot": 118.04645669291338
+						"yBot": 118.04645669291338,
+						"appearance": {
+							"fontColor": "#404040",
+							"fontName": "helvetica",
+							"fontSize": 30,
+							"fontStyle": "normal"
+						},
+						"options": {
+							"fieldName": "testidquestion_dropdown_other_not_answered",
+							"value": "Select...",
+							"isReadOnly": false,
+							"optionsCaption": "Select...",
+							"showOptionsCaption": true,
+							"items": [
+								"right choice",
+								"Other (describe)"
+							]
+						}
 					}
 				]
 			}

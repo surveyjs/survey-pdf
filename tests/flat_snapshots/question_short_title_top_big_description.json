@@ -34,12 +34,14 @@
 								"xRight": 163.64645669291338,
 								"yTop": 28.34645669291339,
 								"yBot": 66.29645669291338,
-								"text": "Tiny title",
-								"options": {
+								"appearance": {
 									"fontSize": 33,
 									"fontName": "helvetica",
 									"fontStyle": "bold",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "Tiny title"
 								}
 							}
 						]
@@ -63,12 +65,14 @@
 						"xRight": 428.84645669291353,
 						"yTop": 68.45270669291338,
 						"yBot": 91.45270669291338,
-						"text": "The description is so long, very long, very",
-						"options": {
+						"appearance": {
 							"fontSize": 20,
 							"fontName": "helvetica",
 							"fontStyle": "normal",
 							"fontColor": "#404040"
+						},
+						"options": {
+							"text": "The description is so long, very long, very"
 						}
 					}
 				]
@@ -90,11 +94,18 @@
 				"xRight": 566.9291338582677,
 				"yTop": 108.70270669291338,
 				"yBot": 143.20270669291338,
+				"appearance": {
+					"fontName": "helvetica",
+					"fontColor": "#404040",
+					"fontSize": 30,
+					"fontStyle": "normal"
+				},
 				"options": {
 					"fieldName": "testidquestion_box",
 					"inputType": "text",
 					"value": "",
 					"isReadOnly": false,
+					"shouldRenderReadOnly": false,
 					"shouldRenderBorders": true,
 					"placeholder": "",
 					"isMultiline": false

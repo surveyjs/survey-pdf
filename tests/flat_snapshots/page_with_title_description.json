@@ -25,12 +25,14 @@
 						"xRight": 278.7264566929133,
 						"yTop": 28.34645669291339,
 						"yBot": 73.19645669291339,
-						"text": "The sun rises",
-						"options": {
+						"appearance": {
 							"fontSize": 39,
 							"fontName": "helvetica",
 							"fontStyle": "bold",
 							"fontColor": "#404040"
+						},
+						"options": {
+							"text": "The sun rises"
 						}
 					}
 				]
@@ -52,12 +54,14 @@
 						"xRight": 234.9464566929134,
 						"yTop": 81.82145669291339,
 						"yBot": 104.82145669291339,
-						"text": "Over the Huanghe river",
-						"options": {
+						"appearance": {
 							"fontSize": 20,
 							"fontName": "helvetica",
 							"fontStyle": "normal",
 							"fontColor": "#404040"
+						},
+						"options": {
+							"text": "Over the Huanghe river"
 						}
 					}
 				]
@@ -81,11 +85,18 @@
 		"xRight": 566.9291338582677,
 		"yTop": 139.3214566929134,
 		"yBot": 173.8214566929134,
+		"appearance": {
+			"fontName": "helvetica",
+			"fontColor": "#404040",
+			"fontSize": 30,
+			"fontStyle": "normal"
+		},
 		"options": {
 			"fieldName": "testidquestion_HiddenText",
 			"inputType": "text",
 			"value": "",
 			"isReadOnly": false,
+			"shouldRenderReadOnly": false,
 			"shouldRenderBorders": true,
 			"placeholder": "",
 			"isMultiline": false

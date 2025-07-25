@@ -1,8 +1,11 @@
-import { IQuestion, } from 'survey-core';
 import { IPoint, IRect, DocController } from '../doc_controller';
-import { PdfBrick } from './pdf_brick';
+import { IPdfBrickOptions, PdfBrick } from './pdf_brick';
 
-export interface ITextOptions {
+export interface ITextBrickOptions extends IPdfBrickOptions {
+    text: string;
+}
+
+export interface ITextAppearanceOptions {
     fontStyle: string;
     fontSize: number;
     fontName: string;
@@ -11,9 +14,9 @@ export interface ITextOptions {
 
 export class TextBrick extends PdfBrick {
     protected align: any;
-    public constructor(question: IQuestion, controller: DocController,
-        rect: IRect, protected text: string, protected options: ITextOptions) {
-        super(question, controller, rect);
+    public constructor(controller: DocController,
+        rect: IRect, public options: ITextBrickOptions, public appearance: ITextAppearanceOptions) {
+        super(controller, rect, options);
         this.align = {
             isInputRtl: false,
             isOutputRtl: controller.isRTL,
@@ -22,10 +25,10 @@ export class TextBrick extends PdfBrick {
         };
     }
     private escapeText() {
-        while (this.text.indexOf('\t') > -1) {
-            this.text = this.text.replace('\t', Array(5).join(String.fromCharCode(160)));
+        while (this.options.text.indexOf('\t') > -1) {
+            this.options.text = this.options.text.replace('\t', Array(5).join(String.fromCharCode(160)));
         }
-        return this.text;
+        return this.options.text;
     }
     public async renderInteractive(): Promise<void> {
         const alignPoint: IPoint = this.alignPoint(this);
@@ -33,10 +36,10 @@ export class TextBrick extends PdfBrick {
         const oldFontStyle: string = this.controller.fontStyle;
         const oldFontName: string = this.controller.fontName;
         const oldFontColor: string = this.controller.doc.getTextColor();
-        this.controller.fontSize = this.options.fontSize;
-        this.controller.fontStyle = this.options.fontStyle;
-        this.controller.fontName = this.options.fontName;
-        this.controller.doc.setTextColor(this.options.fontColor);
+        this.controller.fontSize = this.appearance.fontSize;
+        this.controller.fontStyle = this.appearance.fontStyle;
+        this.controller.fontName = this.appearance.fontName;
+        this.controller.doc.setTextColor(this.appearance.fontColor);
         this.controller.doc.text(this.escapeText(), alignPoint.xLeft, alignPoint.yTop, this.align);
         this.controller.doc.setTextColor(oldFontColor);
         this.controller.fontSize = oldFontSize;

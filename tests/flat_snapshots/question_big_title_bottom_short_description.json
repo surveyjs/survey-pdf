@@ -7,11 +7,18 @@
 		"xRight": 566.9291338582677,
 		"yTop": 28.34645669291339,
 		"yBot": 62.84645669291339,
+		"appearance": {
+			"fontName": "helvetica",
+			"fontColor": "#404040",
+			"fontSize": 30,
+			"fontStyle": "normal"
+		},
 		"options": {
 			"fieldName": "testidquestion_box",
 			"inputType": "text",
 			"value": "",
 			"isReadOnly": false,
+			"shouldRenderReadOnly": false,
 			"shouldRenderBorders": true,
 			"placeholder": "",
 			"isMultiline": false
@@ -52,12 +59,14 @@
 								"xRight": 362.6364566929133,
 								"yTop": 80.09645669291339,
 								"yBot": 118.04645669291338,
-								"text": "What a gorgeous title",
-								"options": {
+								"appearance": {
 									"fontSize": 33,
 									"fontName": "helvetica",
 									"fontStyle": "bold",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "What a gorgeous title"
 								}
 							}
 						]
@@ -81,12 +90,14 @@
 						"xRight": 314.6464566929134,
 						"yTop": 120.20270669291338,
 						"yBot": 143.20270669291338,
-						"text": "Who reads the descriptions?",
-						"options": {
+						"appearance": {
 							"fontSize": 20,
 							"fontName": "helvetica",
 							"fontStyle": "normal",
 							"fontColor": "#404040"
+						},
+						"options": {
+							"text": "Who reads the descriptions?"
 						}
 					}
 				]

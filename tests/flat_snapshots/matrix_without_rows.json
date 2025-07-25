@@ -25,12 +25,14 @@
 						"xRight": 132.14645669291338,
 						"yTop": 28.34645669291339,
 						"yBot": 62.84645669291339,
-						"text": "test1",
-						"options": {
+						"appearance": {
 							"fontSize": 30,
 							"fontName": "helvetica",
 							"fontStyle": "bold",
 							"fontColor": "#404040"
+						},
+						"options": {
+							"text": "test1"
 						}
 					}
 				]

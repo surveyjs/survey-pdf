@@ -16,6 +16,12 @@
 				"xRight": 566.9335433070864,
 				"yTop": 28.34645669291339,
 				"yBot": 70.20645669291338,
+				"appearance": {
+					"fontName": "helvetica",
+					"fontColor": "#404040",
+					"fontSize": 14,
+					"fontStyle": "normal"
+				},
 				"options": {
 					"fieldName": "testidquestion_question1",
 					"shouldRenderBorders": true,
@@ -23,6 +29,7 @@
 					"isReadOnly": true,
 					"placeholder": "Select...",
 					"rows": 1,
+					"shouldRenderReadOnly": true,
 					"isMultiline": false,
 					"inputType": ""
 				}

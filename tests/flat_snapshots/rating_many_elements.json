@@ -34,12 +34,14 @@
 								"xRight": 60.19645669291339,
 								"yTop": 28.34645669291339,
 								"yBot": 44.44645669291339,
-								"text": "1",
-								"options": {
+								"appearance": {
 									"fontSize": 14,
 									"fontName": "helvetica",
 									"fontStyle": "bold",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "1"
 								}
 							}
 						]
@@ -51,7 +53,19 @@
 						"xLeft": 44.44645669291339,
 						"xRight": 92.74645669291338,
 						"yTop": 44.44645669291339,
-						"yBot": 60.54645669291338
+						"yBot": 60.54645669291338,
+						"appearance": {
+							"fontName": "zapfdingbats",
+							"fontSize": 7.394405440157338,
+							"fontColor": "#9f9f9f",
+							"fontStyle": "normal",
+							"checkMark": "l"
+						},
+						"options": {
+							"index": 0,
+							"checked": false,
+							"shouldRenderReadOnly": false
+						}
 					}
 				]
 			},
@@ -81,12 +95,14 @@
 								"xRight": 108.49645669291338,
 								"yTop": 28.34645669291339,
 								"yBot": 44.44645669291339,
-								"text": "2",
-								"options": {
+								"appearance": {
 									"fontSize": 14,
 									"fontName": "helvetica",
 									"fontStyle": "bold",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "2"
 								}
 							}
 						]
@@ -98,7 +114,19 @@
 						"xLeft": 92.74645669291338,
 						"xRight": 141.04645669291338,
 						"yTop": 44.44645669291339,
-						"yBot": 60.54645669291338
+						"yBot": 60.54645669291338,
+						"appearance": {
+							"fontName": "zapfdingbats",
+							"fontSize": 7.394405440157338,
+							"fontColor": "#9f9f9f",
+							"fontStyle": "normal",
+							"checkMark": "l"
+						},
+						"options": {
+							"index": 1,
+							"checked": false,
+							"shouldRenderReadOnly": false
+						}
 					}
 				]
 			},
@@ -128,12 +156,14 @@
 								"xRight": 156.79645669291338,
 								"yTop": 28.34645669291339,
 								"yBot": 44.44645669291339,
-								"text": "3",
-								"options": {
+								"appearance": {
 									"fontSize": 14,
 									"fontName": "helvetica",
 									"fontStyle": "bold",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "3"
 								}
 							}
 						]
@@ -145,7 +175,19 @@
 						"xLeft": 141.04645669291338,
 						"xRight": 189.34645669291336,
 						"yTop": 44.44645669291339,
-						"yBot": 60.54645669291338
+						"yBot": 60.54645669291338,
+						"appearance": {
+							"fontName": "zapfdingbats",
+							"fontSize": 7.394405440157338,
+							"fontColor": "#9f9f9f",
+							"fontStyle": "normal",
+							"checkMark": "l"
+						},
+						"options": {
+							"index": 2,
+							"checked": false,
+							"shouldRenderReadOnly": false
+						}
 					}
 				]
 			},
@@ -175,12 +217,14 @@
 								"xRight": 205.09645669291336,
 								"yTop": 28.34645669291339,
 								"yBot": 44.44645669291339,
-								"text": "4",
-								"options": {
+								"appearance": {
 									"fontSize": 14,
 									"fontName": "helvetica",
 									"fontStyle": "bold",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "4"
 								}
 							}
 						]
@@ -192,7 +236,19 @@
 						"xLeft": 189.34645669291336,
 						"xRight": 237.64645669291338,
 						"yTop": 44.44645669291339,
-						"yBot": 60.54645669291338
+						"yBot": 60.54645669291338,
+						"appearance": {
+							"fontName": "zapfdingbats",
+							"fontSize": 7.394405440157338,
+							"fontColor": "#9f9f9f",
+							"fontStyle": "normal",
+							"checkMark": "l"
+						},
+						"options": {
+							"index": 3,
+							"checked": false,
+							"shouldRenderReadOnly": false
+						}
 					}
 				]
 			},
@@ -222,12 +278,14 @@
 								"xRight": 253.39645669291338,
 								"yTop": 28.34645669291339,
 								"yBot": 44.44645669291339,
-								"text": "5",
-								"options": {
+								"appearance": {
 									"fontSize": 14,
 									"fontName": "helvetica",
 									"fontStyle": "bold",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "5"
 								}
 							}
 						]
@@ -239,7 +297,19 @@
 						"xLeft": 237.64645669291338,
 						"xRight": 285.9464566929134,
 						"yTop": 44.44645669291339,
-						"yBot": 60.54645669291338
+						"yBot": 60.54645669291338,
+						"appearance": {
+							"fontName": "zapfdingbats",
+							"fontSize": 7.394405440157338,
+							"fontColor": "#9f9f9f",
+							"fontStyle": "normal",
+							"checkMark": "l"
+						},
+						"options": {
+							"index": 4,
+							"checked": false,
+							"shouldRenderReadOnly": false
+						}
 					}
 				]
 			},
@@ -269,12 +339,14 @@
 								"xRight": 301.6964566929134,
 								"yTop": 28.34645669291339,
 								"yBot": 44.44645669291339,
-								"text": "6",
-								"options": {
+								"appearance": {
 									"fontSize": 14,
 									"fontName": "helvetica",
 									"fontStyle": "bold",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "6"
 								}
 							}
 						]
@@ -286,7 +358,19 @@
 						"xLeft": 285.9464566929134,
 						"xRight": 334.2464566929134,
 						"yTop": 44.44645669291339,
-						"yBot": 60.54645669291338
+						"yBot": 60.54645669291338,
+						"appearance": {
+							"fontName": "zapfdingbats",
+							"fontSize": 7.394405440157338,
+							"fontColor": "#9f9f9f",
+							"fontStyle": "normal",
+							"checkMark": "l"
+						},
+						"options": {
+							"index": 5,
+							"checked": false,
+							"shouldRenderReadOnly": false
+						}
 					}
 				]
 			}

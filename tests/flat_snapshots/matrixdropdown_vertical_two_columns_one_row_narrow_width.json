@@ -34,12 +34,14 @@
 								"xRight": 204.16645669291339,
 								"yTop": 28.34645669291339,
 								"yBot": 44.44645669291339,
-								"text": "Cap",
-								"options": {
+								"appearance": {
 									"fontSize": 14,
 									"fontName": "helvetica",
 									"fontStyle": "bold",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "Cap"
 								}
 							}
 						]
@@ -92,12 +94,14 @@
 								"xRight": 113.32645669291341,
 								"yTop": 52.496456692913384,
 								"yBot": 68.59645669291338,
-								"text": "First power",
-								"options": {
+								"appearance": {
 									"fontSize": 14,
 									"fontName": "helvetica",
 									"fontStyle": "normal",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "First power"
 								}
 							}
 						]
@@ -129,7 +133,21 @@
 								"xLeft": 177.8464566929134,
 								"xRight": 287.0964566929134,
 								"yTop": 52.496456692913384,
-								"yBot": 68.59645669291338
+								"yBot": 68.59645669291338,
+								"appearance": {
+									"fontColor": "#404040",
+									"fontName": "helvetica",
+									"fontSize": 14,
+									"fontStyle": "normal"
+								},
+								"options": {
+									"fieldName": "testidquestion_matrixmultiple_twocolumnsonerow_vertical_narrow_row1_cell_1",
+									"value": "Select...",
+									"isReadOnly": false,
+									"optionsCaption": "Select...",
+									"showOptionsCaption": true,
+									"items": []
+								}
 							}
 						]
 					}
@@ -181,12 +199,14 @@
 								"xRight": 135.58645669291343,
 								"yTop": 76.64645669291338,
 								"yBot": 92.74645669291337,
-								"text": "Second choice",
-								"options": {
+								"appearance": {
 									"fontSize": 14,
 									"fontName": "helvetica",
 									"fontStyle": "normal",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "Second choice"
 								}
 							}
 						]
@@ -218,7 +238,21 @@
 								"xLeft": 177.8464566929134,
 								"xRight": 287.0964566929134,
 								"yTop": 76.64645669291338,
-								"yBot": 92.74645669291337
+								"yBot": 92.74645669291337,
+								"appearance": {
+									"fontColor": "#404040",
+									"fontName": "helvetica",
+									"fontSize": 14,
+									"fontStyle": "normal"
+								},
+								"options": {
+									"fieldName": "testidquestion_matrixmultiple_twocolumnsonerow_vertical_narrow_row3_cell_1",
+									"value": "Select...",
+									"isReadOnly": false,
+									"optionsCaption": "Select...",
+									"showOptionsCaption": true,
+									"items": []
+								}
 							}
 						]
 					}

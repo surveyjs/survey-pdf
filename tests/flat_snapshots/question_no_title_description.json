@@ -7,11 +7,18 @@
 		"xRight": 566.9291338582677,
 		"yTop": 28.34645669291339,
 		"yBot": 62.84645669291339,
+		"appearance": {
+			"fontName": "helvetica",
+			"fontColor": "#404040",
+			"fontSize": 30,
+			"fontStyle": "normal"
+		},
 		"options": {
 			"fieldName": "testidquestion_textbox",
 			"inputType": "text",
 			"value": "",
 			"isReadOnly": false,
+			"shouldRenderReadOnly": false,
 			"shouldRenderBorders": true,
 			"placeholder": "",
 			"isMultiline": false

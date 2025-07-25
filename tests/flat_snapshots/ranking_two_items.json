@@ -15,7 +15,16 @@
 				"xLeft": 62.84645669291339,
 				"xRight": 95.62145669291338,
 				"yTop": 29.20895669291339,
-				"yBot": 61.983956692913395
+				"yBot": 61.983956692913395,
+				"appearance": {
+					"fontStyle": "normal",
+					"fontColor": "#9f9f9f",
+					"fontName": "helvetica",
+					"fontSize": 21.845154514622866
+				},
+				"options": {
+					"mark": ""
+				}
 			},
 			{
 				"brickType": "CompositeBrick",
@@ -34,12 +43,14 @@
 						"xRight": 124.04645669291338,
 						"yTop": 28.34645669291339,
 						"yBot": 62.84645669291339,
-						"text": "A",
-						"options": {
+						"appearance": {
 							"fontSize": 30,
 							"fontName": "helvetica",
 							"fontStyle": "normal",
 							"fontColor": "#404040"
+						},
+						"options": {
+							"text": "A"
 						}
 					}
 				]
@@ -62,7 +73,16 @@
 				"xLeft": 62.84645669291339,
 				"xRight": 95.62145669291338,
 				"yTop": 72.33395669291339,
-				"yBot": 105.1089566929134
+				"yBot": 105.1089566929134,
+				"appearance": {
+					"fontStyle": "normal",
+					"fontColor": "#9f9f9f",
+					"fontName": "helvetica",
+					"fontSize": 21.845154514622866
+				},
+				"options": {
+					"mark": ""
+				}
 			},
 			{
 				"brickType": "CompositeBrick",
@@ -81,12 +101,14 @@
 						"xRight": 124.04645669291338,
 						"yTop": 71.47145669291339,
 						"yBot": 105.97145669291339,
-						"text": "B",
-						"options": {
+						"appearance": {
 							"fontSize": 30,
 							"fontName": "helvetica",
 							"fontStyle": "normal",
 							"fontColor": "#404040"
+						},
+						"options": {
+							"text": "B"
 						}
 					}
 				]

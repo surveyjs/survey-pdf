@@ -7,6 +7,12 @@
 		"xRight": 566.9291338582677,
 		"yTop": 28.34645669291339,
 		"yBot": 166.3464566929134,
+		"appearance": {
+			"fontName": "helvetica",
+			"fontColor": "#404040",
+			"fontSize": 30,
+			"fontStyle": "normal"
+		},
 		"options": {
 			"rows": 4,
 			"isReadOnly": true,
@@ -15,6 +21,7 @@
 			"placeholder": "",
 			"shouldRenderBorders": true,
 			"value": "",
+			"shouldRenderReadOnly": true,
 			"inputType": ""
 		}
 	}

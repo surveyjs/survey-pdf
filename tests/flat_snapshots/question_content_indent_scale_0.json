@@ -34,12 +34,14 @@
 								"xRight": 66.6264566929134,
 								"yTop": 28.34645669291339,
 								"yBot": 66.29645669291338,
-								"text": "q1",
-								"options": {
+								"appearance": {
 									"fontSize": 33,
 									"fontName": "helvetica",
 									"fontStyle": "bold",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "q1"
 								}
 							}
 						]
@@ -63,11 +65,18 @@
 				"xRight": 566.9291338582677,
 				"yTop": 83.54645669291338,
 				"yBot": 118.04645669291338,
+				"appearance": {
+					"fontName": "helvetica",
+					"fontColor": "#404040",
+					"fontSize": 30,
+					"fontStyle": "normal"
+				},
 				"options": {
 					"fieldName": "testidquestion_q1",
 					"inputType": "text",
 					"value": "",
 					"isReadOnly": false,
+					"shouldRenderReadOnly": false,
 					"shouldRenderBorders": true,
 					"placeholder": "",
 					"isMultiline": false

@@ -34,12 +34,14 @@
 								"xRight": 187.6464566929134,
 								"yTop": 28.34645669291339,
 								"yBot": 62.84645669291339,
-								"text": "Input me",
-								"options": {
+								"appearance": {
 									"fontSize": 30,
 									"fontName": "helvetica",
 									"fontStyle": "bold",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "Input me"
 								}
 							}
 						]
@@ -52,11 +54,18 @@
 						"xRight": 566.9291338582677,
 						"yTop": 28.34645669291339,
 						"yBot": 62.84645669291339,
+						"appearance": {
+							"fontName": "helvetica",
+							"fontColor": "#404040",
+							"fontSize": 30,
+							"fontStyle": "normal"
+						},
 						"options": {
 							"fieldName": "testidquestion_multi one item_0",
 							"inputType": "text",
 							"value": "",
 							"isReadOnly": false,
+							"shouldRenderReadOnly": false,
 							"shouldRenderBorders": true,
 							"placeholder": "",
 							"isMultiline": false

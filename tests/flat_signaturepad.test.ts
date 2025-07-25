@@ -48,7 +48,7 @@ test('Check signaturepad with backgroundImage', async () => {
     await checkFlatSnapshot(json, {
         snapshotName: 'signaturepad_background_image',
         allowedPropertiesHash: {
-            'HTMLBrick': ['html']
+            'HTMLBrick': ['options']
         }
     });
     SurveyHelper.shouldConvertImageToPng = true;

@@ -19,7 +19,7 @@ export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSele
         textPoint.xLeft = itemFlat.xRight + SurveyHelper.getScaledHorizontalSize(this.controller, this.styles.gapBetweenItemText);
         if (item.locText.renderedHtml !== null) {
             compositeFlat.addBrick(await SurveyHelper.createTextFlat(
-                textPoint, this.question, this.controller, item.locText));
+                textPoint, this.controller, item.locText));
         }
         if (item === this.question.otherItem && (item.value === this.question.value ||
             (typeof this.question.isOtherSelected !== 'undefined' && this.question.isOtherSelected))) {
@@ -33,6 +33,11 @@ export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSele
                     shouldRenderBorders: settings.readOnlyCommentRenderMode === 'textarea',
                     isReadOnly: this.question.isReadOnly,
                     isMultiline: true,
+                }, {
+                    fontName: this.controller.fontName,
+                    fontColor: SurveyHelper.TEXT_COLOR,
+                    fontSize: this.controller.fontSize,
+                    fontStyle: 'normal'
                 }));
         }
         return compositeFlat;

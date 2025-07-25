@@ -9,13 +9,26 @@
 		"yBot": 44.44645669291339,
 		"bricks": [
 			{
-				"brickType": "CheckboxItemBrick",
+				"brickType": "CheckItemBrick",
 				"width": 15.294999999999987,
 				"height": 15.295000000000002,
 				"xLeft": 44.44645669291339,
 				"xRight": 59.741456692913374,
 				"yTop": 28.74895669291339,
-				"yBot": 44.04395669291339
+				"yBot": 44.04395669291339,
+				"appearance": {
+					"fontName": "zapfdingbats",
+					"fontColor": "#9f9f9f",
+					"fontSize": 10.194405440157338,
+					"checkMark": "3",
+					"fontStyle": "normal"
+				},
+				"options": {
+					"shouldRenderReadOnly": false,
+					"readOnly": false,
+					"checked": true,
+					"fieldName": "testidquestion_tagboxindex0"
+				}
 			},
 			{
 				"brickType": "CompositeBrick",
@@ -34,12 +47,14 @@
 						"xRight": 97.78645669291338,
 						"yTop": 28.34645669291339,
 						"yBot": 44.44645669291339,
-						"text": "item2",
-						"options": {
+						"appearance": {
 							"fontSize": 14,
 							"fontName": "helvetica",
 							"fontStyle": "normal",
 							"fontColor": "#404040"
+						},
+						"options": {
+							"text": "item2"
 						}
 					}
 				]
@@ -56,13 +71,26 @@
 		"yBot": 64.57145669291339,
 		"bricks": [
 			{
-				"brickType": "CheckboxItemBrick",
+				"brickType": "CheckItemBrick",
 				"width": 15.294999999999987,
 				"height": 15.294999999999995,
 				"xLeft": 44.44645669291339,
 				"xRight": 59.741456692913374,
 				"yTop": 48.87395669291339,
-				"yBot": 64.16895669291338
+				"yBot": 64.16895669291338,
+				"appearance": {
+					"fontName": "zapfdingbats",
+					"fontColor": "#9f9f9f",
+					"fontSize": 10.194405440157338,
+					"checkMark": "3",
+					"fontStyle": "normal"
+				},
+				"options": {
+					"shouldRenderReadOnly": false,
+					"readOnly": false,
+					"checked": true,
+					"fieldName": "testidquestion_tagboxindex1"
+				}
 			},
 			{
 				"brickType": "CompositeBrick",
@@ -81,12 +109,14 @@
 						"xRight": 97.78645669291338,
 						"yTop": 48.471456692913385,
 						"yBot": 64.57145669291339,
-						"text": "item3",
-						"options": {
+						"appearance": {
 							"fontSize": 14,
 							"fontName": "helvetica",
 							"fontStyle": "normal",
 							"fontColor": "#404040"
+						},
+						"options": {
+							"text": "item3"
 						}
 					}
 				]

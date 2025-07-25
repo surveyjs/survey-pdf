@@ -34,12 +34,14 @@
 								"xRight": 60.7164566929134,
 								"yTop": 28.34645669291339,
 								"yBot": 73.19645669291339,
-								"text": "1.",
-								"options": {
+								"appearance": {
 									"fontSize": 39,
 									"fontName": "helvetica",
 									"fontStyle": "bold",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "1."
 								}
 							}
 						]
@@ -61,12 +63,14 @@
 								"xRight": 263.33645669291343,
 								"yTop": 28.34645669291339,
 								"yBot": 73.19645669291339,
-								"text": "Panel Title",
-								"options": {
+								"appearance": {
 									"fontSize": 39,
 									"fontName": "helvetica",
 									"fontStyle": "bold",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "Panel Title"
 								}
 							}
 						]
@@ -119,12 +123,14 @@
 								"xRight": 64.97645669291339,
 								"yTop": 107.69645669291339,
 								"yBot": 145.64645669291338,
-								"text": "2. ",
-								"options": {
+								"appearance": {
 									"fontSize": 33,
 									"fontName": "helvetica",
 									"fontStyle": "bold",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "2. "
 								}
 							}
 						]
@@ -146,12 +152,14 @@
 								"xRight": 323.03645669291336,
 								"yTop": 107.69645669291339,
 								"yBot": 145.64645669291338,
-								"text": "I am in the panel",
-								"options": {
+								"appearance": {
 									"fontSize": 33,
 									"fontName": "helvetica",
 									"fontStyle": "bold",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "I am in the panel"
 								}
 							}
 						]
@@ -175,11 +183,18 @@
 				"xRight": 566.9291338582677,
 				"yTop": 162.89645669291338,
 				"yBot": 197.39645669291338,
+				"appearance": {
+					"fontName": "helvetica",
+					"fontColor": "#404040",
+					"fontSize": 30,
+					"fontStyle": "normal"
+				},
 				"options": {
 					"fieldName": "testidquestion_I am in the panel",
 					"inputType": "text",
 					"value": "",
 					"isReadOnly": false,
+					"shouldRenderReadOnly": false,
 					"shouldRenderBorders": true,
 					"placeholder": "",
 					"isMultiline": false

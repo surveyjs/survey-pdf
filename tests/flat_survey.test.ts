@@ -269,5 +269,5 @@ test('Check default renderer for custom questions', async () => {
     const questionFlat = FlatRepository.getInstance().create(survey, question, controller, 'test');
     expect(questionFlat).toBeInstanceOf(FlatQuestionDefault);
     const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect((<any>flats[0][0].unfold()[3]).text).toBe('test_value');
+    expect((<any>flats[0][0].unfold()[3]).options.text).toBe('test_value');
 });

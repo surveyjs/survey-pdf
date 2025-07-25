@@ -1,19 +1,19 @@
-import { Question } from 'survey-core';
-import { TextBrick } from './pdf_text';
+import { ITextAppearanceOptions, ITextBrickOptions, TextBrick } from './pdf_text';
 import { SurveyHelper } from '../helper_survey';
+import { DocController, IRect } from '../entries/pdf';
+
+export interface ILinkOptions extends ITextBrickOptions {
+    link: string;
+    readOnlyShowLink: boolean;
+}
+
+export interface ILinkBrickAppearanceOptions extends ITextAppearanceOptions {}
 
 export class LinkBrick extends TextBrick {
     private static readonly SCALE_FACTOR_MAGIC: number = 0.955;
     public static readonly COLOR: string = '#0000EE';
-    public constructor(textFlat: TextBrick, protected link: string) {
-        super((<LinkBrick>textFlat).question,
-            (<LinkBrick>textFlat).controller,
-            textFlat, (<LinkBrick>textFlat).text, {
-                fontSize: (<LinkBrick>textFlat).controller.fontSize,
-                fontColor: LinkBrick.COLOR,
-                fontStyle: (<LinkBrick>textFlat).controller.fontStyle,
-                fontName: (<LinkBrick>textFlat).controller.fontName
-            });
+    public constructor(controller: DocController, rect: IRect, public options: ILinkOptions, public appearance: ILinkBrickAppearanceOptions) {
+        super(controller, rect, options, appearance);
     }
     public async renderInteractive(): Promise<void> {
         let oldTextColor: string = this.controller.doc.getTextColor();
@@ -23,16 +23,16 @@ export class LinkBrick extends TextBrick {
                 LinkBrick.SCALE_FACTOR_MAGIC);
         let yTopLink: number = this.yTop +
             (this.yBot - this.yTop) - descent;
-        this.controller.doc.textWithLink(this.text, this.xLeft,
-            yTopLink, { url: this.link });
+        this.controller.doc.textWithLink(this.options.text, this.xLeft,
+            yTopLink, { url: this.options.link });
         await super.renderInteractive();
         this.controller.doc.setTextColor(oldTextColor);
     }
     public async renderReadOnly(): Promise<void> {
-        if (SurveyHelper.getReadonlyRenderAs(<Question>this.question,
-            this.controller) !== 'text') {
-            return this.renderInteractive();
+        if (this.options.readOnlyShowLink) {
+            super.renderInteractive();
+        } else {
+            this.renderInteractive();
         }
-        await super.renderInteractive();
     }
 }

@@ -34,12 +34,14 @@
 								"xRight": 64.97645669291339,
 								"yTop": 28.34645669291339,
 								"yBot": 66.29645669291338,
-								"text": "1. ",
-								"options": {
+								"appearance": {
 									"fontSize": 33,
 									"fontName": "helvetica",
 									"fontStyle": "bold",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "1. "
 								}
 							}
 						]
@@ -61,12 +63,14 @@
 								"xRight": 123.0564566929134,
 								"yTop": 28.34645669291339,
 								"yBot": 66.29645669291338,
-								"text": "Sex",
-								"options": {
+								"appearance": {
 									"fontSize": 33,
 									"fontName": "helvetica",
 									"fontStyle": "bold",
 									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "Sex"
 								}
 							}
 						]
@@ -92,13 +96,26 @@
 						"yBot": 61.983956692913395,
 						"bricks": [
 							{
-								"brickType": "CheckboxItemBrick",
+								"brickType": "CheckItemBrick",
 								"width": 32.77499999999998,
 								"height": 32.775000000000006,
 								"xLeft": 157.5564566929134,
 								"xRight": 190.33145669291338,
 								"yTop": 29.20895669291339,
-								"yBot": 61.983956692913395
+								"yBot": 61.983956692913395,
+								"appearance": {
+									"fontName": "zapfdingbats",
+									"fontColor": "#9f9f9f",
+									"fontSize": 21.845154514622866,
+									"checkMark": "3",
+									"fontStyle": "normal"
+								},
+								"options": {
+									"shouldRenderReadOnly": false,
+									"readOnly": false,
+									"checked": false,
+									"fieldName": "testidquestion_question1index0"
+								}
 							}
 						]
 					},
@@ -112,13 +129,26 @@
 						"yBot": 61.983956692913395,
 						"bricks": [
 							{
-								"brickType": "CheckboxItemBrick",
+								"brickType": "CheckItemBrick",
 								"width": 32.775000000000034,
 								"height": 32.775000000000006,
 								"xLeft": 388.11779527559054,
 								"xRight": 420.8927952755906,
 								"yTop": 29.20895669291339,
-								"yBot": 61.983956692913395
+								"yBot": 61.983956692913395,
+								"appearance": {
+									"fontName": "zapfdingbats",
+									"fontColor": "#9f9f9f",
+									"fontSize": 21.845154514622866,
+									"checkMark": "3",
+									"fontStyle": "normal"
+								},
+								"options": {
+									"shouldRenderReadOnly": false,
+									"readOnly": false,
+									"checked": false,
+									"fieldName": "testidquestion_question1index1"
+								}
 							}
 						]
 					}
