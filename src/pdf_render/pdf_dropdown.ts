@@ -33,7 +33,7 @@ export class DropdownBrick extends PdfBrick {
         comboBox.readOnly = this.question.isReadOnly;
         comboBox.isUnicode = SurveyHelper.isCustomFont(
             this.controller, comboBox.fontName);
-        comboBox.V = this.getCorrectedText(SurveyHelper.getDropdownQuestionValue(this.question));
+        comboBox.V = this.getCorrectedText(this.question.readOnlyText || '');
         this.controller.doc.addField(comboBox);
         SurveyHelper.renderFlatBorders(this.controller, this);
     }

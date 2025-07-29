@@ -15,29 +15,33 @@ export class FlatDropdown extends FlatQuestion {
         super(survey, question, controller);
         this.question = <QuestionDropdownModel>question;
     }
+    protected async generateItemComment(point: IPoint): Promise<IPdfBrick> {
+        const commentModel = this.question.getCommentTextAreaModel(this.question.selectedItem);
+        return await SurveyHelper.createCommentFlat(
+            point, this.question, this.controller, {
+                fieldName: commentModel.id,
+                rows: SurveyHelper.OTHER_ROWS_COUNT,
+                value: commentModel.getTextValue(),
+                shouldRenderBorders: settings.readOnlyCommentRenderMode === 'textarea',
+                isReadOnly: this.question.isReadOnly,
+                isMultiline: true,
+            }
+        );
+    }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         const valueBrick = !this.shouldRenderAsComment ? new DropdownBrick(this.question, this.controller, SurveyHelper.createTextFieldRect(point, this.controller)) : await SurveyHelper.createCommentFlat(point, this.question, this.controller,
             {
                 fieldName: this.question.id,
                 shouldRenderBorders: settings.readOnlyTextRenderMode === 'input',
-                value: SurveyHelper.getDropdownQuestionValue(this.question),
+                value: this.question.readOnlyText || '',
                 isReadOnly: this.question.isReadOnly,
                 placeholder: SurveyHelper.getLocString(this.question.locPlaceholder)
             });
         const compositeFlat: CompositeBrick = new CompositeBrick(valueBrick);
-        if (this.question.isOtherSelected) {
+        if (this.question.isShowingChoiceComment) {
             const otherPoint: IPoint = SurveyHelper.createPoint(compositeFlat);
             otherPoint.yTop += this.controller.unitHeight * SurveyHelper.GAP_BETWEEN_ROWS;
-            compositeFlat.addBrick(await SurveyHelper.createCommentFlat(
-                otherPoint, this.question, this.controller, {
-                    fieldName: this.question.id + '_comment',
-                    rows: SurveyHelper.OTHER_ROWS_COUNT,
-                    value: this.question.comment !== undefined && this.question.comment !== null ? this.question.comment : '',
-                    shouldRenderBorders: settings.readOnlyCommentRenderMode === 'textarea',
-                    isReadOnly: this.question.isReadOnly,
-                    isMultiline: true,
-                }
-            ));
+            compositeFlat.addBrick(await this.generateItemComment(otherPoint));
         }
         return [compositeFlat];
     }
