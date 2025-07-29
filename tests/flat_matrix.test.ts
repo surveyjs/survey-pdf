@@ -10,6 +10,7 @@ import { TextBrick } from '../src/pdf_render/pdf_text';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 import { FlatQuestion } from '../src/entries/pdf';
+import { checkFlatSnapshot } from './snapshot_helper';
 let __dummy_mt = new FlatMatrix(null, null, null);
 
 test('Matrix simple hasRows true columns', async () => {
@@ -353,4 +354,54 @@ test('Matrix check rowTitleWidth', async () => {
     expect(unfoldHeaderFlats[1].xLeft).toBe(rowTitleWidth + defaultLeftMargin + columnWidth + 2 * gapBetweenColumns);
     expect(unfoldRowFlats[3].xLeft).toBe(rowTitleWidth + defaultLeftMargin + gapBetweenColumns);
     expect(unfoldRowFlats[4].xLeft).toBe(rowTitleWidth + defaultLeftMargin + columnWidth + 2 * gapBetweenColumns);
+});
+
+test('Check matrix with cellType: checkbox', async() => {
+    const options = {
+        allowedPropertiesHash: { 'CheckItemBrick': ['fieldName', 'context.checked'] },
+        onSurveyCreated(survey) {
+            survey.data = {
+                'matrix': {
+                    'row1': 'col1',
+                    'row2': ['col1', 'col2']
+                }
+            };
+        }
+
+    };
+    const json = {
+        'elements': [
+            {
+                'type': 'matrix',
+                'name': 'matrix',
+                titleLocation: 'hidden',
+                cellType: 'checkbox',
+                'columns': [{
+                    'value': 'col1',
+                    'text': 'Column 1'
+                }, {
+                    'value': 'col2',
+                    'text': 'Column 2'
+                }],
+                'rows': [
+                    {
+                        'value': 'row1',
+                        'text': 'Row 1'
+                    },
+                    {
+                        'value': 'row2',
+                        'text': 'Row 2'
+                    },
+                ],
+            }
+        ]
+    };
+
+    await checkFlatSnapshot(json, { snapshotName: 'matrix_checkbox', controllerOptions: {
+        fontSize: 11
+    }, ...options });
+    await checkFlatSnapshot(json, { snapshotName: 'matrix_checkbox_list', controllerOptions: {
+        fontSize: 11,
+        matrixRenderAs: 'list'
+    }, ...options });
 });

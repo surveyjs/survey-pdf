@@ -3,12 +3,13 @@ import { IQuestion, QuestionMatrixModel, MatrixRowModel,
 import { SurveyPDF } from '../survey';
 import { DocController, IPoint, IRect } from '../doc_controller';
 import { FlatQuestion } from './flat_question';
-import { FlatRadiogroup } from './flat_radiogroup';
 import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { TextBrick } from '../pdf_render/pdf_text';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
+import { RadioGroupWrap, RadioItemBrick } from '../pdf_render/pdf_radioitem';
+import { CheckItemBrick } from '../pdf_render/pdf_checkitem';
 
 export class FlatMatrix extends FlatQuestion {
     public static readonly GAP_BETWEEN_ROWS: number = 0.5;
@@ -80,66 +81,83 @@ export class FlatMatrix extends FlatQuestion {
     }
 }
 
-export class FlatMatrixRow extends FlatRadiogroup {
-    protected questionMatrix: QuestionMatrixModel;
+export class FlatMatrixRow {
+    private radioGroupWrap: RadioGroupWrap;
     public constructor(protected survey: SurveyPDF,
-        question: IQuestion, protected controller: DocController, private row: MatrixRowModel, private rowIndex: number,
+        protected question: QuestionMatrixModel, protected controller: DocController, private row: MatrixRowModel, private rowIndex: number,
         private key: string, protected isFirst: boolean = false, protected isVertical: boolean = false, private rowTitleWidth: number, private columnWidth: number) {
-        super(survey, question, controller);
-        this.questionMatrix = <QuestionMatrixModel>question;
     }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         return this.isVertical ?
             await this.generateFlatsVerticallyCells(point) :
             await this.generateFlatsHorizontallyCells(point);
     }
+
+    protected generateFlatItem(rect: IRect, item: ItemValue,
+        index: number, key: string, context: any = {}) {
+        const fieldName = this.question.id + key;
+        const isChecked: boolean = this.row.isChecked(item);
+        if(this.question.isMultiSelect) {
+            return new CheckItemBrick(this.controller, rect, fieldName + 'index' + index, { question: this.question, index, checked: isChecked, item, readOnly: this.question.isReadOnly });
+        } else {
+            if (index === 0) {
+                this.radioGroupWrap = new RadioGroupWrap(fieldName,
+                    this.controller, { readOnly: this.question.isReadOnly, question: this.question, ...context });
+                (<any>this.question).pdfRadioGroupWrap = this.radioGroupWrap;
+            }
+            else if (typeof this.radioGroupWrap === 'undefined') {
+                this.radioGroupWrap = (<any>this.question).pdfRadioGroupWrap;
+            }
+            return new RadioItemBrick(this.controller, rect,
+                { question: this.question, index: index, checked: isChecked, item: item }, this.radioGroupWrap);
+        }
+    }
+
     protected async generateTextComposite(point: IPoint, column: ItemValue, index: number): Promise<IPdfBrick> {
         const currPoint: IPoint = SurveyHelper.clone(point);
-        const checked: boolean = this.row.value == column.value;
         const itemRect = SurveyHelper.createRect(currPoint,
             SurveyHelper.getPageAvailableWidth(this.controller), this.controller.unitHeight);
-        const radioFlat: IPdfBrick = this.generateFlatItem(itemRect, column, index, this.key, checked, { row: this.row, rowIndex: this.rowIndex });
+        const radioFlat: IPdfBrick = this.generateFlatItem(itemRect, column, index, this.key, { row: this.row, rowIndex: this.rowIndex });
         currPoint.yTop = radioFlat.yBot + this.controller.unitHeight * SurveyHelper.GAP_BETWEEN_ITEM_TEXT;
-        const cellTextFlat = await SurveyHelper.createTextFlat(currPoint, this.questionMatrix, this.controller,
-            this.questionMatrix.getCellDisplayLocText(this.row.name, column), TextBrick);
+        const cellTextFlat = await SurveyHelper.createTextFlat(currPoint, this.question, this.controller,
+            this.question.getCellDisplayLocText(this.row.name, column), TextBrick);
         return new CompositeBrick(radioFlat, cellTextFlat);
     }
-    protected async generateItemCompoiste(point: IPoint, column: ItemValue, index: number): Promise<IPdfBrick> {
+    protected async generateItemComposite(point: IPoint, column: ItemValue, index: number): Promise<IPdfBrick> {
         const currPoint: IPoint = SurveyHelper.clone(point);
-        const checked: boolean = this.row.value == column.value;
         const itemRect: IRect = SurveyHelper.createRect(currPoint,
             this.controller.unitHeight, this.controller.unitHeight);
         const radioFlat: IPdfBrick = this.generateFlatItem(SurveyHelper.moveRect(
-            SurveyHelper.scaleRect(itemRect, SurveyHelper.SELECT_ITEM_FLAT_SCALE), itemRect.xLeft), column, index, this.key, checked, { row: this.row, rowIndex: this.rowIndex });
+            SurveyHelper.scaleRect(itemRect, SurveyHelper.SELECT_ITEM_FLAT_SCALE), itemRect.xLeft), column, index, this.key, { row: this.row, rowIndex: this.rowIndex });
         currPoint.xLeft = radioFlat.xRight + this.controller.unitWidth * SurveyHelper.GAP_BETWEEN_ITEM_TEXT;
-        const radioText: IPdfBrick = await SurveyHelper.createTextFlat(currPoint, this.questionMatrix,
+        const radioText: IPdfBrick = await SurveyHelper.createTextFlat(currPoint, this.question,
             this.controller, column.locText, TextBrick);
         return new CompositeBrick(radioFlat, radioText);
     }
     protected async generateFlatsHorizontallyCells(point: IPoint) {
         const cells: IPdfBrick[] = [];
         const currPoint: IPoint = SurveyHelper.clone(point);
-        if (this.questionMatrix.hasRows) {
+        if (this.question.hasRows) {
             this.controller.pushMargins();
             currPoint.xLeft = this.controller.margins.left;
             this.controller.margins.right += (SurveyHelper.getPageAvailableWidth(this.controller) - this.rowTitleWidth);
-            cells.push(await SurveyHelper.createTextFlat(currPoint, this.questionMatrix, this.controller, this.row.locText, TextBrick));
+            cells.push(await SurveyHelper.createTextFlat(currPoint, this.question, this.controller, this.row.locText, TextBrick));
             currPoint.xLeft += this.rowTitleWidth + this.controller.unitWidth * SurveyHelper.GAP_BETWEEN_COLUMNS;
             this.controller.popMargins();
         }
-        for (let i: number = 0; i < this.questionMatrix.visibleColumns.length; i++) {
-            const column: ItemValue = this.questionMatrix.visibleColumns[i];
+        for (let i: number = 0; i < this.question.visibleColumns.length; i++) {
+            const column: ItemValue = this.question.visibleColumns[i];
             const checked: boolean = this.row.value == column.value;
             this.controller.pushMargins();
             this.controller.margins.left = currPoint.xLeft;
             this.controller.margins.right += (SurveyHelper.getPageAvailableWidth(this.controller) - this.columnWidth);
-            if (this.questionMatrix.hasCellText) {
+            if (this.question.hasCellText) {
                 cells.push(await this.generateTextComposite(currPoint, column, i));
             }
             else {
                 const itemRect: IRect = SurveyHelper.createRect(currPoint, this.controller.unitHeight, this.controller.unitHeight);
                 cells.push(this.generateFlatItem(SurveyHelper.moveRect(
-                    SurveyHelper.scaleRect(itemRect, SurveyHelper.SELECT_ITEM_FLAT_SCALE), currPoint.xLeft), column, i, this.key, checked, { row: this.row, rowIndex: this.rowIndex }));
+                    SurveyHelper.scaleRect(itemRect, SurveyHelper.SELECT_ITEM_FLAT_SCALE), currPoint.xLeft), column, i, this.key, { row: this.row, rowIndex: this.rowIndex }));
             }
             currPoint.xLeft += this.columnWidth + this.controller.unitWidth * SurveyHelper.GAP_BETWEEN_COLUMNS;
             this.controller.popMargins();
@@ -150,16 +168,25 @@ export class FlatMatrixRow extends FlatRadiogroup {
     protected async generateFlatsVerticallyCells(point: IPoint): Promise<IPdfBrick[]> {
         const cells: IPdfBrick[] = [];
         const currPoint: IPoint = SurveyHelper.clone(point);
-        if (this.questionMatrix.hasRows) {
-            const rowTextFlat = await SurveyHelper.createTextFlat(currPoint, this.questionMatrix,
+        if (this.question.hasRows) {
+            const rowTextFlat = await SurveyHelper.createTextFlat(currPoint, this.question,
                 this.controller, this.row.locText, TextBrick);
             currPoint.yTop = rowTextFlat.yBot + FlatQuestion.CONTENT_GAP_VERT_SCALE * this.controller.unitHeight;
             cells.push(rowTextFlat);
         }
-        this.generateFlatComposite = (this.questionMatrix.hasCellText) ? this.generateTextComposite : this.generateItemCompoiste;
-        cells.push(...await this.generateVerticallyItems(currPoint, this.questionMatrix.visibleColumns));
+        cells.push(...await this.generateVerticallyItems(currPoint, this.question.visibleColumns));
         const compositeBrick: CompositeBrick = new CompositeBrick(...cells);
         return [compositeBrick, SurveyHelper.createRowlineFlat(SurveyHelper.createPoint(compositeBrick), this.controller)];
+    }
+    protected async generateVerticallyItems(point: IPoint, itemValues: ItemValue[]): Promise<IPdfBrick[]> {
+        const currPoint: IPoint = SurveyHelper.clone(point);
+        const flats: IPdfBrick[] = [];
+        for (let i: number = 0; i < itemValues.length; i++) {
+            const itemFlat: IPdfBrick = await ((this.question.hasCellText) ? this.generateTextComposite : this.generateItemComposite).call(this, currPoint, itemValues[i], i);
+            currPoint.yTop = itemFlat.yBot + SurveyHelper.GAP_BETWEEN_ROWS * this.controller.unitHeight;
+            flats.push(itemFlat);
+        }
+        return flats;
     }
 }
 

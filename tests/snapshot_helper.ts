@@ -67,8 +67,14 @@ function processBrick(brick: IPdfBrick, propertiesHash: PropertiesHash): any {
     for (const allowedProperty of allowedProperties) {
         if(allowedProperty) {
             if(typeof allowedProperty === 'string') {
-                if((brick as any)[allowedProperty] !== undefined) {
-                    res[allowedProperty] = (brick as any)[allowedProperty];
+                let value: any;
+                try {
+                    value = allowedProperty.split('.').reduce((res, prop) => res[prop], brick);
+                } catch {
+                    value = undefined;
+                }
+                if(value !== undefined) {
+                    res[allowedProperty] = value;
                 }
             } else {
                 if((brick as any)[allowedProperty.name] !== undefined) {
