@@ -22,9 +22,9 @@ export class FlatRanking extends FlatQuestion<QuestionRankingModel> {
             },
             {
                 fontStyle: 'normal',
-                fontColor: SurveyHelper.FORM_BORDER_COLOR,
+                fontColor: this.styles.formBorderColor,
                 fontName: this.controller.fontName,
-                fontSize: this.controller.fontSize * CheckItemBrick.CHECKMARK_READONLY_FONT_SIZE_SCALE
+                fontSize: SurveyHelper.getScaledFontSize(this.controller, this.styles.checkmarkFontSizeScale),
             });
         const textPoint: IPoint = SurveyHelper.clone(point);
         textPoint.xLeft = itemFlat.xRight + SurveyHelper.getScaledHorizontalSize(this.controller, this.styles.gapBetweenItemText);
@@ -53,7 +53,7 @@ export class FlatRanking extends FlatQuestion<QuestionRankingModel> {
             xLeft: currPoint.xLeft,
             yTop: currPoint.yTop - SurveyHelper.getScaledVerticalSize(this.controller, this.styles.gapBetweenRows) - 0.5,
         }, this.controller.paperWidth - this.controller.margins.right - currPoint.xLeft, 1);
-        flats.push(new ColoredBrick(this.controller, separatorRect, { color: SurveyHelper.FORM_BORDER_COLOR }));
+        flats.push(new ColoredBrick(this.controller, separatorRect, { color: this.styles.formBorderColor, }));
 
         flats.push(...await this.generateChoicesColumn(currPoint, this.question.unRankingChoices, true));
         return flats;
@@ -88,7 +88,7 @@ export class FlatRanking extends FlatQuestion<QuestionRankingModel> {
             const gapBetweenRows = SurveyHelper.getScaledVerticalSize(this.controller, this.styles.gapBetweenRows);
             row.addBrick(new ColoredBrick(this.controller, separatorRect,
                 {
-                    color: SurveyHelper.FORM_BORDER_COLOR,
+                    color: this.styles.formBorderColor,
                     renderWidth: 1,
                     renderHeight: rowLineFlat.yBot - currPoint.yTop + (i !== rowsCount - 1 ? gapBetweenRows : 0)
                 }

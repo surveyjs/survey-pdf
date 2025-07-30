@@ -147,7 +147,7 @@ test('Check readonly checkbox symbol', async () => {
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     await survey['renderSurvey'](controller);
     expect(controller.doc.internal.pages[1][22]).toContain(
-        '(' + CheckItemBrick['CHECKMARK_READONLY_SYMBOL'] + ')');
+        '(' + '3' + ')');
 });
 
 test('Check onRenderCheck event', async () => {

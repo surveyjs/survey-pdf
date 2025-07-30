@@ -36,7 +36,7 @@ export class FlatRadiogroup extends FlatSelectBase<QuestionRadiogroupModel> {
         {
             fontName: RadioItemBrick.RADIOMARKER_READONLY_FONT,
             fontSize: this.controller.fontSize * RadioItemBrick.RADIOMARKER_READONLY_FONT_SIZE_SCALE,
-            fontColor: SurveyHelper.FORM_BORDER_COLOR,
+            fontColor: this.styles.formBorderColor,
             fontStyle: 'normal',
             checkMark: RadioItemBrick.RADIOMARKER_READONLY_SYMBOL
         });

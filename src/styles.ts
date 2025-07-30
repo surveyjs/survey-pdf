@@ -32,11 +32,22 @@ export const styles: IStyles = {
     },
     selectbase: {
         gapBetweenColumns: 1.5,
-        gapBetweenRows: 0.25
+        gapBetweenRows: 0.25,
+        formBorderColor: '#9f9f9f',
+    },
+    checkbox: {
+        checkmarkFontSizeScale: 1.0 - Math.E / 10.0,
+        checkmarkFont: 'zapfdingbats',
+        checkmarkSymbol: '3',
+        formBorderColor: '#9f9f9f',
+    },
+    radiogroup: {
+        formBorderColor: '#9f9f9f',
     },
     matrixbase: {
         gapBetweenColumns: 1.5,
-        gapBetweenRows: 0.5
+        gapBetweenRows: 0.5,
+        formBorderColor: '#9f9f9f',
     },
     matrix: {
         gapBetweenRows: 0.5,
@@ -47,11 +58,14 @@ export const styles: IStyles = {
         rowsGapScale: 0.195
     },
     rating: {
-        gapBetweenRows: 0.25
+        gapBetweenRows: 0.25,
+        formBorderColor: '#9f9f9f',
     },
     ranking: {
         gapBetweenColumns: 1.5,
-        gapBetweenRows: 0.25
+        gapBetweenRows: 0.25,
+        checkmarkFontSizeScale: 1.0 - Math.E / 10.0,
+        formBorderColor: '#9f9f9f',
     },
     slider: {
         gapBetweenColumns: 1.5,
@@ -66,5 +80,17 @@ export const styles: IStyles = {
     },
     paneldynamic: {
         gapBetweenPanels: 0.75
+    },
+    boolean: {
+        checkmarkFontSizeScale: 1.0 - Math.E / 10.0,
+        checkmarkFont: 'zapfdingbats',
+        checkmarkSymbol: '3',
+        formBorderColor: '#9f9f9f',
+    },
+    imagepicker: {
+        checkmarkFontSizeScale: 1.0 - Math.E / 10.0,
+        checkmarkFont: 'zapfdingbats',
+        checkmarkSymbol: '3',
+        formBorderColor: '#9f9f9f',
     }
 };
