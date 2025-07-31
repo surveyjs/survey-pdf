@@ -17,14 +17,21 @@
 				"yTop": 28.34645669291339,
 				"yBot": 83.54645669291338,
 				"options": {
-					"fieldName": "testId",
+					"fieldName": "testidquestion_q2",
 					"inputType": "number",
 					"value": 30,
 					"isReadOnly": true,
+					"shouldRenderReadOnly": true,
 					"shouldRenderBorders": true,
 					"rows": 1,
 					"isMultiline": false,
 					"placeholder": ""
+				},
+				"appearance": {
+					"fontName": "helvetica",
+					"fontColor": "#404040",
+					"fontSize": 30,
+					"fontStyle": "normal"
 				}
 			},
 			{
@@ -36,14 +43,21 @@
 				"yTop": 28.34645669291339,
 				"yBot": 83.54645669291338,
 				"options": {
-					"fieldName": "testId",
+					"fieldName": "testidquestion_q2",
 					"inputType": "number",
 					"value": 60,
 					"isReadOnly": true,
+					"shouldRenderReadOnly": true,
 					"shouldRenderBorders": true,
 					"rows": 1,
 					"isMultiline": false,
 					"placeholder": ""
+				},
+				"appearance": {
+					"fontName": "helvetica",
+					"fontColor": "#404040",
+					"fontSize": 30,
+					"fontStyle": "normal"
 				}
 			}
 		]

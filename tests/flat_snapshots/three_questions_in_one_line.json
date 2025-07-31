@@ -1,0 +1,79 @@
+[
+	[
+		{
+			"brickType": "TextFieldBrick",
+			"width": 122.0275590551181,
+			"height": 34.5,
+			"xLeft": 62.84645669291339,
+			"xRight": 184.8740157480315,
+			"yTop": 28.34645669291339,
+			"yBot": 62.84645669291339,
+			"appearance": {
+				"fontName": "helvetica",
+				"fontColor": "#404040",
+				"fontSize": 30,
+				"fontStyle": "normal"
+			},
+			"options": {
+				"fieldName": "testidquestion_startWithNewLineFlase1",
+				"inputType": "text",
+				"value": "",
+				"isReadOnly": false,
+				"shouldRenderReadOnly": false,
+				"shouldRenderBorders": true,
+				"placeholder": "",
+				"isMultiline": false
+			}
+		},
+		{
+			"brickType": "TextFieldBrick",
+			"width": 35.937401574803204,
+			"height": 34.5,
+			"xLeft": 253.8740157480315,
+			"xRight": 289.8114173228347,
+			"yTop": 28.34645669291339,
+			"yBot": 62.84645669291339,
+			"appearance": {
+				"fontName": "helvetica",
+				"fontColor": "#404040",
+				"fontSize": 30,
+				"fontStyle": "normal"
+			},
+			"options": {
+				"fieldName": "testidquestion_startWithNewLineFlase2",
+				"inputType": "text",
+				"value": "",
+				"isReadOnly": false,
+				"shouldRenderReadOnly": false,
+				"shouldRenderBorders": true,
+				"placeholder": "",
+				"isMultiline": false
+			}
+		},
+		{
+			"brickType": "TextFieldBrick",
+			"width": 122.0275590551181,
+			"height": 34.5,
+			"xLeft": 358.81141732283464,
+			"xRight": 480.83897637795275,
+			"yTop": 28.34645669291339,
+			"yBot": 62.84645669291339,
+			"appearance": {
+				"fontName": "helvetica",
+				"fontColor": "#404040",
+				"fontSize": 30,
+				"fontStyle": "normal"
+			},
+			"options": {
+				"fieldName": "testidquestion_startWithNewLineFlase3",
+				"inputType": "text",
+				"value": "",
+				"isReadOnly": false,
+				"shouldRenderReadOnly": false,
+				"shouldRenderBorders": true,
+				"placeholder": "",
+				"isMultiline": false
+			}
+		}
+	]
+]

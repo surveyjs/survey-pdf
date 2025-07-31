@@ -3,15 +3,10 @@
 };
 
 import { SurveyPDF } from '../src/survey';
-import { DocController } from '../src/doc_controller';
-import { FlatSurvey } from '../src/flat_layout/flat_survey';
-import { FlatBooleanCheckbox, FlatBoolean } from '../src/flat_layout/flat_boolean';
-import { IPdfBrick } from '../src/pdf_render/pdf_brick';
-import { TextBrick } from '../src/pdf_render/pdf_text';
-import { BooleanItemBrick } from '../src/pdf_render/pdf_booleanitem';
-import { SurveyHelper } from '../src/helper_survey';
+import { FlatBoolean } from '../src/flat_layout/flat_boolean';
 import { Model, QuestionBooleanModel } from 'survey-core';
-let __dummy_bl = new FlatBooleanCheckbox(null, null, null);
+import '../src/flat_layout/flat_boolean';
+import { checkFlatSnapshot } from './snapshot_helper';
 
 test('Check boolean undefined', async () => {
     let json: any = {
@@ -25,14 +20,12 @@ test('Check boolean undefined', async () => {
             }
         ]
     };
-    let survey: SurveyPDF = new SurveyPDF(json, { useLegacyBooleanRendering: true });
-    let controller: DocController = new DocController({ useLegacyBooleanRendering: true });
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(1);
-    let unfoldFlats: IPdfBrick[] = flats[0][0].unfold();
-    expect(unfoldFlats.length).toBe(1);
-    expect(unfoldFlats[0] instanceof BooleanItemBrick);
+    await checkFlatSnapshot(json, {
+        snapshotName: 'boolean_legacy_undefined',
+        controllerOptions: {
+            useLegacyBooleanRendering: true
+        }
+    });
 });
 test('Check boolean true', async () => {
     let json: any = {
@@ -47,18 +40,12 @@ test('Check boolean true', async () => {
             }
         ]
     };
-    let survey: SurveyPDF = new SurveyPDF(json, { useLegacyBooleanRendering: true });
-    let controller: DocController = new DocController({ useLegacyBooleanRendering: true });
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(1);
-    let unfoldFlats: IPdfBrick[] = flats[0][0].unfold();
-    expect(unfoldFlats.length).toBe(2);
-    expect(unfoldFlats[0] instanceof BooleanItemBrick);
-    expect(unfoldFlats[1] instanceof TextBrick);
-    expect(unfoldFlats[1].xLeft).toBe(unfoldFlats[0].xRight +
-        controller.unitWidth * SurveyHelper.GAP_BETWEEN_ITEM_TEXT);
-    expect((<TextBrick>unfoldFlats[1])['text']).toBe(json.questions[0].labelTrue);
+    await checkFlatSnapshot(json, {
+        snapshotName: 'boolean_legacy_true',
+        controllerOptions: {
+            useLegacyBooleanRendering: true
+        }
+    });
 });
 test('Check boolean false', async () => {
     let json: any = {
@@ -73,18 +60,12 @@ test('Check boolean false', async () => {
             }
         ]
     };
-    let survey: SurveyPDF = new SurveyPDF(json, { useLegacyBooleanRendering: true });
-    let controller: DocController = new DocController({ useLegacyBooleanRendering: true });
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(1);
-    let unfoldFlats: IPdfBrick[] = flats[0][0].unfold();
-    expect(unfoldFlats.length).toBe(2);
-    expect(unfoldFlats[0] instanceof BooleanItemBrick);
-    expect(unfoldFlats[1] instanceof TextBrick);
-    expect(unfoldFlats[1].xLeft).toBe(unfoldFlats[0].xRight +
-        controller.unitWidth * SurveyHelper.GAP_BETWEEN_ITEM_TEXT);
-    expect((<TextBrick>unfoldFlats[1])['text']).toBe(json.questions[0].labelFalse);
+    await checkFlatSnapshot(json, {
+        snapshotName: 'boolean_legacy_false',
+        controllerOptions: {
+            useLegacyBooleanRendering: true
+        }
+    });
 });
 
 test('Check boolean renderAs: radiogroup question', async () => {
@@ -107,7 +88,7 @@ test('Check boolean renderAs: radiogroup question', async () => {
 
     question.valueTrue = 'q1_value_true';
     question.value = 'q1_value_true';
-    flat = new FlatBoolean(null, question, null);
+    flat = new FlatBoolean(null, question, null, {});
     expect(flat['question'].value).toEqual('q1_value_true');
     expect((<any>flat).getVisibleChoices()[1].value).toEqual('q1_value_true');
     expect((<any>flat).isItemSelected((<any>flat).getVisibleChoices()[1])).toEqual(true);
@@ -115,7 +96,7 @@ test('Check boolean renderAs: radiogroup question', async () => {
 
 test('Check boolean renderAs: radiogroup default Yes/No labels', async () => {
     const question = new QuestionBooleanModel('q1');
-    let flat = new FlatBoolean(null, question, null);
+    let flat = new FlatBoolean(null, question, null, {});
     expect((<any>flat).getVisibleChoices()[0].text).toBe('No');
     expect((<any>flat).getVisibleChoices()[1].text).toBe('Yes');
 });
@@ -136,14 +117,14 @@ test('Check boolean renderAs: radiogroup locales', async () => {
             'fr': 'oui'
         }
     });
-    let flat = new FlatBoolean(null, question, null);
+    let flat = new FlatBoolean(null, question, null, {});
     expect((<any>flat).getVisibleChoices()[1].text).toBe('yes');
     expect(flat['question'].title).toBe('Title_en');
     expect(flat['question'].description).toBe('Description_en');
     question.setSurveyImpl(new SurveyPDF({
         locale: 'fr'
     }));
-    flat = new FlatBoolean(null, question, null);
+    flat = new FlatBoolean(null, question, null, {});
     expect(flat['question'].title).toBe('Title_fr');
     expect(flat['question'].description).toBe('Description_fr');
     expect((<any>flat).getVisibleChoices()[1].text).toBe('oui');
@@ -162,8 +143,8 @@ test('Check boolean renderAs: radiogroup question number', async () => {
             }
         ]
     });
-    let flat = new FlatBoolean(null, survey.getQuestionByName('q1'), null);
-    let flat2 = new FlatBoolean(null, survey.getQuestionByName('q2'), null);
+    let flat = new FlatBoolean(null, survey.getQuestionByName('q1'), null, {});
+    let flat2 = new FlatBoolean(null, survey.getQuestionByName('q2'), null, {});
     expect(flat['question'].no).toBe('1.');
     expect(flat2['question'].no).toBe('2.');
 });
@@ -179,6 +160,6 @@ test('Check boolean with display mode', async () => {
     let survey = new SurveyPDF({});
     survey.mode = 'display';
     question.setSurveyImpl(survey);
-    let flat = new FlatBoolean(null, question, null);
+    let flat = new FlatBoolean(null, question, null, {});
     expect(flat['question'].isInputReadOnly).toBe(true);
 });

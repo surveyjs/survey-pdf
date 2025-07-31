@@ -1,0 +1,21 @@
+[
+	{
+		"brickType": "HTMLBrick",
+		"width": 504.0826771653543,
+		"height": 3.552713678800501e-15,
+		"xLeft": 62.84645669291339,
+		"xRight": 566.9291338582677,
+		"yTop": 28.34645669291339,
+		"yBot": 28.346456692913392,
+		"options": {
+			"html": "<img src='data:,' width='504.0826771653543' height='2.220446049250313e-15'/>",
+			"isImage": true
+		},
+		"appearance": {
+			"fontSize": 30,
+			"fontName": "helvetica",
+			"fontStyle": "normal",
+			"fontColor": "#404040"
+		}
+	}
+]

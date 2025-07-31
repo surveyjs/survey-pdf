@@ -8,7 +8,7 @@ export class EmptyBrick extends PdfBrick {
     constructor(rect: IRect,
         protected controller: DocController = null,
         isBorderVisible: boolean = false) {
-        super(null, controller, rect);
+        super(controller, rect);
         this.isBorderVisible = isBorderVisible;
     }
 
