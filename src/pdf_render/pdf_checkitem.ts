@@ -16,7 +16,7 @@ export interface ICheckItemBrickAppearanceOptions extends ITextAppearanceOptions
 }
 
 export class CheckItemBrick extends PdfBrick {
-    public static readonly FONT_SIZE_SCALE: number = 0.7;
+    private static readonly FONT_SIZE_SCALE: number = 0.7;
     public constructor(controller: DocController,
         rect: IRect, protected options: ICheckItemBrickOptions, protected appearance: ICheckItemBrickAppearanceOptions) {
         super(controller, rect);

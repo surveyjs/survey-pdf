@@ -96,7 +96,7 @@ export class FlatQuestion<T extends Question = Question> implements IFlatQuestio
                 placeholder: ''
             }, {
                 fontName: this.controller.fontName,
-                fontColor: SurveyHelper.TEXT_COLOR,
+                fontColor: this.styles.textColor,
                 fontSize: this.controller.fontSize,
                 fontStyle: 'normal'
             }));

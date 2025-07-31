@@ -43,7 +43,7 @@ export class FlatSlider extends FlatQuestion<QuestionSliderModel> {
     private async generateInputBrick(point: IPoint, options:ITextFieldBrickOptions): Promise<IPdfBrick> {
         const appearance: ITextFieldBrickAppearanceOptions = {
             fontName: this.controller.fontName,
-            fontColor: SurveyHelper.TEXT_COLOR,
+            fontColor: this.styles.textColor,
             fontSize: this.controller.fontSize,
             fontStyle: 'normal'
         };

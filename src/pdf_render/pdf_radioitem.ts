@@ -48,7 +48,7 @@ export class RadioGroupWrap {
 }
 
 export class RadioItemBrick extends PdfBrick {
-    public static readonly RADIOMARKER_READONLY_SYMBOL: string = 'l';
+    private static readonly RADIOMARKER_READONLY_SYMBOL: string = 'l';
     public constructor(controller: DocController,
         rect: IRect, private radioGroupWrap: RadioGroupWrap, protected options: IRadioItemBrickOptions, protected appearance: IRadioItemBrickAppearanceOptions) {
         super(controller, rect);

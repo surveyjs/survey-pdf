@@ -35,7 +35,7 @@ export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSele
                     isMultiline: true,
                 }, {
                     fontName: this.controller.fontName,
-                    fontColor: SurveyHelper.TEXT_COLOR,
+                    fontColor: this.styles.textColor,
                     fontSize: this.controller.fontSize,
                     fontStyle: 'normal'
                 }));

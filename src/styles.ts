@@ -15,7 +15,8 @@ export const styles: IStyles = {
         descriptionGapScale: 0.0625,
         gapBetweenItemText: 0.25,
         gapBetweenColumns: 1.5,
-        gapBetweenRows: 0.25
+        gapBetweenRows: 0.25,
+        textColor: '#404040',
     },
     panel: {
         titleFontSizeScale: 1.3,
@@ -74,7 +75,8 @@ export const styles: IStyles = {
         gapBetweenColumns: 1.5,
     },
     dropdown: {
-        gapBetweenRows: 0.25
+        gapBetweenRows: 0.25,
+        textColor: '#404040',
     },
     file: {
         imageGapScale: 0.195,
@@ -95,5 +97,11 @@ export const styles: IStyles = {
         checkmarkFont: 'zapfdingbats',
         checkmarkSymbol: '3',
         formBorderColor: '#9f9f9f',
+    },
+    comment: {
+        textColor: '#404040',
+    },
+    expression: {
+        textColor: '#404040',
     }
 };

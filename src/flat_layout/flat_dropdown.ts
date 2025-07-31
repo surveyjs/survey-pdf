@@ -17,7 +17,7 @@ export class FlatDropdown extends FlatQuestion<QuestionDropdownModel> {
             showOptionsCaption: this.question.showOptionsCaption,
             items: this.question.visibleChoices.map(item => SurveyHelper.getLocString(item.locText))
         }, {
-            fontColor: SurveyHelper.TEXT_COLOR,
+            fontColor: this.styles.textColor,
             fontName: this.controller.fontName,
             fontSize: this.controller.fontSize,
             fontStyle: 'normal'
@@ -30,7 +30,7 @@ export class FlatDropdown extends FlatQuestion<QuestionDropdownModel> {
                 placeholder: SurveyHelper.getLocString(this.question.locPlaceholder)
             }, {
                 fontName: this.controller.fontName,
-                fontColor: SurveyHelper.TEXT_COLOR,
+                fontColor: this.styles.textColor,
                 fontSize: this.controller.fontSize,
                 fontStyle: 'normal'
             });
@@ -48,7 +48,7 @@ export class FlatDropdown extends FlatQuestion<QuestionDropdownModel> {
                     isMultiline: true,
                 }, {
                     fontName: this.controller.fontName,
-                    fontColor: SurveyHelper.TEXT_COLOR,
+                    fontColor: this.styles.textColor,
                     fontSize: this.controller.fontSize,
                     fontStyle: 'normal'
                 }

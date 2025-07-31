@@ -11,7 +11,7 @@ export class FlatTextbox extends FlatQuestion {
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         const appearance: ITextFieldBrickAppearanceOptions = {
             fontName: this.controller.fontName,
-            fontColor: SurveyHelper.TEXT_COLOR,
+            fontColor: this.styles.textColor,
             fontSize: this.controller.fontSize,
             fontStyle: 'normal'
         };
