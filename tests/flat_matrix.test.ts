@@ -221,3 +221,53 @@ test('Matrix check rowTitleWidth', async () => {
             fontSize: 14
         } });
 });
+
+test('Check matrix with cellType: checkbox', async() => {
+    const options = {
+        allowedPropertiesHash: { 'CheckItemBrick': ['fieldName', 'context.checked'] },
+        onSurveyCreated(survey) {
+            survey.data = {
+                'matrix': {
+                    'row1': 'col1',
+                    'row2': ['col1', 'col2']
+                }
+            };
+        }
+
+    };
+    const json = {
+        'elements': [
+            {
+                'type': 'matrix',
+                'name': 'matrix',
+                titleLocation: 'hidden',
+                cellType: 'checkbox',
+                'columns': [{
+                    'value': 'col1',
+                    'text': 'Column 1'
+                }, {
+                    'value': 'col2',
+                    'text': 'Column 2'
+                }],
+                'rows': [
+                    {
+                        'value': 'row1',
+                        'text': 'Row 1'
+                    },
+                    {
+                        'value': 'row2',
+                        'text': 'Row 2'
+                    },
+                ],
+            }
+        ]
+    };
+
+    await checkFlatSnapshot(json, { snapshotName: 'matrix_checkbox', controllerOptions: {
+        fontSize: 11
+    }, ...options });
+    await checkFlatSnapshot(json, { snapshotName: 'matrix_checkbox_list', controllerOptions: {
+        fontSize: 11,
+        matrixRenderAs: 'list'
+    }, ...options });
+});

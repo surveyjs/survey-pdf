@@ -122,3 +122,42 @@ test('Check shouldRenderAsComment flag for text flat', async () => {
     question.readonlyRenderAs = 'acroform';
     expect(flat['shouldRenderAsComment']).toBeFalsy();
 });
+
+test('Check item comment', async () => {
+    await checkFlatSnapshot({ 'elements': [{
+        'type': 'dropdown',
+        'name': 'question1',
+        'choices': [
+            {
+                'value': 'Item 1',
+                'showCommentArea': true
+            },
+            {
+                'value': 'Item 2',
+                'showCommentArea': true
+            },
+            {
+                'value': 'Item 3',
+                'showCommentArea': true
+            },
+            'Item 4',
+            'Item 5',
+            'Item 6',
+            'Item 7'
+        ]
+    }]
+    }, {
+        snapshotName: 'dropdown_item_comment',
+        allowedPropertiesHash: {
+            'TextFieldBrick': ['options']
+        },
+        onSurveyCreated(survey) {
+            survey.data = {
+                'question1': {
+                    'value': 'Item 2',
+                    'comment': 'aaaaa'
+                }
+            };
+        },
+    });
+});

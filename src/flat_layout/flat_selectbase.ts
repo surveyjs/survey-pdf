@@ -4,16 +4,35 @@ import { FlatQuestion } from './flat_question';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
+import { ChoiceItem } from 'survey-core/typings/src/question_baseselect';
 
 export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSelectBase> extends FlatQuestion<T> {
     public abstract generateFlatItem(rect: IRect, item: ItemValue, index: number): IPdfBrick;
-    protected async generateFlatComposite(point: IPoint, item: ItemValue, index: number): Promise<IPdfBrick> {
+    protected async generateItemComment(point: IPoint, item: ItemValue) {
+        const commentModel = this.question.getCommentTextAreaModel(item);
+        return await SurveyHelper.createCommentFlat(
+            point, this.question, this.controller, {
+                fieldName: commentModel.id,
+                rows: SurveyHelper.OTHER_ROWS_COUNT,
+                value: commentModel.getTextValue(),
+                shouldRenderBorders: settings.readOnlyCommentRenderMode === 'textarea',
+                isReadOnly: this.question.isReadOnly,
+                isMultiline: true,
+            }, {
+                fontName: this.controller.fontName,
+                fontColor: this.styles.textColor,
+                fontSize: this.controller.fontSize,
+                fontStyle: 'normal'
+            });
+    }
+    protected async generateFlatComposite(point: IPoint, item: ItemValue | ChoiceItem, index: number): Promise<IPdfBrick> {
         const compositeFlat: CompositeBrick = new CompositeBrick();
         const itemRect: IRect = SurveyHelper.createRect(point,
             this.controller.unitWidth, this.controller.unitHeight);
         const itemFlat: IPdfBrick = this.generateFlatItem(SurveyHelper.moveRect(
             SurveyHelper.scaleRect(itemRect, SurveyHelper.SELECT_ITEM_FLAT_SCALE),
             point.xLeft), item, index);
+
         compositeFlat.addBrick(itemFlat);
         const textPoint: IPoint = SurveyHelper.clone(point);
         textPoint.xLeft = itemFlat.xRight + SurveyHelper.getScaledHorizontalSize(this.controller, this.styles.gapBetweenItemText);
@@ -21,24 +40,10 @@ export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSele
             compositeFlat.addBrick(await SurveyHelper.createTextFlat(
                 textPoint, this.controller, item.locText));
         }
-        if (item === this.question.otherItem && (item.value === this.question.value ||
-            (typeof this.question.isOtherSelected !== 'undefined' && this.question.isOtherSelected))) {
-            const otherPoint: IPoint = SurveyHelper.createPoint(compositeFlat);
+        if(item.isCommentShowing) {
+            const otherPoint: IPoint = SurveyHelper.createPoint(compositeFlat, true, false);
             otherPoint.yTop += SurveyHelper.getScaledVerticalSize(this.controller, this.styles.gapBetweenRows);
-            compositeFlat.addBrick(await SurveyHelper.createCommentFlat(
-                otherPoint, this.question, this.controller, {
-                    fieldName: this.question.id + '_comment' + index,
-                    rows: SurveyHelper.OTHER_ROWS_COUNT,
-                    value: this.question.comment !== undefined && this.question.comment !== null ? this.question.comment : '',
-                    shouldRenderBorders: settings.readOnlyCommentRenderMode === 'textarea',
-                    isReadOnly: this.question.isReadOnly,
-                    isMultiline: true,
-                }, {
-                    fontName: this.controller.fontName,
-                    fontColor: this.styles.textColor,
-                    fontSize: this.controller.fontSize,
-                    fontStyle: 'normal'
-                }));
+            compositeFlat.addBrick(await this.generateItemComment(otherPoint, item));
         }
         return compositeFlat;
     }

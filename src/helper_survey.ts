@@ -575,19 +575,6 @@ export class SurveyHelper {
         if (this.hasHtml(text)) return text.renderedHtml;
         return (<any>text).renderedText || text.renderedHtml;
     }
-    public static getDropdownQuestionValue(question: Question): string {
-        const qDropDown: QuestionDropdownModel = <QuestionDropdownModel>question;
-        if (qDropDown.isOtherSelected) {
-            return qDropDown.otherText;
-        }
-        else if (!!question.displayValue) {
-            return question.displayValue;
-        }
-        else if (qDropDown.showOptionsCaption) {
-            return qDropDown.optionsCaption;
-        }
-        return '';
-    }
     public static getContentQuestion(question: Question): Question {
         return !!(<any>question).contentQuestion ? (<any>question).contentQuestion : question;
     }

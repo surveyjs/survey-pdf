@@ -59,6 +59,9 @@ export const styles: IStyles = {
         radiomarkSymbol: 'l',
         radiomarkFontSizeScale: 1.0 - ((2.0 + Math.E) / 10.0),
         radiomarkFont: 'zapfdingbats',
+        checkmarkFontSizeScale: 1.0 - Math.E / 10.0,
+        checkmarkFont: 'zapfdingbats',
+        checkmarkSymbol: '3',
     },
     multipletext: {
         gapBetweenColumns: 1.5,

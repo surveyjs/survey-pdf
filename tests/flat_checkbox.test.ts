@@ -272,3 +272,58 @@ test('Check margins are correct after generating content', async() => {
     expect(controller.margins.left).toBe(oldMarginLeft);
     expect(controller.margins.right).toBe(oldMarginRight);
 });
+
+test('Check checkbox with item comment', async () => {
+    await checkFlatSnapshot({ 'elements':
+         [{
+             'type': 'checkbox',
+             'name': 'question1',
+             'choices': [
+                 {
+                     'value': 'Item 1',
+                     'showCommentArea': true
+                 },
+                 {
+                     'value': 'Item 2',
+                     'showCommentArea': true
+                 },
+                 {
+                     'value': 'Item 3',
+                     'showCommentArea': true
+                 },
+                 'Item 4',
+                 'Item 5',
+             ],
+             'colCount': 1
+         }]
+    }, {
+        snapshotName: 'checkbox_item_comment',
+        allowedPropertiesHash: {
+            'TextFieldBrick': ['options']
+        },
+        onSurveyCreated(survey) {
+            survey.data = {
+                'question1': [
+                    {
+                        'value': 'Item 1',
+                        'comment': 'aaaaa'
+                    },
+                    {
+                        'value': 'Item 3',
+                        'comment': 'bbbbb'
+                    },
+                    {
+                        'value': 'Item 5'
+                    },
+                    {
+                        'value': 'Item 4'
+                    },
+                    {
+                        'value': 'Item 2',
+                        'comment': 'ccccc'
+                    }
+                ]
+            };
+        },
+    });
+});

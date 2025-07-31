@@ -8,10 +8,29 @@ import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
 
 export class FlatDropdown extends FlatQuestion<QuestionDropdownModel> {
+    protected async generateItemComment(point: IPoint): Promise<IPdfBrick> {
+        const commentModel = this.question.getCommentTextAreaModel(this.question.selectedItem);
+        return await SurveyHelper.createCommentFlat(
+            point, this.question, this.controller, {
+                fieldName: commentModel.id,
+                rows: SurveyHelper.OTHER_ROWS_COUNT,
+                value: commentModel.getTextValue(),
+                shouldRenderBorders: settings.readOnlyCommentRenderMode === 'textarea',
+                isReadOnly: this.question.isReadOnly,
+                isMultiline: true,
+            },
+            {
+                fontName: this.controller.fontName,
+                fontColor: this.styles.textColor,
+                fontSize: this.controller.fontSize,
+                fontStyle: 'normal'
+            }
+        );
+    }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         const valueBrick = !this.shouldRenderAsComment ? new DropdownBrick(this.controller, SurveyHelper.createTextFieldRect(point, this.controller), {
             fieldName: this.question.id,
-            value: SurveyHelper.getDropdownQuestionValue(this.question),
+            value: this.question.readOnlyText,
             isReadOnly: this.question.isReadOnly,
             optionsCaption: this.question.optionsCaption,
             showOptionsCaption: this.question.showOptionsCaption,
@@ -25,7 +44,7 @@ export class FlatDropdown extends FlatQuestion<QuestionDropdownModel> {
             {
                 fieldName: this.question.id,
                 shouldRenderBorders: settings.readOnlyTextRenderMode === 'input',
-                value: SurveyHelper.getDropdownQuestionValue(this.question),
+                value: this.question.readOnlyText || '',
                 isReadOnly: this.question.isReadOnly,
                 placeholder: SurveyHelper.getLocString(this.question.locPlaceholder)
             }, {
@@ -35,24 +54,10 @@ export class FlatDropdown extends FlatQuestion<QuestionDropdownModel> {
                 fontStyle: 'normal'
             });
         const compositeFlat: CompositeBrick = new CompositeBrick(valueBrick);
-        if (this.question.isOtherSelected) {
+        if (this.question.isShowingChoiceComment) {
             const otherPoint: IPoint = SurveyHelper.createPoint(compositeFlat);
             otherPoint.yTop += SurveyHelper.getScaledVerticalSize(this.controller, this.styles.gapBetweenRows);
-            compositeFlat.addBrick(await SurveyHelper.createCommentFlat(
-                otherPoint, this.question, this.controller, {
-                    fieldName: this.question.id + '_comment',
-                    rows: SurveyHelper.OTHER_ROWS_COUNT,
-                    value: this.question.comment !== undefined && this.question.comment !== null ? this.question.comment : '',
-                    shouldRenderBorders: settings.readOnlyCommentRenderMode === 'textarea',
-                    isReadOnly: this.question.isReadOnly,
-                    isMultiline: true,
-                }, {
-                    fontName: this.controller.fontName,
-                    fontColor: this.styles.textColor,
-                    fontSize: this.controller.fontSize,
-                    fontStyle: 'normal'
-                }
-            ));
+            compositeFlat.addBrick(await this.generateItemComment(otherPoint));
         }
         return [compositeFlat];
     }
