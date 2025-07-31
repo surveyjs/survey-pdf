@@ -164,7 +164,7 @@
 					"fontStyle": "normal"
 				},
 				"options": {
-					"fieldName": "testidquestion_checkbox_comment0",
+					"fieldName": "testidquestion_checkbox_other",
 					"rows": 2,
 					"value": "",
 					"shouldRenderBorders": true,

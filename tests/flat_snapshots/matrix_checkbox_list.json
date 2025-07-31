@@ -25,7 +25,15 @@
 						"xRight": 72.01645669291338,
 						"yTop": 28.34645669291339,
 						"yBot": 40.996456692913384,
-						"text": "Row 1"
+						"appearance": {
+							"fontSize": 11,
+							"fontName": "helvetica",
+							"fontStyle": "normal",
+							"fontColor": "#404040"
+						},
+						"options": {
+							"text": "Row 1"
+						}
 					}
 				]
 			},
@@ -46,8 +54,19 @@
 						"xRight": 53.013956692913375,
 						"yTop": 47.63770669291339,
 						"yBot": 59.65520669291339,
-						"fieldName": "sq_109row0index0",
-						"context.checked": true
+						"appearance": {
+							"fontName": "zapfdingbats",
+							"fontColor": "#9f9f9f",
+							"fontSize": 8.00988998869505,
+							"checkMark": "3",
+							"fontStyle": "normal"
+						},
+						"options": {
+							"fieldName": "testidquestion_matrixrow0index0",
+							"checked": true,
+							"shouldRenderReadOnly": false,
+							"readOnly": false
+						}
 					},
 					{
 						"brickType": "CompositeBrick",
@@ -66,7 +85,15 @@
 								"xRight": 102.92645669291338,
 								"yTop": 47.32145669291339,
 								"yBot": 59.971456692913385,
-								"text": "Column 1"
+								"appearance": {
+									"fontSize": 11,
+									"fontName": "helvetica",
+									"fontStyle": "normal",
+									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "Column 1"
+								}
 							}
 						]
 					}
@@ -89,8 +116,19 @@
 						"xRight": 53.013956692913375,
 						"yTop": 63.45020669291339,
 						"yBot": 75.4677066929134,
-						"fieldName": "sq_109row0index1",
-						"context.checked": false
+						"appearance": {
+							"fontName": "zapfdingbats",
+							"fontColor": "#9f9f9f",
+							"fontSize": 8.00988998869505,
+							"checkMark": "3",
+							"fontStyle": "normal"
+						},
+						"options": {
+							"fieldName": "testidquestion_matrixrow0index1",
+							"checked": false,
+							"shouldRenderReadOnly": false,
+							"readOnly": false
+						}
 					},
 					{
 						"brickType": "CompositeBrick",
@@ -109,7 +147,15 @@
 								"xRight": 102.92645669291338,
 								"yTop": 63.13395669291339,
 								"yBot": 75.78395669291339,
-								"text": "Column 2"
+								"appearance": {
+									"fontSize": 11,
+									"fontName": "helvetica",
+									"fontStyle": "normal",
+									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "Column 2"
+								}
 							}
 						]
 					}
@@ -152,7 +198,15 @@
 						"xRight": 72.01645669291338,
 						"yTop": 82.1089566929134,
 						"yBot": 94.75895669291339,
-						"text": "Row 2"
+						"appearance": {
+							"fontSize": 11,
+							"fontName": "helvetica",
+							"fontStyle": "normal",
+							"fontColor": "#404040"
+						},
+						"options": {
+							"text": "Row 2"
+						}
 					}
 				]
 			},
@@ -173,8 +227,19 @@
 						"xRight": 53.013956692913396,
 						"yTop": 101.40020669291339,
 						"yBot": 113.4177066929134,
-						"fieldName": "sq_109row1index0",
-						"context.checked": true
+						"appearance": {
+							"fontName": "zapfdingbats",
+							"fontColor": "#9f9f9f",
+							"fontSize": 8.00988998869505,
+							"checkMark": "3",
+							"fontStyle": "normal"
+						},
+						"options": {
+							"fieldName": "testidquestion_matrixrow1index0",
+							"checked": true,
+							"shouldRenderReadOnly": false,
+							"readOnly": false
+						}
 					},
 					{
 						"brickType": "CompositeBrick",
@@ -193,7 +258,15 @@
 								"xRight": 102.9264566929134,
 								"yTop": 101.08395669291339,
 								"yBot": 113.73395669291338,
-								"text": "Column 1"
+								"appearance": {
+									"fontSize": 11,
+									"fontName": "helvetica",
+									"fontStyle": "normal",
+									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "Column 1"
+								}
 							}
 						]
 					}
@@ -216,8 +289,19 @@
 						"xRight": 53.013956692913375,
 						"yTop": 117.21270669291337,
 						"yBot": 129.23020669291338,
-						"fieldName": "sq_109row1index1",
-						"context.checked": true
+						"appearance": {
+							"fontName": "zapfdingbats",
+							"fontColor": "#9f9f9f",
+							"fontSize": 8.00988998869505,
+							"checkMark": "3",
+							"fontStyle": "normal"
+						},
+						"options": {
+							"fieldName": "testidquestion_matrixrow1index1",
+							"checked": true,
+							"shouldRenderReadOnly": false,
+							"readOnly": false
+						}
 					},
 					{
 						"brickType": "CompositeBrick",
@@ -236,7 +320,15 @@
 								"xRight": 102.92645669291338,
 								"yTop": 116.89645669291338,
 								"yBot": 129.54645669291338,
-								"text": "Column 2"
+								"appearance": {
+									"fontSize": 11,
+									"fontName": "helvetica",
+									"fontStyle": "normal",
+									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "Column 2"
+								}
 							}
 						]
 					}

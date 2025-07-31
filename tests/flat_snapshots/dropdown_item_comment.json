@@ -27,14 +27,22 @@
 						"yBot": 66.29645669291338,
 						"bricks": [
 							{
-								"brickType": "TextBoldBrick",
+								"brickType": "TextBrick",
 								"width": 155.1,
 								"height": 37.94999999999999,
 								"xLeft": 28.34645669291339,
 								"xRight": 183.4464566929134,
 								"yTop": 28.34645669291339,
 								"yBot": 66.29645669291338,
-								"text": "question1"
+								"appearance": {
+									"fontSize": 33,
+									"fontName": "helvetica",
+									"fontStyle": "bold",
+									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "question1"
+								}
 							}
 						]
 					}
@@ -65,7 +73,29 @@
 						"xLeft": 62.84645669291339,
 						"xRight": 566.9291338582677,
 						"yTop": 83.54645669291338,
-						"yBot": 118.04645669291338
+						"yBot": 118.04645669291338,
+						"appearance": {
+							"fontColor": "#404040",
+							"fontName": "helvetica",
+							"fontSize": 30,
+							"fontStyle": "normal"
+						},
+						"options": {
+							"fieldName": "testidquestion_question1",
+							"value": "Item 2",
+							"isReadOnly": false,
+							"optionsCaption": "Select...",
+							"showOptionsCaption": true,
+							"items": [
+								"Item 1",
+								"Item 2",
+								"Item 3",
+								"Item 4",
+								"Item 5",
+								"Item 6",
+								"Item 7"
+							]
+						}
 					},
 					{
 						"brickType": "TextFieldBrick",
@@ -76,14 +106,21 @@
 						"yTop": 126.67145669291338,
 						"yBot": 195.67145669291338,
 						"options": {
-							"fieldName": "sq_142_Item_2",
+							"fieldName": "testidquestion_question1_Item_2",
 							"rows": 2,
 							"value": "aaaaa",
 							"shouldRenderBorders": true,
 							"isReadOnly": false,
 							"isMultiline": true,
+							"shouldRenderReadOnly": false,
 							"placeholder": "",
 							"inputType": ""
+						},
+						"appearance": {
+							"fontName": "helvetica",
+							"fontColor": "#404040",
+							"fontSize": 30,
+							"fontStyle": "normal"
 						}
 					}
 				]

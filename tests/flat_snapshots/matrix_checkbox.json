@@ -18,14 +18,22 @@
 				"yBot": 40.996456692913384,
 				"bricks": [
 					{
-						"brickType": "TextBoldBrick",
+						"brickType": "TextBrick",
 						"width": 50.05000000000001,
 						"height": 12.649999999999995,
 						"xLeft": 222.63381889763775,
 						"xRight": 272.68381889763776,
 						"yTop": 28.34645669291339,
 						"yBot": 40.996456692913384,
-						"text": "Column 1"
+						"appearance": {
+							"fontSize": 11,
+							"fontName": "helvetica",
+							"fontStyle": "bold",
+							"fontColor": "#404040"
+						},
+						"options": {
+							"text": "Column 1"
+						}
 					}
 				]
 			},
@@ -39,14 +47,22 @@
 				"yBot": 40.996456692913384,
 				"bricks": [
 					{
-						"brickType": "TextBoldBrick",
+						"brickType": "TextBrick",
 						"width": 50.05000000000001,
 						"height": 12.649999999999995,
 						"xLeft": 404.2711811023621,
 						"xRight": 454.3211811023621,
 						"yTop": 28.34645669291339,
 						"yBot": 40.996456692913384,
-						"text": "Column 2"
+						"appearance": {
+							"fontSize": 11,
+							"fontName": "helvetica",
+							"fontStyle": "bold",
+							"fontColor": "#404040"
+						},
+						"options": {
+							"text": "Column 2"
+						}
 					}
 				]
 			}
@@ -87,7 +103,15 @@
 						"xRight": 72.01645669291338,
 						"yTop": 47.32145669291339,
 						"yBot": 59.971456692913385,
-						"text": "Row 1"
+						"appearance": {
+							"fontSize": 11,
+							"fontName": "helvetica",
+							"fontStyle": "normal",
+							"fontColor": "#404040"
+						},
+						"options": {
+							"text": "Row 1"
+						}
 					}
 				]
 			},
@@ -99,8 +123,19 @@
 				"xRight": 234.65131889763776,
 				"yTop": 47.63770669291339,
 				"yBot": 59.65520669291339,
-				"fieldName": "sq_108row0index0",
-				"context.checked": true
+				"appearance": {
+					"fontName": "zapfdingbats",
+					"fontColor": "#9f9f9f",
+					"fontSize": 8.00988998869505,
+					"checkMark": "3",
+					"fontStyle": "normal"
+				},
+				"options": {
+					"fieldName": "testidquestion_matrixrow0index0",
+					"checked": true,
+					"shouldRenderReadOnly": false,
+					"readOnly": false
+				}
 			},
 			{
 				"brickType": "CheckItemBrick",
@@ -110,8 +145,19 @@
 				"xRight": 416.2886811023621,
 				"yTop": 47.63770669291338,
 				"yBot": 59.655206692913396,
-				"fieldName": "sq_108row0index1",
-				"context.checked": false
+				"appearance": {
+					"fontName": "zapfdingbats",
+					"fontColor": "#9f9f9f",
+					"fontSize": 8.00988998869505,
+					"checkMark": "3",
+					"fontStyle": "normal"
+				},
+				"options": {
+					"fieldName": "testidquestion_matrixrow0index1",
+					"checked": false,
+					"shouldRenderReadOnly": false,
+					"readOnly": false
+				}
 			}
 		]
 	},
@@ -150,7 +196,15 @@
 						"xRight": 72.01645669291338,
 						"yTop": 66.29645669291338,
 						"yBot": 78.94645669291339,
-						"text": "Row 2"
+						"appearance": {
+							"fontSize": 11,
+							"fontName": "helvetica",
+							"fontStyle": "normal",
+							"fontColor": "#404040"
+						},
+						"options": {
+							"text": "Row 2"
+						}
 					}
 				]
 			},
@@ -162,8 +216,19 @@
 				"xRight": 234.65131889763776,
 				"yTop": 66.61270669291338,
 				"yBot": 78.63020669291339,
-				"fieldName": "sq_108row1index0",
-				"context.checked": true
+				"appearance": {
+					"fontName": "zapfdingbats",
+					"fontColor": "#9f9f9f",
+					"fontSize": 8.00988998869505,
+					"checkMark": "3",
+					"fontStyle": "normal"
+				},
+				"options": {
+					"fieldName": "testidquestion_matrixrow1index0",
+					"checked": true,
+					"shouldRenderReadOnly": false,
+					"readOnly": false
+				}
 			},
 			{
 				"brickType": "CheckItemBrick",
@@ -173,8 +238,19 @@
 				"xRight": 416.2886811023621,
 				"yTop": 66.61270669291338,
 				"yBot": 78.63020669291339,
-				"fieldName": "sq_108row1index1",
-				"context.checked": true
+				"appearance": {
+					"fontName": "zapfdingbats",
+					"fontColor": "#9f9f9f",
+					"fontSize": 8.00988998869505,
+					"checkMark": "3",
+					"fontStyle": "normal"
+				},
+				"options": {
+					"fieldName": "testidquestion_matrixrow1index1",
+					"checked": true,
+					"shouldRenderReadOnly": false,
+					"readOnly": false
+				}
 			}
 		]
 	},

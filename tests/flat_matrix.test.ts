@@ -224,7 +224,6 @@ test('Matrix check rowTitleWidth', async () => {
 
 test('Check matrix with cellType: checkbox', async() => {
     const options = {
-        allowedPropertiesHash: { 'CheckItemBrick': ['fieldName', 'context.checked'] },
         onSurveyCreated(survey) {
             survey.data = {
                 'matrix': {

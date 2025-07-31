@@ -107,7 +107,7 @@
 							"fontStyle": "normal"
 						},
 						"options": {
-							"fieldName": "testidquestion_dropdown_other_answered_comment",
+							"fieldName": "testidquestion_dropdown_other_answered_other",
 							"rows": 2,
 							"value": "",
 							"shouldRenderBorders": true,

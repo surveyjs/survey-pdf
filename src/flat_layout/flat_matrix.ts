@@ -91,11 +91,13 @@ export class FlatMatrixRow {
         index: number, key: string, context: any = {}) {
         const fieldName = this.question.id + key;
         const isChecked: boolean = this.row.isChecked(item);
+        const isReadOnly = this.question.isReadOnly;
         if(this.question.isMultiSelect) {
             return new CheckItemBrick(this.controller, rect, {
                 fieldName: fieldName + 'index' + index,
                 checked: isChecked,
-                readOnly: this.question.isReadOnly,
+                shouldRenderReadOnly: isReadOnly && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform' || this.controller.compress,
+                readOnly: isReadOnly,
                 updateOptions: (options) => {
                     this.survey.updateCheckItemAcroformOptions(options, this.question, item);
                 }
@@ -117,7 +119,11 @@ export class FlatMatrixRow {
                 this.radioGroupWrap = (<any>this.question).pdfRadioGroupWrap;
             }
             return new RadioItemBrick(this.controller, rect, this.radioGroupWrap,
-                { checked: isChecked, index: index, updateOptions: options => this.survey.updateRadioItemAcroformOptions(options, this.question, item),
+                {
+                    checked: isChecked,
+                    index: index,
+                    shouldRenderReadOnly: this.radioGroupWrap.readOnly && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform' || this.controller.compress,
+                    updateOptions: options => this.survey.updateRadioItemAcroformOptions(options, this.question, item),
                 },
                 {
                     fontName: this.styles.radiomarkFont,
