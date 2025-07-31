@@ -34,11 +34,11 @@ export class FlatRadiogroup extends FlatSelectBase<QuestionRadiogroupModel> {
             updateOptions: options => this.survey.updateRadioItemAcroformOptions(options, this.question, item),
         },
         {
-            fontName: RadioItemBrick.RADIOMARKER_READONLY_FONT,
-            fontSize: this.controller.fontSize * RadioItemBrick.RADIOMARKER_READONLY_FONT_SIZE_SCALE,
+            fontName: this.styles.radiomarkFont,
+            fontSize: SurveyHelper.getScaledFontSize(this.controller, this.styles.radiomarkFontSizeScale),
             fontColor: this.styles.formBorderColor,
             fontStyle: 'normal',
-            checkMark: RadioItemBrick.RADIOMARKER_READONLY_SYMBOL
+            checkMark: this.styles.radiomarkSymbol,
         });
     }
 }

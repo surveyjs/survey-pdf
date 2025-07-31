@@ -43,6 +43,9 @@ export const styles: IStyles = {
     },
     radiogroup: {
         formBorderColor: '#9f9f9f',
+        radiomarkSymbol: 'l',
+        radiomarkFontSizeScale: 1.0 - ((2.0 + Math.E) / 10.0),
+        radiomarkFont: 'zapfdingbats',
     },
     matrixbase: {
         gapBetweenColumns: 1.5,
