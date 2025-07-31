@@ -55,7 +55,10 @@ export const styles: IStyles = {
     },
     matrix: {
         gapBetweenRows: 0.5,
-        vertivalGapBetweenCells: 0.25
+        vertivalGapBetweenCells: 0.25,
+        radiomarkSymbol: 'l',
+        radiomarkFontSizeScale: 1.0 - ((2.0 + Math.E) / 10.0),
+        radiomarkFont: 'zapfdingbats',
     },
     multipletext: {
         gapBetweenColumns: 1.5,
@@ -64,6 +67,9 @@ export const styles: IStyles = {
     rating: {
         gapBetweenRows: 0.25,
         formBorderColor: '#9f9f9f',
+        radiomarkSymbol: 'l',
+        radiomarkFontSizeScale: 1.0 - ((2.0 + Math.E) / 10.0),
+        radiomarkFont: 'zapfdingbats',
     },
     ranking: {
         gapBetweenColumns: 1.5,
@@ -97,6 +103,9 @@ export const styles: IStyles = {
         checkmarkFont: 'zapfdingbats',
         checkmarkSymbol: '3',
         formBorderColor: '#9f9f9f',
+        radiomarkSymbol: 'l',
+        radiomarkFontSizeScale: 1.0 - ((2.0 + Math.E) / 10.0),
+        radiomarkFont: 'zapfdingbats',
     },
     comment: {
         textColor: '#404040',
