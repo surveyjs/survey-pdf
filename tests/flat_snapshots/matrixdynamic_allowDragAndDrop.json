@@ -89,7 +89,9 @@
 							"fontName": "helvetica",
 							"fontColor": "#404040",
 							"fontSize": 30,
-							"fontStyle": "normal"
+							"fontStyle": "normal",
+							"borderColor": "#9f9f9f",
+							"borderWidth": 2.7600000000000002
 						},
 						"options": {
 							"fieldName": "testidquestion_panel_row1_cell_1",

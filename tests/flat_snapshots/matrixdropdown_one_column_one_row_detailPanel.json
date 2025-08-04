@@ -138,7 +138,9 @@
 									"fontColor": "#404040",
 									"fontName": "helvetica",
 									"fontSize": 30,
-									"fontStyle": "normal"
+									"fontStyle": "normal",
+									"borderColor": "#9f9f9f",
+									"borderWidth": 2.7600000000000002
 								},
 								"options": {
 									"fieldName": "testidquestion_detailPanelChecker_row1_cell_2",
@@ -176,7 +178,9 @@
 					"fontName": "helvetica",
 					"fontColor": "#404040",
 					"fontSize": 30,
-					"fontStyle": "normal"
+					"fontStyle": "normal",
+					"borderColor": "#9f9f9f",
+					"borderWidth": 2.7600000000000002
 				},
 				"options": {
 					"rows": 4,

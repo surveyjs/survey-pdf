@@ -128,7 +128,9 @@
 					"fontColor": "#9f9f9f",
 					"fontSize": 8.00988998869505,
 					"checkMark": "3",
-					"fontStyle": "normal"
+					"fontStyle": "normal",
+					"borderColor": "#9f9f9f",
+					"borderWidth": 1.012
 				},
 				"options": {
 					"fieldName": "testidquestion_matrixrow0index0",
@@ -150,7 +152,9 @@
 					"fontColor": "#9f9f9f",
 					"fontSize": 8.00988998869505,
 					"checkMark": "3",
-					"fontStyle": "normal"
+					"fontStyle": "normal",
+					"borderColor": "#9f9f9f",
+					"borderWidth": 1.012
 				},
 				"options": {
 					"fieldName": "testidquestion_matrixrow0index1",
@@ -221,7 +225,9 @@
 					"fontColor": "#9f9f9f",
 					"fontSize": 8.00988998869505,
 					"checkMark": "3",
-					"fontStyle": "normal"
+					"fontStyle": "normal",
+					"borderColor": "#9f9f9f",
+					"borderWidth": 1.012
 				},
 				"options": {
 					"fieldName": "testidquestion_matrixrow1index0",
@@ -243,7 +249,9 @@
 					"fontColor": "#9f9f9f",
 					"fontSize": 8.00988998869505,
 					"checkMark": "3",
-					"fontStyle": "normal"
+					"fontStyle": "normal",
+					"borderColor": "#9f9f9f",
+					"borderWidth": 1.012
 				},
 				"options": {
 					"fieldName": "testidquestion_matrixrow1index1",

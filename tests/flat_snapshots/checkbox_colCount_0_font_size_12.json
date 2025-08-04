@@ -30,7 +30,9 @@
 							"fontColor": "#9f9f9f",
 							"fontSize": 8.738061805849146,
 							"checkMark": "3",
-							"fontStyle": "normal"
+							"fontStyle": "normal",
+							"borderColor": "#9f9f9f",
+							"borderWidth": 1.1039999999999999
 						},
 						"options": {
 							"shouldRenderReadOnly": false,
@@ -92,7 +94,9 @@
 							"fontColor": "#9f9f9f",
 							"fontSize": 8.738061805849146,
 							"checkMark": "3",
-							"fontStyle": "normal"
+							"fontStyle": "normal",
+							"borderColor": "#9f9f9f",
+							"borderWidth": 1.1039999999999999
 						},
 						"options": {
 							"shouldRenderReadOnly": false,
@@ -154,7 +158,9 @@
 							"fontColor": "#9f9f9f",
 							"fontSize": 8.738061805849146,
 							"checkMark": "3",
-							"fontStyle": "normal"
+							"fontStyle": "normal",
+							"borderColor": "#9f9f9f",
+							"borderWidth": 1.1039999999999999
 						},
 						"options": {
 							"shouldRenderReadOnly": false,
@@ -216,7 +222,9 @@
 							"fontColor": "#9f9f9f",
 							"fontSize": 8.738061805849146,
 							"checkMark": "3",
-							"fontStyle": "normal"
+							"fontStyle": "normal",
+							"borderColor": "#9f9f9f",
+							"borderWidth": 1.1039999999999999
 						},
 						"options": {
 							"shouldRenderReadOnly": false,

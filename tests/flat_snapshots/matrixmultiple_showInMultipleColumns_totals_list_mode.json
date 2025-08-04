@@ -128,7 +128,9 @@
 											"fontSize": 15.845154514622866,
 											"fontColor": "#9f9f9f",
 											"fontStyle": "normal",
-											"checkMark": "l"
+											"checkMark": "l",
+											"borderColor": "#9f9f9f",
+											"borderWidth": 2.7600000000000002
 										},
 										"options": {
 											"index": 0,
@@ -189,7 +191,9 @@
 											"fontSize": 15.845154514622866,
 											"fontColor": "#9f9f9f",
 											"fontStyle": "normal",
-											"checkMark": "l"
+											"checkMark": "l",
+											"borderColor": "#9f9f9f",
+											"borderWidth": 2.7600000000000002
 										},
 										"options": {
 											"index": 1,
@@ -362,7 +366,9 @@
 							"fontName": "helvetica",
 							"fontColor": "#404040",
 							"fontSize": 30,
-							"fontStyle": "normal"
+							"fontStyle": "normal",
+							"borderColor": "#9f9f9f",
+							"borderWidth": 2.7600000000000002
 						},
 						"options": {
 							"value": "0",

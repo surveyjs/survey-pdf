@@ -88,7 +88,9 @@
 									"fontColor": "#9f9f9f",
 									"fontSize": 7.281718171540955,
 									"checkMark": "3",
-									"fontStyle": "normal"
+									"fontStyle": "normal",
+									"borderColor": "#9f9f9f",
+									"borderWidth": 0.9200000000000002
 								},
 								"options": {
 									"shouldRenderReadOnly": false,
@@ -150,7 +152,9 @@
 									"fontColor": "#9f9f9f",
 									"fontSize": 7.281718171540955,
 									"checkMark": "3",
-									"fontStyle": "normal"
+									"fontStyle": "normal",
+									"borderColor": "#9f9f9f",
+									"borderWidth": 0.9200000000000002
 								},
 								"options": {
 									"shouldRenderReadOnly": false,
@@ -212,7 +216,9 @@
 									"fontColor": "#9f9f9f",
 									"fontSize": 7.281718171540955,
 									"checkMark": "3",
-									"fontStyle": "normal"
+									"fontStyle": "normal",
+									"borderColor": "#9f9f9f",
+									"borderWidth": 0.9200000000000002
 								},
 								"options": {
 									"shouldRenderReadOnly": false,
@@ -274,7 +280,9 @@
 									"fontColor": "#9f9f9f",
 									"fontSize": 7.281718171540955,
 									"checkMark": "3",
-									"fontStyle": "normal"
+									"fontStyle": "normal",
+									"borderColor": "#9f9f9f",
+									"borderWidth": 0.9200000000000002
 								},
 								"options": {
 									"shouldRenderReadOnly": false,
@@ -336,7 +344,9 @@
 									"fontColor": "#9f9f9f",
 									"fontSize": 7.281718171540955,
 									"checkMark": "3",
-									"fontStyle": "normal"
+									"fontStyle": "normal",
+									"borderColor": "#9f9f9f",
+									"borderWidth": 0.9200000000000002
 								},
 								"options": {
 									"shouldRenderReadOnly": false,
@@ -420,7 +430,9 @@
 							"fontColor": "#9f9f9f",
 							"fontSize": 7.281718171540955,
 							"checkMark": "3",
-							"fontStyle": "normal"
+							"fontStyle": "normal",
+							"borderColor": "#9f9f9f",
+							"borderWidth": 0.9200000000000002
 						},
 						"options": {
 							"shouldRenderReadOnly": false,
@@ -482,7 +494,9 @@
 							"fontColor": "#9f9f9f",
 							"fontSize": 7.281718171540955,
 							"checkMark": "3",
-							"fontStyle": "normal"
+							"fontStyle": "normal",
+							"borderColor": "#9f9f9f",
+							"borderWidth": 0.9200000000000002
 						},
 						"options": {
 							"shouldRenderReadOnly": false,
@@ -544,7 +558,9 @@
 							"fontColor": "#9f9f9f",
 							"fontSize": 7.281718171540955,
 							"checkMark": "3",
-							"fontStyle": "normal"
+							"fontStyle": "normal",
+							"borderColor": "#9f9f9f",
+							"borderWidth": 0.9200000000000002
 						},
 						"options": {
 							"shouldRenderReadOnly": false,

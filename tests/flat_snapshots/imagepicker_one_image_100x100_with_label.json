@@ -78,7 +78,9 @@
 							"fontSize": 15.845154514622866,
 							"fontColor": "#9f9f9f",
 							"fontStyle": "normal",
-							"checkMark": "l"
+							"checkMark": "l",
+							"borderColor": "#9f9f9f",
+							"borderWidth": 2.7600000000000002
 						},
 						"options": {
 							"index": 0,

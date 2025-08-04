@@ -59,7 +59,9 @@
 							"fontSize": 7.394405440157338,
 							"fontColor": "#9f9f9f",
 							"fontStyle": "normal",
-							"checkMark": "l"
+							"checkMark": "l",
+							"borderColor": "#9f9f9f",
+							"borderWidth": 1.288
 						},
 						"options": {
 							"index": 0,
@@ -120,7 +122,9 @@
 							"fontSize": 7.394405440157338,
 							"fontColor": "#9f9f9f",
 							"fontStyle": "normal",
-							"checkMark": "l"
+							"checkMark": "l",
+							"borderColor": "#9f9f9f",
+							"borderWidth": 1.288
 						},
 						"options": {
 							"index": 1,

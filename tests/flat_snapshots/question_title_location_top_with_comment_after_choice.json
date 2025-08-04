@@ -79,7 +79,9 @@
 							"fontColor": "#9f9f9f",
 							"fontSize": 21.845154514622866,
 							"checkMark": "3",
-							"fontStyle": "normal"
+							"fontStyle": "normal",
+							"borderColor": "#9f9f9f",
+							"borderWidth": 2.7600000000000002
 						},
 						"options": {
 							"shouldRenderReadOnly": false,
@@ -171,7 +173,9 @@
 					"fontName": "helvetica",
 					"fontColor": "#404040",
 					"fontSize": 30,
-					"fontStyle": "normal"
+					"fontStyle": "normal",
+					"borderColor": "#9f9f9f",
+					"borderWidth": 2.7600000000000002
 				},
 				"options": {
 					"fieldName": "testidquestion_checkbox_comment",

@@ -78,7 +78,9 @@
 									"fontColor": "#404040",
 									"fontName": "helvetica",
 									"fontSize": 14,
-									"fontStyle": "normal"
+									"fontStyle": "normal",
+									"borderColor": "#9f9f9f",
+									"borderWidth": 1.288
 								},
 								"options": {
 									"fieldName": "testidquestion_madivertnar_row1_cell_1",

@@ -21,7 +21,9 @@
 					"fontColor": "#9f9f9f",
 					"fontSize": 10.194405440157338,
 					"checkMark": "3",
-					"fontStyle": "normal"
+					"fontStyle": "normal",
+					"borderColor": "#9f9f9f",
+					"borderWidth": 1.288
 				},
 				"options": {
 					"shouldRenderReadOnly": false,
@@ -83,7 +85,9 @@
 					"fontColor": "#9f9f9f",
 					"fontSize": 10.194405440157338,
 					"checkMark": "3",
-					"fontStyle": "normal"
+					"fontStyle": "normal",
+					"borderColor": "#9f9f9f",
+					"borderWidth": 1.288
 				},
 				"options": {
 					"shouldRenderReadOnly": false,

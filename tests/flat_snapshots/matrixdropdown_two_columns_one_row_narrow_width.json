@@ -118,7 +118,9 @@
 									"fontColor": "#404040",
 									"fontName": "helvetica",
 									"fontSize": 14,
-									"fontStyle": "normal"
+									"fontStyle": "normal",
+									"borderColor": "#9f9f9f",
+									"borderWidth": 1.288
 								},
 								"options": {
 									"fieldName": "testidquestion_matrixmultiple_twocolumnsonerow_horizontal_narrow_row1_cell_1",
@@ -203,7 +205,9 @@
 									"fontColor": "#404040",
 									"fontName": "helvetica",
 									"fontSize": 14,
-									"fontStyle": "normal"
+									"fontStyle": "normal",
+									"borderColor": "#9f9f9f",
+									"borderWidth": 1.288
 								},
 								"options": {
 									"fieldName": "testidquestion_matrixmultiple_twocolumnsonerow_horizontal_narrow_row1_cell_2",

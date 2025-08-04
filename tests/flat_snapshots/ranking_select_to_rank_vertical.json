@@ -20,7 +20,9 @@
 					"fontStyle": "normal",
 					"fontColor": "#9f9f9f",
 					"fontName": "helvetica",
-					"fontSize": 21.845154514622866
+					"fontSize": 21.845154514622866,
+					"borderColor": "#9f9f9f",
+					"borderWidth": 2.7600000000000002
 				},
 				"options": {
 					"mark": "1"
@@ -78,7 +80,9 @@
 					"fontStyle": "normal",
 					"fontColor": "#9f9f9f",
 					"fontName": "helvetica",
-					"fontSize": 21.845154514622866
+					"fontSize": 21.845154514622866,
+					"borderColor": "#9f9f9f",
+					"borderWidth": 2.7600000000000002
 				},
 				"options": {
 					"mark": "2"
@@ -148,7 +152,9 @@
 					"fontStyle": "normal",
 					"fontColor": "#9f9f9f",
 					"fontName": "helvetica",
-					"fontSize": 21.845154514622866
+					"fontSize": 21.845154514622866,
+					"borderColor": "#9f9f9f",
+					"borderWidth": 2.7600000000000002
 				},
 				"options": {
 					"mark": "-"

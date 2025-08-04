@@ -38,7 +38,9 @@
 									"fontColor": "#404040",
 									"fontName": "helvetica",
 									"fontSize": 30,
-									"fontStyle": "normal"
+									"fontStyle": "normal",
+									"borderColor": "#9f9f9f",
+									"borderWidth": 2.7600000000000002
 								},
 								"options": {
 									"fieldName": "testidquestion_I'm just a list_row1_cell_0",

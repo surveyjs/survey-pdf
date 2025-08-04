@@ -59,11 +59,13 @@
 							"fontSize": 7.394405440157338,
 							"fontColor": "#9f9f9f",
 							"fontStyle": "normal",
-							"checkMark": "l"
+							"checkMark": "l",
+							"borderColor": "#9f9f9f",
+							"borderWidth": 1.288
 						},
 						"options": {
-							"index": 0,
 							"checked": false,
+							"index": 0,
 							"shouldRenderReadOnly": false
 						}
 					},
@@ -120,11 +122,13 @@
 							"fontSize": 7.394405440157338,
 							"fontColor": "#9f9f9f",
 							"fontStyle": "normal",
-							"checkMark": "l"
+							"checkMark": "l",
+							"borderColor": "#9f9f9f",
+							"borderWidth": 1.288
 						},
 						"options": {
-							"index": 1,
 							"checked": false,
+							"index": 1,
 							"shouldRenderReadOnly": false
 						}
 					},
