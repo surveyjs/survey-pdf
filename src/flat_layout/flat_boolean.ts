@@ -1,37 +1,46 @@
-import { IQuestion, ItemValue, LocalizableString, QuestionBooleanModel, QuestionRadiogroupModel, SurveyModel } from 'survey-core';
+import { ItemValue, LocalizableString, QuestionBooleanModel, QuestionRadiogroupModel } from 'survey-core';
 import { SurveyPDF } from '../survey';
 import { IPoint, DocController } from '../doc_controller';
 import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
-import { TextBrick } from '../pdf_render/pdf_text';
-import { BooleanItemBrick } from '../pdf_render/pdf_booleanitem';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
 import { FlatRadiogroup } from './flat_radiogroup';
+import { IStyles } from '../styles';
+import { CheckItemBrick } from '../pdf_render/pdf_checkitem';
 
-export class FlatBooleanCheckbox extends FlatQuestion {
-    protected question: QuestionBooleanModel;
-    constructor(protected survey: SurveyPDF,
-        question: IQuestion, protected controller: DocController) {
-        super(survey, question, controller);
-        this.question = <QuestionBooleanModel>question;
-    }
+export class FlatBooleanCheckbox extends FlatQuestion<QuestionBooleanModel> {
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         const compositeFlat: CompositeBrick = new CompositeBrick();
         const height: number = this.controller.unitHeight;
-        const itemFlat: IPdfBrick = new BooleanItemBrick(this.question, this.controller,
+        const isReadOnly = this.question.isReadOnly;
+        const itemFlat: IPdfBrick = new CheckItemBrick(this.controller,
             SurveyHelper.moveRect(
                 SurveyHelper.scaleRect(SurveyHelper.createRect(point, height, height),
-                    SurveyHelper.SELECT_ITEM_FLAT_SCALE), point.xLeft));
+                    SurveyHelper.SELECT_ITEM_FLAT_SCALE), point.xLeft), {
+                fieldName: this.question.id,
+                readOnly: isReadOnly,
+                updateOptions: (options) => this.survey.updateCheckItemAcroformOptions(options, this.question),
+                shouldRenderReadOnly: isReadOnly && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform' || this.controller.compress,
+                checked: this.question.checkedValue
+            }, {
+                fontName: this.styles.checkmarkFont,
+                fontColor: this.styles.formBorderColor,
+                fontSize: SurveyHelper.getScaledFontSize(this.controller, this.styles.checkmarkFontSizeScale),
+                checkMark: this.styles.checkmarkSymbol,
+                fontStyle: 'normal',
+                borderColor: SurveyHelper.FORM_BORDER_COLOR,
+                borderWidth: this.controller.unitHeight * SurveyHelper.VISIBLE_BORDER_SCALE * SurveyHelper.BORDER_SCALE,
+            });
         compositeFlat.addBrick(itemFlat);
         const textPoint: IPoint = SurveyHelper.clone(point);
-        textPoint.xLeft = itemFlat.xRight + this.controller.unitWidth * SurveyHelper.GAP_BETWEEN_ITEM_TEXT;
+        textPoint.xLeft = itemFlat.xRight + SurveyHelper.getScaledHorizontalSize(this.controller, this.styles.gapBetweenItemText);
         const locLabelText: LocalizableString = this.question.isIndeterminate ? null :
             this.question.checkedValue ? this.question.locLabelTrue : this.question.locLabelFalse;
         if (locLabelText !== null && locLabelText.renderedHtml !== null) {
             compositeFlat.addBrick(await SurveyHelper.createTextFlat(
-                textPoint, this.question, this.controller, locLabelText, TextBrick));
+                textPoint, this.controller, locLabelText));
         }
         return [compositeFlat];
     }
@@ -39,18 +48,18 @@ export class FlatBooleanCheckbox extends FlatQuestion {
 export class FlatBoolean extends FlatRadiogroup {
     private items: Array<ItemValue>;
     constructor(protected survey: SurveyPDF,
-        question: IQuestion, protected controller: DocController) {
-        super(survey, question, controller);
+        question: QuestionRadiogroupModel, protected controller: DocController, styles: IStyles) {
+        super(survey, question, controller, styles);
         this.buildItems();
     }
     private buildItems() {
-        const question = <QuestionBooleanModel>(<any>this.question);
-        const falseChoice = new ItemValue((<QuestionBooleanModel>question).valueFalse !== undefined ? (<QuestionBooleanModel>question).valueFalse : false);
-        const trueChoice = new ItemValue((<QuestionBooleanModel>question).valueTrue !== undefined ? (<QuestionBooleanModel>question).valueTrue : true);
+        const question = this.question as any as QuestionBooleanModel;
+        const falseChoice = new ItemValue(question.valueFalse !== undefined ? question.valueFalse : false);
+        const trueChoice = new ItemValue(question.valueTrue !== undefined ? question.valueTrue : true);
         falseChoice.locOwner = question;
-        falseChoice.setLocText((<QuestionBooleanModel>question).locLabelFalse);
+        falseChoice.setLocText(question.locLabelFalse);
         trueChoice.locOwner = question;
-        trueChoice.setLocText((<QuestionBooleanModel>question).locLabelTrue);
+        trueChoice.setLocText(question.locLabelTrue);
         this.items = [falseChoice, trueChoice];
     }
     protected getVisibleChoices(): Array<ItemValue> {

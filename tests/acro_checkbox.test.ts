@@ -31,7 +31,7 @@ test('Check that checkbox has square boundaries', async () => {
     let assumeCheckbox: IRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(SurveyHelper.createRect(
         controller.leftTopPoint, controller.unitHeight, controller.unitHeight),
     SurveyHelper.SELECT_ITEM_FLAT_SCALE), controller.leftTopPoint.xLeft);
-    let checkboxFlat: PdfBrick = new PdfBrick(null, null, assumeCheckbox);
+    let checkboxFlat: PdfBrick = new PdfBrick(null, assumeCheckbox);
     assumeCheckbox = SurveyHelper.scaleRect(assumeCheckbox, SurveyHelper.formScale(controller, checkboxFlat));
     let acroFormFields: any = controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields;
     let internalRect: any = acroFormFields[0].Rect;
@@ -58,7 +58,7 @@ test('Check has other checkbox', async () => {
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     await survey['renderSurvey'](controller);
     let internal: any = controller.doc.internal;
-    let internalOtherText: string = internal.pages[1][21];
+    let internalOtherText: string = internal.pages[1][8];
     expect(internalOtherText).toBeDefined();
     let regex: RegExp = /\((.*)\)/;
     let otherText: string = internalOtherText.match(regex)[1];
@@ -146,8 +146,8 @@ test('Check readonly checkbox symbol', async () => {
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     await survey['renderSurvey'](controller);
-    expect(controller.doc.internal.pages[1][22]).toContain(
-        '(' + CheckItemBrick['CHECKMARK_READONLY_SYMBOL'] + ')');
+    expect(controller.doc.internal.pages[1][9]).toContain(
+        '(' + '3' + ')');
 });
 
 test('Check onRenderCheck event', async () => {
@@ -163,8 +163,8 @@ test('Check onRenderCheck event', async () => {
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     survey.onRenderCheckItemAcroform.add((_, opt) => {
-        opt.fieldName = opt.context.question.name + '_value_' + opt.context.item.value;
-        opt.value = opt.context.item.value;
+        opt.options.fieldName = opt.question.name + '_value_' + opt.item.value;
+        opt.options.value = opt.item.value;
     });
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     await survey['renderSurvey'](controller);
