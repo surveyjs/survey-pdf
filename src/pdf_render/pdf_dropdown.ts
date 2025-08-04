@@ -1,7 +1,6 @@
-import { QuestionDropdownModel, ItemValue } from 'survey-core';
 import { IRect, DocController } from '../doc_controller';
 import { IPdfBrickOptions, PdfBrick } from './pdf_brick';
-import { SurveyHelper } from '../helper_survey';
+import { IBorderAppearanceOptions, SurveyHelper } from '../helper_survey';
 import { ITextAppearanceOptions } from './pdf_text';
 
 export interface IDropdownBrickOptions extends IPdfBrickOptions {
@@ -12,8 +11,7 @@ export interface IDropdownBrickOptions extends IPdfBrickOptions {
     optionsCaption: string;
     value: string;
 }
-export interface IDropdownBrickAppearanceOptions extends ITextAppearanceOptions {
-}
+export type IDropdownBrickAppearanceOptions = ITextAppearanceOptions & IBorderAppearanceOptions;
 
 export class DropdownBrick extends PdfBrick {
     public constructor(protected controller: DocController, rect: IRect, protected options: IDropdownBrickOptions, protected appearance: IDropdownBrickAppearanceOptions) {
@@ -42,6 +40,6 @@ export class DropdownBrick extends PdfBrick {
             this.controller, comboBox.fontName);
         comboBox.V = this.getCorrectedText(this.options.value);
         this.controller.doc.addField(comboBox);
-        SurveyHelper.renderFlatBorders(this.controller, this);
+        SurveyHelper.renderFlatBorders(this.controller, this, this.appearance);
     }
 }

@@ -107,7 +107,10 @@ export class FlatMatrixRow {
                 fontColor: this.styles.formBorderColor,
                 fontSize: SurveyHelper.getScaledFontSize(this.controller, this.styles.checkmarkFontSizeScale),
                 checkMark: this.styles.checkmarkSymbol,
-                fontStyle: 'normal'
+                fontStyle: 'normal',
+                borderColor: SurveyHelper.FORM_BORDER_COLOR,
+                borderWidth: this.controller.unitHeight * SurveyHelper.VISIBLE_BORDER_SCALE * SurveyHelper.BORDER_SCALE,
+
             });
         } else {
             if (index === 0) {
@@ -131,6 +134,8 @@ export class FlatMatrixRow {
                     fontColor: this.styles.formBorderColor,
                     fontStyle: 'normal',
                     checkMark: this.styles.radiomarkSymbol,
+                    borderColor: SurveyHelper.FORM_BORDER_COLOR,
+                    borderWidth: this.controller.unitHeight * SurveyHelper.VISIBLE_BORDER_SCALE * SurveyHelper.BORDER_SCALE,
                 });
         }
     }

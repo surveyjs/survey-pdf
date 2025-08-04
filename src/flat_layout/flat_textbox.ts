@@ -13,7 +13,9 @@ export class FlatTextbox extends FlatQuestion {
             fontName: this.controller.fontName,
             fontColor: this.styles.textColor,
             fontSize: this.controller.fontSize,
-            fontStyle: 'normal'
+            fontStyle: 'normal',
+            borderColor: SurveyHelper.FORM_BORDER_COLOR,
+            borderWidth: this.controller.unitHeight * SurveyHelper.VISIBLE_BORDER_SCALE * SurveyHelper.BORDER_SCALE,
         };
         const options: Omit<ITextFieldBrickOptions, 'isMultiline'> = {
             fieldName: this.question.id,

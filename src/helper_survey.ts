@@ -15,7 +15,14 @@ import { ITextFieldBrickAppearanceOptions, ITextFieldBrickOptions, TextFieldBric
 import { FlatPanel } from './flat_layout/flat_panel';
 import { FlatPage } from './flat_layout/flat_page';
 
-export type IBorderDescription = IRect & ISize & Pick<PdfBrick, 'formBorderColor'> & { rounded?: boolean, dashStyle?: { dashArray: [number, number] | [number], dashPhase: number }, outside?: boolean };
+export type IBorderDescription = IRect & ISize;
+
+export type IBorderAppearanceOptions = {
+    borderColor: string,
+    borderWidth: number,
+    dashStyle?: { dashArray: [number, number] | [number], dashPhase: number },
+    outside?: boolean,
+}
 
 export class SurveyHelper {
     public static EPSILON: number = 2.2204460492503130808472633361816e-15;
@@ -36,7 +43,6 @@ export class SurveyHelper {
     public static GAP_BETWEEN_ROWS: number = 0.25;
     public static GAP_BETWEEN_COLUMNS: number = 1.5;
     public static GAP_BETWEEN_ITEM_TEXT: number = 0.25;
-    public static FORM_BORDER_VISIBLE: boolean = true;
     public static BORDER_SCALE: number = 0.1;
     public static VISIBLE_BORDER_SCALE: number = 0.8;
     public static UNVISIBLE_BORDER_SCALE: number = 0.2;
@@ -179,12 +185,12 @@ export class SurveyHelper {
         bricks.push(htmlBrick);
         const currPoint: IPoint = this.createPoint(htmlBrick);
         for (let i: number = 0; i < emptyBrickCount; i++) {
-            bricks.push(new EmptyBrick(this.createRect(currPoint, htmlBrick.width, minHeight)));
+            bricks.push(new EmptyBrick(controller, this.createRect(currPoint, htmlBrick.width, minHeight)));
             currPoint.yTop += minHeight;
         }
         const remainingHeight: number = htmlHeight - (emptyBrickCount + 1) * minHeight;
         if (remainingHeight > 0) {
-            bricks.push(new EmptyBrick(this.createRect(currPoint, htmlBrick.width, remainingHeight)));
+            bricks.push(new EmptyBrick(controller, this.createRect(currPoint, htmlBrick.width, remainingHeight)));
         }
         return new CompositeBrick(...bricks);
     }
@@ -532,20 +538,18 @@ export class SurveyHelper {
         controller.popMargins();
         return textFlat;
     }
-    public static renderFlatBorders(controller: DocController, borderOptions: IBorderDescription): void {
-        if (!this.FORM_BORDER_VISIBLE) return;
-        borderOptions.rounded = borderOptions.rounded ?? true;
-        borderOptions.outside = borderOptions.outside ?? false;
-        const minSide: number = Math.min(borderOptions.width, borderOptions.height);
+    public static renderFlatBorders(controller: DocController, options: IBorderDescription, appearance: IBorderAppearanceOptions): void {
+        appearance.outside = appearance.outside ?? false;
+        const minSide: number = Math.min(options.width, options.height);
         const borderWidth = this.getBorderWidth(controller);
-        const visibleWidth: number = controller.unitHeight * this.VISIBLE_BORDER_SCALE * this.BORDER_SCALE;
-        const visibleScale: number = borderOptions.outside ? (minSide + borderWidth) / minSide - visibleWidth / minSide : (minSide - borderWidth) / minSide + visibleWidth / minSide;
+        const visibleWidth: number = appearance.borderWidth;
+        const visibleScale: number = appearance.outside ? (minSide + borderWidth) / minSide - visibleWidth / minSide : (minSide - borderWidth) / minSide + visibleWidth / minSide;
         const oldDrawColor: string = controller.doc.getDrawColor();
-        controller.doc.setDrawColor(borderOptions.formBorderColor);
+        controller.doc.setDrawColor(appearance.borderColor);
         controller.doc.setLineWidth(visibleWidth);
-        const scaledRect = this.scaleRect(borderOptions, visibleScale);
-        if(borderOptions.dashStyle) {
-            const dashStyle = borderOptions.dashStyle;
+        const scaledRect = this.scaleRect(options, visibleScale);
+        if(appearance.dashStyle) {
+            const dashStyle = appearance.dashStyle;
             const borderLength = (Math.abs(scaledRect.yTop - scaledRect.yBot) + Math.abs(scaledRect.xLeft - scaledRect.xRight)) * 2;
             const dashWithSpaceSize = dashStyle.dashArray[0] + (dashStyle.dashArray[1] ?? dashStyle.dashArray[0]);
             const dashSize = dashStyle.dashArray[0] + (borderLength % dashWithSpaceSize) / Math.floor(borderLength / dashWithSpaceSize);
@@ -557,16 +561,7 @@ export class SurveyHelper {
         }
 
         controller.doc.rect(...this.createAcroformRect(scaledRect));
-        if(borderOptions.rounded) {
-            const unvisibleWidth: number = controller.unitHeight * this.UNVISIBLE_BORDER_SCALE * this.BORDER_SCALE;
-            const unvisibleScale: number = 1.0 - unvisibleWidth / minSide;
-            const unvisibleRadius: number = this.RADIUS_SCALE * unvisibleWidth;
-            controller.doc.setDrawColor(this.BACKGROUND_COLOR);
-            controller.doc.setLineWidth(unvisibleWidth);
-            controller.doc.roundedRect(...this.createAcroformRect(
-                this.scaleRect(borderOptions, unvisibleScale)), unvisibleRadius, unvisibleRadius);
-        }
-        if(borderOptions.dashStyle) {
+        if(appearance.dashStyle) {
             controller.doc.setLineDashPattern([]);
         }
         controller.doc.setDrawColor(oldDrawColor);

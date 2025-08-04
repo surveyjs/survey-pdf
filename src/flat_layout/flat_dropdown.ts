@@ -23,7 +23,9 @@ export class FlatDropdown extends FlatQuestion<QuestionDropdownModel> {
                 fontName: this.controller.fontName,
                 fontColor: this.styles.textColor,
                 fontSize: this.controller.fontSize,
-                fontStyle: 'normal'
+                fontStyle: 'normal',
+                borderColor: SurveyHelper.FORM_BORDER_COLOR,
+                borderWidth: this.controller.unitHeight * SurveyHelper.VISIBLE_BORDER_SCALE * SurveyHelper.BORDER_SCALE,
             }
         );
     }
@@ -39,7 +41,9 @@ export class FlatDropdown extends FlatQuestion<QuestionDropdownModel> {
             fontColor: this.styles.textColor,
             fontName: this.controller.fontName,
             fontSize: this.controller.fontSize,
-            fontStyle: 'normal'
+            fontStyle: 'normal',
+            borderColor: SurveyHelper.FORM_BORDER_COLOR,
+            borderWidth: this.controller.unitHeight * SurveyHelper.VISIBLE_BORDER_SCALE * SurveyHelper.BORDER_SCALE,
         }) : await SurveyHelper.createCommentFlat(point, this.question, this.controller,
             {
                 fieldName: this.question.id,
@@ -51,7 +55,9 @@ export class FlatDropdown extends FlatQuestion<QuestionDropdownModel> {
                 fontName: this.controller.fontName,
                 fontColor: this.styles.textColor,
                 fontSize: this.controller.fontSize,
-                fontStyle: 'normal'
+                fontStyle: 'normal',
+                borderColor: SurveyHelper.FORM_BORDER_COLOR,
+                borderWidth: this.controller.unitHeight * SurveyHelper.VISIBLE_BORDER_SCALE * SurveyHelper.BORDER_SCALE,
             });
         const compositeFlat: CompositeBrick = new CompositeBrick(valueBrick);
         if (this.question.isShowingChoiceComment) {

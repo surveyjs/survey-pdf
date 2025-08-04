@@ -25,7 +25,7 @@ export class FlatSignaturePad extends FlatQuestion {
                     height: height }, false
             ) as PdfBrick;
         } else {
-            brick = new EmptyBrick(SurveyHelper.createRect(point, width, height));
+            brick = new EmptyBrick(this.controller, SurveyHelper.createRect(point, width, height));
         }
         if(FlatSignaturePad.BORDER_STYLE !== 'none') {
             brick.afterRenderCallback = () => {
@@ -36,15 +36,15 @@ export class FlatSignaturePad extends FlatQuestion {
                     yBot: brick.yBot,
                     xLeft: brick.xLeft,
                     xRight: brick.xRight,
-                    formBorderColor: brick.formBorderColor,
-                    rounded: false,
-                    outside: true,
+                };
+                SurveyHelper.renderFlatBorders(this.controller, borderOptions, {
+                    borderColor: SurveyHelper.FORM_BORDER_COLOR,
+                    borderWidth: this.controller.unitHeight * SurveyHelper.VISIBLE_BORDER_SCALE * SurveyHelper.BORDER_SCALE,
                     dashStyle: FlatSignaturePad.BORDER_STYLE == 'dashed' ? {
                         dashArray: [5],
                         dashPhase: 0
                     } : undefined
-                };
-                SurveyHelper.renderFlatBorders(this.controller, borderOptions);
+                });
             };
         }
 

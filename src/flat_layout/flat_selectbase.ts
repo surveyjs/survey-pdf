@@ -22,7 +22,9 @@ export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSele
                 fontName: this.controller.fontName,
                 fontColor: this.styles.textColor,
                 fontSize: this.controller.fontSize,
-                fontStyle: 'normal'
+                fontStyle: 'normal',
+                borderColor: SurveyHelper.FORM_BORDER_COLOR,
+                borderWidth: this.controller.unitHeight * SurveyHelper.VISIBLE_BORDER_SCALE * SurveyHelper.BORDER_SCALE,
             });
     }
     protected async generateFlatComposite(point: IPoint, item: ItemValue | ChoiceItem, index: number): Promise<IPdfBrick> {

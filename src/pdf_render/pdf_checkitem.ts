@@ -1,7 +1,6 @@
-import { QuestionCheckboxModel } from 'survey-core';
 import { IRect, ISize, DocController, IPoint } from '../doc_controller';
 import { IPdfBrick, IPdfBrickOptions, PdfBrick } from './pdf_brick';
-import { SurveyHelper } from '../helper_survey';
+import { IBorderAppearanceOptions, SurveyHelper } from '../helper_survey';
 import { ITextAppearanceOptions } from './pdf_text';
 
 export interface ICheckItemBrickOptions extends IPdfBrickOptions {
@@ -11,8 +10,8 @@ export interface ICheckItemBrickOptions extends IPdfBrickOptions {
     updateOptions: (options: any) => void;
 }
 
-export interface ICheckItemBrickAppearanceOptions extends ITextAppearanceOptions {
-    checkMark: string;
+export type ICheckItemBrickAppearanceOptions = ITextAppearanceOptions & IBorderAppearanceOptions & {
+     checkMark: string,
 }
 
 export class CheckItemBrick extends PdfBrick {
@@ -49,10 +48,10 @@ export class CheckItemBrick extends PdfBrick {
         checkBox.AS = options.AS;
         checkBox.Rect = options.Rect;
 
-        SurveyHelper.renderFlatBorders(this.controller, this);
+        SurveyHelper.renderFlatBorders(this.controller, this, this.appearance);
     }
     public async renderReadOnly(): Promise<void> {
-        SurveyHelper.renderFlatBorders(this.controller, this);
+        SurveyHelper.renderFlatBorders(this.controller, this, this.appearance);
         if (this.options.checked) {
             const checkmarkPoint: IPoint = SurveyHelper.createPoint(this, true, true);
             const textOptions = {

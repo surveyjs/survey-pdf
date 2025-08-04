@@ -1,7 +1,7 @@
 import { IQuestion, QuestionTextModel } from 'survey-core';
 import { IRect, DocController } from '../doc_controller';
 import { IPdfBrick, IPdfBrickOptions, PdfBrick, TranslateXFunction } from './pdf_brick';
-import { SurveyHelper } from '../helper_survey';
+import { IBorderAppearanceOptions, SurveyHelper } from '../helper_survey';
 import { CompositeBrick } from './pdf_composite';
 import { ITextAppearanceOptions } from './pdf_text';
 
@@ -15,7 +15,7 @@ export interface ITextFieldBrickOptions extends IPdfBrickOptions {
     isMultiline?: boolean;
 }
 
-export interface ITextFieldBrickAppearanceOptions extends ITextAppearanceOptions{}
+export type ITextFieldBrickAppearanceOptions = ITextAppearanceOptions & IBorderAppearanceOptions;
 
 export class TextFieldBrick extends PdfBrick {
     public constructor(controller: DocController,
@@ -60,7 +60,7 @@ export class TextFieldBrick extends PdfBrick {
         inputField.Rect = SurveyHelper.createAcroformRect(
             SurveyHelper.scaleRect(this, formScale));
         this.controller.doc.addField(inputField);
-        SurveyHelper.renderFlatBorders(this.controller, this);
+        SurveyHelper.renderFlatBorders(this.controller, this, this.appearance);
     }
     protected shouldRenderFlatBorders(): boolean {
         return this.options.shouldRenderBorders;
@@ -99,10 +99,9 @@ export class TextFieldBrick extends PdfBrick {
                             yTop: renderedOnOnePage ? this.yTop : compositeBrick.yTop - padding,
                             yBot: renderedOnOnePage ? this.yBot : compositeBrick.yBot + padding,
                             height: renderedOnOnePage ? this.height : compositeBrick.height + 2 * padding,
-                            formBorderColor: this.formBorderColor,
                         };
                         this.controller.setPage(Number(key));
-                        SurveyHelper.renderFlatBorders(this.controller, borderRect);
+                        SurveyHelper.renderFlatBorders(this.controller, borderRect, this.appearance);
                         this.controller.setPage(currentPageNumber);
                     });
                 }

@@ -2,11 +2,11 @@ import { IQuestion } from 'survey-core';
 import { IPoint, IRect, ISize, DocController } from '../doc_controller';
 import { IPdfBrick, IPdfBrickOptions, PdfBrick } from './pdf_brick';
 import { SurveyPDF } from '../survey';
-import { SurveyHelper } from '../helper_survey';
+import { IBorderAppearanceOptions, SurveyHelper } from '../helper_survey';
 import { ITextAppearanceOptions } from './pdf_text';
 
-export interface IRadioItemBrickAppearanceOptions extends ITextAppearanceOptions {
-    checkMark: string;
+export type IRadioItemBrickAppearanceOptions = ITextAppearanceOptions & IBorderAppearanceOptions & {
+    checkMark: string,
 }
 export interface IRadioItemBrickOptions extends IPdfBrickOptions {
     checked: boolean;
@@ -85,13 +85,13 @@ export class RadioItemBrick extends PdfBrick {
         radioButton.Rect = options.Rect;
         radioButton.color = options.color;
 
-        SurveyHelper.renderFlatBorders(this.controller, this);
+        SurveyHelper.renderFlatBorders(this.controller, this, this.appearance);
         this.radioGroupWrap.radioGroup.setAppearance(
             options.appearance
         );
     }
     public async renderReadOnly(): Promise<void> {
-        SurveyHelper.renderFlatBorders(this.controller, this);
+        SurveyHelper.renderFlatBorders(this.controller, this, this.appearance);
         if (this.options.checked) {
             const textOptions = {
                 fontName: this.appearance.fontName,

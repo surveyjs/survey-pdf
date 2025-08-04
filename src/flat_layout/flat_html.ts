@@ -29,7 +29,7 @@ export class FlatHTML extends FlatQuestion<QuestionHtmlModel> {
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         let renderAs: IHTMLRenderType = <IHTMLRenderType>this.question.renderAs;
         if(!SurveyHelper.hasDocument) {
-            return [new EmptyBrick(SurveyHelper.createRect(point, 0, 0))];
+            return [new EmptyBrick(this.controller, SurveyHelper.createRect(point, 0, 0))];
         }
         if (renderAs === 'auto') renderAs = this.controller.htmlRenderAs;
         if (renderAs === 'auto') renderAs = this.chooseRender(SurveyHelper.getLocString(this.question.locHtml));

@@ -1,12 +1,12 @@
 import { IRect, ISize, DocController, IPoint } from '../doc_controller';
 import { IPdfBrick, IPdfBrickOptions, PdfBrick } from './pdf_brick';
-import { SurveyHelper } from '../helper_survey';
+import { IBorderAppearanceOptions, SurveyHelper } from '../helper_survey';
 import { ITextAppearanceOptions } from './pdf_text';
 
 export interface IRankingItemBrickOptions extends IPdfBrickOptions {
         mark: string;
 }
-export interface IRankingItemBrickAppearanceOptions extends ITextAppearanceOptions {}
+export type IRankingItemBrickAppearanceOptions = ITextAppearanceOptions & IBorderAppearanceOptions;
 
 export class RankingItemBrick extends PdfBrick {
     public constructor(controller: DocController,
@@ -14,7 +14,7 @@ export class RankingItemBrick extends PdfBrick {
         super(controller, rect);
     }
     public async renderInteractive(): Promise<void> {
-        SurveyHelper.renderFlatBorders(this.controller, this);
+        SurveyHelper.renderFlatBorders(this.controller, this, this.appearance);
         const markPoint: IPoint = SurveyHelper.createPoint(this, true, true);
         const textOptions = {
             fontSize: this.appearance.fontSize,

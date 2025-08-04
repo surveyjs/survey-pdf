@@ -1,6 +1,4 @@
 import { IRect, ISize, DocController } from '../doc_controller';
-import { IQuestion } from 'survey-core';
-import { SurveyHelper } from '../helper_survey';
 
 export type TranslateXFunction = (xLeft: number, xRight : number) => { xLeft: number, xRight: number};
 export interface IPdfBrick extends IRect, ISize {
@@ -63,27 +61,12 @@ export class PdfBrick implements IPdfBrick {
     public set yBot(val: number) {
         this.setYBottom(val);
     }
-    /**
-     * Font size in points.
-     *
-     * Default value: 14 (inherited from the parent PDF document)
-     */
-    public fontSize: number;
-    /**
-     * The color of text within the brick.
-     *
-     * Default value: `"#404040"`
-     */
-    public textColor: string = SurveyHelper.TEXT_COLOR;
-    public formBorderColor: string = SurveyHelper.FORM_BORDER_COLOR;
     public isPageBreak: boolean = false;
     public constructor(protected controller: DocController, rect: IRect, protected options: IPdfBrickOptions = {}) {
         this.xLeft = rect.xLeft;
         this.xRight = rect.xRight;
         this.yTop = rect.yTop;
         this.yBot = rect.yBot;
-        this.fontSize = !!controller ?
-            controller.fontSize : DocController.FONT_SIZE;
     }
     translateX(func: TranslateXFunction): void {
         const res = func(this.xLeft, this.xRight);
