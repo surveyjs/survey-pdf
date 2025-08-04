@@ -58,7 +58,7 @@ test('Check has other checkbox', async () => {
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     await survey['renderSurvey'](controller);
     let internal: any = controller.doc.internal;
-    let internalOtherText: string = internal.pages[1][21];
+    let internalOtherText: string = internal.pages[1][8];
     expect(internalOtherText).toBeDefined();
     let regex: RegExp = /\((.*)\)/;
     let otherText: string = internalOtherText.match(regex)[1];
@@ -146,7 +146,7 @@ test('Check readonly checkbox symbol', async () => {
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     await survey['renderSurvey'](controller);
-    expect(controller.doc.internal.pages[1][22]).toContain(
+    expect(controller.doc.internal.pages[1][9]).toContain(
         '(' + '3' + ')');
 });
 
