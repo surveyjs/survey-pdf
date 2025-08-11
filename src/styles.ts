@@ -1,14 +1,15 @@
 export type IStyles = { [index: string]: any }
 export const styles: IStyles = {
-    titleFontSizeScale: 1.7,
+    titleFontSizeScale: 4,
     titleFontStyle: 'bold',
-    titleFontColor: '#404040',
-    descriptionGapScale: 0.25,
-    panelContGapScale: 1.0,
+    titleFontColor: '#000',
+    descriptionFontSizeScale: 2,
+    descriptionGapScale: 1.5,
+    panelContGapScale: 4.0,
     question: {
-        titleFontSizeScale: 1.1,
-        titleFontStyle: 'bold',
-        titleFontColor: '#404040',
+        titleFontSizeScale: 2,
+        titleFontStyle: 'normal',
+        titleFontColor: '##000',
         contentGapScaleVertical: 0.5,
         contentGapScaleHorizontal: 1.0,
         contentIndentScale: 1.0,
@@ -16,12 +17,12 @@ export const styles: IStyles = {
         gapBetweenItemText: 0.25,
         gapBetweenColumns: 1.5,
         gapBetweenRows: 0.25,
-        textColor: '#404040',
+        textColor: '##000',
     },
     panel: {
-        titleFontSizeScale: 1.3,
+        titleFontSizeScale: 2,
         titleFontStyle: 'bold',
-        titleFontColor: '#404040',
+        titleFontColor: '##000',
         questionGapVerticalScale: 1.5,
         panelContGapScale: 1,
         panelDescriptionGapScale: 0.25
@@ -29,7 +30,7 @@ export const styles: IStyles = {
     page: {
         titleFontSizeScale: 1.3,
         titleFontStyle: 'bold',
-        titleFontColor: '#404040'
+        titleFontColor: '##000'
     },
     selectbase: {
         gapBetweenColumns: 1.5,
@@ -85,7 +86,7 @@ export const styles: IStyles = {
     },
     dropdown: {
         gapBetweenRows: 0.25,
-        textColor: '#404040',
+        textColor: '##000',
     },
     file: {
         imageGapScale: 0.195,
@@ -111,9 +112,12 @@ export const styles: IStyles = {
         radiomarkFont: 'zapfdingbats',
     },
     comment: {
-        textColor: '#404040',
+        textColor: '##000',
     },
     expression: {
-        textColor: '#404040',
+        textColor: '##000',
+    },
+    text: {
+        inputFontSizeScale: 2.5,
     }
 };

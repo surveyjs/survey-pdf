@@ -32,7 +32,7 @@ export class FlatSurvey {
                     point.yTop += SurveyHelper.getScaledHorizontalSize(controller, styles.descriptionGapScale);
                 }
                 compositeFlat.addBrick(await SurveyHelper.createTextFlat(
-                    point, controller, survey.locDescription, { fontSize: controller.fontSize * SurveyHelper.DESCRIPTION_FONT_SIZE_SCALE }));
+                    point, controller, survey.locDescription, { fontSize: controller.fontSize * styles.descriptionFontSizeScale }));
             }
         }
         return compositeFlat;

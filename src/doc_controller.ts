@@ -231,7 +231,7 @@ export interface IDocOptions {
 
 export class DocOptions implements IDocOptions {
     public static readonly MM_TO_PT = 72 / 25.4;
-    public static readonly FONT_SIZE = 14;
+    public static readonly FONT_SIZE = 8 * 72.0 / 96.0; //px to pt
     protected _orientation: 'l' | 'p';
     protected _format: string | number[];
     protected _fontSize: number;

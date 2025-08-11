@@ -394,7 +394,7 @@ export class SurveyHelper {
         let textFlat;
         if (SurveyHelper.shouldRenderReadOnly(question, controller, options.isReadOnly)) {
             textFlat = await this.createReadOnlyTextFieldTextFlat(
-                point, controller, options.value);
+                point, controller, options.value, appearance);
             const padding: number = controller.unitHeight * this.VALUE_READONLY_PADDING_SCALE;
             if (textFlat.yBot + padding > rect.yBot) rect.yBot = textFlat.yBot + padding;
         }
@@ -528,13 +528,13 @@ export class SurveyHelper {
         return this.createRect(point, width, height);
     }
     public static async createReadOnlyTextFieldTextFlat(point: IPoint,
-        controller: DocController, value: string): Promise<IPdfBrick> {
+        controller: DocController, value: string, appearance: ITextFieldBrickAppearanceOptions): Promise<IPdfBrick> {
         const padding: number = controller.unitWidth * this.VALUE_READONLY_PADDING_SCALE;
         point.yTop += padding;
         point.xLeft += padding;
         controller.pushMargins(point.xLeft, controller.margins.right + padding);
         const textFlat: IPdfBrick = await this.createTextFlat(
-            point, controller, value.toString());
+            point, controller, value.toString(), appearance);
         controller.popMargins();
         return textFlat;
     }

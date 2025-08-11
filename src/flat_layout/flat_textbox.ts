@@ -12,7 +12,7 @@ export class FlatTextbox extends FlatQuestion {
         const appearance: ITextFieldBrickAppearanceOptions = {
             fontName: this.controller.fontName,
             fontColor: this.styles.textColor,
-            fontSize: this.controller.fontSize,
+            fontSize: SurveyHelper.getScaledFontSize(this.controller, this.styles.inputFontSizeScale),
             fontStyle: 'normal',
             borderColor: SurveyHelper.FORM_BORDER_COLOR,
             borderWidth: this.controller.unitHeight * SurveyHelper.VISIBLE_BORDER_SCALE * SurveyHelper.BORDER_SCALE,
