@@ -7,6 +7,6 @@ export class BooleanItemBrick extends CheckItemBrick {
         rect: IRect) {
         super(controller, rect,
             (<QuestionBooleanModel>question).id,
-            { question: question, readOnly: question.isReadOnly, checked: (<QuestionBooleanModel>question).checkedValue });
+            { question: question, readOnly: question.isReadOnly, checked: (<QuestionBooleanModel>question).booleanValue });
     }
 }
