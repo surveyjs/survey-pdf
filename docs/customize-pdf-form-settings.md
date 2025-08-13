@@ -102,7 +102,11 @@ The style of the custom font.
 
 To apply a custom font to a PDF document, assign its name to the [`fontName`](https://surveyjs.io/pdf-generator/documentation/api-reference/idocoptions#fontName) property. This setting applies a custom font to all survey questions except [HTML](https://surveyjs.io/form-library/examples/questiontype-html/). To include HTML questions too, enable the [`useCustomFontInHtml`](https://surveyjs.io/pdf-generator/documentation/api-reference/idocoptions#useCustomFontInHtml) property.
 
-[View Demo](https://surveyjs.io/pdf-generator/examples/change-font-in-pdf-form/ (linkStyle))
+[View "Change Font in a PDF Form" Demo](https://surveyjs.io/pdf-generator/examples/change-font-in-pdf-form/ (linkStyle))
+
+Registering a custom font is especially important if your form includes languages other than English, such as Arabic, Chinese, Russian, Greek, Hebrew, or languages that use accented Latin characters. If your exported PDF displays garbled, missing, or incorrectly spaced text, it likely means the default fonts do not support the required characters. To resolve this, register a custom font that includes the necessary glyphs. This ensures accurate rendering of the non-English content in the exported PDF. You can register one or multiple fonts depending on the languages your form supports.
+
+[View "Render non-English Characters in PDF Forms" Demo](/pdf-generator/examples/special-characters-in-pdf-form/ (linkStyle))
 
 ### Font Size
 
