@@ -113,11 +113,12 @@ export const styles: IStyles = {
     },
     comment: {
         textColor: '##000',
+        inputFontSizeScale: 2.5,
     },
     expression: {
         textColor: '##000',
     },
     text: {
         inputFontSizeScale: 2.5,
-    }
+    },
 };
