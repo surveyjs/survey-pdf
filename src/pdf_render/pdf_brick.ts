@@ -1,3 +1,4 @@
+import { EventAsync } from '../event_handler/event_async';
 import { IRect, ISize, DocController } from '../doc_controller';
 
 export type TranslateXFunction = (xLeft: number, xRight : number) => { xLeft: number, xRight: number};
@@ -6,6 +7,9 @@ export interface IPdfBrick extends IRect, ISize {
     unfold(): IPdfBrick[];
     translateX(func: TranslateXFunction): void;
     isPageBreak: boolean;
+    addBeforeRenderCallback(func: (brick: IPdfBrick) => void): void;
+    setPageNumber(number: number): void;
+    getPageNumber(): number;
 }
 /**
  * An object that describes a PDF brick&mdash;a simple element with specified content, size, and location. Bricks are fundamental elements used to construct a PDF document.
@@ -24,6 +28,7 @@ export class PdfBrick implements IPdfBrick {
     protected _xRight: number;
     protected _yTop: number;
     protected _yBot: number;
+    protected _pageNumber: number;
 
     /**
      * An X-coordinate for the left brick edge.
@@ -90,6 +95,7 @@ export class PdfBrick implements IPdfBrick {
     }
     public afterRenderCallback: () => void;
     public async render(): Promise<void> {
+        await this.beforeRenderEvent.fire(this, {});
         if (this.getShouldRenderReadOnly()) {
             await this.renderReadOnly();
         }
@@ -121,5 +127,15 @@ export class PdfBrick implements IPdfBrick {
     }
     protected setYBottom(val: number): void {
         this._yBot = val;
+    }
+    public getPageNumber(): number {
+        return this._pageNumber;
+    }
+    public setPageNumber(val: number): void {
+        this._pageNumber = val;
+    }
+    private beforeRenderEvent: EventAsync<PdfBrick, {}> = new EventAsync();
+    addBeforeRenderCallback(func: (brick: IPdfBrick) => void): void {
+        this.beforeRenderEvent.add(func);
     }
 }

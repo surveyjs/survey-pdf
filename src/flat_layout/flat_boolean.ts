@@ -23,7 +23,7 @@ export class FlatBooleanCheckbox extends FlatQuestion<QuestionBooleanModel> {
                 readOnly: isReadOnly,
                 updateOptions: (options) => this.survey.updateCheckItemAcroformOptions(options, this.question),
                 shouldRenderReadOnly: isReadOnly && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform' || this.controller.compress,
-                checked: this.question.checkedValue
+                checked: this.question.booleanValue
             }, {
                 fontName: this.styles.checkmarkFont,
                 fontColor: this.styles.formBorderColor,
@@ -37,7 +37,7 @@ export class FlatBooleanCheckbox extends FlatQuestion<QuestionBooleanModel> {
         const textPoint: IPoint = SurveyHelper.clone(point);
         textPoint.xLeft = itemFlat.xRight + SurveyHelper.getScaledHorizontalSize(this.controller, this.styles.gapBetweenItemText);
         const locLabelText: LocalizableString = this.question.isIndeterminate ? null :
-            this.question.checkedValue ? this.question.locLabelTrue : this.question.locLabelFalse;
+            this.question.booleanValue ? this.question.locLabelTrue : this.question.locLabelFalse;
         if (locLabelText !== null && locLabelText.renderedHtml !== null) {
             compositeFlat.addBrick(await SurveyHelper.createTextFlat(
                 textPoint, this.controller, locLabelText));

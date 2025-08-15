@@ -32,7 +32,7 @@ test('Check that checkbox has square boundaries', async () => {
         controller.leftTopPoint, controller.unitHeight, controller.unitHeight),
     SurveyHelper.SELECT_ITEM_FLAT_SCALE), controller.leftTopPoint.xLeft);
     let checkboxFlat: PdfBrick = new PdfBrick(null, assumeCheckbox);
-    assumeCheckbox = SurveyHelper.scaleRect(assumeCheckbox, SurveyHelper.formScale(controller, checkboxFlat));
+    assumeCheckbox = SurveyHelper.scaleRect(assumeCheckbox, SurveyHelper.getRectBorderScale(checkboxFlat, controller.unitHeight * SurveyHelper.VISIBLE_BORDER_SCALE * SurveyHelper.BORDER_SCALE));
     let acroFormFields: any = controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields;
     let internalRect: any = acroFormFields[0].Rect;
     TestHelper.equalRect(expect, SurveyHelper.createRect(

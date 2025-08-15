@@ -59,7 +59,7 @@ export class RadioItemBrick extends PdfBrick {
         }
         const options: any = {};
         options.fieldName = this.radioGroupWrap.name + 'index' + this.options.index;
-        let formScale: number = SurveyHelper.formScale(this.controller, this);
+        let formScale = SurveyHelper.getRectBorderScale(this, this.appearance.borderWidth);
         options.Rect = SurveyHelper.createAcroformRect(
             SurveyHelper.scaleRect(this, formScale));
         options.color = this.appearance.fontColor;

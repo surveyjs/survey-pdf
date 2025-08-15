@@ -156,7 +156,7 @@ test('Scale rect 0.8', () => {
         yTop: 11,
         yBot: 19
     };
-    TestHelper.equalRect(expect, SurveyHelper.scaleRect(rect, 0.8), assumeRect);
+    TestHelper.equalRect(expect, SurveyHelper.scaleRect(rect, { scaleX: 0.875, scaleY: 0.8 }), assumeRect);
 });
 test('Scale rect 0.2', () => {
     let rect: IRect = {

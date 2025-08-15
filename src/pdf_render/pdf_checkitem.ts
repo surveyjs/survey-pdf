@@ -22,9 +22,9 @@ export class CheckItemBrick extends PdfBrick {
     }
     public async renderInteractive(): Promise<void> {
         const checkBox: any = new (<any>this.controller.doc.AcroFormCheckBox)();
-        const formScale: number = SurveyHelper.formScale(this.controller, this);
+        const formScale = SurveyHelper.getRectBorderScale(this, this.appearance.borderWidth);
         const options: any = {};
-        options.maxFontSize = this.height * formScale * CheckItemBrick.FONT_SIZE_SCALE;
+        options.maxFontSize = this.height * formScale.scaleY * CheckItemBrick.FONT_SIZE_SCALE;
         options.caption = this.appearance.checkMark;
         options.textAlign = 'center';
         options.fieldName = this.options.fieldName;
