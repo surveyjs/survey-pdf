@@ -11,6 +11,7 @@ import { EmptyBrick } from '../src/pdf_render/pdf_empty';
 import { SurveyHelper } from '../src/helper_survey';
 import { CompositeBrick } from '../src/pdf_render/pdf_composite';
 import { ImageBrick } from '../src/pdf_render/pdf_image';
+import '../src/entries/pdf';
 
 test('Check html brick is empty when document is not defined', async () => {
     let json: any = {

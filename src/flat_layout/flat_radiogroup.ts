@@ -1,19 +1,14 @@
-import { IQuestion, ItemValue, QuestionRadiogroupModel } from 'survey-core';
-import { SurveyPDF } from '../survey';
-import { IRect, DocController } from '../doc_controller';
+import { ItemValue, QuestionRadiogroupModel } from 'survey-core';
+import { IRect } from '../doc_controller';
 import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { RadioGroupWrap, RadioItemBrick } from '../pdf_render/pdf_radioitem';
 import { FlatSelectBase } from './flat_selectbase';
+import { SurveyHelper } from '../helper_survey';
 
-export class FlatRadiogroup extends FlatSelectBase {
+export class FlatRadiogroup extends FlatSelectBase<QuestionRadiogroupModel> {
     protected question: QuestionRadiogroupModel;
     private radioGroupWrap: RadioGroupWrap;
-    public constructor(protected survey: SurveyPDF,
-        question: IQuestion, protected controller: DocController) {
-        super(survey, question, controller);
-        this.question = <QuestionRadiogroupModel>question;
-    }
     protected isItemSelected(item: ItemValue, checked?: boolean): boolean {
         return (typeof checked === 'undefined') ?
             (item === this.question.otherItem ? this.question.isOtherSelected :
@@ -32,8 +27,21 @@ export class FlatRadiogroup extends FlatSelectBase {
             this.radioGroupWrap = (<any>this.question).pdfRadioGroupWrap;
         }
         const isChecked: boolean = this.isItemSelected(item, checked);
-        return new RadioItemBrick(this.controller, rect,
-            { question: this.question, index: index, checked: isChecked, item: item }, this.radioGroupWrap);
+        return new RadioItemBrick(this.controller, rect, this.radioGroupWrap, {
+            index,
+            checked: isChecked,
+            shouldRenderReadOnly: this.radioGroupWrap.readOnly && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform' || this.controller.compress,
+            updateOptions: options => this.survey.updateRadioItemAcroformOptions(options, this.question, item),
+        },
+        {
+            fontName: this.styles.radiomarkFont,
+            fontSize: SurveyHelper.getScaledFontSize(this.controller, this.styles.radiomarkFontSizeScale),
+            fontColor: this.styles.formBorderColor,
+            fontStyle: 'normal',
+            checkMark: this.styles.radiomarkSymbol,
+            borderColor: SurveyHelper.FORM_BORDER_COLOR,
+            borderWidth: this.controller.unitHeight * SurveyHelper.VISIBLE_BORDER_SCALE * SurveyHelper.BORDER_SCALE,
+        });
     }
 }
 
