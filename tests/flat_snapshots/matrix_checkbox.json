@@ -142,11 +142,11 @@
 			{
 				"brickType": "CheckItemBrick",
 				"width": 12.017499999999984,
-				"height": 12.017500000000013,
+				"height": 12.017499999999998,
 				"xLeft": 404.2711811023621,
 				"xRight": 416.2886811023621,
-				"yTop": 47.63770669291338,
-				"yBot": 59.655206692913396,
+				"yTop": 47.63770669291339,
+				"yBot": 59.65520669291339,
 				"appearance": {
 					"fontName": "zapfdingbats",
 					"fontColor": "#9f9f9f",

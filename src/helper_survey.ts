@@ -21,7 +21,7 @@ export type IBorderAppearanceOptions = {
     borderColor: string,
     borderWidth: number,
     dashStyle?: { dashArray: [number, number] | [number], dashPhase: number },
-    outside?: boolean,
+    borderOutside?: boolean,
 }
 
 export class SurveyHelper {
@@ -539,15 +539,15 @@ export class SurveyHelper {
         return textFlat;
     }
     public static renderFlatBorders(controller: DocController, options: IBorderDescription, appearance: IBorderAppearanceOptions): void {
-        appearance.outside = appearance.outside ?? false;
-        const minSide: number = Math.min(options.width, options.height);
-        const borderWidth = this.getBorderWidth(controller);
-        const visibleWidth: number = appearance.borderWidth;
-        const visibleScale: number = appearance.outside ? (minSide + borderWidth) / minSide - visibleWidth / minSide : (minSide - borderWidth) / minSide + visibleWidth / minSide;
+        appearance.borderOutside = appearance.borderOutside ?? false;
+        const borderWidth: number = appearance.borderWidth;
         const oldDrawColor: string = controller.doc.getDrawColor();
         controller.doc.setDrawColor(appearance.borderColor);
-        controller.doc.setLineWidth(visibleWidth);
-        const scaledRect = this.scaleRect(options, visibleScale);
+        controller.doc.setLineWidth(borderWidth);
+        const scaledRect = this.scaleRect(options, {
+            scaleX: appearance.borderOutside ? (options.width + borderWidth) / options.width : (options.width - borderWidth) / options.width,
+            scaleY: appearance.borderOutside ? (options.height + borderWidth) / options.height : (options.height - borderWidth) / options.height
+        });
         if(appearance.dashStyle) {
             const dashStyle = appearance.dashStyle;
             const borderLength = (Math.abs(scaledRect.yTop - scaledRect.yBot) + Math.abs(scaledRect.xLeft - scaledRect.xRight)) * 2;
@@ -630,21 +630,20 @@ export class SurveyHelper {
             yBot: top + rect.yBot - rect.yTop
         };
     }
-    public static scaleRect(rect: IRect, scale: number): IRect {
-        const scaleWidth: number = Math.min(rect.xRight - rect.xLeft, rect.yBot - rect.yTop) * (1.0 - scale) / 2.0;
+    public static scaleRect(rect: IRect, scale: number | { scaleX: number, scaleY: number }): IRect {
+        const scaleX = typeof scale == 'number' ? scale : scale.scaleX;
+        const scaleY = typeof scale == 'number' ? scale : scale.scaleY;
+        const scaleWidth: number = (rect.xRight - rect.xLeft) * (1.0 - scaleX) / 2.0;
+        const scaleHeight: number = (rect.yBot - rect.yTop) * (1.0 - scaleY) / 2.0;
         return {
             xLeft: rect.xLeft + scaleWidth,
-            yTop: rect.yTop + scaleWidth,
+            yTop: rect.yTop + scaleHeight,
             xRight: rect.xRight - scaleWidth,
-            yBot: rect.yBot - scaleWidth
+            yBot: rect.yBot - scaleHeight
         };
     }
-    public static getBorderWidth(controller: DocController) {
-        return 2.0 * controller.unitWidth * this.BORDER_SCALE;
-    }
-    public static formScale(controller: DocController, flat: ISize): number {
-        const minSide: number = Math.min(flat.width, flat.height);
-        return (minSide - this.getBorderWidth(controller)) / minSide;
+    public static getRectBorderScale(flat: ISize, borderWidth: number): { scaleX: number, scaleY: number } {
+        return { scaleX: (flat.width - borderWidth * 2) / flat.width, scaleY: (flat.height - borderWidth * 2) / flat.height };
     }
     public static async generateQuestionFlats(survey: SurveyPDF,
         controller: DocController, question: Question, point: IPoint): Promise<IPdfBrick[]> {
