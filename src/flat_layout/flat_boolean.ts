@@ -23,7 +23,7 @@ export class FlatBooleanCheckbox extends FlatQuestion<QuestionBooleanModel> {
                 readOnly: isReadOnly,
                 updateOptions: (options) => this.survey.updateCheckItemAcroformOptions(options, this.question),
                 shouldRenderReadOnly: isReadOnly && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform' || this.controller.compress,
-                checked: this.question.checkedValue
+                checked: this.question.booleanValue
             }, {
                 fontName: this.styles.checkmarkFont,
                 fontColor: this.styles.formBorderColor,
