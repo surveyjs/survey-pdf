@@ -1,8 +1,10 @@
 import { IPdfBrick, TranslateXFunction } from './pdf_brick';
 import { SurveyHelper } from '../helper_survey';
+import { EmptyBrick } from './pdf_empty';
+import { DocController, IPoint } from '../doc_controller';
 
 export class CompositeBrick implements IPdfBrick {
-    private bricks: IPdfBrick[] = [];
+    protected bricks: IPdfBrick[] = [];
     private _xLeft: number;
     private _xRight: number;
     private _yTop: number;
@@ -14,6 +16,9 @@ export class CompositeBrick implements IPdfBrick {
         this._yTop = 0.0;
         this._yBot = 0.0;
         this.addBrick(...bricks);
+    }
+    addBeforeRenderCallback(func: (brick: IPdfBrick) => void): void {
+        this.bricks.forEach(brick => brick.addBeforeRenderCallback(func));
     }
     get xLeft(): number { return this._xLeft; }
     set xLeft(xLeft: number) {
@@ -80,5 +85,12 @@ export class CompositeBrick implements IPdfBrick {
         const res = func(this.xLeft, this.xRight);
         this._xLeft = res.xLeft;
         this._xRight = res.xRight;
+    }
+
+    public setPageNumber(number: number): void {
+        this.bricks.forEach(brick => brick.setPageNumber(number));
+    }
+    public getPageNumber(): number {
+        return this.bricks[0].getPageNumber();
     }
 }

@@ -1,28 +1,8 @@
-import { EventBase } from 'survey-core';
 import { SurveyPDF } from '../survey';
 import { DocController } from '../doc_controller';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { DrawCanvas } from './draw_canvas';
 import { SurveyHelper } from '../helper_survey';
-
-export class EventAsync<Sender, Options> extends EventBase<Sender, Options> {
-    private isProcessing: boolean = false;
-    public unshift(func: (sender: Sender, options: Options) => any) {
-        if (this.hasFunc(func)) return;
-        if (this.callbacks == null) {
-            this.callbacks = new Array<(sender: Sender, options: Options) => any>();
-        }
-        this.callbacks.unshift(func);
-    }
-    public async fire(sender: Sender, options: Options) {
-        if (this.callbacks == null || this.isProcessing) return;
-        this.isProcessing = true;
-        for (var i = 0; i < this.callbacks.length; i++) {
-            await this.callbacks[i](sender, options);
-            this.isProcessing = false;
-        }
-    }
-}
 export class EventHandler {
     public static async process_header_events(survey: SurveyPDF,
         controller: DocController, packs: IPdfBrick[][]): Promise<void> {

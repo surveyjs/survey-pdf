@@ -4,7 +4,8 @@ import { IDocOptions, DocController } from './doc_controller';
 import { FlatSurvey } from './flat_layout/flat_survey';
 import { PagePacker } from './page_layout/page_packer';
 import { IPdfBrick } from './pdf_render/pdf_brick';
-import { EventAsync, EventHandler } from './event_handler/event_handler';
+import { EventAsync, } from './event_handler/event_async';
+import { EventHandler } from './event_handler/event_handler';
 import { DrawCanvas } from './event_handler/draw_canvas';
 import { AdornersOptions, AdornersPanelOptions, AdornersPageOptions } from './event_handler/adorners';
 import { SurveyHelper } from './helper_survey';
@@ -221,6 +222,11 @@ export class SurveyPDF extends SurveyModel {
         const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(this, controller);
         this.correctBricksPosition(controller, flats);
         const packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
+        packs.forEach((pagePack, i) => {
+            pagePack.forEach(pack => {
+                pack.setPageNumber(i);
+            });
+        });
         await EventHandler.process_header_events(this, controller, packs);
         for (let i: number = 0; i < packs.length; i++) {
             for (let j: number = 0; j < packs[i].length; j++) {
