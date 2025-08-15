@@ -9,7 +9,7 @@ export const styles: IStyles = {
     question: {
         titleFontSizeScale: 2,
         titleFontStyle: 'normal',
-        titleFontColor: '##000',
+        titleFontColor: '#000',
         contentGapScaleVertical: 0.5,
         contentGapScaleHorizontal: 1.0,
         contentIndentScale: 1.0,
@@ -17,12 +17,12 @@ export const styles: IStyles = {
         gapBetweenItemText: 0.25,
         gapBetweenColumns: 1.5,
         gapBetweenRows: 0.25,
-        textColor: '##000',
+        textColor: '#000',
     },
     panel: {
         titleFontSizeScale: 2,
         titleFontStyle: 'bold',
-        titleFontColor: '##000',
+        titleFontColor: '#000',
         questionGapVerticalScale: 1.5,
         panelContGapScale: 1,
         panelDescriptionGapScale: 0.25
@@ -30,15 +30,19 @@ export const styles: IStyles = {
     page: {
         titleFontSizeScale: 1.3,
         titleFontStyle: 'bold',
-        titleFontColor: '##000'
+        titleFontColor: '#000'
     },
     selectbase: {
         gapBetweenColumns: 1.5,
         gapBetweenRows: 0.25,
         formBorderColor: '#9f9f9f',
+        markContainerSizeScale: 2,
+        labelFontSizeScale: 2.5,
+        labelFontStyle: 'normal',
+        labelFontColor: '#000',
     },
     checkbox: {
-        checkmarkFontSizeScale: 1.0 - Math.E / 10.0,
+        checkmarkFontSizeScale: 2,
         checkmarkFont: 'zapfdingbats',
         checkmarkSymbol: '3',
         formBorderColor: '#9f9f9f',
@@ -46,7 +50,7 @@ export const styles: IStyles = {
     radiogroup: {
         formBorderColor: '#9f9f9f',
         radiomarkSymbol: 'l',
-        radiomarkFontSizeScale: 1.0 - ((2.0 + Math.E) / 10.0),
+        radiomarkFontSizeScale: 2,
         radiomarkFont: 'zapfdingbats',
     },
     matrixbase: {
@@ -58,9 +62,9 @@ export const styles: IStyles = {
         gapBetweenRows: 0.5,
         vertivalGapBetweenCells: 0.25,
         radiomarkSymbol: 'l',
-        radiomarkFontSizeScale: 1.0 - ((2.0 + Math.E) / 10.0),
+        radiomarkFontSizeScale: 2,
         radiomarkFont: 'zapfdingbats',
-        checkmarkFontSizeScale: 1.0 - Math.E / 10.0,
+        checkmarkFontSizeScale: 2,
         checkmarkFont: 'zapfdingbats',
         checkmarkSymbol: '3',
     },
@@ -72,13 +76,13 @@ export const styles: IStyles = {
         gapBetweenRows: 0.25,
         formBorderColor: '#9f9f9f',
         radiomarkSymbol: 'l',
-        radiomarkFontSizeScale: 1.0 - ((2.0 + Math.E) / 10.0),
+        radiomarkFontSizeScale: 2,
         radiomarkFont: 'zapfdingbats',
     },
     ranking: {
         gapBetweenColumns: 1.5,
         gapBetweenRows: 0.25,
-        checkmarkFontSizeScale: 1.0 - Math.E / 10.0,
+        checkmarkFontSizeScale: 2,
         formBorderColor: '#9f9f9f',
     },
     slider: {
@@ -86,7 +90,7 @@ export const styles: IStyles = {
     },
     dropdown: {
         gapBetweenRows: 0.25,
-        textColor: '##000',
+        textColor: '#000',
     },
     file: {
         imageGapScale: 0.195,
@@ -97,26 +101,26 @@ export const styles: IStyles = {
         gapBetweenPanels: 0.75
     },
     boolean: {
-        checkmarkFontSizeScale: 1.0 - Math.E / 10.0,
+        checkmarkFontSizeScale: 2,
         checkmarkFont: 'zapfdingbats',
         checkmarkSymbol: '3',
         formBorderColor: '#9f9f9f',
     },
     imagepicker: {
-        checkmarkFontSizeScale: 1.0 - Math.E / 10.0,
+        checkmarkFontSizeScale: 2,
         checkmarkFont: 'zapfdingbats',
         checkmarkSymbol: '3',
         formBorderColor: '#9f9f9f',
         radiomarkSymbol: 'l',
-        radiomarkFontSizeScale: 1.0 - ((2.0 + Math.E) / 10.0),
+        radiomarkFontSizeScale: 2,
         radiomarkFont: 'zapfdingbats',
     },
     comment: {
-        textColor: '##000',
+        textColor: '#000',
         inputFontSizeScale: 2.5,
     },
     expression: {
-        textColor: '##000',
+        textColor: '#000',
     },
     text: {
         inputFontSizeScale: 2.5,

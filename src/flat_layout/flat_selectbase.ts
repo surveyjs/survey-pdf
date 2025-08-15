@@ -5,6 +5,7 @@ import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
 import { ChoiceItem } from 'survey-core/typings/src/question_baseselect';
+import { ITextAppearanceOptions } from '../pdf_render/pdf_text';
 
 export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSelectBase> extends FlatQuestion<T> {
     public abstract generateFlatItem(rect: IRect, item: ItemValue, index: number): IPdfBrick;
@@ -30,17 +31,20 @@ export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSele
     protected async generateFlatComposite(point: IPoint, item: ItemValue | ChoiceItem, index: number): Promise<IPdfBrick> {
         const compositeFlat: CompositeBrick = new CompositeBrick();
         const itemRect: IRect = SurveyHelper.createRect(point,
-            this.controller.unitWidth, this.controller.unitHeight);
-        const itemFlat: IPdfBrick = this.generateFlatItem(SurveyHelper.moveRect(
-            SurveyHelper.scaleRect(itemRect, SurveyHelper.SELECT_ITEM_FLAT_SCALE),
-            point.xLeft), item, index);
+            SurveyHelper.getScaledHorizontalSize(this.controller, this.styles.markContainerSizeScale), SurveyHelper.getScaledVerticalSize(this.controller, this.styles.markContainerSizeScale));
+        const itemFlat: IPdfBrick = this.generateFlatItem(itemRect, item, index);
 
         compositeFlat.addBrick(itemFlat);
         const textPoint: IPoint = SurveyHelper.clone(point);
         textPoint.xLeft = itemFlat.xRight + SurveyHelper.getScaledHorizontalSize(this.controller, this.styles.gapBetweenItemText);
+        const textOptions:Partial<ITextAppearanceOptions> = {
+            fontSize: SurveyHelper.getScaledFontSize(this.controller, this.styles.labelFontSizeScale),
+            fontStyle: this.styles.labelFontStyle,
+            fontColor: this.styles.labelFontColor
+        };
         if (item.locText.renderedHtml !== null) {
             compositeFlat.addBrick(await SurveyHelper.createTextFlat(
-                textPoint, this.controller, item.locText));
+                textPoint, this.controller, item.locText, textOptions));
         }
         if(item.isCommentShowing) {
             const otherPoint: IPoint = SurveyHelper.createPoint(compositeFlat, true, false);
