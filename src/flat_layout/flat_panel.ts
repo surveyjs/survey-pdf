@@ -4,6 +4,7 @@ import { DocController, IPoint } from '../doc_controller';
 import { SurveyPDF } from '../survey';
 import { SurveyHelper } from '../helper_survey';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
+import { ContainerBrick } from '../pdf_render/pdf_container';
 import { AdornersPanelOptions } from '../event_handler/adorners';
 import { FlatRepository } from './flat_repository';
 import { IStyles } from '../styles';
@@ -57,25 +58,40 @@ export class FlatPanel<T extends PanelModel = PanelModel> {
         return composite;
     }
     protected async createHeaderFlats(point: IPoint): Promise<Array<IPdfBrick>> {
-        const compositeFlat: CompositeBrick = new CompositeBrick();
-        let currPoint = SurveyHelper.clone(point);
-        if (this.panel.hasTitle) {
-            const titleFlat = await this.generateTitleFlat(currPoint);
-            compositeFlat.addBrick(titleFlat);
-            currPoint = SurveyHelper.createPoint(titleFlat);
-        }
-        if (this.panel.description) {
-            if (this.panel.title) {
-                currPoint.yTop += SurveyHelper.getScaledHorizontalSize(this.controller, this.styles.panelDescriptionGapScale);
+        const containerBrick: ContainerBrick = new ContainerBrick(this.controller, {
+            ...point,
+            width: SurveyHelper.getPageAvailableWidth(this.controller)
+        },
+        {
+            paddingTop: SurveyHelper.getScaledVerticalSize(this.controller, 0.5),
+            paddingLeft: SurveyHelper.getScaledHorizontalSize(this.controller, 1),
+            paddingBottom: SurveyHelper.getScaledVerticalSize(this.controller, 0.5),
+            paddingRight: SurveyHelper.getScaledHorizontalSize(this.controller, 1),
+            borderWidth: SurveyHelper.getScaledHorizontalSize(this.controller, 0.125),
+            borderColor: '#000',
+            backgroundColor: '#E5E5E5',
+            borderOutside: false
+        });
+        await containerBrick.setup(async (point, bricks)=>{
+            let currPoint = SurveyHelper.clone(point);
+            if (this.panel.hasTitle) {
+                const titleFlat = await this.generateTitleFlat(currPoint);
+                bricks.push(titleFlat);
+                currPoint = SurveyHelper.createPoint(titleFlat);
             }
-            const panelDescFlat: IPdfBrick = await SurveyHelper.createTextFlat(
-                currPoint, this.controller, this.panel.locDescription, { fontSize: this.controller.fontSize * SurveyHelper.DESCRIPTION_FONT_SIZE_SCALE });
-            compositeFlat.addBrick(panelDescFlat);
-            currPoint = SurveyHelper.createPoint(panelDescFlat);
-        }
-        const rowLinePoint: IPoint = SurveyHelper.createPoint(compositeFlat);
-        compositeFlat.addBrick(SurveyHelper.createRowlineFlat(rowLinePoint, this.controller));
-        return [compositeFlat];
+            if (this.panel.description) {
+                if (this.panel.title) {
+                    currPoint.yTop += SurveyHelper.getScaledHorizontalSize(this.controller, this.styles.descriptionGapScale);
+                }
+                const panelDescFlat: IPdfBrick = await SurveyHelper.createTextFlat(
+                    currPoint, this.controller, this.panel.locDescription, { fontSize: SurveyHelper.getScaledFontSize(this.controller, this.styles.descriptionFontSizeScale) });
+                bricks.push(panelDescFlat);
+                currPoint = SurveyHelper.createPoint(panelDescFlat);
+            }
+            const rowLinePoint: IPoint = SurveyHelper.createPoint(containerBrick);
+            bricks.push(SurveyHelper.createRowlineFlat(rowLinePoint, this.controller));
+        });
+        return [containerBrick];
     }
     protected async generateRowsFlats(point: IPoint): Promise<IPdfBrick[]> {
         const currPoint = SurveyHelper.clone(point);

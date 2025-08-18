@@ -25,7 +25,9 @@ export const styles: IStyles = {
         titleFontColor: '#000',
         questionGapVerticalScale: 1.5,
         panelContGapScale: 1,
-        panelDescriptionGapScale: 0.25
+        panelDescriptionGapScale: 0.25,
+        descriptionFontSizeScale: 2,
+        descriptionGapScale: 0.5,
     },
     page: {
         titleFontSizeScale: 1.3,
