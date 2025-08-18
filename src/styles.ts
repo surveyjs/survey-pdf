@@ -14,6 +14,7 @@ export const styles: IStyles = {
         contentGapScaleHorizontal: 1.0,
         contentIndentScale: 0,
         descriptionGapScale: 0.0625,
+        descriptionFontSizeScale: 2,
         gapBetweenItemText: 0.25,
         gapBetweenColumns: 1.5,
         gapBetweenRows: 0.25,

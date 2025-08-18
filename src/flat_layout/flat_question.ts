@@ -67,7 +67,7 @@ export class FlatQuestion<T extends Question = Question> implements IFlatQuestio
         return composite;
     }
     private async generateFlatDescription(point: IPoint): Promise<IPdfBrick> {
-        return await SurveyHelper.createTextFlat(point, this.controller, this.question.locDescription, { fontSize: this.controller.fontSize * SurveyHelper.DESCRIPTION_FONT_SIZE_SCALE });
+        return await SurveyHelper.createTextFlat(point, this.controller, this.question.locDescription, { fontSize: SurveyHelper.getScaledFontSize(this.controller, this.styles.descriptionFontSizeScale) });
     }
     private async generateFlatHeader(point: IPoint): Promise<CompositeBrick> {
         const titleFlat: IPdfBrick = await this.generateFlatTitle(point);
