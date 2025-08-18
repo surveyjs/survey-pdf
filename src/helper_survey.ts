@@ -5,7 +5,7 @@ import { FlatRepository } from './flat_layout/flat_repository';
 import { IFlatQuestion } from './flat_layout/flat_question';
 import { IPdfBrick, PdfBrick } from './pdf_render/pdf_brick';
 import { TextBrick, ITextAppearanceOptions } from './pdf_render/pdf_text';
-import { LinkBrick } from './pdf_render/pdf_link';
+import { ILinkBrickAppearanceOptions, ILinkOptions, LinkBrick } from './pdf_render/pdf_link';
 import { HTMLBrick } from './pdf_render/pdf_html';
 import { ImageBrick } from './pdf_render/pdf_image';
 import { EmptyBrick } from './pdf_render/pdf_empty';
@@ -209,18 +209,18 @@ export class SurveyHelper {
         return composite;
     }
     public static async createTextFlat(point: IPoint,
-        controller: DocController, text: string | LocalizableString, options?: Partial<ITextAppearanceOptions>): Promise<IPdfBrick> {
-        const newOptions = this.mergeObjects(this.getDefaultTextAppearanceOptions(controller), options ?? {});
+        controller: DocController, text: string | LocalizableString, appearance?: Partial<ITextAppearanceOptions>): Promise<IPdfBrick> {
+        const newApperance = this.mergeObjects(this.getDefaultTextAppearanceOptions(controller), appearance ?? {});
         const oldFontSize: number = controller.fontSize;
         const oldFontStyle: string = controller.fontStyle;
         const oldFontName: string = controller.fontName;
-        controller.fontSize = newOptions.fontSize;
-        controller.fontStyle = newOptions.fontStyle;
-        controller.fontName = newOptions.fontName;
+        controller.fontSize = newApperance.fontSize;
+        controller.fontStyle = newApperance.fontStyle;
+        controller.fontName = newApperance.fontName;
         let result: IPdfBrick;
         if (typeof text === 'string' || !this.hasHtml(text)) {
             result = this.createPlainTextFlat(point, controller, typeof text === 'string' ?
-                text : this.getLocString(<LocalizableString>text), newOptions);
+                text : this.getLocString(<LocalizableString>text), newApperance);
         }
         else {
             result = this.splitHtmlRect(controller, await this.createHTMLFlat(point, controller,
@@ -490,26 +490,24 @@ export class SurveyHelper {
             yBot: point.yTop + this.EPSILON
         }, typeof color === 'undefined' ? null : color);
     }
-    public static async createLinkFlat(point: IPoint, question: Question,
-        controller: DocController, text: string, link: string): Promise<IPdfBrick> {
-        const textAppearance = SurveyHelper.getDefaultTextAppearanceOptions(controller);
-        textAppearance.fontColor = LinkBrick.COLOR;
+    public static async createLinkFlat(point: IPoint, controller: DocController, options: ILinkOptions, appearance?: Partial<ILinkBrickAppearanceOptions>): Promise<IPdfBrick> {
+        const newAppearance: ILinkBrickAppearanceOptions = this.mergeObjects(this.getDefaultTextAppearanceOptions(controller), appearance ?? {});
         const compositeText: CompositeBrick = <CompositeBrick>await this.
-            createTextFlat(point, controller, text, textAppearance);
+            createTextFlat(point, controller, options.text, newAppearance);
         const compositeLink: CompositeBrick = new CompositeBrick();
         compositeText.unfold().forEach((text: TextBrick) => {
             compositeLink.addBrick(new LinkBrick(controller, text,
                 {
-                    link,
+                    link: options.link,
                     text: text.options.text,
-                    readOnlyShowLink: SurveyHelper.getReadonlyRenderAs(question, controller) === 'text',
-                    shouldRenderReadOnly: SurveyHelper.shouldRenderReadOnly(question, controller)
+                    readOnlyShowLink: options.readOnlyShowLink,
+                    shouldRenderReadOnly: options.shouldRenderReadOnly
                 },
-                textAppearance
+                newAppearance
             ));
             const linePoint: IPoint = this.createPoint(compositeLink);
             compositeLink.addBrick(this.createRowlineFlat(linePoint,
-                controller, compositeLink.width, LinkBrick.COLOR));
+                controller, compositeLink.width, newAppearance.fontColor));
         });
         return compositeLink;
     }

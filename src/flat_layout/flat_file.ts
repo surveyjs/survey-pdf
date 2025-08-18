@@ -11,7 +11,14 @@ export class FlatFile extends FlatQuestion<QuestionFileModel> {
         name: string, type: string, content: string, imageSize?: ISize,
     }): Promise<IPdfBrick> {
         const compositeFlat: CompositeBrick = new CompositeBrick(await SurveyHelper.createLinkFlat(
-            point, this.question, this.controller, item.name === undefined ? 'image' : item.name, item.content));
+            point, this.controller, {
+                text: item.name === undefined ? 'image' : item.name,
+                link: item.content,
+                readOnlyShowLink: SurveyHelper.getReadonlyRenderAs(this.question, this.controller) === 'text',
+                shouldRenderReadOnly: SurveyHelper.shouldRenderReadOnly(this.question, this.controller),
+            }, {
+                fontColor: '#0000EE'
+            }));
         if (SurveyHelper.canPreviewImage(this.question, item, item.content)) {
             const imagePoint: IPoint = SurveyHelper.createPoint(compositeFlat);
             imagePoint.yTop += SurveyHelper.getScaledVerticalSize(this.controller, this.styles.imageGapScale);
