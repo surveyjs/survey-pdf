@@ -101,4 +101,11 @@ export class ContainerBrick extends CompositeBrick {
     public getBricks(): Array<IPdfBrick> {
         return this.bricks;
     }
+    public async setup(callback: (point: IPoint, bricks: Array<IPdfBrick>) => Promise<void>) {
+        this.startSetup();
+        const bricks:Array<IPdfBrick> = [];
+        await callback(this.getStartPoint(), bricks);
+        this.addBrick(...bricks);
+        this.finishSetup();
+    }
 }
