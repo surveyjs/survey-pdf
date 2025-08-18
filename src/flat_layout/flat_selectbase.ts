@@ -32,19 +32,25 @@ export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSele
         const compositeFlat: CompositeBrick = new CompositeBrick();
         const itemRect: IRect = SurveyHelper.createRect(point,
             SurveyHelper.getScaledHorizontalSize(this.controller, this.styles.markContainerSizeScale), SurveyHelper.getScaledVerticalSize(this.controller, this.styles.markContainerSizeScale));
-        const itemFlat: IPdfBrick = this.generateFlatItem(itemRect, item, index);
-
-        compositeFlat.addBrick(itemFlat);
-        const textPoint: IPoint = SurveyHelper.clone(point);
-        textPoint.xLeft = itemFlat.xRight + SurveyHelper.getScaledHorizontalSize(this.controller, this.styles.gapBetweenItemText);
         const textOptions:Partial<ITextAppearanceOptions> = {
             fontSize: SurveyHelper.getScaledFontSize(this.controller, this.styles.labelFontSizeScale),
             fontStyle: this.styles.labelFontStyle,
             fontColor: this.styles.labelFontColor
         };
+        const measuredText = this.controller.measureText(undefined, textOptions);
+        const shiftHeight = (measuredText.height - (itemRect.yBot - itemRect.yTop)) / 2;
+        itemRect.yTop += shiftHeight;
+        itemRect.yBot += shiftHeight;
+        const itemFlat: IPdfBrick = this.generateFlatItem(itemRect, item, index);
+
+        compositeFlat.addBrick(itemFlat);
+        const textPoint: IPoint = SurveyHelper.clone(point);
+        textPoint.xLeft = itemFlat.xRight + SurveyHelper.getScaledHorizontalSize(this.controller, this.styles.gapBetweenItemText);
+
         if (item.locText.renderedHtml !== null) {
-            compositeFlat.addBrick(await SurveyHelper.createTextFlat(
-                textPoint, this.controller, item.locText, textOptions));
+            const textFlat = await SurveyHelper.createTextFlat(
+                textPoint, this.controller, item.locText, textOptions);
+            compositeFlat.addBrick(textFlat);
         }
         if(item.isCommentShowing) {
             const otherPoint: IPoint = SurveyHelper.createPoint(compositeFlat, true, false);
