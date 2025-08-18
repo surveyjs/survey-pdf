@@ -11,7 +11,6 @@ export interface ILinkBrickAppearanceOptions extends ITextAppearanceOptions {}
 
 export class LinkBrick extends TextBrick {
     private static readonly SCALE_FACTOR_MAGIC: number = 0.955;
-    public static readonly COLOR: string = '#0000EE';
     public constructor(controller: DocController, rect: IRect, public options: ILinkOptions, public appearance: ILinkBrickAppearanceOptions) {
         super(controller, rect, options, appearance);
     }
