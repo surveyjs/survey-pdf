@@ -10,6 +10,7 @@ export interface IPdfBrick extends IRect, ISize {
     addBeforeRenderCallback(func: (brick: IPdfBrick) => void): void;
     setPageNumber(number: number): void;
     getPageNumber(): number;
+    updateRect(): void;
 }
 /**
  * An object that describes a PDF brick&mdash;a simple element with specified content, size, and location. Bricks are fundamental elements used to construct a PDF document.
@@ -138,4 +139,5 @@ export class PdfBrick implements IPdfBrick {
     addBeforeRenderCallback(func: (brick: IPdfBrick) => void): void {
         this.beforeRenderEvent.add(func);
     }
+    public updateRect(): void {}
 }
