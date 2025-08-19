@@ -37,29 +37,33 @@ export class InseparableBrick extends CompositeBrick {
 }
 
 export class ContainerBrick extends CompositeBrick {
+    private paddingTopBrick: IPdfBrick;
+    private paddingBottomBrick: IPdfBrick;
     private get includedBorderWidth() {
         return this.appearance.borderOutside ? 0 : this.appearance.borderWidth;
     }
-    constructor(private controller: DocController, private layout: { xLeft: number, yTop: number, width: number }, private appearance: IContainerBrickAppearance) {
+    constructor(private controller: DocController, private layout: { xLeft: number, yTop: number, width: number }, private appearance: Readonly<IContainerBrickAppearance>) {
         super();
-        this.addBrick(new EmptyBrick(controller, { ...layout, xRight: layout.xLeft + layout.width, yBot: layout.yTop + appearance.paddingTop + this.includedBorderWidth }));
     }
     getStartPoint(): IPoint {
         return { yTop: this.bricks[0].yBot, xLeft: this.layout.xLeft + this.appearance.paddingLeft + this.includedBorderWidth };
     }
     startSetup() {
+        this.paddingTopBrick = new EmptyBrick(this.controller, { ...this.layout, xRight: this.layout.xLeft + this.layout.width, yBot: this.layout.yTop + this.appearance.paddingTop + this.includedBorderWidth });
+        this.addBrick(this.paddingTopBrick);
         this.controller.pushMargins();
         this.controller.margins.left = this.layout.xLeft + this.appearance.paddingLeft + this.includedBorderWidth;
         this.controller.margins.right = this.controller.paperWidth - (this.layout.xLeft + this.layout.width) + this.appearance.paddingRight + this.includedBorderWidth;
     }
     finishSetup() {
         this.controller.popMargins();
-        this.addBrick(new EmptyBrick(this.controller, {
+        this.paddingBottomBrick = new EmptyBrick(this.controller, {
             xLeft: this.layout.xLeft,
             yTop: this.yBot,
             xRight: this.layout.xLeft + this.layout.width,
             yBot: this.yBot + this.appearance.paddingBottom + this.includedBorderWidth
-        }));
+        });
+        this.addBrick(this.paddingBottomBrick);
         if(this.bricks.length > 3) {
             const firstBrickWithPadding = new InseparableBrick(InseparableBrickMode.FIRST, this.bricks[0], this.bricks[1]);
             const lastBrickWithPadding = new InseparableBrick(InseparableBrickMode.LAST, this.bricks[this.bricks.length - 2], this.bricks[this.bricks.length - 1]);
@@ -107,5 +111,9 @@ export class ContainerBrick extends CompositeBrick {
         await callback(this.getStartPoint(), bricks);
         this.addBrick(...bricks);
         this.finishSetup();
+    }
+    fitToHeight(height: number) {
+        this.paddingBottomBrick.yBot += height - this.height;
+        this.updateRect();
     }
 }
