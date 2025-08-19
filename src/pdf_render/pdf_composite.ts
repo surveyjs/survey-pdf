@@ -1,7 +1,5 @@
 import { IPdfBrick, TranslateXFunction } from './pdf_brick';
 import { SurveyHelper } from '../helper_survey';
-import { EmptyBrick } from './pdf_empty';
-import { DocController, IPoint } from '../doc_controller';
 
 export class CompositeBrick implements IPdfBrick {
     protected bricks: IPdfBrick[] = [];
@@ -63,14 +61,17 @@ export class CompositeBrick implements IPdfBrick {
     public get isEmpty(): boolean {
         return this.bricks.length === 0;
     }
+    private _updateRect() {
+        let mergeRect = SurveyHelper.mergeRects(...this.bricks);
+        this._xLeft = mergeRect.xLeft;
+        this._xRight = mergeRect.xRight;
+        this._yTop = mergeRect.yTop;
+        this._yBot = mergeRect.yBot;
+    }
     public addBrick(...bricks: IPdfBrick[]) {
         if (bricks.length != 0) {
             this.bricks.push(...bricks);
-            let mergeRect = SurveyHelper.mergeRects(...this.bricks);
-            this._xLeft = mergeRect.xLeft;
-            this._xRight = mergeRect.xRight;
-            this._yTop = mergeRect.yTop;
-            this._yBot = mergeRect.yBot;
+            this._updateRect();
         }
     }
     public unfold(): IPdfBrick[] {
@@ -92,5 +93,11 @@ export class CompositeBrick implements IPdfBrick {
     }
     public getPageNumber(): number {
         return this.bricks[0].getPageNumber();
+    }
+    public updateRect(): void {
+        this.bricks.forEach(brick => {
+            brick.updateRect();
+        });
+        this._updateRect();
     }
 }

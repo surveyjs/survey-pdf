@@ -47,4 +47,5 @@ export class RowlineBrick implements IPdfBrick {
     }
 
     translateX(_: TranslateXFunction): void {}
+    updateRect(): void {}
 }
