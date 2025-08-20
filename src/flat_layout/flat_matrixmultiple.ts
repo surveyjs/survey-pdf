@@ -37,7 +37,7 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
             if(location == 'footer' && !cell.question.isAnswered) {}
             else if (isWide && cell.isChoice) {
                 const flatMultipleColumnsQuestion: IFlatQuestion = FlatRepository.getInstance().create(
-                    this.survey, cell.question, this.controller, cell.question.getType());
+                    this.survey, cell.question, this.controller, this.survey.getStylesForElement(cell.question), cell.question.getType());
                 const itemRect: IRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(
                     SurveyHelper.createRect(point, this.controller.unitHeight, this.controller.unitHeight),
                     SurveyHelper.SELECT_ITEM_FLAT_SCALE), point.xLeft);
@@ -47,7 +47,7 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
             else {
                 cell.question.titleLocation = SurveyHelper.TITLE_LOCATION_MATRIX;
                 composite.addBrick(...await SurveyHelper.generateQuestionFlats(
-                    this.survey, this.controller, cell.question, point));
+                    this.survey, this.controller, cell.question, point, this.survey.getStylesForElement(cell.question)));
             }
         }
         else if (cell.hasTitle) {
@@ -179,7 +179,7 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
                 for (let j = 0; j < currentDetailPanel.questions.length; j++) {
                     currentDetailPanel.questions[j].id += '_' + i;
                 }
-                const panelBricks: IPdfBrick[] = await SurveyHelper.generatePanelFlats(this.survey, this.controller, currentDetailPanel, currPoint);
+                const panelBricks: IPdfBrick[] = await SurveyHelper.generatePanelFlats(this.survey, this.controller, currentDetailPanel, currPoint, this.survey.getStylesForElement(currentDetailPanel));
 
                 const currComposite: CompositeBrick = new CompositeBrick();
                 currComposite.addBrick(...panelBricks);

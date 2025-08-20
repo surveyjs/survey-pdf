@@ -1,4 +1,4 @@
-import { IElement, PanelModel, Question } from 'survey-core';
+import { IElement, PanelModel, Question, SurveyElement } from 'survey-core';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { DocController, IPoint } from '../doc_controller';
 import { SurveyPDF } from '../survey';
@@ -114,12 +114,12 @@ export class FlatPanel<T extends PanelModel = PanelModel> {
                 currPoint.xLeft = this.controller.margins.left;
                 nextMarginLeft = this.controller.margins.left + persWidth;
                 if (element instanceof PanelModel) {
-                    rowFlats.push(...await SurveyHelper.generatePanelFlats(this.survey, this.controller, element, currPoint));
+                    rowFlats.push(...await SurveyHelper.generatePanelFlats(this.survey, this.controller, element, currPoint, this.survey.getStylesForElement(element)));
                 }
                 else {
                     await (<Question>element).waitForQuestionIsReady();
                     rowFlats.push(...await SurveyHelper.generateQuestionFlats(this.survey,
-                        this.controller, <Question>element, currPoint));
+                        this.controller, <Question>element, currPoint, this.survey.getStylesForElement(element as any as SurveyElement)));
                 }
             }
             this.controller.popMargins();

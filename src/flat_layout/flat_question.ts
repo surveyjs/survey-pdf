@@ -106,7 +106,7 @@ export class FlatQuestion<T extends Question = Question> implements IFlatQuestio
     public async generateFlatsComposite(point: IPoint): Promise<IPdfBrick[]> {
         const contentPanel = (<any>this.question).contentPanel;
         if (!!contentPanel) {
-            return await SurveyHelper.generatePanelFlats(this.survey, this.controller, contentPanel, point);
+            return await SurveyHelper.generatePanelFlats(this.survey, this.controller, contentPanel, point, this.survey.getStylesForElement(contentPanel));
         }
         this.question = SurveyHelper.getContentQuestion(this.question) as T;
         return await this.generateFlatsContent(point);
