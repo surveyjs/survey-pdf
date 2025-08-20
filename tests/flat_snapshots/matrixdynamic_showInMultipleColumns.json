@@ -1,0 +1,183 @@
+[
+	{
+		"brickType": "CompositeBrick",
+		"width": 504.0826771653543,
+		"height": 34.5,
+		"xLeft": 62.84645669291339,
+		"xRight": 566.9291338582677,
+		"yTop": 28.34645669291339,
+		"yBot": 62.84645669291339,
+		"bricks": [
+			{
+				"brickType": "CompositeBrick",
+				"width": 116.4,
+				"height": 34.5,
+				"xLeft": 62.84645669291342,
+				"xRight": 179.24645669291343,
+				"yTop": 28.34645669291339,
+				"yBot": 62.84645669291339,
+				"bricks": [
+					{
+						"brickType": "CompositeBrick",
+						"width": 116.4,
+						"height": 34.5,
+						"xLeft": 62.84645669291342,
+						"xRight": 179.24645669291343,
+						"yTop": 28.34645669291339,
+						"yBot": 62.84645669291339,
+						"bricks": [
+							{
+								"brickType": "TextBrick",
+								"width": 116.4,
+								"height": 34.5,
+								"xLeft": 62.84645669291342,
+								"xRight": 179.24645669291343,
+								"yTop": 28.34645669291339,
+								"yBot": 62.84645669291339,
+								"appearance": {
+									"fontSize": 30,
+									"fontName": "helvetica",
+									"fontStyle": "bold",
+									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "MulCol1"
+								}
+							}
+						]
+					}
+				]
+			},
+			{
+				"brickType": "CompositeBrick",
+				"width": 116.40000000000003,
+				"height": 34.5,
+				"xLeft": 340.7627952755906,
+				"xRight": 457.1627952755906,
+				"yTop": 28.34645669291339,
+				"yBot": 62.84645669291339,
+				"bricks": [
+					{
+						"brickType": "CompositeBrick",
+						"width": 116.40000000000003,
+						"height": 34.5,
+						"xLeft": 340.7627952755906,
+						"xRight": 457.1627952755906,
+						"yTop": 28.34645669291339,
+						"yBot": 62.84645669291339,
+						"bricks": [
+							{
+								"brickType": "TextBrick",
+								"width": 116.40000000000003,
+								"height": 34.5,
+								"xLeft": 340.7627952755906,
+								"xRight": 457.1627952755906,
+								"yTop": 28.34645669291339,
+								"yBot": 62.84645669291339,
+								"appearance": {
+									"fontSize": 30,
+									"fontName": "helvetica",
+									"fontStyle": "bold",
+									"fontColor": "#404040"
+								},
+								"options": {
+									"text": "MulCol2"
+								}
+							}
+						]
+					}
+				]
+			},
+			{
+				"brickType": "RowlineBrick",
+				"width": 504.0826771653543,
+				"height": 0,
+				"xLeft": 62.84645669291339,
+				"xRight": 566.9291338582677,
+				"yTop": 62.84645669291339,
+				"yBot": 62.84645669291339
+			}
+		]
+	},
+	{
+		"brickType": "CompositeBrick",
+		"width": 310.6913385826771,
+		"height": 32.775000000000006,
+		"xLeft": 62.84645669291342,
+		"xRight": 373.5377952755905,
+		"yTop": 80.95895669291339,
+		"yBot": 113.7339566929134,
+		"bricks": [
+			{
+				"brickType": "CompositeBrick",
+				"width": 32.77499999999999,
+				"height": 32.775000000000006,
+				"xLeft": 62.84645669291342,
+				"xRight": 95.62145669291341,
+				"yTop": 80.95895669291339,
+				"yBot": 113.7339566929134,
+				"bricks": [
+					{
+						"brickType": "CheckItemBrick",
+						"width": 32.77499999999999,
+						"height": 32.775000000000006,
+						"xLeft": 62.84645669291342,
+						"xRight": 95.62145669291341,
+						"yTop": 80.95895669291339,
+						"yBot": 113.7339566929134,
+						"appearance": {
+							"fontName": "zapfdingbats",
+							"fontColor": "#9f9f9f",
+							"fontSize": 21.845154514622866,
+							"checkMark": "3",
+							"fontStyle": "normal",
+							"borderColor": "#9f9f9f",
+							"borderWidth": 2.7600000000000002
+						},
+						"options": {
+							"shouldRenderReadOnly": false,
+							"readOnly": false,
+							"checked": false,
+							"fieldName": "testidquestion_madintotalsshowmulcol_row1_cell_1index0"
+						}
+					}
+				]
+			},
+			{
+				"brickType": "CompositeBrick",
+				"width": 32.77499999999992,
+				"height": 32.775000000000006,
+				"xLeft": 340.7627952755906,
+				"xRight": 373.5377952755905,
+				"yTop": 80.95895669291339,
+				"yBot": 113.7339566929134,
+				"bricks": [
+					{
+						"brickType": "CheckItemBrick",
+						"width": 32.77499999999992,
+						"height": 32.775000000000006,
+						"xLeft": 340.7627952755906,
+						"xRight": 373.5377952755905,
+						"yTop": 80.95895669291339,
+						"yBot": 113.7339566929134,
+						"appearance": {
+							"fontName": "zapfdingbats",
+							"fontColor": "#9f9f9f",
+							"fontSize": 21.845154514622866,
+							"checkMark": "3",
+							"fontStyle": "normal",
+							"borderColor": "#9f9f9f",
+							"borderWidth": 2.7600000000000002
+						},
+						"options": {
+							"shouldRenderReadOnly": false,
+							"readOnly": false,
+							"checked": false,
+							"fieldName": "testidquestion_madintotalsshowmulcol_row1_cell_1index1"
+						}
+					}
+				]
+			}
+		]
+	}
+]
