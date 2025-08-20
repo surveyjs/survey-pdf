@@ -24,7 +24,8 @@ export const styles: IStyles = {
         wrapperPaddingLeftScale: 1,
         wrapperPaddingRightScale: 1,
         wrapperBorderWidthScale: 0.125,
-        wrapperBorderColor: '#000'
+        wrapperBorderColor: '#000',
+        borderScale: 0
     },
     panel: {
         wrapperPaddingTopScale: 0,
@@ -40,6 +41,14 @@ export const styles: IStyles = {
         panelDescriptionGapScale: 0.25,
         descriptionFontSizeScale: 2,
         descriptionGapScale: 0.5,
+        paddingTop: 0.5,
+        paddingLeft: 1,
+        paddingBottom: 0.5,
+        paddingRight: 1,
+        borderWidth: 0.125,
+        borderColor: '#000',
+        backgroundColor: '#E5E5E5',
+        borderOutside: false
     },
     page: {
         questionGapVerticalScale: 1.5,

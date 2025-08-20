@@ -18,7 +18,7 @@ export class FlatExpression extends FlatQuestion<QuestionExpressionModel> {
             fontSize: this.controller.fontSize,
             fontStyle: 'normal',
             borderColor: SurveyHelper.FORM_BORDER_COLOR,
-            borderWidth: this.controller.unitHeight * SurveyHelper.VISIBLE_BORDER_SCALE * SurveyHelper.BORDER_SCALE,
+            borderWidth: SurveyHelper.getScaledVerticalSize(this.controller, this.styles.borderScale),
         })];
     }
 }

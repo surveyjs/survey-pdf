@@ -26,7 +26,7 @@ export class FlatRanking extends FlatQuestion<QuestionRankingModel> {
                 fontName: this.controller.fontName,
                 fontSize: SurveyHelper.getScaledFontSize(this.controller, this.styles.checkmarkFontSizeScale),
                 borderColor: SurveyHelper.FORM_BORDER_COLOR,
-                borderWidth: this.controller.unitHeight * SurveyHelper.VISIBLE_BORDER_SCALE * SurveyHelper.BORDER_SCALE,
+                borderWidth: SurveyHelper.getScaledVerticalSize(this.controller, this.styles.borderScale),
             });
         const textPoint: IPoint = SurveyHelper.clone(point);
         textPoint.xLeft = itemFlat.xRight + SurveyHelper.getScaledHorizontalSize(this.controller, this.styles.gapBetweenItemText);

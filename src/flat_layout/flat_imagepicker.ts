@@ -40,7 +40,7 @@ export class FlatImagePicker extends FlatQuestion<QuestionImagePickerModel> {
                     checkMark: this.styles.checkmarkSymbol,
                     fontStyle: 'normal',
                     borderColor: SurveyHelper.FORM_BORDER_COLOR,
-                    borderWidth: this.controller.unitHeight * SurveyHelper.VISIBLE_BORDER_SCALE * SurveyHelper.BORDER_SCALE,
+                    borderWidth: SurveyHelper.getScaledVerticalSize(this.controller, this.styles.borderScale),
                 }));
         }
         else {
