@@ -7,6 +7,7 @@ import { TextBrick } from '../src/pdf_render/pdf_text';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 import { SurveyPDF } from '../src/survey';
+import '../src/entries/pdf';
 
 test('Merge rects 2 count', () => {
     let rectKeys: string[] = Object.keys(TestHelper.defaultRect);
@@ -60,8 +61,7 @@ test('Create point', () => {
 test('Not Carry text', async () => {
     let text: string = '111 11111 1111';
     let controller: DocController = new DocController(TestHelper.defaultOptions);
-    let composite: IPdfBrick = await SurveyHelper.createTextFlat(controller.leftTopPoint,
-        null, controller, text, TextBrick);
+    let composite: IPdfBrick = await SurveyHelper.createTextFlat(controller.leftTopPoint, controller, text, TextBrick);
     let assumeRect: IRect = {
         xLeft: controller.leftTopPoint.xLeft,
         xRight: controller.leftTopPoint.xLeft + controller.measureText(text).width,
@@ -77,8 +77,7 @@ test('Carry text', async () => {
         new DocController(options).measureText('1').width * 5 / DocOptions.MM_TO_PT +
         options.margins.right, 297];
     let controller: DocController = new DocController(options);
-    let composite: IPdfBrick = await SurveyHelper.createTextFlat(controller.leftTopPoint,
-        null, controller, text, TextBrick);
+    let composite: IPdfBrick = await SurveyHelper.createTextFlat(controller.leftTopPoint, controller, text);
     let assumeRect: IRect = {
         xLeft: controller.leftTopPoint.xLeft,
         xRight: controller.leftTopPoint.xLeft + controller.measureText('11111').width,
@@ -94,8 +93,7 @@ test('Carry split long text', async () => {
         new DocController(options).measureText('1').width * 3.5 / DocOptions.MM_TO_PT +
         options.margins.right, 297];
     let controller: DocController = new DocController(options);
-    let composite: IPdfBrick = await SurveyHelper.createTextFlat(controller.leftTopPoint,
-        null, controller, text, TextBrick);
+    let composite: IPdfBrick = await SurveyHelper.createTextFlat(controller.leftTopPoint, controller, text);
     let assumeRect: IRect = {
         xLeft: controller.leftTopPoint.xLeft,
         xRight: controller.leftTopPoint.xLeft + controller.measureText('111').width,
@@ -158,7 +156,7 @@ test('Scale rect 0.8', () => {
         yTop: 11,
         yBot: 19
     };
-    TestHelper.equalRect(expect, SurveyHelper.scaleRect(rect, 0.8), assumeRect);
+    TestHelper.equalRect(expect, SurveyHelper.scaleRect(rect, { scaleX: 0.875, scaleY: 0.8 }), assumeRect);
 });
 test('Scale rect 0.2', () => {
     let rect: IRect = {
@@ -240,19 +238,19 @@ test('Check set column width', () => {
         }
     };
     let controller: DocController = new DocController(options);
-    let columnWidth: number = SurveyHelper.getColumnWidth(controller, 3);
+    let columnWidth: number = SurveyHelper.getColumnWidth(controller, 3, SurveyHelper.GAP_BETWEEN_COLUMNS);
     let gap: number = controller.unitWidth * SurveyHelper.GAP_BETWEEN_COLUMNS;
     controller.pushMargins();
-    SurveyHelper.setColumnMargins(controller, 3, 0);
+    SurveyHelper.setColumnMargins(controller, 3, 0, SurveyHelper.GAP_BETWEEN_COLUMNS);
     expect(controller.margins.left).toBe(0);
     expect(controller.margins.right).toBe(2 * (columnWidth + gap));
     controller.popMargins();
     controller.pushMargins();
-    SurveyHelper.setColumnMargins(controller, 3, 1);
+    SurveyHelper.setColumnMargins(controller, 3, 1, SurveyHelper.GAP_BETWEEN_COLUMNS);
     expect(controller.margins.left).toBe(columnWidth + gap);
     expect(controller.margins.right).toBe(columnWidth + gap);
     controller.popMargins();
-    SurveyHelper.setColumnMargins(controller, 3, 2);
+    SurveyHelper.setColumnMargins(controller, 3, 2, SurveyHelper.GAP_BETWEEN_COLUMNS);
     expect(controller.margins.left).toBe(2 * (columnWidth + gap));
     expect(controller.margins.right).toBe(0);
 });

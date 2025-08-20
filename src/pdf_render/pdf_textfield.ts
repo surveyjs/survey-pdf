@@ -1,10 +1,11 @@
-import { IQuestion, QuestionTextModel, settings } from 'survey-core';
+import { IQuestion, QuestionTextModel } from 'survey-core';
 import { IRect, DocController } from '../doc_controller';
-import { IPdfBrick, PdfBrick, TranslateXFunction } from './pdf_brick';
-import { SurveyHelper } from '../helper_survey';
+import { IPdfBrick, IPdfBrickOptions, PdfBrick, TranslateXFunction } from './pdf_brick';
+import { IBorderAppearanceOptions, SurveyHelper } from '../helper_survey';
 import { CompositeBrick } from './pdf_composite';
+import { ITextAppearanceOptions } from './pdf_text';
 
-export interface ITextFieldBrickOptions {
+export interface ITextFieldBrickOptions extends IPdfBrickOptions {
     isReadOnly: boolean;
     fieldName: string;
     shouldRenderBorders: boolean;
@@ -14,20 +15,21 @@ export interface ITextFieldBrickOptions {
     isMultiline?: boolean;
 }
 
+export type ITextFieldBrickAppearanceOptions = ITextAppearanceOptions & IBorderAppearanceOptions;
+
 export class TextFieldBrick extends PdfBrick {
-    public constructor(protected question: IQuestion, controller: DocController,
-        rect: IRect, protected options: ITextFieldBrickOptions
+    public constructor(controller: DocController,
+        rect: IRect, protected options: ITextFieldBrickOptions, protected appearance: ITextFieldBrickAppearanceOptions
     ) {
-        super(question, controller, rect);
+        super(controller, rect);
         options.isMultiline = options.isMultiline ?? false;
         options.placeholder = options.placeholder ?? '';
         options.inputType = options.inputType ?? '';
         options.value = options.value ?? '';
-        this.question = <QuestionTextModel>question;
     }
     private renderColorQuestion(): void {
         let oldFillColor: string = this.controller.doc.getFillColor();
-        this.controller.doc.setFillColor(this.question.value || 'black');
+        this.controller.doc.setFillColor(this.options.value || 'black');
         this.controller.doc.rect(this.xLeft, this.yTop,
             this.width, this.height, 'F');
         this.controller.doc.setFillColor(oldFillColor);
@@ -41,8 +43,8 @@ export class TextFieldBrick extends PdfBrick {
             new (<any>this.controller.doc.AcroFormPasswordField)() :
             new (<any>this.controller.doc.AcroFormTextField)();
         inputField.fieldName = this.options.fieldName;
-        inputField.fontName = this.controller.fontName;
-        inputField.fontSize = this.fontSize;
+        inputField.fontName = this.appearance.fontName;
+        inputField.fontSize = this.appearance.fontSize;
         inputField.isUnicode = SurveyHelper.isCustomFont(
             this.controller, inputField.fontName);
         if (this.options.inputType !== 'password') {
@@ -52,19 +54,16 @@ export class TextFieldBrick extends PdfBrick {
         else inputField.value = '';
         inputField.multiline = this.options.isMultiline;
         inputField.readOnly = this.options.isReadOnly;
-        inputField.color = this.textColor;
-        let formScale: number = SurveyHelper.formScale(this.controller, this);
-        inputField.maxFontSize = this.controller.fontSize * formScale;
+        inputField.color = this.appearance.fontColor;
+        let formScale = SurveyHelper.getRectBorderScale(this, this.appearance.borderWidth);
+        inputField.maxFontSize = this.appearance.fontSize * formScale.scaleY;
         inputField.Rect = SurveyHelper.createAcroformRect(
             SurveyHelper.scaleRect(this, formScale));
         this.controller.doc.addField(inputField);
-        SurveyHelper.renderFlatBorders(this.controller, this);
+        SurveyHelper.renderFlatBorders(this.controller, this, this.appearance);
     }
     protected shouldRenderFlatBorders(): boolean {
         return this.options.shouldRenderBorders;
-    }
-    protected getShouldRenderReadOnly(): boolean {
-        return SurveyHelper.shouldRenderReadOnly(this.question, this.controller, this.options.isReadOnly);
     }
     private _textBrick: IPdfBrick;
     public get textBrick(): IPdfBrick {
@@ -100,10 +99,9 @@ export class TextFieldBrick extends PdfBrick {
                             yTop: renderedOnOnePage ? this.yTop : compositeBrick.yTop - padding,
                             yBot: renderedOnOnePage ? this.yBot : compositeBrick.yBot + padding,
                             height: renderedOnOnePage ? this.height : compositeBrick.height + 2 * padding,
-                            formBorderColor: this.formBorderColor,
                         };
                         this.controller.setPage(Number(key));
-                        SurveyHelper.renderFlatBorders(this.controller, borderRect);
+                        SurveyHelper.renderFlatBorders(this.controller, borderRect, this.appearance);
                         this.controller.setPage(currentPageNumber);
                     });
                 }
