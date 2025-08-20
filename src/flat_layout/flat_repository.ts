@@ -27,7 +27,7 @@ export class FlatRepository {
         return this.questions[type];
     }
     public create(survey: SurveyPDF, question: Question,
-        docController: DocController, type?: string): IFlatQuestion {
+        docController: DocController, styles: IStyles, type?: string): IFlatQuestion {
         const questionType: string = typeof type === 'undefined' ? question.getType() : type;
         let rendererConstructor = this.getRenderer(questionType);
         if(!rendererConstructor) {
@@ -37,7 +37,6 @@ export class FlatRepository {
                 rendererConstructor = FlatQuestionDefault;
             }
         }
-        const styles = survey.getStylesForElement(question);
         return new rendererConstructor(survey, question, docController, styles);
     }
     public static register(type: string, rendererConstructor: FlatConstructor): void {
