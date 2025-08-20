@@ -235,8 +235,8 @@ export class SurveyHelper {
     public static mergeObjects(dest:any, ...sources:Array<any>):any {
         sources.forEach(source => {
             Object.keys(source).forEach(key=>{
-                if (source[key] !== undefined && source[key] !== null) {
-                    if(typeof source[key] == 'object') {
+                if (source[key] !== undefined) {
+                    if(typeof source[key] == 'object' && source[key] !== null) {
                         dest[key] = SurveyHelper.mergeObjects(dest[key] ?? {}, source[key]);
                     } else {
                         dest[key] = source[key];
