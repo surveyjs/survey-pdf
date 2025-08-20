@@ -10,14 +10,26 @@ interface IContainerBrickAppearance {
     paddingBottom: number;
     paddingRight: number;
     borderWidth: number;
-    borderColor: string;
-    backgroundColor: string;
+    borderColor: string | null;
+    backgroundColor: string | null;
     borderOutside: boolean;
 }
 
 export enum InseparableBrickMode {
     FIRST = 1, LAST = 2, BOTH = 3
 }
+
+const defaultContainerOptions: IContainerBrickAppearance = {
+    paddingTop: 0,
+    paddingLeft: 0,
+    paddingBottom: 0,
+    paddingRight: 0,
+    borderWidth: 0,
+    backgroundColor: null,
+    borderColor: null,
+    borderOutside: false
+};
+
 export class InseparableBrick extends CompositeBrick {
     constructor(private mode: InseparableBrickMode, ...bricks: Array<IPdfBrick>) {
         super(...bricks);
@@ -39,11 +51,13 @@ export class InseparableBrick extends CompositeBrick {
 export class ContainerBrick extends CompositeBrick {
     private paddingTopBrick: IPdfBrick;
     private paddingBottomBrick: IPdfBrick;
+    private appearance: Readonly<IContainerBrickAppearance>;
     private get includedBorderWidth() {
         return this.appearance.borderOutside ? 0 : this.appearance.borderWidth;
     }
-    constructor(private controller: DocController, private layout: { xLeft: number, yTop: number, width: number }, private appearance: Readonly<IContainerBrickAppearance>) {
+    constructor(private controller: DocController, private layout: { xLeft: number, yTop: number, width: number }, appearance: Partial<Readonly<IContainerBrickAppearance>>) {
         super();
+        this.appearance = SurveyHelper.mergeObjects({}, defaultContainerOptions, appearance);
     }
     getStartPoint(): IPoint {
         return { yTop: this.bricks[0].yBot, xLeft: this.layout.xLeft + this.appearance.paddingLeft + this.includedBorderWidth };
@@ -80,22 +94,27 @@ export class ContainerBrick extends CompositeBrick {
             } else {
                 renderedPageIndex = currentPageIndex;
                 const bricksOnPage = new CompositeBrick(...this.unfold().filter(brick => brick.getPageNumber() == currentPageIndex));
-                const oldFillColor = this.controller.doc.getFillColor();
-                this.controller.doc.setFillColor(this.appearance.backgroundColor);
-                SurveyHelper.renderFlatBorders(this.controller, {
-                    xLeft: this.layout.xLeft,
-                    xRight: this.layout.xLeft + this.layout.width,
-                    yTop: bricksOnPage.yTop,
-                    yBot: bricksOnPage.yBot,
-                    width: this.layout.width,
-                    height: bricksOnPage.height }, { ...this.appearance });
-                this.controller.doc.rect(
-                    this.layout.xLeft + this.includedBorderWidth,
-                    bricksOnPage.yTop + this.includedBorderWidth,
-                    this.layout.width - this.includedBorderWidth * 2,
-                    bricksOnPage.height - this.includedBorderWidth * 2,
-                    'F');
-                this.controller.doc.setFillColor(oldFillColor);
+                if(this.appearance.borderColor !== null) {
+                    SurveyHelper.renderFlatBorders(this.controller, {
+                        xLeft: this.layout.xLeft,
+                        xRight: this.layout.xLeft + this.layout.width,
+                        yTop: bricksOnPage.yTop,
+                        yBot: bricksOnPage.yBot,
+                        width: this.layout.width,
+                        height: bricksOnPage.height }, { ...this.appearance });
+                }
+                if(this.appearance.backgroundColor !== null) {
+                    const oldFillColor = this.controller.doc.getFillColor();
+                    this.controller.doc.setFillColor(this.appearance.backgroundColor);
+                    this.controller.doc.rect(
+                        this.layout.xLeft + this.includedBorderWidth,
+                        bricksOnPage.yTop + this.includedBorderWidth,
+                        this.layout.width - this.includedBorderWidth * 2,
+                        bricksOnPage.height - this.includedBorderWidth * 2,
+                        'F');
+                    this.controller.doc.setFillColor(oldFillColor);
+                }
+
             }
         };
         this.bricks.forEach(brick => {
