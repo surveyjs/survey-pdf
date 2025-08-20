@@ -6,7 +6,7 @@ import { IPdfBrick } from '../pdf_render/pdf_brick';
 
 export class FlatCustomModel extends FlatQuestion<QuestionCustomModel> {
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
-        const flat = FlatRepository.getInstance().create(this.survey, this.question, this.controller, this.question.getType());
+        const flat = FlatRepository.getInstance().create(this.survey, this.question, this.controller, this.survey.getStylesForElement(this.question), this.question.getType());
         return flat.generateFlatsContent(point);
     }
 }

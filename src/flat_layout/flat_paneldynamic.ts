@@ -10,7 +10,7 @@ export class FlatPanelDynamic extends FlatQuestion<QuestionPanelDynamicModel> {
         const flats: IPdfBrick[] = [];
         const currPoint: IPoint = SurveyHelper.clone(point);
         for (const panel of this.question.panels) {
-            const panelFlats: IPdfBrick[] = await SurveyHelper.generatePanelFlats(this.survey, this.controller, panel, currPoint);
+            const panelFlats: IPdfBrick[] = await SurveyHelper.generatePanelFlats(this.survey, this.controller, panel, currPoint, this.survey.getStylesForElement(panel));
 
             if (panelFlats.length !== 0) {
                 currPoint.yTop = SurveyHelper.mergeRects(...panelFlats).yBot;

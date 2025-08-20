@@ -22,7 +22,7 @@ export class FlatMultipleText extends FlatQuestion<QuestionMultipleTextModel> {
         this.controller.popMargins();
 
         const flatMultipleTextItemQuestion: IFlatQuestion = FlatRepository.getInstance().create(
-            this.survey, item.editor, this.controller, 'text');
+            this.survey, item.editor, this.controller, this.survey.getStylesForElement(item.editor), 'text');
         const itemPoint: IPoint = SurveyHelper.createTextFieldRect({
             xLeft: point.xLeft + colWidth * SurveyHelper.MULTIPLETEXT_TEXT_PERS, yTop: point.yTop },
         this.controller);

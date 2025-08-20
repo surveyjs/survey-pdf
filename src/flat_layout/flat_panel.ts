@@ -1,4 +1,4 @@
-import { IElement, PanelModel, Question } from 'survey-core';
+import { IElement, PanelModel, Question, SurveyElement } from 'survey-core';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { DocController, IPoint } from '../doc_controller';
 import { SurveyPDF } from '../survey';
@@ -101,34 +101,53 @@ export class FlatPanel<T extends PanelModel = PanelModel> {
             this.controller.pushMargins();
             const width: number = SurveyHelper.getPageAvailableWidth(this.controller);
             let nextMarginLeft: number = this.controller.margins.left;
-            const rowFlats: IPdfBrick[] = [];
+            const rowContainers: Array<ContainerBrick> = [];
             const visibleElements = row.elements.filter(el => el.isVisible);
             for (let i: number = 0; i < visibleElements.length; i++) {
                 let element: IElement = visibleElements[i];
                 if (!element.isVisible) continue;
+                const gap = 0;//this.controller.unitWidth;
                 const persWidth: number = SurveyHelper.parseWidth(element.renderWidth,
-                    width - (visibleElements.length - 1) * this.controller.unitWidth,
+                    width - (visibleElements.length - 1) * gap,
                     visibleElements.length);
-                this.controller.margins.left = nextMarginLeft + ((i !== 0) ? this.controller.unitWidth : 0);
+                this.controller.margins.left = nextMarginLeft + ((i !== 0) ? gap : 0);
                 this.controller.margins.right = this.controller.paperWidth - this.controller.margins.left - persWidth;
                 currPoint.xLeft = this.controller.margins.left;
                 nextMarginLeft = this.controller.margins.left + persWidth;
-                if (element instanceof PanelModel) {
-                    rowFlats.push(...await SurveyHelper.generatePanelFlats(this.survey, this.controller, element, currPoint));
+                const elementStyles = this.survey.getStylesForElement(element as any as SurveyElement);
+                const containerBrick = new ContainerBrick(this.controller, { ...currPoint, width: SurveyHelper.getPageAvailableWidth(this.controller) }, element.isQuestion ? {
+                    paddingTop: SurveyHelper.getScaledVerticalSize(this.controller, elementStyles.wrapperPaddingTopScale),
+                    paddingLeft: SurveyHelper.getScaledHorizontalSize(this.controller, elementStyles.wrapperPaddingLeftScale),
+                    paddingBottom: SurveyHelper.getScaledVerticalSize(this.controller, elementStyles.wrapperPaddingBottomScale),
+                    paddingRight: SurveyHelper.getScaledHorizontalSize(this.controller, elementStyles.wrapperPaddingRightScale),
+                    borderWidth: SurveyHelper.getScaledHorizontalSize(this.controller, elementStyles.wrapperBorderWidthScale),
+                    borderColor: elementStyles.wrapperBorderColor,
                 }
-                else {
-                    await (<Question>element).waitForQuestionIsReady();
-                    rowFlats.push(...await SurveyHelper.generateQuestionFlats(this.survey,
-                        this.controller, <Question>element, currPoint));
-                }
+                    : {});
+                await containerBrick.setup(async (point, bricks) => {
+                    if (element instanceof PanelModel) {
+                        bricks.push(...await SurveyHelper.generatePanelFlats(this.survey, this.controller, element, point, elementStyles));
+                    }
+                    else {
+                        await (<Question>element).waitForQuestionIsReady();
+                        bricks.push(...await SurveyHelper.generateQuestionFlats(this.survey,
+                            this.controller, <Question>element, point, elementStyles));
+                    }
+                });
+                rowContainers.push(containerBrick);
             }
             this.controller.popMargins();
             currPoint.xLeft = this.controller.margins.left;
-            if (rowFlats.length !== 0) {
-                currPoint.yTop = SurveyHelper.mergeRects(...rowFlats).yBot;
+            if (rowContainers.length !== 0) {
+                const rowRect = SurveyHelper.mergeRects(...rowContainers);
+                const yBot = rowRect.yBot;
+                currPoint.yTop = yBot;
+                rowContainers.forEach((brick: ContainerBrick) => {
+                    brick.fitToHeight(rowRect.yBot - rowRect.yTop);
+                });
                 currPoint.xLeft = point.xLeft;
                 currPoint.yTop += SurveyHelper.getScaledVerticalSize(this.controller, this.styles.questionGapVerticalScale);
-                rowsFlats.push(...rowFlats);
+                rowContainers.forEach((elementFlat: ContainerBrick) => rowsFlats.push(...elementFlat.getBricks()));
                 rowsFlats.push(SurveyHelper.createRowlineFlat(currPoint, this.controller));
                 currPoint.yTop += SurveyHelper.EPSILON;
             }
