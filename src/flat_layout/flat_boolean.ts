@@ -31,11 +31,11 @@ export class FlatBooleanCheckbox extends FlatQuestion<QuestionBooleanModel> {
                 checkMark: this.styles.checkmarkSymbol,
                 fontStyle: 'normal',
                 borderColor: SurveyHelper.FORM_BORDER_COLOR,
-                borderWidth: SurveyHelper.getScaledVerticalSize(this.controller, this.styles.borderScale),
+                borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.borderScale),
             });
         compositeFlat.addBrick(itemFlat);
         const textPoint: IPoint = SurveyHelper.clone(point);
-        textPoint.xLeft = itemFlat.xRight + SurveyHelper.getScaledHorizontalSize(this.controller, this.styles.gapBetweenItemText);
+        textPoint.xLeft = itemFlat.xRight + SurveyHelper.getScaledSize(this.controller, this.styles.gapBetweenItemText);
         const locLabelText: LocalizableString = this.question.isIndeterminate ? null :
             this.question.booleanValue ? this.question.locLabelTrue : this.question.locLabelFalse;
         if (locLabelText !== null && locLabelText.renderedHtml !== null) {

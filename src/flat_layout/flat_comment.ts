@@ -23,7 +23,7 @@ export class FlatComment extends FlatQuestion<QuestionCommentModel> {
                 fontSize: SurveyHelper.getScaledFontSize(this.controller, this.styles.inputFontSizeScale),
                 fontStyle: 'normal',
                 borderColor: SurveyHelper.FORM_BORDER_COLOR,
-                borderWidth: SurveyHelper.getScaledVerticalSize(this.controller, this.styles.borderScale),
+                borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.borderScale),
             })];
     }
 }

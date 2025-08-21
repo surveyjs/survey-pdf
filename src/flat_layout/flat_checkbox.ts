@@ -26,7 +26,7 @@ export class FlatCheckbox<T extends QuestionCheckboxModel = QuestionCheckboxMode
                 checkMark: this.styles.checkmarkSymbol,
                 fontStyle: 'normal',
                 borderColor: SurveyHelper.FORM_BORDER_COLOR,
-                borderWidth: SurveyHelper.getScaledVerticalSize(this.controller, this.styles.borderScale),
+                borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.borderScale),
             });
     }
 }

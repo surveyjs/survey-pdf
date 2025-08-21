@@ -25,7 +25,7 @@ export class FlatDropdown extends FlatQuestion<QuestionDropdownModel> {
                 fontSize: this.controller.fontSize,
                 fontStyle: 'normal',
                 borderColor: SurveyHelper.FORM_BORDER_COLOR,
-                borderWidth: SurveyHelper.getScaledVerticalSize(this.controller, this.styles.borderScale),
+                borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.borderScale),
             }
         );
     }
@@ -43,7 +43,7 @@ export class FlatDropdown extends FlatQuestion<QuestionDropdownModel> {
             fontSize: this.controller.fontSize,
             fontStyle: 'normal',
             borderColor: SurveyHelper.FORM_BORDER_COLOR,
-            borderWidth: SurveyHelper.getScaledVerticalSize(this.controller, this.styles.borderScale),
+            borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.borderScale),
         }) : await SurveyHelper.createCommentFlat(point, this.question, this.controller,
             {
                 fieldName: this.question.id,
@@ -57,12 +57,12 @@ export class FlatDropdown extends FlatQuestion<QuestionDropdownModel> {
                 fontSize: this.controller.fontSize,
                 fontStyle: 'normal',
                 borderColor: SurveyHelper.FORM_BORDER_COLOR,
-                borderWidth: SurveyHelper.getScaledVerticalSize(this.controller, this.styles.borderScale),
+                borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.borderScale),
             });
         const compositeFlat: CompositeBrick = new CompositeBrick(valueBrick);
         if (this.question.isShowingChoiceComment) {
             const otherPoint: IPoint = SurveyHelper.createPoint(compositeFlat);
-            otherPoint.yTop += SurveyHelper.getScaledVerticalSize(this.controller, this.styles.gapBetweenRows);
+            otherPoint.yTop += SurveyHelper.getScaledSize(this.controller, this.styles.gapBetweenRows);
             compositeFlat.addBrick(await this.generateItemComment(otherPoint));
         }
         return [compositeFlat];

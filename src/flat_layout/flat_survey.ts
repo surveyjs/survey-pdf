@@ -29,7 +29,7 @@ export class FlatSurvey {
             }
             if (survey.description) {
                 if (survey.title) {
-                    point.yTop += SurveyHelper.getScaledHorizontalSize(controller, styles.descriptionGapScale);
+                    point.yTop += SurveyHelper.getScaledSize(controller, styles.descriptionGapScale);
                 }
                 compositeFlat.addBrick(await SurveyHelper.createTextFlat(
                     point, controller, survey.locDescription, { fontSize: controller.fontSize * styles.descriptionFontSizeScale }));
@@ -114,7 +114,7 @@ export class FlatSurvey {
             point.yTop = SurveyHelper.createPoint(SurveyHelper.mergeRects(...flats[0])).yTop;
             flats[0].push(SurveyHelper.createRowlineFlat(point, controller));
             const styles = survey.styles;
-            point.yTop += SurveyHelper.getScaledVerticalSize(controller, styles.panelContGapScale) + SurveyHelper.EPSILON;
+            point.yTop += SurveyHelper.getScaledSize(controller, styles.panelContGapScale) + SurveyHelper.EPSILON;
         }
         for (let i: number = 0; i < survey.visiblePages.length; i++) {
             survey.currentPage = survey.visiblePages[i];

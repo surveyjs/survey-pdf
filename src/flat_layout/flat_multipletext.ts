@@ -54,7 +54,7 @@ export class FlatMultipleText extends FlatQuestion<QuestionMultipleTextModel> {
             rowsFlats[rowsFlats.length - 1].addBrick(
                 SurveyHelper.createRowlineFlat(currPoint, this.controller));
             currPoint.yTop += SurveyHelper.EPSILON;
-            currPoint.yTop += SurveyHelper.getScaledVerticalSize(this.controller, this.styles.rowsGapScale);
+            currPoint.yTop += SurveyHelper.getScaledSize(this.controller, this.styles.rowsGapScale);
         }
         return rowsFlats;
     }

@@ -74,14 +74,14 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
         const composite: CompositeBrick = new CompositeBrick();
         const currPoint: IPoint = SurveyHelper.clone(point);
         let lastRightMargin: number = this.controller.paperWidth - this.controller.margins.left +
-            SurveyHelper.getScaledHorizontalSize(this.controller, this.styles.gapBetweenColumns);
+            SurveyHelper.getScaledSize(this.controller, this.styles.gapBetweenColumns);
         this.controller.pushMargins();
         let cnt = 0;
         const rowLocation = this.getRowLocation(row);
         for (let i = 0; i < row.cells.length; i++) {
             if (this.ignoreCell(row.cells[i], i, rowLocation)) continue;
             this.controller.margins.left = this.controller.paperWidth - lastRightMargin +
-                SurveyHelper.getScaledHorizontalSize(this.controller, this.styles.gapBetweenColumns);
+                SurveyHelper.getScaledSize(this.controller, this.styles.gapBetweenColumns);
             this.controller.margins.right = this.controller.paperWidth -
                 this.controller.margins.left - columnWidth[cnt];
             lastRightMargin = this.controller.margins.right;
@@ -104,16 +104,16 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
             if (this.ignoreCell(row.cells[i], i, rowLocation, false)) continue;
             if (this.question.renderedTable.showHeader && (!this.isMultiple || i > 0) && row.cells[i].cell?.column?.locTitle) {
                 composite.addBrick(await this.generateFlatsCellTitle(currPoint, row.cells[i].cell.column.locTitle));
-                currPoint.yTop = composite.yBot + SurveyHelper.getScaledVerticalSize(this.controller, this.styles.gapBetweenRows);
+                currPoint.yTop = composite.yBot + SurveyHelper.getScaledSize(this.controller, this.styles.gapBetweenRows);
             }
             composite.addBrick(await this.generateFlatsCell(currPoint, row.cells[i], rowLocation, false));
-            currPoint.yTop = composite.yBot + SurveyHelper.getScaledVerticalSize(this.controller, this.styles.gapBetweenRows);
+            currPoint.yTop = composite.yBot + SurveyHelper.getScaledSize(this.controller, this.styles.gapBetweenRows);
         }
         return composite;
     }
     private getAvalableWidth(colCount: number): number {
         return SurveyHelper.getPageAvailableWidth(this.controller) -
-        (colCount - 1) * SurveyHelper.getScaledHorizontalSize(this.controller, this.styles.gapBetweenColumns);
+        (colCount - 1) * SurveyHelper.getScaledSize(this.controller, this.styles.gapBetweenColumns);
     }
     private calculateColumnWidth(rows: QuestionMatrixDropdownRenderedRow[], colCount: number): number[] {
         const availableWidth: number = this.getAvalableWidth(colCount);
@@ -170,7 +170,7 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
                     rowFlat.addBrick(SurveyHelper.createRowlineFlat(currPoint, this.controller));
                 }
                 rowsFlats.push(rowFlat);
-                currPoint.yTop = rowFlat.yBot + SurveyHelper.getScaledVerticalSize(this.controller, this.styles.gapBetweenRows);
+                currPoint.yTop = rowFlat.yBot + SurveyHelper.getScaledSize(this.controller, this.styles.gapBetweenRows);
             }
 
             if (!!rows[i].row && rows[i].row.hasPanel) {
@@ -183,7 +183,7 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
 
                 const currComposite: CompositeBrick = new CompositeBrick();
                 currComposite.addBrick(...panelBricks);
-                currPoint.yTop = currComposite.yBot + SurveyHelper.getScaledVerticalSize(this.controller, this.styles.gapBetweenRows);
+                currPoint.yTop = currComposite.yBot + SurveyHelper.getScaledSize(this.controller, this.styles.gapBetweenRows);
 
                 rowsFlats.push(currComposite);
                 if (i !== rows.length - 1 && this.question.renderedTable.showHeader && isWide) {
@@ -194,7 +194,7 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
                         currYTop = header.yBot;
                         rowsFlats.push(header);
                     }
-                    currPoint.yTop = currYTop + SurveyHelper.getScaledVerticalSize(this.controller, this.styles.gapBetweenRows);
+                    currPoint.yTop = currYTop + SurveyHelper.getScaledSize(this.controller, this.styles.gapBetweenRows);
                 }
             }
         }

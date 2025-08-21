@@ -40,7 +40,7 @@ export class FlatRadiogroup extends FlatSelectBase<QuestionRadiogroupModel> {
             fontStyle: 'normal',
             checkMark: this.styles.radiomarkSymbol,
             borderColor: SurveyHelper.FORM_BORDER_COLOR,
-            borderWidth: SurveyHelper.getScaledVerticalSize(this.controller, this.styles.borderScale),
+            borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.borderScale),
         });
     }
 }

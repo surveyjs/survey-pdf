@@ -58,12 +58,11 @@ export class SurveyHelper {
     public static STANDARD_FONT: string = 'helvetica';
     public static CUSTOM_FONT_ENCODING: string = 'Identity-H';
 
-    public static getScaledVerticalSize(controller: DocController, scale: number = 1) {
-        return controller.unitHeight * scale;
+    public static getBaseUnit(controller: DocController): number {
+        return controller.unitHeight / controller.helperDoc.getLineHeightFactor();
     }
-
-    public static getScaledHorizontalSize(controller: DocController, scale: number = 1) {
-        return controller.unitWidth * scale;
+    public static getScaledSize(controller: DocController, scale: number = 1) {
+        return SurveyHelper.getBaseUnit(controller) * scale;
     }
 
     public static getScaledFontSize(controller: DocController, scale: number = 1) {
@@ -612,14 +611,14 @@ export class SurveyHelper {
     }
     public static getColumnWidth(controller: DocController, colCount: number, gapBetweenColumns: number) {
         return (this.getPageAvailableWidth(controller) - (colCount - 1) *
-            SurveyHelper.getScaledHorizontalSize(controller, gapBetweenColumns)) / colCount;
+            SurveyHelper.getScaledSize(controller, gapBetweenColumns)) / colCount;
     }
     public static setColumnMargins(controller: DocController, colCount: number, column: number, gapBetweenColumns: number) {
         const cellWidth: number = this.getColumnWidth(controller, colCount, gapBetweenColumns);
         controller.margins.left = controller.margins.left + column *
-            (cellWidth + SurveyHelper.getScaledHorizontalSize(controller, gapBetweenColumns));
+            (cellWidth + SurveyHelper.getScaledSize(controller, gapBetweenColumns));
         controller.margins.right = controller.margins.right + (colCount - column - 1) *
-            (cellWidth + SurveyHelper.getScaledHorizontalSize(controller, gapBetweenColumns));
+            (cellWidth + SurveyHelper.getScaledSize(controller, gapBetweenColumns));
     }
     public static moveRect(rect: IRect, left: number = rect.xLeft, top: number = rect.yTop): IRect {
         return {

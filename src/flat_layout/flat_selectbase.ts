@@ -25,13 +25,13 @@ export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSele
                 fontSize: this.controller.fontSize,
                 fontStyle: 'normal',
                 borderColor: SurveyHelper.FORM_BORDER_COLOR,
-                borderWidth: SurveyHelper.getScaledVerticalSize(this.controller, this.styles.borderScale),
+                borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.borderScale),
             });
     }
     protected async generateFlatComposite(point: IPoint, item: ItemValue | ChoiceItem, index: number): Promise<IPdfBrick> {
         const compositeFlat: CompositeBrick = new CompositeBrick();
         const itemRect: IRect = SurveyHelper.createRect(point,
-            SurveyHelper.getScaledHorizontalSize(this.controller, this.styles.markContainerSizeScale), SurveyHelper.getScaledVerticalSize(this.controller, this.styles.markContainerSizeScale));
+            SurveyHelper.getScaledSize(this.controller, this.styles.markContainerSizeScale), SurveyHelper.getScaledSize(this.controller, this.styles.markContainerSizeScale));
         const textOptions:Partial<ITextAppearanceOptions> = {
             fontSize: SurveyHelper.getScaledFontSize(this.controller, this.styles.labelFontSizeScale),
             fontStyle: this.styles.labelFontStyle,
@@ -45,7 +45,7 @@ export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSele
 
         compositeFlat.addBrick(itemFlat);
         const textPoint: IPoint = SurveyHelper.clone(point);
-        textPoint.xLeft = itemFlat.xRight + SurveyHelper.getScaledHorizontalSize(this.controller, this.styles.gapBetweenItemText);
+        textPoint.xLeft = itemFlat.xRight + SurveyHelper.getScaledSize(this.controller, this.styles.gapBetweenItemText);
 
         if (item.locText.renderedHtml !== null) {
             const textFlat = await SurveyHelper.createTextFlat(
@@ -54,7 +54,7 @@ export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSele
         }
         if(item.isCommentShowing) {
             const otherPoint: IPoint = SurveyHelper.createPoint(compositeFlat, true, false);
-            otherPoint.yTop += SurveyHelper.getScaledVerticalSize(this.controller, this.styles.gapBetweenRows);
+            otherPoint.yTop += SurveyHelper.getScaledSize(this.controller, this.styles.gapBetweenRows);
             compositeFlat.addBrick(await this.generateItemComment(otherPoint, item));
         }
         return compositeFlat;
@@ -107,7 +107,7 @@ export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSele
             }
             const rowLineFlat: IPdfBrick = SurveyHelper.createRowlineFlat(
                 SurveyHelper.createPoint(rowFlat), this.controller);
-            currPoint.yTop = rowLineFlat.yBot + SurveyHelper.getScaledVerticalSize(this.controller, this.styles.gapBetweenRows);
+            currPoint.yTop = rowLineFlat.yBot + SurveyHelper.getScaledSize(this.controller, this.styles.gapBetweenRows);
             flats.push(rowFlat, rowLineFlat);
         }
         return flats;
@@ -118,7 +118,7 @@ export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSele
         const flats: IPdfBrick[] = [];
         for (let i: number = 0; i < itemValues.length; i++) {
             const itemFlat: IPdfBrick = await this.generateFlatComposite(currPoint, itemValues[i], i);
-            currPoint.yTop = itemFlat.yBot + SurveyHelper.getScaledVerticalSize(this.controller, customGap || this.styles.gapBetweenRows);
+            currPoint.yTop = itemFlat.yBot + SurveyHelper.getScaledSize(this.controller, customGap || this.styles.gapBetweenRows);
             flats.push(itemFlat);
         }
         return flats;

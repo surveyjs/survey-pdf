@@ -47,7 +47,7 @@ export class FlatSlider extends FlatQuestion<QuestionSliderModel> {
             fontSize: this.controller.fontSize,
             fontStyle: 'normal',
             borderColor: SurveyHelper.FORM_BORDER_COLOR,
-            borderWidth: SurveyHelper.getScaledVerticalSize(this.controller, this.styles.borderScale),
+            borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.borderScale),
         };
         if (!this.shouldRenderAsComment) {
             const rect1: IRect = SurveyHelper.createTextFieldRect(point, this.controller);
