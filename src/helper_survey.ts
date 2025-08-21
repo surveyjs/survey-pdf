@@ -519,10 +519,10 @@ export class SurveyHelper {
             rect.yBot - rect.yTop
         ];
     }
-    public static createTextFieldRect(point: IPoint, controller: DocController, lines: number = 1): IRect {
+    public static createTextFieldRect(point: IPoint, controller: DocController, lines: number = 1, lineHeight: number = controller.unitHeight): IRect {
         let width: number = controller.paperWidth - point.xLeft - controller.margins.right;
         width = Math.max(width, controller.unitWidth);
-        const height: number = controller.unitHeight * lines;
+        const height: number = lineHeight * lines;
         return this.createRect(point, width, height);
     }
     public static async createReadOnlyTextFieldTextFlat(point: IPoint,
@@ -539,6 +539,7 @@ export class SurveyHelper {
     public static renderFlatBorders(controller: DocController, options: IBorderDescription, appearance: IBorderAppearanceOptions): void {
         appearance.borderOutside = appearance.borderOutside ?? false;
         const borderWidth: number = appearance.borderWidth;
+        if(!borderWidth) return;
         const oldDrawColor: string = controller.doc.getDrawColor();
         controller.doc.setDrawColor(appearance.borderColor);
         controller.doc.setLineWidth(borderWidth);
