@@ -18,14 +18,16 @@ export const styles: IStyles = {
         gapBetweenItemText: 0.25,
         gapBetweenColumns: 1.5,
         gapBetweenRows: 0.25,
-        textColor: '#000',
         wrapperPaddingTopScale: 0.5,
         wrapperPaddingBottomScale: 0.5,
         wrapperPaddingLeftScale: 1,
         wrapperPaddingRightScale: 1,
         wrapperBorderWidthScale: 0.125,
         wrapperBorderColor: '#000',
-        borderScale: 0
+        inputBorderColor: '#000',
+        inputBorderWidthScale: 0,
+        inputFontColor: '#000',
+        inputFontSizeScale: 2.5
     },
     panel: {
         wrapperPaddingTopScale: 0,
@@ -61,28 +63,23 @@ export const styles: IStyles = {
         gapBetweenRows: 1,
         gapBetweenItemText: 1,
         contentGapScaleVertical: 1,
-        formBorderColor: '#9f9f9f',
         markContainerSizeScale: 2,
         labelFontSizeScale: 2.5,
         labelFontStyle: 'normal',
         labelFontColor: '#000',
+        inputBorderWidthScale: 0.125,
+        inputFontSizeScale: 1.25,
+        inputFont: 'zapfdingbats',
     },
     checkbox: {
-        checkmarkFontSizeScale: 2,
-        checkmarkFont: 'zapfdingbats',
-        checkmarkSymbol: '3',
-        formBorderColor: '#9f9f9f',
+        inputSymbol: '3',
     },
     radiogroup: {
-        formBorderColor: '#9f9f9f',
-        radiomarkSymbol: 'l',
-        radiomarkFontSizeScale: 2,
-        radiomarkFont: 'zapfdingbats',
+        inputSymbol: 'l',
     },
     matrixbase: {
         gapBetweenColumns: 1.5,
         gapBetweenRows: 0.5,
-        formBorderColor: '#9f9f9f',
     },
     matrix: {
         gapBetweenRows: 0.5,
@@ -100,23 +97,21 @@ export const styles: IStyles = {
     },
     rating: {
         gapBetweenRows: 0.25,
-        formBorderColor: '#9f9f9f',
-        radiomarkSymbol: 'l',
-        radiomarkFontSizeScale: 2,
+        inputSymbol: 'l',
         radiomarkFont: 'zapfdingbats',
+        inputBorderWidthScale: 0.125,
+        inputFontSizeScale: 1.25
     },
     ranking: {
         gapBetweenColumns: 1.5,
         gapBetweenRows: 0.25,
         checkmarkFontSizeScale: 2,
-        formBorderColor: '#9f9f9f',
     },
     slider: {
         gapBetweenColumns: 1.5,
     },
     dropdown: {
         gapBetweenRows: 0.25,
-        textColor: '#000',
     },
     file: {
         imageGapScale: 0.195,
@@ -130,24 +125,19 @@ export const styles: IStyles = {
         checkmarkFontSizeScale: 2,
         checkmarkFont: 'zapfdingbats',
         checkmarkSymbol: '3',
-        formBorderColor: '#9f9f9f',
     },
     imagepicker: {
         checkmarkFontSizeScale: 2,
         checkmarkFont: 'zapfdingbats',
         checkmarkSymbol: '3',
-        formBorderColor: '#9f9f9f',
         radiomarkSymbol: 'l',
         radiomarkFontSizeScale: 2,
         radiomarkFont: 'zapfdingbats',
     },
     comment: {
-        textColor: '#000',
         inputFontSizeScale: 2.5,
     },
-    expression: {
-        textColor: '#000',
-    },
+    expression: {},
     text: {
         inputFontSizeScale: 2.5,
     },

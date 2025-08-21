@@ -104,12 +104,12 @@ export class FlatMatrixRow {
             },
             {
                 fontName: this.styles.checkmarkFont,
-                fontColor: this.styles.formBorderColor,
+                fontColor: this.styles.inputFontColor,
                 fontSize: SurveyHelper.getScaledFontSize(this.controller, this.styles.checkmarkFontSizeScale),
                 checkMark: this.styles.checkmarkSymbol,
                 fontStyle: 'normal',
-                borderColor: SurveyHelper.FORM_BORDER_COLOR,
-                borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.borderScale),
+                borderColor: this.styles.inputBorderColor,
+                borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.inputBorderWidthScale),
 
             });
         } else {
@@ -131,11 +131,11 @@ export class FlatMatrixRow {
                 {
                     fontName: this.styles.radiomarkFont,
                     fontSize: SurveyHelper.getScaledFontSize(this.controller, this.styles.radiomarkFontSizeScale),
-                    fontColor: this.styles.formBorderColor,
+                    fontColor: this.styles.inputFontColor,
                     fontStyle: 'normal',
                     checkMark: this.styles.radiomarkSymbol,
-                    borderColor: SurveyHelper.FORM_BORDER_COLOR,
-                    borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.borderScale),
+                    borderColor: this.styles.inputBorderColor,
+                    borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.inputBorderWidthScale),
                 });
         }
     }

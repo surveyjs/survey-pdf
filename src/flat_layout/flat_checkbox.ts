@@ -20,13 +20,13 @@ export class FlatCheckbox<T extends QuestionCheckboxModel = QuestionCheckboxMode
                 }
             },
             {
-                fontName: this.styles.checkmarkFont,
-                fontColor: this.styles.formBorderColor,
-                fontSize: SurveyHelper.getScaledFontSize(this.controller, this.styles.checkmarkFontSizeScale),
-                checkMark: this.styles.checkmarkSymbol,
+                fontName: this.styles.inputFont,
+                fontColor: this.styles.inputFontColor,
+                fontSize: SurveyHelper.getScaledFontSize(this.controller, this.styles.inputFontSizeScale),
+                checkMark: this.styles.inputSymbol,
                 fontStyle: 'normal',
-                borderColor: SurveyHelper.FORM_BORDER_COLOR,
-                borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.borderScale),
+                borderColor: this.styles.inputBorderColor,
+                borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.inputBorderWidthScale),
             });
     }
 }

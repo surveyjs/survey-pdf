@@ -24,8 +24,8 @@ export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSele
                 fontColor: this.styles.textColor,
                 fontSize: this.controller.fontSize,
                 fontStyle: 'normal',
-                borderColor: SurveyHelper.FORM_BORDER_COLOR,
-                borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.borderScale),
+                borderColor: this.styles.inputBorderColor,
+                borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.inputBorderWidthScale),
             });
     }
     protected async generateFlatComposite(point: IPoint, item: ItemValue | ChoiceItem, index: number): Promise<IPdfBrick> {

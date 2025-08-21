@@ -99,8 +99,8 @@ export class FlatQuestion<T extends Question = Question> implements IFlatQuestio
                 fontColor: this.styles.textColor,
                 fontSize: this.controller.fontSize,
                 fontStyle: 'normal',
-                borderColor: SurveyHelper.FORM_BORDER_COLOR,
-                borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.borderScale),
+                borderColor: this.styles.inputBorderColor,
+                borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.inputBorderWidthScale),
             }));
     }
     public async generateFlatsComposite(point: IPoint): Promise<IPdfBrick[]> {

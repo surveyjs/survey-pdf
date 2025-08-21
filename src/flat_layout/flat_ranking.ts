@@ -22,11 +22,11 @@ export class FlatRanking extends FlatQuestion<QuestionRankingModel> {
             },
             {
                 fontStyle: 'normal',
-                fontColor: this.styles.formBorderColor,
+                fontColor: this.styles.inputFontColor,
                 fontName: this.controller.fontName,
-                fontSize: SurveyHelper.getScaledFontSize(this.controller, this.styles.checkmarkFontSizeScale),
-                borderColor: SurveyHelper.FORM_BORDER_COLOR,
-                borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.borderScale),
+                fontSize: SurveyHelper.getScaledFontSize(this.controller, this.styles.inputFontSizeScale),
+                borderColor: this.styles.inputBorderColor,
+                borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.inputBorderWidthScale),
             });
         const textPoint: IPoint = SurveyHelper.clone(point);
         textPoint.xLeft = itemFlat.xRight + SurveyHelper.getScaledSize(this.controller, this.styles.gapBetweenItemText);
@@ -55,7 +55,7 @@ export class FlatRanking extends FlatQuestion<QuestionRankingModel> {
             xLeft: currPoint.xLeft,
             yTop: currPoint.yTop - SurveyHelper.getScaledSize(this.controller, this.styles.gapBetweenRows) - 0.5,
         }, this.controller.paperWidth - this.controller.margins.right - currPoint.xLeft, 1);
-        flats.push(new ColoredBrick(this.controller, separatorRect, { color: this.styles.formBorderColor, }));
+        flats.push(new ColoredBrick(this.controller, separatorRect, { color: this.styles.inputFontColor, }));
 
         flats.push(...await this.generateChoicesColumn(currPoint, this.question.unRankingChoices, true));
         return flats;
@@ -90,7 +90,7 @@ export class FlatRanking extends FlatQuestion<QuestionRankingModel> {
             const gapBetweenRows = SurveyHelper.getScaledSize(this.controller, this.styles.gapBetweenRows);
             row.addBrick(new ColoredBrick(this.controller, separatorRect,
                 {
-                    color: this.styles.formBorderColor,
+                    color: this.styles.inputBorderColor,
                     renderWidth: 1,
                     renderHeight: rowLineFlat.yBot - currPoint.yTop + (i !== rowsCount - 1 ? gapBetweenRows : 0)
                 }

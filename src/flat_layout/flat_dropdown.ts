@@ -24,8 +24,8 @@ export class FlatDropdown extends FlatQuestion<QuestionDropdownModel> {
                 fontColor: this.styles.textColor,
                 fontSize: this.controller.fontSize,
                 fontStyle: 'normal',
-                borderColor: SurveyHelper.FORM_BORDER_COLOR,
-                borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.borderScale),
+                borderColor: this.styles.inputBorderColor,
+                borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.inputBorderWidthScale),
             }
         );
     }
@@ -42,8 +42,8 @@ export class FlatDropdown extends FlatQuestion<QuestionDropdownModel> {
             fontName: this.controller.fontName,
             fontSize: this.controller.fontSize,
             fontStyle: 'normal',
-            borderColor: SurveyHelper.FORM_BORDER_COLOR,
-            borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.borderScale),
+            borderColor: this.styles.inputBorderColor,
+            borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.inputBorderWidthScale),
         }) : await SurveyHelper.createCommentFlat(point, this.question, this.controller,
             {
                 fieldName: this.question.id,
@@ -56,8 +56,8 @@ export class FlatDropdown extends FlatQuestion<QuestionDropdownModel> {
                 fontColor: this.styles.textColor,
                 fontSize: this.controller.fontSize,
                 fontStyle: 'normal',
-                borderColor: SurveyHelper.FORM_BORDER_COLOR,
-                borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.borderScale),
+                borderColor: this.styles.inputBorderColor,
+                borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.inputBorderWidthScale),
             });
         const compositeFlat: CompositeBrick = new CompositeBrick(valueBrick);
         if (this.question.isShowingChoiceComment) {
