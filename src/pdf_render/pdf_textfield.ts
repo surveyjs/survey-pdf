@@ -164,4 +164,18 @@ export class TextFieldBrick extends PdfBrick {
             this.textBrick.yBot = this.textBrick.yBot + delta;
         }
     }
+    public setPageNumber(val: number): void {
+        if(this.textBrick) {
+            this.textBrick.setPageNumber(val);
+        } else {
+            super.setPageNumber(val);
+        }
+    }
+    public getPageNumber(): number {
+        if(this.textBrick) {
+            return this.textBrick.getPageNumber();
+        } else {
+            return super.getPageNumber();
+        }
+    }
 }
