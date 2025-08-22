@@ -19,7 +19,7 @@ export class FlatSurvey {
             const styles = survey.styles;
             if (survey.title) {
                 const textOptions:Partial<ITextAppearanceOptions> = {
-                    fontSize: SurveyHelper.getScaledFontSize(controller, styles.titleFontSizeScale),
+                    fontSize: SurveyHelper.getScaledSize(controller, styles.titleFontSizeScale),
                     fontStyle: styles.titleFontStyle,
                     fontColor: styles.titleFontColor
                 };

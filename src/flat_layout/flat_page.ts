@@ -10,7 +10,7 @@ import { ITextAppearanceOptions } from '../pdf_render/pdf_text';
 export class FlatPage extends FlatPanel<PageModel> {
     protected async generateTitleFlat(point: IPoint): Promise<IPdfBrick> {
         const textOptions:Partial<ITextAppearanceOptions> = {
-            fontSize: SurveyHelper.getScaledFontSize(this.controller, this.styles.titleFontSizeScale),
+            fontSize: SurveyHelper.getScaledSize(this.controller, this.styles.titleFontSizeScale),
             fontStyle: this.styles.titleFontStyle,
             fontColor: this.styles.titleFontColor
         };

@@ -105,7 +105,7 @@ export class FlatMatrixRow {
             {
                 fontName: this.styles.checkmarkFont,
                 fontColor: this.styles.inputFontColor,
-                fontSize: SurveyHelper.getScaledFontSize(this.controller, this.styles.checkmarkFontSizeScale),
+                fontSize: SurveyHelper.getScaledSize(this.controller, this.styles.checkmarkFontSizeScale),
                 checkMark: this.styles.checkmarkSymbol,
                 fontStyle: 'normal',
                 borderColor: this.styles.inputBorderColor,
@@ -130,7 +130,7 @@ export class FlatMatrixRow {
                 },
                 {
                     fontName: this.styles.radiomarkFont,
-                    fontSize: SurveyHelper.getScaledFontSize(this.controller, this.styles.radiomarkFontSizeScale),
+                    fontSize: SurveyHelper.getScaledSize(this.controller, this.styles.radiomarkFontSizeScale),
                     fontColor: this.styles.inputFontColor,
                     fontStyle: 'normal',
                     checkMark: this.styles.radiomarkSymbol,

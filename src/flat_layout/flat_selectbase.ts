@@ -33,7 +33,7 @@ export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSele
         const itemRect: IRect = SurveyHelper.createRect(point,
             SurveyHelper.getScaledSize(this.controller, this.styles.markContainerSizeScale), SurveyHelper.getScaledSize(this.controller, this.styles.markContainerSizeScale));
         const textOptions:Partial<ITextAppearanceOptions> = {
-            fontSize: SurveyHelper.getScaledFontSize(this.controller, this.styles.labelFontSizeScale),
+            fontSize: SurveyHelper.getScaledSize(this.controller, this.styles.labelFontSizeScale),
             fontStyle: this.styles.labelFontStyle,
             fontColor: this.styles.labelFontColor
         };

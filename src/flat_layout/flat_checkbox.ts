@@ -22,7 +22,7 @@ export class FlatCheckbox<T extends QuestionCheckboxModel = QuestionCheckboxMode
             {
                 fontName: this.styles.inputFont,
                 fontColor: this.styles.inputFontColor,
-                fontSize: SurveyHelper.getScaledFontSize(this.controller, this.styles.inputFontSizeScale),
+                fontSize: SurveyHelper.getScaledSize(this.controller, this.styles.inputFontSizeScale),
                 checkMark: this.styles.inputSymbol,
                 fontStyle: 'normal',
                 borderColor: this.styles.inputBorderColor,

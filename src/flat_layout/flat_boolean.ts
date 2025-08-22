@@ -27,7 +27,7 @@ export class FlatBooleanCheckbox extends FlatQuestion<QuestionBooleanModel> {
             }, {
                 fontName: this.styles.checkmarkFont,
                 fontColor: this.styles.inputFontColor,
-                fontSize: SurveyHelper.getScaledFontSize(this.controller, this.styles.checkmarkFontSizeScale),
+                fontSize: SurveyHelper.getScaledSize(this.controller, this.styles.checkmarkFontSizeScale),
                 checkMark: this.styles.checkmarkSymbol,
                 fontStyle: 'normal',
                 borderColor: this.styles.inputBorderColor,

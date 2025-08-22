@@ -58,14 +58,7 @@ export class SurveyHelper {
     public static STANDARD_FONT: string = 'helvetica';
     public static CUSTOM_FONT_ENCODING: string = 'Identity-H';
 
-    public static getBaseUnit(controller: DocController): number {
-        return controller.unitHeight / controller.helperDoc.getLineHeightFactor();
-    }
     public static getScaledSize(controller: DocController, scale: number = 1) {
-        return SurveyHelper.getBaseUnit(controller) * scale;
-    }
-
-    public static getScaledFontSize(controller: DocController, scale: number = 1) {
         return controller.fontSize * scale;
     }
 
