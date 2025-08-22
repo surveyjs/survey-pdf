@@ -21,7 +21,7 @@ export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSele
                 isMultiline: true,
             }, {
                 fontName: this.controller.fontName,
-                fontColor: this.styles.textColor,
+                fontColor: this.styles.inputFontColor,
                 fontSize: this.controller.fontSize,
                 fontStyle: 'normal',
                 borderColor: this.styles.inputBorderColor,

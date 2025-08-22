@@ -19,7 +19,7 @@ export class FlatComment extends FlatQuestion<QuestionCommentModel> {
                 value: this.question.value
             }, {
                 fontName: this.controller.fontName,
-                fontColor: this.styles.textColor,
+                fontColor: this.styles.inputFontColor,
                 fontSize: SurveyHelper.getScaledFontSize(this.controller, this.styles.inputFontSizeScale),
                 fontStyle: 'normal',
                 borderColor: this.styles.inputBorderColor,

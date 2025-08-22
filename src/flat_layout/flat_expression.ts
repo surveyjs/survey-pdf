@@ -14,7 +14,7 @@ export class FlatExpression extends FlatQuestion<QuestionExpressionModel> {
             shouldRenderBorders: settings.readOnlyTextRenderMode === 'input',
         }, {
             fontName: this.controller.fontName,
-            fontColor: this.styles.textColor,
+            fontColor: this.styles.inputFontColor,
             fontSize: this.controller.fontSize,
             fontStyle: 'normal',
             borderColor: this.styles.inputBorderColor,
