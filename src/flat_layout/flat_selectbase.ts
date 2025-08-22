@@ -21,11 +21,12 @@ export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSele
                 isMultiline: true,
             }, {
                 fontName: this.controller.fontName,
-                fontColor: this.styles.inputFontColor,
-                fontSize: this.controller.fontSize,
+                fontColor: this.styles.commentFontColor,
+                fontSize: SurveyHelper.getScaledSize(this.controller, this.styles.commentFontSizeScale),
+                lineHeight: SurveyHelper.getScaledSize(this.controller, this.styles.commentLineHeightScale),
                 fontStyle: 'normal',
-                borderColor: this.styles.inputBorderColor,
-                borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.inputBorderWidthScale),
+                borderColor: this.styles.commentBorderColor,
+                borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.commentBorderWidthScale),
             });
     }
     protected async generateFlatComposite(point: IPoint, item: ItemValue | ChoiceItem, index: number): Promise<IPdfBrick> {
@@ -33,6 +34,7 @@ export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSele
         const itemRect: IRect = SurveyHelper.createRect(point,
             SurveyHelper.getScaledSize(this.controller, this.styles.markContainerSizeScale), SurveyHelper.getScaledSize(this.controller, this.styles.markContainerSizeScale));
         const textOptions:Partial<ITextAppearanceOptions> = {
+            lineHeight: SurveyHelper.getScaledSize(this.controller, this.styles.labelLineHeightScale),
             fontSize: SurveyHelper.getScaledSize(this.controller, this.styles.labelFontSizeScale),
             fontStyle: this.styles.labelFontStyle,
             fontColor: this.styles.labelFontColor

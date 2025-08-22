@@ -15,7 +15,8 @@ export class FlatExpression extends FlatQuestion<QuestionExpressionModel> {
         }, {
             fontName: this.controller.fontName,
             fontColor: this.styles.inputFontColor,
-            fontSize: this.controller.fontSize,
+            lineHeight: SurveyHelper.getScaledSize(this.styles.inputLineHeightScale),
+            fontSize: SurveyHelper.getScaledSize(this.styles.inputFontSizeScale),
             fontStyle: 'normal',
             borderColor: this.styles.inputBorderColor,
             borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.inputBorderWidthScale),

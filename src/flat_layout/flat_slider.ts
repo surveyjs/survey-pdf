@@ -44,13 +44,14 @@ export class FlatSlider extends FlatQuestion<QuestionSliderModel> {
         const appearance: ITextFieldBrickAppearanceOptions = {
             fontName: this.controller.fontName,
             fontColor: this.styles.inputFontColor,
-            fontSize: this.controller.fontSize,
+            fontSize: SurveyHelper.getScaledSize(this.controller, this.styles.inputFontSizeScale),
             fontStyle: 'normal',
+            lineHeight: SurveyHelper.getScaledSize(this.controller, this.styles.inputLineHeightScale),
             borderColor: this.styles.inputBorderColor,
             borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.inputBorderWidthScale),
         };
         if (!this.shouldRenderAsComment) {
-            const rect1: IRect = SurveyHelper.createTextFieldRect(point, this.controller);
+            const rect1: IRect = SurveyHelper.createTextFieldRect(point, this.controller, 1, appearance.lineHeight);
             return new TextFieldBrick(this.controller, rect1, { ...options }, appearance);
         }
         else {

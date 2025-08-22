@@ -36,6 +36,7 @@ export class FlatRadiogroup extends FlatSelectBase<QuestionRadiogroupModel> {
         {
             fontName: this.styles.inputFont,
             fontSize: SurveyHelper.getScaledSize(this.controller, this.styles.inputFontSizeScale),
+            lineHeight: SurveyHelper.getScaledSize(this.controller, this.styles.inputFontSizeScale),
             fontColor: this.styles.inputFontColor,
             fontStyle: 'normal',
             checkMark: this.styles.inputSymbol,

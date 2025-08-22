@@ -12,6 +12,7 @@ export class FlatTextbox extends FlatQuestion {
         const appearance: ITextFieldBrickAppearanceOptions = {
             fontName: this.controller.fontName,
             fontColor: this.styles.inputFontColor,
+            lineHeight: SurveyHelper.getScaledSize(this.controller, this.styles.inputLineHeightScale),
             fontSize: SurveyHelper.getScaledSize(this.controller, this.styles.inputFontSizeScale),
             fontStyle: 'normal',
             borderColor: this.styles.inputBorderColor,
@@ -27,7 +28,7 @@ export class FlatTextbox extends FlatQuestion {
             placeholder: SurveyHelper.getLocString(this.question.locPlaceHolder)
         };
         if (!this.shouldRenderAsComment) {
-            const rect: IRect = SurveyHelper.createTextFieldRect(point, this.controller);
+            const rect: IRect = SurveyHelper.createTextFieldRect(point, this.controller, 1, appearance.lineHeight);
             return [new TextFieldBrick(this.controller, rect, { ...options }, appearance)];
         }
         return [await SurveyHelper.createCommentFlat(point, this.question,

@@ -96,11 +96,12 @@ export class FlatQuestion<T extends Question = Question> implements IFlatQuestio
                 placeholder: ''
             }, {
                 fontName: this.controller.fontName,
-                fontColor: this.styles.inputFontColor,
-                fontSize: this.controller.fontSize,
+                fontColor: this.styles.commentFontColor,
+                fontSize: SurveyHelper.getScaledSize(this.controller, this.styles.commentFontSizeScale),
+                lineHeight: SurveyHelper.getScaledSize(this.controller, this.styles.commentLineHeightScale),
                 fontStyle: 'normal',
-                borderColor: this.styles.inputBorderColor,
-                borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.inputBorderWidthScale),
+                borderColor: this.styles.commentBorderColor,
+                borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.commentBorderWidthScale),
             }));
     }
     public async generateFlatsComposite(point: IPoint): Promise<IPdfBrick[]> {

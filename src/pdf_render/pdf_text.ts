@@ -10,6 +10,7 @@ export interface ITextAppearanceOptions {
     fontSize: number;
     fontName: string;
     fontColor: string;
+    lineHeight: number;
 }
 
 export class TextBrick extends PdfBrick {
@@ -21,7 +22,8 @@ export class TextBrick extends PdfBrick {
             isInputRtl: false,
             isOutputRtl: controller.isRTL,
             align: controller.isRTL ? 'right': 'left',
-            baseline: 'middle'
+            baseline: 'middle',
+            lineHeightFactor: 1.15
         };
     }
     private escapeText() {

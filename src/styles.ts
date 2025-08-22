@@ -27,7 +27,12 @@ export const styles: IStyles = {
         inputBorderColor: '#000',
         inputBorderWidthScale: 0,
         inputFontColor: '#000',
-        inputFontSizeScale: 2.5
+        inputFontSizeScale: 2.5,
+        commentBorderColor: '#000',
+        commentBorderWidthScale: 0,
+        commentFontColor: '#000',
+        commentFontSizeScale: 2.5,
+        commentLineHeightScale: 3
     },
     panel: {
         wrapperPaddingTopScale: 0,
@@ -65,6 +70,7 @@ export const styles: IStyles = {
         contentGapScaleVertical: 1,
         markContainerSizeScale: 2,
         labelFontSizeScale: 2.5,
+        labelLineHeightScale: 3,
         labelFontStyle: 'normal',
         labelFontColor: '#000',
         inputBorderWidthScale: 0.125,
@@ -112,6 +118,8 @@ export const styles: IStyles = {
     },
     dropdown: {
         gapBetweenRows: 0.25,
+        inputFontSizeScale: 2.5,
+        inputLineHeightScale: 3
     },
     file: {
         imageGapScale: 0.195,
@@ -134,11 +142,12 @@ export const styles: IStyles = {
         radiomarkFontSizeScale: 2,
         radiomarkFont: 'zapfdingbats',
     },
-    comment: {
+    textbase: {
         inputFontSizeScale: 2.5,
+        inputLineHeightScale: 3
     },
-    expression: {},
-    text: {
+    expression: {
         inputFontSizeScale: 2.5,
+        inputLineHeightScale: 3
     },
 };

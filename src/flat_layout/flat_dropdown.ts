@@ -21,44 +21,40 @@ export class FlatDropdown extends FlatQuestion<QuestionDropdownModel> {
             },
             {
                 fontName: this.controller.fontName,
-                fontColor: this.styles.inputFontColor,
-                fontSize: this.controller.fontSize,
+                fontColor: this.styles.commentFontColor,
+                fontSize: SurveyHelper.getScaledSize(this.controller, this.styles.commentFontSizeScale),
+                lineHeight: SurveyHelper.getScaledSize(this.controller, this.styles.commentLineHeightScale),
                 fontStyle: 'normal',
-                borderColor: this.styles.inputBorderColor,
-                borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.inputBorderWidthScale),
+                borderColor: this.styles.commentBorderColor,
+                borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.commentBorderWidthScale),
             }
         );
     }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
-        const valueBrick = !this.shouldRenderAsComment ? new DropdownBrick(this.controller, SurveyHelper.createTextFieldRect(point, this.controller), {
+        const appearance = {
+            fontColor: this.styles.inputFontColor,
+            fontName: this.controller.fontName,
+            fontSize: SurveyHelper.getScaledSize(this.controller, this.styles.inputFontSizeScale),
+            lineHeight: SurveyHelper.getScaledSize(this.controller, this.styles.inputLineHeightScale),
+            fontStyle: 'normal',
+            borderColor: this.styles.inputBorderColor,
+            borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.inputBorderWidthScale),
+        };
+        const valueBrick = !this.shouldRenderAsComment ? new DropdownBrick(this.controller, SurveyHelper.createTextFieldRect(point, this.controller, 1, appearance.lineHeight), {
             fieldName: this.question.id,
             value: this.question.readOnlyText,
             isReadOnly: this.question.isReadOnly,
             optionsCaption: this.question.optionsCaption,
             showOptionsCaption: this.question.showOptionsCaption,
             items: this.question.visibleChoices.map(item => SurveyHelper.getLocString(item.locText))
-        }, {
-            fontColor: this.styles.inputFontColor,
-            fontName: this.controller.fontName,
-            fontSize: this.controller.fontSize,
-            fontStyle: 'normal',
-            borderColor: this.styles.inputBorderColor,
-            borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.inputBorderWidthScale),
-        }) : await SurveyHelper.createCommentFlat(point, this.question, this.controller,
+        }, appearance) : await SurveyHelper.createCommentFlat(point, this.question, this.controller,
             {
                 fieldName: this.question.id,
                 shouldRenderBorders: settings.readOnlyTextRenderMode === 'input',
                 value: this.question.readOnlyText || '',
                 isReadOnly: this.question.isReadOnly,
                 placeholder: SurveyHelper.getLocString(this.question.locPlaceholder)
-            }, {
-                fontName: this.controller.fontName,
-                fontColor: this.styles.inputFontColor,
-                fontSize: this.controller.fontSize,
-                fontStyle: 'normal',
-                borderColor: this.styles.inputBorderColor,
-                borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.inputBorderWidthScale),
-            });
+            }, appearance);
         const compositeFlat: CompositeBrick = new CompositeBrick(valueBrick);
         if (this.question.isShowingChoiceComment) {
             const otherPoint: IPoint = SurveyHelper.createPoint(compositeFlat);

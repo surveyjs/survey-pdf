@@ -25,6 +25,7 @@ export class FlatRanking extends FlatQuestion<QuestionRankingModel> {
                 fontColor: this.styles.inputFontColor,
                 fontName: this.controller.fontName,
                 fontSize: SurveyHelper.getScaledSize(this.controller, this.styles.inputFontSizeScale),
+                lineHeight: SurveyHelper.getScaledSize(this.controller, this.styles.inputFontSizeScale),
                 borderColor: this.styles.inputBorderColor,
                 borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.inputBorderWidthScale),
             });

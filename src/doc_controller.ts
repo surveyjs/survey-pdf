@@ -451,6 +451,16 @@ export class DocController extends DocOptions {
         this._doc.setFontSize(fontSize);
         this._helperDoc.setFontSize(fontSize);
     }
+    private _lineHeightFactor: number;
+    public get lineHeightFactor(): number {
+        return this._lineHeightFactor;
+    }
+    public set lineHeightFactor(lineHeightFactor: number) {
+        this._lineHeightFactor = lineHeightFactor;
+        this._doc.setLineHeightFactor(lineHeightFactor);
+        this._helperDoc.setLineHeightFactor(lineHeightFactor);
+    }
+
     public get fontStyle(): string {
         return this._fontStyle;
     }
@@ -460,12 +470,14 @@ export class DocController extends DocOptions {
         this._helperDoc.setFont(this._fontName, fontStyle);
     }
     public measureText(text: string | LocalizableString | number = 1, options?: Partial<ITextAppearanceOptions>): ISize {
-        const newOptions = SurveyHelper.mergeObjects(SurveyHelper.getDefaultTextAppearanceOptions(this), options ?? {});
+        const newOptions: ITextAppearanceOptions = SurveyHelper.getPatchedTextAppearanceOptions(this, options);
         const oldFontSize: number = this._helperDoc.getFontSize();
         const oldFontName: string = this._helperDoc.getFont().fontName;
         const oldFontStyle: string = this._helperDoc.getFont().fontStyle;
+        const oldLineHeightFactor = this._helperDoc.getLineHeightFactor();
         this._helperDoc.setFontSize(newOptions.fontSize);
         this._helperDoc.setFont(newOptions.fontName, newOptions.fontStyle);
+        this._helperDoc.setLineHeightFactor(newOptions.lineHeight / newOptions.fontSize);
         const height: number = this._helperDoc.getLineHeight() / this._helperDoc.internal.scaleFactor;
         let width: number = 0.0;
         if (typeof text === 'number') {
@@ -477,6 +489,7 @@ export class DocController extends DocOptions {
                 sm + this._helperDoc.getTextWidth(cr), 0.0);
         }
         this._helperDoc.setFontSize(oldFontSize);
+        this._helperDoc.setLineHeightFactor(oldLineHeightFactor);
         this._helperDoc.setFont(oldFontName, oldFontStyle);
         return {
             width: width,
