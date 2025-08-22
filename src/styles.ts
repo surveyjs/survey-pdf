@@ -68,7 +68,8 @@ export const styles: IStyles = {
         gapBetweenRows: 1,
         gapBetweenItemText: 1,
         contentGapScaleVertical: 1,
-        markContainerSizeScale: 2,
+        inputWidthScale: 2,
+        inputHeightScale: 2,
         labelFontSizeScale: 2.5,
         labelLineHeightScale: 3,
         labelFontStyle: 'normal',
@@ -141,6 +142,7 @@ export const styles: IStyles = {
         radiomarkSymbol: 'l',
         radiomarkFontSizeScale: 2,
         radiomarkFont: 'zapfdingbats',
+        inputHeightScale: 2
     },
     textbase: {
         inputFontSizeScale: 2.5,

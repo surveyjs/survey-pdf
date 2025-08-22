@@ -32,7 +32,7 @@ export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSele
     protected async generateFlatComposite(point: IPoint, item: ItemValue | ChoiceItem, index: number): Promise<IPdfBrick> {
         const compositeFlat: CompositeBrick = new CompositeBrick();
         const itemRect: IRect = SurveyHelper.createRect(point,
-            SurveyHelper.getScaledSize(this.controller, this.styles.markContainerSizeScale), SurveyHelper.getScaledSize(this.controller, this.styles.markContainerSizeScale));
+            SurveyHelper.getScaledSize(this.controller, this.styles.inputWidthScale), SurveyHelper.getScaledSize(this.controller, this.styles.inputHeightScale));
         const textOptions:Partial<ITextAppearanceOptions> = {
             lineHeight: SurveyHelper.getScaledSize(this.controller, this.styles.labelLineHeightScale),
             fontSize: SurveyHelper.getScaledSize(this.controller, this.styles.labelFontSizeScale),
