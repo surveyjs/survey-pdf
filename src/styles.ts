@@ -7,6 +7,11 @@ export const styles: IStyles = {
     descriptionGapScale: 1.5,
     panelContGapScale: 4.0,
     question: {
+        headerBorderWidthScale: 0,
+        headerPaddingTopScale: 0,
+        headerPaddingBottomScale: 0,
+        headerPaddingRightScale: 0,
+        headerPaddingLeftScale: 0,
         titleFontSizeScale: 2,
         titleFontStyle: 'normal',
         titleFontColor: '#000',
@@ -35,6 +40,7 @@ export const styles: IStyles = {
         commentLineHeightScale: 3
     },
     panel: {
+
         wrapperPaddingTopScale: 0,
         wrapperPaddingBottomScale: 0,
         wrapperPaddingLeftScale: 0,
@@ -48,14 +54,13 @@ export const styles: IStyles = {
         panelDescriptionGapScale: 0.25,
         descriptionFontSizeScale: 2,
         descriptionGapScale: 0.5,
-        paddingTop: 0.5,
-        paddingLeft: 1,
-        paddingBottom: 0.5,
-        paddingRight: 1,
-        borderWidth: 0.125,
-        borderColor: '#000',
-        backgroundColor: '#E5E5E5',
-        borderOutside: false
+        headerPaddingTopScale: 0.5,
+        headerPaddingLeftScale: 1,
+        headerPaddingBottomScale: 0.5,
+        headerPaddingRightScale: 1,
+        headerBorderWidthScale: 0.125,
+        headerBorderColor: '#000',
+        headerBackgroundColor: '#E5E5E5'
     },
     page: {
         questionGapVerticalScale: 1.5,
@@ -85,11 +90,36 @@ export const styles: IStyles = {
         inputSymbol: 'l',
     },
     matrixbase: {
-        gapBetweenColumns: 1.5,
-        gapBetweenRows: 0.5,
+        cellBorderWidthScale: 0.125,
+        cellBorderColor: '#000',
+        cellPaddingTopScale: 0.5,
+        cellPaddingBottomScale: 0.5,
+        cellPaddingLeftScale: 1,
+        cellPaddingRightScale: 1,
+
+        headerBorderWidthScale: 0.125,
+        headerPaddingTopScale: 0.5,
+        headerPaddingBottomScale: 0.5,
+        headerPaddingRightScale: 1,
+        headerPaddingLeftScale: 1,
+        headerBackgroundColor: '#E5E5E5',
+        headerBorderColor: '#000',
+
+        contentGapScaleVertical: 0,
+        wrapperPaddingTopScale: 0,
+        wrapperPaddingBottomScale: 0,
+        wrapperPaddingLeftScale: 0,
+        wrapperPaddingRightScale: 0,
+        wrapperBorderWidthScale: 0,
+
+        titleFontStyle: 'bold',
+        gapBetweenColumns: 0,
+        gapBetweenRows: 0,
     },
     matrix: {
-        gapBetweenRows: 0.5,
+        inputWidthScale: 2,
+        inputHeightScale: 2,
+        inputBorderWidthScale: 0.125,
         vertivalGapBetweenCells: 0.25,
         radiomarkSymbol: 'l',
         radiomarkFontSizeScale: 2,
@@ -120,7 +150,8 @@ export const styles: IStyles = {
     dropdown: {
         gapBetweenRows: 0.25,
         inputFontSizeScale: 2.5,
-        inputLineHeightScale: 3
+        inputLineHeightScale: 3,
+        inputBorderWidthScale: 0
     },
     file: {
         imageGapScale: 0.195,
@@ -134,6 +165,8 @@ export const styles: IStyles = {
         checkmarkFontSizeScale: 2,
         checkmarkFont: 'zapfdingbats',
         checkmarkSymbol: '3',
+        inputWidthScale: 2,
+        inputHeightScale: 2,
     },
     imagepicker: {
         checkmarkFontSizeScale: 2,

@@ -27,7 +27,7 @@ const defaultContainerOptions: IContainerBrickAppearance = {
     borderWidth: 0,
     backgroundColor: null,
     borderColor: null,
-    borderOutside: false
+    borderOutside: false,
 };
 
 export class InseparableBrick extends CompositeBrick {
@@ -69,6 +69,7 @@ export class ContainerBrick extends CompositeBrick {
         this.controller.margins.left = this.layout.xLeft + this.appearance.paddingLeft + this.includedBorderWidth;
         this.controller.margins.right = this.controller.paperWidth - (this.layout.xLeft + this.layout.width) + this.appearance.paddingRight + this.includedBorderWidth;
     }
+    private originalBricks: Array<IPdfBrick>;
     finishSetup() {
         this.controller.popMargins();
         this.paddingBottomBrick = new EmptyBrick(this.controller, {
@@ -78,6 +79,7 @@ export class ContainerBrick extends CompositeBrick {
             yBot: this.yBot + this.appearance.paddingBottom + this.includedBorderWidth
         });
         this.addBrick(this.paddingBottomBrick);
+        this.originalBricks = this.bricks.slice(1, this.bricks.length - 1);
         if(this.bricks.length > 3) {
             const firstBrickWithPadding = new InseparableBrick(InseparableBrickMode.FIRST, this.bricks[0], this.bricks[1]);
             const lastBrickWithPadding = new InseparableBrick(InseparableBrickMode.LAST, this.bricks[this.bricks.length - 2], this.bricks[this.bricks.length - 1]);
@@ -131,8 +133,31 @@ export class ContainerBrick extends CompositeBrick {
         this.addBrick(...bricks);
         this.finishSetup();
     }
-    fitToHeight(height: number) {
-        this.paddingBottomBrick.yBot += height - this.height;
+    public set xLeft(val: number) {}
+    public get xLeft() {
+        return this.layout.xLeft;
+    }
+    public set xRight(val: number) {}
+    public get xRight() {
+        return this.layout.xLeft + this.layout.width;
+    }
+    public get width() {
+        return this.layout.width;
+    }
+    fitToHeight(height: number, alignCenter: boolean = false) {
+        const originalHeight = this.height;
+        this.paddingBottomBrick.yBot += height - originalHeight;
+        if(alignCenter) {
+            const shift = (height - originalHeight) / 2;
+            this.originalBricks.forEach(brick => {
+                brick.translateY((yTop, yBot) => {
+                    return {
+                        yTop: yTop + shift,
+                        yBot: yBot + shift
+                    };
+                });
+            });
+        }
         this.updateRect();
     }
 }

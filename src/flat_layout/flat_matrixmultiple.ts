@@ -12,6 +12,7 @@ import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
 import { IStyles } from '../styles';
+import { ContainerBrick } from '../pdf_render/pdf_container';
 
 export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = QuestionMatrixDropdownModelBase> extends FlatQuestion<T> {
     constructor(protected survey: SurveyPDF, question: T, controller: DocController, styles: IStyles,
@@ -32,33 +33,42 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
     }
     private async generateFlatsCell(point: IPoint, cell: QuestionMatrixDropdownRenderedCell,
         location?: 'header' | 'footer', isWide: boolean = true): Promise<CompositeBrick> {
-        const composite: CompositeBrick = new CompositeBrick();
-        if (cell.hasQuestion) {
-            if(location == 'footer' && !cell.question.isAnswered) {}
-            else if (isWide && cell.isChoice) {
-                const flatMultipleColumnsQuestion: IFlatQuestion = FlatRepository.getInstance().create(
-                    this.survey, cell.question, this.controller, this.survey.getStylesForElement(cell.question), cell.question.getType());
-                const itemRect: IRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(
-                    SurveyHelper.createRect(point, this.controller.unitHeight, this.controller.unitHeight),
-                    SurveyHelper.SELECT_ITEM_FLAT_SCALE), point.xLeft);
-                composite.addBrick((<FlatSelectBase>flatMultipleColumnsQuestion)
-                    .generateFlatItem(itemRect, cell.item, cell.choiceIndex));
+        const container: ContainerBrick = new ContainerBrick(this.controller, { ...point, width: SurveyHelper.getPageAvailableWidth(this.controller) }, {
+            paddingBottom: SurveyHelper.getScaledSize(this.controller, this.styles.cellPaddingBottomScale),
+            paddingTop: SurveyHelper.getScaledSize(this.controller, this.styles.cellPaddingTopScale),
+            paddingLeft: SurveyHelper.getScaledSize(this.controller, this.styles.cellPaddingLeftScale),
+            paddingRight: SurveyHelper.getScaledSize(this.controller, this.styles.cellPaddingRightScale),
+            borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.cellBorderWidthScale),
+            borderColor: this.styles.cellBorderColor,
+        });
+        await container.setup(async (point, bricks) => {
+            if (cell.hasQuestion) {
+                if(location == 'footer' && !cell.question.isAnswered) {}
+                else if (isWide && cell.isChoice) {
+                    const flatMultipleColumnsQuestion: IFlatQuestion = FlatRepository.getInstance().create(
+                        this.survey, cell.question, this.controller, this.survey.getStylesForElement(cell.question), cell.question.getType());
+                    const itemRect: IRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(
+                        SurveyHelper.createRect(point, this.controller.unitHeight, this.controller.unitHeight),
+                        SurveyHelper.SELECT_ITEM_FLAT_SCALE), point.xLeft);
+                    bricks.push((<FlatSelectBase>flatMultipleColumnsQuestion)
+                        .generateFlatItem(itemRect, cell.item, cell.choiceIndex));
+                }
+                else {
+                    cell.question.titleLocation = SurveyHelper.TITLE_LOCATION_MATRIX;
+                    bricks.push(...await SurveyHelper.generateQuestionFlats(
+                        this.survey, this.controller, cell.question, point, this.survey.getStylesForElement(cell.question)));
+                }
             }
-            else {
-                cell.question.titleLocation = SurveyHelper.TITLE_LOCATION_MATRIX;
-                composite.addBrick(...await SurveyHelper.generateQuestionFlats(
-                    this.survey, this.controller, cell.question, point, this.survey.getStylesForElement(cell.question)));
+            else if (cell.hasTitle) {
+                if (location == 'header') {
+                    bricks.push(await SurveyHelper.createTextFlat(point, this.controller, cell.locTitle, { fontStyle: 'bold' }));
+                }
+                else {
+                    bricks.push(await SurveyHelper.createTextFlat(point, this.controller, cell.locTitle));
+                }
             }
-        }
-        else if (cell.hasTitle) {
-            if (location == 'header') {
-                composite.addBrick(await SurveyHelper.createTextFlat(point, this.controller, cell.locTitle, { fontStyle: 'bold' }));
-            }
-            else {
-                composite.addBrick(await SurveyHelper.createTextFlat(point, this.controller, cell.locTitle));
-            }
-        }
-        return composite;
+        });
+        return container;
     }
     private get hasDetailPanel(): boolean {
         return this.visibleRows.some((renderedRow) => renderedRow.row && this.question.hasDetailPanel(renderedRow.row));

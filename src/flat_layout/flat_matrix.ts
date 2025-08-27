@@ -4,29 +4,57 @@ import { SurveyPDF } from '../survey';
 import { DocController, IPoint, IRect } from '../doc_controller';
 import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
-import { IPdfBrick } from '../pdf_render/pdf_brick';
+import { IPdfBrick, PdfBrick } from '../pdf_render/pdf_brick';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
 import { IStyles } from '../styles';
 import { RadioGroupWrap, RadioItemBrick } from '../pdf_render/pdf_radioitem';
 import { CheckItemBrick } from '../pdf_render/pdf_checkitem';
+import { ContainerBrick } from '../pdf_render/pdf_container';
+import { EmptyBrick } from '../pdf_render/pdf_empty';
 
 export class FlatMatrix extends FlatQuestion<QuestionMatrixModel> {
     protected question: QuestionMatrixModel;
+
+    protected async generateFlatCell(point: IPoint, contentCallback: (point: IPoint, bricks: Array<IPdfBrick>) => Promise<void>) {
+        const container: ContainerBrick = new ContainerBrick(this.controller, { ...point, width: SurveyHelper.getPageAvailableWidth(this.controller) }, {
+            paddingBottom: SurveyHelper.getScaledSize(this.controller, this.styles.cellPaddingBottomScale),
+            paddingTop: SurveyHelper.getScaledSize(this.controller, this.styles.cellPaddingTopScale),
+            paddingLeft: SurveyHelper.getScaledSize(this.controller, this.styles.cellPaddingLeftScale),
+            paddingRight: SurveyHelper.getScaledSize(this.controller, this.styles.cellPaddingRightScale),
+            borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.cellBorderWidthScale),
+            borderColor: this.styles.cellBorderColor,
+        });
+        await container.setup(async (point, bricks) => {
+            await contentCallback(point, bricks);
+        });
+        return container;
+    }
     protected async generateFlatsHeader(point: IPoint): Promise<IPdfBrick[]> {
-        const headers: IPdfBrick[] = [];
+        const headers: ContainerBrick[] = [];
         const currPoint: IPoint = SurveyHelper.clone(point);
         if(this.question.hasRows) {
+            this.controller.margins.left = currPoint.xLeft;
+            this.controller.margins.right += (SurveyHelper.getPageAvailableWidth(this.controller) - this.rowTitleWidth);
+            headers.push(await this.generateFlatCell(currPoint, async (point, bricks) => {
+                bricks.push(new EmptyBrick(this.controller, SurveyHelper.createRect(point, SurveyHelper.getPageAvailableWidth(this.controller), 1)));
+            }));
             currPoint.xLeft += this.rowTitleWidth + SurveyHelper.getScaledSize(this.controller, this.styles.gapBetweenColumns);
         }
         for (let i: number = 0; i < this.question.visibleColumns.length; i++) {
             this.controller.pushMargins();
             this.controller.margins.left = currPoint.xLeft;
             this.controller.margins.right += (SurveyHelper.getPageAvailableWidth(this.controller) - this.columnWidth);
-            headers.push(await SurveyHelper.createTextFlat(currPoint, this.controller, this.question.visibleColumns[i].locText, { fontStyle: 'bold' }));
+            headers.push(await this.generateFlatCell(currPoint, async (point, bricks) => {
+                bricks.push(await SurveyHelper.createTextFlat(point, this.controller, this.question.visibleColumns[i].locText, { fontStyle: 'bold' }));
+            }));
             currPoint.xLeft += this.columnWidth + SurveyHelper.getScaledSize(this.controller, this.styles.gapBetweenColumns);
             this.controller.popMargins();
         }
+        const rowRect = SurveyHelper.mergeRects(...headers);
+        headers.forEach(header => {
+            header.fitToHeight(rowRect.yBot - rowRect.yTop, true);
+        });
         const compositeBrick: CompositeBrick = new CompositeBrick(...headers);
         return [compositeBrick, SurveyHelper.createRowlineFlat(SurveyHelper.createPoint(compositeBrick), this.controller)];
     }
@@ -36,7 +64,7 @@ export class FlatMatrix extends FlatQuestion<QuestionMatrixModel> {
         for (let i: number = 0; i < this.question.visibleRows.length; i++) {
             const key: string = 'row' + i;
             const flatsRow: IPdfBrick[] = await new FlatMatrixRow(this.survey, this.question, this.controller, this.styles,
-                this.question.visibleRows[i], i, key, i == 0, isVertical, this.rowTitleWidth, this.columnWidth).generateFlatsContent(currPoint);
+                this.question.visibleRows[i], i, key, i == 0, isVertical, this.rowTitleWidth, this.columnWidth, this.generateFlatCell.bind(this)).generateFlatsContent(currPoint);
             currPoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(...flatsRow));
             currPoint.yTop += SurveyHelper.getScaledSize(this.controller, this.styles.gapBetweenRows);
             cells.push(...flatsRow);
@@ -79,7 +107,7 @@ export class FlatMatrixRow {
     private radioGroupWrap: RadioGroupWrap;
     public constructor(protected survey: SurveyPDF,
         protected question: QuestionMatrixModel, protected controller: DocController, protected styles: IStyles, private row: MatrixRowModel, private rowIndex: number,
-        private key: string, protected isFirst: boolean = false, protected isVertical: boolean = false, private rowTitleWidth: number, private columnWidth: number) {
+        private key: string, protected isFirst: boolean = false, protected isVertical: boolean = false, private rowTitleWidth: number, private columnWidth: number, private generateFlatCell: (point: IPoint, contentCallback: (point: IPoint, bricks: Array<IPdfBrick>) => Promise<void>) => Promise<ContainerBrick>) {
     }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         return this.isVertical ?
@@ -145,7 +173,7 @@ export class FlatMatrixRow {
     protected async generateTextComposite(point: IPoint, column: ItemValue, index: number): Promise<IPdfBrick> {
         const currPoint: IPoint = SurveyHelper.clone(point);
         const itemRect = SurveyHelper.createRect(currPoint,
-            SurveyHelper.getPageAvailableWidth(this.controller), this.controller.unitHeight);
+            SurveyHelper.getPageAvailableWidth(this.controller), SurveyHelper.getScaledSize(this.controller, this.styles.inputHeightScale));
         const radioFlat: IPdfBrick = this.generateFlatItem(itemRect, column, index, this.key, { row: this.row, rowIndex: this.rowIndex });
         currPoint.yTop = radioFlat.yBot + SurveyHelper.getScaledSize(this.controller, this.styles.gapBetweenItemText);
         const cellTextFlat = await SurveyHelper.createTextFlat(currPoint, this.controller,
@@ -155,7 +183,7 @@ export class FlatMatrixRow {
     protected async generateItemComposite(point: IPoint, column: ItemValue, index: number): Promise<IPdfBrick> {
         const currPoint: IPoint = SurveyHelper.clone(point);
         const itemRect: IRect = SurveyHelper.createRect(currPoint,
-            this.controller.unitHeight, this.controller.unitHeight);
+            SurveyHelper.getScaledSize(this.controller, this.styles.inputWidthScale), SurveyHelper.getScaledSize(this.controller, this.styles.inputHeightScale));
         const radioFlat: IPdfBrick = this.generateFlatItem(SurveyHelper.moveRect(
             SurveyHelper.scaleRect(itemRect, SurveyHelper.SELECT_ITEM_FLAT_SCALE), itemRect.xLeft), column, index, this.key, { row: this.row, rowIndex: this.rowIndex });
         currPoint.xLeft = radioFlat.xRight + SurveyHelper.getScaledSize(this.controller, this.styles.gapBetweenItemText);
@@ -164,33 +192,40 @@ export class FlatMatrixRow {
         return new CompositeBrick(radioFlat, radioText);
     }
     protected async generateFlatsHorizontallyCells(point: IPoint) {
-        const cells: IPdfBrick[] = [];
+        const cells: ContainerBrick[] = [];
         const currPoint: IPoint = SurveyHelper.clone(point);
         if (this.question.hasRows) {
             this.controller.pushMargins();
             currPoint.xLeft = this.controller.margins.left;
             this.controller.margins.right += (SurveyHelper.getPageAvailableWidth(this.controller) - this.rowTitleWidth);
-            cells.push(await SurveyHelper.createTextFlat(currPoint, this.controller, this.row.locText));
+            cells.push(
+                await this.generateFlatCell(currPoint, async (point, bricks) => {
+                    bricks.push(await SurveyHelper.createTextFlat(point, this.controller, this.row.locText));
+                }));
             currPoint.xLeft += this.rowTitleWidth + SurveyHelper.getScaledSize(this.controller, this.styles.gapBetweenColumns);
             this.controller.popMargins();
         }
         for (let i: number = 0; i < this.question.visibleColumns.length; i++) {
-            const column: ItemValue = this.question.visibleColumns[i];
-            const checked: boolean = this.row.value == column.value;
             this.controller.pushMargins();
-            this.controller.margins.left = currPoint.xLeft;
+            this.controller.margins.left = point.xLeft;
             this.controller.margins.right += (SurveyHelper.getPageAvailableWidth(this.controller) - this.columnWidth);
-            if (this.question.hasCellText) {
-                cells.push(await this.generateTextComposite(currPoint, column, i));
-            }
-            else {
-                const itemRect: IRect = SurveyHelper.createRect(currPoint, this.controller.unitHeight, this.controller.unitHeight);
-                cells.push(this.generateFlatItem(SurveyHelper.moveRect(
-                    SurveyHelper.scaleRect(itemRect, SurveyHelper.SELECT_ITEM_FLAT_SCALE), currPoint.xLeft), column, i, this.key, { row: this.row, rowIndex: this.rowIndex }));
-            }
+            cells.push(await this.generateFlatCell(currPoint, async (point, bricks) => {
+                if (this.question.hasCellText) {
+                    bricks.push(await this.generateTextComposite(point, this.question.visibleColumns[i], i));
+                }
+                else {
+                    const itemRect: IRect = SurveyHelper.createRect(point, SurveyHelper.getScaledSize(this.controller, this.styles.inputWidthScale), SurveyHelper.getScaledSize(this.controller, this.styles.inputHeightScale));
+                    bricks.push(this.generateFlatItem(SurveyHelper.moveRect(
+                        SurveyHelper.scaleRect(itemRect, SurveyHelper.SELECT_ITEM_FLAT_SCALE), point.xLeft), this.question.visibleColumns[i], i, this.key, { row: this.row, rowIndex: this.rowIndex }));
+                }
+            }));
             currPoint.xLeft += this.columnWidth + SurveyHelper.getScaledSize(this.controller, this.styles.gapBetweenColumns);
             this.controller.popMargins();
         }
+        const rowRect = SurveyHelper.mergeRects(...cells);
+        cells.forEach(cell => {
+            cell.fitToHeight(rowRect.yBot - rowRect.yTop, true);
+        });
         const compositeBrick = new CompositeBrick(...cells);
         return [compositeBrick, SurveyHelper.createRowlineFlat(SurveyHelper.createPoint(compositeBrick), this.controller)];
     }

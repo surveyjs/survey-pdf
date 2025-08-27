@@ -63,14 +63,13 @@ export class FlatPanel<T extends PanelModel = PanelModel> {
             width: SurveyHelper.getPageAvailableWidth(this.controller)
         },
         {
-            paddingTop: SurveyHelper.getScaledSize(this.controller, this.styles.paddingTop),
-            paddingLeft: SurveyHelper.getScaledSize(this.controller, this.styles.paddingLeft),
-            paddingBottom: SurveyHelper.getScaledSize(this.controller, this.styles.paddingBottom),
-            paddingRight: SurveyHelper.getScaledSize(this.controller, this.styles.paddingRight),
-            borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.borderWidth),
-            borderColor: this.styles.borderColor,
-            backgroundColor: this.styles.backgroundColor,
-            borderOutside: this.styles.borderOutside
+            paddingTop: SurveyHelper.getScaledSize(this.controller, this.styles.headerPaddingTopScale),
+            paddingLeft: SurveyHelper.getScaledSize(this.controller, this.styles.headerPaddingLeftScale),
+            paddingBottom: SurveyHelper.getScaledSize(this.controller, this.styles.headerPaddingBottomScale),
+            paddingRight: SurveyHelper.getScaledSize(this.controller, this.styles.headerPaddingRightScale),
+            borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.headerBorderWidthScale),
+            borderColor: this.styles.headerBorderColor,
+            backgroundColor: this.styles.headerBackgroundColor,
         });
         await containerBrick.setup(async (point, bricks)=>{
             let currPoint = SurveyHelper.clone(point);

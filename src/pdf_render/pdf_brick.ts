@@ -2,10 +2,12 @@ import { EventAsync } from '../event_handler/event_async';
 import { IRect, ISize, DocController } from '../doc_controller';
 
 export type TranslateXFunction = (xLeft: number, xRight : number) => { xLeft: number, xRight: number};
+export type TranslateYFunction = (yTop: number, yBot : number) => { yTop: number, yBot: number};
 export interface IPdfBrick extends IRect, ISize {
     render(): Promise<void>;
     unfold(): IPdfBrick[];
     translateX(func: TranslateXFunction): void;
+    translateY(func: TranslateYFunction): void;
     isPageBreak: boolean;
     addBeforeRenderCallback(func: (brick: IPdfBrick) => void): void;
     setPageNumber(number: number): void;
@@ -73,6 +75,11 @@ export class PdfBrick implements IPdfBrick {
         this.xRight = rect.xRight;
         this.yTop = rect.yTop;
         this.yBot = rect.yBot;
+    }
+    translateY(func: TranslateYFunction): void {
+        const res = func(this.yTop, this.yBot);
+        this.yTop = res.yTop;
+        this.yBot = res.yBot;
     }
     translateX(func: TranslateXFunction): void {
         const res = func(this.xLeft, this.xRight);

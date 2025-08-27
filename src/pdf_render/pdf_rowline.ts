@@ -1,6 +1,6 @@
 import { EventAsync } from '../event_handler/event_async';
 import { IRect, DocController } from '../doc_controller';
-import { IPdfBrick, TranslateXFunction } from './pdf_brick';
+import { IPdfBrick, TranslateXFunction, TranslateYFunction } from './pdf_brick';
 
 export class RowlineBrick implements IPdfBrick {
     xLeft: number;
@@ -47,5 +47,10 @@ export class RowlineBrick implements IPdfBrick {
     }
 
     translateX(_: TranslateXFunction): void {}
+    translateY(func: TranslateYFunction): void {
+        const res = func(this.yTop, this.yBot);
+        this.yTop = res.yTop;
+        this.yBot = res.yBot;
+    }
     updateRect(): void {}
 }

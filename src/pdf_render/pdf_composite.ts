@@ -1,4 +1,4 @@
-import { IPdfBrick, TranslateXFunction } from './pdf_brick';
+import { IPdfBrick, TranslateXFunction, TranslateYFunction } from './pdf_brick';
 import { SurveyHelper } from '../helper_survey';
 
 export class CompositeBrick implements IPdfBrick {
@@ -86,6 +86,12 @@ export class CompositeBrick implements IPdfBrick {
         const res = func(this.xLeft, this.xRight);
         this._xLeft = res.xLeft;
         this._xRight = res.xRight;
+    }
+    translateY(func: TranslateYFunction): void {
+        this.bricks.forEach(brick => brick.translateY(func));
+        const res = func(this.yTop, this.yBot);
+        this._yTop = res.yTop;
+        this._yBot = res.yBot;
     }
 
     public setPageNumber(number: number): void {
