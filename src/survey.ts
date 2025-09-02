@@ -1,13 +1,15 @@
-import { SurveyModel, Question, EventBase } from 'survey-core';
-import * as SurveyCore from 'survey-core';
+import { SurveyModel, EventBase, SurveyElement, Serializer, Question, ItemValue } from 'survey-core';
+import { hasLicense } from 'survey-core';
 import { IDocOptions, DocController } from './doc_controller';
 import { FlatSurvey } from './flat_layout/flat_survey';
 import { PagePacker } from './page_layout/page_packer';
 import { IPdfBrick } from './pdf_render/pdf_brick';
-import { EventAsync, EventHandler } from './event_handler/event_handler';
+import { EventAsync, } from './event_handler/event_async';
+import { EventHandler } from './event_handler/event_handler';
 import { DrawCanvas } from './event_handler/draw_canvas';
 import { AdornersOptions, AdornersPanelOptions, AdornersPageOptions } from './event_handler/adorners';
 import { SurveyHelper } from './helper_survey';
+import { IStyles, styles } from './styles';
 
 /**
  * The `SurveyPDF` object enables you to export your surveys and forms to PDF documents.
@@ -29,7 +31,7 @@ export class SurveyPDF extends SurveyModel {
         this.options = SurveyHelper.clone(options);
     }
     public get haveCommercialLicense(): boolean {
-        const f = SurveyCore.hasLicense;
+        const f = hasLicense;
         return !!f && f(2);
     }
     public set haveCommercialLicense(val: boolean) {
@@ -159,14 +161,49 @@ export class SurveyPDF extends SurveyModel {
     public onRenderRadioItemAcroform: EventAsync<SurveyPDF, any> =
     new EventAsync<SurveyPDF, any>();
 
-    public getUpdatedCheckItemAcroformOptions(options: any): void {
-        this.onRenderCheckItemAcroform.fire(this, options);
+    public updateCheckItemAcroformOptions(options: any, question: Question, item?: ItemValue): void {
+        this.onRenderCheckItemAcroform.fire(this, {
+            options: options,
+            question: question,
+            item: item
+        });
     }
     public getUpdatedRadioGroupWrapOptions(options: any): void {
         this.onRenderRadioGroupWrapAcroform.fire(this, options);
     }
-    public getUpdatedRadioItemAcroformOptions(options: any): void {
-        this.onRenderRadioItemAcroform.fire(this, options);
+    public updateRadioItemAcroformOptions(options: any, question: Question, item?: ItemValue): void {
+        this.onRenderRadioItemAcroform.fire(this, {
+            options: options,
+            question: question,
+            item: item
+        });
+    }
+
+    private _styles: IStyles;
+
+    public get styles(): IStyles {
+        if(!this._styles) {
+            this._styles = SurveyHelper.mergeObjects({}, styles);
+        }
+        return this._styles;
+    }
+    public set styles(styles: IStyles) {
+        SurveyHelper.mergeObjects(this.styles, styles);
+    }
+
+    public getStylesForElement(element: SurveyElement): IStyles {
+        const styles = this.styles;
+        const types = [element.getType()];
+        let currentClass = Serializer.findClass(element.getType());
+        while(!!currentClass.parentName) {
+            types.unshift(currentClass.parentName);
+            currentClass = Serializer.findClass(currentClass.parentName);
+        }
+        const res = {};
+        types.forEach(type => {
+            SurveyHelper.mergeObjects(res, styles[type] ?? {});
+        });
+        return res;
     }
     private correctBricksPosition(controller: DocController, flats: IPdfBrick[][]) {
         if(controller.isRTL) {
@@ -185,6 +222,11 @@ export class SurveyPDF extends SurveyModel {
         const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(this, controller);
         this.correctBricksPosition(controller, flats);
         const packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
+        packs.forEach((pagePack, i) => {
+            pagePack.forEach(pack => {
+                pack.setPageNumber(i);
+            });
+        });
         await EventHandler.process_header_events(this, controller, packs);
         for (let i: number = 0; i < packs.length; i++) {
             for (let j: number = 0; j < packs[i].length; j++) {

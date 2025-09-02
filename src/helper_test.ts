@@ -35,7 +35,7 @@ export class TestHelper {
         };
     }
     public static wrapRect(rect: IRect): IPdfBrick {
-        return new PdfBrick(null, null, rect);
+        return new PdfBrick(null, rect);
     }
     public static wrapRects(rects: IRect[]): IPdfBrick[] {
         let pdfqs: IPdfBrick[] = [];

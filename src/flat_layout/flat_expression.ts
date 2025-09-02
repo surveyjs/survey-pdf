@@ -1,24 +1,24 @@
-import { IQuestion, QuestionExpressionModel, settings } from 'survey-core';
-import { SurveyPDF } from '../survey';
-import { IPoint, IRect, DocController } from '../doc_controller';
+import { QuestionExpressionModel, settings } from 'survey-core';
+import { IPoint } from '../doc_controller';
 import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { SurveyHelper } from '../helper_survey';
 
-export class FlatExpression extends FlatQuestion {
-    protected question: QuestionExpressionModel;
-    public constructor(protected survey: SurveyPDF,
-        question: IQuestion, controller: DocController) {
-        super(survey, question, controller);
-        this.question = <QuestionExpressionModel>question;
-    }
+export class FlatExpression extends FlatQuestion<QuestionExpressionModel> {
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         return [await SurveyHelper.createCommentFlat(point, this.question, this.controller, {
             value: this.question.displayValue,
             isReadOnly: true,
             fieldName: this.question.id,
             shouldRenderBorders: settings.readOnlyTextRenderMode === 'input',
+        }, {
+            fontName: this.controller.fontName,
+            fontColor: this.styles.textColor,
+            fontSize: this.controller.fontSize,
+            fontStyle: 'normal',
+            borderColor: SurveyHelper.FORM_BORDER_COLOR,
+            borderWidth: this.controller.unitHeight * SurveyHelper.VISIBLE_BORDER_SCALE * SurveyHelper.BORDER_SCALE,
         })];
     }
 }
