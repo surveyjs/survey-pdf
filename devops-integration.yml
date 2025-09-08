@@ -190,6 +190,16 @@ steps:
 
   - task: CopyFiles@2
     inputs:
+      SourceFolder: "$(Build.SourcesDirectory)/survey-pdf/docs"
+      Contents: |
+        surveyjs_definition.json
+      TargetFolder: "$(Build.SourcesDirectory)/survey-pdf/build"
+      OverWrite: true
+      CleanTargetFolder: false
+    displayName: "put surveyjs_definition.json into build"
+
+  - task: CopyFiles@2
+    inputs:
       SourceFolder: "$(Build.SourcesDirectory)/survey-pdf/build"
       targetFolder: $(Build.ArtifactStagingDirectory)/SurveyjsPDFbuild/packages/survey-pdf
 
