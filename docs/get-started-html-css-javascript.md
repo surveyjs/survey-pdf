@@ -68,7 +68,7 @@ survey.addNavigationItem({
 
 The following image illustrates the resulting UI with the [Default theme](https://surveyjs.io/form-library/documentation/manage-default-themes-and-styles) applied:
 
-![Export Survey to PDF - Save as PDF navigation button](images/surveypdf-navigation-button.png)
+<img src="./images/surveypdf-navigation-button.png" alt="Export Survey to PDF - Save as PDF navigation button" width="772" height="404">
 
 <details>
     <summary>View Full Code</summary>  

@@ -11,7 +11,7 @@ Many PDF forms contain editable fields that allow users to complete the form dir
 
 The form filling functionality requires a third-party PDF library, such as <a href="https://pdf-lib.js.org/" target="_blank">`pdf-lib`</a> or <a href="https://mozilla.github.io/pdf.js/" target="_blank">`PDF.js`</a>. Depending on whether you have a modular or classic script application, add one of those libraries as shown below.
 
-## Option 1: Add the pdf-lib Library
+### Option 1: Add the pdf-lib Library
 
 <details>
     <summary>Classic script applications</summary>

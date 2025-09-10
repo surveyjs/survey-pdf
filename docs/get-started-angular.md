@@ -79,7 +79,7 @@ export class AppComponent implements OnInit {
 
 The following image illustrates the resulting UI with the [Default theme](https://surveyjs.io/form-library/documentation/manage-default-themes-and-styles) applied:
 
-![Export Survey to PDF - Save as PDF navigation button](images/surveypdf-navigation-button.png)
+<img src="./images/surveypdf-navigation-button.png" alt="Export Survey to PDF - Save as PDF navigation button" width="772" height="404">
 
 To view the application, run `ng serve` in a command line and open [http://localhost:4200/](http://localhost:4200/) in your browser.
 

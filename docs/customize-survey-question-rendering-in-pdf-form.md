@@ -50,11 +50,11 @@ const surveyJson = {
 
 **Matrix rendered as a table**
 
-![SurveyJS PDF Generator: Render a matrix as a table in a PDF form](images/matrix-render-as-table.png)
+<img src="./images/matrix-render-as-table.png" alt="SurveyJS PDF Generator: Render a matrix as a table in a PDF form" width="772" height="285">
 
 **Matrix rendered as a list**
 
-![SurveyJS PDF Generator: Render a matrix as a list in a PDF form](images/matrix-render-as-list.png)
+<img src="./images/matrix-render-as-list.png" alt="SurveyJS PDF Generator: Render a matrix as a list in a PDF form" width="772" height="436">
 
 If you want to render all matrices as lists, regardless of whether they fit into the page as tables or not, set the [`matrixRenderAs`](https://surveyjs.io/pdf-generator/documentation/api-reference/idocoptions#matrixRenderAs) property to `"list"`:
 

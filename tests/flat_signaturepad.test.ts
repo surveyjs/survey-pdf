@@ -83,3 +83,59 @@ test('Check signaturepad getSignImageUrl', async () => {
     quesiton['_loadedData'] = 'some_url2';
     expect(flatSignature['getSignImageUrl']()).toBe('some_url');
 });
+
+test('Check signature size', async() => {
+    let json: any = {
+        questions: [
+            {
+                type: 'signaturepad',
+                name: 'signaturepad',
+                titleLocation: 'hidden',
+                signatureWidth: 800,
+                signatureHeight: 600,
+            }
+        ]
+    };
+    checkFlatSnapshot(json, {
+        snapshotName: 'big_signature',
+        onSurveyCreated: (survey) => {
+            survey.data = {
+                'signaturepad': SIGNATURE_VALUE,
+            };
+        }
+    });
+    checkFlatSnapshot(json, {
+        snapshotName: 'small_signature',
+        onSurveyCreated: (survey) => {
+            survey.getAllQuestions()[0].signatureWidth = 200;
+            survey.getAllQuestions()[0].signatureHeight = 100;
+            survey.data = {
+                'signaturepad': SIGNATURE_VALUE,
+            };
+        }
+    });
+});
+
+test('Check signature empty size', async() => {
+    let json: any = {
+        questions: [
+            {
+                type: 'signaturepad',
+                name: 'signaturepad',
+                titleLocation: 'hidden',
+                signatureWidth: 800,
+                signatureHeight: 600,
+            }
+        ]
+    };
+    checkFlatSnapshot(json, {
+        snapshotName: 'big_signature_empty',
+    });
+    checkFlatSnapshot(json, {
+        snapshotName: 'small_signature_empty',
+        onSurveyCreated: (survey) => {
+            survey.getAllQuestions()[0].signatureWidth = 200;
+            survey.getAllQuestions()[0].signatureHeight = 100;
+        }
+    });
+});

@@ -83,7 +83,7 @@ export default function SurveyComponent() {
 
 The following image illustrates the resulting UI with the [Default theme](https://surveyjs.io/form-library/documentation/manage-default-themes-and-styles) applied:
 
-![Export Survey to PDF - Save as PDF navigation button](images/surveypdf-navigation-button.png)
+<img src="./images/surveypdf-navigation-button.png" alt="Export Survey to PDF - Save as PDF navigation button" width="772" height="404">
 
 To view the application, run `npm run dev` in a command line and open [http://localhost:3000/](http://localhost:3000/) in your browser.
 
