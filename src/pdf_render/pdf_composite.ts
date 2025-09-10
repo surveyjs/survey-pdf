@@ -62,11 +62,13 @@ export class CompositeBrick implements IPdfBrick {
         return this.bricks.length === 0;
     }
     private _updateRect() {
-        let mergeRect = SurveyHelper.mergeRects(...this.bricks);
-        this._xLeft = mergeRect.xLeft;
-        this._xRight = mergeRect.xRight;
-        this._yTop = mergeRect.yTop;
-        this._yBot = mergeRect.yBot;
+        if(this.bricks.length > 0) {
+            let mergeRect = SurveyHelper.mergeRects(...this.bricks);
+            this._xLeft = mergeRect.xLeft;
+            this._xRight = mergeRect.xRight;
+            this._yTop = mergeRect.yTop;
+            this._yBot = mergeRect.yBot;
+        }
     }
     public addBrick(...bricks: IPdfBrick[]) {
         if (bricks.length != 0) {
