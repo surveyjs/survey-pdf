@@ -1,0 +1,195 @@
+export type IStyles = { [index: string]: any }
+export function getDefaultStyles (baseSize: number) {
+    return {
+        titleFontSize: baseSize * 4,
+        titleFontStyle: 'bold',
+        titleFontColor: '#000',
+        descriptionFontSize: 2,
+        descriptionGap: baseSize * 1.5,
+        panelContGap: baseSize * 4.0,
+        question: {
+            headerBorderWidth: 0,
+            headerPaddingTop: 0,
+            headerPaddingBottom: 0,
+            headerPaddingRight: 0,
+            headerPaddingLeft: 0,
+            titleFontSize: baseSize * 2,
+            titleFontStyle: 'normal',
+            titleFontColor: '#000',
+            contentGapVertical: baseSize * 0.5,
+            contentGapHorizontal: baseSize * 1.0,
+            contentIndent: 0,
+            descriptionGap: baseSize * 0.0625,
+            descriptionFontSize: baseSize * 2,
+            gapBetweenItemText: baseSize * 0.25,
+            gapBetweenColumns: baseSize * 1.5,
+            gapBetweenRows: baseSize * 0.25,
+            wrapperPaddingTop: baseSize * 0.5,
+            wrapperPaddingBottom: baseSize * 0.5,
+            wrapperPaddingLeft: baseSize * 1,
+            wrapperPaddingRight: baseSize * 1,
+            wrapperBorderWidth: baseSize * 0.125,
+            wrapperBorderColor: '#000',
+            inputBorderColor: '#000',
+            inputBorderWidth: 0,
+            inputFontColor: '#000',
+            inputFontSize: baseSize * 2.5,
+            commentBorderColor: '#000',
+            commentBorderWidth: 0,
+            commentFontColor: '#000',
+            commentFontSize: baseSize * 2.5,
+            commentLineHeight: baseSize * 3
+        },
+        panel: {
+
+            wrapperPaddingTop: 0,
+            wrapperPaddingBottom: 0,
+            wrapperPaddingLeft: 0,
+            wrapperPaddingRight: 0,
+            wrapperBorderWidth: 0,
+            titleFontSize: baseSize * 2,
+            titleFontStyle: 'bold',
+            titleFontColor: '#000',
+            questionGapVertical: 0,
+            panelContGap: 0,
+            panelDescriptionGap: baseSize * 0.25,
+            descriptionFontSize: baseSize * 2,
+            descriptionGap: baseSize * 0.5,
+            headerPaddingTop: baseSize * 0.5,
+            headerPaddingLeft: baseSize * 1,
+            headerPaddingBottom: baseSize * 0.5,
+            headerPaddingRight: baseSize * 1,
+            headerBorderWidth: baseSize * 0.125,
+            headerBorderColor: '#000',
+            headerBackgroundColor: '#E5E5E5'
+        },
+        page: {
+            questionGapVertical: baseSize * 1.5,
+            titleFontSize: baseSize * 1.3,
+            titleFontStyle: 'bold',
+            titleFontColor: '#000'
+        },
+        selectbase: {
+            gapBetweenColumns: 1.5,
+            gapBetweenRows: baseSize,
+            gapBetweenItemText: baseSize,
+            contentGapVertical: baseSize * 1,
+            inputWidth: baseSize * 2,
+            inputHeight: baseSize * 2,
+            labelFontSize: baseSize * 2.5,
+            labelLineHeight: baseSize * 3,
+            labelFontStyle: 'normal',
+            labelFontColor: '#000',
+            inputBorderWidth: baseSize * 0.125,
+            inputFontSize: baseSize * 1.25,
+            inputFont: 'zapfdingbats',
+        },
+        checkbox: {
+            inputSymbol: '3',
+        },
+        radiogroup: {
+            inputSymbol: 'l',
+        },
+        matrixbase: {
+            cellBorderWidth: baseSize * 0.125,
+            cellBorderColor: '#000',
+            cellPaddingTop: baseSize * 0.5,
+            cellPaddingBottom: baseSize * 0.5,
+            cellPaddingLeft: baseSize * 1,
+            cellPaddingRight: baseSize * 1,
+
+            headerBorderWidth: baseSize * 0.125,
+            headerPaddingTop: baseSize * 0.5,
+            headerPaddingBottom: baseSize * 0.5,
+            headerPaddingRight: baseSize * 1,
+            headerPaddingLeft: baseSize * 1,
+            headerBackgroundColor: '#E5E5E5',
+            headerBorderColor: '#000',
+
+            contentGapVertical: 0,
+            wrapperPaddingTop: 0,
+            wrapperPaddingBottom: 0,
+            wrapperPaddingLeft: 0,
+            wrapperPaddingRight: 0,
+            wrapperBorderWidth: 0,
+
+            titleFontStyle: 'bold',
+            gapBetweenColumns: 0,
+            gapBetweenRows: 0,
+            inputHeight: baseSize * 2,
+            inputWidth: baseSize * 2,
+        },
+        matrix: {
+            inputBorderWidth: baseSize * 0.125,
+            vertivalGapBetweenCells: 0.25,
+            radiomarkSymbol: 'l',
+            radiomarkFontSize: baseSize * 2,
+            radiomarkFont: 'zapfdingbats',
+            checkmarkFontSize: baseSize * 2,
+            checkmarkFont: 'zapfdingbats',
+            checkmarkSymbol: '3',
+        },
+        multipletext: {
+            gapBetweenColumns: 1.5,
+            rowsGap: baseSize * 0.195
+        },
+        rating: {
+            inputHeight: baseSize * 2,
+            inputWidth: baseSize * 2,
+            gapBetweenRows: baseSize * 0.25,
+            inputSymbol: 'l',
+            radiomarkFont: 'zapfdingbats',
+            inputBorderWidth: baseSize * 0.125,
+            inputFontSize: baseSize * 1.25
+        },
+        ranking: {
+            inputHeight: baseSize * 2,
+            inputWidth: baseSize * 2,
+            gapBetweenColumns: baseSize * 1.5,
+            gapBetweenRows: baseSize * 0.25,
+            checkmarkFontSize: baseSize * 2,
+        },
+        slider: {
+            gapBetweenColumns: baseSize * 1.5,
+        },
+        dropdown: {
+            gapBetweenRows: baseSize * 0.25,
+            inputFontSize: baseSize * 2.5,
+            inputLineHeight: baseSize * 3,
+            inputBorderWidth: baseSize * 0
+        },
+        file: {
+            imageGap: baseSize * 0.195,
+            textMin: baseSize * 5,
+            defaultImageFit: 'contain'
+        },
+        paneldynamic: {
+            gapBetweenPanels: 0.75
+        },
+        boolean: {
+            checkmarkFontSize: baseSize * 2,
+            checkmarkFont: 'zapfdingbats',
+            checkmarkSymbol: '3',
+            inputWidth: baseSize * 2,
+            inputHeight: baseSize * 2,
+        },
+        imagepicker: {
+            checkmarkFontSize: baseSize * 2,
+            checkmarkFont: 'zapfdingbats',
+            checkmarkSymbol: '3',
+            radiomarkSymbol: 'l',
+            radiomarkFontSize: baseSize * 2,
+            radiomarkFont: 'zapfdingbats',
+            inputHeight: baseSize * 2
+        },
+        textbase: {
+            inputFontSize: baseSize * 2.5,
+            inputLineHeight: baseSize * 3
+        },
+        expression: {
+            inputFontSize: baseSize * 2.5,
+            inputLineHeight: baseSize * 3
+        },
+    };
+}
+

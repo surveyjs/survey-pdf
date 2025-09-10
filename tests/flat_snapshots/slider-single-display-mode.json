@@ -8,14 +8,23 @@
 		"yTop": 28.34645669291339,
 		"yBot": 83.54645669291338,
 		"options": {
-			"fieldName": "testId",
+			"fieldName": "testidquestion_q1",
 			"inputType": "number",
 			"value": 50,
 			"isReadOnly": true,
+			"shouldRenderReadOnly": true,
 			"shouldRenderBorders": true,
 			"rows": 1,
 			"isMultiline": false,
 			"placeholder": ""
+		},
+		"appearance": {
+			"fontName": "helvetica",
+			"fontColor": "#404040",
+			"fontSize": 30,
+			"fontStyle": "normal",
+			"borderColor": "#9f9f9f",
+			"borderWidth": 2.7600000000000002
 		}
 	}
 ]
