@@ -27,13 +27,8 @@ export type IBorderAppearanceOptions = {
 
 export class SurveyHelper {
     public static EPSILON: number = 2.2204460492503130808472633361816e-15;
-    public static TITLE_SURVEY_FONT_SIZE_SCALE: number = 1.7;
-    public static TITLE_PAGE_FONT_SIZE_SCALE: number = 1.3;
-    public static TITLE_PANEL_FONT_SIZE_SCALE: number = 1.3;
-    public static DESCRIPTION_FONT_SIZE_SCALE: number = 2.0 / 3.0;
     public static OTHER_ROWS_COUNT: number = 2;
     public static RATING_MIN_WIDTH: number = 3;
-    public static RATING_MIN_HEIGHT: number = 2;
     public static RATING_COLUMN_WIDTH: number = 5;
     public static MATRIX_COLUMN_WIDTH: number = 5;
     public static IMAGEPICKER_COUNT: number = 4;
@@ -41,14 +36,6 @@ export class SurveyHelper {
     public static MULTIPLETEXT_TEXT_PERS: number = Math.E / 10.0;
     public static HTML_TAIL_TEXT_SCALE: number = 0.24;
     public static SELECT_ITEM_FLAT_SCALE: number = 0.95;
-    public static GAP_BETWEEN_ROWS: number = 0.25;
-    public static GAP_BETWEEN_COLUMNS: number = 1.5;
-    public static GAP_BETWEEN_ITEM_TEXT: number = 0.25;
-    public static BORDER_SCALE: number = 0.1;
-    public static VISIBLE_BORDER_SCALE: number = 0.8;
-    public static UNVISIBLE_BORDER_SCALE: number = 0.2;
-    public static RADIUS_SCALE: number = 3.0;
-    public static TITLE_FONT_SCALE: number = 1.1;
     public static VALUE_READONLY_PADDING_SCALE: number = 0.3;
     public static HTML_TO_IMAGE_QUALITY: number = 1.0;
     public static FORM_BORDER_COLOR: string = '#9f9f9f';
