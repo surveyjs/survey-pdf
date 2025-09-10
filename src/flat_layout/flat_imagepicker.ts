@@ -21,7 +21,7 @@ export class FlatImagePicker extends FlatQuestion<QuestionImagePickerModel> {
             compositeFlat.addBrick(labelFlat);
             buttonPoint = SurveyHelper.createPoint(labelFlat);
         }
-        const height: number = SurveyHelper.getScaledSize(this.controller, this.styles.inputHeightScale);
+        const height: number = this.styles.inputHeight;
         const buttonRect: IRect = SurveyHelper.createRect(buttonPoint, pageAvailableWidth, height);
         const isChecked = this.question.isItemSelected(item);
         const isReadOnly = this.question.isReadOnly || !item.isEnabled;
@@ -40,12 +40,12 @@ export class FlatImagePicker extends FlatQuestion<QuestionImagePickerModel> {
                 {
                     fontName: this.styles.checkmarkFont,
                     fontColor: this.styles.inputFontColor,
-                    fontSize: SurveyHelper.getScaledSize(this.controller, this.styles.checkmarkFontSizeScale),
-                    lineHeight: SurveyHelper.getScaledSize(this.controller, this.styles.checkmarkFontSizeScale),
+                    fontSize: this.styles.checkmarkFontSize,
+                    lineHeight: this.styles.checkmarkFontSize,
                     checkMark: this.styles.checkmarkSymbol,
                     fontStyle: 'normal',
                     borderColor: this.styles.inputBorderColor,
-                    borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.inputBorderWidthScale),
+                    borderWidth: this.styles.inputBorderWidth,
                 }));
         }
         else {
@@ -65,13 +65,13 @@ export class FlatImagePicker extends FlatQuestion<QuestionImagePickerModel> {
             },
             {
                 fontName: this.styles.radiomarkFont,
-                fontSize: SurveyHelper.getScaledSize(this.controller, this.styles.radiomarkFontSizeScale),
-                lineHeight: SurveyHelper.getScaledSize(this.controller, this.styles.radiomarkFontSizeScale),
+                fontSize: this.styles.radiomarkFontSize,
+                lineHeight: this.styles.radiomarkFontSize,
                 fontColor: this.styles.inputFontColor,
                 fontStyle: 'normal',
                 checkMark: this.styles.radiomarkSymbol,
                 borderColor: this.styles.inputBorderColor,
-                borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.inputBorderWidthScale),
+                borderWidth: this.styles.inputBorderWidth,
             });
         }
         return compositeFlat;

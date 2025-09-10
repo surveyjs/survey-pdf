@@ -1,6 +1,6 @@
 import { SurveyModel, EventBase, SurveyElement, Serializer, Question, ItemValue } from 'survey-core';
 import { hasLicense } from 'survey-core';
-import { IDocOptions, DocController } from './doc_controller';
+import { IDocOptions, DocController, DocOptions } from './doc_controller';
 import { FlatSurvey } from './flat_layout/flat_survey';
 import { PagePacker } from './page_layout/page_packer';
 import { IPdfBrick } from './pdf_render/pdf_brick';
@@ -9,7 +9,7 @@ import { EventHandler } from './event_handler/event_handler';
 import { DrawCanvas } from './event_handler/draw_canvas';
 import { AdornersOptions, AdornersPanelOptions, AdornersPageOptions } from './event_handler/adorners';
 import { SurveyHelper } from './helper_survey';
-import { IStyles, styles } from './styles';
+import { getDefaultStyles, IStyles } from './styles';
 
 /**
  * The `SurveyPDF` object enables you to export your surveys and forms to PDF documents.
@@ -183,7 +183,7 @@ export class SurveyPDF extends SurveyModel {
 
     public get styles(): IStyles {
         if(!this._styles) {
-            this._styles = SurveyHelper.mergeObjects({}, styles);
+            this._styles = SurveyHelper.mergeObjects({}, getDefaultStyles(this.options.fontSize || DocOptions.FONT_SIZE));
         }
         return this._styles;
     }

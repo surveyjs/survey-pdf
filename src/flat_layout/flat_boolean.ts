@@ -27,16 +27,16 @@ export class FlatBooleanCheckbox extends FlatQuestion<QuestionBooleanModel> {
             }, {
                 fontName: this.styles.checkmarkFont,
                 fontColor: this.styles.inputFontColor,
-                fontSize: SurveyHelper.getScaledSize(this.controller, this.styles.checkmarkFontSizeScale),
-                lineHeight: SurveyHelper.getScaledSize(this.controller, this.styles.checkmarkFontSizeScale),
+                fontSize: this.styles.checkmarkFontSize,
+                lineHeight: this.styles.checkmarkFontSize,
                 checkMark: this.styles.checkmarkSymbol,
                 fontStyle: 'normal',
                 borderColor: this.styles.inputBorderColor,
-                borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.inputBorderWidthScale),
+                borderWidth: this.styles.inputBorderWidth,
             });
         compositeFlat.addBrick(itemFlat);
         const textPoint: IPoint = SurveyHelper.clone(point);
-        textPoint.xLeft = itemFlat.xRight + SurveyHelper.getScaledSize(this.controller, this.styles.gapBetweenItemText);
+        textPoint.xLeft = itemFlat.xRight + this.styles.gapBetweenItemText;
         const locLabelText: LocalizableString = this.question.isIndeterminate ? null :
             this.question.booleanValue ? this.question.locLabelTrue : this.question.locLabelFalse;
         if (locLabelText !== null && locLabelText.renderedHtml !== null) {

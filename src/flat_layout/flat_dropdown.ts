@@ -22,11 +22,11 @@ export class FlatDropdown extends FlatQuestion<QuestionDropdownModel> {
             {
                 fontName: this.controller.fontName,
                 fontColor: this.styles.commentFontColor,
-                fontSize: SurveyHelper.getScaledSize(this.controller, this.styles.commentFontSizeScale),
-                lineHeight: SurveyHelper.getScaledSize(this.controller, this.styles.commentLineHeightScale),
+                fontSize: this.styles.commentFontSize,
+                lineHeight: this.styles.commentLineHeight,
                 fontStyle: 'normal',
                 borderColor: this.styles.commentBorderColor,
-                borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.commentBorderWidthScale),
+                borderWidth: this.styles.commentBorderWidth,
             }
         );
     }
@@ -34,11 +34,11 @@ export class FlatDropdown extends FlatQuestion<QuestionDropdownModel> {
         const appearance = {
             fontColor: this.styles.inputFontColor,
             fontName: this.controller.fontName,
-            fontSize: SurveyHelper.getScaledSize(this.controller, this.styles.inputFontSizeScale),
-            lineHeight: SurveyHelper.getScaledSize(this.controller, this.styles.inputLineHeightScale),
+            fontSize: this.styles.inputFontSize,
+            lineHeight: this.styles.inputLineHeight,
             fontStyle: 'normal',
             borderColor: this.styles.inputBorderColor,
-            borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.inputBorderWidthScale),
+            borderWidth: this.styles.inputBorderWidth,
         };
         const valueBrick = !this.shouldRenderAsComment ? new DropdownBrick(this.controller, SurveyHelper.createTextFieldRect(point, this.controller, 1, appearance.lineHeight), {
             fieldName: this.question.id,
@@ -58,7 +58,7 @@ export class FlatDropdown extends FlatQuestion<QuestionDropdownModel> {
         const compositeFlat: CompositeBrick = new CompositeBrick(valueBrick);
         if (this.question.isShowingChoiceComment) {
             const otherPoint: IPoint = SurveyHelper.createPoint(compositeFlat);
-            otherPoint.yTop += SurveyHelper.getScaledSize(this.controller, this.styles.gapBetweenRows);
+            otherPoint.yTop += this.styles.gapBetweenRows;
             compositeFlat.addBrick(await this.generateItemComment(otherPoint));
         }
         return [compositeFlat];

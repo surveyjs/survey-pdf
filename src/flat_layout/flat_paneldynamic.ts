@@ -14,7 +14,7 @@ export class FlatPanelDynamic extends FlatQuestion<QuestionPanelDynamicModel> {
 
             if (panelFlats.length !== 0) {
                 currPoint.yTop = SurveyHelper.mergeRects(...panelFlats).yBot;
-                currPoint.yTop += SurveyHelper.getScaledSize(this.controller, this.styles.gapBetweenPanels);
+                currPoint.yTop += this.styles.gapBetweenPanels;
                 flats.push(...panelFlats);
             }
         }

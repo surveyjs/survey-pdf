@@ -1,188 +1,191 @@
 export type IStyles = { [index: string]: any }
-export const styles: IStyles = {
-    titleFontSizeScale: 4,
-    titleFontStyle: 'bold',
-    titleFontColor: '#000',
-    descriptionFontSizeScale: 2,
-    descriptionGapScale: 1.5,
-    panelContGapScale: 4.0,
-    question: {
-        headerBorderWidthScale: 0,
-        headerPaddingTopScale: 0,
-        headerPaddingBottomScale: 0,
-        headerPaddingRightScale: 0,
-        headerPaddingLeftScale: 0,
-        titleFontSizeScale: 2,
-        titleFontStyle: 'normal',
-        titleFontColor: '#000',
-        contentGapScaleVertical: 0.5,
-        contentGapScaleHorizontal: 1.0,
-        contentIndentScale: 0,
-        descriptionGapScale: 0.0625,
-        descriptionFontSizeScale: 2,
-        gapBetweenItemText: 0.25,
-        gapBetweenColumns: 1.5,
-        gapBetweenRows: 0.25,
-        wrapperPaddingTopScale: 0.5,
-        wrapperPaddingBottomScale: 0.5,
-        wrapperPaddingLeftScale: 1,
-        wrapperPaddingRightScale: 1,
-        wrapperBorderWidthScale: 0.125,
-        wrapperBorderColor: '#000',
-        inputBorderColor: '#000',
-        inputBorderWidthScale: 0,
-        inputFontColor: '#000',
-        inputFontSizeScale: 2.5,
-        commentBorderColor: '#000',
-        commentBorderWidthScale: 0,
-        commentFontColor: '#000',
-        commentFontSizeScale: 2.5,
-        commentLineHeightScale: 3
-    },
-    panel: {
-
-        wrapperPaddingTopScale: 0,
-        wrapperPaddingBottomScale: 0,
-        wrapperPaddingLeftScale: 0,
-        wrapperPaddingRightScale: 0,
-        wrapperBorderWidthScale: 0,
-        titleFontSizeScale: 2,
+export function getDefaultStyles (baseSize: number) {
+    return {
+        titleFontSize: baseSize * 4,
         titleFontStyle: 'bold',
         titleFontColor: '#000',
-        questionGapVerticalScale: 0,
-        panelContGapScale: 0,
-        panelDescriptionGapScale: 0.25,
-        descriptionFontSizeScale: 2,
-        descriptionGapScale: 0.5,
-        headerPaddingTopScale: 0.5,
-        headerPaddingLeftScale: 1,
-        headerPaddingBottomScale: 0.5,
-        headerPaddingRightScale: 1,
-        headerBorderWidthScale: 0.125,
-        headerBorderColor: '#000',
-        headerBackgroundColor: '#E5E5E5'
-    },
-    page: {
-        questionGapVerticalScale: 1.5,
-        titleFontSizeScale: 1.3,
-        titleFontStyle: 'bold',
-        titleFontColor: '#000'
-    },
-    selectbase: {
-        gapBetweenColumns: 1.5,
-        gapBetweenRows: 1,
-        gapBetweenItemText: 1,
-        contentGapScaleVertical: 1,
-        inputWidthScale: 2,
-        inputHeightScale: 2,
-        labelFontSizeScale: 2.5,
-        labelLineHeightScale: 3,
-        labelFontStyle: 'normal',
-        labelFontColor: '#000',
-        inputBorderWidthScale: 0.125,
-        inputFontSizeScale: 1.25,
-        inputFont: 'zapfdingbats',
-    },
-    checkbox: {
-        inputSymbol: '3',
-    },
-    radiogroup: {
-        inputSymbol: 'l',
-    },
-    matrixbase: {
-        cellBorderWidthScale: 0.125,
-        cellBorderColor: '#000',
-        cellPaddingTopScale: 0.5,
-        cellPaddingBottomScale: 0.5,
-        cellPaddingLeftScale: 1,
-        cellPaddingRightScale: 1,
+        descriptionFontSize: 2,
+        descriptionGap: baseSize * 1.5,
+        panelContGap: baseSize * 4.0,
+        question: {
+            headerBorderWidth: 0,
+            headerPaddingTop: 0,
+            headerPaddingBottom: 0,
+            headerPaddingRight: 0,
+            headerPaddingLeft: 0,
+            titleFontSize: baseSize * 2,
+            titleFontStyle: 'normal',
+            titleFontColor: '#000',
+            contentGapVertical: baseSize * 0.5,
+            contentGapHorizontal: baseSize * 1.0,
+            contentIndent: 0,
+            descriptionGap: baseSize * 0.0625,
+            descriptionFontSize: baseSize * 2,
+            gapBetweenItemText: baseSize * 0.25,
+            gapBetweenColumns: baseSize * 1.5,
+            gapBetweenRows: baseSize * 0.25,
+            wrapperPaddingTop: baseSize * 0.5,
+            wrapperPaddingBottom: baseSize * 0.5,
+            wrapperPaddingLeft: baseSize * 1,
+            wrapperPaddingRight: baseSize * 1,
+            wrapperBorderWidth: baseSize * 0.125,
+            wrapperBorderColor: '#000',
+            inputBorderColor: '#000',
+            inputBorderWidth: 0,
+            inputFontColor: '#000',
+            inputFontSize: baseSize * 2.5,
+            commentBorderColor: '#000',
+            commentBorderWidth: 0,
+            commentFontColor: '#000',
+            commentFontSize: baseSize * 2.5,
+            commentLineHeight: baseSize * 3
+        },
+        panel: {
 
-        headerBorderWidthScale: 0.125,
-        headerPaddingTopScale: 0.5,
-        headerPaddingBottomScale: 0.5,
-        headerPaddingRightScale: 1,
-        headerPaddingLeftScale: 1,
-        headerBackgroundColor: '#E5E5E5',
-        headerBorderColor: '#000',
+            wrapperPaddingTop: 0,
+            wrapperPaddingBottom: 0,
+            wrapperPaddingLeft: 0,
+            wrapperPaddingRight: 0,
+            wrapperBorderWidth: 0,
+            titleFontSize: baseSize * 2,
+            titleFontStyle: 'bold',
+            titleFontColor: '#000',
+            questionGapVertical: 0,
+            panelContGap: 0,
+            panelDescriptionGap: baseSize * 0.25,
+            descriptionFontSize: baseSize * 2,
+            descriptionGap: baseSize * 0.5,
+            headerPaddingTop: baseSize * 0.5,
+            headerPaddingLeft: baseSize * 1,
+            headerPaddingBottom: baseSize * 0.5,
+            headerPaddingRight: baseSize * 1,
+            headerBorderWidth: baseSize * 0.125,
+            headerBorderColor: '#000',
+            headerBackgroundColor: '#E5E5E5'
+        },
+        page: {
+            questionGapVertical: baseSize * 1.5,
+            titleFontSize: baseSize * 1.3,
+            titleFontStyle: 'bold',
+            titleFontColor: '#000'
+        },
+        selectbase: {
+            gapBetweenColumns: 1.5,
+            gapBetweenRows: baseSize,
+            gapBetweenItemText: baseSize,
+            contentGapVertical: baseSize * 1,
+            inputWidth: baseSize * 2,
+            inputHeight: baseSize * 2,
+            labelFontSize: baseSize * 2.5,
+            labelLineHeight: baseSize * 3,
+            labelFontStyle: 'normal',
+            labelFontColor: '#000',
+            inputBorderWidth: baseSize * 0.125,
+            inputFontSize: baseSize * 1.25,
+            inputFont: 'zapfdingbats',
+        },
+        checkbox: {
+            inputSymbol: '3',
+        },
+        radiogroup: {
+            inputSymbol: 'l',
+        },
+        matrixbase: {
+            cellBorderWidth: baseSize * 0.125,
+            cellBorderColor: '#000',
+            cellPaddingTop: baseSize * 0.5,
+            cellPaddingBottom: baseSize * 0.5,
+            cellPaddingLeft: baseSize * 1,
+            cellPaddingRight: baseSize * 1,
 
-        contentGapScaleVertical: 0,
-        wrapperPaddingTopScale: 0,
-        wrapperPaddingBottomScale: 0,
-        wrapperPaddingLeftScale: 0,
-        wrapperPaddingRightScale: 0,
-        wrapperBorderWidthScale: 0,
+            headerBorderWidth: baseSize * 0.125,
+            headerPaddingTop: baseSize * 0.5,
+            headerPaddingBottom: baseSize * 0.5,
+            headerPaddingRight: baseSize * 1,
+            headerPaddingLeft: baseSize * 1,
+            headerBackgroundColor: '#E5E5E5',
+            headerBorderColor: '#000',
 
-        titleFontStyle: 'bold',
-        gapBetweenColumns: 0,
-        gapBetweenRows: 0,
-    },
-    matrix: {
-        inputWidthScale: 2,
-        inputHeightScale: 2,
-        inputBorderWidthScale: 0.125,
-        vertivalGapBetweenCells: 0.25,
-        radiomarkSymbol: 'l',
-        radiomarkFontSizeScale: 2,
-        radiomarkFont: 'zapfdingbats',
-        checkmarkFontSizeScale: 2,
-        checkmarkFont: 'zapfdingbats',
-        checkmarkSymbol: '3',
-    },
-    multipletext: {
-        gapBetweenColumns: 1.5,
-        rowsGapScale: 0.195
-    },
-    rating: {
-        gapBetweenRows: 0.25,
-        inputSymbol: 'l',
-        radiomarkFont: 'zapfdingbats',
-        inputBorderWidthScale: 0.125,
-        inputFontSizeScale: 1.25
-    },
-    ranking: {
-        gapBetweenColumns: 1.5,
-        gapBetweenRows: 0.25,
-        checkmarkFontSizeScale: 2,
-    },
-    slider: {
-        gapBetweenColumns: 1.5,
-    },
-    dropdown: {
-        gapBetweenRows: 0.25,
-        inputFontSizeScale: 2.5,
-        inputLineHeightScale: 3,
-        inputBorderWidthScale: 0
-    },
-    file: {
-        imageGapScale: 0.195,
-        textMinScale: 5,
-        defaultImageFit: 'contain'
-    },
-    paneldynamic: {
-        gapBetweenPanels: 0.75
-    },
-    boolean: {
-        checkmarkFontSizeScale: 2,
-        checkmarkFont: 'zapfdingbats',
-        checkmarkSymbol: '3',
-        inputWidthScale: 2,
-        inputHeightScale: 2,
-    },
-    imagepicker: {
-        checkmarkFontSizeScale: 2,
-        checkmarkFont: 'zapfdingbats',
-        checkmarkSymbol: '3',
-        radiomarkSymbol: 'l',
-        radiomarkFontSizeScale: 2,
-        radiomarkFont: 'zapfdingbats',
-        inputHeightScale: 2
-    },
-    textbase: {
-        inputFontSizeScale: 2.5,
-        inputLineHeightScale: 3
-    },
-    expression: {
-        inputFontSizeScale: 2.5,
-        inputLineHeightScale: 3
-    },
-};
+            contentGapVertical: 0,
+            wrapperPaddingTop: 0,
+            wrapperPaddingBottom: 0,
+            wrapperPaddingLeft: 0,
+            wrapperPaddingRight: 0,
+            wrapperBorderWidth: 0,
+
+            titleFontStyle: 'bold',
+            gapBetweenColumns: 0,
+            gapBetweenRows: 0,
+        },
+        matrix: {
+            inputWidth: baseSize * 2,
+            inputHeight: baseSize * 2,
+            inputBorderWidth: baseSize * 0.125,
+            vertivalGapBetweenCells: 0.25,
+            radiomarkSymbol: 'l',
+            radiomarkFontSize: baseSize * 2,
+            radiomarkFont: 'zapfdingbats',
+            checkmarkFontSize: baseSize * 2,
+            checkmarkFont: 'zapfdingbats',
+            checkmarkSymbol: '3',
+        },
+        multipletext: {
+            gapBetweenColumns: 1.5,
+            rowsGap: baseSize * 0.195
+        },
+        rating: {
+            gapBetweenRows: baseSize * 0.25,
+            inputSymbol: 'l',
+            radiomarkFont: 'zapfdingbats',
+            inputBorderWidth: baseSize * 0.125,
+            inputFontSize: baseSize * 1.25
+        },
+        ranking: {
+            gapBetweenColumns: baseSize * 1.5,
+            gapBetweenRows: baseSize * 0.25,
+            checkmarkFontSize: baseSize * 2,
+        },
+        slider: {
+            gapBetweenColumns: baseSize * 1.5,
+        },
+        dropdown: {
+            gapBetweenRows: baseSize * 0.25,
+            inputFontSize: baseSize * 2.5,
+            inputLineHeight: baseSize * 3,
+            inputBorderWidth: baseSize * 0
+        },
+        file: {
+            imageGap: baseSize * 0.195,
+            textMin: baseSize * 5,
+            defaultImageFit: 'contain'
+        },
+        paneldynamic: {
+            gapBetweenPanels: 0.75
+        },
+        boolean: {
+            checkmarkFontSize: baseSize * 2,
+            checkmarkFont: 'zapfdingbats',
+            checkmarkSymbol: '3',
+            inputWidth: baseSize * 2,
+            inputHeight: baseSize * 2,
+        },
+        imagepicker: {
+            checkmarkFontSize: baseSize * 2,
+            checkmarkFont: 'zapfdingbats',
+            checkmarkSymbol: '3',
+            radiomarkSymbol: 'l',
+            radiomarkFontSize: baseSize * 2,
+            radiomarkFont: 'zapfdingbats',
+            inputHeight: baseSize * 2
+        },
+        textbase: {
+            inputFontSize: baseSize * 2.5,
+            inputLineHeight: baseSize * 3
+        },
+        expression: {
+            inputFontSize: baseSize * 2.5,
+            inputLineHeight: baseSize * 3
+        },
+    };
+}
+

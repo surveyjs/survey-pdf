@@ -35,13 +35,13 @@ export class FlatRadiogroup extends FlatSelectBase<QuestionRadiogroupModel> {
         },
         {
             fontName: this.styles.inputFont,
-            fontSize: SurveyHelper.getScaledSize(this.controller, this.styles.inputFontSizeScale),
-            lineHeight: SurveyHelper.getScaledSize(this.controller, this.styles.inputFontSizeScale),
+            fontSize: this.styles.inputFontSize,
+            lineHeight: this.styles.inputFontSize,
             fontColor: this.styles.inputFontColor,
             fontStyle: 'normal',
             checkMark: this.styles.inputSymbol,
             borderColor: this.styles.inputBorderColor,
-            borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.inputBorderWidthScale),
+            borderWidth: this.styles.inputBorderWidth,
         });
     }
 }

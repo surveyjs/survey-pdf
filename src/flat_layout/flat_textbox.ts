@@ -12,11 +12,11 @@ export class FlatTextbox extends FlatQuestion {
         const appearance: ITextFieldBrickAppearanceOptions = {
             fontName: this.controller.fontName,
             fontColor: this.styles.inputFontColor,
-            lineHeight: SurveyHelper.getScaledSize(this.controller, this.styles.inputLineHeightScale),
-            fontSize: SurveyHelper.getScaledSize(this.controller, this.styles.inputFontSizeScale),
+            lineHeight: this.styles.inputLineHeight,
+            fontSize: this.styles.inputFontSize,
             fontStyle: 'normal',
             borderColor: this.styles.inputBorderColor,
-            borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.inputBorderWidthScale),
+            borderWidth: this.styles.inputBorderWidth,
         };
         const options: Omit<ITextFieldBrickOptions, 'isMultiline'> = {
             fieldName: this.question.id,

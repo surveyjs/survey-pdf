@@ -19,7 +19,7 @@ export class FlatSurvey {
             const styles = survey.styles;
             if (survey.title) {
                 const textOptions:Partial<ITextAppearanceOptions> = {
-                    fontSize: SurveyHelper.getScaledSize(controller, styles.titleFontSizeScale),
+                    fontSize: styles.titleFontSize,
                     fontStyle: styles.titleFontStyle,
                     fontColor: styles.titleFontColor
                 };
@@ -29,10 +29,10 @@ export class FlatSurvey {
             }
             if (survey.description) {
                 if (survey.title) {
-                    point.yTop += SurveyHelper.getScaledSize(controller, styles.descriptionGapScale);
+                    point.yTop += styles.descriptionGap;
                 }
                 compositeFlat.addBrick(await SurveyHelper.createTextFlat(
-                    point, controller, survey.locDescription, { fontSize: controller.fontSize * styles.descriptionFontSizeScale }));
+                    point, controller, survey.locDescription, { fontSize: controller.fontSize * styles.descriptionFontSize }));
             }
         }
         return compositeFlat;
@@ -114,7 +114,7 @@ export class FlatSurvey {
             point.yTop = SurveyHelper.createPoint(SurveyHelper.mergeRects(...flats[0])).yTop;
             flats[0].push(SurveyHelper.createRowlineFlat(point, controller));
             const styles = survey.styles;
-            point.yTop += SurveyHelper.getScaledSize(controller, styles.panelContGapScale) + SurveyHelper.EPSILON;
+            point.yTop += styles.panelContGap + SurveyHelper.EPSILON;
         }
         for (let i: number = 0; i < survey.visiblePages.length; i++) {
             survey.currentPage = survey.visiblePages[i];

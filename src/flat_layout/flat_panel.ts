@@ -33,7 +33,7 @@ export class FlatPanel<T extends PanelModel = PanelModel> {
         if(this.panel.hasDescriptionUnderTitle || this.panel.hasTitle) {
             const headerFlats = await this.createHeaderFlats(currPoint);
             panelFlats.push(...headerFlats);
-            currPoint.yTop = headerFlats[headerFlats.length - 1].yBot + SurveyHelper.getScaledSize(this.controller, this.styles.panelContGapScale) + SurveyHelper.EPSILON;
+            currPoint.yTop = headerFlats[headerFlats.length - 1].yBot + this.styles.panelContGap + SurveyHelper.EPSILON;
         }
         panelFlats.push(...await this.generateRowsFlats(currPoint));
         return panelFlats;
@@ -41,7 +41,7 @@ export class FlatPanel<T extends PanelModel = PanelModel> {
     protected async generateTitleFlat(point: IPoint): Promise<IPdfBrick> {
         const composite: CompositeBrick = new CompositeBrick();
         const textOptions:Partial<ITextAppearanceOptions> = {
-            fontSize: SurveyHelper.getScaledSize(this.controller, this.styles.titleFontSizeScale),
+            fontSize: this.styles.titleFontSize,
             fontStyle: this.styles.titleFontStyle,
             fontColor: this.styles.titleFontColor
         };
@@ -63,11 +63,11 @@ export class FlatPanel<T extends PanelModel = PanelModel> {
             width: SurveyHelper.getPageAvailableWidth(this.controller)
         },
         {
-            paddingTop: SurveyHelper.getScaledSize(this.controller, this.styles.headerPaddingTopScale),
-            paddingLeft: SurveyHelper.getScaledSize(this.controller, this.styles.headerPaddingLeftScale),
-            paddingBottom: SurveyHelper.getScaledSize(this.controller, this.styles.headerPaddingBottomScale),
-            paddingRight: SurveyHelper.getScaledSize(this.controller, this.styles.headerPaddingRightScale),
-            borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.headerBorderWidthScale),
+            paddingTop: this.styles.headerPaddingTop,
+            paddingLeft: this.styles.headerPaddingLeft,
+            paddingBottom: this.styles.headerPaddingBottom,
+            paddingRight: this.styles.headerPaddingRight,
+            borderWidth: this.styles.headerBorderWidth,
             borderColor: this.styles.headerBorderColor,
             backgroundColor: this.styles.headerBackgroundColor,
         });
@@ -80,10 +80,10 @@ export class FlatPanel<T extends PanelModel = PanelModel> {
             }
             if (this.panel.description) {
                 if (this.panel.title) {
-                    currPoint.yTop += SurveyHelper.getScaledSize(this.controller, this.styles.descriptionGapScale);
+                    currPoint.yTop += this.styles.descriptionGap;
                 }
                 const panelDescFlat: IPdfBrick = await SurveyHelper.createTextFlat(
-                    currPoint, this.controller, this.panel.locDescription, { fontSize: SurveyHelper.getScaledSize(this.controller, this.styles.descriptionFontSizeScale) });
+                    currPoint, this.controller, this.panel.locDescription, { fontSize: this.styles.descriptionFontSize });
                 bricks.push(panelDescFlat);
                 currPoint = SurveyHelper.createPoint(panelDescFlat);
             }
@@ -115,11 +115,11 @@ export class FlatPanel<T extends PanelModel = PanelModel> {
                 nextMarginLeft = this.controller.margins.left + persWidth;
                 const elementStyles = this.survey.getStylesForElement(element as any as SurveyElement);
                 const containerBrick = new ContainerBrick(this.controller, { ...currPoint, width: SurveyHelper.getPageAvailableWidth(this.controller) }, element.isQuestion ? {
-                    paddingTop: SurveyHelper.getScaledSize(this.controller, elementStyles.wrapperPaddingTopScale),
-                    paddingLeft: SurveyHelper.getScaledSize(this.controller, elementStyles.wrapperPaddingLeftScale),
-                    paddingBottom: SurveyHelper.getScaledSize(this.controller, elementStyles.wrapperPaddingBottomScale),
-                    paddingRight: SurveyHelper.getScaledSize(this.controller, elementStyles.wrapperPaddingRightScale),
-                    borderWidth: SurveyHelper.getScaledSize(this.controller, elementStyles.wrapperBorderWidthScale),
+                    paddingTop: elementStyles.wrapperPaddingTop,
+                    paddingLeft: elementStyles.wrapperPaddingLeft,
+                    paddingBottom: elementStyles.wrapperPaddingBottom,
+                    paddingRight: elementStyles.wrapperPaddingRight,
+                    borderWidth: elementStyles.wrapperBorderWidth,
                     borderColor: elementStyles.wrapperBorderColor,
                 }
                     : {});
@@ -145,7 +145,7 @@ export class FlatPanel<T extends PanelModel = PanelModel> {
                     brick.fitToHeight(rowRect.yBot - rowRect.yTop);
                 });
                 currPoint.xLeft = point.xLeft;
-                currPoint.yTop += SurveyHelper.getScaledSize(this.controller, this.styles.questionGapVerticalScale);
+                currPoint.yTop += this.styles.questionGapVertical;
                 rowContainers.forEach((elementFlat: ContainerBrick) => rowsFlats.push(...elementFlat.getBricks()));
                 rowsFlats.push(SurveyHelper.createRowlineFlat(currPoint, this.controller));
                 currPoint.yTop += SurveyHelper.EPSILON;

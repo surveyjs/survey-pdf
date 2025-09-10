@@ -21,7 +21,7 @@ export class FlatFile extends FlatQuestion<QuestionFileModel> {
             }));
         if (SurveyHelper.canPreviewImage(this.question, item, item.content)) {
             const imagePoint: IPoint = SurveyHelper.createPoint(compositeFlat);
-            imagePoint.yTop += SurveyHelper.getScaledSize(this.controller, this.styles.imageGapScale);
+            imagePoint.yTop += this.styles.imageGap;
             compositeFlat.addBrick(await SurveyHelper.createImageFlat(imagePoint, this.question, this.controller, { link: item.content, width: item.imageSize.width, height: item.imageSize.height, objectFit: this.styles.defaultImageFit }));
         }
         return compositeFlat;
@@ -36,7 +36,7 @@ export class FlatFile extends FlatQuestion<QuestionFileModel> {
     }
 
     private async getImagePreviewContentWidth(item: { name: string, type: string, content: string, imageSize?: ISize }) {
-        return Math.max(item.imageSize.width, SurveyHelper.getScaledSize(this.controller, this.styles.textMinScale));
+        return Math.max(item.imageSize.width, this.styles.textMin);
     }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         const previewValue = this.question.showPreview ? this.question.previewValue : this.question.value;

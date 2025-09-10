@@ -58,10 +58,6 @@ export class SurveyHelper {
     public static STANDARD_FONT: string = 'helvetica';
     public static CUSTOM_FONT_ENCODING: string = 'Identity-H';
 
-    public static getScaledSize(controller: DocController, scale: number = 1) {
-        return controller.fontSize * scale;
-    }
-
     public static parseWidth(width: string, maxWidth: number,
         columnsCount: number = 1, defaultUnit?: string): number {
         if (width.indexOf('calc') === 0) {
@@ -616,14 +612,14 @@ export class SurveyHelper {
     }
     public static getColumnWidth(controller: DocController, colCount: number, gapBetweenColumns: number) {
         return (this.getPageAvailableWidth(controller) - (colCount - 1) *
-            SurveyHelper.getScaledSize(controller, gapBetweenColumns)) / colCount;
+            gapBetweenColumns) / colCount;
     }
     public static setColumnMargins(controller: DocController, colCount: number, column: number, gapBetweenColumns: number) {
         const cellWidth: number = this.getColumnWidth(controller, colCount, gapBetweenColumns);
         controller.margins.left = controller.margins.left + column *
-            (cellWidth + SurveyHelper.getScaledSize(controller, gapBetweenColumns));
+            (cellWidth + gapBetweenColumns);
         controller.margins.right = controller.margins.right + (colCount - column - 1) *
-            (cellWidth + SurveyHelper.getScaledSize(controller, gapBetweenColumns));
+            (cellWidth + gapBetweenColumns);
     }
     public static moveRect(rect: IRect, left: number = rect.xLeft, top: number = rect.yTop): IRect {
         return {

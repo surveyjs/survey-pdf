@@ -50,7 +50,7 @@ export class FlatSignaturePad extends FlatQuestion {
                 };
                 SurveyHelper.renderFlatBorders(this.controller, borderOptions, {
                     borderColor: this.styles.inputBorderColor,
-                    borderWidth: SurveyHelper.getScaledSize(this.controller, this.styles.inputBorderWidthScale),
+                    borderWidth: this.styles.inputBorderWidth,
                     dashStyle: FlatSignaturePad.BORDER_STYLE == 'dashed' ? {
                         dashArray: [5],
                         dashPhase: 0
