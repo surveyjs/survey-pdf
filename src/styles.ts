@@ -116,10 +116,10 @@ export function getDefaultStyles (baseSize: number) {
             titleFontStyle: 'bold',
             gapBetweenColumns: 0,
             gapBetweenRows: 0,
+            inputHeight: baseSize * 2,
+            inputWidth: baseSize * 2,
         },
         matrix: {
-            inputWidth: baseSize * 2,
-            inputHeight: baseSize * 2,
             inputBorderWidth: baseSize * 0.125,
             vertivalGapBetweenCells: 0.25,
             radiomarkSymbol: 'l',
@@ -134,6 +134,8 @@ export function getDefaultStyles (baseSize: number) {
             rowsGap: baseSize * 0.195
         },
         rating: {
+            inputHeight: baseSize * 2,
+            inputWidth: baseSize * 2,
             gapBetweenRows: baseSize * 0.25,
             inputSymbol: 'l',
             radiomarkFont: 'zapfdingbats',
@@ -141,6 +143,8 @@ export function getDefaultStyles (baseSize: number) {
             inputFontSize: baseSize * 1.25
         },
         ranking: {
+            inputHeight: baseSize * 2,
+            inputWidth: baseSize * 2,
             gapBetweenColumns: baseSize * 1.5,
             gapBetweenRows: baseSize * 0.25,
             checkmarkFontSize: baseSize * 2,

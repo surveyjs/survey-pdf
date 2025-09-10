@@ -39,16 +39,14 @@ export class FlatRating extends FlatQuestion<QuestionRatingModel> {
         const radioPoint: IPoint = SurveyHelper.createPoint(compositeFlat);
         radioPoint.xLeft = point.xLeft;
         compositeFlat.addBrick(this.generateFlatItem(SurveyHelper.createRect(
-            radioPoint, textWidth, this.controller.unitHeight), item, index));
+            radioPoint, textWidth, this.styles.inputHeight), item, index));
         return compositeFlat;
     }
     protected async generateFlatComposite(point: IPoint, item: ItemValue, index: number): Promise<IPdfBrick> {
         const compositeFlat: CompositeBrick = new CompositeBrick();
         const itemRect: IRect = SurveyHelper.createRect(point,
-            this.controller.unitHeight, this.controller.unitHeight);
-        const itemFlat: IPdfBrick = this.generateFlatItem(SurveyHelper.moveRect(
-            SurveyHelper.scaleRect(itemRect, SurveyHelper.SELECT_ITEM_FLAT_SCALE),
-            point.xLeft), item, index);
+            this.styles.inputWidth, this.styles.inputHeight);
+        const itemFlat: IPdfBrick = this.generateFlatItem(itemRect, item, index);
         compositeFlat.addBrick(itemFlat);
         const textPoint: IPoint = SurveyHelper.clone(point);
         textPoint.xLeft = itemFlat.xRight + this.styles.gapBetweenItemText;

@@ -14,12 +14,10 @@ import { ITextAppearanceOptions } from '../pdf_render/pdf_text';
 export class FlatBooleanCheckbox extends FlatQuestion<QuestionBooleanModel> {
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         const compositeFlat: CompositeBrick = new CompositeBrick();
-        const height: number = this.controller.unitHeight;
         const isReadOnly = this.question.isReadOnly;
         const itemFlat: IPdfBrick = new CheckItemBrick(this.controller,
-            SurveyHelper.moveRect(
-                SurveyHelper.scaleRect(SurveyHelper.createRect(point, height, height),
-                    SurveyHelper.SELECT_ITEM_FLAT_SCALE), point.xLeft), {
+            SurveyHelper.createRect(point, this.styles.inputWidth, this.styles.inputHeight),
+            {
                 fieldName: this.question.id,
                 readOnly: isReadOnly,
                 updateOptions: (options) => this.survey.updateCheckItemAcroformOptions(options, this.question),

@@ -47,11 +47,8 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
                 else if (isWide && cell.isChoice) {
                     const flatMultipleColumnsQuestion: IFlatQuestion = FlatRepository.getInstance().create(
                         this.survey, cell.question, this.controller, this.survey.getStylesForElement(cell.question), cell.question.getType());
-                    const itemRect: IRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(
-                        SurveyHelper.createRect(point, this.controller.unitHeight, this.controller.unitHeight),
-                        SurveyHelper.SELECT_ITEM_FLAT_SCALE), point.xLeft);
                     bricks.push((<FlatSelectBase>flatMultipleColumnsQuestion)
-                        .generateFlatItem(itemRect, cell.item, cell.choiceIndex));
+                        .generateFlatItem(SurveyHelper.createRect(point, this.styles.inputWidth, this.styles.inputHeight), cell.item, cell.choiceIndex));
                 }
                 else {
                     cell.question.titleLocation = SurveyHelper.TITLE_LOCATION_MATRIX;

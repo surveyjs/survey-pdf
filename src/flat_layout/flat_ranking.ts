@@ -13,10 +13,8 @@ export class FlatRanking extends FlatQuestion<QuestionRankingModel> {
     protected async generateFlatComposite(point: IPoint, item: ItemValue, index: number, unrankedItem: boolean = false): Promise<IPdfBrick> {
         const itemRect: IRect = SurveyHelper.createRect(point,
             this.controller.unitWidth, this.controller.unitHeight);
-        const itemScaledRect: IRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(
-            itemRect, SurveyHelper.SELECT_ITEM_FLAT_SCALE), point.xLeft);
         const itemFlat: IPdfBrick = new RankingItemBrick(this.controller,
-            itemScaledRect,
+            SurveyHelper.createRect(point, this.styles.inputWidth, this.styles.inputHeight),
             {
                 mark: unrankedItem ? '-' : this.question.getNumberByIndex(index)
             },

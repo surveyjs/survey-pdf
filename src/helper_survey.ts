@@ -35,7 +35,6 @@ export class SurveyHelper {
     public static IMAGEPICKER_RATIO: number = 4.0 / 3.0;
     public static MULTIPLETEXT_TEXT_PERS: number = Math.E / 10.0;
     public static HTML_TAIL_TEXT_SCALE: number = 0.24;
-    public static SELECT_ITEM_FLAT_SCALE: number = 0.95;
     public static VALUE_READONLY_PADDING_SCALE: number = 0.3;
     public static HTML_TO_IMAGE_QUALITY: number = 1.0;
     public static FORM_BORDER_COLOR: string = '#9f9f9f';

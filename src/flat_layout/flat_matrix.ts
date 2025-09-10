@@ -184,8 +184,8 @@ export class FlatMatrixRow {
         const currPoint: IPoint = SurveyHelper.clone(point);
         const itemRect: IRect = SurveyHelper.createRect(currPoint,
             this.styles.inputWidth, this.styles.inputHeight);
-        const radioFlat: IPdfBrick = this.generateFlatItem(SurveyHelper.moveRect(
-            SurveyHelper.scaleRect(itemRect, SurveyHelper.SELECT_ITEM_FLAT_SCALE), itemRect.xLeft), column, index, this.key, { row: this.row, rowIndex: this.rowIndex });
+        const radioFlat: IPdfBrick = this.generateFlatItem(SurveyHelper.createRect(point,
+            this.styles.inputWidth, this.styles.inputHeight), column, index, this.key, { row: this.row, rowIndex: this.rowIndex });
         currPoint.xLeft = radioFlat.xRight + this.styles.gapBetweenItemText;
         const radioText: IPdfBrick = await SurveyHelper.createTextFlat(currPoint,
             this.controller, column.locText);
@@ -214,9 +214,8 @@ export class FlatMatrixRow {
                     bricks.push(await this.generateTextComposite(point, this.question.visibleColumns[i], i));
                 }
                 else {
-                    const itemRect: IRect = SurveyHelper.createRect(point, this.styles.inputWidth, this.styles.inputHeight);
-                    bricks.push(this.generateFlatItem(SurveyHelper.moveRect(
-                        SurveyHelper.scaleRect(itemRect, SurveyHelper.SELECT_ITEM_FLAT_SCALE), point.xLeft), this.question.visibleColumns[i], i, this.key, { row: this.row, rowIndex: this.rowIndex }));
+                    bricks.push(this.generateFlatItem(SurveyHelper.createRect(point, this.styles.inputWidth, this.styles.inputHeight),
+                        this.question.visibleColumns[i], i, this.key, { row: this.row, rowIndex: this.rowIndex }));
                 }
             }));
             currPoint.xLeft += this.columnWidth + this.styles.gapBetweenColumns;
