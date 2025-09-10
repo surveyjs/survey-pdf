@@ -11,7 +11,7 @@ export type IRadioItemBrickAppearanceOptions = ITextAppearanceOptions & IBorderA
 export interface IRadioItemBrickOptions extends IPdfBrickOptions {
     checked: boolean;
     index: number;
-    updateOptions: (options: any) => void;
+    updateOptions?: (options: any) => void;
 }
 
 export interface IRadiogroupWrapContext {
@@ -66,7 +66,7 @@ export class RadioItemBrick extends PdfBrick {
         options.appearance = this.controller.doc.AcroForm.Appearance.RadioButton.Circle;
         options.radioGroup = this.radioGroupWrap.radioGroup;
 
-        this.options.updateOptions(options);
+        this.options.updateOptions && this.options.updateOptions(options);
         let radioButton: any = this.radioGroupWrap.radioGroup.createOption(options.fieldName);
 
         if (this.options.checked) {

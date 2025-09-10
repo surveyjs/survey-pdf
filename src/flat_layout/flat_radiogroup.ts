@@ -7,7 +7,6 @@ import { FlatSelectBase } from './flat_selectbase';
 import { SurveyHelper } from '../helper_survey';
 
 export class FlatRadiogroup extends FlatSelectBase<QuestionRadiogroupModel> {
-    protected question: QuestionRadiogroupModel;
     private radioGroupWrap: RadioGroupWrap;
     protected isItemSelected(item: ItemValue, checked?: boolean): boolean {
         return (typeof checked === 'undefined') ?
@@ -16,17 +15,16 @@ export class FlatRadiogroup extends FlatSelectBase<QuestionRadiogroupModel> {
                     (typeof this.question.isItemSelected !== 'undefined' &&
                         this.question.isItemSelected(item)))) : checked;
     }
-    public generateFlatItem(rect: IRect, item: ItemValue,
-        index: number, key?: string, checked?: boolean, context: any = {}): IPdfBrick {
+    public generateFlatItem(rect: IRect, item: ItemValue, index: number): IPdfBrick {
         if (index === 0) {
-            this.radioGroupWrap = new RadioGroupWrap(this.question.id + ((typeof key === 'undefined') ? '' : key),
-                this.controller, { readOnly: this.question.isReadOnly, question: this.question, ...context });
+            this.radioGroupWrap = new RadioGroupWrap(this.question.id,
+                this.controller, { readOnly: this.question.isReadOnly, question: this.question });
             (<any>this.question).pdfRadioGroupWrap = this.radioGroupWrap;
         }
         else if (typeof this.radioGroupWrap === 'undefined') {
             this.radioGroupWrap = (<any>this.question).pdfRadioGroupWrap;
         }
-        const isChecked: boolean = this.isItemSelected(item, checked);
+        const isChecked: boolean = this.isItemSelected(item);
         return new RadioItemBrick(this.controller, rect, this.radioGroupWrap, {
             index,
             checked: isChecked,

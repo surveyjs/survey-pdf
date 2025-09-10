@@ -1,23 +1,23 @@
-import { IQuestion, ItemValue, QuestionRatingModel, LocalizableString, QuestionRadiogroupModel } from 'survey-core';
+import { ItemValue, QuestionRatingModel, LocalizableString } from 'survey-core';
 import { SurveyPDF } from '../survey';
 import { IPoint, IRect, DocController } from '../doc_controller';
-import { FlatRadiogroup } from './flat_radiogroup';
 import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
 import { IStyles } from '../styles';
+import { FlatQuestion } from './flat_question';
+import { RadioGroupWrap, RadioItemBrick } from '../pdf_render/pdf_radioitem';
 
-export class FlatRating extends FlatRadiogroup {
-    protected questionRating: QuestionRatingModel;
+export class FlatRating extends FlatQuestion<QuestionRatingModel> {
+    private radioGroupWrap: RadioGroupWrap;
     public constructor(protected survey: SurveyPDF,
-        question: IQuestion, protected controller: DocController, styles: IStyles) {
-        super(survey, question as QuestionRadiogroupModel, controller, styles);
-        this.questionRating = <QuestionRatingModel>question;
+        question: QuestionRatingModel, protected controller: DocController, styles: IStyles) {
+        super(survey, question, controller, styles);
     }
     protected async generateFlatHorisontalComposite(point: IPoint, item: ItemValue, index: number): Promise<IPdfBrick> {
         const itemText: LocalizableString = SurveyHelper.getRatingItemText(
-            this.questionRating, index, item.locText);
+            this.question, index, item.locText);
         this.controller.pushMargins();
         const halfWidth: number = this.controller.unitWidth / 2.0;
         this.controller.margins.left += halfWidth;
@@ -39,7 +39,7 @@ export class FlatRating extends FlatRadiogroup {
         const radioPoint: IPoint = SurveyHelper.createPoint(compositeFlat);
         radioPoint.xLeft = point.xLeft;
         compositeFlat.addBrick(this.generateFlatItem(SurveyHelper.createRect(
-            radioPoint, textWidth, this.controller.unitHeight), item, index, undefined, this.question.value == item.value));
+            radioPoint, textWidth, this.controller.unitHeight), item, index));
         return compositeFlat;
     }
     protected async generateFlatComposite(point: IPoint, item: ItemValue, index: number): Promise<IPdfBrick> {
@@ -48,11 +48,11 @@ export class FlatRating extends FlatRadiogroup {
             this.controller.unitHeight, this.controller.unitHeight);
         const itemFlat: IPdfBrick = this.generateFlatItem(SurveyHelper.moveRect(
             SurveyHelper.scaleRect(itemRect, SurveyHelper.SELECT_ITEM_FLAT_SCALE),
-            point.xLeft), item, index, undefined, this.question.value == item.value);
+            point.xLeft), item, index);
         compositeFlat.addBrick(itemFlat);
         const textPoint: IPoint = SurveyHelper.clone(point);
         textPoint.xLeft = itemFlat.xRight + this.styles.gapBetweenItemText;
-        const itemText: LocalizableString = SurveyHelper.getRatingItemText(this.questionRating, index, item.locText);
+        const itemText: LocalizableString = SurveyHelper.getRatingItemText(this.question, index, item.locText);
         itemText == null || compositeFlat.addBrick(await SurveyHelper.createTextFlat(
             textPoint, this.controller, itemText));
         return compositeFlat;
@@ -60,9 +60,9 @@ export class FlatRating extends FlatRadiogroup {
     protected async generateHorisontallyItems(point: IPoint) {
         const rowsFlats: CompositeBrick[] = [new CompositeBrick()];
         const currPoint: IPoint = SurveyHelper.clone(point);
-        for (let i: number = 0; i < this.questionRating.visibleRateValues.length; i++) {
+        for (let i: number = 0; i < this.question.visibleRateValues.length; i++) {
             const itemFlat: IPdfBrick = await this.generateFlatHorisontalComposite(currPoint,
-                this.questionRating.visibleRateValues[i], i);
+                this.question.visibleRateValues[i], i);
             rowsFlats[rowsFlats.length - 1].addBrick(itemFlat);
             const leftWidth: number = this.controller.paperWidth -
                 this.controller.margins.right - itemFlat.xRight;
@@ -72,7 +72,7 @@ export class FlatRating extends FlatRadiogroup {
             else {
                 currPoint.xLeft = point.xLeft;
                 currPoint.yTop = itemFlat.yBot;
-                if (i !== this.questionRating.visibleRateValues.length - 1) {
+                if (i !== this.question.visibleRateValues.length - 1) {
                     rowsFlats[rowsFlats.length - 1].addBrick(
                         SurveyHelper.createRowlineFlat(currPoint, this.controller));
                     currPoint.yTop += SurveyHelper.EPSILON;
@@ -82,16 +82,54 @@ export class FlatRating extends FlatRadiogroup {
         }
         return rowsFlats;
     }
+    public generateFlatItem(rect: IRect, item: ItemValue, index: number): IPdfBrick {
+        if (index === 0) {
+            this.radioGroupWrap = new RadioGroupWrap(this.question.id,
+                this.controller, { readOnly: this.question.isReadOnly, question: this.question });
+            (<any>this.question).pdfRadioGroupWrap = this.radioGroupWrap;
+        }
+        else if (typeof this.radioGroupWrap === 'undefined') {
+            this.radioGroupWrap = (<any>this.question).pdfRadioGroupWrap;
+        }
+        const isChecked: boolean = this.question.isItemSelected(item);
+        return new RadioItemBrick(this.controller, rect, this.radioGroupWrap, {
+            index,
+            checked: isChecked,
+            shouldRenderReadOnly: this.radioGroupWrap.readOnly && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform' || this.controller.compress,
+            updateOptions: options => this.survey.updateRadioItemAcroformOptions(options, this.question, item),
+        },
+        {
+            fontName: this.styles.inputFont,
+            fontSize: this.styles.inputFontSize,
+            lineHeight: this.styles.inputFontSize,
+            fontColor: this.styles.inputFontColor,
+            fontStyle: 'normal',
+            checkMark: this.styles.inputSymbol,
+            borderColor: this.styles.inputBorderColor,
+            borderWidth: this.styles.inputBorderWidth,
+        });
+    }
+    protected async generateVerticallyItems (point: IPoint): Promise<IPdfBrick[]> {
+        const currPoint: IPoint = SurveyHelper.clone(point);
+        const flats: IPdfBrick[] = [];
+        for (let i: number = 0; i < this.question.visibleRateValues.length; i++) {
+            const itemFlat: IPdfBrick = await this.generateFlatComposite(currPoint, this.question.visibleRateValues[i], i);
+            currPoint.yTop = itemFlat.yBot + this.styles.gapBetweenRows;
+            flats.push(itemFlat);
+        }
+        return flats;
+    }
+
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         let isVertical: boolean = false;
-        for (let i: number = 0; i < this.questionRating.visibleRateValues.length; i++) {
+        for (let i: number = 0; i < this.question.visibleRateValues.length; i++) {
             const itemText: LocalizableString = SurveyHelper.getRatingItemText(
-                this.questionRating, i, this.questionRating.visibleRateValues[i].locText);
+                this.question, i, this.question.visibleRateValues[i].locText);
             if (this.controller.measureText(itemText).width > this.controller.measureText(SurveyHelper.RATING_COLUMN_WIDTH).width) {
                 isVertical = true;
             }
         }
-        return isVertical ? this.generateVerticallyItems(point, this.questionRating.visibleRateValues) : this.generateHorisontallyItems(point);
+        return isVertical ? this.generateVerticallyItems(point) : this.generateHorisontallyItems(point);
     }
 }
 
