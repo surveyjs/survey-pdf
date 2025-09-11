@@ -33,7 +33,7 @@ export class FlatPanel<T extends PanelModel = PanelModel> {
         if(this.panel.hasDescriptionUnderTitle || this.panel.hasTitle) {
             const headerFlats = await this.createHeaderFlats(currPoint);
             panelFlats.push(...headerFlats);
-            currPoint.yTop = headerFlats[headerFlats.length - 1].yBot + this.styles.panelContGap + SurveyHelper.EPSILON;
+            currPoint.yTop = headerFlats[headerFlats.length - 1].yBot + this.styles.contentGap + SurveyHelper.EPSILON;
         }
         panelFlats.push(...await this.generateRowsFlats(currPoint));
         return panelFlats;
@@ -43,7 +43,8 @@ export class FlatPanel<T extends PanelModel = PanelModel> {
         const textOptions:Partial<ITextAppearanceOptions> = {
             fontSize: this.styles.titleFontSize,
             fontStyle: this.styles.titleFontStyle,
-            fontColor: this.styles.titleFontColor
+            fontColor: this.styles.titleFontColor,
+            lineHeight: this.styles.titleLineHeight
         };
         let currPoint = SurveyHelper.clone(point);
         if (this.panel.no) {
@@ -105,7 +106,7 @@ export class FlatPanel<T extends PanelModel = PanelModel> {
             for (let i: number = 0; i < visibleElements.length; i++) {
                 let element: IElement = visibleElements[i];
                 if (!element.isVisible) continue;
-                const gap = 0;//this.controller.unitWidth;
+                const gap = this.styles.gapBetweenElements;//this.controller.unitWidth;
                 const persWidth: number = SurveyHelper.parseWidth(element.renderWidth,
                     width - (visibleElements.length - 1) * gap,
                     visibleElements.length);
@@ -145,7 +146,7 @@ export class FlatPanel<T extends PanelModel = PanelModel> {
                     brick.fitToHeight(rowRect.yBot - rowRect.yTop);
                 });
                 currPoint.xLeft = point.xLeft;
-                currPoint.yTop += this.styles.questionGapVertical;
+                currPoint.yTop += this.styles.gapBetweenRows;
                 rowContainers.forEach((elementFlat: ContainerBrick) => rowsFlats.push(...elementFlat.getBricks()));
                 rowsFlats.push(SurveyHelper.createRowlineFlat(currPoint, this.controller));
                 currPoint.yTop += SurveyHelper.EPSILON;

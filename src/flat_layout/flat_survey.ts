@@ -114,7 +114,7 @@ export class FlatSurvey {
             point.yTop = SurveyHelper.createPoint(SurveyHelper.mergeRects(...flats[0])).yTop;
             flats[0].push(SurveyHelper.createRowlineFlat(point, controller));
             const styles = survey.styles;
-            point.yTop += styles.panelContGap + SurveyHelper.EPSILON;
+            point.yTop += styles.contentGap + SurveyHelper.EPSILON;
         }
         for (let i: number = 0; i < survey.visiblePages.length; i++) {
             survey.currentPage = survey.visiblePages[i];

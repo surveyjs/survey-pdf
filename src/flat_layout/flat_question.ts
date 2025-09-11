@@ -24,7 +24,8 @@ export class FlatQuestion<T extends Question = Question> implements IFlatQuestio
         const textOptions:Partial<ITextAppearanceOptions> = {
             fontSize: this.styles.titleFontSize,
             fontStyle: this.styles.titleFontStyle,
-            fontColor: this.styles.titleFontColor
+            fontColor: this.styles.titleFontColor,
+            lineHeight: this.styles.titleLineHeight
         };
         if (this.question.no) {
             const noText: string = this.question.no + ' ';
@@ -50,7 +51,7 @@ export class FlatQuestion<T extends Question = Question> implements IFlatQuestio
         composite.addBrick(textFlat);
         this.controller.popMargins();
         if (this.question.isRequired) {
-            const requiredText: string = this.question.requiredText;
+            const requiredText: string = this.question.requiredMark;
             if (SurveyHelper.hasHtml(this.question.locTitle)) {
                 currPoint = SurveyHelper.createPoint(textFlat.unfold()[0], false, false);
                 this.controller.pushMargins();

@@ -6,13 +6,14 @@ export function getDefaultStyles (baseSize: number) {
         titleFontColor: '#000',
         descriptionFontSize: 2,
         descriptionGap: baseSize * 1.5,
-        panelContGap: baseSize * 4.0,
+        contentGap: baseSize * 4.0,
         question: {
             headerBorderWidth: 0,
             headerPaddingTop: 0,
             headerPaddingBottom: 0,
             headerPaddingRight: 0,
             headerPaddingLeft: 0,
+            titleLineHeight: baseSize * 3,
             titleFontSize: baseSize * 2,
             titleFontStyle: 'normal',
             titleFontColor: '#000',
@@ -41,7 +42,6 @@ export function getDefaultStyles (baseSize: number) {
             commentLineHeight: baseSize * 3
         },
         panel: {
-
             wrapperPaddingTop: 0,
             wrapperPaddingBottom: 0,
             wrapperPaddingLeft: 0,
@@ -50,8 +50,10 @@ export function getDefaultStyles (baseSize: number) {
             titleFontSize: baseSize * 2,
             titleFontStyle: 'bold',
             titleFontColor: '#000',
-            questionGapVertical: 0,
-            panelContGap: 0,
+            titleLineHeight: baseSize * 3.5,
+            gapBetweenRows: 0,
+            gapBetweenElements: 0,
+            contentGap: 0,
             panelDescriptionGap: baseSize * 0.25,
             descriptionFontSize: baseSize * 2,
             descriptionGap: baseSize * 0.5,
@@ -64,7 +66,8 @@ export function getDefaultStyles (baseSize: number) {
             headerBackgroundColor: '#E5E5E5'
         },
         page: {
-            questionGapVertical: baseSize * 1.5,
+            gapBetweenRows: baseSize * 1.5,
+            gapBetweenElements: 0,
             titleFontSize: baseSize * 1.3,
             titleFontStyle: 'bold',
             titleFontColor: '#000'
@@ -130,6 +133,10 @@ export function getDefaultStyles (baseSize: number) {
             checkmarkSymbol: '3',
         },
         multipletext: {
+            labelFontSize: baseSize * 2.5,
+            labelLineHeight: baseSize * 3,
+            labelFontStyle: 'normal',
+            labelFontColor: '#000',
             gapBetweenColumns: 1.5,
             rowsGap: baseSize * 0.195
         },
@@ -138,10 +145,10 @@ export function getDefaultStyles (baseSize: number) {
             inputWidth: baseSize * 2,
             gapBetweenRows: baseSize * 0.25,
             inputSymbol: 'l',
-            labelFontSize: baseSize * 2.5,
-            labelLineHeight: baseSize * 3,
             gapBetweenItemText: baseSize,
             gapBetweenItemTextVertical: 0,
+            labelFontSize: baseSize * 2.5,
+            labelLineHeight: baseSize * 3,
             labelFontStyle: 'normal',
             labelFontColor: '#000',
             radiomarkFont: 'zapfdingbats',
@@ -159,6 +166,7 @@ export function getDefaultStyles (baseSize: number) {
             gapBetweenColumns: baseSize * 1.5,
         },
         dropdown: {
+            contentGapVertical: baseSize * 0.5,
             gapBetweenRows: baseSize * 0.25,
             inputFontSize: baseSize * 2.5,
             inputLineHeight: baseSize * 3,
