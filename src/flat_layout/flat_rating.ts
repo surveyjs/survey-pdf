@@ -25,7 +25,7 @@ export class FlatRating extends FlatQuestion<QuestionRatingModel> {
         const textPoint: IPoint = SurveyHelper.clone(point);
         textPoint.xLeft += halfWidth;
         const compositeFlat: CompositeBrick = new CompositeBrick(await SurveyHelper.
-            createTextFlat(textPoint, this.controller, itemText, { fontStyle: 'bold' }));
+            createTextFlat(textPoint, this.controller, itemText, { fontStyle: this.styles.labelFontStyle, fontColor: this.styles.labelFontColor, fontSize: this.styles.labelFontSize, lineHeight: this.styles.labelLineHeight }));
         this.controller.popMargins();
         let textWidth: number = compositeFlat.width;
         if (textWidth < SurveyHelper.getRatingMinWidth(this.controller)) {
@@ -38,6 +38,7 @@ export class FlatRating extends FlatQuestion<QuestionRatingModel> {
         }
         const radioPoint: IPoint = SurveyHelper.createPoint(compositeFlat);
         radioPoint.xLeft = point.xLeft;
+        radioPoint.yTop += this.styles.gapBetweenItemTextVertical;
         compositeFlat.addBrick(this.generateFlatItem(SurveyHelper.createRect(
             radioPoint, textWidth, this.styles.inputHeight), item, index));
         return compositeFlat;

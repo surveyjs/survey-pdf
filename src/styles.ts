@@ -138,6 +138,12 @@ export function getDefaultStyles (baseSize: number) {
             inputWidth: baseSize * 2,
             gapBetweenRows: baseSize * 0.25,
             inputSymbol: 'l',
+            labelFontSize: baseSize * 2.5,
+            labelLineHeight: baseSize * 3,
+            gapBetweenItemText: baseSize,
+            gapBetweenItemTextVertical: 0,
+            labelFontStyle: 'normal',
+            labelFontColor: '#000',
             radiomarkFont: 'zapfdingbats',
             inputBorderWidth: baseSize * 0.125,
             inputFontSize: baseSize * 1.25
