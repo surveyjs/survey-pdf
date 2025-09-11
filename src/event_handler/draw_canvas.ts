@@ -228,7 +228,7 @@ export class DrawCanvas {
             fontStyle: textOptions.isBold ? 'bold' : 'normal',
             fontSize: textOptions.fontSize,
             fontName: this.controller.fontName,
-            fontColor: SurveyHelper.TEXT_COLOR,
+            fontColor: '#404040',
             lineHeight: textOptions.fontSize * 1.15
         };
         const textSize: ISize = this.controller.measureText(textOptions.text, options);

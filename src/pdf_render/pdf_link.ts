@@ -16,7 +16,7 @@ export class LinkBrick extends TextBrick {
     }
     public async renderInteractive(): Promise<void> {
         let oldTextColor: string = this.controller.doc.getTextColor();
-        this.controller.doc.setTextColor(SurveyHelper.BACKGROUND_COLOR);
+        this.controller.doc.setTextColor('#FFFFFF');
         let descent: number = this.controller.unitHeight *
             (this.controller.doc.getLineHeightFactor() -
                 LinkBrick.SCALE_FACTOR_MAGIC);

@@ -37,9 +37,6 @@ export class SurveyHelper {
     public static HTML_TAIL_TEXT_SCALE: number = 0.24;
     public static VALUE_READONLY_PADDING_SCALE: number = 0.3;
     public static HTML_TO_IMAGE_QUALITY: number = 1.0;
-    public static FORM_BORDER_COLOR: string = '#9f9f9f';
-    public static TEXT_COLOR: string = '#404040';
-    public static BACKGROUND_COLOR: string = '#FFFFFF';
     public static TITLE_LOCATION_MATRIX: string = 'matrix';
     public static STANDARD_FONT: string = 'helvetica';
     public static CUSTOM_FONT_ENCODING: string = 'Identity-H';
@@ -141,14 +138,13 @@ export class SurveyHelper {
     public static chooseHtmlFont(controller: DocController, fontName?: string): string {
         return controller.useCustomFontInHtml ? fontName ?? controller.fontName : this.STANDARD_FONT;
     }
-    public static generateCssTextRule(fontSize: number, fontStyle: string, fontName: string): string {
-        return `"font-size: ${fontSize}pt; font-weight: ${fontStyle}; font-family: ${fontName}; color: ${this.TEXT_COLOR};"`;
+    public static generateCssTextRule(appearance: ITextAppearanceOptions): string {
+        return `"font-size: ${appearance.fontSize}pt; font-weight: ${appearance.fontStyle}; font-family: ${appearance.fontName}; color: ${appearance.fontColor};"`;
     }
     public static createHtmlContainerBlock(html: string, controller: DocController, appearance?: Partial<ITextAppearanceOptions>): string {
         const newApperance: ITextAppearanceOptions = SurveyHelper.getPatchedTextAppearanceOptions(controller, appearance);
         const font = this.chooseHtmlFont(controller, newApperance.fontName);
-        return `<div class="__surveypdf_html" style=${this.generateCssTextRule(
-            newApperance.fontSize, newApperance.fontStyle, font)}>` +
+        return `<div class="__surveypdf_html" style=${this.generateCssTextRule(newApperance)}>` +
             `<style>.__surveypdf_html p { margin: 0; line-height: ${controller.fontSize}pt } body { margin: 0; }</style>${html}</div>`;
     }
     public static splitHtmlRect(controller: DocController, htmlBrick: IPdfBrick): IPdfBrick {
@@ -237,7 +233,7 @@ export class SurveyHelper {
             fontName: controller.fontName,
             fontStyle: controller.fontStyle,
             lineHeight: controller.fontSize,
-            fontColor: SurveyHelper.TEXT_COLOR
+            fontColor: '#404040'
         };
     }
     public static hasHtml(text: LocalizableString): boolean {
@@ -345,7 +341,7 @@ export class SurveyHelper {
         canvas.height = divHeight * SurveyHelper.HTML_TO_IMAGE_QUALITY;
         const context: CanvasRenderingContext2D = canvas.getContext('2d');
         context.scale(SurveyHelper.HTML_TO_IMAGE_QUALITY, SurveyHelper.HTML_TO_IMAGE_QUALITY);
-        context.fillStyle = SurveyHelper.BACKGROUND_COLOR;
+        context.fillStyle = '#FFFFFF';
         context.fillRect(0, 0, divWidth, divHeight);
         context.drawImage(img, 0, 0);
     }
