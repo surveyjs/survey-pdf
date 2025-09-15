@@ -14,6 +14,7 @@ export interface IFlatQuestion {
     generateFlatsContent(point: IPoint): Promise<IPdfBrick[]>;
     generateFlats(point: IPoint): Promise<IPdfBrick[]>;
 }
+
 export class FlatQuestion<T extends Question = Question> implements IFlatQuestion {
     public constructor(protected survey: SurveyPDF,
         protected question: T, protected controller: DocController, protected styles: IStyles) {
@@ -163,6 +164,7 @@ export class FlatQuestion<T extends Question = Question> implements IFlatQuestio
         const flats: IPdfBrick[] = [];
         let titleLocation: string = this.question.getTitleLocation();
         titleLocation = this.question.hasTitle ? titleLocation : 'hidden';
+        const titleLocationMatrix = 'matrix';
         switch (titleLocation) {
             case 'top':
             case 'default': {
@@ -222,11 +224,11 @@ export class FlatQuestion<T extends Question = Question> implements IFlatQuestio
                 break;
             }
             case 'hidden':
-            case SurveyHelper.TITLE_LOCATION_MATRIX:
+            case titleLocationMatrix:
             default: {
                 const contentPoint: IPoint = SurveyHelper.clone(indentPoint);
                 this.controller.pushMargins();
-                if (titleLocation !== SurveyHelper.TITLE_LOCATION_MATRIX) {
+                if (titleLocation !== titleLocationMatrix) {
                     const indent = this.styles.contentIndent;
                     contentPoint.xLeft += indent;
                     this.controller.margins.left += indent;

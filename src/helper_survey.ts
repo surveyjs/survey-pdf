@@ -36,10 +36,6 @@ export class SurveyHelper {
     public static MULTIPLETEXT_TEXT_PERS: number = Math.E / 10.0;
     public static HTML_TAIL_TEXT_SCALE: number = 0.24;
     public static VALUE_READONLY_PADDING_SCALE: number = 0.3;
-    public static HTML_TO_IMAGE_QUALITY: number = 1.0;
-    public static TITLE_LOCATION_MATRIX: string = 'matrix';
-    public static STANDARD_FONT: string = 'helvetica';
-    public static CUSTOM_FONT_ENCODING: string = 'Identity-H';
 
     public static parseWidth(width: string, maxWidth: number,
         columnsCount: number = 1, defaultUnit?: string): number {
@@ -136,7 +132,7 @@ export class SurveyHelper {
         };
     }
     public static chooseHtmlFont(controller: DocController, fontName?: string): string {
-        return controller.useCustomFontInHtml ? fontName ?? controller.fontName : this.STANDARD_FONT;
+        return controller.useCustomFontInHtml ? fontName ?? controller.fontName : 'helvetica';
     }
     public static generateCssTextRule(appearance: ITextAppearanceOptions): string {
         return `"font-size: ${appearance.fontSize}pt; font-weight: ${appearance.fontStyle}; font-family: ${appearance.fontName}; color: ${appearance.fontColor};"`;
@@ -336,11 +332,11 @@ export class SurveyHelper {
             this.htmlToXml(html) + '</foreignObject></svg>';
         return { svg, divWidth, divHeight };
     }
-    private static setCanvas(canvas: HTMLCanvasElement, divWidth: number, divHeight: number, img: HTMLImageElement): void {
-        canvas.width = divWidth * SurveyHelper.HTML_TO_IMAGE_QUALITY;
-        canvas.height = divHeight * SurveyHelper.HTML_TO_IMAGE_QUALITY;
+    private static setCanvas(controller: DocController, canvas: HTMLCanvasElement, divWidth: number, divHeight: number, img: HTMLImageElement): void {
+        canvas.width = divWidth * controller.htmlToImageQuality;
+        canvas.height = divHeight * controller.htmlToImageQuality;
         const context: CanvasRenderingContext2D = canvas.getContext('2d');
-        context.scale(SurveyHelper.HTML_TO_IMAGE_QUALITY, SurveyHelper.HTML_TO_IMAGE_QUALITY);
+        context.scale(controller.htmlToImageQuality, controller.htmlToImageQuality);
         context.fillStyle = '#FFFFFF';
         context.fillRect(0, 0, divWidth, divHeight);
         context.drawImage(img, 0, 0);
@@ -354,8 +350,8 @@ export class SurveyHelper {
         return new Promise((resolve) => {
             img.onload = function () {
                 const canvas: HTMLCanvasElement = document.createElement('canvas');
-                SurveyHelper.setCanvas(canvas, divWidth, divHeight, img);
-                const url: string = canvas.toDataURL('image/jpeg', SurveyHelper.HTML_TO_IMAGE_QUALITY);
+                SurveyHelper.setCanvas(controller, canvas, divWidth, divHeight, img);
+                const url: string = canvas.toDataURL('image/jpeg', controller.htmlToImageQuality);
                 canvas.remove();
                 resolve({ url: url, aspect: divWidth / divHeight });
             };
@@ -648,7 +644,7 @@ export class SurveyHelper {
         return controller.doc.internal.getFont(fontName).fontName === fontName;
     }
     public static isCustomFont(controller: DocController, fontName: string): boolean {
-        return controller.doc.internal.getFont(fontName).encoding === this.CUSTOM_FONT_ENCODING;
+        return controller.doc.internal.getFont(fontName).encoding === 'Identity-H';
     }
     public static fixFont(controller: DocController): void {
         if (this.isCustomFont(controller, controller.fontName)) {

@@ -227,6 +227,8 @@ export interface IDocOptions {
      * Default value: `false` (include all choices)
      */
     tagboxSelectedChoicesOnly?: boolean;
+
+    htmlToImageQuality?: number;
 }
 
 export class DocOptions implements IDocOptions {
@@ -235,6 +237,7 @@ export class DocOptions implements IDocOptions {
     protected _orientation: 'l' | 'p';
     protected _format: string | number[];
     protected _fontSize: number;
+    protected _htmlToImageQuality: number;
     protected _fontName: string;
     public static SEGOE_NORMAL: string;
     public static SEGOE_BOLD: string;
@@ -266,7 +269,7 @@ export class DocOptions implements IDocOptions {
         this._fontSize = options.fontSize || DocOptions.FONT_SIZE;
         if(!options.fontName) {
             if(!DocOptions.SEGOE_BOLD && !DocOptions.SEGOE_NORMAL) {
-                this._fontName = SurveyHelper.STANDARD_FONT;
+                this._fontName = 'helvetica';
             } else {
                 this._fontName = 'segoe';
             }
@@ -312,6 +315,7 @@ export class DocOptions implements IDocOptions {
         this._useLegacyBooleanRendering = options.useLegacyBooleanRendering || false;
         this._isRTL = options.isRTL || false;
         this._tagboxSelectedChoicesOnly = options.tagboxSelectedChoicesOnly || false;
+        this._htmlToImageQuality = options.htmlToImageQuality || 1;
     }
     public get leftTopPoint(): IPoint {
         return {
@@ -366,6 +370,9 @@ export class DocOptions implements IDocOptions {
     }
     public get tagboxSelectedChoicesOnly(): boolean {
         return this._tagboxSelectedChoicesOnly;
+    }
+    public get htmlToImageQuality(): number {
+        return this._htmlToImageQuality;
     }
 }
 

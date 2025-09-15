@@ -51,7 +51,7 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
                         .generateFlatItem(SurveyHelper.createRect(point, this.styles.inputWidth, this.styles.inputHeight), cell.item, cell.choiceIndex));
                 }
                 else {
-                    cell.question.titleLocation = SurveyHelper.TITLE_LOCATION_MATRIX;
+                    cell.question.titleLocation = 'matrix';
                     bricks.push(...await SurveyHelper.generateQuestionFlats(
                         this.survey, this.controller, cell.question, point, this.survey.getStylesForElement(cell.question)));
                 }
