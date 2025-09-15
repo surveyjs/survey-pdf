@@ -12,7 +12,7 @@ export class FlatImagePicker extends FlatQuestion<QuestionImagePickerModel> {
     private radioGroupWrap: any;
     private async generateFlatItem(point: IPoint, item: ItemValue, index: number): Promise<IPdfBrick> {
         const pageAvailableWidth = SurveyHelper.getPageAvailableWidth(this.controller);
-        const imageFlat = await SurveyHelper.createImageFlat(point, this.question, this.controller, { link: (<any>item).imageLink, width: pageAvailableWidth, height: pageAvailableWidth / SurveyHelper.IMAGEPICKER_RATIO });
+        const imageFlat = await SurveyHelper.createImageFlat(point, this.question, this.controller, { link: (<any>item).imageLink, width: pageAvailableWidth, height: pageAvailableWidth / this.styles.imageRatio });
         const compositeFlat: CompositeBrick = new CompositeBrick(imageFlat);
         let buttonPoint: IPoint = SurveyHelper.createPoint(compositeFlat);
         if (this.question.showLabel) {
@@ -75,26 +75,37 @@ export class FlatImagePicker extends FlatQuestion<QuestionImagePickerModel> {
         }
         return compositeFlat;
     }
+    protected getColumnsInfo(): { columnsCount: number, columnWidth: number } {
+        const { gapBetweenColumns, imageMinWidth, imageMaxWidth } = this.styles;
+        const availableWidth = SurveyHelper.getPageAvailableWidth(this.controller);
+        let columnsCount = this.question.colCount == 0 ? this.question.visibleChoices.length : this.question.colCount;
+        let columnWidth: number;
+        const getColumnWidth = () => {
+            return Math.max(Math.min((availableWidth - gapBetweenColumns * (columnsCount - 1)) / columnsCount, imageMaxWidth), 1);
+        };
+        if(imageMinWidth * columnsCount + gapBetweenColumns * (columnsCount - 1) < availableWidth) {
+            columnWidth = getColumnWidth();
+        } else {
+            columnsCount = Math.max(Math.ceil((availableWidth + gapBetweenColumns)/ (imageMinWidth + gapBetweenColumns)), 1);
+            columnWidth = getColumnWidth();
+        }
+        return { columnsCount, columnWidth };
+    }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         const rowsFlats: CompositeBrick[] = [new CompositeBrick()];
-        const colWidth: number = SurveyHelper.getImagePickerAvailableWidth(
-            this.controller) / SurveyHelper.IMAGEPICKER_COUNT;
-        let cols: number = ~~(SurveyHelper.
-            getPageAvailableWidth(this.controller) / colWidth) || 1;
-        const count: number = this.question.visibleChoices.length;
-        cols = cols <= count ? cols : count;
-        const rows: number = ~~(Math.ceil(count / cols));
+        const { columnsCount: columnsCount, columnWidth: columnWidth } = this.getColumnsInfo();
+        const rows: number = Math.ceil(this.question.visibleChoices.length / columnsCount);
         const currPoint: IPoint = SurveyHelper.clone(point);
         for (let i: number = 0; i < rows; i++) {
             let yBot: number = currPoint.yTop;
             this.controller.pushMargins();
             let currMarginLeft: number = this.controller.margins.left;
-            for (let j: number = 0; j < cols; j++) {
-                const index: number = i * cols + j;
-                if (index == count) break;
+            for (let j: number = 0; j < columnsCount; j++) {
+                const index: number = i * columnsCount + j;
+                if (index == this.question.visibleChoices.length) break;
                 this.controller.margins.left = currMarginLeft;
                 this.controller.margins.right = this.controller.paperWidth -
-                    currMarginLeft - colWidth;
+                    currMarginLeft - columnWidth;
                 currMarginLeft = this.controller.paperWidth -
                     this.controller.margins.right + this.controller.unitWidth;
                 currPoint.xLeft = this.controller.margins.left;
@@ -109,7 +120,7 @@ export class FlatImagePicker extends FlatQuestion<QuestionImagePickerModel> {
             if (i !== rows - 1) {
                 rowsFlats[rowsFlats.length - 1].addBrick(
                     SurveyHelper.createRowlineFlat(currPoint, this.controller));
-                currPoint.yTop += SurveyHelper.EPSILON;
+                currPoint.yTop += this.styles.gapBetweenRows;
                 rowsFlats.push(new CompositeBrick());
             }
         }

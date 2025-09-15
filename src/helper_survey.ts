@@ -26,13 +26,11 @@ export type IBorderAppearanceOptions = {
 }
 
 export class SurveyHelper {
-    public static EPSILON: number = 2.2204460492503130808472633361816e-15;
+    public static readonly EPSILON: number = 2.2204460492503130808472633361816e-15;
     public static OTHER_ROWS_COUNT: number = 2;
     public static RATING_MIN_WIDTH: number = 3;
     public static RATING_COLUMN_WIDTH: number = 5;
     public static MATRIX_COLUMN_WIDTH: number = 5;
-    public static IMAGEPICKER_COUNT: number = 4;
-    public static IMAGEPICKER_RATIO: number = 4.0 / 3.0;
     public static MULTIPLETEXT_TEXT_PERS: number = Math.E / 10.0;
     public static HTML_TAIL_TEXT_SCALE: number = 0.24;
     public static VALUE_READONLY_PADDING_SCALE: number = 0.3;
@@ -582,11 +580,6 @@ export class SurveyHelper {
     }
     public static getPageAvailableWidth(controller: DocController): number {
         return controller.paperWidth - controller.margins.left - controller.margins.right;
-    }
-    public static getImagePickerAvailableWidth(controller: DocController): number {
-        const width: number = (this.getPageAvailableWidth(controller) -
-            (this.IMAGEPICKER_COUNT - 1) * controller.unitHeight);
-        return width > 0 ? width : controller.unitHeight;
     }
     public static getColumnWidth(controller: DocController, colCount: number, gapBetweenColumns: number) {
         return (this.getPageAvailableWidth(controller) - (colCount - 1) *

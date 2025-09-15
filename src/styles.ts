@@ -194,7 +194,12 @@ export function getDefaultStyles (baseSize: number) {
             radiomarkSymbol: 'l',
             radiomarkFontSize: baseSize * 2,
             radiomarkFont: 'zapfdingbats',
-            inputHeight: baseSize * 2
+            inputHeight: baseSize * 2,
+            gapBetweenColumns: baseSize * 1.5,
+            gapBetweenRows: baseSize * 1.5,
+            imageRatio: 4 / 3,
+            imageMinWidth: baseSize * 12.5,
+            imageMaxWidth: baseSize * 37.5
         },
         textbase: {
             inputFontSize: baseSize * 2.5,
