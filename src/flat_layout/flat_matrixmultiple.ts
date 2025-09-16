@@ -141,7 +141,7 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
             columnWidth.push(width);
         }
         if (remainColCount === 0) return columnWidth;
-        const heuristicWidth: number = this.controller.measureText(SurveyHelper.MATRIX_COLUMN_WIDTH).width;
+        const heuristicWidth: number = this.styles.columnMinWidth;
         unsetCells.sort((cell1: QuestionMatrixDropdownRenderedCell, cell2: QuestionMatrixDropdownRenderedCell) => {
             let minWidth1 = SurveyHelper.parseWidth(cell1.minWidth, availableWidth, colCount) || 0.0;
             let minWidth2 = SurveyHelper.parseWidth(cell2.minWidth, availableWidth, colCount) || 0.0;

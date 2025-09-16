@@ -14,7 +14,7 @@ export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSele
         return await SurveyHelper.createCommentFlat(
             point, this.question, this.controller, {
                 fieldName: commentModel.id,
-                rows: SurveyHelper.OTHER_ROWS_COUNT,
+                rows: this.controller.otherRowsCount,
                 value: commentModel.getTextValue(),
                 shouldRenderBorders: settings.readOnlyCommentRenderMode === 'textarea',
                 isReadOnly: this.question.isReadOnly,
@@ -73,14 +73,14 @@ export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSele
         let currentColCount: number = colCount;
         if (colCount == 0) {
             currentColCount = Math.floor(SurveyHelper.getPageAvailableWidth(this.controller)
-                / this.controller.measureText(SurveyHelper.MATRIX_COLUMN_WIDTH).width) || 1;
+                / this.styles.columnMinWidth) || 1;
             if (visibleChoices.length < currentColCount) {
                 currentColCount = visibleChoices.length;
             }
         }
         else if (colCount > 1) {
             currentColCount = (SurveyHelper.getColumnWidth(this.controller, colCount, this.styles.gapBetweenColumns) <
-                this.controller.measureText(SurveyHelper.MATRIX_COLUMN_WIDTH).width) ? 1 : colCount;
+                this.styles.columnMinWidth) ? 1 : colCount;
             if(currentColCount == colCount) {
                 return await this.generateColumns(point);
             }

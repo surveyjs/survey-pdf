@@ -229,6 +229,7 @@ export interface IDocOptions {
     tagboxSelectedChoicesOnly?: boolean;
 
     htmlToImageQuality?: number;
+    otherRowsCount?: number;
 }
 
 export class DocOptions implements IDocOptions {
@@ -253,6 +254,7 @@ export class DocOptions implements IDocOptions {
     protected _useLegacyBooleanRendering: boolean
     protected _isRTL: boolean;
     protected _tagboxSelectedChoicesOnly: boolean;
+    protected _otherRowsCount: number;
     public constructor(options: IDocOptions) {
         if (typeof options.orientation === 'undefined') {
             if (typeof options.format === 'undefined' ||
@@ -315,7 +317,8 @@ export class DocOptions implements IDocOptions {
         this._useLegacyBooleanRendering = options.useLegacyBooleanRendering || false;
         this._isRTL = options.isRTL || false;
         this._tagboxSelectedChoicesOnly = options.tagboxSelectedChoicesOnly || false;
-        this._htmlToImageQuality = options.htmlToImageQuality || 1;
+        this._htmlToImageQuality = options.htmlToImageQuality ?? 1;
+        this._otherRowsCount = options.otherRowsCount ?? 2;
     }
     public get leftTopPoint(): IPoint {
         return {
@@ -373,6 +376,9 @@ export class DocOptions implements IDocOptions {
     }
     public get htmlToImageQuality(): number {
         return this._htmlToImageQuality;
+    }
+    public get otherRowsCount(): number {
+        return this._otherRowsCount;
     }
 }
 

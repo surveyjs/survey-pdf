@@ -73,6 +73,7 @@ export function getDefaultStyles (baseSize: number) {
             titleFontColor: '#000'
         },
         selectbase: {
+            columnMinWidth: baseSize * 5,
             gapBetweenColumns: 1.5,
             gapBetweenRows: baseSize,
             gapBetweenItemText: baseSize,
@@ -94,6 +95,7 @@ export function getDefaultStyles (baseSize: number) {
             inputSymbol: 'l',
         },
         matrixbase: {
+            columnMinWidth: baseSize * 5,
             cellBorderWidth: baseSize * 0.125,
             cellBorderColor: '#000',
             cellPaddingTop: baseSize * 0.5,

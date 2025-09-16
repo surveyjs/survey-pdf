@@ -107,7 +107,7 @@ export class FlatQuestion<T extends Question = Question> implements IFlatQuestio
         return new CompositeBrick(otherTextFlat, await SurveyHelper.createCommentFlat(
             otherPoint, this.question, this.controller, {
                 fieldName: this.question.id + '_comment',
-                rows: SurveyHelper.OTHER_ROWS_COUNT,
+                rows: this.controller.otherRowsCount,
                 value: this.question.comment !== undefined && this.question.comment !== null ? this.question.comment : '',
                 shouldRenderBorders: settings.readOnlyCommentRenderMode === 'textarea',
                 isReadOnly: this.question.isReadOnly,

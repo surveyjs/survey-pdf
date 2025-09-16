@@ -13,7 +13,7 @@ export class FlatDropdown extends FlatQuestion<QuestionDropdownModel> {
         return await SurveyHelper.createCommentFlat(
             point, this.question, this.controller, {
                 fieldName: commentModel.id,
-                rows: SurveyHelper.OTHER_ROWS_COUNT,
+                rows: this.controller.otherRowsCount,
                 value: commentModel.getTextValue(),
                 shouldRenderBorders: settings.readOnlyCommentRenderMode === 'textarea',
                 isReadOnly: this.question.isReadOnly,

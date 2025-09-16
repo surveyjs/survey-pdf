@@ -89,7 +89,7 @@ export class FlatMatrix extends FlatQuestion<QuestionMatrixModel> {
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         this.calculateColumnsWidthes();
         const isVertical: boolean = this.question.renderAs === 'list' || this.controller.matrixRenderAs === 'list' ||
-            this.columnWidth < this.controller.measureText(SurveyHelper.MATRIX_COLUMN_WIDTH).width;
+            this.columnWidth < this.styles.columnMinWidth;
         let currPoint: IPoint = SurveyHelper.clone(point);
         const cells: IPdfBrick[] = [];
         if (!isVertical && this.question.showHeader && this.question.visibleColumns.length != 0) {
