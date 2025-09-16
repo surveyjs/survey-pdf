@@ -31,7 +31,6 @@ export class SurveyHelper {
     public static RATING_MIN_WIDTH: number = 3;
     public static RATING_COLUMN_WIDTH: number = 5;
     public static MULTIPLETEXT_TEXT_PERS: number = Math.E / 10.0;
-    public static VALUE_READONLY_PADDING_SCALE: number = 0.3;
 
     public static parseWidth(width: string, maxWidth: number,
         columnsCount: number = 1, defaultUnit?: string): number {
@@ -369,8 +368,6 @@ export class SurveyHelper {
         if (SurveyHelper.shouldRenderReadOnly(question, controller, options.isReadOnly)) {
             textFlat = await this.createReadOnlyTextFieldTextFlat(
                 point, controller, options.value, appearance);
-            const padding: number = controller.unitHeight * this.VALUE_READONLY_PADDING_SCALE;
-            if (textFlat.yBot + padding > rect.yBot) rect.yBot = textFlat.yBot + padding;
         }
         const comment = new TextFieldBrick(controller, rect, options, appearance);
         if(textFlat) {
@@ -501,10 +498,7 @@ export class SurveyHelper {
     }
     public static async createReadOnlyTextFieldTextFlat(point: IPoint,
         controller: DocController, value: string, appearance: ITextFieldBrickAppearanceOptions): Promise<IPdfBrick> {
-        const padding: number = controller.unitWidth * this.VALUE_READONLY_PADDING_SCALE;
-        point.yTop += padding;
-        point.xLeft += padding;
-        controller.pushMargins(point.xLeft, controller.margins.right + padding);
+        controller.pushMargins(point.xLeft, controller.margins.right);
         const textFlat: IPdfBrick = await this.createTextFlat(
             point, controller, value.toString(), appearance);
         controller.popMargins();

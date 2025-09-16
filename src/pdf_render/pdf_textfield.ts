@@ -91,14 +91,13 @@ export class TextFieldBrick extends PdfBrick {
                         bricksByPage[key as any].forEach((brick: PdfBrick) => {
                             compositeBrick.addBrick(brick);
                         });
-                        const padding = this.controller.unitHeight * SurveyHelper.VALUE_READONLY_PADDING_SCALE;
                         const borderRect = {
                             xLeft: this.xLeft,
                             xRight: this.xRight,
                             width: this.width,
-                            yTop: renderedOnOnePage ? this.yTop : compositeBrick.yTop - padding,
-                            yBot: renderedOnOnePage ? this.yBot : compositeBrick.yBot + padding,
-                            height: renderedOnOnePage ? this.height : compositeBrick.height + 2 * padding,
+                            yTop: renderedOnOnePage ? this.yTop : compositeBrick.yTop,
+                            yBot: renderedOnOnePage ? this.yBot : compositeBrick.yBot,
+                            height: renderedOnOnePage ? this.height : compositeBrick.height,
                         };
                         this.controller.setPage(Number(key));
                         SurveyHelper.renderFlatBorders(this.controller, borderRect, this.appearance);
