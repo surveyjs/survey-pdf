@@ -13,6 +13,7 @@ export function getDefaultStyles (baseSize: number) {
             headerPaddingBottom: 0,
             headerPaddingRight: 0,
             headerPaddingLeft: 0,
+            titleLeftWidthPers: Math.E / 10.0,
             titleLineHeight: baseSize * 3,
             titleFontSize: baseSize * 2,
             titleFontStyle: 'normal',
@@ -135,6 +136,7 @@ export function getDefaultStyles (baseSize: number) {
             checkmarkSymbol: '3',
         },
         multipletext: {
+            itemTitleWidthPers: Math.E / 10.0,
             labelFontSize: baseSize * 2.5,
             labelLineHeight: baseSize * 3,
             labelFontStyle: 'normal',

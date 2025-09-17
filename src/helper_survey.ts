@@ -28,7 +28,6 @@ export type IBorderAppearanceOptions = {
 export class SurveyHelper {
     public static readonly EPSILON: number = 2.2204460492503130808472633361816e-15;
     public static readonly HTML_TAIL_TEXT_SCALE: number = 0.24;
-    public static MULTIPLETEXT_TEXT_PERS: number = Math.E / 10.0;
 
     public static parseWidth(width: string, maxWidth: number,
         columnsCount: number = 1, defaultUnit?: string): number {

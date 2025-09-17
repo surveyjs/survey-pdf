@@ -16,7 +16,7 @@ export class FlatMultipleText extends FlatQuestion<QuestionMultipleTextModel> {
         const colWidth: number = SurveyHelper.getPageAvailableWidth(this.controller);
         this.controller.pushMargins();
         this.controller.margins.right = this.controller.paperWidth -
-            this.controller.margins.left - colWidth * SurveyHelper.MULTIPLETEXT_TEXT_PERS;
+            this.controller.margins.left - colWidth * this.styles.itemTitleWidthPers;
         const compositeFlat: CompositeBrick = new CompositeBrick(await SurveyHelper.
             createTextFlat(point, this.controller, item.locTitle, { fontColor: this.styles.labelFontColor, fontSize: this.styles.labelFontSize, lineHeight: this.styles.labelLineHeight, fontStyle: this.styles.labelFontStyle }));
         this.controller.popMargins();
@@ -24,7 +24,7 @@ export class FlatMultipleText extends FlatQuestion<QuestionMultipleTextModel> {
         const flatMultipleTextItemQuestion: IFlatQuestion = FlatRepository.getInstance().create(
             this.survey, item.editor, this.controller, this.survey.getStylesForElement(item.editor), 'text');
         const itemPoint: IPoint = SurveyHelper.createTextFieldRect({
-            xLeft: point.xLeft + colWidth * SurveyHelper.MULTIPLETEXT_TEXT_PERS, yTop: point.yTop },
+            xLeft: point.xLeft + colWidth * this.styles.itemTitleWidthPers, yTop: point.yTop },
         this.controller);
         compositeFlat.addBrick(...await (<FlatTextbox>flatMultipleTextItemQuestion).generateFlatsContent(itemPoint));
 

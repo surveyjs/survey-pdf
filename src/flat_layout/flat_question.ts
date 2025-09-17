@@ -208,8 +208,7 @@ export class FlatQuestion<T extends Question = Question> implements IFlatQuestio
             case 'left': {
                 this.controller.pushMargins(this.controller.margins.left,
                     this.controller.paperWidth - this.controller.margins.left -
-                        SurveyHelper.getPageAvailableWidth(this.controller) *
-                            SurveyHelper.MULTIPLETEXT_TEXT_PERS);
+                        SurveyHelper.getPageAvailableWidth(this.controller) * this.styles.titleLeftWidthPers);
                 const headerFlat: CompositeBrick = await this.generateFlatHeader(indentPoint);
                 const contentPoint: IPoint = SurveyHelper.createPoint(headerFlat, false, true);
                 this.controller.popMargins();
