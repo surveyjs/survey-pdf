@@ -145,6 +145,8 @@ export function getDefaultStyles (baseSize: number) {
         rating: {
             inputHeight: baseSize * 2,
             inputWidth: baseSize * 2,
+            itemMinWidth: baseSize * 3,
+            gapBetweenColumns: baseSize * 0.25,
             gapBetweenRows: baseSize * 0.25,
             inputSymbol: 'l',
             gapBetweenItemText: baseSize,

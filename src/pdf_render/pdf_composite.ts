@@ -91,9 +91,7 @@ export class CompositeBrick implements IPdfBrick {
     }
     translateY(func: TranslateYFunction): void {
         this.bricks.forEach(brick => brick.translateY(func));
-        const res = func(this.yTop, this.yBot);
-        this._yTop = res.yTop;
-        this._yBot = res.yBot;
+        this._updateRect();
     }
 
     public setPageNumber(number: number): void {

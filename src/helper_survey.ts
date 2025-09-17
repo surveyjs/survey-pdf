@@ -28,8 +28,6 @@ export type IBorderAppearanceOptions = {
 export class SurveyHelper {
     public static readonly EPSILON: number = 2.2204460492503130808472633361816e-15;
     public static readonly HTML_TAIL_TEXT_SCALE: number = 0.24;
-    public static RATING_MIN_WIDTH: number = 3;
-    public static RATING_COLUMN_WIDTH: number = 5;
     public static MULTIPLETEXT_TEXT_PERS: number = Math.E / 10.0;
 
     public static parseWidth(width: string, maxWidth: number,
@@ -554,21 +552,6 @@ export class SurveyHelper {
     public static getContentQuestionType(question: Question, survey: SurveyPDF): string {
         if(!!question.customWidget) return question.customWidget.pdfQuestionType;
         return !!(<any>question).contentQuestion ? 'custom_model' : this.getContentQuestionTypeRenderAs(question, survey);
-    }
-    public static getRatingMinWidth(controller: DocController): number {
-        return controller.measureText(this.RATING_MIN_WIDTH).width;
-    }
-    public static getRatingItemText(question: QuestionRatingModel,
-        index: number, locText: LocalizableString): LocalizableString {
-        const ratingItemLocText: LocalizableString = new LocalizableString(locText.owner, locText.useMarkdown);
-        ratingItemLocText.text = this.getLocString(locText);
-        if (index === 0 && question.minRateDescription) {
-            ratingItemLocText.text = question.locMinRateDescription.text + ' ' + this.getLocString(locText);
-        }
-        else if (index === question.visibleRateValues.length - 1 && question.maxRateDescription) {
-            ratingItemLocText.text = this.getLocString(locText) + ' ' + question.locMaxRateDescription.text;
-        }
-        return ratingItemLocText;
     }
     public static getPageAvailableWidth(controller: DocController): number {
         return controller.paperWidth - controller.margins.left - controller.margins.right;
