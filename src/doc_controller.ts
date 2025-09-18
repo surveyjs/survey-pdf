@@ -6,6 +6,7 @@ import { LocalizableString } from 'survey-core';
 import setRadioAppearance from './jspdf_plugins/acroform_radio';
 import './jspdf_plugins/acroform.js';
 import './jspdf_plugins/from_html.js';
+import { ITextAppearanceOptions } from './pdf_render/pdf_text';
 
 export interface IPoint {
     /**
@@ -226,14 +227,18 @@ export interface IDocOptions {
      * Default value: `false` (include all choices)
      */
     tagboxSelectedChoicesOnly?: boolean;
+
+    htmlToImageQuality?: number;
+    otherRowsCount?: number;
 }
 
 export class DocOptions implements IDocOptions {
     public static readonly MM_TO_PT = 72 / 25.4;
-    public static readonly FONT_SIZE = 14;
+    public static readonly FONT_SIZE = 8 * 72.0 / 96.0; //px to pt
     protected _orientation: 'l' | 'p';
     protected _format: string | number[];
     protected _fontSize: number;
+    protected _htmlToImageQuality: number;
     protected _fontName: string;
     public static SEGOE_NORMAL: string;
     public static SEGOE_BOLD: string;
@@ -249,6 +254,7 @@ export class DocOptions implements IDocOptions {
     protected _useLegacyBooleanRendering: boolean
     protected _isRTL: boolean;
     protected _tagboxSelectedChoicesOnly: boolean;
+    protected _otherRowsCount: number;
     public constructor(options: IDocOptions) {
         if (typeof options.orientation === 'undefined') {
             if (typeof options.format === 'undefined' ||
@@ -265,7 +271,7 @@ export class DocOptions implements IDocOptions {
         this._fontSize = options.fontSize || DocOptions.FONT_SIZE;
         if(!options.fontName) {
             if(!DocOptions.SEGOE_BOLD && !DocOptions.SEGOE_NORMAL) {
-                this._fontName = SurveyHelper.STANDARD_FONT;
+                this._fontName = 'helvetica';
             } else {
                 this._fontName = 'segoe';
             }
@@ -311,6 +317,8 @@ export class DocOptions implements IDocOptions {
         this._useLegacyBooleanRendering = options.useLegacyBooleanRendering || false;
         this._isRTL = options.isRTL || false;
         this._tagboxSelectedChoicesOnly = options.tagboxSelectedChoicesOnly || false;
+        this._htmlToImageQuality = options.htmlToImageQuality ?? 1;
+        this._otherRowsCount = options.otherRowsCount ?? 2;
     }
     public get leftTopPoint(): IPoint {
         return {
@@ -365,6 +373,12 @@ export class DocOptions implements IDocOptions {
     }
     public get tagboxSelectedChoicesOnly(): boolean {
         return this._tagboxSelectedChoicesOnly;
+    }
+    public get htmlToImageQuality(): number {
+        return this._htmlToImageQuality;
+    }
+    public get otherRowsCount(): number {
+        return this._otherRowsCount;
     }
 }
 
@@ -450,6 +464,16 @@ export class DocController extends DocOptions {
         this._doc.setFontSize(fontSize);
         this._helperDoc.setFontSize(fontSize);
     }
+    private _lineHeightFactor: number;
+    public get lineHeightFactor(): number {
+        return this._lineHeightFactor;
+    }
+    public set lineHeightFactor(lineHeightFactor: number) {
+        this._lineHeightFactor = lineHeightFactor;
+        this._doc.setLineHeightFactor(lineHeightFactor);
+        this._helperDoc.setLineHeightFactor(lineHeightFactor);
+    }
+
     public get fontStyle(): string {
         return this._fontStyle;
     }
@@ -458,11 +482,15 @@ export class DocController extends DocOptions {
         this._doc.setFont(this._fontName, fontStyle);
         this._helperDoc.setFont(this._fontName, fontStyle);
     }
-    public measureText(text: string | LocalizableString | number = 1, fontStyle: string = this._fontStyle,
-        fontSize: number = this._fontSize): ISize {
+    public measureText(text: string | LocalizableString | number = 1, options?: Partial<ITextAppearanceOptions>): ISize {
+        const newOptions: ITextAppearanceOptions = SurveyHelper.getPatchedTextAppearanceOptions(this, options);
         const oldFontSize: number = this._helperDoc.getFontSize();
-        this._helperDoc.setFontSize(fontSize);
-        this._helperDoc.setFont(this._fontName, fontStyle);
+        const oldFontName: string = this._helperDoc.getFont().fontName;
+        const oldFontStyle: string = this._helperDoc.getFont().fontStyle;
+        const oldLineHeightFactor = this._helperDoc.getLineHeightFactor();
+        this._helperDoc.setFontSize(newOptions.fontSize);
+        this._helperDoc.setFont(newOptions.fontName, newOptions.fontStyle);
+        this._helperDoc.setLineHeightFactor(newOptions.lineHeight / newOptions.fontSize);
         const height: number = this._helperDoc.getLineHeight() / this._helperDoc.internal.scaleFactor;
         let width: number = 0.0;
         if (typeof text === 'number') {
@@ -474,7 +502,8 @@ export class DocController extends DocOptions {
                 sm + this._helperDoc.getTextWidth(cr), 0.0);
         }
         this._helperDoc.setFontSize(oldFontSize);
-        this._helperDoc.setFont(this._fontName, 'normal');
+        this._helperDoc.setLineHeightFactor(oldLineHeightFactor);
+        this._helperDoc.setFont(oldFontName, oldFontStyle);
         return {
             width: width,
             height: height
