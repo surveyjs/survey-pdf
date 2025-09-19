@@ -1,5 +1,5 @@
 import { DocController, IPoint } from '../doc_controller';
-import { SurveyHelper } from '../helper_survey';
+import { BorderMode, SurveyHelper } from '../helper_survey';
 import { IPdfBrick } from './pdf_brick';
 import { CompositeBrick } from './pdf_composite';
 import { EmptyBrick } from './pdf_empty';
@@ -12,7 +12,7 @@ interface IContainerBrickAppearance {
     borderWidth: number;
     borderColor: string | null;
     backgroundColor: string | null;
-    borderOutside: boolean;
+    borderMode: BorderMode;
 }
 
 export enum InseparableBrickMode {
@@ -27,7 +27,7 @@ const defaultContainerOptions: IContainerBrickAppearance = {
     borderWidth: 0,
     backgroundColor: null,
     borderColor: null,
-    borderOutside: false,
+    borderMode: 1,
 };
 
 export class InseparableBrick extends CompositeBrick {
@@ -53,7 +53,14 @@ export class ContainerBrick extends CompositeBrick {
     private paddingBottomBrick: IPdfBrick;
     private appearance: Readonly<IContainerBrickAppearance>;
     private get includedBorderWidth() {
-        return this.appearance.borderOutside ? 0 : this.appearance.borderWidth;
+        switch(this.appearance.borderMode) {
+            case BorderMode.Inside:
+                return this.appearance.borderWidth;
+            case BorderMode.Middle:
+                return this.appearance.borderWidth / 2;
+            default:
+                return 0;
+        }
     }
     constructor(private controller: DocController, private layout: { xLeft: number, yTop: number, width: number }, appearance: Partial<Readonly<IContainerBrickAppearance>>) {
         super();

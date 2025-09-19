@@ -18,11 +18,17 @@ import { IStyles } from './styles';
 
 export type IBorderDescription = IRect & ISize;
 
+export enum BorderMode {
+    Inside = 0,
+    Middle = 1,
+    Outside = 2,
+}
+
 export type IBorderAppearanceOptions = {
     borderColor: string,
     borderWidth: number,
     dashStyle?: { dashArray: [number, number] | [number], dashPhase: number },
-    borderOutside?: boolean,
+    borderMode?: BorderMode,
 }
 
 export class SurveyHelper {
@@ -502,15 +508,17 @@ export class SurveyHelper {
         return textFlat;
     }
     public static renderFlatBorders(controller: DocController, options: IBorderDescription, appearance: IBorderAppearanceOptions): void {
-        appearance.borderOutside = appearance.borderOutside ?? false;
+        appearance.borderMode = appearance.borderMode ?? BorderMode.Inside;
         const borderWidth: number = appearance.borderWidth;
         if(!borderWidth) return;
         const oldDrawColor: string = controller.doc.getDrawColor();
         controller.doc.setDrawColor(appearance.borderColor);
         controller.doc.setLineWidth(borderWidth);
+
+        const scaleFactor = appearance.borderMode == BorderMode.Middle ? 0 : (appearance.borderMode == BorderMode.Inside ? - 1 : 1) * borderWidth;
         const scaledRect = this.scaleRect(options, {
-            scaleX: appearance.borderOutside ? (options.width + borderWidth) / options.width : (options.width - borderWidth) / options.width,
-            scaleY: appearance.borderOutside ? (options.height + borderWidth) / options.height : (options.height - borderWidth) / options.height
+            scaleX: (options.width + scaleFactor) / options.width,
+            scaleY: (options.height + scaleFactor) / options.height
         });
         if(appearance.dashStyle) {
             const dashStyle = appearance.dashStyle;

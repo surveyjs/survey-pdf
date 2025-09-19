@@ -67,7 +67,7 @@ export function getDefaultStyles (baseSize: number) {
             headerBackgroundColor: '#E5E5E5'
         },
         page: {
-            gapBetweenRows: baseSize * 1.5,
+            gapBetweenRows: 0,
             gapBetweenElements: 0,
             titleFontSize: baseSize * 1.3,
             titleFontStyle: 'bold',

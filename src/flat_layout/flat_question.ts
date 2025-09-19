@@ -80,7 +80,6 @@ export class FlatQuestion<T extends Question = Question> implements IFlatQuestio
             borderColor: this.styles.headerBorderColor,
             backgroundColor: this.styles.headerBackgroundColor,
             borderWidth: this.styles.headerBorderWidth,
-            borderOutside: false,
             paddingTop: this.styles.headerPaddingTop,
             paddingBottom: this.styles.headerPaddingBottom,
             paddingRight: this.styles.headerPaddingRight,
