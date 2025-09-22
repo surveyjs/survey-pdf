@@ -128,7 +128,18 @@ export function getDefaultStyles (baseSize: number) {
             headerFontSize: baseSize * 2,
             headerLineHeight: baseSize * 3,
             headerFontStyle: 'normal',
-            headerFontColor: '#000'
+            headerFontColor: '#000',
+
+            headerVerticalFontSize: baseSize * 2,
+            headerVerticalLineHeight: baseSize * 3,
+            headerVerticalFontStyle: 'normal',
+            headerVerticalFontColor: '#000',
+            rowTitleVerticalFontSize: baseSize * 2,
+            rowTitleVerticalLineHeight: baseSize * 3,
+            rowTitleVerticalFontStyle: 'bold',
+            gapBetweenVerticalRowTitleQuestion: baseSize * 0.5,
+            rowTitleVerticalFontColor: '#000',
+            cellRowTitleVerticalBackgroundColor: '#E5E5E5'
         },
         matrix: {
             inputBorderWidth: baseSize * 0.125,
