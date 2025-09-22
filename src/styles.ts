@@ -103,7 +103,6 @@ export function getDefaultStyles (baseSize: number) {
             cellPaddingBottom: baseSize * 0.5,
             cellPaddingLeft: baseSize * 1,
             cellPaddingRight: baseSize * 1,
-
             headerBorderWidth: baseSize * 0.125,
             headerPaddingTop: baseSize * 0.5,
             headerPaddingBottom: baseSize * 0.5,
@@ -111,19 +110,25 @@ export function getDefaultStyles (baseSize: number) {
             headerPaddingLeft: baseSize * 1,
             headerBackgroundColor: '#E5E5E5',
             headerBorderColor: '#000',
-
             contentGapVertical: 0,
             wrapperPaddingTop: 0,
             wrapperPaddingBottom: 0,
             wrapperPaddingLeft: 0,
             wrapperPaddingRight: 0,
             wrapperBorderWidth: 0,
-
             titleFontStyle: 'bold',
             gapBetweenColumns: 0,
             gapBetweenRows: 0,
             inputHeight: baseSize * 2,
             inputWidth: baseSize * 2,
+            rowTitleFontSize: baseSize * 2,
+            rowTitleLineHeight: baseSize * 3,
+            rowTitleFontStyle: 'normal',
+            rowTitleFontColor: '#000',
+            headerFontSize: baseSize * 2,
+            headerLineHeight: baseSize * 3,
+            headerFontStyle: 'normal',
+            headerFontColor: '#000'
         },
         matrix: {
             inputBorderWidth: baseSize * 0.125,

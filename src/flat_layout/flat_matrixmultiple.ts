@@ -32,7 +32,7 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
         return composite;
     }
     private async generateFlatsCell(point: IPoint, cell: QuestionMatrixDropdownRenderedCell,
-        location?: 'header' | 'footer', isWide: boolean = true): Promise<CompositeBrick> {
+        location?: 'header' | 'footer', isWide: boolean = true): Promise<ContainerBrick> {
         const container: ContainerBrick = new ContainerBrick(this.controller, { ...point, width: SurveyHelper.getPageAvailableWidth(this.controller) }, {
             paddingBottom: this.styles.cellPaddingBottom,
             paddingTop: this.styles.cellPaddingTop,
@@ -58,10 +58,26 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
             }
             else if (cell.hasTitle) {
                 if (location == 'header') {
-                    bricks.push(await SurveyHelper.createTextFlat(point, this.controller, cell.locTitle, { fontStyle: 'bold' }));
+                    bricks.push(await SurveyHelper.createTextFlat(point, this.controller, cell.locTitle, {
+                        fontStyle: this.styles.headerFontStyle,
+                        fontSize: this.styles.headerFontSize,
+                        lineHeight: this.styles.headerLineHeight,
+                        fontColor: this.styles.headerFontColor,
+                    }));
                 }
                 else {
-                    bricks.push(await SurveyHelper.createTextFlat(point, this.controller, cell.locTitle));
+                    const rowTitleFlat = await SurveyHelper.createTextFlat(point, this.controller, cell.locTitle, {
+                        fontStyle: this.styles.rowTitleFontStyle,
+                        fontSize: this.styles.rowTitleFontSize,
+                        lineHeight: this.styles.rowTitleLineHeight,
+                        fontColor: this.styles.rowTitleFontColor
+                    });
+                    const availableWidth = SurveyHelper.getPageAvailableWidth(this.controller);
+                    const shift = availableWidth - rowTitleFlat.width;
+                    rowTitleFlat.translateX((xLeft: number, xRight: number) => {
+                        return { xLeft: xLeft + shift, xRight: xRight + shift };
+                    });
+                    bricks.push(rowTitleFlat);
                 }
             }
         });
@@ -78,7 +94,7 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
         return row === this.question.renderedTable.headerRow ? 'header' : (this.question.renderedTable.footerRow === row ? 'footer' : undefined);
     }
     private async generateFlatsRowHorisontal(point: IPoint, row: QuestionMatrixDropdownRenderedRow, columnWidth: number[]): Promise<CompositeBrick> {
-        const composite: CompositeBrick = new CompositeBrick();
+        const rowBricks: Array<ContainerBrick> = [];
         const currPoint: IPoint = SurveyHelper.clone(point);
         let lastRightMargin: number = this.controller.paperWidth - this.controller.margins.left +
             this.styles.gapBetweenColumns;
@@ -93,15 +109,20 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
                 this.controller.margins.left - columnWidth[cnt];
             lastRightMargin = this.controller.margins.right;
             currPoint.xLeft = this.controller.margins.left;
-            const cellContent: CompositeBrick = await this.generateFlatsCell(
+            const cellContent: ContainerBrick = await this.generateFlatsCell(
                 currPoint, row.cells[i], rowLocation);
             if (!cellContent.isEmpty) {
-                composite.addBrick(cellContent);
+                rowBricks.push(cellContent);
             }
             cnt++;
         }
+        const { yBot: rowYBot, yTop: rowYTop } = SurveyHelper.mergeRects(...rowBricks);
+        const rowHeight = rowYBot - rowYTop;
+        rowBricks.forEach(brick => {
+            brick.fitToHeight(rowHeight);
+        });
         this.controller.popMargins();
-        return composite;
+        return new CompositeBrick(...rowBricks);
     }
     private async generateFlatsRowVertical(point: IPoint, row: QuestionMatrixDropdownRenderedRow): Promise<CompositeBrick> {
         const composite: CompositeBrick = new CompositeBrick();

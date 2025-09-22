@@ -46,7 +46,11 @@ export class FlatMatrix extends FlatQuestion<QuestionMatrixModel> {
             this.controller.margins.left = currPoint.xLeft;
             this.controller.margins.right += (SurveyHelper.getPageAvailableWidth(this.controller) - this.columnWidth);
             headers.push(await this.generateFlatCell(currPoint, async (point, bricks) => {
-                bricks.push(await SurveyHelper.createTextFlat(point, this.controller, this.question.visibleColumns[i].locText, { fontStyle: 'bold' }));
+                bricks.push(await SurveyHelper.createTextFlat(point, this.controller, this.question.visibleColumns[i].locText, {
+                    fontStyle: this.styles.headerFontStyle,
+                    fontSize: this.styles.headerFontSize,
+                    lineHeight: this.styles.headerLineHeight,
+                    fontColor: this.styles.headerFontColor, }));
             }));
             currPoint.xLeft += this.columnWidth + this.styles.gapBetweenColumns;
             this.controller.popMargins();
@@ -198,10 +202,21 @@ export class FlatMatrixRow {
             this.controller.pushMargins();
             currPoint.xLeft = this.controller.margins.left;
             this.controller.margins.right += (SurveyHelper.getPageAvailableWidth(this.controller) - this.rowTitleWidth);
-            cells.push(
-                await this.generateFlatCell(currPoint, async (point, bricks) => {
-                    bricks.push(await SurveyHelper.createTextFlat(point, this.controller, this.row.locText));
-                }));
+            cells.push(await this.generateFlatCell(currPoint, async (point, bricks) => {
+                const rowTitleFlat = await SurveyHelper.createTextFlat(point, this.controller, this.row.locText, {
+                    fontStyle: this.styles.rowTitleFontStyle,
+                    fontSize: this.styles.rowTitleFontSize,
+                    lineHeight: this.styles.rowTitleLineHeight,
+                    fontColor: this.styles.rowTitleFontColor
+                });
+                const availableWidth = SurveyHelper.getPageAvailableWidth(this.controller);
+                const shift = availableWidth - rowTitleFlat.width;
+                rowTitleFlat.translateX((xLeft: number, xRight: number) => {
+                    return { xLeft: xLeft + shift, xRight: xRight + shift };
+                });
+                bricks.push(rowTitleFlat);
+            }
+            ));
             currPoint.xLeft += this.rowTitleWidth + this.styles.gapBetweenColumns;
             this.controller.popMargins();
         }
