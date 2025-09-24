@@ -695,4 +695,29 @@ export class SurveyHelper {
         }
         return { width: widthPt || defaultWidthPt || 0, height: heightPt || defaultHeightPt || 0 };
     }
+    public static alignVerticallyBricks(align: 'top' | 'center' | 'bottom', ...bricks: IPdfBrick[]) {
+        const mergedRect = SurveyHelper.mergeRects(...bricks);
+        bricks.forEach((brick) => {
+            switch (align) {
+                case 'center': {
+                    brick.translateY((yTop, yBot) => {
+                        const shift = ((mergedRect.yTop + mergedRect.yBot) - (yTop + yBot)) / 2;
+                        return { yTop: yTop + shift, yBot: yBot + shift };
+                    });
+                    break;
+                }
+                case 'bottom': {
+                    brick.translateY((yTop, yBot) => {
+                        return { yTop: yTop + mergedRect.yBot - yBot, yBot: mergedRect.yBot };
+                    });
+                    break;
+                }
+                default: {
+                    brick.translateY((yTop, yBot) => {
+                        return { yTop: mergedRect.yTop, yBot: yBot - yTop + mergedRect.yTop };
+                    });
+                }
+            }
+        });
+    }
 }

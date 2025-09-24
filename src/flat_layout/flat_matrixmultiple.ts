@@ -38,7 +38,7 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
             backgroundColor: this.styles.cellBackgroudColor
         };
         if(cell.hasTitle && location !== 'header') {
-            cellAppearanceOptions.backgroundColor = isWide ? this.styles.cellRowTitleBackgroundColor : this.styles.cellRowTitleVerticalBackgroundColor;
+            cellAppearanceOptions.backgroundColor = isWide ? this.styles.cellRowTitleBackgroundColor : this.styles.verticalCellRowTitleBackgroundColor;
         }
         const container: ContainerBrick = new ContainerBrick(this.controller, { ...point, width: SurveyHelper.getPageAvailableWidth(this.controller) }, cellAppearanceOptions);
         await container.setup(async (point, bricks) => {
@@ -55,12 +55,12 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
                     const currPoint = SurveyHelper.clone(point);
                     if (!isWide && this.question.renderedTable.showHeader && (location !== 'header') && cell.cell?.column?.locTitle) {
                         container.addBrick(await SurveyHelper.createTextFlat(currPoint, this.controller, cell.cell.column.locTitle, {
-                            fontStyle: this.styles.headerVerticalFontStyle,
-                            fontSize: this.styles.headerVerticalFontSize,
-                            lineHeight: this.styles.headerVerticalLineHeight,
-                            fontColor: this.styles.headerVerticalFontColor,
+                            fontStyle: this.styles.verticalHeaderFontStyle,
+                            fontSize: this.styles.verticalHeaderFontSize,
+                            lineHeight: this.styles.verticalHeaderLineHeight,
+                            fontColor: this.styles.verticalHeaderFontColor,
                         }));
-                        currPoint.yTop = container.yBot + this.styles.gapBetweenVerticalRowTitleQuestion;
+                        currPoint.yTop = container.yBot + this.styles.verticalGapBetweenRowTitleQuestion;
                     }
                     bricks.push(...await SurveyHelper.generateQuestionFlats(
                         this.survey, this.controller, cell.question, currPoint, this.survey.getStylesForElement(cell.question)));
@@ -77,10 +77,10 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
                 }
                 else {
                     bricks.push(await SurveyHelper.createTextFlat(point, this.controller, cell.locTitle, {
-                        fontStyle: isWide ? this.styles.rowTitleFontStyle: this.styles.rowTitleVerticalFontStyle,
-                        fontSize: isWide ? this.styles.rowTitleFontSize: this.styles.rowTitleVerticalFontSize,
-                        lineHeight: isWide ? this.styles.rowTitleLineHeight: this.styles.rowTitleVerticalLineHeight,
-                        fontColor: isWide ? this.styles.rowTitleFontColor: this.styles.rowTitleVerticalFontColor,
+                        fontStyle: isWide ? this.styles.rowTitleFontStyle: this.styles.verticalRowTitleFontStyle,
+                        fontSize: isWide ? this.styles.rowTitleFontSize: this.styles.verticalRowTitleFontSize,
+                        lineHeight: isWide ? this.styles.rowTitleLineHeight: this.styles.verticalRowTitleLineHeight,
+                        fontColor: isWide ? this.styles.rowTitleFontColor: this.styles.verticalRowTitleFontColor,
                         textAlign: isWide ? 'right': 'left'
                     }));
                 }

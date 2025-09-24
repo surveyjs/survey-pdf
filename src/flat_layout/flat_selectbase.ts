@@ -39,10 +39,6 @@ export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSele
             fontStyle: this.styles.labelFontStyle,
             fontColor: this.styles.labelFontColor
         };
-        const measuredText = this.controller.measureText(undefined, textOptions);
-        const shiftHeight = (measuredText.height - (itemRect.yBot - itemRect.yTop)) / 2;
-        itemRect.yTop += shiftHeight;
-        itemRect.yBot += shiftHeight;
         const itemFlat: IPdfBrick = this.generateFlatItem(itemRect, item, index);
 
         compositeFlat.addBrick(itemFlat);
@@ -52,6 +48,8 @@ export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSele
         if (item.locText.renderedHtml !== null) {
             const textFlat = await SurveyHelper.createTextFlat(
                 textPoint, this.controller, item.locText, textOptions);
+            SurveyHelper.alignVerticallyBricks('center', itemFlat, textFlat.unfold()[0]);
+            textFlat.updateRect();
             compositeFlat.addBrick(textFlat);
         }
         if(item.isCommentShowing) {
