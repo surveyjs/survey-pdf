@@ -31,6 +31,10 @@ export type IBorderAppearanceOptions = {
     borderMode?: BorderMode,
 }
 
+export interface ITextWithAlignAppearanceOptions extends ITextAppearanceOptions {
+    textAlign?: 'left' | 'center' | 'right';
+}
+
 export class SurveyHelper {
     public static readonly EPSILON: number = 2.2204460492503130808472633361816e-15;
     public static readonly HTML_TAIL_TEXT_SCALE: number = 0.24;
@@ -160,7 +164,7 @@ export class SurveyHelper {
         return new CompositeBrick(...bricks);
     }
     public static createPlainTextFlat(point: IPoint,
-        controller: DocController, text: string, options: ITextAppearanceOptions): CompositeBrick {
+        controller: DocController, text: string, options: ITextWithAlignAppearanceOptions): CompositeBrick {
         const lines: string[] = controller.doc.splitTextToSize(text,
             controller.paperWidth - controller.margins.right - point.xLeft);
         const currPoint: IPoint = this.clone(point);
@@ -171,11 +175,25 @@ export class SurveyHelper {
                 this.createRect(currPoint, size.width, size.height), { text }, options));
             currPoint.yTop += size.height;
         });
+        if(options.textAlign == 'right') {
+            const spaceXRight = point.xLeft + SurveyHelper.getPageAvailableWidth(controller);
+            composite.translateX((xLeft, xRight) => {
+                return { xLeft: xLeft + (spaceXRight - xRight), xRight: spaceXRight };
+            });
+        }
+        if(options.textAlign == 'center') {
+            const spaceXCenter = point.xLeft + SurveyHelper.getPageAvailableWidth(controller) / 2;
+            composite.translateX((xLeft, xRight) => {
+                const shift = spaceXCenter - (xLeft + xRight) / 2;
+                return { xLeft: xLeft + shift, xRight: xRight + shift };
+            });
+        }
         return composite;
     }
     public static async createTextFlat(point: IPoint,
-        controller: DocController, text: string | LocalizableString, appearance?: Partial<ITextAppearanceOptions>): Promise<IPdfBrick> {
-        const newApperance: ITextAppearanceOptions = SurveyHelper.getPatchedTextAppearanceOptions(controller, appearance);
+        controller: DocController, text: string | LocalizableString, appearance?: Partial<ITextWithAlignAppearanceOptions>): Promise<IPdfBrick> {
+        const newApperance: ITextWithAlignAppearanceOptions = SurveyHelper.getPatchedTextAppearanceOptions(controller, appearance);
+        newApperance.textAlign = newApperance.textAlign ?? 'left';
         const oldFontSize: number = controller.fontSize;
         const oldFontStyle: string = controller.fontStyle;
         const oldFontName: string = controller.fontName;

@@ -76,20 +76,13 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
                     }));
                 }
                 else {
-                    const rowTitleFlat = await SurveyHelper.createTextFlat(point, this.controller, cell.locTitle, {
+                    bricks.push(await SurveyHelper.createTextFlat(point, this.controller, cell.locTitle, {
                         fontStyle: isWide ? this.styles.rowTitleFontStyle: this.styles.rowTitleVerticalFontStyle,
                         fontSize: isWide ? this.styles.rowTitleFontSize: this.styles.rowTitleVerticalFontSize,
                         lineHeight: isWide ? this.styles.rowTitleLineHeight: this.styles.rowTitleVerticalLineHeight,
-                        fontColor: isWide ? this.styles.rowTitleFontColor: this.styles.rowTitleVerticalFontColor
-                    });
-                    if(isWide) {
-                        const availableWidth = SurveyHelper.getPageAvailableWidth(this.controller);
-                        const shift = availableWidth - rowTitleFlat.width;
-                        rowTitleFlat.translateX((xLeft: number, xRight: number) => {
-                            return { xLeft: xLeft + shift, xRight: xRight + shift };
-                        });
-                    }
-                    bricks.push(rowTitleFlat);
+                        fontColor: isWide ? this.styles.rowTitleFontColor: this.styles.rowTitleVerticalFontColor,
+                        textAlign: isWide ? 'right': 'left'
+                    }));
                 }
             }
         });
