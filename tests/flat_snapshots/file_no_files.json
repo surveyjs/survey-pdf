@@ -1,0 +1,31 @@
+[
+	{
+		"brickType": "CompositeBrick",
+		"width": 204.00000000000003,
+		"height": 34.5,
+		"xLeft": 62.84645669291339,
+		"xRight": 266.8464566929134,
+		"yTop": 28.34645669291339,
+		"yBot": 62.84645669291339,
+		"bricks": [
+			{
+				"brickType": "TextBrick",
+				"width": 204.00000000000003,
+				"height": 34.5,
+				"xLeft": 62.84645669291339,
+				"xRight": 266.8464566929134,
+				"yTop": 28.34645669291339,
+				"yBot": 62.84645669291339,
+				"appearance": {
+					"fontSize": 30,
+					"fontName": "helvetica",
+					"fontStyle": "normal",
+					"fontColor": "#404040"
+				},
+				"options": {
+					"text": "No file selected"
+				}
+			}
+		]
+	}
+]

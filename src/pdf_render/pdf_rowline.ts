@@ -1,5 +1,6 @@
+import { EventAsync } from '../event_handler/event_async';
 import { IRect, DocController } from '../doc_controller';
-import { IPdfBrick, TranslateXFunction } from './pdf_brick';
+import { IPdfBrick, TranslateXFunction, TranslateYFunction } from './pdf_brick';
 
 export class RowlineBrick implements IPdfBrick {
     xLeft: number;
@@ -14,6 +15,8 @@ export class RowlineBrick implements IPdfBrick {
         this.yTop = rect.yTop;
         this.yBot = rect.yBot;
     }
+    protected _pageNumber: number;
+
     public get width(): number {
         return this.xRight - this.xLeft;
     }
@@ -21,6 +24,7 @@ export class RowlineBrick implements IPdfBrick {
         return this.yBot - this.yTop;
     }
     public async render(): Promise<void> {
+        await this.beforeRenderEvent.fire(this, {});
         if (this.color !== null) {
             let oldDrawColor: string = this.controller.doc.getDrawColor();
             this.controller.doc.setDrawColor(this.color);
@@ -28,8 +32,25 @@ export class RowlineBrick implements IPdfBrick {
             this.controller.doc.setDrawColor(oldDrawColor);
         }
     }
+    public getPageNumber(): number {
+        return this._pageNumber;
+    }
+    public setPageNumber(val: number): void {
+        this._pageNumber = val;
+    }
+    private beforeRenderEvent: EventAsync<RowlineBrick, {}> = new EventAsync();
+    addBeforeRenderCallback(func: (brick: IPdfBrick) => void): void {
+        this.beforeRenderEvent.add(func);
+    }
     public unfold(): IPdfBrick[] {
         return [this];
     }
+
     translateX(_: TranslateXFunction): void {}
+    translateY(func: TranslateYFunction): void {
+        const res = func(this.yTop, this.yBot);
+        this.yTop = res.yTop;
+        this.yBot = res.yBot;
+    }
+    updateRect(): void {}
 }

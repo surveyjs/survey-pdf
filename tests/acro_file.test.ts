@@ -9,7 +9,7 @@ import { FlatFile } from '../src/flat_layout/flat_file';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
-const __dummy_fl = new FlatFile(null, null, null);
+const __dummy_fl = new FlatFile(null, null, null, {});
 
 test('Check file readonly with link', async () => {
     const json: any = {
