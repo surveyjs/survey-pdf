@@ -232,6 +232,12 @@ export function getDefaultStyles (baseSize: number) {
             checkmarkSymbol: '3',
             inputWidth: baseSize * 2,
             inputHeight: baseSize * 2,
+            inputBorderWidth: baseSize * 0.125,
+            labelFontSize: baseSize * 2.5,
+            labelLineHeight: baseSize * 3,
+            labelFontStyle: 'normal',
+            labelFontColor: '#000',
+            gapBetweenItemText: baseSize,
         },
         imagepicker: {
             checkmarkFontSize: baseSize * 2,

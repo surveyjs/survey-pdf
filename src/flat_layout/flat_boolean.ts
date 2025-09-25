@@ -39,28 +39,35 @@ export class FlatBooleanCheckbox extends FlatQuestion<QuestionBooleanModel> {
         const locLabelText: LocalizableString = this.question.isIndeterminate ? null :
             this.question.booleanValue ? this.question.locLabelTrue : this.question.locLabelFalse;
         if (locLabelText !== null && locLabelText.renderedHtml !== null) {
-            compositeFlat.addBrick(await SurveyHelper.createTextFlat(
-                textPoint, this.controller, locLabelText));
+            const textFlat = await SurveyHelper.createTextFlat(
+                textPoint, this.controller, locLabelText, {
+                    lineHeight: this.styles.labelLineHeight,
+                    fontSize: this.styles.labelFontSize,
+                    fontStyle: this.styles.labelFontStyle,
+                    fontColor: this.styles.labelFontColor
+                });
+            SurveyHelper.alignVerticallyBricks('center', itemFlat, textFlat.unfold()[0]);
+            textFlat.updateRect();
+            compositeFlat.addBrick(textFlat);
         }
         return [compositeFlat];
     }
 }
 export class FlatBoolean extends FlatQuestion<QuestionBooleanModel> {
-    private radioGroupWrap: RadioGroupWrap;
+    private _radioGroupWrap: RadioGroupWrap;
     constructor(protected survey: SurveyPDF,
         question: QuestionBooleanModel, protected controller: DocController, styles: IStyles) {
         super(survey, question, controller, styles);
     }
+    protected get radioGroupWrap() {
+        if(!this._radioGroupWrap) {
+            this._radioGroupWrap = new RadioGroupWrap(this.question.id,
+                this.controller, { readOnly: this.question.isReadOnly, question: this.question });
+        }
+        return this._radioGroupWrap;
+    }
     public generateFlatItem(rect: IRect, item: { value: string },
         index: number): IPdfBrick {
-        if (index === 0) {
-            this.radioGroupWrap = new RadioGroupWrap(this.question.id,
-                this.controller, { readOnly: this.question.isReadOnly, question: this.question });
-            (<any>this.question).pdfRadioGroupWrap = this.radioGroupWrap;
-        }
-        else if (typeof this.radioGroupWrap === 'undefined') {
-            this.radioGroupWrap = (<any>this.question).pdfRadioGroupWrap;
-        }
         const isChecked: boolean = this.question.value == item.value;
         return new RadioItemBrick(this.controller, rect, this.radioGroupWrap, {
             index,
@@ -89,9 +96,6 @@ export class FlatBoolean extends FlatQuestion<QuestionBooleanModel> {
             fontColor: this.styles.labelFontColor
         };
         const measuredText = this.controller.measureText(undefined, textOptions);
-        const shiftHeight = (measuredText.height - (itemRect.yBot - itemRect.yTop)) / 2;
-        itemRect.yTop += shiftHeight;
-        itemRect.yBot += shiftHeight;
         const itemFlat: IPdfBrick = this.generateFlatItem(itemRect, item, index);
 
         compositeFlat.addBrick(itemFlat);
@@ -100,6 +104,8 @@ export class FlatBoolean extends FlatQuestion<QuestionBooleanModel> {
         if (item.locText.renderedHtml !== null) {
             const textFlat = await SurveyHelper.createTextFlat(
                 textPoint, this.controller, item.locText, textOptions);
+            SurveyHelper.alignVerticallyBricks('center', itemFlat, textFlat.unfold()[0]);
+            textFlat.updateRect();
             compositeFlat.addBrick(textFlat);
         }
         return compositeFlat;
