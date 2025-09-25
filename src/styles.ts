@@ -67,9 +67,16 @@ export function getDefaultStyles (baseSize: number) {
             headerBackgroundColor: '#E5E5E5'
         },
         page: {
+            headerBorderWidth: 0,
+            headerPaddingTop: 0,
+            headerPaddingBottom: 0,
+            headerPaddingRight: 0,
+            headerPaddingLeft: 0,
+            contentGap: baseSize * 2,
+            headerBackgroundColor: '#fff',
             gapBetweenRows: 0,
             gapBetweenElements: 0,
-            titleFontSize: baseSize * 1.3,
+            titleFontSize: baseSize * 2,
             titleFontStyle: 'bold',
             titleFontColor: '#000'
         },
@@ -203,7 +210,21 @@ export function getDefaultStyles (baseSize: number) {
             defaultImageFit: 'contain'
         },
         paneldynamic: {
-            gapBetweenPanels: 0.75
+            titleFontStyle: 'bold',
+            headerBorderWidth: baseSize * 0.125,
+            headerPaddingTop: baseSize * 0.5,
+            headerPaddingBottom: baseSize * 0.5,
+            headerPaddingRight: baseSize * 1,
+            headerPaddingLeft: baseSize * 1,
+            headerBackgroundColor: '#E5E5E5',
+            headerBorderColor: '#000',
+            contentGapVertical: 0,
+            gapBetweenPanels: 0,
+            wrapperPaddingTop: 0,
+            wrapperPaddingBottom: 0,
+            wrapperPaddingLeft: 0,
+            wrapperPaddingRight: 0,
+            wrapperBorderWidth: 0,
         },
         boolean: {
             checkmarkFontSize: baseSize * 2,
