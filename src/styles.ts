@@ -195,6 +195,8 @@ export function getDefaultStyles (baseSize: number) {
             checkmarkFontSize: baseSize * 2,
         },
         slider: {
+            inputFontSize: baseSize * 2.5,
+            inputLineHeight: baseSize * 3,
             gapBetweenColumns: baseSize * 1.5,
         },
         dropdown: {

@@ -9,14 +9,26 @@ import { SurveyHelper } from '../helper_survey';
 import { RadioGroupWrap, RadioItemBrick } from '../pdf_render/pdf_radioitem';
 
 export class FlatImagePicker extends FlatQuestion<QuestionImagePickerModel> {
-    private radioGroupWrap: any;
+    private _radioGroupWrap: any;
+    protected get radioGroupWrap(): RadioGroupWrap {
+        if(!this._radioGroupWrap) {
+            this._radioGroupWrap = new RadioGroupWrap(this.question.id,
+                this.controller, { readOnly: this.question.isReadOnly, question: this.question });
+        }
+        return this._radioGroupWrap;
+    }
     private async generateFlatItem(point: IPoint, item: ItemValue, index: number): Promise<IPdfBrick> {
         const pageAvailableWidth = SurveyHelper.getPageAvailableWidth(this.controller);
         const imageFlat = await SurveyHelper.createImageFlat(point, this.question, this.controller, { link: (<any>item).imageLink, width: pageAvailableWidth, height: pageAvailableWidth / this.styles.imageRatio });
         const compositeFlat: CompositeBrick = new CompositeBrick(imageFlat);
         let buttonPoint: IPoint = SurveyHelper.createPoint(compositeFlat);
         if (this.question.showLabel) {
-            let labelFlat: IPdfBrick = await SurveyHelper.createTextFlat(buttonPoint, this.controller, item.text || item.value);
+            let labelFlat: IPdfBrick = await SurveyHelper.createTextFlat(buttonPoint, this.controller, item.text || item.value, {
+                fontColor: this.styles.labelFontColor,
+                lineHeight: this.styles.labelLineHeight,
+                fontStyle: this.styles.labelFontStyle,
+                fontSize: this.styles.labelFontSize
+            });
             compositeFlat.addBrick(labelFlat);
             buttonPoint = SurveyHelper.createPoint(labelFlat);
         }
@@ -48,15 +60,7 @@ export class FlatImagePicker extends FlatQuestion<QuestionImagePickerModel> {
                 }));
         }
         else {
-            if (index === 0) {
-                this.radioGroupWrap = new RadioGroupWrap(this.question.id,
-                    this.controller, { readOnly: this.question.isReadOnly, question: this.question });
-                (<any>this.question).pdfRadioGroupWrap = this.radioGroupWrap;
-            }
-            else if (typeof this.radioGroupWrap === 'undefined') {
-                this.radioGroupWrap = (<any>this.question).pdfRadioGroupWrap;
-            }
-            return new RadioItemBrick(this.controller, buttonRect, this.radioGroupWrap, {
+            compositeFlat.addBrick(new RadioItemBrick(this.controller, buttonRect, this.radioGroupWrap, {
                 index,
                 checked: isChecked,
                 shouldRenderReadOnly: shouldRenderReadOnly,
@@ -71,7 +75,7 @@ export class FlatImagePicker extends FlatQuestion<QuestionImagePickerModel> {
                 checkMark: this.styles.radiomarkSymbol,
                 borderColor: this.styles.inputBorderColor,
                 borderWidth: this.styles.inputBorderWidth,
-            });
+            }));
         }
         return compositeFlat;
     }
