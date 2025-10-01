@@ -137,13 +137,13 @@ export class SurveyHelper {
         return controller.useCustomFontInHtml ? fontName ?? controller.fontName : 'helvetica';
     }
     public static generateCssTextRule(appearance: ITextAppearanceOptions): string {
-        return `"font-size: ${appearance.fontSize}pt; font-weight: ${appearance.fontStyle}; font-family: ${appearance.fontName}; color: ${appearance.fontColor};"`;
+        return `"font-size: ${appearance.fontSize}pt; font-weight: ${appearance.fontStyle}; font-family: ${appearance.fontName}; color: ${appearance.fontColor}; lineHeight: ${appearance.lineHeight}"`;
     }
     public static createHtmlContainerBlock(html: string, controller: DocController, appearance?: Partial<ITextAppearanceOptions>): string {
         const newApperance: ITextAppearanceOptions = SurveyHelper.getPatchedTextAppearanceOptions(controller, appearance);
         const font = this.chooseHtmlFont(controller, newApperance.fontName);
         return `<div class="__surveypdf_html" style=${this.generateCssTextRule(newApperance)}>` +
-            `<style>.__surveypdf_html p { margin: 0; line-height: ${controller.fontSize}pt } body { margin: 0; }</style>${html}</div>`;
+            `<style>.__surveypdf_html p { margin: 0; line-height: ${newApperance.lineHeight}pt } body { margin: 0; }</style>${html}</div>`;
     }
     public static splitHtmlRect(controller: DocController, htmlBrick: IPdfBrick): IPdfBrick {
         const bricks: IPdfBrick[] = [];
@@ -449,10 +449,6 @@ export class SurveyHelper {
             return new HTMLBrick(controller, this.createRect(point, imageOptions.width, imageOptions.height), { html, isImage: true }, SurveyHelper.getDefaultTextAppearanceOptions(controller));
         }
         return new ImageBrick(controller, point, imageOptions);
-    }
-    public static canPreviewImage(question: QuestionFileModel, item: { name: string, type: string, content: string }, url: string): boolean {
-        return question.canPreviewImage(item);
-        //  &&  await this.getImageSize(url) !== null;
     }
     public static async getImageSize(url: string): Promise<ISize> {
         if (!SurveyHelper.inBrowser) {

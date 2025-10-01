@@ -103,15 +103,6 @@ export class ContainerBrick extends CompositeBrick {
             } else {
                 renderedPageIndex = currentPageIndex;
                 const bricksOnPage = new CompositeBrick(...this.unfold().filter(brick => brick.getPageNumber() == currentPageIndex));
-                if(this.appearance.borderColor !== null) {
-                    SurveyHelper.renderFlatBorders(this.controller, {
-                        xLeft: this.layout.xLeft,
-                        xRight: this.layout.xLeft + this.layout.width,
-                        yTop: bricksOnPage.yTop,
-                        yBot: bricksOnPage.yBot,
-                        width: this.layout.width,
-                        height: bricksOnPage.height }, { ...this.appearance });
-                }
                 if(this.appearance.backgroundColor !== null) {
                     const oldFillColor = this.controller.doc.getFillColor();
                     this.controller.doc.setFillColor(this.appearance.backgroundColor);
@@ -123,7 +114,15 @@ export class ContainerBrick extends CompositeBrick {
                         'F');
                     this.controller.doc.setFillColor(oldFillColor);
                 }
-
+                if(this.appearance.borderColor !== null) {
+                    SurveyHelper.renderFlatBorders(this.controller, {
+                        xLeft: this.layout.xLeft,
+                        xRight: this.layout.xLeft + this.layout.width,
+                        yTop: bricksOnPage.yTop,
+                        yBot: bricksOnPage.yBot,
+                        width: this.layout.width,
+                        height: bricksOnPage.height }, { ...this.appearance });
+                }
             }
         };
         this.bricks.forEach(brick => {

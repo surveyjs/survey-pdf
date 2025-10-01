@@ -208,8 +208,12 @@ export function getDefaultStyles (baseSize: number) {
         },
         file: {
             imageGap: baseSize * 0.195,
-            textMin: baseSize * 5,
-            defaultImageFit: 'contain'
+            itemMinWidth: baseSize * 5,
+            labelFontColor: '#0000EE',
+            labelFontStyle: 'normal',
+            labelFontSize: baseSize * 2.5,
+            labelLineHeight: baseSize * 3,
+            defaultImageFit: 'contain',
         },
         paneldynamic: {
             titleFontStyle: 'bold',
@@ -263,6 +267,11 @@ export function getDefaultStyles (baseSize: number) {
             inputFontSize: baseSize * 2.5,
             inputLineHeight: baseSize * 3
         },
+        html: {
+            fontSize: baseSize * 2,
+            fontColor: '#000',
+            lineHeight: baseSize * 3.5,
+        }
     };
 }
 

@@ -17,9 +17,12 @@ export class FlatFile extends FlatQuestion<QuestionFileModel> {
                 readOnlyShowLink: SurveyHelper.getReadonlyRenderAs(this.question, this.controller) === 'text',
                 shouldRenderReadOnly: SurveyHelper.shouldRenderReadOnly(this.question, this.controller),
             }, {
-                fontColor: '#0000EE'
+                fontColor: this.styles.labelFontColor,
+                fontStyle: this.styles.labelFontStyle,
+                fontSize: this.styles.labelFontSize,
+                lineHeight: this.styles.labelLineHeight
             }));
-        if (SurveyHelper.canPreviewImage(this.question, item, item.content)) {
+        if (this.question.canPreviewImage(item)) {
             const imagePoint: IPoint = SurveyHelper.createPoint(compositeFlat);
             imagePoint.yTop += this.styles.imageGap;
             compositeFlat.addBrick(await SurveyHelper.createImageFlat(imagePoint, this.question, this.controller, { link: item.content, width: item.imageSize.width, height: item.imageSize.height, objectFit: this.styles.defaultImageFit }));
@@ -36,7 +39,7 @@ export class FlatFile extends FlatQuestion<QuestionFileModel> {
     }
 
     private async getImagePreviewContentWidth(item: { name: string, type: string, content: string, imageSize?: ISize }) {
-        return Math.max(item.imageSize.width, this.styles.textMin);
+        return Math.max(item.imageSize.width, this.styles.itemMinWidth);
     }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         const previewValue = this.question.showPreview ? this.question.previewValue : this.question.value;
@@ -49,7 +52,7 @@ export class FlatFile extends FlatQuestion<QuestionFileModel> {
         let yBot: number = currPoint.yTop;
         for (let i: number = 0; i < previewValue.length; i++) {
             let item: { name: string, type: string, content: string, imageSize?: ISize } = { ...previewValue[i] };
-            const canPreviewImage = SurveyHelper.canPreviewImage(this.question, item, item.content);
+            const canPreviewImage = this.question.canPreviewImage(item);
             if (canPreviewImage) {
                 item.imageSize = await SurveyHelper.getCorrectedImageSize(this.controller, { imageWidth: this.question.imageWidth, imageHeight: this.question.imageHeight, imageLink: previewValue[i].content, defaultImageWidth: 200, defaultImageHeight: 150 });
             }

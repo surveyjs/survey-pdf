@@ -10,9 +10,10 @@ import { FlatSelectBase } from './flat_selectbase';
 import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
-import { SurveyHelper } from '../helper_survey';
+import { BorderMode, SurveyHelper } from '../helper_survey';
 import { IStyles } from '../styles';
 import { ContainerBrick } from '../pdf_render/pdf_container';
+import { EmptyBrick } from '../pdf_render/pdf_empty';
 
 export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = QuestionMatrixDropdownModelBase> extends FlatQuestion<T> {
     constructor(protected survey: SurveyPDF, question: T, controller: DocController, styles: IStyles,
@@ -189,9 +190,10 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
         colCount: number, isWide: boolean): Promise<CompositeBrick[]> {
         const currPoint: IPoint = SurveyHelper.clone(point);
         const rowsFlats: CompositeBrick[] = [];
+        const columnWidths = this.calculateColumnWidth(rows, colCount);
         for (let i: number = 0; i < rows.length; i++) {
             let rowFlat: CompositeBrick = await this.generateOneRow(currPoint, rows[i],
-                isWide, this.calculateColumnWidth(rows, colCount));
+                isWide, columnWidths);
             if (rowFlat.isEmpty && !(rows[i].row && rows[i].row.hasPanel)) continue;
             if(!rowFlat.isEmpty) {
                 if (i !== rows.length - 1) {
@@ -208,23 +210,29 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
                 for (let j = 0; j < currentDetailPanel.questions.length; j++) {
                     currentDetailPanel.questions[j].id += '_' + i;
                 }
-                const panelBricks: IPdfBrick[] = await SurveyHelper.generatePanelFlats(this.survey, this.controller, currentDetailPanel, currPoint, this.survey.getStylesForElement(currentDetailPanel));
-
+                const panelPoint = SurveyHelper.clone(currPoint);
                 const currComposite: CompositeBrick = new CompositeBrick();
+                if(this.isMultiple && isWide) {
+                    this.controller.pushMargins();
+                    panelPoint.xLeft+= columnWidths[0];
+                    this.controller.margins.left = panelPoint.xLeft;
+                }
+                const panelBricks: IPdfBrick[] = await SurveyHelper.generatePanelFlats(this.survey, this.controller, currentDetailPanel, panelPoint, this.survey.getStylesForElement(currentDetailPanel));
+
+                if(this.isMultiple && isWide) {
+                    this.controller.popMargins();
+                    const panelRect = SurveyHelper.mergeRects(...panelBricks);
+                    const emptyBrick = new EmptyBrick(this.controller, { ...currPoint, xRight: currPoint.xLeft + columnWidths[0], yBot: currPoint.yTop + panelRect.yBot - panelRect.yTop }, {
+                        borderWidth: this.styles.cellBorderWidth,
+                        borderColor: this.styles.cellBorderColor,
+                        borderMode: BorderMode.Middle,
+                        isBorderVisible: true
+                    });
+                    currComposite.addBrick(emptyBrick);
+                }
                 currComposite.addBrick(...panelBricks);
                 currPoint.yTop = currComposite.yBot + this.styles.gapBetweenRows;
-
                 rowsFlats.push(currComposite);
-                if (i !== rows.length - 1 && this.question.renderedTable.showHeader && isWide) {
-                    const header: CompositeBrick = await this.generateOneRow(currPoint, rows[0],
-                        isWide, this.calculateColumnWidth(rows, colCount));
-                    let currYTop = currComposite.yBot;
-                    if(!header.isEmpty) {
-                        currYTop = header.yBot;
-                        rowsFlats.push(header);
-                    }
-                    currPoint.yTop = currYTop + this.styles.gapBetweenRows;
-                }
             }
         }
         return rowsFlats;
@@ -241,7 +249,7 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
     }
     private getRowsToRender(table: QuestionMatrixDropdownRenderedTable, isVertical: boolean, isWide: boolean) {
         const rows: QuestionMatrixDropdownRenderedRow[] = [];
-        const renderedRows = this.visibleRows;
+        const renderedRows = this.visibleRows.filter(row => !row.isDetailRow);
         if (table.showHeader && isWide) rows.push(table.headerRow);
         rows.push(...renderedRows);
         if (table.hasRemoveRows && isVertical) rows.pop();
