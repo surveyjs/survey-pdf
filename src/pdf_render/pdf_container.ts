@@ -1,5 +1,5 @@
 import { DocController, IPoint } from '../doc_controller';
-import { BorderMode, SurveyHelper } from '../helper_survey';
+import { BorderMode, BorderRect, SurveyHelper } from '../helper_survey';
 import { IPdfBrick } from './pdf_brick';
 import { CompositeBrick } from './pdf_composite';
 import { EmptyBrick } from './pdf_empty';
@@ -102,15 +102,24 @@ export class ContainerBrick extends CompositeBrick {
                 return;
             } else {
                 renderedPageIndex = currentPageIndex;
-                const bricksOnPage = new CompositeBrick(...this.unfold().filter(brick => brick.getPageNumber() == currentPageIndex));
+                const unfoldedBricks = this.unfold();
+                const unfoldedBricksOnPage = unfoldedBricks.filter(brick => brick.getPageNumber() == currentPageIndex)
+                const mergedRect = SurveyHelper.mergeRects(...unfoldedBricksOnPage);
+                let borderRect = BorderRect.All;
+                if(unfoldedBricks[0] != unfoldedBricksOnPage[0]) {
+                    borderRect ^= BorderRect.Top
+                }
+                if(unfoldedBricks[unfoldedBricks.length - 1] !== unfoldedBricksOnPage[unfoldedBricksOnPage.length - 1]) {
+                    borderRect ^= BorderRect.Bottom
+                }
                 if(this.appearance.backgroundColor !== null) {
                     const oldFillColor = this.controller.doc.getFillColor();
                     this.controller.doc.setFillColor(this.appearance.backgroundColor);
                     this.controller.doc.rect(
                         this.layout.xLeft + this.includedBorderWidth,
-                        bricksOnPage.yTop + this.includedBorderWidth,
+                        mergedRect.yTop + this.includedBorderWidth,
                         this.layout.width - this.includedBorderWidth * 2,
-                        bricksOnPage.height - this.includedBorderWidth * 2,
+                        (mergedRect.yBot - mergedRect.yTop) - this.includedBorderWidth * 2,
                         'F');
                     this.controller.doc.setFillColor(oldFillColor);
                 }
@@ -118,10 +127,10 @@ export class ContainerBrick extends CompositeBrick {
                     SurveyHelper.renderFlatBorders(this.controller, {
                         xLeft: this.layout.xLeft,
                         xRight: this.layout.xLeft + this.layout.width,
-                        yTop: bricksOnPage.yTop,
-                        yBot: bricksOnPage.yBot,
+                        yTop: mergedRect.yTop,
+                        yBot: mergedRect.yBot,
                         width: this.layout.width,
-                        height: bricksOnPage.height }, { ...this.appearance });
+                        height:  mergedRect.yBot - mergedRect.yTop }, { ...this.appearance, borderRect });
                 }
             }
         };

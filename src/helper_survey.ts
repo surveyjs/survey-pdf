@@ -23,12 +23,20 @@ export enum BorderMode {
     Middle = 1,
     Outside = 2,
 }
-
+export enum BorderRect {
+    None = 0,
+    Top =  1,
+    Bottom = 2,
+    Right = 4,
+    Left = 8,
+    All = 15
+}
 export type IBorderAppearanceOptions = {
     borderColor: string,
     borderWidth: number,
     dashStyle?: { dashArray: [number, number] | [number], dashPhase: number },
     borderMode?: BorderMode,
+    borderRect?: BorderRect,
 }
 
 export interface ITextWithAlignAppearanceOptions extends ITextAppearanceOptions {
@@ -523,6 +531,7 @@ export class SurveyHelper {
     }
     public static renderFlatBorders(controller: DocController, options: IBorderDescription, appearance: IBorderAppearanceOptions): void {
         appearance.borderMode = appearance.borderMode ?? BorderMode.Inside;
+        appearance.borderRect = appearance.borderRect ?? BorderRect.All;
         const borderWidth: number = appearance.borderWidth;
         if(!borderWidth) return;
         const oldDrawColor: string = controller.doc.getDrawColor();
@@ -545,8 +554,20 @@ export class SurveyHelper {
                 dashStyle.dashPhase
             );
         }
+        if(appearance.borderRect & BorderRect.Top) {
+            controller.doc.line(scaledRect.xLeft, scaledRect.yTop, scaledRect.xRight, scaledRect.yTop)
+        }
+        if(appearance.borderRect & BorderRect.Bottom) {
+            controller.doc.line(scaledRect.xLeft, scaledRect.yBot, scaledRect.xRight, scaledRect.yBot)
+        }
+        if(appearance.borderRect & BorderRect.Left) {
+            controller.doc.line(scaledRect.xLeft, scaledRect.yTop - borderWidth / 2, scaledRect.xLeft, scaledRect.yBot + borderWidth / 2)
+        }
+        if(appearance.borderRect & BorderRect.Right) {
+            controller.doc.line(scaledRect.xRight, scaledRect.yTop - borderWidth / 2, scaledRect.xRight, scaledRect.yBot + borderWidth / 2)
+        }
 
-        controller.doc.rect(...this.createAcroformRect(scaledRect));
+        // controller.doc.rect(...this.createAcroformRect(scaledRect));
         if(appearance.dashStyle) {
             controller.doc.setLineDashPattern([]);
         }
