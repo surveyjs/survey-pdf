@@ -80,10 +80,7 @@ export class FlatQuestion<T extends Question = Question> implements IFlatQuestio
             borderColor: this.styles.headerBorderColor,
             backgroundColor: this.styles.headerBackgroundColor,
             borderWidth: this.styles.headerBorderWidth,
-            paddingTop: this.styles.headerPaddingTop,
-            paddingBottom: this.styles.headerPaddingBottom,
-            paddingRight: this.styles.headerPaddingRight,
-            paddingLeft: this.styles.headerPaddingLeft,
+            ...SurveyHelper.getPaddingFromStyle(this.styles.headerPadding),
         });
         await containerBrick.setup(async (point, bricks) => {
             const titleFlat: IPdfBrick = await this.generateFlatTitle(point);

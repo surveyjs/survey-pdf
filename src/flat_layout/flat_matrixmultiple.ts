@@ -30,10 +30,7 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
     private async generateFlatsCell(point: IPoint, cell: QuestionMatrixDropdownRenderedCell,
         location?: 'header' | 'footer', isWide: boolean = true): Promise<ContainerBrick> {
         const cellAppearanceOptions = {
-            paddingBottom: this.styles.cellPaddingBottom,
-            paddingTop: this.styles.cellPaddingTop,
-            paddingLeft: this.styles.cellPaddingLeft,
-            paddingRight: this.styles.cellPaddingRight,
+            ...SurveyHelper.getPaddingFromStyle(this.styles.cellPadding),
             borderWidth: this.styles.cellBorderWidth,
             borderColor: this.styles.cellBorderColor,
             backgroundColor: this.styles.cellBackgroudColor
