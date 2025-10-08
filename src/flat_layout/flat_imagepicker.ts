@@ -37,7 +37,14 @@ export class FlatImagePicker extends FlatQuestion<QuestionImagePickerModel> {
         const isChecked = this.question.isItemSelected(item);
         const isReadOnly = this.question.isReadOnly || !item.isEnabled;
         const shouldRenderReadOnly = isReadOnly && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform' || this.controller.compress;
-
+        const appearance = {
+            fontSize: this.styles.inputFontSize,
+            lineHeight: this.styles.inputFontSize,
+            fontColor: this.styles.inputFontColor,
+            fontStyle: 'normal',
+            borderColor: this.styles.inputBorderColor,
+            borderWidth: this.styles.inputBorderWidth,
+        }
         if (this.question.multiSelect) {
             compositeFlat.addBrick(new CheckItemBrick(this.controller,
                 buttonRect,
@@ -49,14 +56,9 @@ export class FlatImagePicker extends FlatQuestion<QuestionImagePickerModel> {
                     updateOptions: (options) => this.survey.updateCheckItemAcroformOptions(options, this.question, item),
                 },
                 {
+                    ...appearance,
                     fontName: this.styles.checkmarkFont,
-                    fontColor: this.styles.inputFontColor,
-                    fontSize: this.styles.checkmarkFontSize,
-                    lineHeight: this.styles.checkmarkFontSize,
                     checkMark: this.styles.checkmarkSymbol,
-                    fontStyle: 'normal',
-                    borderColor: this.styles.inputBorderColor,
-                    borderWidth: this.styles.inputBorderWidth,
                 }));
         }
         else {
@@ -67,14 +69,9 @@ export class FlatImagePicker extends FlatQuestion<QuestionImagePickerModel> {
                 updateOptions: options => this.survey.updateRadioItemAcroformOptions(options, this.question, item),
             },
             {
+                ...appearance,
                 fontName: this.styles.radiomarkFont,
-                fontSize: this.styles.radiomarkFontSize,
-                lineHeight: this.styles.radiomarkFontSize,
-                fontColor: this.styles.inputFontColor,
-                fontStyle: 'normal',
                 checkMark: this.styles.radiomarkSymbol,
-                borderColor: this.styles.inputBorderColor,
-                borderWidth: this.styles.inputBorderWidth,
             }));
         }
         return compositeFlat;

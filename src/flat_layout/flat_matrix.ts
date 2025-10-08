@@ -63,6 +63,14 @@ export abstract class FlatMatrixContent {
         const fieldName = this.question.id + 'row' + rowIndex;
         const isChecked: boolean = row.isChecked(item);
         const isReadOnly = this.question.isReadOnly;
+        const appearance = {
+                fontStyle: 'normal',
+                fontColor: this.styles.inputFontColor,
+                lineHeight: this.styles.inputFontSize,
+                fontSize: this.styles.inputFontSize,
+                borderColor: this.styles.inputBorderColor,
+                borderWidth: this.styles.inputBorderWidth
+        }
         if(this.question.isMultiSelect) {
             return new CheckItemBrick(this.controller, rect, {
                 fieldName: fieldName + 'index' + itemIndex,
@@ -74,15 +82,9 @@ export abstract class FlatMatrixContent {
                 }
             },
             {
+                ...appearance,
                 fontName: this.styles.checkmarkFont,
-                fontColor: this.styles.inputFontColor,
-                fontSize: this.styles.checkmarkFontSize,
-                lineHeight: this.styles.checkmarkFontSize,
                 checkMark: this.styles.checkmarkSymbol,
-                fontStyle: 'normal',
-                borderColor: this.styles.inputBorderColor,
-                borderWidth: this.styles.inputBorderWidth,
-
             });
         } else {
             const radioGroupWrap = this.getRadioGroupWrap(fieldName);
@@ -94,14 +96,9 @@ export abstract class FlatMatrixContent {
                     updateOptions: options => this.survey.updateRadioItemAcroformOptions(options, this.question, item),
                 },
                 {
+                    ...appearance,
                     fontName: this.styles.radiomarkFont,
-                    fontSize: this.styles.radiomarkFontSize,
-                    fontColor: this.styles.inputFontColor,
-                    fontStyle: 'normal',
-                    lineHeight: this.styles.radiomarkFontSize,
                     checkMark: this.styles.radiomarkSymbol,
-                    borderColor: this.styles.inputBorderColor,
-                    borderWidth: this.styles.inputBorderWidth,
                 });
         }
     }

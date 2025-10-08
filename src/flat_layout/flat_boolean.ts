@@ -1,4 +1,4 @@
-import { ItemValue, LocalizableString, QuestionBooleanModel } from 'survey-core';
+import { LocalizableString, QuestionBooleanModel } from 'survey-core';
 import { SurveyPDF } from '../survey';
 import { IPoint, DocController, IRect } from '../doc_controller';
 import { FlatQuestion } from './flat_question';
@@ -25,10 +25,10 @@ export class FlatBooleanCheckbox extends FlatQuestion<QuestionBooleanModel> {
                 checked: this.question.booleanValue
             }, {
                 fontName: this.styles.checkmarkFont,
-                fontColor: this.styles.inputFontColor,
-                fontSize: this.styles.checkmarkFontSize,
-                lineHeight: this.styles.checkmarkFontSize,
                 checkMark: this.styles.checkmarkSymbol,
+                fontColor: this.styles.inputFontColor,
+                fontSize: this.styles.inputFontSize,
+                lineHeight: this.styles.inputFontSize,
                 fontStyle: 'normal',
                 borderColor: this.styles.inputBorderColor,
                 borderWidth: this.styles.inputBorderWidth,
@@ -75,12 +75,12 @@ export class FlatBoolean extends FlatQuestion<QuestionBooleanModel> {
             shouldRenderReadOnly: this.radioGroupWrap.readOnly && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform' || this.controller.compress,
         },
         {
-            fontName: this.styles.inputFont,
+            fontName: this.styles.radiomarkFont,
+            checkMark: this.styles.radiomarkSymbol,
             fontSize: this.styles.inputFontSize,
             lineHeight: this.styles.inputFontSize,
             fontColor: this.styles.inputFontColor,
             fontStyle: 'normal',
-            checkMark: this.styles.inputSymbol,
             borderColor: this.styles.inputBorderColor,
             borderWidth: this.styles.inputBorderWidth,
         });

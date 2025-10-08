@@ -48,7 +48,6 @@ export class RadioGroupWrap {
 }
 
 export class RadioItemBrick extends PdfBrick {
-    private static readonly RADIOMARKER_READONLY_SYMBOL: string = 'l';
     public constructor(controller: DocController,
         rect: IRect, private radioGroupWrap: RadioGroupWrap, protected options: IRadioItemBrickOptions, protected appearance: IRadioItemBrickAppearanceOptions) {
         super(controller, rect);
@@ -96,7 +95,8 @@ export class RadioItemBrick extends PdfBrick {
             const textOptions = {
                 fontName: this.appearance.fontName,
                 fontSize: this.appearance.fontSize,
-                fontColor: this.appearance.fontColor
+                fontColor: this.appearance.fontColor,
+                lineHeight: this.appearance.lineHeight
             };
             const radiomarkerPoint: IPoint = SurveyHelper.createPoint(this, true, true);
             const radiomarkerSize: ISize = this.controller.measureText(
@@ -105,7 +105,7 @@ export class RadioItemBrick extends PdfBrick {
             radiomarkerPoint.yTop += this.height / 2.0 - radiomarkerSize.height / 2.0;
             let radiomarkerFlat: IPdfBrick = await SurveyHelper.createTextFlat(
                 radiomarkerPoint, this.controller,
-                RadioItemBrick.RADIOMARKER_READONLY_SYMBOL, textOptions);
+                this.appearance.checkMark, textOptions);
             await radiomarkerFlat.render();
         }
     }
