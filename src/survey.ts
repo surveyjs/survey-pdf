@@ -1,4 +1,4 @@
-import { SurveyModel, EventBase, SurveyElement, Serializer, Question, ItemValue } from 'survey-core';
+import { SurveyModel, EventBase, SurveyElement, Serializer, Question, ItemValue, PanelModel, PageModel } from 'survey-core';
 import { hasLicense } from 'survey-core';
 import { IDocOptions, DocController, DocOptions } from './doc_controller';
 import { FlatSurvey } from './flat_layout/flat_survey';
@@ -179,6 +179,10 @@ export class SurveyPDF extends SurveyModel {
         });
     }
 
+    public onGetQuestionStyles: EventBase<SurveyPDF, { question: Question, styles: IStyles }> = new EventBase<SurveyPDF, { question: Question, styles: IStyles }>;
+    public onGetPanelStyles: EventBase<SurveyPDF, { panel: PanelModel, styles: IStyles }> = new EventBase<SurveyPDF, { panel: PanelModel, styles: IStyles }>;
+    public onGetPageStyles: EventBase<SurveyPDF, { page: PanelModel, styles: IStyles }> = new EventBase<SurveyPDF, { page: PanelModel, styles: IStyles }>;
+
     private _styles: IStyles;
 
     public get styles(): IStyles {
@@ -203,6 +207,15 @@ export class SurveyPDF extends SurveyModel {
         types.forEach(type => {
             SurveyHelper.mergeObjects(res, styles[type] ?? {});
         });
+        if(element.isPanel) {
+            this.onGetPanelStyles.fire(this, { panel: element as PanelModel, styles: res });
+        }
+        if(element.isPage) {
+            this.onGetPageStyles.fire(this, { page: element as PageModel, styles: res });
+        }
+        if(element.isQuestion) {
+            this.onGetQuestionStyles.fire(this, { question: element as Question, styles: res });
+        }
         return res;
     }
     private correctBricksPosition(controller: DocController, flats: IPdfBrick[][]) {
