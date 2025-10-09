@@ -1,10 +1,8 @@
 import {
     QuestionMatrixDropdownModelBase, QuestionMatrixDropdownRenderedTable,
-    QuestionMatrixDropdownRenderedRow, QuestionMatrixDropdownRenderedCell, Serializer, PanelModel,
-    LocalizableString
-} from 'survey-core';
+    QuestionMatrixDropdownRenderedRow, QuestionMatrixDropdownRenderedCell, Serializer, PanelModel} from 'survey-core';
 import { SurveyPDF } from '../survey';
-import { IPoint, IRect, DocController } from '../doc_controller';
+import { IPoint, DocController } from '../doc_controller';
 import { IFlatQuestion, FlatQuestion } from './flat_question';
 import { FlatSelectBase } from './flat_selectbase';
 import { FlatRepository } from './flat_repository';
@@ -53,10 +51,7 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
                     const currPoint = SurveyHelper.clone(point);
                     if (!isWide && this.question.renderedTable.showHeader && (location !== 'header') && cell.cell?.column?.locTitle) {
                         container.addBrick(await SurveyHelper.createTextFlat(currPoint, this.controller, cell.cell.column.locTitle, {
-                            fontStyle: this.styles.verticalHeaderFontStyle,
-                            fontSize: this.styles.verticalHeaderFontSize,
-                            lineHeight: this.styles.verticalHeaderLineHeight,
-                            fontColor: this.styles.verticalHeaderFontColor,
+                            ...this.styles.verticalHeader
                         }));
                         currPoint.yTop = container.yBot + this.styles.verticalGapBetweenRowTitleQuestion;
                     }
@@ -66,21 +61,12 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
             }
             else if (cell.hasTitle) {
                 if (location == 'header') {
-                    bricks.push(await SurveyHelper.createTextFlat(point, this.controller, cell.locTitle, {
-                        fontStyle: this.styles.headerFontStyle,
-                        fontSize: this.styles.headerFontSize,
-                        lineHeight: this.styles.headerLineHeight,
-                        fontColor: this.styles.headerFontColor,
-                    }));
+                    bricks.push(await SurveyHelper.createTextFlat(point, this.controller, cell.locTitle, { ...this.styles.header }));
                 }
                 else {
-                    bricks.push(await SurveyHelper.createTextFlat(point, this.controller, cell.locTitle, {
-                        fontStyle: isWide ? this.styles.rowTitleFontStyle: this.styles.verticalRowTitleFontStyle,
-                        fontSize: isWide ? this.styles.rowTitleFontSize: this.styles.verticalRowTitleFontSize,
-                        lineHeight: isWide ? this.styles.rowTitleLineHeight: this.styles.verticalRowTitleLineHeight,
-                        fontColor: isWide ? this.styles.rowTitleFontColor: this.styles.verticalRowTitleFontColor,
-                        textAlign: isWide ? 'right': 'left'
-                    }));
+                    bricks.push(await SurveyHelper.createTextFlat(point, this.controller, cell.locTitle,
+                        isWide ? {...this.styles.rowTitle, textAlign: 'right'} :  {...this.styles.verticalRowTitle}
+                    ));
                 }
             }
         });

@@ -33,12 +33,7 @@ export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSele
         const compositeFlat: CompositeBrick = new CompositeBrick();
         const itemRect: IRect = SurveyHelper.createRect(point,
             this.styles.inputWidth, this.styles.inputHeight);
-        const textOptions:Partial<ITextAppearanceOptions> = {
-            lineHeight: this.styles.labelLineHeight,
-            fontSize: this.styles.labelFontSize,
-            fontStyle: this.styles.labelFontStyle,
-            fontColor: this.styles.labelFontColor
-        };
+        const textOptions:Partial<ITextAppearanceOptions> = { ...this.styles.label };
         const itemFlat: IPdfBrick = this.generateFlatItem(itemRect, item, index);
 
         compositeFlat.addBrick(itemFlat);

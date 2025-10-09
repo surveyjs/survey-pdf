@@ -18,11 +18,7 @@ export class FlatSurvey {
         if (survey.showTitle) {
             const styles = survey.styles;
             if (survey.title) {
-                const textOptions:Partial<ITextAppearanceOptions> = {
-                    fontSize: styles.titleFontSize,
-                    fontStyle: styles.titleFontStyle,
-                    fontColor: styles.titleFontColor
-                };
+                const textOptions:Partial<ITextAppearanceOptions> = { ...styles.title };
                 const surveyTitleFlat: IPdfBrick = await SurveyHelper.createTextFlat(point, controller, survey.locTitle, textOptions);
                 compositeFlat.addBrick(surveyTitleFlat);
                 point = SurveyHelper.createPoint(surveyTitleFlat);
@@ -32,7 +28,7 @@ export class FlatSurvey {
                     point.yTop += styles.descriptionGap;
                 }
                 compositeFlat.addBrick(await SurveyHelper.createTextFlat(
-                    point, controller, survey.locDescription, { fontSize: controller.fontSize * styles.descriptionFontSize }));
+                    point, controller, survey.locDescription, { ...styles.description }));
             }
         }
         return compositeFlat;

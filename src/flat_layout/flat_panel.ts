@@ -40,12 +40,7 @@ export class FlatPanel<T extends PanelModel = PanelModel> {
     }
     protected async generateTitleFlat(point: IPoint): Promise<IPdfBrick> {
         const composite: CompositeBrick = new CompositeBrick();
-        const textOptions:Partial<ITextAppearanceOptions> = {
-            fontSize: this.styles.titleFontSize,
-            fontStyle: this.styles.titleFontStyle,
-            fontColor: this.styles.titleFontColor,
-            lineHeight: this.styles.titleLineHeight
-        };
+        const textOptions:Partial<ITextAppearanceOptions> = { ...this.styles.title }
         let currPoint = SurveyHelper.clone(point);
         if (this.panel.no) {
             const noFlat: IPdfBrick = await SurveyHelper.createTextFlat(
@@ -81,7 +76,7 @@ export class FlatPanel<T extends PanelModel = PanelModel> {
                     currPoint.yTop += this.styles.descriptionGap;
                 }
                 const panelDescFlat: IPdfBrick = await SurveyHelper.createTextFlat(
-                    currPoint, this.controller, this.panel.locDescription, { fontSize: this.styles.descriptionFontSize });
+                    currPoint, this.controller, this.panel.locDescription, { ...this.styles.description });
                 bricks.push(panelDescFlat);
                 currPoint = SurveyHelper.createPoint(panelDescFlat);
             }

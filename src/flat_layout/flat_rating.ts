@@ -8,7 +8,6 @@ import { SurveyHelper } from '../helper_survey';
 import { IStyles } from '../styles';
 import { FlatQuestion } from './flat_question';
 import { RadioGroupWrap, RadioItemBrick } from '../pdf_render/pdf_radioitem';
-import { ITextAppearanceOptions } from 'src/pdf_render/pdf_text';
 
 interface ItemInfo { item: ItemValue, index: number, locText: LocalizableString, width: number }
 
@@ -25,16 +24,8 @@ export class FlatRating extends FlatQuestion<QuestionRatingModel> {
         }
         return this._radioGroupWrap;
     }
-    protected get labelAppearance(): Partial<ITextAppearanceOptions> {
-        return {
-            fontStyle: this.styles.labelFontStyle,
-            fontColor: this.styles.labelFontColor,
-            fontSize: this.styles.labelFontSize,
-            lineHeight: this.styles.labelLineHeight
-        };
-    }
     protected getItemWidth(title: LocalizableString): number {
-        return Math.min(Math.max(this.controller.measureText(title, this.labelAppearance).width, this.styles.itemMinWidth), SurveyHelper.getPageAvailableWidth(this.controller));
+        return Math.min(Math.max(this.controller.measureText(title, { ...this.styles.label }).width, this.styles.itemMinWidth), SurveyHelper.getPageAvailableWidth(this.controller));
     }
     protected getItemText(index: number, locText: LocalizableString): LocalizableString {
         const ratingItemLocText: LocalizableString = new LocalizableString(locText.owner, locText.useMarkdown);
@@ -70,7 +61,7 @@ export class FlatRating extends FlatQuestion<QuestionRatingModel> {
         const currPoint = SurveyHelper.clone(point);
         const compositeFlat: CompositeBrick = new CompositeBrick();
         const textBrick = await SurveyHelper.
-            createTextFlat(point, this.controller, this.getItemText(itemInfo.index, itemInfo.locText), this.labelAppearance);
+            createTextFlat(point, this.controller, this.getItemText(itemInfo.index, itemInfo.locText), { ...this.styles.label });
         compositeFlat.addBrick(textBrick);
         currPoint.yTop = textBrick.yBot + this.styles.gapBetweenItemTextVertical;
         compositeFlat.addBrick(this.generateFlatItem(SurveyHelper.createRect(

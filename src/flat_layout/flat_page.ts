@@ -9,13 +9,8 @@ import { ITextAppearanceOptions } from '../pdf_render/pdf_text';
 
 export class FlatPage extends FlatPanel<PageModel> {
     protected async generateTitleFlat(point: IPoint): Promise<IPdfBrick> {
-        const textOptions:Partial<ITextAppearanceOptions> = {
-            fontSize: this.styles.titleFontSize,
-            fontStyle: this.styles.titleFontStyle,
-            fontColor: this.styles.titleFontColor
-        };
         return await SurveyHelper.createTextFlat(
-            point, this.controller, this.panel.locTitle, textOptions);
+            point, this.controller, this.panel.locTitle, {...this.styles.title});
     }
     async generateFlats(point: IPoint): Promise<IPdfBrick[]> {
         const pageFlats: IPdfBrick[] = [];

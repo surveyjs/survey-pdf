@@ -122,12 +122,7 @@ export class FlatMatrixContentVertical extends FlatMatrixContent {
             this.styles.inputWidth, this.styles.inputHeight), options);
         currPoint.xLeft = radioFlat.xRight + this.styles.verticalGapBetweenItemText;
         const radioText: IPdfBrick = await SurveyHelper.createTextFlat(currPoint,
-            this.controller, options.item.locText, {
-                fontSize: this.styles.verticalHeaderFontSize,
-                lineHeight: this.styles.verticalHeaderLineHeight,
-                fontStyle: this.styles.verticalHeaderFontStyle,
-                fontColor: this.styles.verticalHeaderFontColor,
-            });
+            this.controller, options.item.locText, { ...this.styles.verticalHeader });
         SurveyHelper.alignVerticallyBricks('center', radioFlat, radioText.unfold()[0]);
         radioText.updateRect();
         return new CompositeBrick(radioFlat, radioText);
@@ -137,12 +132,7 @@ export class FlatMatrixContentVertical extends FlatMatrixContent {
         const cell = await this.generateFlatCell(currPoint, async (point, bricks) => {
             const currPoint = SurveyHelper.clone(point);
             const rowTextFlat = await SurveyHelper.createTextFlat(point,
-                this.controller, row.locText, {
-                    fontSize: this.styles.verticalRowTitleFontSize,
-                    lineHeight: this.styles.verticalRowTitleLineHeight,
-                    fontStyle: this.styles.verticalRowTitleFontStyle,
-                    fontColor: this.styles.verticalRowTitleFontColor,
-                });
+                this.controller, row.locText, { ...this.styles.verticalRowTitle });
             bricks.push(rowTextFlat);
             currPoint.yTop = rowTextFlat.yBot + this.styles.verticalGapBetweenRowTitleQuestion;
             for (let i: number = 0; i < this.question.visibleColumns.length; i++) {
@@ -177,13 +167,7 @@ export class FlatMatrixContentHorizontal extends FlatMatrixContent {
             currPoint.xLeft = this.controller.margins.left;
             this.controller.margins.right += (SurveyHelper.getPageAvailableWidth(this.controller) - this.rowTitleWidth);
             cells.push(await this.generateFlatCell(currPoint, async (point, bricks) => {
-                bricks.push(await SurveyHelper.createTextFlat(point, this.controller, row.locText, {
-                    fontStyle: this.styles.rowTitleFontStyle,
-                    fontSize: this.styles.rowTitleFontSize,
-                    lineHeight: this.styles.rowTitleLineHeight,
-                    fontColor: this.styles.rowTitleFontColor,
-                    textAlign: 'right'
-                }));
+                bricks.push(await SurveyHelper.createTextFlat(point, this.controller, row.locText, { ...this.styles.rowTitle, textAlign: 'right' }));
             }
             ));
             currPoint.xLeft += this.rowTitleWidth + this.styles.gapBetweenColumns;
@@ -229,11 +213,7 @@ export class FlatMatrixContentHorizontal extends FlatMatrixContent {
             this.controller.margins.left = currPoint.xLeft;
             this.controller.margins.right += (SurveyHelper.getPageAvailableWidth(this.controller) - this.columnWidth);
             headers.push(await this.generateFlatCell(currPoint, async (point, bricks) => {
-                bricks.push(await SurveyHelper.createTextFlat(point, this.controller, this.question.visibleColumns[i].locText, {
-                    fontStyle: this.styles.headerFontStyle,
-                    fontSize: this.styles.headerFontSize,
-                    lineHeight: this.styles.headerLineHeight,
-                    fontColor: this.styles.headerFontColor, }));
+                bricks.push(await SurveyHelper.createTextFlat(point, this.controller, this.question.visibleColumns[i].locText, { ...this.styles.header }));
             }));
             currPoint.xLeft += this.columnWidth + this.styles.gapBetweenColumns;
             this.controller.popMargins();

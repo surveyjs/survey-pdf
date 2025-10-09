@@ -1,25 +1,28 @@
 export type IStyles = { [index: string]: any }
 export function getDefaultStyles (baseSize: number) {
     return {
-        titleFontSize: baseSize * 4,
-        titleFontStyle: 'bold',
-        titleFontColor: '#000',
-        descriptionFontSize: 2,
+        title: {
+            fontSize: baseSize * 4,
+            fontStyle: 'bold',
+            fontColor: '#000',
+            lineHeight: baseSize * 5,
+        },
+        description: {
+            fontSize: baseSize * 2,
+            lineHeight: baseSize * 3,
+            fontStyle: "normal",
+            fontColor: '#000',
+        },
         descriptionGap: baseSize * 1.5,
         contentGap: baseSize * 4.0,
         question: {
             headerBorderWidth: 0,
             headerPadding: 0,
             titleLeftWidthPers: Math.E / 10.0,
-            titleLineHeight: baseSize * 3,
-            titleFontSize: baseSize * 2,
-            titleFontStyle: 'normal',
-            titleFontColor: '#000',
             contentGapVertical: baseSize * 0.5,
             contentGapHorizontal: baseSize * 1.0,
             contentIndent: 0,
             descriptionGap: baseSize * 0.0625,
-            descriptionFontSize: baseSize * 2,
             gapBetweenItemText: baseSize * 0.25,
             gapBetweenColumns: baseSize * 1.5,
             gapBetweenRows: baseSize * 0.25,
@@ -34,25 +37,38 @@ export function getDefaultStyles (baseSize: number) {
             commentBorderWidth: 0,
             commentFontColor: '#000',
             commentFontSize: baseSize * 2.5,
-            commentLineHeight: baseSize * 3
+            commentLineHeight: baseSize * 3,
+            title: {
+                lineHeight: baseSize * 3,
+                fontSize: baseSize * 2,
+                fontStyle: 'normal',
+                fontColor: '#000',
+            },
+            description: {
+                fontSize: baseSize * 2,
+            },
         },
         panel: {
             wrapperPadding: 0,
             wrapperBorderWidth: 0,
-            titleFontSize: baseSize * 2,
-            titleFontStyle: 'bold',
-            titleFontColor: '#000',
-            titleLineHeight: baseSize * 3.5,
             gapBetweenRows: 0,
             gapBetweenElements: 0,
             contentGap: 0,
             panelDescriptionGap: baseSize * 0.25,
-            descriptionFontSize: baseSize * 2,
             descriptionGap: baseSize * 0.5,
             headerPadding: [baseSize * 0.5, baseSize],
             headerBorderWidth: baseSize * 0.125,
             headerBorderColor: '#000',
-            headerBackgroundColor: '#E5E5E5'
+            headerBackgroundColor: '#E5E5E5',
+            title: {
+                fontSize: baseSize * 2,
+                fontStyle: 'bold',
+                fontColor: '#000',
+                lineHeight: baseSize * 3.5,
+            },
+            description: {
+                fontSize: baseSize * 2,
+            },
         },
         page: {
             headerBorderWidth: 0,
@@ -61,9 +77,6 @@ export function getDefaultStyles (baseSize: number) {
             headerBackgroundColor: '#fff',
             gapBetweenRows: 0,
             gapBetweenElements: 0,
-            titleFontSize: baseSize * 2,
-            titleFontStyle: 'bold',
-            titleFontColor: '#000'
         },
         selectbase: {
             columnMinWidth: baseSize * 5,
@@ -73,10 +86,12 @@ export function getDefaultStyles (baseSize: number) {
             contentGapVertical: baseSize * 1,
             inputWidth: baseSize * 2,
             inputHeight: baseSize * 2,
-            labelFontSize: baseSize * 2.5,
-            labelLineHeight: baseSize * 3,
-            labelFontStyle: 'normal',
-            labelFontColor: '#000',
+            label: {
+                fontSize: baseSize * 2.5,
+                lineHeight: baseSize * 3,
+                fontStyle: 'normal',
+                fontColor: '#000'
+            },
             inputBorderWidth: baseSize * 0.125,
             inputFontSize: baseSize * 1.25,
             inputFont: 'zapfdingbats',
@@ -88,6 +103,9 @@ export function getDefaultStyles (baseSize: number) {
             inputSymbol: 'l',
         },
         matrixbase: {
+            title: {
+                fontStyle: "bold"
+            },
             columnMinWidth: baseSize * 12.5,
             cellBorderWidth: baseSize * 0.125,
             cellBorderColor: '#000',
@@ -99,31 +117,37 @@ export function getDefaultStyles (baseSize: number) {
             contentGapVertical: 0,
             wrapperPadding: 0,
             wrapperBorderWidth: 0,
-            titleFontStyle: 'bold',
             gapBetweenColumns: 0,
             gapBetweenRows: 0,
             inputHeight: baseSize * 2,
             inputWidth: baseSize * 2,
-            rowTitleFontSize: baseSize * 2,
-            rowTitleLineHeight: baseSize * 3,
-            rowTitleFontStyle: 'normal',
-            rowTitleFontColor: '#000',
-            headerFontSize: baseSize * 2,
-            headerLineHeight: baseSize * 3,
-            headerFontStyle: 'normal',
-            headerFontColor: '#000',
-
-            verticalHeaderFontSize: baseSize * 2,
-            verticalHeaderLineHeight: baseSize * 3,
-            verticalHeaderFontStyle: 'normal',
-            verticalHeaderFontColor: '#000',
-            verticalRowTitleFontSize: baseSize * 2,
-            verticalRowTitleLineHeight: baseSize * 3,
-            verticalRowTitleFontStyle: 'bold',
-            verticalRowTitleFontColor: '#000',
             verticalGapBetweenItems: baseSize,
             verticalGapBetweenRowTitleQuestion: baseSize * 0.5,
-            verticalCellRowTitleBackgroundColor: '#E5E5E5'
+            verticalCellRowTitleBackgroundColor: '#E5E5E5',
+            rowTitle: {
+                fontSize: baseSize * 2,
+                lineHeight: baseSize * 3,
+                fontStyle: 'normal',
+                fontColor: '#000',
+            },
+            header: {
+                fontSize: baseSize * 2,
+                lineHeight: baseSize * 3,
+                fontStyle: 'normal',
+                fontColor: '#000',
+            },
+            verticalHeader: {
+                fontSize: baseSize * 2,
+                lineHeight: baseSize * 3,
+                fontStyle: 'normal',
+                fontColor: '#000',
+            },
+            verticalRowTitle: {
+                fontSize: baseSize * 2,
+                lineHeight: baseSize * 3,
+                fontStyle: 'bold',
+                fontColor: '#000',
+            },
         },
         matrix: {
             inputBorderWidth: baseSize * 0.125,
@@ -132,18 +156,24 @@ export function getDefaultStyles (baseSize: number) {
             radiomarkFont: 'zapfdingbats',
             checkmarkSymbol: '3',
             checkmarkFont: 'zapfdingbats',
-            verticalHeaderFontSize: baseSize * 2.5,
-            verticalRowTitleFontStyle: 'normal',
             verticalGapBetweenItemText: baseSize,
+            verticalRowTitle: {
+                fontStyle: 'normal',
+            },
+            verticalHeader: {
+                fontSize: baseSize * 2.5
+            }
         },
         multipletext: {
             itemTitleWidthPers: Math.E / 10.0,
-            labelFontSize: baseSize * 2.5,
-            labelLineHeight: baseSize * 3,
-            labelFontStyle: 'normal',
-            labelFontColor: '#000',
             gapBetweenColumns: 1.5,
-            rowsGap: baseSize * 0.195
+            rowsGap: baseSize * 0.195,
+            label: {
+                fontSize: baseSize * 2.5,
+                lineHeight: baseSize * 3,
+                fontStyle: 'normal',
+                fontColor: '#000',
+            },
         },
         rating: {
             inputHeight: baseSize * 2,
@@ -157,11 +187,13 @@ export function getDefaultStyles (baseSize: number) {
             gapBetweenRows: baseSize * 0.25,
             gapBetweenItemText: baseSize,
             gapBetweenItemTextVertical: 0,
-            labelFontSize: baseSize * 2.5,
-            labelLineHeight: baseSize * 3,
-            labelFontStyle: 'normal',
-            labelFontColor: '#000',
             radiomarkFont: 'zapfdingbats',
+            label: {
+                fontSize: baseSize * 2.5,
+                lineHeight: baseSize * 3,
+                fontStyle: 'normal',
+                fontColor: '#000',
+            },
         },
         ranking: {
             inputHeight: baseSize * 2,
@@ -185,14 +217,15 @@ export function getDefaultStyles (baseSize: number) {
         file: {
             imageGap: baseSize * 0.195,
             itemMinWidth: baseSize * 5,
-            labelFontColor: '#0000EE',
-            labelFontStyle: 'normal',
-            labelFontSize: baseSize * 2.5,
-            labelLineHeight: baseSize * 3,
             defaultImageFit: 'contain',
+            label: {
+                fontColor: '#0000EE',
+                fontStyle: 'normal',
+                fontSize: baseSize * 2.5,
+                lineHeight: baseSize * 3,
+            },
         },
         paneldynamic: {
-            titleFontStyle: 'bold',
             headerBorderWidth: baseSize * 0.125,
             headerPadding: [baseSize * 0.5, baseSize],
             headerBackgroundColor: '#E5E5E5',
@@ -201,6 +234,9 @@ export function getDefaultStyles (baseSize: number) {
             gapBetweenPanels: 0,
             wrapperPadding: 0,
             wrapperBorderWidth: 0,
+            title: {
+                fontStyle: 'bold'
+            },
         },
         boolean: {
             inputWidth: baseSize * 2,
@@ -211,11 +247,13 @@ export function getDefaultStyles (baseSize: number) {
             radiomarkFont: 'zapfdingbats',
             checkmarkSymbol: '3',
             checkmarkFont: 'zapfdingbats',
-            labelFontSize: baseSize * 2.5,
-            labelLineHeight: baseSize * 3,
-            labelFontStyle: 'normal',
-            labelFontColor: '#000',
             gapBetweenItemText: baseSize,
+            label: {
+                fontSize: baseSize * 2.5,
+                lineHeight: baseSize * 3,
+                fontStyle: 'normal',
+                fontColor: '#000',
+            },
         },
         imagepicker: {
             checkmarkFont: 'zapfdingbats',

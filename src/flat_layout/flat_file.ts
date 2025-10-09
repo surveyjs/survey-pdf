@@ -16,12 +16,7 @@ export class FlatFile extends FlatQuestion<QuestionFileModel> {
                 link: item.content,
                 readOnlyShowLink: SurveyHelper.getReadonlyRenderAs(this.question, this.controller) === 'text',
                 shouldRenderReadOnly: SurveyHelper.shouldRenderReadOnly(this.question, this.controller),
-            }, {
-                fontColor: this.styles.labelFontColor,
-                fontStyle: this.styles.labelFontStyle,
-                fontSize: this.styles.labelFontSize,
-                lineHeight: this.styles.labelLineHeight
-            }));
+            }, { ...this.styles.label }));
         if (this.question.canPreviewImage(item)) {
             const imagePoint: IPoint = SurveyHelper.createPoint(compositeFlat);
             imagePoint.yTop += this.styles.imageGap;

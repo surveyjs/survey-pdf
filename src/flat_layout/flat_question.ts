@@ -22,12 +22,7 @@ export class FlatQuestion<T extends Question = Question> implements IFlatQuestio
     private async generateFlatTitle(point: IPoint): Promise<IPdfBrick> {
         const composite: CompositeBrick = new CompositeBrick();
         let currPoint: IPoint = SurveyHelper.clone(point);
-        const textOptions:Partial<ITextAppearanceOptions> = {
-            fontSize: this.styles.titleFontSize,
-            fontStyle: this.styles.titleFontStyle,
-            fontColor: this.styles.titleFontColor,
-            lineHeight: this.styles.titleLineHeight
-        };
+        const textOptions:Partial<ITextAppearanceOptions> = { ...this.styles.title };
         if (this.question.no) {
             const noText: string = this.question.no + ' ';
             let noFlat: IPdfBrick;
@@ -70,7 +65,7 @@ export class FlatQuestion<T extends Question = Question> implements IFlatQuestio
         return composite;
     }
     private async generateFlatDescription(point: IPoint): Promise<IPdfBrick> {
-        return await SurveyHelper.createTextFlat(point, this.controller, this.question.locDescription, { fontSize: this.styles.descriptionFontSize });
+        return await SurveyHelper.createTextFlat(point, this.controller, this.question.locDescription, { ...this.styles.description });
     }
     private async generateFlatHeader(point: IPoint): Promise<CompositeBrick> {
         const containerBrick: ContainerBrick = new ContainerBrick(this.controller, {
