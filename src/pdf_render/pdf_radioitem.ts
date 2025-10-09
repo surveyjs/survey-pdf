@@ -2,10 +2,9 @@ import { IQuestion } from 'survey-core';
 import { IPoint, IRect, ISize, DocController } from '../doc_controller';
 import { IPdfBrick, IPdfBrickOptions, PdfBrick } from './pdf_brick';
 import { SurveyPDF } from '../survey';
-import { IBorderAppearanceOptions, SurveyHelper } from '../helper_survey';
-import { ITextAppearanceOptions } from './pdf_text';
+import { IInputAppearanceOptions, SurveyHelper } from '../helper_survey';
 
-export type IRadioItemBrickAppearanceOptions = ITextAppearanceOptions & IBorderAppearanceOptions & {
+export type IRadioItemBrickAppearanceOptions = IInputAppearanceOptions & {
     checkMark: string,
 }
 export interface IRadioItemBrickOptions extends IPdfBrickOptions {

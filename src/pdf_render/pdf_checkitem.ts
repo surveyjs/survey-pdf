@@ -1,8 +1,6 @@
 import { IRect, ISize, DocController, IPoint } from '../doc_controller';
 import { IPdfBrick, IPdfBrickOptions, PdfBrick } from './pdf_brick';
-import { IBorderAppearanceOptions, SurveyHelper } from '../helper_survey';
-import { ITextAppearanceOptions } from './pdf_text';
-
+import { IInputAppearanceOptions, SurveyHelper } from '../helper_survey';
 export interface ICheckItemBrickOptions extends IPdfBrickOptions {
     checked: boolean;
     readOnly: boolean;
@@ -10,7 +8,7 @@ export interface ICheckItemBrickOptions extends IPdfBrickOptions {
     updateOptions: (options: any) => void;
 }
 
-export type ICheckItemBrickAppearanceOptions = ITextAppearanceOptions & IBorderAppearanceOptions & {
+export type ICheckItemBrickAppearanceOptions = IInputAppearanceOptions & {
      checkMark: string,
 }
 

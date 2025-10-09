@@ -5,7 +5,6 @@ import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { AdornersPageOptions } from '../event_handler/adorners';
 import { SurveyHelper } from '../helper_survey';
-import { ITextAppearanceOptions } from '../pdf_render/pdf_text';
 
 export class FlatPage extends FlatPanel<PageModel> {
     protected async generateTitleFlat(point: IPoint): Promise<IPdfBrick> {

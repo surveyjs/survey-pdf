@@ -1,16 +1,9 @@
+import { ITextAppearanceOptions } from '../helper_survey';
 import { IPoint, IRect, DocController } from '../doc_controller';
 import { IPdfBrickOptions, PdfBrick } from './pdf_brick';
 
 export interface ITextBrickOptions extends IPdfBrickOptions {
     text: string;
-}
-
-export interface ITextAppearanceOptions {
-    fontStyle: string;
-    fontSize: number;
-    fontName: string;
-    fontColor: string;
-    lineHeight: number;
 }
 
 export class TextBrick extends PdfBrick {

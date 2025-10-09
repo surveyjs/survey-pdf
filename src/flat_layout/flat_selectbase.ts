@@ -3,9 +3,8 @@ import { IPoint, IRect } from '../doc_controller';
 import { FlatQuestion } from './flat_question';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
-import { SurveyHelper } from '../helper_survey';
+import { SurveyHelper, ITextAppearanceOptions } from '../helper_survey';
 import { ChoiceItem } from 'survey-core/typings/src/question_baseselect';
-import { ITextAppearanceOptions } from '../pdf_render/pdf_text';
 
 export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSelectBase> extends FlatQuestion<T> {
     public abstract generateFlatItem(rect: IRect, item: ItemValue, index: number): IPdfBrick;

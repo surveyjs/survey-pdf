@@ -1,9 +1,8 @@
 import { IQuestion, QuestionTextModel } from 'survey-core';
 import { IRect, DocController } from '../doc_controller';
 import { IPdfBrick, IPdfBrickOptions, PdfBrick, TranslateXFunction } from './pdf_brick';
-import { IBorderAppearanceOptions, SurveyHelper } from '../helper_survey';
+import { IBorderAppearanceOptions, SurveyHelper, ITextAppearanceOptions } from '../helper_survey';
 import { CompositeBrick } from './pdf_composite';
-import { ITextAppearanceOptions } from './pdf_text';
 
 export interface ITextFieldBrickOptions extends IPdfBrickOptions {
     isReadOnly: boolean;

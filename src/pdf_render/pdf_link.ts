@@ -1,5 +1,5 @@
-import { ITextAppearanceOptions, ITextBrickOptions, TextBrick } from './pdf_text';
-import { SurveyHelper } from '../helper_survey';
+import { ITextBrickOptions, TextBrick } from './pdf_text';
+import { ITextAppearanceOptions } from '../helper_survey';
 import { IRect, DocController } from '../doc_controller';
 
 export interface ILinkOptions extends ITextBrickOptions {
@@ -7,11 +7,9 @@ export interface ILinkOptions extends ITextBrickOptions {
     readOnlyShowLink: boolean;
 }
 
-export interface ILinkBrickAppearanceOptions extends ITextAppearanceOptions {}
-
 export class LinkBrick extends TextBrick {
     private static readonly SCALE_FACTOR_MAGIC: number = 0.955;
-    public constructor(controller: DocController, rect: IRect, public options: ILinkOptions, public appearance: ILinkBrickAppearanceOptions) {
+    public constructor(controller: DocController, rect: IRect, public options: ILinkOptions, public appearance: ITextAppearanceOptions) {
         super(controller, rect, options, appearance);
     }
     public async renderInteractive(): Promise<void> {

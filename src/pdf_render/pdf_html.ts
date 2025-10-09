@@ -1,6 +1,6 @@
 import { IPdfBrickOptions, PdfBrick } from './pdf_brick';
 import { IRect, DocController } from '../doc_controller';
-import { ITextAppearanceOptions } from './pdf_text';
+import { ITextAppearanceOptions } from '../helper_survey';
 
 export interface IHTMLOptions extends IPdfBrickOptions {
     html: string;

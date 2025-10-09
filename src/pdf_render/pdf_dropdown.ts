@@ -1,7 +1,6 @@
 import { IRect, DocController } from '../doc_controller';
 import { IPdfBrickOptions, PdfBrick } from './pdf_brick';
-import { IBorderAppearanceOptions, SurveyHelper } from '../helper_survey';
-import { ITextAppearanceOptions } from './pdf_text';
+import { IInputAppearanceOptions, SurveyHelper } from '../helper_survey';
 
 export interface IDropdownBrickOptions extends IPdfBrickOptions {
     fieldName: string;
@@ -11,10 +10,9 @@ export interface IDropdownBrickOptions extends IPdfBrickOptions {
     optionsCaption: string;
     value: string;
 }
-export type IDropdownBrickAppearanceOptions = ITextAppearanceOptions & IBorderAppearanceOptions;
 
 export class DropdownBrick extends PdfBrick {
-    public constructor(protected controller: DocController, rect: IRect, protected options: IDropdownBrickOptions, protected appearance: IDropdownBrickAppearanceOptions) {
+    public constructor(protected controller: DocController, rect: IRect, protected options: IDropdownBrickOptions, protected appearance: IInputAppearanceOptions) {
         super(controller, rect);
     }
     public async renderInteractive(): Promise<void> {

@@ -3,8 +3,7 @@ import { IPoint, DocController } from '../doc_controller';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { RowlineBrick } from '../pdf_render/pdf_rowline';
-import { SurveyHelper } from '../helper_survey';
-import { ITextAppearanceOptions } from '../pdf_render/pdf_text';
+import { SurveyHelper, ITextAppearanceOptions } from '../helper_survey';
 
 export class FlatSurvey {
     private static popRowlines(flats: IPdfBrick[]) {

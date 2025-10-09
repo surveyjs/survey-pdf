@@ -2,13 +2,12 @@ import { IElement, PanelModel, Question, SurveyElement } from 'survey-core';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { DocController, IPoint } from '../doc_controller';
 import { SurveyPDF } from '../survey';
-import { SurveyHelper } from '../helper_survey';
+import { SurveyHelper, ITextAppearanceOptions } from '../helper_survey';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { ContainerBrick } from '../pdf_render/pdf_container';
 import { AdornersPanelOptions } from '../event_handler/adorners';
 import { FlatRepository } from './flat_repository';
 import { IStyles } from '../styles';
-import { ITextAppearanceOptions } from '../pdf_render/pdf_text';
 
 export class FlatPanel<T extends PanelModel = PanelModel> {
     constructor(protected survey: SurveyPDF, protected panel: T, protected controller: DocController, protected styles: IStyles) {}

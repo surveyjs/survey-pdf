@@ -3,11 +3,10 @@ import { SurveyPDF } from '../survey';
 import { IPoint, DocController } from '../doc_controller';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
-import { SurveyHelper } from '../helper_survey';
+import { SurveyHelper, ITextAppearanceOptions } from '../helper_survey';
 import { AdornersOptions } from '../event_handler/adorners';
 import { FlatRepository } from './flat_repository';
 import { IStyles } from '../styles';
-import { ITextAppearanceOptions } from '../pdf_render/pdf_text';
 import { ContainerBrick } from '../pdf_render/pdf_container';
 
 export interface IFlatQuestion {
@@ -17,7 +16,7 @@ export interface IFlatQuestion {
 
 export class FlatQuestion<T extends Question = Question> implements IFlatQuestion {
     public constructor(protected survey: SurveyPDF,
-        protected question: T, protected controller: DocController, protected styles: IStyles) {
+        protected question: T, protected controller: DocController, protected styles: Readonly<IStyles>) {
     }
     private async generateFlatTitle(point: IPoint): Promise<IPdfBrick> {
         const composite: CompositeBrick = new CompositeBrick();

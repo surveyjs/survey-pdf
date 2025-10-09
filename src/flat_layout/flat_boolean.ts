@@ -5,12 +5,10 @@ import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
-import { SurveyHelper } from '../helper_survey';
+import { SurveyHelper, ITextAppearanceOptions } from '../helper_survey';
 import { IStyles } from '../styles';
 import { CheckItemBrick } from '../pdf_render/pdf_checkitem';
 import { RadioGroupWrap, RadioItemBrick } from '../pdf_render/pdf_radioitem';
-import { ITextAppearanceOptions } from '../pdf_render/pdf_text';
-
 export class FlatBooleanCheckbox extends FlatQuestion<QuestionBooleanModel> {
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         const compositeFlat: CompositeBrick = new CompositeBrick();

@@ -1,11 +1,11 @@
-import { IQuestion, Question, QuestionRatingModel, QuestionFileModel, LocalizableString, QuestionDropdownModel, PanelModel, PageModel } from 'survey-core';
+import { IQuestion, Question, LocalizableString, PanelModel, PageModel } from 'survey-core';
 import { SurveyPDF } from './survey';
 import { IPoint, IRect, ISize, DocController } from './doc_controller';
 import { FlatRepository } from './flat_layout/flat_repository';
 import { IFlatQuestion } from './flat_layout/flat_question';
-import { IPdfBrick, PdfBrick } from './pdf_render/pdf_brick';
-import { TextBrick, ITextAppearanceOptions } from './pdf_render/pdf_text';
-import { ILinkBrickAppearanceOptions, ILinkOptions, LinkBrick } from './pdf_render/pdf_link';
+import { IPdfBrick } from './pdf_render/pdf_brick';
+import { TextBrick } from './pdf_render/pdf_text';
+import { ILinkOptions, LinkBrick } from './pdf_render/pdf_link';
 import { HTMLBrick } from './pdf_render/pdf_html';
 import { ImageBrick } from './pdf_render/pdf_image';
 import { EmptyBrick } from './pdf_render/pdf_empty';
@@ -15,6 +15,17 @@ import { ITextFieldBrickAppearanceOptions, ITextFieldBrickOptions, TextFieldBric
 import { FlatPanel } from './flat_layout/flat_panel';
 import { FlatPage } from './flat_layout/flat_page';
 import { IStyles } from './styles';
+
+export interface ITextAppearanceOptions {
+    fontStyle: string;
+    fontSize: number;
+    fontName: string;
+    fontColor: string;
+    lineHeight: number;
+}
+export interface ITextWithAlignAppearanceOptions extends ITextAppearanceOptions {
+    textAlign?: 'left' | 'center' | 'right';
+}
 
 export type IBorderDescription = IRect & ISize;
 
@@ -32,16 +43,14 @@ export enum BorderRect {
     All = 15
 }
 export type IBorderAppearanceOptions = {
-    borderColor: string,
-    borderWidth: number,
+    borderColor?: string,
+    borderWidth?: number,
     dashStyle?: { dashArray: [number, number] | [number], dashPhase: number },
     borderMode?: BorderMode,
     borderRect?: BorderRect,
 }
 
-export interface ITextWithAlignAppearanceOptions extends ITextAppearanceOptions {
-    textAlign?: 'left' | 'center' | 'right';
-}
+export type IInputAppearanceOptions = IBorderAppearanceOptions & ITextAppearanceOptions;
 
 export class SurveyHelper {
     public static readonly EPSILON: number = 2.2204460492503130808472633361816e-15;
@@ -240,7 +249,7 @@ export class SurveyHelper {
         });
         return dest;
     }
-    public static getPatchedTextAppearanceOptions(controller: DocController, options?: Partial<ITextAppearanceOptions>): ITextAppearanceOptions {
+    public static getPatchedTextAppearanceOptions(controller: DocController, options?: Readonly<Partial<ITextAppearanceOptions>>): ITextAppearanceOptions {
         const newOptions = SurveyHelper.mergeObjects(SurveyHelper.getDefaultTextAppearanceOptions(controller), options ?? {});
         if(options && options.lineHeight == undefined) {
             newOptions.lineHeight = newOptions.fontSize;
@@ -388,7 +397,8 @@ export class SurveyHelper {
         return (<any>question).readonlyRenderAs === 'auto' ? controller.readonlyRenderAs : (<any>question).readonlyRenderAs;
     }
     public static async createCommentFlat(point: IPoint, question: Question,
-        controller: DocController, options: { rows?: number } & ITextFieldBrickOptions, appearance: ITextFieldBrickAppearanceOptions): Promise<IPdfBrick> {
+        controller: DocController, options: { rows?: number } & ITextFieldBrickOptions, appearance: Readonly<Partial<IInputAppearanceOptions>>): Promise<IPdfBrick> {
+        const newAppearance: ITextAppearanceOptions = SurveyHelper.getPatchedTextAppearanceOptions(controller, appearance);
         options.rows = options.rows ?? 1;
         options.value = options.value ?? '';
         options.shouldRenderReadOnly = SurveyHelper.shouldRenderReadOnly(question, controller, options.isReadOnly);
@@ -396,9 +406,9 @@ export class SurveyHelper {
         let textFlat;
         if (SurveyHelper.shouldRenderReadOnly(question, controller, options.isReadOnly)) {
             textFlat = await this.createReadOnlyTextFieldTextFlat(
-                point, controller, options.value, appearance);
+                point, controller, options.value, newAppearance);
         }
-        const comment = new TextFieldBrick(controller, rect, options, appearance);
+        const comment = new TextFieldBrick(controller, rect, options, newAppearance);
         if(textFlat) {
             comment.textBrick = textFlat;
         }
@@ -486,7 +496,7 @@ export class SurveyHelper {
             yBot: point.yTop + this.EPSILON
         }, typeof color === 'undefined' ? null : color);
     }
-    public static async createLinkFlat(point: IPoint, controller: DocController, options: ILinkOptions, appearance?: Partial<ILinkBrickAppearanceOptions>): Promise<IPdfBrick> {
+    public static async createLinkFlat(point: IPoint, controller: DocController, options: ILinkOptions, appearance?: Readonly<Partial<ITextAppearanceOptions>>): Promise<IPdfBrick> {
         const newAppearance: ITextAppearanceOptions = SurveyHelper.getPatchedTextAppearanceOptions(controller, appearance);
         const compositeText: CompositeBrick = <CompositeBrick>await this.
             createTextFlat(point, controller, options.text, newAppearance);
@@ -533,7 +543,7 @@ export class SurveyHelper {
         appearance.borderMode = appearance.borderMode ?? BorderMode.Inside;
         appearance.borderRect = appearance.borderRect ?? BorderRect.All;
         const borderWidth: number = appearance.borderWidth;
-        if(!borderWidth) return;
+        if(!borderWidth || !appearance.borderColor) return;
         const oldDrawColor: string = controller.doc.getDrawColor();
         controller.doc.setDrawColor(appearance.borderColor);
         controller.doc.setLineWidth(borderWidth);
