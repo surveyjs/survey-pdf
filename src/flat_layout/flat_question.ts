@@ -71,7 +71,9 @@ export class FlatQuestion implements IFlatQuestion {
     public async generateFlatsContentWithOptionalElements(point: IPoint): Promise<IPdfBrick[]> {
         const flats: Array<IPdfBrick> = [];
         const contentFlats = await this.generateFlatsComposite(point);
-        flats.push(...contentFlats);
+        if(Array.isArray(contentFlats)) {
+            flats.push(...contentFlats);
+        }
         const getLatestPoint = (): IPoint => {
             const res = SurveyHelper.clone(point);
             if(contentFlats !== null && contentFlats.length !== 0) {
