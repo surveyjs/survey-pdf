@@ -1,13 +1,18 @@
+import { EventAsync } from '../event_handler/event_async';
 import { IRect, ISize, DocController } from '../doc_controller';
-import { IQuestion, Question } from 'survey-core';
-import { SurveyHelper } from '../helper_survey';
 
 export type TranslateXFunction = (xLeft: number, xRight : number) => { xLeft: number, xRight: number};
+export type TranslateYFunction = (yTop: number, yBot : number) => { yTop: number, yBot: number};
 export interface IPdfBrick extends IRect, ISize {
     render(): Promise<void>;
     unfold(): IPdfBrick[];
     translateX(func: TranslateXFunction): void;
+    translateY(func: TranslateYFunction): void;
     isPageBreak: boolean;
+    addBeforeRenderCallback(func: (brick: IPdfBrick) => void): void;
+    setPageNumber(number: number): void;
+    getPageNumber(): number;
+    updateRect(): void;
 }
 /**
  * An object that describes a PDF brick&mdash;a simple element with specified content, size, and location. Bricks are fundamental elements used to construct a PDF document.
@@ -16,11 +21,17 @@ export interface IPdfBrick extends IRect, ISize {
  *
  * [View Demo](https://surveyjs.io/pdf-generator/examples/add-markup-to-customize-pdf-forms/ (linkStyle))
  */
+
+export interface IPdfBrickOptions {
+    shouldRenderReadOnly?: boolean;
+}
+
 export class PdfBrick implements IPdfBrick {
     protected _xLeft: number;
     protected _xRight: number;
     protected _yTop: number;
     protected _yBot: number;
+    protected _pageNumber: number;
 
     /**
      * An X-coordinate for the left brick edge.
@@ -58,28 +69,17 @@ export class PdfBrick implements IPdfBrick {
     public set yBot(val: number) {
         this.setYBottom(val);
     }
-    /**
-     * Font size in points.
-     *
-     * Default value: 14 (inherited from the parent PDF document)
-     */
-    public fontSize: number;
-    /**
-     * The color of text within the brick.
-     *
-     * Default value: `"#404040"`
-     */
-    public textColor: string = SurveyHelper.TEXT_COLOR;
-    public formBorderColor: string = SurveyHelper.FORM_BORDER_COLOR;
     public isPageBreak: boolean = false;
-    public constructor(protected question: IQuestion,
-        protected controller: DocController, rect: IRect) {
+    public constructor(protected controller: DocController, rect: IRect, protected options: IPdfBrickOptions = {}) {
         this.xLeft = rect.xLeft;
         this.xRight = rect.xRight;
         this.yTop = rect.yTop;
         this.yBot = rect.yBot;
-        this.fontSize = !!controller ?
-            controller.fontSize : DocController.FONT_SIZE;
+    }
+    translateY(func: TranslateYFunction): void {
+        const res = func(this.yTop, this.yBot);
+        this.yTop = res.yTop;
+        this.yBot = res.yBot;
     }
     translateX(func: TranslateXFunction): void {
         const res = func(this.xLeft, this.xRight);
@@ -99,10 +99,11 @@ export class PdfBrick implements IPdfBrick {
         return this.yBot - this.yTop;
     }
     protected getShouldRenderReadOnly(): boolean {
-        return SurveyHelper.shouldRenderReadOnly(this.question, this.controller);
+        return this.options.shouldRenderReadOnly;
     }
     public afterRenderCallback: () => void;
     public async render(): Promise<void> {
+        await this.beforeRenderEvent.fire(this, {});
         if (this.getShouldRenderReadOnly()) {
             await this.renderReadOnly();
         }
@@ -135,4 +136,15 @@ export class PdfBrick implements IPdfBrick {
     protected setYBottom(val: number): void {
         this._yBot = val;
     }
+    public getPageNumber(): number {
+        return this._pageNumber;
+    }
+    public setPageNumber(val: number): void {
+        this._pageNumber = val;
+    }
+    private beforeRenderEvent: EventAsync<PdfBrick, {}> = new EventAsync();
+    addBeforeRenderCallback(func: (brick: IPdfBrick) => void): void {
+        this.beforeRenderEvent.add(func);
+    }
+    public updateRect(): void {}
 }
