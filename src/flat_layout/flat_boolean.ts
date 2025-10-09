@@ -38,12 +38,7 @@ export class FlatBooleanCheckbox extends FlatQuestion<QuestionBooleanModel> {
             this.question.booleanValue ? this.question.locLabelTrue : this.question.locLabelFalse;
         if (locLabelText !== null && locLabelText.renderedHtml !== null) {
             const textFlat = await SurveyHelper.createTextFlat(
-                textPoint, this.controller, locLabelText, {
-                    lineHeight: this.styles.labelLineHeight,
-                    fontSize: this.styles.labelFontSize,
-                    fontStyle: this.styles.labelFontStyle,
-                    fontColor: this.styles.labelFontColor
-                });
+                textPoint, this.controller, locLabelText, this.styles.label);
             SurveyHelper.alignVerticallyBricks('center', itemFlat, textFlat.unfold()[0]);
             textFlat.updateRect();
             compositeFlat.addBrick(textFlat);
@@ -87,13 +82,7 @@ export class FlatBoolean extends FlatQuestion<QuestionBooleanModel> {
         const compositeFlat: CompositeBrick = new CompositeBrick();
         const itemRect: IRect = SurveyHelper.createRect(point,
             this.styles.inputWidth, this.styles.inputHeight);
-        const textOptions: Partial<ITextAppearanceOptions> = {
-            lineHeight: this.styles.labelLineHeight,
-            fontSize: this.styles.labelFontSize,
-            fontStyle: this.styles.labelFontStyle,
-            fontColor: this.styles.labelFontColor
-        };
-        const measuredText = this.controller.measureText(undefined, textOptions);
+        const textOptions: Partial<ITextAppearanceOptions> = this.styles.label;
         const itemFlat: IPdfBrick = this.generateFlatItem(itemRect, item, index);
 
         compositeFlat.addBrick(itemFlat);
