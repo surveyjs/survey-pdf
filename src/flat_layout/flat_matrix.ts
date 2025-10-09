@@ -30,7 +30,7 @@ export abstract class FlatMatrixContent {
     }
     protected async generateFlatCell(point: IPoint, contentCallback: (point: IPoint, bricks: Array<IPdfBrick>) => Promise<void>) {
         const container: ContainerBrick = new ContainerBrick(this.controller, { ...point, width: SurveyHelper.getPageAvailableWidth(this.controller) }, {
-            ...SurveyHelper.getPaddingFromStyle(this.styles.cellPadding),
+            padding: this.styles.cellPadding,
             borderWidth: this.styles.cellBorderWidth,
             borderColor: this.styles.cellBorderColor,
         });

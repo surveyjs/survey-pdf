@@ -747,41 +747,4 @@ export class SurveyHelper {
             }
         });
     }
-    public static getPaddingFromStyle(paddings: Array<number> | number): { paddingTop: number, paddingBottom: number, paddingLeft: number, paddingRight: number } {
-        if(Array.isArray(paddings) && paddings.length > 1) {
-            if(paddings.length == 2) {
-                return {
-                    paddingTop: paddings[0],
-                    paddingBottom: paddings[0],
-                    paddingLeft: paddings[1],
-                    paddingRight: paddings[1]
-                }
-            }
-            if(paddings.length == 3) {
-                return {
-                    paddingTop: paddings[0],
-                    paddingLeft: paddings[1],
-                    paddingRight: paddings[1],
-                    paddingBottom: paddings[2],
-                }
-            }
-            if(paddings.length == 4) {
-                return {
-                    paddingTop: paddings[0],
-                    paddingRight: paddings[1],
-                    paddingBottom: paddings[2],
-                    paddingLeft: paddings[3],
-                }
-            }
-        }
-        else {
-            const value = Array.isArray(paddings) ? paddings[0] : paddings;
-            return {
-                paddingTop: value,
-                paddingBottom: value,
-                paddingRight: value,
-                paddingLeft: value
-             }
-        }
-    }
 }

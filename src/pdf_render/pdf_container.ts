@@ -5,10 +5,7 @@ import { CompositeBrick } from './pdf_composite';
 import { EmptyBrick } from './pdf_empty';
 
 interface IContainerBrickAppearance {
-    paddingTop: number;
-    paddingLeft: number;
-    paddingBottom: number;
-    paddingRight: number;
+    padding: Array<number> | number;
     borderWidth: number;
     borderColor: string | null;
     backgroundColor: string | null;
@@ -20,10 +17,7 @@ export enum InseparableBrickMode {
 }
 
 const defaultContainerOptions: IContainerBrickAppearance = {
-    paddingTop: 0,
-    paddingLeft: 0,
-    paddingBottom: 0,
-    paddingRight: 0,
+    padding: 0,
     borderWidth: 0,
     backgroundColor: null,
     borderColor: null,
@@ -48,6 +42,50 @@ export class InseparableBrick extends CompositeBrick {
     }
 }
 
+interface IPadding {
+  top: number;
+  bottom: number;
+  left: number;
+  right: number;
+}
+
+function parsePadding(padding: Array<number> | number): IPadding {
+  if (Array.isArray(padding) && padding.length > 1) {
+    if (padding.length == 2) {
+      return {
+        top: padding[0],
+        bottom: padding[0],
+        left: padding[1],
+        right: padding[1],
+      };
+    }
+    if (padding.length == 3) {
+      return {
+        top: padding[0],
+        left: padding[1],
+        right: padding[1],
+        bottom: padding[2],
+      };
+    }
+    if (padding.length == 4) {
+      return {
+        top: padding[0],
+        right: padding[1],
+        bottom: padding[2],
+        left: padding[3],
+      };
+    }
+  } else {
+    const value = Array.isArray(padding) ? padding[0] : padding;
+    return {
+      top: value,
+      bottom: value,
+      right: value,
+      left: value,
+    };
+  }
+}
+
 export class ContainerBrick extends CompositeBrick {
     private paddingTopBrick: IPdfBrick;
     private paddingBottomBrick: IPdfBrick;
@@ -62,19 +100,26 @@ export class ContainerBrick extends CompositeBrick {
                 return 0;
         }
     }
+    private _padding: IPadding;
+    private get padding(): IPadding {
+      if(!this._padding) {
+        this._padding = parsePadding(this.appearance.padding);
+      }
+      return this._padding;
+    }
     constructor(private controller: DocController, private layout: { xLeft: number, yTop: number, width: number }, appearance: Partial<Readonly<IContainerBrickAppearance>>) {
         super();
         this.appearance = SurveyHelper.mergeObjects({}, defaultContainerOptions, appearance);
     }
     getStartPoint(): IPoint {
-        return { yTop: this.bricks[0].yBot, xLeft: this.layout.xLeft + this.appearance.paddingLeft + this.includedBorderWidth };
+        return { yTop: this.bricks[0].yBot, xLeft: this.layout.xLeft + this.padding.left + this.includedBorderWidth };
     }
     startSetup() {
-        this.paddingTopBrick = new EmptyBrick(this.controller, { ...this.layout, xRight: this.layout.xLeft + this.layout.width, yBot: this.layout.yTop + this.appearance.paddingTop + this.includedBorderWidth });
+        this.paddingTopBrick = new EmptyBrick(this.controller, { ...this.layout, xRight: this.layout.xLeft + this.layout.width, yBot: this.layout.yTop + this.padding.top + this.includedBorderWidth });
         this.addBrick(this.paddingTopBrick);
         this.controller.pushMargins();
-        this.controller.margins.left = this.layout.xLeft + this.appearance.paddingLeft + this.includedBorderWidth;
-        this.controller.margins.right = this.controller.paperWidth - (this.layout.xLeft + this.layout.width) + this.appearance.paddingRight + this.includedBorderWidth;
+        this.controller.margins.left = this.layout.xLeft + this.padding.left + this.includedBorderWidth;
+        this.controller.margins.right = this.controller.paperWidth - (this.layout.xLeft + this.layout.width) + this.padding.right + this.includedBorderWidth;
     }
     private originalBricks: Array<IPdfBrick>;
     finishSetup() {
@@ -83,7 +128,7 @@ export class ContainerBrick extends CompositeBrick {
             xLeft: this.layout.xLeft,
             yTop: this.yBot,
             xRight: this.layout.xLeft + this.layout.width,
-            yBot: this.yBot + this.appearance.paddingBottom + this.includedBorderWidth
+            yBot: this.yBot + this.padding.bottom + this.includedBorderWidth
         });
         this.addBrick(this.paddingBottomBrick);
         this.originalBricks = this.bricks.slice(1, this.bricks.length - 1);

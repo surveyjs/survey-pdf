@@ -58,7 +58,7 @@ export class FlatPanel<T extends PanelModel = PanelModel> {
             width: SurveyHelper.getPageAvailableWidth(this.controller)
         },
         {
-            ...SurveyHelper.getPaddingFromStyle(this.styles.headerPadding),
+            padding: this.styles.headerPadding,
             borderWidth: this.styles.headerBorderWidth,
             borderColor: this.styles.headerBorderColor,
             backgroundColor: this.styles.headerBackgroundColor,
@@ -107,7 +107,7 @@ export class FlatPanel<T extends PanelModel = PanelModel> {
                 nextMarginLeft = this.controller.margins.left + persWidth;
                 const elementStyles = this.survey.getStylesForElement(element as any as SurveyElement);
                 const containerBrick = new ContainerBrick(this.controller, { ...currPoint, width: SurveyHelper.getPageAvailableWidth(this.controller) }, element.isQuestion ? {
-                    ...SurveyHelper.getPaddingFromStyle(elementStyles.wrapperPadding),
+                    padding: elementStyles.wrapperPadding,
                     borderWidth: elementStyles.wrapperBorderWidth,
                     borderColor: elementStyles.wrapperBorderColor,
                 }
