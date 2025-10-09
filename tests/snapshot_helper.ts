@@ -1,4 +1,4 @@
-import { EventBase } from 'survey-core';
+import { EventBase, PanelModel } from 'survey-core';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { DocController, IDocOptions } from '../src/doc_controller';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
@@ -14,15 +14,61 @@ interface ISnapshotOptions {
 }
 interface IPDFSnapshotOptions extends ISnapshotOptions {}
 
+function correctSurveyElementIds(survey: SurveyPDF) {
+    survey.getAllQuestions().forEach((q) => {
+        q.id = `testidquestion_${q.name}`;
+        if (q.getType() === 'paneldynamic') {
+            q.panels.forEach((p, i) => {
+                p.id = `${q.id}_panel_${i}`;
+                p.questions.forEach((pq)=> {
+                    pq.id = `${p.id}_${q.name}`;
+                });
+            });
+        }
+        if (q.getType() === 'matrixdynamic' || q.getType() === 'matrixdropdown') {
+            q.renderedTable.rows.forEach((row: any, rowIndex: number) => {
+                if (row.row) {
+                    row.row.idValue = `${q.id}row${rowIndex}`;
+                }
+                row.cells.forEach((cell: any, cellIndex: number) => {
+                    if (cell.hasQuestion) {
+                        cell.question.id = `${q.id}_row${rowIndex}_cell_${cellIndex}`;
+                    }
+                    if (cell.hasPanel) {
+                        cell.panel.id = `${q.id}row${rowIndex}cell${cellIndex}detailPanel`;
+                        cell.panel.questions.forEach((detailQuestion) => {
+                            detailQuestion.id = `${q.id}_row${rowIndex}_cell${cellIndex}_detailPanelQuestion_${detailQuestion.name}`;
+                        });
+                    }
+                });
+            });
+        }
+        if (q.getType() === 'file') {
+            q.pages.forEach((p, j) => {
+                p.id = q.id + 'page' + j;
+            });
+        }
+    });
+    survey.getAllPanels().map((p: PanelModel) => {
+        p.id = `testidpanel_${p.name}`;
+
+    });
+    survey.pages.map((p: PanelModel) => {
+        p.id = `testidpage_${p.name}`;
+    });
+}
+
 export async function checkPDFSnapshot(surveyJSON: any, snapshotOptions: IPDFSnapshotOptions): Promise<void> {
     const jsPdfVersion = jsPDF.version;
     jsPDF.version = 'test';
     const survey = new SurveyPDFTester(surveyJSON, snapshotOptions.controllerOptions ?? TestHelper.defaultOptions);
     snapshotOptions.onSurveyCreated && snapshotOptions.onSurveyCreated(survey);
+    correctSurveyElementIds(survey);
     survey.onDocControllerCreated.add((_, options) => {
         options.controller.doc.setCreationDate(new Date(0));
         options.controller.doc.setFileId('00000000000000000000000000000000');
     });
+
     const actual = (await survey.raw()).replaceAll(/\r\n/g, '\n');
     const snapshotName = snapshotOptions.snapshotName;
     const fileName = `${__dirname}/pdf_snapshots/${snapshotName}.pdf`;
@@ -101,6 +147,7 @@ function processBricks(bricks: Array<IPdfBrick>, propertiesHash: PropertiesHash)
 export async function checkFlatSnapshot(surveyJSON: any, snapshotOptions: IFlatSnaphotOptions): Promise<void> {
     const survey = new SurveyPDF(surveyJSON);
     snapshotOptions.onSurveyCreated && snapshotOptions.onSurveyCreated(survey);
+    correctSurveyElementIds(survey);
     const controller = new DocController(snapshotOptions.controllerOptions ?? TestHelper.defaultOptions);
     (survey[snapshotOptions.eventName || 'onRenderQuestion'] as EventBase<SurveyPDF, any>).add((_, options) => {
         if(!snapshotOptions.isCorrectEvent || snapshotOptions.isCorrectEvent(options)) {
