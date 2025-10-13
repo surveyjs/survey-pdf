@@ -146,17 +146,8 @@ export function getDefaultStyles (baseSize: number) {
                 fontStyle: 'normal',
                 fontColor: '#000',
             },
-            verticalColumnTitle: {
-                fontSize: baseSize * 2,
-                lineHeight: baseSize * 3,
-                fontStyle: 'normal',
-                fontColor: '#000',
-            },
             verticalRowTitle: {
-                fontSize: baseSize * 2,
-                lineHeight: baseSize * 3,
                 fontStyle: 'bold',
-                fontColor: '#000',
             },
         },
         matrix: {

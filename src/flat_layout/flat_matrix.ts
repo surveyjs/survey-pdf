@@ -122,7 +122,7 @@ export class FlatMatrixContentVertical extends FlatMatrixContent {
             this.styles.inputWidth, this.styles.inputHeight), options);
         currPoint.xLeft = radioFlat.xRight + this.styles.verticalGapBetweenItemText;
         const radioText: IPdfBrick = await SurveyHelper.createTextFlat(currPoint,
-            this.controller, options.item.locText, { ...this.styles.verticalHeader });
+            this.controller, options.item.locText, SurveyHelper.mergeObjects({}, this.styles.columnTitle, this.styles.verticalColumnTitle));
         SurveyHelper.alignVerticallyBricks('center', radioFlat, radioText.unfold()[0]);
         radioText.updateRect();
         return new CompositeBrick(radioFlat, radioText);
@@ -132,7 +132,7 @@ export class FlatMatrixContentVertical extends FlatMatrixContent {
         const cell = await this.generateFlatCell(currPoint, async (point, bricks) => {
             const currPoint = SurveyHelper.clone(point);
             const rowTextFlat = await SurveyHelper.createTextFlat(point,
-                this.controller, row.locText, { ...this.styles.verticalRowTitle });
+                this.controller, row.locText, SurveyHelper.mergeObjects({}, this.styles.rowTitle, this.styles.verticalRowTitle));
             bricks.push(rowTextFlat);
             currPoint.yTop = rowTextFlat.yBot + this.styles.verticalGapBetweenRowTitleQuestion;
             for (let i: number = 0; i < this.question.visibleColumns.length; i++) {

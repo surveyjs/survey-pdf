@@ -50,9 +50,7 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
                     cell.question.titleLocation = 'matrix';
                     const currPoint = SurveyHelper.clone(point);
                     if (!isWide && this.question.renderedTable.showHeader && (location !== 'header') && cell.cell?.column?.locTitle) {
-                        container.addBrick(await SurveyHelper.createTextFlat(currPoint, this.controller, cell.cell.column.locTitle, {
-                            ...this.styles.verticalColumnTitle
-                        }));
+                        container.addBrick(await SurveyHelper.createTextFlat(currPoint, this.controller, cell.cell.column.locTitle, SurveyHelper.mergeObjects({}, this.styles.columnTitle, this.styles.verticalColumnTitle)));
                         currPoint.yTop = container.yBot + this.styles.verticalGapBetweenRowTitleQuestion;
                     }
                     bricks.push(...await SurveyHelper.generateQuestionFlats(
@@ -64,9 +62,7 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
                     bricks.push(await SurveyHelper.createTextFlat(point, this.controller, cell.locTitle, { ...this.styles.columnTitle }));
                 }
                 else {
-                    bricks.push(await SurveyHelper.createTextFlat(point, this.controller, cell.locTitle,
-                        isWide ? {...this.styles.rowTitle, textAlign: 'right'} :  {...this.styles.verticalRowTitle}
-                    ));
+                    bricks.push(await SurveyHelper.createTextFlat(point, this.controller, cell.locTitle, SurveyHelper.mergeObjects({}, this.styles.rowTitle, isWide ? undefined : this.styles.verticalRowTitle)));
                 }
             }
         });
