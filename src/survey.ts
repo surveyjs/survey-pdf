@@ -239,7 +239,12 @@ export class SurveyPDF extends SurveyModel {
      * @param type *(Optional)* One of `"blob"`, `"bloburl"`, `"dataurlstring"`. Do not specify this parameter if you want to get raw PDF content as a string value.
      *
      */
-    public async raw(type?: string): Promise<string> {
+    raw(): Promise<string>;
+    raw(type: 'arraybuffer'): Promise<ArrayBuffer>;
+    raw(type: 'blob'): Promise<Blob>;
+    raw(type: 'bloburl'): Promise<URL>;
+    raw(type: 'dataurlstring'): Promise<string>;
+    public async raw(type?: string): Promise<ArrayBuffer | string | Blob | URL > {
         const controller: DocController = new DocController(this.options);
         this.onDocControllerCreated.fire(this, { controller: controller });
         SurveyHelper.fixFont(controller);
