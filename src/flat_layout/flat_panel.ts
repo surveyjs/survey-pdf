@@ -106,12 +106,7 @@ export class FlatPanel<T extends PanelModel = PanelModel> {
                 currPoint.xLeft = this.controller.margins.left;
                 nextMarginLeft = this.controller.margins.left + persWidth;
                 const elementStyles = this.survey.getStylesForElement(element as any as SurveyElement);
-                const containerBrick = new ContainerBrick(this.controller, { ...currPoint, width: SurveyHelper.getPageAvailableWidth(this.controller) }, element.isQuestion ? {
-                    padding: elementStyles.wrapperPadding,
-                    borderWidth: elementStyles.wrapperBorderWidth,
-                    borderColor: elementStyles.wrapperBorderColor,
-                }
-                    : {});
+                const containerBrick = new ContainerBrick(this.controller, { ...currPoint, width: SurveyHelper.getPageAvailableWidth(this.controller) }, elementStyles.wrapper);
                 await containerBrick.setup(async (point, bricks) => {
                     if (element instanceof PanelModel) {
                         bricks.push(...await SurveyHelper.generatePanelFlats(this.survey, this.controller, element, point, elementStyles));

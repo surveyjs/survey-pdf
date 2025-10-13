@@ -26,9 +26,6 @@ export function getDefaultStyles (baseSize: number) {
             gapBetweenItemText: baseSize * 0.25,
             gapBetweenColumns: baseSize * 1.5,
             gapBetweenRows: baseSize * 0.25,
-            wrapperPadding: [baseSize * 0.5, baseSize],
-            wrapperBorderWidth: baseSize * 0.125,
-            wrapperBorderColor: '#000',
             inputBorderColor: '#000',
             inputBorderWidth: 0,
             inputFontColor: '#000',
@@ -38,6 +35,11 @@ export function getDefaultStyles (baseSize: number) {
             commentFontColor: '#000',
             commentFontSize: baseSize * 2.5,
             commentLineHeight: baseSize * 3,
+            wrapper: {
+                padding: [baseSize * 0.5, baseSize],
+                borderWidth: baseSize * 0.125,
+                borderColor: '#000'
+            },
             title: {
                 lineHeight: baseSize * 3,
                 fontSize: baseSize * 2,
@@ -49,8 +51,6 @@ export function getDefaultStyles (baseSize: number) {
             },
         },
         panel: {
-            wrapperPadding: 0,
-            wrapperBorderWidth: 0,
             gapBetweenRows: 0,
             gapBetweenElements: 0,
             contentGap: 0,
@@ -60,6 +60,10 @@ export function getDefaultStyles (baseSize: number) {
             headerBorderWidth: baseSize * 0.125,
             headerBorderColor: '#000',
             headerBackgroundColor: '#E5E5E5',
+            wrapper: {
+                padding: 0,
+                borderWidth: 0
+            },
             title: {
                 fontSize: baseSize * 2,
                 fontStyle: 'bold',
@@ -115,8 +119,6 @@ export function getDefaultStyles (baseSize: number) {
             headerBackgroundColor: '#E5E5E5',
             headerBorderColor: '#000',
             contentGapVertical: 0,
-            wrapperPadding: 0,
-            wrapperBorderWidth: 0,
             gapBetweenColumns: 0,
             gapBetweenRows: 0,
             inputHeight: baseSize * 2,
@@ -124,6 +126,10 @@ export function getDefaultStyles (baseSize: number) {
             verticalGapBetweenItems: baseSize,
             verticalGapBetweenRowTitleQuestion: baseSize * 0.5,
             verticalCellRowTitleBackgroundColor: '#E5E5E5',
+            wrapper: {
+                padding: 0,
+                borderWidth: 0
+            },
             rowTitle: {
                 fontSize: baseSize * 2,
                 lineHeight: baseSize * 3,
@@ -232,8 +238,10 @@ export function getDefaultStyles (baseSize: number) {
             headerBorderColor: '#000',
             contentGapVertical: 0,
             gapBetweenPanels: 0,
-            wrapperPadding: 0,
-            wrapperBorderWidth: 0,
+            wrapper: {
+                padding: 0,
+                borderWidth: 0
+            },
             title: {
                 fontStyle: 'bold'
             },
