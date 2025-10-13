@@ -29,11 +29,7 @@ export abstract class FlatMatrixContent {
     constructor(protected controller: DocController, protected survey: SurveyPDF, protected question: QuestionMatrixModel, protected styles: IStyles) {
     }
     protected async generateFlatCell(point: IPoint, contentCallback: (point: IPoint, bricks: Array<IPdfBrick>) => Promise<void>) {
-        const container: ContainerBrick = new ContainerBrick(this.controller, { ...point, width: SurveyHelper.getPageAvailableWidth(this.controller) }, {
-            padding: this.styles.cellPadding,
-            borderWidth: this.styles.cellBorderWidth,
-            borderColor: this.styles.cellBorderColor,
-        });
+        const container: ContainerBrick = new ContainerBrick(this.controller, { ...point, width: SurveyHelper.getPageAvailableWidth(this.controller) }, this.styles.cell);
         await container.setup(async (point, bricks) => {
             await contentCallback(point, bricks);
         });

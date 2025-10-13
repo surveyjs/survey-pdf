@@ -27,14 +27,19 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
     }
     private async generateFlatsCell(point: IPoint, cell: QuestionMatrixDropdownRenderedCell,
         location?: 'header' | 'footer', isWide: boolean = true): Promise<ContainerBrick> {
-        const cellAppearanceOptions = {
-            padding: this.styles.cellPadding,
-            borderWidth: this.styles.cellBorderWidth,
-            borderColor: this.styles.cellBorderColor,
-            backgroundColor: this.styles.cellBackgroudColor
-        };
-        if(cell.hasTitle && location !== 'header') {
-            cellAppearanceOptions.backgroundColor = isWide ? this.styles.cellRowTitleBackgroundColor : this.styles.verticalCellRowTitleBackgroundColor;
+        let cellAppearanceOptions = this.styles.cell;
+        if(cell.hasTitle && location !== "header") {
+            cellAppearanceOptions = SurveyHelper.mergeObjects({}, cellAppearanceOptions, this.styles.cellRowTitle)
+            if(!isWide) {
+                cellAppearanceOptions = SurveyHelper.mergeObjects({}, cellAppearanceOptions, this.styles.cellVerticalRowTitle)
+            }
+        }
+        if(cell.hasTitle && location === "header") {
+            cellAppearanceOptions = SurveyHelper.mergeObjects({}, cellAppearanceOptions, this.styles.cellColumnTitle)
+            if(!isWide) {
+                cellAppearanceOptions = SurveyHelper.mergeObjects({}, cellAppearanceOptions, this.styles.cellVerticalColumnTitle)
+            }
+
         }
         const container: ContainerBrick = new ContainerBrick(this.controller, { ...point, width: SurveyHelper.getPageAvailableWidth(this.controller) }, cellAppearanceOptions);
         await container.setup(async (point, bricks) => {
@@ -201,12 +206,7 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
                 if(this.isMultiple && isWide) {
                     this.controller.popMargins();
                     const panelRect = SurveyHelper.mergeRects(...panelBricks);
-                    const emptyBrick = new EmptyBrick(this.controller, { ...currPoint, xRight: currPoint.xLeft + columnWidths[0], yBot: currPoint.yTop + panelRect.yBot - panelRect.yTop }, {
-                        borderWidth: this.styles.cellBorderWidth,
-                        borderColor: this.styles.cellBorderColor,
-                        borderMode: BorderMode.Middle,
-                        isBorderVisible: true
-                    });
+                    const emptyBrick = new EmptyBrick(this.controller, { ...currPoint, xRight: currPoint.xLeft + columnWidths[0], yBot: currPoint.yTop + panelRect.yBot - panelRect.yTop }, SurveyHelper.mergeObjects({}, this.styles.cell, this.styles.cellDetail));
                     currComposite.addBrick(emptyBrick);
                 }
                 currComposite.addBrick(...panelBricks);

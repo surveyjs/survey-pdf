@@ -113,9 +113,6 @@ export function getDefaultStyles (baseSize: number) {
                 fontStyle: "bold"
             },
             columnMinWidth: baseSize * 12.5,
-            cellBorderWidth: baseSize * 0.125,
-            cellBorderColor: '#000',
-            cellPadding: [baseSize * 0.5, baseSize],
             contentGapVertical: 0,
             gapBetweenColumns: 0,
             gapBetweenRows: 0,
@@ -123,16 +120,20 @@ export function getDefaultStyles (baseSize: number) {
             inputWidth: baseSize * 2,
             verticalGapBetweenItems: baseSize,
             verticalGapBetweenRowTitleQuestion: baseSize * 0.5,
-            verticalCellRowTitleBackgroundColor: '#E5E5E5',
+            wrapper: {
+                padding: 0,
+                borderWidth: 0
+            },
             header: {
                 borderWidth: baseSize * 0.125,
                 padding: [baseSize * 0.5, baseSize],
                 backgroundColor: '#E5E5E5',
                 borderColor: '#000',
             },
-            wrapper: {
-                padding: 0,
-                borderWidth: 0
+            cell: {
+                borderWidth: baseSize * 0.125,
+                borderColor: '#000',
+                padding: [baseSize * 0.5, baseSize]
             },
             rowTitle: {
                 fontSize: baseSize * 2,
@@ -148,7 +149,6 @@ export function getDefaultStyles (baseSize: number) {
                 fontColor: '#000',
             },
             verticalRowTitle: {
-                fontStyle: 'bold',
                 textAlign: 'left'
             },
         },
@@ -160,12 +160,23 @@ export function getDefaultStyles (baseSize: number) {
             checkmarkSymbol: '3',
             checkmarkFont: 'zapfdingbats',
             verticalGapBetweenItemText: baseSize,
-            verticalRowTitle: {
-                fontStyle: 'normal',
-            },
             verticalColumnTitle: {
                 fontSize: baseSize * 2.5
             }
+        },
+        matrixdropdownbase: {
+            cellDetail: {
+                borderMode: 1,
+                padding: 0
+            },
+        },
+        matrixdropdown: {
+            cellVerticalRowTitle: {
+                backgroundColor: '#E5E5E5'
+            },
+            verticalRowTitle: {
+                fontStyle: 'bold',
+            },
         },
         multipletext: {
             itemTitleWidthPers: Math.E / 10.0,
