@@ -139,6 +139,7 @@ export function getDefaultStyles (baseSize: number) {
                 lineHeight: baseSize * 3,
                 fontStyle: 'normal',
                 fontColor: '#000',
+                textAlign: 'right'
             },
             columnTitle: {
                 fontSize: baseSize * 2,
@@ -148,6 +149,7 @@ export function getDefaultStyles (baseSize: number) {
             },
             verticalRowTitle: {
                 fontStyle: 'bold',
+                textAlign: 'left'
             },
         },
         matrix: {
