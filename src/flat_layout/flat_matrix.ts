@@ -213,7 +213,7 @@ export class FlatMatrixContentHorizontal extends FlatMatrixContent {
             this.controller.margins.left = currPoint.xLeft;
             this.controller.margins.right += (SurveyHelper.getPageAvailableWidth(this.controller) - this.columnWidth);
             headers.push(await this.generateFlatCell(currPoint, async (point, bricks) => {
-                bricks.push(await SurveyHelper.createTextFlat(point, this.controller, this.question.visibleColumns[i].locText, { ...this.styles.header }));
+                bricks.push(await SurveyHelper.createTextFlat(point, this.controller, this.question.visibleColumns[i].locText, { ...this.styles.columnTitle }));
             }));
             currPoint.xLeft += this.columnWidth + this.styles.gapBetweenColumns;
             this.controller.popMargins();

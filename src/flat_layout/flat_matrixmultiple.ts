@@ -51,7 +51,7 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
                     const currPoint = SurveyHelper.clone(point);
                     if (!isWide && this.question.renderedTable.showHeader && (location !== 'header') && cell.cell?.column?.locTitle) {
                         container.addBrick(await SurveyHelper.createTextFlat(currPoint, this.controller, cell.cell.column.locTitle, {
-                            ...this.styles.verticalHeader
+                            ...this.styles.verticalColumnTitle
                         }));
                         currPoint.yTop = container.yBot + this.styles.verticalGapBetweenRowTitleQuestion;
                     }
@@ -61,7 +61,7 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
             }
             else if (cell.hasTitle) {
                 if (location == 'header') {
-                    bricks.push(await SurveyHelper.createTextFlat(point, this.controller, cell.locTitle, { ...this.styles.header }));
+                    bricks.push(await SurveyHelper.createTextFlat(point, this.controller, cell.locTitle, { ...this.styles.columnTitle }));
                 }
                 else {
                     bricks.push(await SurveyHelper.createTextFlat(point, this.controller, cell.locTitle,

@@ -236,6 +236,7 @@ export class SurveyHelper {
     }
     public static mergeObjects(dest:any, ...sources:Array<any>):any {
         sources.forEach(source => {
+            if(!source) return;
             Object.keys(source).forEach(key=>{
                 if (source[key] !== undefined) {
                     if(typeof source[key] == 'object' && source[key] !== null && !Array.isArray(source[key])) {

@@ -70,12 +70,7 @@ export class FlatQuestion<T extends Question = Question> implements IFlatQuestio
         const containerBrick: ContainerBrick = new ContainerBrick(this.controller, {
             ...point,
             width: SurveyHelper.getPageAvailableWidth(this.controller)
-        }, {
-            borderColor: this.styles.headerBorderColor,
-            backgroundColor: this.styles.headerBackgroundColor,
-            borderWidth: this.styles.headerBorderWidth,
-            padding: this.styles.headerPadding,
-        });
+        },  this.styles.header);
         await containerBrick.setup(async (point, bricks) => {
             const titleFlat: IPdfBrick = await this.generateFlatTitle(point);
             bricks.push(titleFlat);

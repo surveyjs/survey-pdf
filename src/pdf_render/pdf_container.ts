@@ -107,7 +107,7 @@ export class ContainerBrick extends CompositeBrick {
       }
       return this._padding;
     }
-    constructor(private controller: DocController, private layout: { xLeft: number, yTop: number, width: number }, appearance: Partial<Readonly<IContainerBrickAppearance>>) {
+    constructor(private controller: DocController, private layout: { xLeft: number, yTop: number, width: number }, appearance?: Partial<Readonly<IContainerBrickAppearance>>) {
         super();
         this.appearance = SurveyHelper.mergeObjects({}, defaultContainerOptions, appearance);
     }

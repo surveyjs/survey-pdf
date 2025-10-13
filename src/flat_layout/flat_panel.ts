@@ -56,13 +56,7 @@ export class FlatPanel<T extends PanelModel = PanelModel> {
         const containerBrick: ContainerBrick = new ContainerBrick(this.controller, {
             ...point,
             width: SurveyHelper.getPageAvailableWidth(this.controller)
-        },
-        {
-            padding: this.styles.headerPadding,
-            borderWidth: this.styles.headerBorderWidth,
-            borderColor: this.styles.headerBorderColor,
-            backgroundColor: this.styles.headerBackgroundColor,
-        });
+        }, this.styles.header);
         await containerBrick.setup(async (point, bricks)=>{
             let currPoint = SurveyHelper.clone(point);
             if (this.panel.hasTitle) {

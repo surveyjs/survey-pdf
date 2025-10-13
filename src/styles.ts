@@ -16,8 +16,6 @@ export function getDefaultStyles (baseSize: number) {
         descriptionGap: baseSize * 1.5,
         contentGap: baseSize * 4.0,
         question: {
-            headerBorderWidth: 0,
-            headerPadding: 0,
             titleLeftWidthPers: Math.E / 10.0,
             contentGapVertical: baseSize * 0.5,
             contentGapHorizontal: baseSize * 1.0,
@@ -56,13 +54,15 @@ export function getDefaultStyles (baseSize: number) {
             contentGap: 0,
             panelDescriptionGap: baseSize * 0.25,
             descriptionGap: baseSize * 0.5,
-            headerPadding: [baseSize * 0.5, baseSize],
-            headerBorderWidth: baseSize * 0.125,
-            headerBorderColor: '#000',
-            headerBackgroundColor: '#E5E5E5',
             wrapper: {
                 padding: 0,
                 borderWidth: 0
+            },
+            header: {
+                padding: [baseSize * 0.5, baseSize],
+                borderWidth: baseSize * 0.125,
+                borderColor: '#000',
+                backgroundColor: '#E5E5E5'
             },
             title: {
                 fontSize: baseSize * 2,
@@ -75,12 +75,14 @@ export function getDefaultStyles (baseSize: number) {
             },
         },
         page: {
-            headerBorderWidth: 0,
-            headerPadding: 0,
             contentGap: baseSize * 2,
-            headerBackgroundColor: '#fff',
             gapBetweenRows: 0,
             gapBetweenElements: 0,
+            header: {
+                borderWidth: 0,
+                padding: 0,
+                backgroundColor: '#fff'
+            }
         },
         selectbase: {
             columnMinWidth: baseSize * 5,
@@ -114,10 +116,6 @@ export function getDefaultStyles (baseSize: number) {
             cellBorderWidth: baseSize * 0.125,
             cellBorderColor: '#000',
             cellPadding: [baseSize * 0.5, baseSize],
-            headerBorderWidth: baseSize * 0.125,
-            headerPadding: [baseSize * 0.5, baseSize],
-            headerBackgroundColor: '#E5E5E5',
-            headerBorderColor: '#000',
             contentGapVertical: 0,
             gapBetweenColumns: 0,
             gapBetweenRows: 0,
@@ -126,6 +124,12 @@ export function getDefaultStyles (baseSize: number) {
             verticalGapBetweenItems: baseSize,
             verticalGapBetweenRowTitleQuestion: baseSize * 0.5,
             verticalCellRowTitleBackgroundColor: '#E5E5E5',
+            header: {
+                borderWidth: baseSize * 0.125,
+                padding: [baseSize * 0.5, baseSize],
+                backgroundColor: '#E5E5E5',
+                borderColor: '#000',
+            },
             wrapper: {
                 padding: 0,
                 borderWidth: 0
@@ -136,13 +140,13 @@ export function getDefaultStyles (baseSize: number) {
                 fontStyle: 'normal',
                 fontColor: '#000',
             },
-            header: {
+            columnTitle: {
                 fontSize: baseSize * 2,
                 lineHeight: baseSize * 3,
                 fontStyle: 'normal',
                 fontColor: '#000',
             },
-            verticalHeader: {
+            verticalColumnTitle: {
                 fontSize: baseSize * 2,
                 lineHeight: baseSize * 3,
                 fontStyle: 'normal',
@@ -166,7 +170,7 @@ export function getDefaultStyles (baseSize: number) {
             verticalRowTitle: {
                 fontStyle: 'normal',
             },
-            verticalHeader: {
+            verticalColumnTitle: {
                 fontSize: baseSize * 2.5
             }
         },
@@ -232,15 +236,17 @@ export function getDefaultStyles (baseSize: number) {
             },
         },
         paneldynamic: {
-            headerBorderWidth: baseSize * 0.125,
-            headerPadding: [baseSize * 0.5, baseSize],
-            headerBackgroundColor: '#E5E5E5',
-            headerBorderColor: '#000',
             contentGapVertical: 0,
             gapBetweenPanels: 0,
             wrapper: {
                 padding: 0,
                 borderWidth: 0
+            },
+            header: {
+                borderWidth: baseSize * 0.125,
+                padding: [baseSize * 0.5, baseSize],
+                backgroundColor: '#E5E5E5',
+                borderColor: '#000',
             },
             title: {
                 fontStyle: 'bold'
