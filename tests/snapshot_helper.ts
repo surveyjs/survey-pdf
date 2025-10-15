@@ -43,6 +43,14 @@ function correctSurveyElementIds(survey: SurveyPDF) {
                 });
             });
         }
+        if(typeof q.getCommentTextAreaModel == 'function' && Array.isArray(q.visibleChoices)) {
+            q.visibleChoices.forEach(choice => {
+                const comment = q.getCommentTextAreaModel(choice);
+                if(!!comment) {
+                    comment.options.id = () => `${q.id}_${choice.value}_comment`;
+                }
+            });
+        }
         if (q.getType() === 'file') {
             q.pages.forEach((p, j) => {
                 p.id = q.id + 'page' + j;
