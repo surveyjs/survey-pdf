@@ -5,7 +5,7 @@ import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { DropdownBrick } from '../pdf_render/pdf_dropdown';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
-import { SurveyHelper } from '../helper_survey';
+import { IInputAppearanceOptions, SurveyHelper } from '../helper_survey';
 
 export class FlatDropdown extends FlatQuestion<QuestionDropdownModel> {
     protected async generateItemComment(point: IPoint): Promise<IPdfBrick> {
@@ -18,28 +18,11 @@ export class FlatDropdown extends FlatQuestion<QuestionDropdownModel> {
                 shouldRenderBorders: settings.readOnlyCommentRenderMode === 'textarea',
                 isReadOnly: this.question.isReadOnly,
                 isMultiline: true,
-            },
-            {
-                fontName: this.controller.fontName,
-                fontColor: this.styles.commentFontColor,
-                fontSize: this.styles.commentFontSize,
-                lineHeight: this.styles.commentLineHeight,
-                fontStyle: 'normal',
-                borderColor: this.styles.commentBorderColor,
-                borderWidth: this.styles.commentBorderWidth,
-            }
+            }, SurveyHelper.getPatchedTextAppearanceOptions(this.controller, this.styles.comment as IInputAppearanceOptions)
         );
     }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
-        const appearance = {
-            fontColor: this.styles.inputFontColor,
-            fontName: this.controller.fontName,
-            fontSize: this.styles.inputFontSize,
-            lineHeight: this.styles.inputLineHeight,
-            fontStyle: 'normal',
-            borderColor: this.styles.inputBorderColor,
-            borderWidth: this.styles.inputBorderWidth,
-        };
+        const appearance = SurveyHelper.getPatchedTextAppearanceOptions(this.controller, this.styles.input as IInputAppearanceOptions);
         const valueBrick = !this.shouldRenderAsComment ? new DropdownBrick(this.controller, SurveyHelper.createTextFieldRect(point, this.controller, 1, appearance.lineHeight), {
             fieldName: this.question.id,
             value: this.question.readOnlyText,

@@ -8,8 +8,8 @@ import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
 import { IStyles } from '../styles';
-import { RadioGroupWrap, RadioItemBrick } from '../pdf_render/pdf_radioitem';
-import { CheckItemBrick } from '../pdf_render/pdf_checkitem';
+import { IRadioItemBrickAppearanceOptions, RadioGroupWrap, RadioItemBrick } from '../pdf_render/pdf_radioitem';
+import { CheckItemBrick, ICheckItemBrickAppearanceOptions } from '../pdf_render/pdf_checkitem';
 import { ContainerBrick } from '../pdf_render/pdf_container';
 import { EmptyBrick } from '../pdf_render/pdf_empty';
 
@@ -38,9 +38,7 @@ export abstract class FlatMatrixContent {
     protected async generateTextComposite(point: IPoint, options: { item: ItemValue, row: MatrixRowModel, rowIndex: number, itemIndex: number }): Promise<IPdfBrick> {
         const { item, row } = options;
         const currPoint: IPoint = SurveyHelper.clone(point);
-        const itemRect = SurveyHelper.createRect(currPoint,
-            SurveyHelper.getPageAvailableWidth(this.controller), this.styles.inputHeight);
-        const radioFlat: IPdfBrick = this.generateFlatItem(itemRect, options);
+        const radioFlat: IPdfBrick = this.generateFlatItem(currPoint, options);
         currPoint.yTop = radioFlat.yBot + this.styles.gapBetweenItemText;
         const cellTextFlat = await SurveyHelper.createTextFlat(currPoint, this.controller,
             this.question.getCellDisplayLocText(row.name, item));
@@ -54,19 +52,13 @@ export abstract class FlatMatrixContent {
         }
         return this.radioGroupWraps[fieldName];
     }
-    protected generateFlatItem(rect: IRect, options: { item: ItemValue, row: MatrixRowModel, rowIndex: number, itemIndex: number }) {
+    protected generateFlatItem(point: IPoint, options: { item: ItemValue, row: MatrixRowModel, rowIndex: number, itemIndex: number }) {
         const { item, row, itemIndex, rowIndex } = options;
         const fieldName = this.question.id + 'row' + rowIndex;
         const isChecked: boolean = row.isChecked(item);
         const isReadOnly = this.question.isReadOnly;
-        const appearance = {
-                fontStyle: 'normal',
-                fontColor: this.styles.inputFontColor,
-                lineHeight: this.styles.inputFontSize,
-                fontSize: this.styles.inputFontSize,
-                borderColor: this.styles.inputBorderColor,
-                borderWidth: this.styles.inputBorderWidth
-        }
+        const appearance = SurveyHelper.getPatchedTextAppearanceOptions(this.controller, SurveyHelper.mergeObjects({}, this.styles.input, this.question.isMultiSelect ? this.styles.checkboxInput : this.styles.radioInput) as ICheckItemBrickAppearanceOptions & { width: number, height: number });
+        const rect = SurveyHelper.createRect(point, appearance.width, appearance.height)
         if(this.question.isMultiSelect) {
             return new CheckItemBrick(this.controller, rect, {
                 fieldName: fieldName + 'index' + itemIndex,
@@ -76,12 +68,7 @@ export abstract class FlatMatrixContent {
                 updateOptions: (options) => {
                     this.survey.updateCheckItemAcroformOptions(options, this.question, item);
                 }
-            },
-            {
-                ...appearance,
-                fontName: this.styles.checkmarkFont,
-                checkMark: this.styles.checkmarkSymbol,
-            });
+            }, appearance);
         } else {
             const radioGroupWrap = this.getRadioGroupWrap(fieldName);
             return new RadioItemBrick(this.controller, rect, radioGroupWrap,
@@ -90,12 +77,7 @@ export abstract class FlatMatrixContent {
                     index: itemIndex,
                     shouldRenderReadOnly: radioGroupWrap.readOnly && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform' || this.controller.compress,
                     updateOptions: options => this.survey.updateRadioItemAcroformOptions(options, this.question, item),
-                },
-                {
-                    ...appearance,
-                    fontName: this.styles.radiomarkFont,
-                    checkMark: this.styles.radiomarkSymbol,
-                });
+                }, appearance);    
         }
     }
     public async generateFlats(point: IPoint) {
@@ -114,8 +96,7 @@ export abstract class FlatMatrixContent {
 export class FlatMatrixContentVertical extends FlatMatrixContent {
     protected async generateItemComposite(point: IPoint, options: { item: ItemValue, row: MatrixRowModel, rowIndex: number, itemIndex: number }): Promise<IPdfBrick> {
         const currPoint: IPoint = SurveyHelper.clone(point);
-        const radioFlat: IPdfBrick = this.generateFlatItem(SurveyHelper.createRect(point,
-            this.styles.inputWidth, this.styles.inputHeight), options);
+        const radioFlat: IPdfBrick = this.generateFlatItem(point, options);
         currPoint.xLeft = radioFlat.xRight + this.styles.verticalGapBetweenItemText;
         const radioText: IPdfBrick = await SurveyHelper.createTextFlat(currPoint,
             this.controller, options.item.locText, SurveyHelper.mergeObjects({}, this.styles.columnTitle, this.styles.verticalColumnTitle));
@@ -179,8 +160,7 @@ export class FlatMatrixContentHorizontal extends FlatMatrixContent {
                     bricks.push(await this.generateTextComposite(point, options));
                 }
                 else {
-                    bricks.push(this.generateFlatItem(SurveyHelper.createRect(point, this.styles.inputWidth, this.styles.inputHeight),
-                        options));
+                    bricks.push(this.generateFlatItem(point, options));
                 }
             }));
             currPoint.xLeft += this.columnWidth + this.styles.gapBetweenColumns;

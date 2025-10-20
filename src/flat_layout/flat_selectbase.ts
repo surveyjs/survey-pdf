@@ -3,11 +3,11 @@ import { IPoint, IRect } from '../doc_controller';
 import { FlatQuestion } from './flat_question';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
-import { SurveyHelper, ITextAppearanceOptions } from '../helper_survey';
+import { SurveyHelper, ITextAppearanceOptions, IInputAppearanceOptions } from '../helper_survey';
 import { ChoiceItem } from 'survey-core/typings/src/question_baseselect';
 
 export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSelectBase> extends FlatQuestion<T> {
-    public abstract generateFlatItem(rect: IRect, item: ItemValue, index: number): IPdfBrick;
+    public abstract generateFlatItem(point: IPoint, item: ItemValue, index: number): IPdfBrick;
     protected async generateItemComment(point: IPoint, item: ItemValue) {
         const commentModel = this.question.getCommentTextAreaModel(item);
         return await SurveyHelper.createCommentFlat(
@@ -18,22 +18,12 @@ export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSele
                 shouldRenderBorders: settings.readOnlyCommentRenderMode === 'textarea',
                 isReadOnly: this.question.isReadOnly,
                 isMultiline: true,
-            }, {
-                fontName: this.controller.fontName,
-                fontColor: this.styles.commentFontColor,
-                fontSize: this.styles.commentFontSize,
-                lineHeight: this.styles.commentLineHeight,
-                fontStyle: 'normal',
-                borderColor: this.styles.commentBorderColor,
-                borderWidth: this.styles.commentBorderWidth,
-            });
+            }, SurveyHelper.getPatchedTextAppearanceOptions(this.controller, this.styles.comment as IInputAppearanceOptions));
     }
     protected async generateFlatComposite(point: IPoint, item: ItemValue | ChoiceItem, index: number): Promise<IPdfBrick> {
         const compositeFlat: CompositeBrick = new CompositeBrick();
-        const itemRect: IRect = SurveyHelper.createRect(point,
-            this.styles.inputWidth, this.styles.inputHeight);
         const textOptions:Partial<ITextAppearanceOptions> = { ...this.styles.label };
-        const itemFlat: IPdfBrick = this.generateFlatItem(itemRect, item, index);
+        const itemFlat: IPdfBrick = this.generateFlatItem(point, item, index);
 
         compositeFlat.addBrick(itemFlat);
         const textPoint: IPoint = SurveyHelper.clone(point);

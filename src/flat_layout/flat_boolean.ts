@@ -7,30 +7,21 @@ import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper, ITextAppearanceOptions } from '../helper_survey';
 import { IStyles } from '../styles';
-import { CheckItemBrick } from '../pdf_render/pdf_checkitem';
-import { RadioGroupWrap, RadioItemBrick } from '../pdf_render/pdf_radioitem';
+import { CheckItemBrick, ICheckItemBrickAppearanceOptions } from '../pdf_render/pdf_checkitem';
+import { IRadioItemBrickAppearanceOptions, RadioGroupWrap, RadioItemBrick } from '../pdf_render/pdf_radioitem';
 export class FlatBooleanCheckbox extends FlatQuestion<QuestionBooleanModel> {
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         const compositeFlat: CompositeBrick = new CompositeBrick();
         const isReadOnly = this.question.isReadOnly;
-        const itemFlat: IPdfBrick = new CheckItemBrick(this.controller,
-            SurveyHelper.createRect(point, this.styles.inputWidth, this.styles.inputHeight),
+        const appearance = SurveyHelper.getPatchedTextAppearanceOptions(this.controller,SurveyHelper.mergeObjects({}, this.styles.input, this.styles.checkboxInput) as ICheckItemBrickAppearanceOptions & { width: number; height: number });
+        const itemFlat: IPdfBrick = new CheckItemBrick(this.controller, SurveyHelper.createRect(point, appearance.width, appearance.height),
             {
                 fieldName: this.question.id,
                 readOnly: isReadOnly,
                 updateOptions: (options) => this.survey.updateCheckItemAcroformOptions(options, this.question),
                 shouldRenderReadOnly: isReadOnly && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform' || this.controller.compress,
                 checked: this.question.booleanValue
-            }, {
-                fontName: this.styles.checkmarkFont,
-                checkMark: this.styles.checkmarkSymbol,
-                fontColor: this.styles.inputFontColor,
-                fontSize: this.styles.inputFontSize,
-                lineHeight: this.styles.inputFontSize,
-                fontStyle: 'normal',
-                borderColor: this.styles.inputBorderColor,
-                borderWidth: this.styles.inputBorderWidth,
-            });
+            },  appearance);
         compositeFlat.addBrick(itemFlat);
         const textPoint: IPoint = SurveyHelper.clone(point);
         textPoint.xLeft = itemFlat.xRight + this.styles.gapBetweenItemText;
@@ -59,31 +50,21 @@ export class FlatBoolean extends FlatQuestion<QuestionBooleanModel> {
         }
         return this._radioGroupWrap;
     }
-    public generateFlatItem(rect: IRect, item: { value: string },
+    public generateFlatItem(point: IPoint, item: { value: string },
         index: number): IPdfBrick {
+        const appearance = SurveyHelper.getPatchedTextAppearanceOptions(this.controller,SurveyHelper.mergeObjects({}, this.styles.input, this.styles.radioInput) as IRadioItemBrickAppearanceOptions & { width: number; height: number });
+        const itemRect: IRect = SurveyHelper.createRect(point, appearance.width, appearance.height);
         const isChecked: boolean = this.question.value == item.value;
-        return new RadioItemBrick(this.controller, rect, this.radioGroupWrap, {
+        return new RadioItemBrick(this.controller, itemRect, this.radioGroupWrap, {
             index,
             checked: isChecked,
             shouldRenderReadOnly: this.radioGroupWrap.readOnly && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform' || this.controller.compress,
-        },
-        {
-            fontName: this.styles.radiomarkFont,
-            checkMark: this.styles.radiomarkSymbol,
-            fontSize: this.styles.inputFontSize,
-            lineHeight: this.styles.inputFontSize,
-            fontColor: this.styles.inputFontColor,
-            fontStyle: 'normal',
-            borderColor: this.styles.inputBorderColor,
-            borderWidth: this.styles.inputBorderWidth,
-        });
+        }, appearance);
     }
     protected async generateFlatComposite(point: IPoint, item: { value: string, locText: LocalizableString }, index: number): Promise<IPdfBrick> {
         const compositeFlat: CompositeBrick = new CompositeBrick();
-        const itemRect: IRect = SurveyHelper.createRect(point,
-            this.styles.inputWidth, this.styles.inputHeight);
         const textOptions: Partial<ITextAppearanceOptions> = this.styles.label;
-        const itemFlat: IPdfBrick = this.generateFlatItem(itemRect, item, index);
+        const itemFlat: IPdfBrick = this.generateFlatItem(point, item, index);
 
         compositeFlat.addBrick(itemFlat);
         const textPoint: IPoint = SurveyHelper.clone(point);

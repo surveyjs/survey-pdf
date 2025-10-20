@@ -3,10 +3,10 @@ import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
 import { IPoint, IRect } from '../doc_controller';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
-import { CheckItemBrick } from '../pdf_render/pdf_checkitem';
+import { CheckItemBrick, ICheckItemBrickAppearanceOptions } from '../pdf_render/pdf_checkitem';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
-import { RadioGroupWrap, RadioItemBrick } from '../pdf_render/pdf_radioitem';
+import { IRadioItemBrickAppearanceOptions, RadioGroupWrap, RadioItemBrick } from '../pdf_render/pdf_radioitem';
 
 export class FlatImagePicker extends FlatQuestion<QuestionImagePickerModel> {
     private _radioGroupWrap: any;
@@ -19,6 +19,7 @@ export class FlatImagePicker extends FlatQuestion<QuestionImagePickerModel> {
     }
     private async generateFlatItem(point: IPoint, item: ItemValue, index: number): Promise<IPdfBrick> {
         const pageAvailableWidth = SurveyHelper.getPageAvailableWidth(this.controller);
+        const itemAppearance = SurveyHelper.mergeObjects({}, this.styles.input, this.question.multiSelect ? this.styles.checkboxInput : this.styles.radioInput)
         const imageFlat = await SurveyHelper.createImageFlat(point, this.question, this.controller, { link: (<any>item).imageLink, width: pageAvailableWidth, height: pageAvailableWidth / this.styles.imageRatio });
         const compositeFlat: CompositeBrick = new CompositeBrick(imageFlat);
         let buttonPoint: IPoint = SurveyHelper.createPoint(compositeFlat);
@@ -29,19 +30,11 @@ export class FlatImagePicker extends FlatQuestion<QuestionImagePickerModel> {
             compositeFlat.addBrick(labelFlat);
             buttonPoint = SurveyHelper.createPoint(labelFlat);
         }
-        const height: number = this.styles.inputHeight;
+        const height: number = itemAppearance.height;
         const buttonRect: IRect = SurveyHelper.createRect(buttonPoint, pageAvailableWidth, height);
         const isChecked = this.question.isItemSelected(item);
         const isReadOnly = this.question.isReadOnly || !item.isEnabled;
         const shouldRenderReadOnly = isReadOnly && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform' || this.controller.compress;
-        const appearance = {
-            fontSize: this.styles.inputFontSize,
-            lineHeight: this.styles.inputFontSize,
-            fontColor: this.styles.inputFontColor,
-            fontStyle: 'normal',
-            borderColor: this.styles.inputBorderColor,
-            borderWidth: this.styles.inputBorderWidth,
-        }
         if (this.question.multiSelect) {
             compositeFlat.addBrick(new CheckItemBrick(this.controller,
                 buttonRect,
@@ -52,11 +45,7 @@ export class FlatImagePicker extends FlatQuestion<QuestionImagePickerModel> {
                     shouldRenderReadOnly: shouldRenderReadOnly,
                     updateOptions: (options) => this.survey.updateCheckItemAcroformOptions(options, this.question, item),
                 },
-                {
-                    ...appearance,
-                    fontName: this.styles.checkmarkFont,
-                    checkMark: this.styles.checkmarkSymbol,
-                }));
+               itemAppearance));
         }
         else {
             compositeFlat.addBrick(new RadioItemBrick(this.controller, buttonRect, this.radioGroupWrap, {
@@ -64,12 +53,7 @@ export class FlatImagePicker extends FlatQuestion<QuestionImagePickerModel> {
                 checked: isChecked,
                 shouldRenderReadOnly: shouldRenderReadOnly,
                 updateOptions: options => this.survey.updateRadioItemAcroformOptions(options, this.question, item),
-            },
-            {
-                ...appearance,
-                fontName: this.styles.radiomarkFont,
-                checkMark: this.styles.radiomarkSymbol,
-            }));
+            }, itemAppearance));
         }
         return compositeFlat;
     }

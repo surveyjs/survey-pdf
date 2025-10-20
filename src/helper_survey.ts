@@ -250,7 +250,7 @@ export class SurveyHelper {
         });
         return dest;
     }
-    public static getPatchedTextAppearanceOptions(controller: DocController, options?: Readonly<Partial<ITextAppearanceOptions>>): ITextAppearanceOptions {
+    public static getPatchedTextAppearanceOptions<T extends Partial<ITextAppearanceOptions> = ITextAppearanceOptions>(controller: DocController, options?: Readonly<Partial<T>>): T & ITextAppearanceOptions{
         const newOptions = SurveyHelper.mergeObjects(SurveyHelper.getDefaultTextAppearanceOptions(controller), options ?? {});
         if(options && options.lineHeight == undefined) {
             newOptions.lineHeight = newOptions.fontSize;
@@ -541,21 +541,20 @@ export class SurveyHelper {
         return textFlat;
     }
     public static renderFlatBorders(controller: DocController, options: IBorderDescription, appearance: IBorderAppearanceOptions): void {
-        appearance.borderMode = appearance.borderMode ?? BorderMode.Inside;
-        appearance.borderRect = appearance.borderRect ?? BorderRect.All;
-        const borderWidth: number = appearance.borderWidth;
-        if(!borderWidth || !appearance.borderColor) return;
+        const newAppearance = SurveyHelper.mergeObjects({}, { borderMode: BorderMode.Inside, borderRect: BorderRect.All }, appearance)
+        const borderWidth: number = newAppearance.borderWidth;
+        if(!borderWidth || !newAppearance.borderColor) return;
         const oldDrawColor: string = controller.doc.getDrawColor();
-        controller.doc.setDrawColor(appearance.borderColor);
+        controller.doc.setDrawColor(newAppearance.borderColor);
         controller.doc.setLineWidth(borderWidth);
 
-        const scaleFactor = appearance.borderMode == BorderMode.Middle ? 0 : (appearance.borderMode == BorderMode.Inside ? - 1 : 1) * borderWidth;
+        const scaleFactor = newAppearance.borderMode == BorderMode.Middle ? 0 : (newAppearance.borderMode == BorderMode.Inside ? - 1 : 1) * borderWidth;
         const scaledRect = this.scaleRect(options, {
             scaleX: (options.width + scaleFactor) / options.width,
             scaleY: (options.height + scaleFactor) / options.height
         });
-        if(appearance.dashStyle) {
-            const dashStyle = appearance.dashStyle;
+        if(newAppearance.dashStyle) {
+            const dashStyle = newAppearance.dashStyle;
             const borderLength = (Math.abs(scaledRect.yTop - scaledRect.yBot) + Math.abs(scaledRect.xLeft - scaledRect.xRight)) * 2;
             const dashWithSpaceSize = dashStyle.dashArray[0] + (dashStyle.dashArray[1] ?? dashStyle.dashArray[0]);
             const dashSize = dashStyle.dashArray[0] + (borderLength % dashWithSpaceSize) / Math.floor(borderLength / dashWithSpaceSize);
@@ -565,21 +564,21 @@ export class SurveyHelper {
                 dashStyle.dashPhase
             );
         }
-        if(appearance.borderRect & BorderRect.Top) {
+        if(newAppearance.borderRect & BorderRect.Top) {
             controller.doc.line(scaledRect.xLeft, scaledRect.yTop, scaledRect.xRight, scaledRect.yTop)
         }
-        if(appearance.borderRect & BorderRect.Bottom) {
+        if(newAppearance.borderRect & BorderRect.Bottom) {
             controller.doc.line(scaledRect.xLeft, scaledRect.yBot, scaledRect.xRight, scaledRect.yBot)
         }
-        if(appearance.borderRect & BorderRect.Left) {
+        if(newAppearance.borderRect & BorderRect.Left) {
             controller.doc.line(scaledRect.xLeft, scaledRect.yTop - borderWidth / 2, scaledRect.xLeft, scaledRect.yBot + borderWidth / 2)
         }
-        if(appearance.borderRect & BorderRect.Right) {
+        if(newAppearance.borderRect & BorderRect.Right) {
             controller.doc.line(scaledRect.xRight, scaledRect.yTop - borderWidth / 2, scaledRect.xRight, scaledRect.yBot + borderWidth / 2)
         }
 
         // controller.doc.rect(...this.createAcroformRect(scaledRect));
-        if(appearance.dashStyle) {
+        if(newAppearance.dashStyle) {
             controller.doc.setLineDashPattern([]);
         }
         controller.doc.setDrawColor(oldDrawColor);

@@ -3,7 +3,7 @@ import { IPoint, IRect } from '../doc_controller';
 import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
-import { SurveyHelper } from '../helper_survey';
+import { IInputAppearanceOptions, SurveyHelper } from '../helper_survey';
 import { ITextFieldBrickAppearanceOptions, ITextFieldBrickOptions, TextFieldBrick } from '../pdf_render/pdf_textfield';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 
@@ -41,15 +41,7 @@ export class FlatSlider extends FlatQuestion<QuestionSliderModel> {
     }
 
     private async generateInputBrick(point: IPoint, options:ITextFieldBrickOptions): Promise<IPdfBrick> {
-        const appearance: ITextFieldBrickAppearanceOptions = {
-            fontName: this.controller.fontName,
-            fontColor: this.styles.inputFontColor,
-            fontSize: this.styles.inputFontSize,
-            fontStyle: 'normal',
-            lineHeight: this.styles.inputLineHeight,
-            borderColor: this.styles.inputBorderColor,
-            borderWidth: this.styles.inputBorderWidth,
-        };
+        const appearance = SurveyHelper.getPatchedTextAppearanceOptions(this.controller, this.styles.input as IInputAppearanceOptions);
         if (!this.shouldRenderAsComment) {
             const rect1: IRect = SurveyHelper.createTextFieldRect(point, this.controller, 1, appearance.lineHeight);
             return new TextFieldBrick(this.controller, rect1, { ...options }, appearance);

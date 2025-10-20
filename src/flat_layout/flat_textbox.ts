@@ -3,21 +3,13 @@ import { IPoint, IRect } from '../doc_controller';
 import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
-import { SurveyHelper } from '../helper_survey';
+import { IInputAppearanceOptions, SurveyHelper } from '../helper_survey';
 import { ITextFieldBrickAppearanceOptions, ITextFieldBrickOptions, TextFieldBrick } from '../pdf_render/pdf_textfield';
 
 export class FlatTextbox extends FlatQuestion {
     public static readonly MULTILINE_TEXT_ROWS_COUNT: number = 1;
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
-        const appearance: ITextFieldBrickAppearanceOptions = {
-            fontName: this.controller.fontName,
-            fontColor: this.styles.inputFontColor,
-            lineHeight: this.styles.inputLineHeight,
-            fontSize: this.styles.inputFontSize,
-            fontStyle: 'normal',
-            borderColor: this.styles.inputBorderColor,
-            borderWidth: this.styles.inputBorderWidth,
-        };
+        const appearance = SurveyHelper.getPatchedTextAppearanceOptions(this.controller, this.styles.input as IInputAppearanceOptions)
         const options: Omit<ITextFieldBrickOptions, 'isMultiline'> = {
             fieldName: this.question.id,
             inputType: this.question.inputType,

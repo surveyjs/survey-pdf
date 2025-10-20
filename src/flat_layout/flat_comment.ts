@@ -3,7 +3,7 @@ import { IPoint } from '../doc_controller';
 import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
-import { SurveyHelper } from '../helper_survey';
+import { IInputAppearanceOptions, SurveyHelper } from '../helper_survey';
 
 export class FlatComment extends FlatQuestion<QuestionCommentModel> {
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
@@ -17,15 +17,7 @@ export class FlatComment extends FlatQuestion<QuestionCommentModel> {
                 placeholder: SurveyHelper.getLocString(this.question.locPlaceHolder),
                 shouldRenderBorders: settings.readOnlyCommentRenderMode === 'textarea',
                 value: this.question.value
-            }, {
-                fontName: this.controller.fontName,
-                fontColor: this.styles.inputFontColor,
-                lineHeight: this.styles.inputLineHeight,
-                fontSize: this.styles.inputFontSize,
-                fontStyle: 'normal',
-                borderColor: this.styles.inputBorderColor,
-                borderWidth: this.styles.inputBorderWidth,
-            })];
+            }, SurveyHelper.getPatchedTextAppearanceOptions(this.controller, this.styles.input as IInputAppearanceOptions))];
     }
 }
 

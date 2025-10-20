@@ -1,13 +1,21 @@
 import { ItemValue, QuestionRadiogroupModel } from 'survey-core';
-import { IRect } from '../doc_controller';
+import { IPoint, IRect } from '../doc_controller';
 import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
-import { RadioGroupWrap, RadioItemBrick } from '../pdf_render/pdf_radioitem';
+import { IRadioItemBrickAppearanceOptions, RadioGroupWrap, RadioItemBrick } from '../pdf_render/pdf_radioitem';
 import { FlatSelectBase } from './flat_selectbase';
 import { SurveyHelper } from '../helper_survey';
 
 export class FlatRadiogroup extends FlatSelectBase<QuestionRadiogroupModel> {
-    private radioGroupWrap: RadioGroupWrap;
+    private _radioGroupWrap: RadioGroupWrap;
+    private get radioGroupWrap(): RadioGroupWrap {
+        if(!this._radioGroupWrap) {
+            this._radioGroupWrap = new RadioGroupWrap(this.question.id,
+                this.controller, { readOnly: this.question.isReadOnly, question: this.question });
+            (<any>this.question).pdfRadioGroupWrap = this.radioGroupWrap;
+        }
+        return this._radioGroupWrap;
+    }
     protected isItemSelected(item: ItemValue, checked?: boolean): boolean {
         return (typeof checked === 'undefined') ?
             (item === this.question.otherItem ? this.question.isOtherSelected :
@@ -15,32 +23,16 @@ export class FlatRadiogroup extends FlatSelectBase<QuestionRadiogroupModel> {
                     (typeof this.question.isItemSelected !== 'undefined' &&
                         this.question.isItemSelected(item)))) : checked;
     }
-    public generateFlatItem(rect: IRect, item: ItemValue, index: number): IPdfBrick {
-        if (index === 0) {
-            this.radioGroupWrap = new RadioGroupWrap(this.question.id,
-                this.controller, { readOnly: this.question.isReadOnly, question: this.question });
-            (<any>this.question).pdfRadioGroupWrap = this.radioGroupWrap;
-        }
-        else if (typeof this.radioGroupWrap === 'undefined') {
-            this.radioGroupWrap = (<any>this.question).pdfRadioGroupWrap;
-        }
+    public generateFlatItem(point: IPoint, item: ItemValue, index: number): IPdfBrick {
+        const rect: IRect = SurveyHelper.createRect(point,
+            this.styles.input.width, this.styles.input.height);
         const isChecked: boolean = this.isItemSelected(item);
         return new RadioItemBrick(this.controller, rect, this.radioGroupWrap, {
             index,
             checked: isChecked,
             shouldRenderReadOnly: this.radioGroupWrap.readOnly && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform' || this.controller.compress,
             updateOptions: options => this.survey.updateRadioItemAcroformOptions(options, this.question, item),
-        },
-        {
-            fontName: this.styles.inputFont,
-            fontSize: this.styles.inputFontSize,
-            lineHeight: this.styles.inputFontSize,
-            fontColor: this.styles.inputFontColor,
-            fontStyle: 'normal',
-            checkMark: this.styles.inputSymbol,
-            borderColor: this.styles.inputBorderColor,
-            borderWidth: this.styles.inputBorderWidth,
-        });
+        }, SurveyHelper.getPatchedTextAppearanceOptions(this.controller, this.styles.input as IRadioItemBrickAppearanceOptions));
     }
 }
 

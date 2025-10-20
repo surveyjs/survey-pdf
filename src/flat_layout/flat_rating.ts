@@ -7,7 +7,7 @@ import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
 import { IStyles } from '../styles';
 import { FlatQuestion } from './flat_question';
-import { RadioGroupWrap, RadioItemBrick } from '../pdf_render/pdf_radioitem';
+import { IRadioItemBrickAppearanceOptions, RadioGroupWrap, RadioItemBrick } from '../pdf_render/pdf_radioitem';
 
 interface ItemInfo { item: ItemValue, index: number, locText: LocalizableString, width: number }
 
@@ -45,17 +45,7 @@ export class FlatRating extends FlatQuestion<QuestionRatingModel> {
             checked: isChecked,
             shouldRenderReadOnly: this.radioGroupWrap.readOnly && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform' || this.controller.compress,
             updateOptions: options => this.survey.updateRadioItemAcroformOptions(options, this.question, item),
-        },
-        {
-            fontName: this.styles.inputFont,
-            fontSize: this.styles.inputFontSize,
-            lineHeight: this.styles.inputFontSize,
-            fontColor: this.styles.inputFontColor,
-            fontStyle: 'normal',
-            checkMark: this.styles.inputSymbol,
-            borderColor: this.styles.inputBorderColor,
-            borderWidth: this.styles.inputBorderWidth,
-        });
+        }, SurveyHelper.getPatchedTextAppearanceOptions(this.controller, this.styles.input as IRadioItemBrickAppearanceOptions));
     }
     protected async generateItemComposite(point: IPoint, itemInfo: ItemInfo): Promise<IPdfBrick> {
         const currPoint = SurveyHelper.clone(point);
@@ -65,7 +55,7 @@ export class FlatRating extends FlatQuestion<QuestionRatingModel> {
         compositeFlat.addBrick(textBrick);
         currPoint.yTop = textBrick.yBot + this.styles.gapBetweenItemTextVertical;
         compositeFlat.addBrick(this.generateFlatItem(SurveyHelper.createRect(
-            currPoint, itemInfo.width, this.styles.inputHeight), itemInfo.item, itemInfo.index));
+            currPoint, itemInfo.width, this.styles.input.height), itemInfo.item, itemInfo.index));
         compositeFlat.translateX((xLeft, xRight) => {
             const shift = (compositeFlat.width - (xRight - xLeft)) / 2;
             return { xLeft: xLeft + shift, xRight: xRight + shift };

@@ -3,7 +3,7 @@ import { SurveyPDF } from '../survey';
 import { IPoint, DocController } from '../doc_controller';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
-import { SurveyHelper, ITextAppearanceOptions } from '../helper_survey';
+import { SurveyHelper, ITextAppearanceOptions, IInputAppearanceOptions } from '../helper_survey';
 import { AdornersOptions } from '../event_handler/adorners';
 import { FlatRepository } from './flat_repository';
 import { IStyles } from '../styles';
@@ -98,15 +98,7 @@ export class FlatQuestion<T extends Question = Question> implements IFlatQuestio
                 isReadOnly: this.question.isReadOnly,
                 isMultiline: true,
                 placeholder: ''
-            }, {
-                fontName: this.controller.fontName,
-                fontColor: this.styles.commentFontColor,
-                fontSize: this.styles.commentFontSize,
-                lineHeight: this.styles.commentLineHeight,
-                fontStyle: 'normal',
-                borderColor: this.styles.commentBorderColor,
-                borderWidth: this.styles.commentBorderWidth,
-            }));
+            }, SurveyHelper.getPatchedTextAppearanceOptions(this.controller, this.styles.comment as IInputAppearanceOptions)));
     }
     public async generateFlatsComposite(point: IPoint): Promise<IPdfBrick[]> {
         const contentPanel = (<any>this.question).contentPanel;

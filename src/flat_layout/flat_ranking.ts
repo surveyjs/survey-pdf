@@ -14,7 +14,7 @@ export class FlatRanking extends FlatQuestion<QuestionRankingModel> {
         const itemRect: IRect = SurveyHelper.createRect(point,
             this.controller.unitWidth, this.controller.unitHeight);
         const itemFlat: IPdfBrick = new RankingItemBrick(this.controller,
-            SurveyHelper.createRect(point, this.styles.inputWidth, this.styles.inputHeight),
+            SurveyHelper.createRect(point, this.styles.input.width, this.styles.input.height),
             {
                 mark: unrankedItem ? '-' : this.question.getNumberByIndex(index)
             },

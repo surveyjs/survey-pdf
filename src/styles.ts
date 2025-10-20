@@ -24,15 +24,6 @@ export function getDefaultStyles (baseSize: number) {
             gapBetweenItemText: baseSize * 0.25,
             gapBetweenColumns: baseSize * 1.5,
             gapBetweenRows: baseSize * 0.25,
-            inputBorderColor: '#000',
-            inputBorderWidth: 0,
-            inputFontColor: '#000',
-            inputFontSize: baseSize * 2.5,
-            commentBorderColor: '#000',
-            commentBorderWidth: 0,
-            commentFontColor: '#000',
-            commentFontSize: baseSize * 2.5,
-            commentLineHeight: baseSize * 3,
             wrapper: {
                 padding: [baseSize * 0.5, baseSize],
                 borderWidth: baseSize * 0.125,
@@ -47,6 +38,19 @@ export function getDefaultStyles (baseSize: number) {
             description: {
                 fontSize: baseSize * 2,
             },
+            comment: {
+                borderColor: '#000',
+                borderWidth: 0,
+                fontColor: '#000',
+                fontSize: baseSize * 2.5,
+                lineHeight: baseSize * 3,
+            },
+            input: {
+                borderColor: '#000',
+                borderWidth: 0,
+                fontColor: '#000',
+                fontSize: baseSize * 2.5,
+            }
         },
         panel: {
             gapBetweenRows: 0,
@@ -90,23 +94,29 @@ export function getDefaultStyles (baseSize: number) {
             gapBetweenRows: baseSize,
             gapBetweenItemText: baseSize,
             contentGapVertical: baseSize * 1,
-            inputWidth: baseSize * 2,
-            inputHeight: baseSize * 2,
             label: {
                 fontSize: baseSize * 2.5,
                 lineHeight: baseSize * 3,
                 fontStyle: 'normal',
                 fontColor: '#000'
             },
-            inputBorderWidth: baseSize * 0.125,
-            inputFontSize: baseSize * 1.25,
-            inputFont: 'zapfdingbats',
+            input: {
+                width: baseSize * 2,
+                height: baseSize * 2,
+                borderWidth: baseSize * 0.125,
+                fontSize: baseSize * 1.25,
+                fontName: 'zapfdingbats',
+            }
         },
         checkbox: {
-            inputSymbol: '3',
+            input: {
+                checkMark: '3'
+            }
         },
         radiogroup: {
-            inputSymbol: 'l',
+            input: {
+                checkMark: 'l'
+            }
         },
         matrixbase: {
             title: {
@@ -116,8 +126,6 @@ export function getDefaultStyles (baseSize: number) {
             contentGapVertical: 0,
             gapBetweenColumns: 0,
             gapBetweenRows: 0,
-            inputHeight: baseSize * 2,
-            inputWidth: baseSize * 2,
             verticalGapBetweenItems: baseSize,
             verticalGapBetweenRowTitleQuestion: baseSize * 0.5,
             wrapper: {
@@ -151,17 +159,26 @@ export function getDefaultStyles (baseSize: number) {
             verticalRowTitle: {
                 textAlign: 'left'
             },
+            input: {
+                height: baseSize * 2,
+                width: baseSize * 2,
+            }
         },
         matrix: {
-            inputBorderWidth: baseSize * 0.125,
-            inputFontSize: baseSize * 1.25,
-            radiomarkSymbol: 'l',
-            radiomarkFont: 'zapfdingbats',
-            checkmarkSymbol: '3',
-            checkmarkFont: 'zapfdingbats',
             verticalGapBetweenItemText: baseSize,
             verticalColumnTitle: {
                 fontSize: baseSize * 2.5
+            },
+            input: {
+                fontName: 'zapfdingbats',
+                borderWidth: baseSize * 0.125,
+                fontSize: baseSize * 1.25,
+            },
+            radioInput: {
+                checkMark:  'l'
+            },
+            checkboxInput: {
+                checkMark: '3',
             }
         },
         matrixdropdownbase: {
@@ -190,43 +207,50 @@ export function getDefaultStyles (baseSize: number) {
             },
         },
         rating: {
-            inputHeight: baseSize * 2,
-            inputWidth: baseSize * 2,
-            inputBorderWidth: baseSize * 0.125,
-            inputFontSize: baseSize * 1.25,
-            inputFont: 'zapfdingbats',
-            inputSymbol: 'l',
             itemMinWidth: baseSize * 3,
             gapBetweenColumns: baseSize * 0.25,
             gapBetweenRows: baseSize * 0.25,
             gapBetweenItemText: baseSize,
             gapBetweenItemTextVertical: 0,
-            radiomarkFont: 'zapfdingbats',
             label: {
                 fontSize: baseSize * 2.5,
                 lineHeight: baseSize * 3,
                 fontStyle: 'normal',
                 fontColor: '#000',
             },
+            input: {
+                height: baseSize * 2,
+                width: baseSize * 2,
+                borderWidth: baseSize * 0.125,
+                fontSize: baseSize * 1.25,
+                fontName: 'zapfdingbats',
+                checkMark: 'l',
+            },
         },
         ranking: {
-            inputHeight: baseSize * 2,
-            inputWidth: baseSize * 2,
+            input: {
+                height: baseSize * 2,
+                width: baseSize * 2,
+                fontSize: baseSize * 2
+            },
             gapBetweenColumns: baseSize * 1.5,
             gapBetweenRows: baseSize * 0.25,
-            checkmarkFontSize: baseSize * 2,
         },
         slider: {
-            inputFontSize: baseSize * 2.5,
-            inputLineHeight: baseSize * 3,
             gapBetweenColumns: baseSize * 1.5,
+            input: {
+                fontSize: baseSize * 2.5,
+                lineHeight: baseSize * 3
+            }
         },
         dropdown: {
             contentGapVertical: baseSize * 0.5,
             gapBetweenRows: baseSize * 0.25,
-            inputFontSize: baseSize * 2.5,
-            inputLineHeight: baseSize * 3,
-            inputBorderWidth: baseSize * 0
+            input: {
+                fontSize: baseSize * 2.5,
+                lineHeight: baseSize * 3,
+                borderWidth: baseSize * 0
+            }
         },
         file: {
             imageGap: baseSize * 0.195,
@@ -257,14 +281,6 @@ export function getDefaultStyles (baseSize: number) {
             },
         },
         boolean: {
-            inputWidth: baseSize * 2,
-            inputHeight: baseSize * 2,
-            inputBorderWidth: baseSize * 0.125,
-            inputFontSize: baseSize * 1.25,
-            radiomarkSymbol: 'l',
-            radiomarkFont: 'zapfdingbats',
-            checkmarkSymbol: '3',
-            checkmarkFont: 'zapfdingbats',
             gapBetweenItemText: baseSize,
             label: {
                 fontSize: baseSize * 2.5,
@@ -272,26 +288,48 @@ export function getDefaultStyles (baseSize: number) {
                 fontStyle: 'normal',
                 fontColor: '#000',
             },
+            input: {
+                fontName: 'zapfdingbats',
+                width: baseSize * 2,
+                height: baseSize * 2,
+                borderWidth: baseSize * 0.125,
+                fontSize: baseSize * 1.25,
+            },
+            radioInput: {
+                checkMark: 'l'
+            },
+            checkboxInput: {
+                checkMark: '3'
+            }
         },
         imagepicker: {
-            checkmarkFont: 'zapfdingbats',
-            checkmarkSymbol: '3',
-            radiomarkSymbol: 'l',
-            radiomarkFont: 'zapfdingbats',
-            inputHeight: baseSize * 2,
             gapBetweenColumns: baseSize * 1.5,
             gapBetweenRows: baseSize * 1.5,
             imageRatio: 4 / 3,
             imageMinWidth: baseSize * 12.5,
-            imageMaxWidth: baseSize * 37.5
+            imageMaxWidth: baseSize * 37.5,
+            input: {
+                fontName: 'zapfdingbats',
+                height: baseSize * 2,
+            },
+            radioInput: {
+                checkMark: 'l'
+            },
+            checkboxInput: {
+                checkMark: '3'
+            }
         },
         textbase: {
-            inputFontSize: baseSize * 2.5,
-            inputLineHeight: baseSize * 3
+            input: {
+                fontSize: baseSize * 2.5,
+                lineHeight: baseSize * 3
+            }
         },
         expression: {
-            inputFontSize: baseSize * 2.5,
-            inputLineHeight: baseSize * 3
+            input: {
+                fontSize: baseSize * 2.5,
+                lineHeight: baseSize * 3
+            }
         },
         html: {
             fontSize: baseSize * 2,
