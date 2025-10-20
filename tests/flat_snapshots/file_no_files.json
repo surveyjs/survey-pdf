@@ -2,25 +2,27 @@
 	{
 		"brickType": "CompositeBrick",
 		"width": 204.00000000000003,
-		"height": 34.5,
-		"xLeft": 62.84645669291339,
-		"xRight": 266.8464566929134,
-		"yTop": 28.34645669291339,
-		"yBot": 62.84645669291339,
+		"height": 30,
+		"xLeft": 60.22145669291339,
+		"xRight": 264.2214566929134,
+		"yTop": 45.22145669291339,
+		"yBot": 75.22145669291339,
 		"bricks": [
 			{
 				"brickType": "TextBrick",
 				"width": 204.00000000000003,
-				"height": 34.5,
-				"xLeft": 62.84645669291339,
-				"xRight": 266.8464566929134,
-				"yTop": 28.34645669291339,
-				"yBot": 62.84645669291339,
+				"height": 30,
+				"xLeft": 60.22145669291339,
+				"xRight": 264.2214566929134,
+				"yTop": 45.22145669291339,
+				"yBot": 75.22145669291339,
 				"appearance": {
 					"fontSize": 30,
 					"fontName": "helvetica",
 					"fontStyle": "normal",
-					"fontColor": "#404040"
+					"lineHeight": 30,
+					"fontColor": "#404040",
+					"textAlign": "left"
 				},
 				"options": {
 					"text": "No file selected"

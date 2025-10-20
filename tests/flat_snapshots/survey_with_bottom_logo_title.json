@@ -2,38 +2,60 @@
 	[
 		{
 			"brickType": "CompositeBrick",
-			"width": 406.98,
-			"height": 58.64999999999999,
+			"width": 492.00000000000006,
+			"height": 300.00000000000006,
 			"xLeft": 28.34645669291339,
-			"xRight": 435.3264566929134,
+			"xRight": 520.3464566929134,
 			"yTop": 28.34645669291339,
-			"yBot": 86.99645669291338,
+			"yBot": 328.3464566929134,
 			"bricks": [
 				{
 					"brickType": "CompositeBrick",
-					"width": 406.98,
-					"height": 58.64999999999999,
+					"width": 492.00000000000006,
+					"height": 300.00000000000006,
 					"xLeft": 28.34645669291339,
-					"xRight": 435.3264566929134,
+					"xRight": 520.3464566929134,
 					"yTop": 28.34645669291339,
-					"yBot": 86.99645669291338,
+					"yBot": 328.3464566929134,
 					"bricks": [
 						{
 							"brickType": "TextBrick",
-							"width": 406.98,
-							"height": 58.64999999999999,
+							"width": 465.59999999999997,
+							"height": 150,
 							"xLeft": 28.34645669291339,
-							"xRight": 435.3264566929134,
+							"xRight": 493.94645669291333,
 							"yTop": 28.34645669291339,
-							"yBot": 86.99645669291338,
+							"yBot": 178.3464566929134,
 							"appearance": {
-								"fontSize": 51,
+								"fontSize": 120,
 								"fontName": "helvetica",
 								"fontStyle": "bold",
-								"fontColor": "#404040"
+								"lineHeight": 150,
+								"fontColor": "#000",
+								"textAlign": "left"
 							},
 							"options": {
-								"text": "TitleLogoBottom"
+								"text": "TitleLog"
+							}
+						},
+						{
+							"brickType": "TextBrick",
+							"width": 492.00000000000006,
+							"height": 150.00000000000003,
+							"xLeft": 28.34645669291339,
+							"xRight": 520.3464566929134,
+							"yTop": 178.3464566929134,
+							"yBot": 328.3464566929134,
+							"appearance": {
+								"fontSize": 120,
+								"fontName": "helvetica",
+								"fontStyle": "bold",
+								"lineHeight": 150,
+								"fontColor": "#000",
+								"textAlign": "left"
+							},
+							"options": {
+								"text": "oBottom"
 							}
 						}
 					]
@@ -46,12 +68,13 @@
 			"height": 150,
 			"xLeft": 185.13779527559055,
 			"xRight": 410.1377952755905,
-			"yTop": 104.24645669291338,
-			"yBot": 254.2464566929134,
+			"yTop": 343.3464566929134,
+			"yBot": 493.3464566929134,
 			"appearance": {
 				"fontSize": 30,
 				"fontName": "helvetica",
 				"fontStyle": "normal",
+				"lineHeight": 30,
 				"fontColor": "#404040"
 			},
 			"options": {
@@ -65,8 +88,8 @@
 			"height": 0,
 			"xLeft": 28.34645669291339,
 			"xRight": 566.9291338582677,
-			"yTop": 254.2464566929134,
-			"yBot": 254.2464566929134
+			"yTop": 493.3464566929134,
+			"yBot": 493.3464566929134
 		}
 	]
 ]

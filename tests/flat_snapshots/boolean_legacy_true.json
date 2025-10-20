@@ -1,29 +1,32 @@
 [
 	{
 		"brickType": "CompositeBrick",
-		"width": 28.559999999999988,
-		"height": 16.099999999999998,
-		"xLeft": 44.44645669291339,
-		"xRight": 73.00645669291337,
-		"yTop": 28.34645669291339,
-		"yBot": 44.44645669291339,
+		"width": 27.9,
+		"height": 18.000000000000004,
+		"xLeft": 34.72145669291339,
+		"xRight": 62.62145669291339,
+		"yTop": 31.72145669291339,
+		"yBot": 49.72145669291339,
 		"bricks": [
 			{
 				"brickType": "CheckItemBrick",
-				"width": 15.294999999999987,
-				"height": 15.295000000000002,
-				"xLeft": 44.44645669291339,
-				"xRight": 59.741456692913374,
-				"yTop": 28.74895669291339,
-				"yBot": 44.04395669291339,
+				"width": 12,
+				"height": 12,
+				"xLeft": 34.72145669291339,
+				"xRight": 46.72145669291339,
+				"yTop": 34.72145669291339,
+				"yBot": 46.72145669291339,
 				"appearance": {
+					"fontSize": 7.5,
 					"fontName": "zapfdingbats",
-					"fontColor": "#9f9f9f",
-					"fontSize": 10.194405440157338,
-					"checkMark": "3",
 					"fontStyle": "normal",
-					"borderColor": "#9f9f9f",
-					"borderWidth": 1.288
+					"lineHeight": 7.5,
+					"fontColor": "#000",
+					"borderColor": "#000",
+					"borderWidth": 0.75,
+					"width": 12,
+					"height": 12,
+					"checkMark": "3"
 				},
 				"options": {
 					"fieldName": "testidquestion_bool_undefined",
@@ -34,26 +37,28 @@
 			},
 			{
 				"brickType": "CompositeBrick",
-				"width": 9.240000000000002,
-				"height": 16.099999999999998,
-				"xLeft": 63.76645669291337,
-				"xRight": 73.00645669291337,
-				"yTop": 28.34645669291339,
-				"yBot": 44.44645669291339,
+				"width": 9.899999999999999,
+				"height": 18.000000000000004,
+				"xLeft": 52.72145669291339,
+				"xRight": 62.62145669291339,
+				"yTop": 31.72145669291339,
+				"yBot": 49.72145669291339,
 				"bricks": [
 					{
 						"brickType": "TextBrick",
-						"width": 9.240000000000002,
-						"height": 16.099999999999998,
-						"xLeft": 63.76645669291337,
-						"xRight": 73.00645669291337,
-						"yTop": 28.34645669291339,
-						"yBot": 44.44645669291339,
+						"width": 9.899999999999999,
+						"height": 18.000000000000004,
+						"xLeft": 52.72145669291339,
+						"xRight": 62.62145669291339,
+						"yTop": 31.72145669291339,
+						"yBot": 49.72145669291339,
 						"appearance": {
-							"fontSize": 14,
+							"fontSize": 15,
 							"fontName": "helvetica",
 							"fontStyle": "normal",
-							"fontColor": "#404040"
+							"lineHeight": 18,
+							"fontColor": "#000",
+							"textAlign": "left"
 						},
 						"options": {
 							"text": "Y"

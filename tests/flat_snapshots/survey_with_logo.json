@@ -12,6 +12,7 @@
 				"fontSize": 30,
 				"fontName": "helvetica",
 				"fontStyle": "normal",
+				"lineHeight": 30,
 				"fontColor": "#404040"
 			},
 			"options": {
