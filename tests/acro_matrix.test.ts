@@ -27,10 +27,11 @@ test('Matrix default value', async () => {
     };
     const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     const controller: DocController = new DocController(TestHelper.defaultOptions);
+    survey.getAllQuestions()[0].id = 'test_id';
     await survey['renderSurvey'](controller);
     const acroFormFields = controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields;
-    expect(acroFormFields[0].value).toBe('sq_100row0index0');
-    expect(acroFormFields[1].AS).toBe('/sq_100row0index0');
+    expect(acroFormFields[0].value).toBe('test_idrow0index0');
+    expect(acroFormFields[1].AS).toBe('/test_idrow0index0');
     expect(acroFormFields[2].AS).toBe('/Off');
 });
 test('Matrix dropdown with radiogroup showInMultipleColumns equals true', async () => {

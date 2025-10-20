@@ -62,6 +62,11 @@ steps:
       workingDir: $(Build.SourcesDirectory)/survey-pdf
     condition: ne(variables.NPM_CACHE_RESTORED, 'true')
 
+  - script: |
+      cd $(Build.SourcesDirectory)/survey-pdf
+      npm run lint
+    displayName: "run lint command"
+
   - task: DownloadBuildArtifacts@0
     inputs:
       buildType: "specific"

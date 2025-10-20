@@ -128,7 +128,7 @@
 						"yTop": 126.67145669291338,
 						"yBot": 195.67145669291338,
 						"options": {
-							"fieldName": "testidquestion_question1_Item_1",
+							"fieldName": "testidquestion_question1_Item 1_comment",
 							"rows": 2,
 							"value": "aaaaa",
 							"shouldRenderBorders": true,
@@ -222,7 +222,7 @@
 				"yTop": 247.42145669291338,
 				"yBot": 316.42145669291335,
 				"options": {
-					"fieldName": "testidquestion_question1_Item_2",
+					"fieldName": "testidquestion_question1_Item 2_comment",
 					"rows": 2,
 					"value": "ccccc",
 					"shouldRenderBorders": true,
@@ -314,7 +314,7 @@
 				"yTop": 368.17145669291335,
 				"yBot": 437.17145669291335,
 				"options": {
-					"fieldName": "testidquestion_question1_Item_3",
+					"fieldName": "testidquestion_question1_Item 3_comment",
 					"rows": 2,
 					"value": "bbbbb",
 					"shouldRenderBorders": true,

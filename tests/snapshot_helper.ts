@@ -43,6 +43,14 @@ function correctSurveyElementIds(survey: SurveyPDF) {
                 });
             });
         }
+        if(typeof q.getCommentTextAreaModel == 'function' && Array.isArray(q.visibleChoices)) {
+            q.visibleChoices.forEach(choice => {
+                const comment = q.getCommentTextAreaModel(choice);
+                if(!!comment) {
+                    comment.options.id = () => `${q.id}_${choice.value}_comment`;
+                }
+            });
+        }
         if (q.getType() === 'file') {
             q.pages.forEach((p, j) => {
                 p.id = q.id + 'page' + j;
@@ -68,6 +76,7 @@ export async function checkPDFSnapshot(surveyJSON: any, snapshotOptions: IPDFSna
         options.controller.doc.setCreationDate(new Date(0));
         options.controller.doc.setFileId('00000000000000000000000000000000');
     });
+
     const actual = (await survey.raw()).replaceAll(/\r\n/g, '\n');
     const snapshotName = snapshotOptions.snapshotName;
     const fileName = `${__dirname}/pdf_snapshots/${snapshotName}.pdf`;
