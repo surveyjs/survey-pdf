@@ -108,7 +108,18 @@ export class TextFieldBrick extends PdfBrick {
         unFoldedBricks.forEach((brick: PdfBrick) => {
             brick.afterRenderCallback = afterRenderTextBrickCallback.bind(this, brick);
         });
+        this.updateRect();
     }
+    public updateRect(): void {
+        if(this.textBrick) {
+            this.textBrick.updateRect();
+            this._xLeft = this.textBrick.xLeft;
+            this._xRight = this.textBrick.xRight;
+            this._yTop = this.textBrick.yTop;
+            this._yBot = this.textBrick.yBot;
+        }
+    }
+
     public async renderReadOnly(): Promise<void> {
         this.controller.pushMargins(this.xLeft,
             this.controller.paperWidth - this.xRight);
