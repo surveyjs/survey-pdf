@@ -9,7 +9,7 @@ import { ITextFieldBrickAppearanceOptions, ITextFieldBrickOptions, TextFieldBric
 export class FlatTextbox extends FlatQuestion {
     public static readonly MULTILINE_TEXT_ROWS_COUNT: number = 1;
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
-        const appearance = SurveyHelper.getPatchedTextAppearanceOptions(this.controller, this.styles.input as IInputAppearanceOptions)
+        const appearance = SurveyHelper.getPatchedTextAppearanceOptions(this.controller, this.styles.input as IInputAppearanceOptions);
         const options: Omit<ITextFieldBrickOptions, 'isMultiline'> = {
             fieldName: this.question.id,
             inputType: this.question.inputType,

@@ -13,7 +13,7 @@ export class FlatBooleanCheckbox extends FlatQuestion<QuestionBooleanModel> {
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         const compositeFlat: CompositeBrick = new CompositeBrick();
         const isReadOnly = this.question.isReadOnly;
-        const appearance = SurveyHelper.getPatchedTextAppearanceOptions(this.controller,SurveyHelper.mergeObjects({}, this.styles.input, this.styles.checkboxInput) as ICheckItemBrickAppearanceOptions & { width: number; height: number });
+        const appearance = SurveyHelper.getPatchedTextAppearanceOptions(this.controller, SurveyHelper.mergeObjects({}, this.styles.input, this.styles.checkboxInput) as ICheckItemBrickAppearanceOptions & { width: number, height: number });
         const itemFlat: IPdfBrick = new CheckItemBrick(this.controller, SurveyHelper.createRect(point, appearance.width, appearance.height),
             {
                 fieldName: this.question.id,
@@ -21,7 +21,7 @@ export class FlatBooleanCheckbox extends FlatQuestion<QuestionBooleanModel> {
                 updateOptions: (options) => this.survey.updateCheckItemAcroformOptions(options, this.question),
                 shouldRenderReadOnly: isReadOnly && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform' || this.controller.compress,
                 checked: this.question.booleanValue
-            },  appearance);
+            }, appearance);
         compositeFlat.addBrick(itemFlat);
         const textPoint: IPoint = SurveyHelper.clone(point);
         textPoint.xLeft = itemFlat.xRight + this.styles.gapBetweenItemText;
@@ -52,7 +52,7 @@ export class FlatBoolean extends FlatQuestion<QuestionBooleanModel> {
     }
     public generateFlatItem(point: IPoint, item: { value: string },
         index: number): IPdfBrick {
-        const appearance = SurveyHelper.getPatchedTextAppearanceOptions(this.controller,SurveyHelper.mergeObjects({}, this.styles.input, this.styles.radioInput) as IRadioItemBrickAppearanceOptions & { width: number; height: number });
+        const appearance = SurveyHelper.getPatchedTextAppearanceOptions(this.controller, SurveyHelper.mergeObjects({}, this.styles.input, this.styles.radioInput) as IRadioItemBrickAppearanceOptions & { width: number, height: number });
         const itemRect: IRect = SurveyHelper.createRect(point, appearance.width, appearance.height);
         const isChecked: boolean = this.question.value == item.value;
         return new RadioItemBrick(this.controller, itemRect, this.radioGroupWrap, {

@@ -50,40 +50,40 @@ interface IPadding {
 }
 
 function parsePadding(padding: Array<number> | number): IPadding {
-  if (Array.isArray(padding) && padding.length > 1) {
-    if (padding.length == 2) {
-      return {
-        top: padding[0],
-        bottom: padding[0],
-        left: padding[1],
-        right: padding[1],
-      };
+    if (Array.isArray(padding) && padding.length > 1) {
+        if (padding.length == 2) {
+            return {
+                top: padding[0],
+                bottom: padding[0],
+                left: padding[1],
+                right: padding[1],
+            };
+        }
+        if (padding.length == 3) {
+            return {
+                top: padding[0],
+                left: padding[1],
+                right: padding[1],
+                bottom: padding[2],
+            };
+        }
+        if (padding.length == 4) {
+            return {
+                top: padding[0],
+                right: padding[1],
+                bottom: padding[2],
+                left: padding[3],
+            };
+        }
+    } else {
+        const value = Array.isArray(padding) ? padding[0] : padding;
+        return {
+            top: value,
+            bottom: value,
+            right: value,
+            left: value,
+        };
     }
-    if (padding.length == 3) {
-      return {
-        top: padding[0],
-        left: padding[1],
-        right: padding[1],
-        bottom: padding[2],
-      };
-    }
-    if (padding.length == 4) {
-      return {
-        top: padding[0],
-        right: padding[1],
-        bottom: padding[2],
-        left: padding[3],
-      };
-    }
-  } else {
-    const value = Array.isArray(padding) ? padding[0] : padding;
-    return {
-      top: value,
-      bottom: value,
-      right: value,
-      left: value,
-    };
-  }
 }
 
 export class ContainerBrick extends CompositeBrick {
@@ -102,10 +102,10 @@ export class ContainerBrick extends CompositeBrick {
     }
     private _padding: IPadding;
     private get padding(): IPadding {
-      if(!this._padding) {
-        this._padding = parsePadding(this.appearance.padding);
-      }
-      return this._padding;
+        if(!this._padding) {
+            this._padding = parsePadding(this.appearance.padding);
+        }
+        return this._padding;
     }
     constructor(private controller: DocController, private layout: { xLeft: number, yTop: number, width: number }, appearance?: Partial<Readonly<IContainerBrickAppearance>>) {
         super();
@@ -148,14 +148,14 @@ export class ContainerBrick extends CompositeBrick {
             } else {
                 renderedPageIndex = currentPageIndex;
                 const unfoldedBricks = this.unfold();
-                const unfoldedBricksOnPage = unfoldedBricks.filter(brick => brick.getPageNumber() == currentPageIndex)
+                const unfoldedBricksOnPage = unfoldedBricks.filter(brick => brick.getPageNumber() == currentPageIndex);
                 const mergedRect = SurveyHelper.mergeRects(...unfoldedBricksOnPage);
                 let borderRect = BorderRect.All;
                 if(unfoldedBricks[0] != unfoldedBricksOnPage[0]) {
-                    borderRect ^= BorderRect.Top
+                    borderRect ^= BorderRect.Top;
                 }
                 if(unfoldedBricks[unfoldedBricks.length - 1] !== unfoldedBricksOnPage[unfoldedBricksOnPage.length - 1]) {
-                    borderRect ^= BorderRect.Bottom
+                    borderRect ^= BorderRect.Bottom;
                 }
                 if(this.appearance.backgroundColor !== null) {
                     const oldFillColor = this.controller.doc.getFillColor();
@@ -175,7 +175,7 @@ export class ContainerBrick extends CompositeBrick {
                         yTop: mergedRect.yTop,
                         yBot: mergedRect.yBot,
                         width: this.layout.width,
-                        height:  mergedRect.yBot - mergedRect.yTop }, { ...this.appearance, borderRect });
+                        height: mergedRect.yBot - mergedRect.yTop }, { ...this.appearance, borderRect });
                 }
             }
         };

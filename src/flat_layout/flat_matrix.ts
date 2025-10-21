@@ -58,7 +58,7 @@ export abstract class FlatMatrixContent {
         const isChecked: boolean = row.isChecked(item);
         const isReadOnly = this.question.isReadOnly;
         const appearance = SurveyHelper.getPatchedTextAppearanceOptions(this.controller, SurveyHelper.mergeObjects({}, this.styles.input, this.question.isMultiSelect ? this.styles.checkboxInput : this.styles.radioInput) as ICheckItemBrickAppearanceOptions & { width: number, height: number });
-        const rect = SurveyHelper.createRect(point, appearance.width, appearance.height)
+        const rect = SurveyHelper.createRect(point, appearance.width, appearance.height);
         if(this.question.isMultiSelect) {
             return new CheckItemBrick(this.controller, rect, {
                 fieldName: fieldName + 'index' + itemIndex,
@@ -77,7 +77,7 @@ export abstract class FlatMatrixContent {
                     index: itemIndex,
                     shouldRenderReadOnly: radioGroupWrap.readOnly && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform' || this.controller.compress,
                     updateOptions: options => this.survey.updateRadioItemAcroformOptions(options, this.question, item),
-                }, appearance);    
+                }, appearance);
         }
     }
     public async generateFlats(point: IPoint) {

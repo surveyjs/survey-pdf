@@ -1,6 +1,6 @@
 import {
     QuestionMatrixDropdownModelBase, QuestionMatrixDropdownRenderedTable,
-    QuestionMatrixDropdownRenderedRow, QuestionMatrixDropdownRenderedCell, Serializer, PanelModel} from 'survey-core';
+    QuestionMatrixDropdownRenderedRow, QuestionMatrixDropdownRenderedCell, Serializer, PanelModel } from 'survey-core';
 import { SurveyPDF } from '../survey';
 import { IPoint, DocController } from '../doc_controller';
 import { IFlatQuestion, FlatQuestion } from './flat_question';
@@ -28,16 +28,16 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
     private async generateFlatsCell(point: IPoint, cell: QuestionMatrixDropdownRenderedCell,
         location?: 'header' | 'footer', isWide: boolean = true): Promise<ContainerBrick> {
         let cellAppearanceOptions = this.styles.cell;
-        if(cell.hasTitle && location !== "header") {
-            cellAppearanceOptions = SurveyHelper.mergeObjects({}, cellAppearanceOptions, this.styles.cellRowTitle)
+        if(cell.hasTitle && location !== 'header') {
+            cellAppearanceOptions = SurveyHelper.mergeObjects({}, cellAppearanceOptions, this.styles.cellRowTitle);
             if(!isWide) {
-                cellAppearanceOptions = SurveyHelper.mergeObjects({}, cellAppearanceOptions, this.styles.cellVerticalRowTitle)
+                cellAppearanceOptions = SurveyHelper.mergeObjects({}, cellAppearanceOptions, this.styles.cellVerticalRowTitle);
             }
         }
-        if(cell.hasTitle && location === "header") {
-            cellAppearanceOptions = SurveyHelper.mergeObjects({}, cellAppearanceOptions, this.styles.cellColumnTitle)
+        if(cell.hasTitle && location === 'header') {
+            cellAppearanceOptions = SurveyHelper.mergeObjects({}, cellAppearanceOptions, this.styles.cellColumnTitle);
             if(!isWide) {
-                cellAppearanceOptions = SurveyHelper.mergeObjects({}, cellAppearanceOptions, this.styles.cellVerticalColumnTitle)
+                cellAppearanceOptions = SurveyHelper.mergeObjects({}, cellAppearanceOptions, this.styles.cellVerticalColumnTitle);
             }
 
         }
@@ -125,12 +125,12 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
         }
         return composite;
     }
-    private getAvalableWidth(colCount: number): number {
+    private getColumnsAvalableWidth(colCount: number): number {
         return SurveyHelper.getPageAvailableWidth(this.controller) -
         (colCount - 1) * this.styles.gapBetweenColumns;
     }
     private calculateColumnWidth(rows: QuestionMatrixDropdownRenderedRow[], colCount: number): number[] {
-        const availableWidth: number = this.getAvalableWidth(colCount);
+        const availableWidth: number = this.getColumnsAvalableWidth(colCount);
         let remainWidth: number = availableWidth;
         let remainColCount: number = colCount;
         const columnWidth: number[] = [];
@@ -224,7 +224,7 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
         rows.push(...this.visibleRows);
         if(rows.length === 0) return true;
         const columnWidthSum = this.calculateColumnWidth(rows, colCount).reduce((widthSum: number, width: number) => widthSum += width, 0);
-        return this.question.renderAs !== 'list' && this.controller.matrixRenderAs !== 'list' && Math.floor(columnWidthSum) <= Math.floor(this.getAvalableWidth(colCount));
+        return this.question.renderAs !== 'list' && this.controller.matrixRenderAs !== 'list' && Math.floor(columnWidthSum) <= Math.floor(this.getColumnsAvalableWidth(colCount));
     }
     private getRowsToRender(table: QuestionMatrixDropdownRenderedTable, isVertical: boolean, isWide: boolean) {
         const rows: QuestionMatrixDropdownRenderedRow[] = [];

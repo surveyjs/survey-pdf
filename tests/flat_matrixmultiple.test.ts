@@ -213,13 +213,10 @@ test('Check matrix multiple with showInMultipleColumns option and none choice', 
             }
         ]
     };
-    checkFlatSnapshot(json, {
+    await checkFlatSnapshot(json, {
         snapshotName: 'matrixdropdown_showInMultipleColumns_none_choice',
         isCorrectEvent: (options: AdornersOptions) => {
             return options.question.getType() == 'matrixdropdown';
-        },
-        controllerOptions: {
-            fontSize: DocController.FONT_SIZE
         }
     });
 });
@@ -230,7 +227,7 @@ test('Check matrix multiple column widths', async () => {
                 type: 'matrixdropdown',
                 name: 'matrixdropdown',
                 titleLocation: 'hidden',
-                rowTitleWidth: '400px',
+                rowTitleWidth: '500px',
                 showHeader: false,
                 columns: [
                     {
@@ -252,14 +249,13 @@ test('Check matrix multiple column widths', async () => {
         ]
     };
     const options: IDocOptions = TestHelper.defaultOptions;
-    options.fontSize = DocController.FONT_SIZE;
     let survey: SurveyPDF = new SurveyPDF(json, options);
     let question = <QuestionMatrixDropdownModel>survey.getAllQuestions()[0];
     const controller: DocController = new DocController(options);
     let flat = new FlatMatrixMultiple(survey, question, controller, survey.getStylesForElement(question));
     let widths = flat['calculateColumnWidth'](flat['visibleRows'], 4);
-    let restWidth = controller.measureText(SurveyHelper.MATRIX_COLUMN_WIDTH).width;
-    expect(widths).toEqual([300, restWidth, 37.5, restWidth]);
+    let restWidth = flat['styles'].columnMinWidth;
+    expect(widths).toEqual([375, restWidth, 37.5, restWidth]);
     expect(flat['calculateIsWide'](question.renderedTable, 4)).toBeFalsy();
 
     json = {
@@ -293,7 +289,7 @@ test('Check matrix multiple column widths', async () => {
     question = <QuestionMatrixDropdownModel>survey.getAllQuestions()[0];
     let flat = new FlatMatrixMultiple(survey, question, controller, survey.getStylesForElement(question));
     widths = flat['calculateColumnWidth'](flat['visibleRows'], 4);
-    restWidth = (flat['getAvalableWidth'](4) - 75 - 37.5) / 2;
+    restWidth = (flat['getColumnsAvalableWidth'](4) - 75 - 37.5) / 2;
     expect(widths).toEqual([75, restWidth, 37.5, restWidth]);
     expect(flat['calculateIsWide'](question.renderedTable, 4)).toBeTruthy();
 });
@@ -320,7 +316,7 @@ test('Check matrix dynamic column min widths', async () => {
                     {
                         cellType: 'text',
                         name: 'Col3',
-                        minWidth: '200px',
+                        minWidth: '300px',
                     },
                     {
                         cellType: 'text',
@@ -333,14 +329,13 @@ test('Check matrix dynamic column min widths', async () => {
         ]
     };
     const options: IDocOptions = TestHelper.defaultOptions;
-    options.fontSize = DocController.FONT_SIZE;
     let survey: SurveyPDF = new SurveyPDF(json, options);
     let question = <QuestionMatrixDropdownModel>survey.getAllQuestions()[0];
     const controller: DocController = new DocController(options);
     let flat = new FlatMatrixMultiple(survey, question, controller, survey.getStylesForElement(question));
     let widths = flat['calculateColumnWidth'](flat['visibleRows'], 4);
-    let restWidth = (flat['getAvalableWidth'](4) - 112.5 - 150) / 2;
-    expect(widths).toEqual([112.5, restWidth, 150, restWidth]);
+    let restWidth = (flat['getColumnsAvalableWidth'](4) - 112.5 - 225) / 2;
+    expect(widths).toEqual([112.5, restWidth, 225, restWidth]);
 });
 test('Check matrix dynamic column min widths with detailPanel', async () => {
     let json: any = {
@@ -365,7 +360,7 @@ test('Check matrix dynamic column min widths with detailPanel', async () => {
                     {
                         cellType: 'text',
                         name: 'Col3',
-                        minWidth: '200px',
+                        minWidth: '300px',
                     },
                     {
                         cellType: 'text',
@@ -384,14 +379,13 @@ test('Check matrix dynamic column min widths with detailPanel', async () => {
         ]
     };
     const options: IDocOptions = TestHelper.defaultOptions;
-    options.fontSize = DocController.FONT_SIZE;
     let survey: SurveyPDF = new SurveyPDF(json, options);
     let question = <QuestionMatrixDropdownModel>survey.getAllQuestions()[0];
     const controller: DocController = new DocController(options);
     let flat = new FlatMatrixMultiple(survey, question, controller, survey.getStylesForElement(question));
     let widths = flat['calculateColumnWidth'](flat['visibleRows'], 4);
-    let restWidth = (flat['getAvalableWidth'](4) - 112.5 - 150) / 2;
-    expect(widths).toEqual([112.5, restWidth, 150, restWidth]);
+    let restWidth = (flat['getColumnsAvalableWidth'](4) - 112.5 - 225) / 2;
+    expect(widths).toEqual([112.5, restWidth, 225, restWidth]);
 });
 test('Check getRowsToRender method', async () => {
     const json = {

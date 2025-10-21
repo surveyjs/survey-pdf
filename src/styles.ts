@@ -10,7 +10,7 @@ export function getDefaultStyles (baseSize: number) {
         description: {
             fontSize: baseSize * 2,
             lineHeight: baseSize * 3,
-            fontStyle: "normal",
+            fontStyle: 'normal',
             fontColor: '#000',
         },
         descriptionGap: baseSize * 1.5,
@@ -120,9 +120,9 @@ export function getDefaultStyles (baseSize: number) {
         },
         matrixbase: {
             title: {
-                fontStyle: "bold"
+                fontStyle: 'bold'
             },
-            columnMinWidth: baseSize * 12.5,
+            columnMinWidth: baseSize * 15,
             contentGapVertical: 0,
             gapBetweenColumns: 0,
             gapBetweenRows: 0,
@@ -175,7 +175,7 @@ export function getDefaultStyles (baseSize: number) {
                 fontSize: baseSize * 1.25,
             },
             radioInput: {
-                checkMark:  'l'
+                checkMark: 'l'
             },
             checkboxInput: {
                 checkMark: '3',

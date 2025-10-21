@@ -36,7 +36,7 @@ export enum BorderMode {
 }
 export enum BorderRect {
     None = 0,
-    Top =  1,
+    Top = 1,
     Bottom = 2,
     Right = 4,
     Left = 8,
@@ -250,7 +250,7 @@ export class SurveyHelper {
         });
         return dest;
     }
-    public static getPatchedTextAppearanceOptions<T extends Partial<ITextAppearanceOptions> = ITextAppearanceOptions>(controller: DocController, options?: Readonly<Partial<T>>): T & ITextAppearanceOptions{
+    public static getPatchedTextAppearanceOptions<T extends Partial<ITextAppearanceOptions> = ITextAppearanceOptions>(controller: DocController, options?: Readonly<Partial<T>>): T & ITextAppearanceOptions {
         const newOptions = SurveyHelper.mergeObjects(SurveyHelper.getDefaultTextAppearanceOptions(controller), options ?? {});
         if(options && options.lineHeight == undefined) {
             newOptions.lineHeight = newOptions.fontSize;
@@ -541,7 +541,7 @@ export class SurveyHelper {
         return textFlat;
     }
     public static renderFlatBorders(controller: DocController, options: IBorderDescription, appearance: IBorderAppearanceOptions): void {
-        const newAppearance = SurveyHelper.mergeObjects({}, { borderMode: BorderMode.Inside, borderRect: BorderRect.All }, appearance)
+        const newAppearance = SurveyHelper.mergeObjects({}, { borderMode: BorderMode.Inside, borderRect: BorderRect.All }, appearance);
         const borderWidth: number = newAppearance.borderWidth;
         if(!borderWidth || !newAppearance.borderColor) return;
         const oldDrawColor: string = controller.doc.getDrawColor();
@@ -565,16 +565,16 @@ export class SurveyHelper {
             );
         }
         if(newAppearance.borderRect & BorderRect.Top) {
-            controller.doc.line(scaledRect.xLeft, scaledRect.yTop, scaledRect.xRight, scaledRect.yTop)
+            controller.doc.line(scaledRect.xLeft, scaledRect.yTop, scaledRect.xRight, scaledRect.yTop);
         }
         if(newAppearance.borderRect & BorderRect.Bottom) {
-            controller.doc.line(scaledRect.xLeft, scaledRect.yBot, scaledRect.xRight, scaledRect.yBot)
+            controller.doc.line(scaledRect.xLeft, scaledRect.yBot, scaledRect.xRight, scaledRect.yBot);
         }
         if(newAppearance.borderRect & BorderRect.Left) {
-            controller.doc.line(scaledRect.xLeft, scaledRect.yTop - borderWidth / 2, scaledRect.xLeft, scaledRect.yBot + borderWidth / 2)
+            controller.doc.line(scaledRect.xLeft, scaledRect.yTop - borderWidth / 2, scaledRect.xLeft, scaledRect.yBot + borderWidth / 2);
         }
         if(newAppearance.borderRect & BorderRect.Right) {
-            controller.doc.line(scaledRect.xRight, scaledRect.yTop - borderWidth / 2, scaledRect.xRight, scaledRect.yBot + borderWidth / 2)
+            controller.doc.line(scaledRect.xRight, scaledRect.yTop - borderWidth / 2, scaledRect.xRight, scaledRect.yBot + borderWidth / 2);
         }
 
         // controller.doc.rect(...this.createAcroformRect(scaledRect));

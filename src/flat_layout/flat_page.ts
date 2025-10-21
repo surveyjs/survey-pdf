@@ -9,7 +9,7 @@ import { SurveyHelper } from '../helper_survey';
 export class FlatPage extends FlatPanel<PageModel> {
     protected async generateTitleFlat(point: IPoint): Promise<IPdfBrick> {
         return await SurveyHelper.createTextFlat(
-            point, this.controller, this.panel.locTitle, {...this.styles.title});
+            point, this.controller, this.panel.locTitle, { ...this.styles.title });
     }
     async generateFlats(point: IPoint): Promise<IPdfBrick[]> {
         const pageFlats: IPdfBrick[] = [];

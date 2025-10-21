@@ -39,7 +39,7 @@ export class FlatPanel<T extends PanelModel = PanelModel> {
     }
     protected async generateTitleFlat(point: IPoint): Promise<IPdfBrick> {
         const composite: CompositeBrick = new CompositeBrick();
-        const textOptions:Partial<ITextAppearanceOptions> = { ...this.styles.title }
+        const textOptions:Partial<ITextAppearanceOptions> = { ...this.styles.title };
         let currPoint = SurveyHelper.clone(point);
         if (this.panel.no) {
             const noFlat: IPdfBrick = await SurveyHelper.createTextFlat(

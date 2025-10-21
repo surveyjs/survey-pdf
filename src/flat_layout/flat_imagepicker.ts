@@ -19,7 +19,7 @@ export class FlatImagePicker extends FlatQuestion<QuestionImagePickerModel> {
     }
     private async generateFlatItem(point: IPoint, item: ItemValue, index: number): Promise<IPdfBrick> {
         const pageAvailableWidth = SurveyHelper.getPageAvailableWidth(this.controller);
-        const itemAppearance = SurveyHelper.mergeObjects({}, this.styles.input, this.question.multiSelect ? this.styles.checkboxInput : this.styles.radioInput)
+        const itemAppearance = SurveyHelper.mergeObjects({}, this.styles.input, this.question.multiSelect ? this.styles.checkboxInput : this.styles.radioInput);
         const imageFlat = await SurveyHelper.createImageFlat(point, this.question, this.controller, { link: (<any>item).imageLink, width: pageAvailableWidth, height: pageAvailableWidth / this.styles.imageRatio });
         const compositeFlat: CompositeBrick = new CompositeBrick(imageFlat);
         let buttonPoint: IPoint = SurveyHelper.createPoint(compositeFlat);
@@ -45,7 +45,7 @@ export class FlatImagePicker extends FlatQuestion<QuestionImagePickerModel> {
                     shouldRenderReadOnly: shouldRenderReadOnly,
                     updateOptions: (options) => this.survey.updateCheckItemAcroformOptions(options, this.question, item),
                 },
-               itemAppearance));
+                itemAppearance));
         }
         else {
             compositeFlat.addBrick(new RadioItemBrick(this.controller, buttonRect, this.radioGroupWrap, {
