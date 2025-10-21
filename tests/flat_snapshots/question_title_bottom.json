@@ -1,19 +1,20 @@
 [
 	{
 		"brickType": "TextFieldBrick",
-		"width": 504.0826771653543,
-		"height": 34.5,
-		"xLeft": 62.84645669291339,
-		"xRight": 566.9291338582677,
-		"yTop": 28.34645669291339,
-		"yBot": 62.84645669291339,
+		"width": 525.8326771653543,
+		"height": 18.000000000000004,
+		"xLeft": 34.72145669291339,
+		"xRight": 560.5541338582677,
+		"yTop": 31.72145669291339,
+		"yBot": 49.72145669291339,
 		"appearance": {
+			"fontSize": 15,
 			"fontName": "helvetica",
-			"fontColor": "#404040",
-			"fontSize": 30,
 			"fontStyle": "normal",
-			"borderColor": "#9f9f9f",
-			"borderWidth": 2.7600000000000002
+			"lineHeight": 18,
+			"fontColor": "#000",
+			"borderColor": "#000",
+			"borderWidth": 0
 		},
 		"options": {
 			"fieldName": "testidquestion_textbox",
@@ -27,51 +28,86 @@
 		}
 	},
 	{
-		"brickType": "CompositeBrick",
-		"width": 188.43,
-		"height": 37.94999999999999,
-		"xLeft": 28.34645669291339,
-		"xRight": 216.7764566929134,
-		"yTop": 80.09645669291339,
-		"yBot": 118.04645669291338,
+		"brickType": "ContainerBrick",
+		"width": 525.8326771653543,
+		"height": 18,
+		"xLeft": 34.72145669291339,
+		"xRight": 560.5541338582677,
+		"yTop": 52.72145669291339,
+		"yBot": 70.72145669291339,
 		"bricks": [
 			{
-				"brickType": "CompositeBrick",
-				"width": 188.43,
-				"height": 37.94999999999999,
-				"xLeft": 28.34645669291339,
-				"xRight": 216.7764566929134,
-				"yTop": 80.09645669291339,
-				"yBot": 118.04645669291338,
+				"brickType": "InseparableBrick",
+				"width": 525.8326771653543,
+				"height": 18,
+				"xLeft": 34.72145669291339,
+				"xRight": 560.5541338582677,
+				"yTop": 52.72145669291339,
+				"yBot": 70.72145669291339,
 				"bricks": [
 					{
+						"brickType": "EmptyBrick",
+						"width": 525.8326771653543,
+						"height": 0,
+						"xLeft": 34.72145669291339,
+						"xRight": 560.5541338582677,
+						"yTop": 52.72145669291339,
+						"yBot": 52.72145669291339,
+						"appearance": {},
+						"options": {}
+					},
+					{
 						"brickType": "CompositeBrick",
-						"width": 188.43,
-						"height": 37.94999999999999,
-						"xLeft": 28.34645669291339,
-						"xRight": 216.7764566929134,
-						"yTop": 80.09645669291339,
-						"yBot": 118.04645669291338,
+						"width": 62.400000000000006,
+						"height": 18,
+						"xLeft": 34.72145669291339,
+						"xRight": 97.1214566929134,
+						"yTop": 52.72145669291339,
+						"yBot": 70.72145669291339,
 						"bricks": [
 							{
-								"brickType": "TextBrick",
-								"width": 188.43,
-								"height": 37.94999999999999,
-								"xLeft": 28.34645669291339,
-								"xRight": 216.7764566929134,
-								"yTop": 80.09645669291339,
-								"yBot": 118.04645669291338,
-								"appearance": {
-									"fontSize": 33,
-									"fontName": "helvetica",
-									"fontStyle": "bold",
-									"fontColor": "#404040"
-								},
-								"options": {
-									"text": "Title bottom"
-								}
+								"brickType": "CompositeBrick",
+								"width": 62.400000000000006,
+								"height": 18,
+								"xLeft": 34.72145669291339,
+								"xRight": 97.1214566929134,
+								"yTop": 52.72145669291339,
+								"yBot": 70.72145669291339,
+								"bricks": [
+									{
+										"brickType": "TextBrick",
+										"width": 62.400000000000006,
+										"height": 18,
+										"xLeft": 34.72145669291339,
+										"xRight": 97.1214566929134,
+										"yTop": 52.72145669291339,
+										"yBot": 70.72145669291339,
+										"appearance": {
+											"fontSize": 12,
+											"fontName": "helvetica",
+											"fontStyle": "normal",
+											"lineHeight": 18,
+											"fontColor": "#000",
+											"textAlign": "left"
+										},
+										"options": {
+											"text": "Title bottom"
+										}
+									}
+								]
 							}
 						]
+					},
+					{
+						"brickType": "EmptyBrick",
+						"width": 525.8326771653543,
+						"height": 0,
+						"xLeft": 34.72145669291339,
+						"xRight": 560.5541338582677,
+						"yTop": 70.72145669291339,
+						"yBot": 70.72145669291339,
+						"appearance": {},
+						"options": {}
 					}
 				]
 			}

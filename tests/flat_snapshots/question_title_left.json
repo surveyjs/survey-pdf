@@ -1,68 +1,104 @@
 [
 	{
-		"brickType": "CompositeBrick",
-		"width": 538.5826771653543,
-		"height": 37.94999999999999,
-		"xLeft": 28.34645669291339,
-		"xRight": 566.9291338582677,
-		"yTop": 28.34645669291339,
-		"yBot": 66.29645669291338,
+		"brickType": "ContainerBrick",
+		"width": 142.9361411148554,
+		"height": 18.000000000000004,
+		"xLeft": 34.72145669291339,
+		"xRight": 177.65759780776878,
+		"yTop": 31.72145669291339,
+		"yBot": 49.72145669291339,
 		"bricks": [
 			{
-				"brickType": "CompositeBrick",
-				"width": 67.65,
-				"height": 37.94999999999999,
-				"xLeft": 28.34645669291339,
-				"xRight": 95.9964566929134,
-				"yTop": 28.34645669291339,
-				"yBot": 66.29645669291338,
+				"brickType": "InseparableBrick",
+				"width": 142.9361411148554,
+				"height": 18.000000000000004,
+				"xLeft": 34.72145669291339,
+				"xRight": 177.65759780776878,
+				"yTop": 31.72145669291339,
+				"yBot": 49.72145669291339,
 				"bricks": [
 					{
+						"brickType": "EmptyBrick",
+						"width": 142.9361411148554,
+						"height": 0,
+						"xLeft": 34.72145669291339,
+						"xRight": 177.65759780776878,
+						"yTop": 31.72145669291339,
+						"yBot": 31.72145669291339,
+						"appearance": {},
+						"options": {}
+					},
+					{
 						"brickType": "CompositeBrick",
-						"width": 67.65,
-						"height": 37.94999999999999,
-						"xLeft": 28.34645669291339,
-						"xRight": 95.9964566929134,
-						"yTop": 28.34645669291339,
-						"yBot": 66.29645669291338,
+						"width": 22.560000000000002,
+						"height": 18.000000000000004,
+						"xLeft": 34.72145669291339,
+						"xRight": 57.281456692913395,
+						"yTop": 31.72145669291339,
+						"yBot": 49.72145669291339,
 						"bricks": [
 							{
-								"brickType": "TextBrick",
-								"width": 67.65,
-								"height": 37.94999999999999,
-								"xLeft": 28.34645669291339,
-								"xRight": 95.9964566929134,
-								"yTop": 28.34645669291339,
-								"yBot": 66.29645669291338,
-								"appearance": {
-									"fontSize": 33,
-									"fontName": "helvetica",
-									"fontStyle": "bold",
-									"fontColor": "#404040"
-								},
-								"options": {
-									"text": "Title"
-								}
+								"brickType": "CompositeBrick",
+								"width": 22.560000000000002,
+								"height": 18.000000000000004,
+								"xLeft": 34.72145669291339,
+								"xRight": 57.281456692913395,
+								"yTop": 31.72145669291339,
+								"yBot": 49.72145669291339,
+								"bricks": [
+									{
+										"brickType": "TextBrick",
+										"width": 22.560000000000002,
+										"height": 18.000000000000004,
+										"xLeft": 34.72145669291339,
+										"xRight": 57.281456692913395,
+										"yTop": 31.72145669291339,
+										"yBot": 49.72145669291339,
+										"appearance": {
+											"fontSize": 12,
+											"fontName": "helvetica",
+											"fontStyle": "normal",
+											"lineHeight": 18,
+											"fontColor": "#000",
+											"textAlign": "left"
+										},
+										"options": {
+											"text": "Title"
+										}
+									}
+								]
 							}
 						]
+					},
+					{
+						"brickType": "EmptyBrick",
+						"width": 142.9361411148554,
+						"height": 0,
+						"xLeft": 34.72145669291339,
+						"xRight": 177.65759780776878,
+						"yTop": 49.72145669291339,
+						"yBot": 49.72145669291339,
+						"appearance": {},
+						"options": {}
 					}
 				]
 			},
 			{
 				"brickType": "TextFieldBrick",
-				"width": 436.43267716535433,
-				"height": 34.5,
-				"xLeft": 130.4964566929134,
-				"xRight": 566.9291338582677,
-				"yTop": 28.34645669291339,
-				"yBot": 62.84645669291339,
+				"width": 376.896536050499,
+				"height": 18.000000000000004,
+				"xLeft": 183.65759780776878,
+				"xRight": 560.5541338582677,
+				"yTop": 31.72145669291339,
+				"yBot": 49.72145669291339,
 				"appearance": {
+					"fontSize": 15,
 					"fontName": "helvetica",
-					"fontColor": "#404040",
-					"fontSize": 30,
 					"fontStyle": "normal",
-					"borderColor": "#9f9f9f",
-					"borderWidth": 2.7600000000000002
+					"lineHeight": 18,
+					"fontColor": "#000",
+					"borderColor": "#000",
+					"borderWidth": 0
 				},
 				"options": {
 					"fieldName": "testidquestion_textbox left bound",

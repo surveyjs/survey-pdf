@@ -1,12 +1,12 @@
 [
 	{
 		"brickType": "TextFieldBrick",
-		"width": 525.8326771653543,
-		"height": 72,
+		"width": 519.75,
+		"height": 180,
 		"xLeft": 34.72145669291339,
-		"xRight": 560.5541338582677,
+		"xRight": 554.4714566929134,
 		"yTop": 31.72145669291339,
-		"yBot": 103.72145669291339,
+		"yBot": 211.7214566929134,
 		"appearance": {
 			"fontSize": 15,
 			"fontName": "helvetica",

@@ -3,14 +3,15 @@
 		"brickType": "HTMLBrick",
 		"width": 150,
 		"height": 112.5,
-		"xLeft": 62.84645669291339,
-		"xRight": 212.8464566929134,
-		"yTop": 28.34645669291339,
-		"yBot": 140.8464566929134,
+		"xLeft": 34.72145669291339,
+		"xRight": 184.7214566929134,
+		"yTop": 31.72145669291339,
+		"yBot": 144.2214566929134,
 		"appearance": {
-			"fontSize": 30,
+			"fontSize": 6,
 			"fontName": "helvetica",
 			"fontStyle": "normal",
+			"lineHeight": 6,
 			"fontColor": "#404040"
 		},
 		"options": {

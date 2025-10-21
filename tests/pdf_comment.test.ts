@@ -15,9 +15,6 @@ var json = {
 
 test('Check long comment splitted in multiple pages', async () => {
     await checkPDFSnapshot(json, {
-        controllerOptions: {
-            fontSize: 20
-        },
         onSurveyCreated: (survey) => {
             survey.mode = 'display';
             survey.data = {
@@ -30,9 +27,6 @@ test('Check long comment splitted in multiple pages', async () => {
 
 test('Check medium comment', async () => {
     await checkPDFSnapshot(json, {
-        controllerOptions: {
-            fontSize: 20
-        },
         onSurveyCreated: (survey) => {
             survey.mode = 'display';
             survey.data = {
@@ -45,9 +39,6 @@ test('Check medium comment', async () => {
 
 test('Check short comment', async () => {
     await checkPDFSnapshot(json, {
-        controllerOptions: {
-            fontSize: 20
-        },
         onSurveyCreated: (survey) => {
             survey.mode = 'display';
             survey.data = {
