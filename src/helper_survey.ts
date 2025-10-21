@@ -26,8 +26,7 @@ export interface ITextAppearanceOptions {
 export interface ITextWithAlignAppearanceOptions extends ITextAppearanceOptions {
     textAlign?: 'left' | 'center' | 'right';
 }
-
-export type IBorderDescription = IRect & ISize;
+export interface IBorderDescription extends IRect, ISize {}
 
 export enum BorderMode {
     Inside = 0,
@@ -42,15 +41,15 @@ export enum BorderRect {
     Left = 8,
     All = 15
 }
-export type IBorderAppearanceOptions = {
-    borderColor?: string,
-    borderWidth?: number,
-    dashStyle?: { dashArray: [number, number] | [number], dashPhase: number },
-    borderMode?: BorderMode,
-    borderRect?: BorderRect,
+export interface IBorderAppearanceOptions {
+    borderColor?: string;
+    borderWidth?: number;
+    dashStyle?: { dashArray: [number, number] | [number], dashPhase: number };
+    borderMode?: BorderMode;
+    borderRect?: BorderRect;
 }
 
-export type IInputAppearanceOptions = IBorderAppearanceOptions & ITextAppearanceOptions;
+export interface IInputAppearanceOptions extends IBorderAppearanceOptions, ITextAppearanceOptions {}
 
 export class SurveyHelper {
     public static readonly EPSILON: number = 2.2204460492503130808472633361816e-15;
