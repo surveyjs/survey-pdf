@@ -1,6 +1,5 @@
 import { IPdfBrick, TranslateXFunction, TranslateYFunction } from './pdf_brick';
-import { SurveyHelper } from '../helper_survey';
-
+import { mergeRects } from '../utils';
 export class CompositeBrick implements IPdfBrick {
     protected bricks: IPdfBrick[] = [];
     private _xLeft: number;
@@ -63,7 +62,7 @@ export class CompositeBrick implements IPdfBrick {
     }
     private _updateRect() {
         if(this.bricks.length > 0) {
-            let mergeRect = SurveyHelper.mergeRects(...this.bricks);
+            let mergeRect = mergeRects(...this.bricks);
             this._xLeft = mergeRect.xLeft;
             this._xRight = mergeRect.xRight;
             this._yTop = mergeRect.yTop;

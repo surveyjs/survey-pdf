@@ -15,6 +15,7 @@ import { ITextFieldBrickAppearanceOptions, ITextFieldBrickOptions, TextFieldBric
 import { FlatPanel } from './flat_layout/flat_panel';
 import { FlatPage } from './flat_layout/flat_page';
 import { IStyles } from './styles';
+import { mergeRects } from './utils';
 
 export interface ITextAppearanceOptions {
     fontStyle: string;
@@ -105,19 +106,7 @@ export class SurveyHelper {
         return value * 72.0 / 96.0;
     }
     public static mergeRects(...rects: IRect[]): IRect {
-        const resultRect: IRect = {
-            xLeft: rects[0].xLeft,
-            xRight: rects[0].xRight,
-            yTop: rects[0].yTop,
-            yBot: rects[0].yBot
-        };
-        rects.forEach((rect: IRect) => {
-            resultRect.xLeft = Math.min(resultRect.xLeft, rect.xLeft),
-            resultRect.xRight = Math.max(resultRect.xRight, rect.xRight),
-            resultRect.yTop = Math.min(resultRect.yTop, rect.yTop),
-            resultRect.yBot = Math.max(resultRect.yBot, rect.yBot);
-        });
-        return resultRect;
+        return mergeRects(...rects);
     }
     public static createPoint(rect: IRect, isLeft: boolean = true, isTop: boolean = false): IPoint {
         return {
