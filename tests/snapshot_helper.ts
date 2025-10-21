@@ -26,7 +26,8 @@ function correctSurveyElementIds(survey: SurveyPDF) {
             });
         }
         if (q.getType() === 'matrixdynamic' || q.getType() === 'matrixdropdown') {
-            q.renderedTable.rows.forEach((row: any, rowIndex: number) => {
+            const rows = ([] as Array<any>).concat(q.renderedTable.rows, q.renderedTable.footerRow ?? []);
+            rows.forEach((row: any, rowIndex: number) => {
                 if (row.row) {
                     row.row.idValue = `${q.id}row${rowIndex}`;
                 }
@@ -34,14 +35,17 @@ function correctSurveyElementIds(survey: SurveyPDF) {
                     if (cell.hasQuestion) {
                         cell.question.id = `${q.id}_row${rowIndex}_cell_${cellIndex}`;
                     }
-                    if (cell.hasPanel) {
-                        cell.panel.id = `${q.id}row${rowIndex}cell${cellIndex}detailPanel`;
-                        cell.panel.questions.forEach((detailQuestion) => {
-                            detailQuestion.id = `${q.id}_row${rowIndex}_cell${cellIndex}_detailPanelQuestion_${detailQuestion.name}`;
-                        });
-                    }
                 });
-            });
+                if (!!row.row && row.row.hasPanel) {
+                    row.row.showDetailPanel();
+                    const detailPanel = row.row.detailPanel;
+                    detailPanel.id = `${q.id}row${rowIndex}_detailPanel`;
+                    detailPanel.questions.forEach((detailQuestion) => {
+                        detailQuestion.id = `${q.id}_row${rowIndex}_detailPanelQuestion_${detailQuestion.name}`;
+                    });
+                }
+            }
+            );
         }
         if(typeof q.getCommentTextAreaModel == 'function' && Array.isArray(q.visibleChoices)) {
             q.visibleChoices.forEach(choice => {

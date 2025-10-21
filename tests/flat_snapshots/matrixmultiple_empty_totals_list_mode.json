@@ -523,7 +523,7 @@
 								"options": {
 									"value": "0",
 									"isReadOnly": true,
-									"fieldName": "sq_810",
+									"fieldName": "testidquestion_matrix_row2_cell_2",
 									"shouldRenderBorders": true,
 									"rows": 1,
 									"shouldRenderReadOnly": true,

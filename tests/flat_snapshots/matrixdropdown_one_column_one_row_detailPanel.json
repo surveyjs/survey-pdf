@@ -373,7 +373,7 @@
 							"rows": 4,
 							"isReadOnly": false,
 							"isMultiline": true,
-							"fieldName": "sq_598_1",
+							"fieldName": "testidquestion_detailPanelChecker_row1_detailPanelQuestion_commentInPanel_1",
 							"placeholder": "",
 							"shouldRenderBorders": true,
 							"value": "",
