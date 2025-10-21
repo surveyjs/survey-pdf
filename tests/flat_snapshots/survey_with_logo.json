@@ -9,10 +9,10 @@
 			"yTop": 28.34645669291339,
 			"yBot": 178.3464566929134,
 			"appearance": {
-				"fontSize": 30,
+				"fontSize": 6,
 				"fontName": "helvetica",
 				"fontStyle": "normal",
-				"lineHeight": 30,
+				"lineHeight": 6,
 				"fontColor": "#404040"
 			},
 			"options": {

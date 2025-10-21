@@ -24,7 +24,7 @@ export class TestHelper {
     public static get defaultOptions(): IDocOptions {
         return {
             format: [210.0, 297.0],
-            fontSize: 30,
+            fontSize: 6,
             fontName: SurveyHelper.STANDARD_FONT,
             margins: {
                 left: 10.0,
