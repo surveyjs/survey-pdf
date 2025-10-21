@@ -5,7 +5,7 @@
 import { DocOptions, DocController } from '../src/doc_controller';
 import { TestHelper } from '../src/helper_test';
 import { checkFlatSnapshot } from './snapshot_helper';
-import { settings } from 'survey-core';
+import { QuestionCheckboxModel, settings } from 'survey-core';
 
 import '../src/flat_layout/flat_textbox';
 import '../src/flat_layout/flat_checkbox';
@@ -268,7 +268,8 @@ test('Check margins are correct after generating content', async() => {
     const controller: DocController = new DocController(options);
     const oldMarginLeft: number = controller.margins.left as number;
     const oldMarginRight: number = controller.margins.right as number;
-    await new FlatCheckbox(survey, survey.getAllQuestions()[0], controller, {}).generateFlats({ xLeft: oldMarginLeft, yTop: controller.margins.top as number });
+    const question = survey.getAllQuestions()[0] as QuestionCheckboxModel;
+    await new FlatCheckbox(survey, question, controller, survey.getStylesForElement(question)).generateFlats({ xLeft: oldMarginLeft, yTop: controller.margins.top as number });
     expect(controller.margins.left).toBe(oldMarginLeft);
     expect(controller.margins.right).toBe(oldMarginRight);
 });
