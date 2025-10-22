@@ -7,8 +7,8 @@ import { FlatTextbox } from '../src/flat_layout/flat_textbox';
 import { TestHelper } from '../src/helper_test';
 import { DocController, DocOptions } from '../src/doc_controller';
 import { FlatRepository } from '../src/flat_layout/flat_repository';
-import { TextBoldBrick } from '../src/pdf_render/pdf_textbold';
 import { SurveyHelper } from '../src/helper_survey';
+import { TextBrick } from '../src/pdf_render/pdf_text';
 let __dummy_tx = new FlatTextbox(null, null, null);
 
 test('Check raw method', async () => {
@@ -123,15 +123,15 @@ test('Check surveyPDF isRTL options', (done) => {
     let originalXLeft: number;
     let originalXRight: number;
     surveyPDF.onRenderQuestion.add((sender, options) => {
-        const titleBrick = options.bricks[0].unfold()[0];
+        const titleBrick = (options.bricks[0].unfold()[0] as any).bricks[0].bricks[1];
         originalXLeft = titleBrick.xLeft;
         originalXRight = titleBrick.xRight;
     });
     surveyPDF.onRenderHeader.add((sender, options) => {
-        const titleBrick = <TextBoldBrick>options['packs'][0].unfold()[0];
+        const titleBrick = <TextBrick>(options.packs[0].unfold()[0] as any).bricks[1].bricks[0].bricks[1];
         expect(titleBrick.xLeft).toBeCloseTo(options.controller.paperWidth - originalXRight);
         expect(titleBrick.xRight).toBeCloseTo(options.controller.paperWidth - originalXLeft);
-        expect(titleBrick['align']).toEqual({ 'align': 'right', 'baseline': 'middle', 'isInputRtl': false, 'isOutputRtl': true });
+        expect(titleBrick['align']).toEqual({ 'align': 'right', 'baseline': 'middle', 'isInputRtl': false, 'isOutputRtl': true, 'lineHeightFactor': 1.15 });
         done();
     });
     surveyPDF.raw();
