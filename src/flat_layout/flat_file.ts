@@ -67,8 +67,7 @@ export class FlatFile extends FlatQuestion<QuestionFileModel> {
                 currPoint.xLeft += itemFlat.width;
                 yBot = Math.max(yBot, itemFlat.yBot);
                 this.controller.popMargins();
-            }
-            else {
+            } else {
                 if (availableWidth < this.controller.unitWidth) {
                     currPoint.xLeft = point.xLeft;
                     currPoint.yTop = yBot;

@@ -250,10 +250,10 @@ test('Test file question getImagePreviewContentWidth ', async () => {
     const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     const question = <QuestionFileModel>survey.getAllQuestions()[0];
     const controller: DocController = new DocController(TestHelper.defaultOptions);
-    const flatFile = new FlatFile(survey, question, controller, { textMinScale: 5 });
+    const flatFile = new FlatFile(survey, question, controller, { itemMinWidth: 200 });
 
     let width = await flatFile['getImagePreviewContentWidth']({ content: '', type: 'image', name: 'file', imageSize: { width: 150, height: 50 } });
-    expect(width).toBe(flatFile['styles'].textMinScale * controller.unitWidth);
+    expect(width).toBe(flatFile['styles'].itemMinWidth);
 
     width = await flatFile['getImagePreviewContentWidth']({ content: '', type: 'image', name: 'file', imageSize: { width: 300, height: 50 } });
     expect(width).toBe(300);
@@ -334,8 +334,8 @@ test('Test file question getImagePreviewContentWidth always return correct image
     SurveyHelper.inBrowser = false;
     const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     const question = <QuestionFileModel>survey.getAllQuestions()[0];
-    const controller: DocController = new DocController(TestHelper.defaultOptions);
-    const flatFile = new FlatFile(survey, question, controller, {});
+    const controller: DocController = new DocController(Object.assign(TestHelper.defaultOptions, { fontSize: 30 }));
+    const flatFile = new FlatFile(survey, question, controller, { itemMinWidth: 20 });
     const questionBricks = await flatFile.generateFlatsContent({ xLeft: controller.margins.left || 10, yTop: controller.margins.top || 10 });
     expect(questionBricks.length).toBe(3);
     //check all item bricks have the same width
