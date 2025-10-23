@@ -37,8 +37,8 @@ export class HTMLBrick extends PdfBrick {
         this.controller.fontName = this.appearance.fontName;
         this.controller.doc.setTextColor(this.appearance.fontColor);
         await new Promise<void>((resolve) => {
-            this.controller.doc.fromHTML(this.options.html, this.xLeft, this.yTop, {
-                width: this.width, pagesplit: true,
+            this.controller.doc.fromHTML(this.options.html, this.contentRect.xLeft, this.contentRect.yTop, {
+                width: this.contentRect.width, pagesplit: true,
             }, function () {
                 [].slice.call(document.querySelectorAll('.sjs-pdf-hidden-html-div')).forEach(
                     function (el: HTMLDivElement) {

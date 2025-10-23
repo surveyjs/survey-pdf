@@ -1,5 +1,6 @@
 import { IPdfBrick, TranslateXFunction, TranslateYFunction } from './pdf_brick';
 import { mergeRects } from '../utils';
+import { IntervalTree } from 'node-interval-tree';
 export class CompositeBrick implements IPdfBrick {
     protected bricks: IPdfBrick[] = [];
     private _xLeft: number;
@@ -104,5 +105,33 @@ export class CompositeBrick implements IPdfBrick {
             brick.updateRect();
         });
         this._updateRect();
+    }
+    increasePadding(val: { top: number, bottom: number }): void {
+        if(val.top == 0 && val.bottom == 0) return;
+        const tree = new IntervalTree<{ low: number, high: number, yTop: number, yBot: number }>();
+        this.bricks.forEach(brick => {
+            tree.insert({ low: brick.xLeft, high: brick.xRight, yTop: brick.yTop, yBot: brick.yBot });
+        });
+        this.bricks.forEach(brick => {
+            const padding = {
+                top: 0,
+                bottom: 0
+            };
+            const res = tree.search(brick.xLeft, brick.xRight).reduce((acc, val) => {
+                acc.yTop = Math.min(acc.yTop, val.yTop);
+                acc.yBot = Math.max(acc.yBot, val.yBot);
+                return acc;
+            }, { yTop: Number.MAX_VALUE, yBot: Number.MIN_VALUE });
+            if(brick.yTop <= res.yTop) {
+                padding.top = val.top;
+            }
+            if(brick.yBot >= res.yBot) {
+                padding.bottom = val.bottom;
+            }
+            if(padding.top !== 0 || padding.bottom !== 0) {
+                brick.increasePadding(padding);
+            }
+        });
+        this.updateRect();
     }
 }

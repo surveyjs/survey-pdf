@@ -13,6 +13,7 @@ export interface IPdfBrick extends IRect, ISize {
     setPageNumber(number: number): void;
     getPageNumber(): number;
     updateRect(): void;
+    increasePadding(val: { top: number, bottom: number }): void;
 }
 /**
  * An object that describes a PDF brick&mdash;a simple element with specified content, size, and location. Bricks are fundamental elements used to construct a PDF document.
@@ -145,6 +146,31 @@ export class PdfBrick implements IPdfBrick {
     private beforeRenderEvent: EventAsync<PdfBrick, {}> = new EventAsync();
     addBeforeRenderCallback(func: (brick: IPdfBrick) => void): void {
         this.beforeRenderEvent.add(func);
+    }
+    private padding: { top: number, bottom: number } = { top: 0, bottom: 0 }
+    public increasePadding(padding: { top: number, bottom: number }) {
+        if(padding.top == 0 && padding.bottom == 0) return;
+        Object.keys(this.padding).forEach((key: 'top' | 'bottom') => {
+            this.padding[key] += padding[key];
+        });
+        this._yTop -= padding.top;
+        this._yBot += padding.bottom;
+        this._contentRect = undefined;
+    }
+    private _contentRect: IRect & ISize
+    public get contentRect(): IRect & ISize {
+        if(!this._contentRect) {
+            const yBot = this.yBot -= this.padding.bottom;
+            const yTop = this.yTop += this.padding.top;
+            this._contentRect = {
+                yBot, yTop,
+                xLeft: this.xLeft,
+                xRight: this.xRight,
+                width: this.width,
+                height: yBot - yTop
+            };
+        }
+        return this._contentRect;
     }
     public updateRect(): void {}
 }

@@ -26,7 +26,7 @@ export class TextBrick extends PdfBrick {
         return this.options.text;
     }
     public async renderInteractive(): Promise<void> {
-        const alignPoint: IPoint = this.alignPoint(this);
+        const alignPoint: IPoint = this.alignPoint(this.contentRect);
         const oldFontSize: number = this.controller.fontSize;
         const oldFontStyle: string = this.controller.fontStyle;
         const oldFontName: string = this.controller.fontName;

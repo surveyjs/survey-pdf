@@ -20,9 +20,9 @@ export class CheckItemBrick extends PdfBrick {
     }
     public async renderInteractive(): Promise<void> {
         const checkBox: any = new (<any>this.controller.doc.AcroFormCheckBox)();
-        const formScale = SurveyHelper.getRectBorderScale(this, this.appearance.borderWidth);
+        const formScale = SurveyHelper.getRectBorderScale(this.contentRect, this.appearance.borderWidth);
         const options: any = {};
-        options.maxFontSize = this.height * formScale.scaleY * CheckItemBrick.FONT_SIZE_SCALE;
+        options.maxFontSize = this.contentRect.height * formScale.scaleY * CheckItemBrick.FONT_SIZE_SCALE;
         options.caption = this.appearance.checkMark;
         options.textAlign = 'center';
         options.fieldName = this.options.fieldName;
@@ -32,7 +32,7 @@ export class CheckItemBrick extends PdfBrick {
         options.AS = this.options.checked ? '/On' : '/Off';
 
         options.Rect = SurveyHelper.createAcroformRect(
-            SurveyHelper.scaleRect(this, formScale));
+            SurveyHelper.scaleRect(this.contentRect, formScale));
         this.controller.doc.addField(checkBox);
         this.options.updateOptions(options);
 
@@ -46,12 +46,12 @@ export class CheckItemBrick extends PdfBrick {
         checkBox.AS = options.AS;
         checkBox.Rect = options.Rect;
 
-        SurveyHelper.renderFlatBorders(this.controller, this, this.appearance);
+        SurveyHelper.renderFlatBorders(this.controller, this.contentRect, this.appearance);
     }
     public async renderReadOnly(): Promise<void> {
-        SurveyHelper.renderFlatBorders(this.controller, this, this.appearance);
+        SurveyHelper.renderFlatBorders(this.controller, this.contentRect, this.appearance);
         if (this.options.checked) {
-            const checkmarkPoint: IPoint = SurveyHelper.createPoint(this, true, true);
+            const checkmarkPoint: IPoint = SurveyHelper.createPoint(this.contentRect, true, true);
             const textOptions = {
                 fontName: this.appearance.fontName,
                 fontSize: this.appearance.fontSize,
@@ -59,8 +59,8 @@ export class CheckItemBrick extends PdfBrick {
             };
             const checkmarkSize: ISize = this.controller.measureText(
                 this.appearance.checkMark, textOptions);
-            checkmarkPoint.xLeft += this.width / 2.0 - checkmarkSize.width / 2.0;
-            checkmarkPoint.yTop += this.height / 2.0 - checkmarkSize.height / 2.0;
+            checkmarkPoint.xLeft += this.contentRect.width / 2.0 - checkmarkSize.width / 2.0;
+            checkmarkPoint.yTop += this.contentRect.height / 2.0 - checkmarkSize.height / 2.0;
             const checkmarkFlat: IPdfBrick = await SurveyHelper.createTextFlat(
                 checkmarkPoint, this.controller,
                 this.appearance.checkMark, textOptions);

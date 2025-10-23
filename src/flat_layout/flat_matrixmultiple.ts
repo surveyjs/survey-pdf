@@ -44,7 +44,9 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
         const container: ContainerBrick = new ContainerBrick(this.controller, { ...point, width: SurveyHelper.getPageAvailableWidth(this.controller) }, cellAppearanceOptions);
         await container.setup(async (point, bricks) => {
             if (cell.hasQuestion) {
-                if(location == 'footer' && !cell.question.isAnswered) {}
+                if(location == 'footer' && !cell.question.isAnswered) {
+                    bricks.push(new EmptyBrick(this.controller, { ...point, yBot: point.yTop, xRight: point.xLeft + SurveyHelper.getPageAvailableWidth(this.controller) }));
+                }
                 else if (isWide && cell.isChoice) {
                     const flatMultipleColumnsQuestion: IFlatQuestion = FlatRepository.getInstance().create(
                         this.survey, cell.question, this.controller, this.survey.getStylesForElement(cell.question), cell.question.getType());
@@ -69,6 +71,8 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
                 else {
                     bricks.push(await SurveyHelper.createTextFlat(point, this.controller, cell.locTitle, SurveyHelper.mergeObjects({}, this.styles.rowTitle, isWide ? undefined : this.styles.verticalRowTitle)));
                 }
+            } else {
+                bricks.push(new EmptyBrick(this.controller, { ...point, yBot: point.yTop, xRight: point.xLeft + SurveyHelper.getPageAvailableWidth(this.controller) }));
             }
         });
         return container;

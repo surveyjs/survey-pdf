@@ -56,9 +56,9 @@ export class RadioItemBrick extends PdfBrick {
         }
         const options: any = {};
         options.fieldName = this.radioGroupWrap.fieldName + 'index' + this.options.index;
-        let formScale = SurveyHelper.getRectBorderScale(this, this.appearance.borderWidth);
+        let formScale = SurveyHelper.getRectBorderScale(this.contentRect, this.appearance.borderWidth);
         options.Rect = SurveyHelper.createAcroformRect(
-            SurveyHelper.scaleRect(this, formScale));
+            SurveyHelper.scaleRect(this.contentRect, formScale));
         options.color = this.appearance.fontColor;
         options.appearance = this.controller.doc.AcroForm.Appearance.RadioButton.Circle;
         options.radioGroup = this.radioGroupWrap.radioGroup;
@@ -82,13 +82,13 @@ export class RadioItemBrick extends PdfBrick {
         radioButton.Rect = options.Rect;
         radioButton.color = options.color;
 
-        SurveyHelper.renderFlatBorders(this.controller, this, this.appearance);
+        SurveyHelper.renderFlatBorders(this.controller, this.contentRect, this.appearance);
         this.radioGroupWrap.radioGroup.setAppearance(
             options.appearance
         );
     }
     public async renderReadOnly(): Promise<void> {
-        SurveyHelper.renderFlatBorders(this.controller, this, this.appearance);
+        SurveyHelper.renderFlatBorders(this.controller, this.contentRect, this.appearance);
         if (this.options.checked) {
             const textOptions = {
                 fontName: this.appearance.fontName,
@@ -96,11 +96,11 @@ export class RadioItemBrick extends PdfBrick {
                 fontColor: this.appearance.fontColor,
                 lineHeight: this.appearance.lineHeight
             };
-            const radiomarkerPoint: IPoint = SurveyHelper.createPoint(this, true, true);
+            const radiomarkerPoint: IPoint = SurveyHelper.createPoint(this.contentRect, true, true);
             const radiomarkerSize: ISize = this.controller.measureText(
                 this.appearance.checkMark, textOptions);
-            radiomarkerPoint.xLeft += this.width / 2.0 - radiomarkerSize.width / 2.0;
-            radiomarkerPoint.yTop += this.height / 2.0 - radiomarkerSize.height / 2.0;
+            radiomarkerPoint.xLeft += this.contentRect.width / 2.0 - radiomarkerSize.width / 2.0;
+            radiomarkerPoint.yTop += this.contentRect.height / 2.0 - radiomarkerSize.height / 2.0;
             let radiomarkerFlat: IPdfBrick = await SurveyHelper.createTextFlat(
                 radiomarkerPoint, this.controller,
                 this.appearance.checkMark, textOptions);

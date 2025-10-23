@@ -73,7 +73,7 @@ export class FlatPanel<T extends PanelModel = PanelModel> {
                 bricks.push(panelDescFlat);
                 currPoint = SurveyHelper.createPoint(panelDescFlat);
             }
-            const rowLinePoint: IPoint = SurveyHelper.createPoint(containerBrick);
+            const rowLinePoint: IPoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(...bricks));
             bricks.push(SurveyHelper.createRowlineFlat(rowLinePoint, this.controller));
         });
         return [containerBrick];

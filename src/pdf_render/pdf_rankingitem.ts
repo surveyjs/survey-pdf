@@ -12,12 +12,12 @@ export class RankingItemBrick extends PdfBrick {
         super(controller, rect);
     }
     public async renderInteractive(): Promise<void> {
-        SurveyHelper.renderFlatBorders(this.controller, this, this.appearance);
-        const markPoint: IPoint = SurveyHelper.createPoint(this, true, true);
+        SurveyHelper.renderFlatBorders(this.controller, this.contentRect, this.appearance);
+        const markPoint: IPoint = SurveyHelper.createPoint(this.contentRect, true, true);
         const textOptions = { ...this.appearance };
         const markSize: ISize = this.controller.measureText(this.options.mark, textOptions);
-        markPoint.xLeft += this.width / 2.0 - markSize.width / 2.0;
-        markPoint.yTop += this.height / 2.0 - markSize.height / 2.0;
+        markPoint.xLeft += this.contentRect.width / 2.0 - markSize.width / 2.0;
+        markPoint.yTop += this.contentRect.height / 2.0 - markSize.height / 2.0;
         const markFlat: IPdfBrick = await SurveyHelper.createTextFlat(
             markPoint, this.controller, this.options.mark, textOptions);
         await markFlat.render();

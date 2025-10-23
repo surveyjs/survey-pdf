@@ -8,7 +8,7 @@ export class CustomBrick extends PdfBrick {
     }
     public async renderInteractive(): Promise<void> {
         await new Promise<void>((resolve) => {
-            this.renderFunc(this.controller.doc, this.question, this.xLeft, this.yTop);
+            this.renderFunc(this.controller.doc, this.question, this.contentRect.xLeft, this.contentRect.yTop);
             resolve();
         });
     }

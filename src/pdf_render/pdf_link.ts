@@ -24,9 +24,9 @@ export class LinkBrick extends TextBrick {
         let descent: number = this.controller.unitHeight *
             (this.controller.doc.getLineHeightFactor() -
                 LinkBrick.SCALE_FACTOR_MAGIC);
-        let yTopLink: number = this.yTop +
-            (this.yBot - this.yTop) - descent;
-        this.controller.doc.textWithLink(this.options.text, this.xLeft,
+        let yTopLink: number = this.contentRect.yTop +
+            (this.contentRect.yBot - this.contentRect.yTop) - descent;
+        this.controller.doc.textWithLink(this.options.text, this.contentRect.xLeft,
             yTopLink, { url: this.options.link });
         await super.renderInteractive();
         this.controller.doc.setTextColor(oldTextColor);
