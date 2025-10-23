@@ -501,7 +501,6 @@
 								"yBot": 385.3464566929134,
 								"appearance": {
 									"fontSize": 15,
-									"fontName": "helvetica",
 									"fontStyle": "normal",
 									"lineHeight": 18,
 									"fontColor": "#000",
@@ -926,7 +925,6 @@
 								"yBot": 682.3464566929134,
 								"appearance": {
 									"fontSize": 15,
-									"fontName": "helvetica",
 									"fontStyle": "normal",
 									"lineHeight": 18,
 									"fontColor": "#000",

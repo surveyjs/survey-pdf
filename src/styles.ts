@@ -250,7 +250,7 @@ export function getDefaultStyles (baseSize: number) {
                 fontSize: baseSize * 2.5,
                 lineHeight: baseSize * 3,
                 borderWidth: baseSize * 0,
-                fontName: 'helvetica'
+                fontName: undefined as any
             }
         },
         file: {
