@@ -249,7 +249,8 @@ export function getDefaultStyles (baseSize: number) {
             input: {
                 fontSize: baseSize * 2.5,
                 lineHeight: baseSize * 3,
-                borderWidth: baseSize * 0
+                borderWidth: baseSize * 0,
+                fontName: 'helvetica'
             }
         },
         file: {
