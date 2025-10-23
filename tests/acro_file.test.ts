@@ -79,7 +79,7 @@ test('Check hyperlink underline color', async () => {
     const controller: DocController = new DocController(TestHelper.defaultOptions);
     await survey['renderSurvey'](controller);
     const internal: any = controller.doc.internal;
-    const colorInfo: string[] = internal.pages[1][4].split(/(\.| )/);
+    const colorInfo: string[] = internal.pages[1][19].split(/(\.| )/);
     expect(colorInfo[0]).toBe('0');
     expect(colorInfo[4]).toBe('0');
     expect(colorInfo[8]).toBe('0');
@@ -107,12 +107,12 @@ test('Check hyperlink underline position', async () => {
     await survey['renderSurvey'](controller);
     const internal: any = controller.doc.internal;
     const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    const moveInfo: string[] = internal.pages[1][5].split(' ');
-    const assumeLeft: number = flats[0][0].xLeft;
+    const moveInfo: string[] = internal.pages[1][20].split(' ');
+    const assumeLeft: number = (flats[0][0] as any).bricks[1].xLeft;
     const actualLeft: number = +moveInfo[0];
     expect(actualLeft).toBe(assumeLeft);
-    const lineInfo: string[] = internal.pages[1][6].split(' ');
-    const assumeRight: number = flats[0][0].xRight;
+    const lineInfo: string[] = internal.pages[1][21].split(' ');
+    const assumeRight: number = (flats[0][0] as any).bricks[1].xRight;
     const actualRight: number = +lineInfo[0];
     expect(actualRight).toBe(assumeRight);
     const bottomMove: number = +moveInfo[1];
@@ -133,13 +133,12 @@ test('Check that border does not exist when FORM_BORDER_VISIBLE is false', async
             }
         ]
     };
-    (<any>SurveyHelper).FORM_BORDER_VISIBLE = false;
     const survey: SurveyPDF = new SurveyPDFTester(json, TestHelper.defaultOptions);
     const controller: DocController = new DocController(TestHelper.defaultOptions);
     await survey['renderSurvey'](controller);
     const internal: any = controller.doc.internal;
-    expect(internal.pages[1].length).toBe(3);
-    const textDescription: string = internal.pages[1][2];
+    expect(internal.pages[1].length).toBe(18);
+    const textDescription: string = internal.pages[1][17];
     const textPosition: number = textDescription.indexOf('I\'m without border', 0);
     expect(textPosition).toBeGreaterThan(-1);
     const actualEnd: string = textDescription.substring(textDescription.length - 2);

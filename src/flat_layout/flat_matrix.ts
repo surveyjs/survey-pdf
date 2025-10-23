@@ -45,10 +45,14 @@ export abstract class FlatMatrixContent {
         return new CompositeBrick(radioFlat, cellTextFlat);
     }
     private radioGroupWraps: {[index: string]: RadioGroupWrap } = {}
-    private getRadioGroupWrap(fieldName: string): RadioGroupWrap {
+    private getRadioGroupWrap(fieldName: string, row: MatrixRowModel, rowIndex: number): RadioGroupWrap {
         if(!this.radioGroupWraps[fieldName]) {
-            this.radioGroupWraps[fieldName] = new RadioGroupWrap(fieldName,
-                this.controller, { readOnly: this.question.isReadOnly, question: this.question });
+            this.radioGroupWraps[fieldName] = new RadioGroupWrap(
+                this.controller, {
+                    readOnly: this.question.isReadOnly,
+                    fieldName: fieldName,
+                    updateOptions: (options) => { this.survey.getUpdatedRadioGroupWrapOptions(options, this.question, { row, rowIndex }); }
+                });
         }
         return this.radioGroupWraps[fieldName];
     }
@@ -66,17 +70,17 @@ export abstract class FlatMatrixContent {
                 shouldRenderReadOnly: isReadOnly && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform' || this.controller.compress,
                 readOnly: isReadOnly,
                 updateOptions: (options) => {
-                    this.survey.updateCheckItemAcroformOptions(options, this.question, item);
+                    this.survey.updateCheckItemAcroformOptions(options, this.question, { item, row, rowIndex });
                 }
             }, appearance);
         } else {
-            const radioGroupWrap = this.getRadioGroupWrap(fieldName);
+            const radioGroupWrap = this.getRadioGroupWrap(fieldName, row, rowIndex);
             return new RadioItemBrick(this.controller, rect, radioGroupWrap,
                 {
                     checked: isChecked,
                     index: itemIndex,
                     shouldRenderReadOnly: radioGroupWrap.readOnly && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform' || this.controller.compress,
-                    updateOptions: options => this.survey.updateRadioItemAcroformOptions(options, this.question, item),
+                    updateOptions: options => this.survey.updateRadioItemAcroformOptions(options, this.question, { item, row, rowIndex }),
                 }, appearance);
         }
     }

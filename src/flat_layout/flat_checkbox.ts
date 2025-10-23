@@ -17,7 +17,7 @@ export class FlatCheckbox<T extends QuestionCheckboxModel = QuestionCheckboxMode
                 checked: this.question.isItemSelected(item),
                 fieldName: this.question.id + 'index' + index,
                 updateOptions: (options) => {
-                    this.survey.updateCheckItemAcroformOptions(options, this.question, item);
+                    this.survey.updateCheckItemAcroformOptions(options, this.question, { item });
                 }
             }, SurveyHelper.getPatchedTextAppearanceOptions(this.controller, this.styles.input as ICheckItemBrickAppearanceOptions));
     }

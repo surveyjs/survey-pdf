@@ -81,7 +81,7 @@ test('Check matrix onRender* events', async () => {
     survey.getAllQuestions()[0].id = 'questionId';
     const controller: DocController = new DocController(TestHelper.defaultOptions);
     survey.onRenderRadioGroupWrapAcroform.add((_, opt) => {
-        opt.fieldName = opt.context.question.id + '_row_' + opt.context.row.name;
+        opt.options.fieldName = opt.question.id + '_row_' + opt.row.name;
     });
     survey.onRenderRadioItemAcroform.add((_, opt) => {
         opt.options.fieldName = opt.item.value;

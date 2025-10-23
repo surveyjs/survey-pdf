@@ -12,8 +12,12 @@ export class FlatImagePicker extends FlatQuestion<QuestionImagePickerModel> {
     private _radioGroupWrap: any;
     protected get radioGroupWrap(): RadioGroupWrap {
         if(!this._radioGroupWrap) {
-            this._radioGroupWrap = new RadioGroupWrap(this.question.id,
-                this.controller, { readOnly: this.question.isReadOnly, question: this.question });
+            this._radioGroupWrap = new RadioGroupWrap(
+                this.controller, {
+                    readOnly: this.question.isReadOnly,
+                    fieldName: this.question.id,
+                    updateOptions: (options) => { this.survey.getUpdatedRadioGroupWrapOptions(options, this.question); }
+                });
         }
         return this._radioGroupWrap;
     }
@@ -43,7 +47,7 @@ export class FlatImagePicker extends FlatQuestion<QuestionImagePickerModel> {
                     readOnly: isReadOnly,
                     checked: isChecked,
                     shouldRenderReadOnly: shouldRenderReadOnly,
-                    updateOptions: (options) => this.survey.updateCheckItemAcroformOptions(options, this.question, item),
+                    updateOptions: (options) => this.survey.updateCheckItemAcroformOptions(options, this.question, { item }),
                 },
                 itemAppearance));
         }
@@ -52,7 +56,7 @@ export class FlatImagePicker extends FlatQuestion<QuestionImagePickerModel> {
                 index,
                 checked: isChecked,
                 shouldRenderReadOnly: shouldRenderReadOnly,
-                updateOptions: options => this.survey.updateRadioItemAcroformOptions(options, this.question, item),
+                updateOptions: options => this.survey.updateRadioItemAcroformOptions(options, this.question, { item }),
             }, itemAppearance));
         }
         return compositeFlat;

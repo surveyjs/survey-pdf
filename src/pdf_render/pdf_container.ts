@@ -24,12 +24,21 @@ const defaultContainerOptions: IContainerBrickAppearance = {
     borderMode: 1,
 };
 
+function areArraysEqual<T = any>(arr1: Array<T>, arr2: Array<T>) {
+    return arr1.length === arr2.length && arr1.every((el, i) => el === arr2[i]);
+}
+
 export class InseparableBrick extends CompositeBrick {
     constructor(private mode: InseparableBrickMode, ...bricks: Array<IPdfBrick>) {
         super(...bricks);
     }
     public unfold(): IPdfBrick[] {
         const unfoldedBricks = super.unfold();
+        if(unfoldedBricks.length == 2 && !!(this.mode & InseparableBrickMode.BOTH) ||
+            unfoldedBricks.length == 3 && (this.mode & InseparableBrickMode.BOTH) == InseparableBrickMode.BOTH &&
+            areArraysEqual(this.bricks, unfoldedBricks)) {
+            return [this];
+        }
         if(this.mode & InseparableBrickMode.FIRST && unfoldedBricks.length > 1) {
             const inseparableBricks = new InseparableBrick(this.mode, unfoldedBricks[0], unfoldedBricks[1]);
             unfoldedBricks.splice(0, 2, inseparableBricks);

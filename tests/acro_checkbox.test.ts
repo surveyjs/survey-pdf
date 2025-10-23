@@ -25,14 +25,28 @@ test('Check that checkbox has square boundaries', async () => {
         ]
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    survey.styles = {
+        question: {
+            wrapper: {
+                padding: 0,
+                borderWidth: 0
+            }
+        }
+    };
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     await survey['renderSurvey'](controller);
-    controller.margins.left += controller.unitWidth;
+    const question = survey.getAllQuestions()[0];
+    const labelStyles = survey.getStylesForElement(question).label;
+    const inputStyles = survey.getStylesForElement(question).input;
     let assumeCheckbox: IRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(SurveyHelper.createRect(
-        controller.leftTopPoint, controller.unitHeight, controller.unitHeight),
+        controller.leftTopPoint, inputStyles.width, inputStyles.height),
     1), controller.leftTopPoint.xLeft);
+    const textHeight = controller.measureText(1, labelStyles).height;
+    const shift = (textHeight - (assumeCheckbox.yBot - assumeCheckbox.yTop)) / 2;
+    assumeCheckbox.yTop += shift;
+    assumeCheckbox.yBot += shift;
     let checkboxFlat: PdfBrick = new PdfBrick(null, assumeCheckbox);
-    assumeCheckbox = SurveyHelper.scaleRect(assumeCheckbox, SurveyHelper.getRectBorderScale(checkboxFlat, controller.unitHeight * SurveyHelper.VISIBLE_BORDER_SCALE * SurveyHelper.BORDER_SCALE));
+    assumeCheckbox = SurveyHelper.scaleRect(assumeCheckbox, SurveyHelper.getRectBorderScale(checkboxFlat, inputStyles.borderWidth));
     let acroFormFields: any = controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields;
     let internalRect: any = acroFormFields[0].Rect;
     TestHelper.equalRect(expect, SurveyHelper.createRect(
@@ -58,7 +72,7 @@ test('Check has other checkbox', async () => {
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     await survey['renderSurvey'](controller);
     let internal: any = controller.doc.internal;
-    let internalOtherText: string = internal.pages[1][8];
+    let internalOtherText: string = internal.pages[1][33];
     expect(internalOtherText).toBeDefined();
     let regex: RegExp = /\((.*)\)/;
     let otherText: string = internalOtherText.match(regex)[1];
@@ -146,7 +160,7 @@ test('Check readonly checkbox symbol', async () => {
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     await survey['renderSurvey'](controller);
-    expect(controller.doc.internal.pages[1][9]).toContain(
+    expect(controller.doc.internal.pages[1][34]).toContain(
         '(' + '3' + ')');
 });
 

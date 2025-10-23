@@ -45,8 +45,12 @@ export class FlatBoolean extends FlatQuestion<QuestionBooleanModel> {
     }
     protected get radioGroupWrap() {
         if(!this._radioGroupWrap) {
-            this._radioGroupWrap = new RadioGroupWrap(this.question.id,
-                this.controller, { readOnly: this.question.isReadOnly, question: this.question });
+            this._radioGroupWrap = new RadioGroupWrap(
+                this.controller, {
+                    readOnly: this.question.isReadOnly,
+                    fieldName: this.question.id,
+                    updateOptions: (options) => { this.survey.getUpdatedRadioGroupWrapOptions(options, this.question); }
+                });
         }
         return this._radioGroupWrap;
     }

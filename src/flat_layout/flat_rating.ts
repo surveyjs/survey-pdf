@@ -19,8 +19,12 @@ export class FlatRating extends FlatQuestion<QuestionRatingModel> {
     }
     protected get radioGroupWrap(): RadioGroupWrap {
         if(!this._radioGroupWrap) {
-            this._radioGroupWrap = new RadioGroupWrap(this.question.id,
-                this.controller, { readOnly: this.question.isReadOnly, question: this.question });
+            this._radioGroupWrap = new RadioGroupWrap(
+                this.controller, {
+                    readOnly: this.question.isReadOnly,
+                    fieldName: this.question.id,
+                    updateOptions: (options) => { this.survey.getUpdatedRadioGroupWrapOptions(options, this.question); }
+                });
         }
         return this._radioGroupWrap;
     }
@@ -44,7 +48,7 @@ export class FlatRating extends FlatQuestion<QuestionRatingModel> {
             index,
             checked: isChecked,
             shouldRenderReadOnly: this.radioGroupWrap.readOnly && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform' || this.controller.compress,
-            updateOptions: options => this.survey.updateRadioItemAcroformOptions(options, this.question, item),
+            updateOptions: options => this.survey.updateRadioItemAcroformOptions(options, this.question, { item }),
         }, SurveyHelper.getPatchedTextAppearanceOptions(this.controller, this.styles.input as IRadioItemBrickAppearanceOptions));
     }
     protected async generateItemComposite(point: IPoint, itemInfo: ItemInfo): Promise<IPdfBrick> {

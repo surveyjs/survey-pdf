@@ -1,7 +1,5 @@
-import { IQuestion } from 'survey-core';
 import { IPoint, IRect, ISize, DocController } from '../doc_controller';
 import { IPdfBrick, IPdfBrickOptions, PdfBrick } from './pdf_brick';
-import { SurveyPDF } from '../survey';
 import { IInputAppearanceOptions, SurveyHelper } from '../helper_survey';
 
 export type IRadioItemBrickAppearanceOptions = IInputAppearanceOptions & {
@@ -14,23 +12,21 @@ export interface IRadioItemBrickOptions extends IPdfBrickOptions {
 }
 
 export interface IRadiogroupWrapContext {
-    question: IQuestion;
+    fieldName: string;
     readOnly: boolean;
+    updateOptions: (options: any) => void;
 }
 export class RadioGroupWrap {
     private _radioGroup: any;
-    public constructor(public name: string,
-        private controller: DocController,
-        private context: IRadiogroupWrapContext) {
+    public constructor(private controller: DocController, private options: IRadiogroupWrapContext) {
     }
     public addToPdf(color: string) {
         this._radioGroup = new this.controller.doc.AcroFormRadioButton();
         const options: any = {};
-        options.fieldName = this.name;
-        options.readOnly = this.readOnly;
+        options.fieldName = this.options.fieldName;
+        options.readOnly = this.options.readOnly;
         options.color = color;
-        options.context = this.context;
-        (<SurveyPDF>this.context.question.survey)?.getUpdatedRadioGroupWrapOptions(options);
+        this.options.updateOptions(options);
         this._radioGroup.fieldName = options.fieldName;
         this._radioGroup.readOnly = options.readOnly;
         this._radioGroup.color = options.color;
@@ -42,7 +38,10 @@ export class RadioGroupWrap {
         return this._radioGroup;
     }
     get readOnly(): boolean {
-        return this.context.readOnly;
+        return this.options.readOnly;
+    }
+    get fieldName(): string {
+        return this.options.fieldName;
     }
 }
 
@@ -56,7 +55,7 @@ export class RadioItemBrick extends PdfBrick {
             this.radioGroupWrap.addToPdf(this.appearance.fontColor);
         }
         const options: any = {};
-        options.fieldName = this.radioGroupWrap.name + 'index' + this.options.index;
+        options.fieldName = this.radioGroupWrap.fieldName + 'index' + this.options.index;
         let formScale = SurveyHelper.getRectBorderScale(this, this.appearance.borderWidth);
         options.Rect = SurveyHelper.createAcroformRect(
             SurveyHelper.scaleRect(this, formScale));

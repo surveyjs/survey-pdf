@@ -161,21 +161,25 @@ export class SurveyPDF extends SurveyModel {
     public onRenderRadioItemAcroform: EventAsync<SurveyPDF, any> =
     new EventAsync<SurveyPDF, any>();
 
-    public updateCheckItemAcroformOptions(options: any, question: Question, item?: ItemValue): void {
+    public updateCheckItemAcroformOptions(options: any, question: Question, context?: any): void {
         this.onRenderCheckItemAcroform.fire(this, {
             options: options,
             question: question,
-            item: item
+            ...(context ?? {})
         });
     }
-    public getUpdatedRadioGroupWrapOptions(options: any): void {
-        this.onRenderRadioGroupWrapAcroform.fire(this, options);
+    public getUpdatedRadioGroupWrapOptions(options: any, question: Question, context?: any): void {
+        this.onRenderRadioGroupWrapAcroform.fire(this, {
+            options: options,
+            question: question,
+            ...(context ?? {})
+        });
     }
-    public updateRadioItemAcroformOptions(options: any, question: Question, item?: ItemValue): void {
+    public updateRadioItemAcroformOptions(options: any, question: Question, context?: any): void {
         this.onRenderRadioItemAcroform.fire(this, {
             options: options,
             question: question,
-            item: item
+            ...(context ?? {})
         });
     }
 

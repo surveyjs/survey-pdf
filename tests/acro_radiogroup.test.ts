@@ -26,7 +26,7 @@ test('Has other radiogroup', async () => {
     const controller: DocController = new DocController(TestHelper.defaultOptions);
     await survey['renderSurvey'](controller);
     const internal: any = controller.doc.internal;
-    const internalOtherText: string = internal.pages[1][8];
+    const internalOtherText: string = internal.pages[1][33];
     expect(internalOtherText).toBeDefined();
     const regex: RegExp = /\((.*)\)/;
     const otherText: string = internalOtherText.match(regex)[1];
@@ -92,7 +92,7 @@ test('Check onRenderRadio* events', async () => {
     survey.getAllQuestions()[0].id = 'questionId';
     const controller: DocController = new DocController(TestHelper.defaultOptions);
     survey.onRenderRadioGroupWrapAcroform.add((_, opt) => {
-        opt.fieldName = opt.context.question.name;
+        opt.options.fieldName = opt.question.name;
     });
 
     survey.onRenderRadioItemAcroform.add((_, opt) => {
