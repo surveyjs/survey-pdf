@@ -226,14 +226,11 @@ export class SurveyHelper {
         sources.forEach(source => {
             if(!source) return;
             Object.keys(source).forEach(key=>{
-                if (source[key] !== undefined) {
-                    if(typeof source[key] == 'object' && source[key] !== null && !Array.isArray(source[key])) {
-                        dest[key] = SurveyHelper.mergeObjects(dest[key] ?? {}, source[key]);
-                    } else {
-                        dest[key] = source[key];
-                    }
+                if(typeof source[key] == 'object' && source[key] !== null && !Array.isArray(source[key])) {
+                    dest[key] = SurveyHelper.mergeObjects(dest[key] ?? {}, source[key]);
+                } else {
+                    dest[key] = source[key];
                 }
-
             });
         });
         return dest;

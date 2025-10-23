@@ -5,8 +5,8 @@
 		"height": 74.67,
 		"xLeft": 34.72145669291339,
 		"xRight": 72.22145669291339,
-		"yTop": 31.72145669291339,
-		"yBot": 106.3914566929134,
+		"yTop": 31.34645669291339,
+		"yBot": 106.0164566929134,
 		"bricks": [
 			{
 				"brickType": "CompositeBrick",
@@ -14,8 +14,8 @@
 				"height": 74.67,
 				"xLeft": 34.72145669291339,
 				"xRight": 72.22145669291339,
-				"yTop": 31.72145669291339,
-				"yBot": 106.3914566929134,
+				"yTop": 31.34645669291339,
+				"yBot": 106.0164566929134,
 				"bricks": [
 					{
 						"brickType": "CompositeBrick",
@@ -23,8 +23,8 @@
 						"height": 36,
 						"xLeft": 34.72145669291339,
 						"xRight": 67.1214566929134,
-						"yTop": 31.72145669291339,
-						"yBot": 67.72145669291339,
+						"yTop": 31.34645669291339,
+						"yBot": 67.34645669291339,
 						"bricks": [
 							{
 								"brickType": "LinkBrick",
@@ -32,8 +32,8 @@
 								"height": 18.000000000000004,
 								"xLeft": 34.72145669291339,
 								"xRight": 67.1214566929134,
-								"yTop": 31.72145669291339,
-								"yBot": 49.72145669291339,
+								"yTop": 31.34645669291339,
+								"yBot": 49.34645669291339,
 								"appearance": {
 									"fontSize": 15,
 									"fontName": "helvetica",
@@ -46,6 +46,10 @@
 									"text": "cat.p",
 									"readOnlyShowLink": false,
 									"shouldRenderReadOnly": false
+								},
+								"padding": {
+									"top": 0,
+									"bottom": 0
 								}
 							},
 							{
@@ -54,8 +58,8 @@
 								"height": 0,
 								"xLeft": 34.72145669291339,
 								"xRight": 67.1214566929134,
-								"yTop": 49.72145669291339,
-								"yBot": 49.72145669291339
+								"yTop": 49.34645669291339,
+								"yBot": 49.34645669291339
 							},
 							{
 								"brickType": "LinkBrick",
@@ -63,8 +67,8 @@
 								"height": 18,
 								"xLeft": 34.72145669291339,
 								"xRight": 51.22145669291339,
-								"yTop": 49.72145669291339,
-								"yBot": 67.72145669291339,
+								"yTop": 49.34645669291339,
+								"yBot": 67.34645669291339,
 								"appearance": {
 									"fontSize": 15,
 									"fontName": "helvetica",
@@ -77,6 +81,10 @@
 									"text": "ng",
 									"readOnlyShowLink": false,
 									"shouldRenderReadOnly": false
+								},
+								"padding": {
+									"top": 0,
+									"bottom": 0
 								}
 							},
 							{
@@ -85,8 +93,8 @@
 								"height": 0,
 								"xLeft": 34.72145669291339,
 								"xRight": 67.1214566929134,
-								"yTop": 67.72145669291339,
-								"yBot": 67.72145669291339
+								"yTop": 67.34645669291339,
+								"yBot": 67.34645669291339
 							}
 						]
 					},
@@ -96,8 +104,8 @@
 						"height": 37.5,
 						"xLeft": 34.72145669291339,
 						"xRight": 72.22145669291339,
-						"yTop": 68.8914566929134,
-						"yBot": 106.3914566929134,
+						"yTop": 68.5164566929134,
+						"yBot": 106.0164566929134,
 						"appearance": {
 							"fontSize": 6,
 							"fontName": "helvetica",
@@ -108,6 +116,10 @@
 						"options": {
 							"html": "<img src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAMAAAAoLQ9TAAAAA3NCSVQICAjb4U/gAAAAt1BMVEVHcExTXGROYmJIT1ZPXmVJV11ES1JYZ24+SE5JU1s+R0xVYmtYZW1ETlRRXWVUYWpKV1xZZ25YZW5YanNrfIdTYWlaZ29nd4JUYmhIU1lHUVtRXWQ+SlA6QkouNzpFT1ZCS1JSXWVxhI98kp53iZZSXmVcaXE5QkdCTFNndn9WY2tZZm5canJfbXVbZ29hcHlXZGxtfYVNWmFRXWVCTFNKVl04QEdoeINnZGxrc3uAk6Fzb3dxg43scHiMAAAAKnRSTlMALwQXZU4MImyJQbCrPOPZRdOHx4X4t2fR0SfsoHhYseyioqbHwOy+59gMe1UiAAAAuElEQVQYlU2P5xKCQAyEI1gABVSKUu3tOgL2938u74Ybx/2xk3yT2SQAPw2Yb8KfRp6VzAxVDDVwYej1ZbHbG9tQTy030sJP+1po4MfSZs+qsrp+KubSg8e7Wq8mk/E44LinwqJr22IskCA4UgBiUqueUUqJ2gLzO0MCC8Ypx1MFXEIEqhFGjB/0zTXNbPvcXOkx7YjFbYDydsq7DIAeKyS9mSYadGBR51A0JVwy/dcyScFxwLAdgC+IFhIbrHyDqAAAAABJRU5ErkJggg==' width='37.5' height='37.5'/>",
 							"isImage": true
+						},
+						"padding": {
+							"top": 0,
+							"bottom": 0
 						}
 					}
 				]

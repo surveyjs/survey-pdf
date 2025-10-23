@@ -109,7 +109,8 @@ interface IFlatSnaphotOptions extends ISnapshotOptions {
 
 export const globalAllowedPropertiesHash: PropertiesHash = {
     'default': ['width', 'height', 'xLeft', 'xRight', 'yTop', 'yBot'],
-    'PdfBrick': ['appearance', 'options'],
+    'PdfBrick': ['appearance', 'options', 'padding'],
+    'RowLineBrick': ['padding'],
     'CompositeBrick': [{ name: 'bricks', deep: true }]
 };
 

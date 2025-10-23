@@ -5,8 +5,8 @@
 		"height": 39,
 		"xLeft": 34.72145669291339,
 		"xRight": 560.5541338582677,
-		"yTop": 31.72145669291339,
-		"yBot": 70.72145669291339,
+		"yTop": 31.34645669291339,
+		"yBot": 70.34645669291339,
 		"bricks": [
 			{
 				"brickType": "ContainerBrick",
@@ -14,81 +14,52 @@
 				"height": 18.000000000000004,
 				"xLeft": 34.72145669291339,
 				"xRight": 560.5541338582677,
-				"yTop": 31.72145669291339,
-				"yBot": 49.72145669291339,
+				"yTop": 31.34645669291339,
+				"yBot": 49.34645669291339,
 				"bricks": [
 					{
-						"brickType": "InseparableBrick",
-						"width": 525.8326771653543,
+						"brickType": "CompositeBrick",
+						"width": 123.23999999999998,
 						"height": 18.000000000000004,
 						"xLeft": 34.72145669291339,
-						"xRight": 560.5541338582677,
-						"yTop": 31.72145669291339,
-						"yBot": 49.72145669291339,
+						"xRight": 157.96145669291337,
+						"yTop": 31.34645669291339,
+						"yBot": 49.34645669291339,
 						"bricks": [
-							{
-								"brickType": "EmptyBrick",
-								"width": 525.8326771653543,
-								"height": 0,
-								"xLeft": 34.72145669291339,
-								"xRight": 560.5541338582677,
-								"yTop": 31.72145669291339,
-								"yBot": 31.72145669291339,
-								"appearance": {},
-								"options": {}
-							},
 							{
 								"brickType": "CompositeBrick",
 								"width": 123.23999999999998,
 								"height": 18.000000000000004,
 								"xLeft": 34.72145669291339,
 								"xRight": 157.96145669291337,
-								"yTop": 31.72145669291339,
-								"yBot": 49.72145669291339,
+								"yTop": 31.34645669291339,
+								"yBot": 49.34645669291339,
 								"bricks": [
 									{
-										"brickType": "CompositeBrick",
+										"brickType": "TextBrick",
 										"width": 123.23999999999998,
 										"height": 18.000000000000004,
 										"xLeft": 34.72145669291339,
 										"xRight": 157.96145669291337,
-										"yTop": 31.72145669291339,
-										"yBot": 49.72145669291339,
-										"bricks": [
-											{
-												"brickType": "TextBrick",
-												"width": 123.23999999999998,
-												"height": 18.000000000000004,
-												"xLeft": 34.72145669291339,
-												"xRight": 157.96145669291337,
-												"yTop": 31.72145669291339,
-												"yBot": 49.72145669291339,
-												"appearance": {
-													"fontSize": 12,
-													"fontName": "helvetica",
-													"fontStyle": "normal",
-													"lineHeight": 18,
-													"fontColor": "#000",
-													"textAlign": "left"
-												},
-												"options": {
-													"text": "I do not need a number"
-												}
-											}
-										]
+										"yTop": 31.34645669291339,
+										"yBot": 49.34645669291339,
+										"appearance": {
+											"fontSize": 12,
+											"fontName": "helvetica",
+											"fontStyle": "normal",
+											"lineHeight": 18,
+											"fontColor": "#000",
+											"textAlign": "left"
+										},
+										"options": {
+											"text": "I do not need a number"
+										},
+										"padding": {
+											"top": 0,
+											"bottom": 0
+										}
 									}
 								]
-							},
-							{
-								"brickType": "EmptyBrick",
-								"width": 525.8326771653543,
-								"height": 0,
-								"xLeft": 34.72145669291339,
-								"xRight": 560.5541338582677,
-								"yTop": 49.72145669291339,
-								"yBot": 49.72145669291339,
-								"appearance": {},
-								"options": {}
 							}
 						]
 					}
@@ -100,8 +71,8 @@
 				"height": 0,
 				"xLeft": 34.72145669291339,
 				"xRight": 560.5541338582677,
-				"yTop": 49.72145669291339,
-				"yBot": 49.72145669291339
+				"yTop": 49.34645669291339,
+				"yBot": 49.34645669291339
 			},
 			{
 				"brickType": "TextFieldBrick",
@@ -109,8 +80,8 @@
 				"height": 18,
 				"xLeft": 34.72145669291339,
 				"xRight": 560.5541338582677,
-				"yTop": 52.72145669291339,
-				"yBot": 70.72145669291339,
+				"yTop": 52.34645669291339,
+				"yBot": 70.34645669291339,
 				"appearance": {
 					"fontSize": 15,
 					"fontName": "helvetica",
@@ -129,6 +100,10 @@
 					"shouldRenderBorders": true,
 					"placeholder": "",
 					"isMultiline": false
+				},
+				"padding": {
+					"top": 0,
+					"bottom": 0
 				}
 			}
 		]

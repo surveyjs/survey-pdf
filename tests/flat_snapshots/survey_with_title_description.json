@@ -36,6 +36,10 @@
 							},
 							"options": {
 								"text": "One small step for man"
+							},
+							"padding": {
+								"top": 0,
+								"bottom": 0
 							}
 						}
 					]
@@ -67,6 +71,10 @@
 							},
 							"options": {
 								"text": "One giant leap for mankind"
+							},
+							"padding": {
+								"top": 0,
+								"bottom": 0
 							}
 						}
 					]
@@ -83,65 +91,36 @@
 			"yBot": 85.34645669291339
 		},
 		{
-			"brickType": "InseparableBrick",
-			"width": 538.5826771653543,
-			"height": 24.75,
-			"xLeft": 28.34645669291339,
-			"xRight": 566.9291338582677,
+			"brickType": "TextFieldBrick",
+			"width": 525.8326771653543,
+			"height": 24,
+			"xLeft": 34.72145669291339,
+			"xRight": 560.5541338582677,
 			"yTop": 109.34645669291339,
-			"yBot": 134.0964566929134,
-			"bricks": [
-				{
-					"brickType": "EmptyBrick",
-					"width": 538.5826771653543,
-					"height": 3.375,
-					"xLeft": 28.34645669291339,
-					"xRight": 566.9291338582677,
-					"yTop": 109.34645669291339,
-					"yBot": 112.72145669291339,
-					"appearance": {},
-					"options": {}
-				},
-				{
-					"brickType": "TextFieldBrick",
-					"width": 525.8326771653543,
-					"height": 18,
-					"xLeft": 34.72145669291339,
-					"xRight": 560.5541338582677,
-					"yTop": 112.72145669291339,
-					"yBot": 130.7214566929134,
-					"appearance": {
-						"fontSize": 15,
-						"fontName": "helvetica",
-						"fontStyle": "normal",
-						"lineHeight": 18,
-						"fontColor": "#000",
-						"borderColor": "#000",
-						"borderWidth": 0
-					},
-					"options": {
-						"fieldName": "testidquestion_MissText",
-						"inputType": "text",
-						"value": "",
-						"isReadOnly": false,
-						"shouldRenderReadOnly": false,
-						"shouldRenderBorders": true,
-						"placeholder": "",
-						"isMultiline": false
-					}
-				},
-				{
-					"brickType": "EmptyBrick",
-					"width": 538.5826771653543,
-					"height": 3.375,
-					"xLeft": 28.34645669291339,
-					"xRight": 566.9291338582677,
-					"yTop": 130.7214566929134,
-					"yBot": 134.0964566929134,
-					"appearance": {},
-					"options": {}
-				}
-			]
+			"yBot": 133.3464566929134,
+			"appearance": {
+				"fontSize": 15,
+				"fontName": "helvetica",
+				"fontStyle": "normal",
+				"lineHeight": 18,
+				"fontColor": "#000",
+				"borderColor": "#000",
+				"borderWidth": 0
+			},
+			"options": {
+				"fieldName": "testidquestion_MissText",
+				"inputType": "text",
+				"value": "",
+				"isReadOnly": false,
+				"shouldRenderReadOnly": false,
+				"shouldRenderBorders": true,
+				"placeholder": "",
+				"isMultiline": false
+			},
+			"padding": {
+				"top": 3,
+				"bottom": 3
+			}
 		}
 	]
 ]

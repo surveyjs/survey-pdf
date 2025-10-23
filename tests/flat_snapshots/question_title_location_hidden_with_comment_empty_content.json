@@ -5,8 +5,8 @@
 		"height": 48,
 		"xLeft": 34.72145669291339,
 		"xRight": 560.5541338582677,
-		"yTop": 31.72145669291339,
-		"yBot": 79.72145669291339,
+		"yTop": 31.34645669291339,
+		"yBot": 79.34645669291339,
 		"bricks": [
 			{
 				"brickType": "CompositeBrick",
@@ -14,8 +14,8 @@
 				"height": 6.0000000000000036,
 				"xLeft": 34.72145669291339,
 				"xRight": 100.00145669291338,
-				"yTop": 31.72145669291339,
-				"yBot": 37.72145669291339,
+				"yTop": 31.34645669291339,
+				"yBot": 37.34645669291339,
 				"bricks": [
 					{
 						"brickType": "TextBrick",
@@ -23,8 +23,8 @@
 						"height": 6.0000000000000036,
 						"xLeft": 34.72145669291339,
 						"xRight": 100.00145669291338,
-						"yTop": 31.72145669291339,
-						"yBot": 37.72145669291339,
+						"yTop": 31.34645669291339,
+						"yBot": 37.34645669291339,
 						"appearance": {
 							"fontSize": 6,
 							"fontName": "helvetica",
@@ -35,6 +35,10 @@
 						},
 						"options": {
 							"text": "Please leave a comment"
+						},
+						"padding": {
+							"top": 0,
+							"bottom": 0
 						}
 					}
 				]
@@ -45,8 +49,8 @@
 				"height": 36,
 				"xLeft": 34.72145669291339,
 				"xRight": 560.5541338582677,
-				"yTop": 43.72145669291339,
-				"yBot": 79.72145669291339,
+				"yTop": 43.34645669291339,
+				"yBot": 79.34645669291339,
 				"appearance": {
 					"fontSize": 15,
 					"fontName": "helvetica",
@@ -66,6 +70,10 @@
 					"placeholder": "",
 					"shouldRenderReadOnly": false,
 					"inputType": ""
+				},
+				"padding": {
+					"top": 0,
+					"bottom": 0
 				}
 			}
 		]

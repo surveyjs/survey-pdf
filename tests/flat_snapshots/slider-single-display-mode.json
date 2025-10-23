@@ -5,8 +5,8 @@
 		"height": 18.000000000000004,
 		"xLeft": 34.72145669291339,
 		"xRight": 51.22145669291339,
-		"yTop": 31.72145669291339,
-		"yBot": 49.72145669291339,
+		"yTop": 31.34645669291339,
+		"yBot": 49.34645669291339,
 		"options": {
 			"fieldName": "testidquestion_q1",
 			"inputType": "number",
@@ -26,6 +26,10 @@
 			"fontColor": "#000",
 			"borderColor": "#000",
 			"borderWidth": 0
+		},
+		"padding": {
+			"top": 0,
+			"bottom": 0
 		}
 	}
 ]
