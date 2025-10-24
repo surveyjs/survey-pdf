@@ -127,15 +127,19 @@ export class PdfBrick implements IPdfBrick {
     }
     protected setXLeft(val: number): void {
         this._xLeft = val;
+        this.resetContentRect();
     }
     protected setXRight(val: number): void {
         this._xRight = val;
+        this.resetContentRect();
     }
     protected setYTop(val: number): void {
         this._yTop = val;
+        this.resetContentRect();
     }
     protected setYBottom(val: number): void {
         this._yBot = val;
+        this.resetContentRect();
     }
     public getPageNumber(): number {
         return this._pageNumber;
@@ -155,7 +159,7 @@ export class PdfBrick implements IPdfBrick {
         });
         this._yTop -= padding.top;
         this._yBot += padding.bottom;
-        this._contentRect = undefined;
+        this.resetContentRect();
     }
     private _contentRect: IRect & ISize
     public get contentRect(): IRect & ISize {
@@ -171,6 +175,9 @@ export class PdfBrick implements IPdfBrick {
             };
         }
         return this._contentRect;
+    }
+    private resetContentRect() {
+        this._contentRect = undefined;
     }
     public updateRect(): void {}
 }

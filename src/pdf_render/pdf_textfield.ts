@@ -1,8 +1,6 @@
-import { IQuestion, QuestionTextModel } from 'survey-core';
 import { IRect, DocController, ISize } from '../doc_controller';
 import { IPdfBrick, IPdfBrickOptions, PdfBrick, TranslateXFunction } from './pdf_brick';
 import { IBorderAppearanceOptions, SurveyHelper, ITextAppearanceOptions } from '../helper_survey';
-import { CompositeBrick } from './pdf_composite';
 import { mergeRects } from '../utils';
 
 export interface ITextFieldBrickOptions extends IPdfBrickOptions {
@@ -87,7 +85,6 @@ export class TextFieldBrick extends PdfBrick {
                     const keys = Object.keys(bricksByPage);
                     const renderedOnOnePage = keys.length == 1;
                     keys.forEach((key: string) => {
-                        const compositeBrick = new CompositeBrick();
                         const mergedRect = mergeRects(...bricksByPage[key as any]);
                         const borderRect = {
                             xLeft: this.contentRect.xLeft,
@@ -173,14 +170,14 @@ export class TextFieldBrick extends PdfBrick {
         }
     }
     public setPageNumber(val: number): void {
-        if(this.textBrick) {
+        if(this.getShouldRenderReadOnly() && this.options.inputType !== 'color') {
             this.textBrick.setPageNumber(val);
         } else {
             super.setPageNumber(val);
         }
     }
     public getPageNumber(): number {
-        if(this.textBrick) {
+        if(this.getShouldRenderReadOnly() && this.options.inputType !== 'color') {
             return this.textBrick.getPageNumber();
         } else {
             return super.getPageNumber();
@@ -188,11 +185,16 @@ export class TextFieldBrick extends PdfBrick {
     }
     public increasePadding(val: { top: number, bottom: number }): void {
         if(val.top == 0 && val.bottom == 0) return;
-        if(this.textBrick) {
+        if(this.getShouldRenderReadOnly() && this.options.inputType !== 'color') {
             this.textBrick.increasePadding(val);
             this.updateRect();
         } else {
             super.increasePadding(val);
+        }
+    }
+    public addBeforeRenderCallback(func: (brick: IPdfBrick) => void): void {
+        if(this.getShouldRenderReadOnly() && this.options.inputType !== 'color') {
+            this.textBrick.addBeforeRenderCallback(func);
         }
     }
 }
