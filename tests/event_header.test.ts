@@ -98,7 +98,7 @@ test('Event render header left top text', async () => {
     EventHandler.process_header_events(survey, controller, packs);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(2);
-    let textSize: ISize = controller.measureText(text, { fontStyle: 'normal', fontSize: DocOptions.FONT_SIZE });
+    let textSize: ISize = controller.measureText(text, { fontStyle: 'normal', fontSize: DocOptions.FONT_SIZE, lineHeight: DocOptions.FONT_SIZE * 1.15 });
     TestHelper.equalRect(expect, packs[0][1], SurveyHelper.createRect(
         { xLeft: 0, yTop: 0 }, textSize.width, textSize.height));
 });
@@ -129,7 +129,7 @@ test('Event render header center middle text', async () => {
     EventHandler.process_header_events(survey, controller, packs);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(2);
-    let textSize: ISize = controller.measureText(text, { fontStyle: 'normal', fontSize: DocOptions.FONT_SIZE });
+    let textSize: ISize = controller.measureText(text, { fontStyle: 'normal', fontSize: DocOptions.FONT_SIZE, lineHeight: DocOptions.FONT_SIZE * 1.15 });
     let headerRect: IRect = SurveyHelper.createHeaderRect(controller);
     let assumeText: IRect = {
         xLeft: (headerRect.xRight - headerRect.xLeft - textSize.width) / 2.0,
@@ -166,7 +166,7 @@ test('Event render footer center middle text', async () => {
     await EventHandler.process_header_events(survey, controller, packs);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(2);
-    let textSize: ISize = controller.measureText(text, { fontStyle: 'normal', fontSize: DocOptions.FONT_SIZE });
+    let textSize: ISize = controller.measureText(text, { fontStyle: 'normal', fontSize: DocOptions.FONT_SIZE, lineHeight: DocOptions.FONT_SIZE * 1.15 });
     let footerRect: IRect = SurveyHelper.createFooterRect(controller);
     let assumeText: IRect = {
         xLeft: (footerRect.xLeft + footerRect.xRight - textSize.width) / 2.0,

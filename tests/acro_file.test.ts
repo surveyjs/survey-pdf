@@ -108,11 +108,11 @@ test('Check hyperlink underline position', async () => {
     const internal: any = controller.doc.internal;
     const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     const moveInfo: string[] = internal.pages[1][20].split(' ');
-    const assumeLeft: number = (flats[0][0] as any).bricks[1].xLeft;
+    const assumeLeft: number = flats[0][0].unfold()[0].xLeft;
     const actualLeft: number = +moveInfo[0];
     expect(actualLeft).toBe(assumeLeft);
     const lineInfo: string[] = internal.pages[1][21].split(' ');
-    const assumeRight: number = (flats[0][0] as any).bricks[1].xRight;
+    const assumeRight: number = flats[0][0].unfold()[0].xRight;
     const actualRight: number = +lineInfo[0];
     expect(actualRight).toBe(assumeRight);
     const bottomMove: number = +moveInfo[1];

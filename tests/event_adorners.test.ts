@@ -76,7 +76,7 @@ test('Event render questions checkbox as radiogroup', async () => {
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     survey.onRenderQuestion.add(async (survey: SurveyPDF, options: AdornersOptions) => {
         let flatQuestion: IFlatQuestion = options.repository.create(survey,
-            options.question, options.controller, 'radiogroup');
+            options.question, options.controller, 'radiogroup', survey.getStylesForElement(options.question));
         options.bricks = await flatQuestion.generateFlats(options.point);
     });
     let controller: DocController = new DocController(TestHelper.defaultOptions);

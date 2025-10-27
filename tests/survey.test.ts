@@ -123,12 +123,12 @@ test('Check surveyPDF isRTL options', (done) => {
     let originalXLeft: number;
     let originalXRight: number;
     surveyPDF.onRenderQuestion.add((sender, options) => {
-        const titleBrick = (options.bricks[0].unfold()[0] as any).bricks[0].bricks[1];
+        const titleBrick = options.bricks[0].unfold()[0];
         originalXLeft = titleBrick.xLeft;
         originalXRight = titleBrick.xRight;
     });
     surveyPDF.onRenderHeader.add((sender, options) => {
-        const titleBrick = <TextBrick>(options.packs[0].unfold()[0] as any).bricks[1].bricks[0].bricks[1];
+        const titleBrick = <TextBrick>(options.packs[0].unfold()[0]);
         expect(titleBrick.xLeft).toBeCloseTo(options.controller.paperWidth - originalXRight);
         expect(titleBrick.xRight).toBeCloseTo(options.controller.paperWidth - originalXLeft);
         expect(titleBrick['align']).toEqual({ 'align': 'right', 'baseline': 'middle', 'isInputRtl': false, 'isOutputRtl': true, 'lineHeightFactor': 1.15 });

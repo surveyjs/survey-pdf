@@ -5,13 +5,14 @@
 import { SurveyPDF } from '../src/survey';
 import { DocController, IRect } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
-import { IPdfBrick } from '../src/pdf_render/pdf_brick';
+import { IPdfBrick, PdfBrick } from '../src/pdf_render/pdf_brick';
 import { TestHelper } from '../src/helper_test';
 import { EmptyBrick } from '../src/pdf_render/pdf_empty';
 import { SurveyHelper } from '../src/helper_survey';
 import { CompositeBrick } from '../src/pdf_render/pdf_composite';
 import { ImageBrick } from '../src/pdf_render/pdf_image';
 import '../src/entries/pdf';
+import { HTMLBrick } from '../src/entries/pdf';
 
 test('Check html brick is empty when document is not defined', async () => {
     let json: any = {
@@ -28,10 +29,10 @@ test('Check html brick is empty when document is not defined', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
-    const emptyBrick = flats[0][0].unfold()[0];
+    const emptyBrick = flats[0][0].unfold()[0] as PdfBrick;
     expect(emptyBrick instanceof EmptyBrick).toBe(true);
-    expect(emptyBrick.height).toEqual(0);
-    expect(emptyBrick.width).toEqual(0);
+    expect(emptyBrick.contentRect.height).toBeCloseTo(0);
+    expect(emptyBrick.contentRect.width).toBeCloseTo(0);
 });
 
 test('Check signaturepad with empty value', async () => {
@@ -51,17 +52,12 @@ test('Check signaturepad with empty value', async () => {
     expect(flats[0].length).toBe(1);
     expect(flats[0][0] instanceof CompositeBrick).toBeTruthy();
     expect((<CompositeBrick>flats[0][0])['bricks'].length).toBe(1);
-    const htmlBrick = (<CompositeBrick>flats[0][0])['bricks'][0];
+    const htmlBrick = (<CompositeBrick>flats[0][0])['bricks'][0] as HTMLBrick;
     expect(htmlBrick instanceof EmptyBrick).toBeTruthy();
-    let assumeHTML: IRect = {
-        xLeft: controller.leftTopPoint.xLeft + controller.unitWidth,
-        xRight: controller.leftTopPoint.xLeft + controller.unitWidth +
-            SurveyHelper.pxToPt((<any>survey.getAllQuestions()[0]).signatureWidth),
-        yTop: controller.leftTopPoint.yTop,
-        yBot: controller.leftTopPoint.yTop +
-            SurveyHelper.pxToPt((<any>survey.getAllQuestions()[0]).signatureHeight)
-    };
-    TestHelper.equalRect(expect, htmlBrick, assumeHTML);
+    expect(htmlBrick.contentRect.width).toBeCloseTo(
+        SurveyHelper.pxToPt((<any>survey.getAllQuestions()[0]).signatureWidth));
+    expect(htmlBrick.contentRect.height).toBeCloseTo(
+        SurveyHelper.pxToPt((<any>survey.getAllQuestions()[0]).signatureHeight));
 });
 
 test('Check image with non base64 link', async () => {

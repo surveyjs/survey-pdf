@@ -164,14 +164,14 @@ export class PdfBrick implements IPdfBrick {
     private _contentRect: IRect & ISize
     public get contentRect(): IRect & ISize {
         if(!this._contentRect) {
-            const yBot = this.yBot -= this.padding.bottom;
-            const yTop = this.yTop += this.padding.top;
+            const yBot = this.yBot - this.padding.bottom;
+            const yTop = this.yTop + this.padding.top;
             this._contentRect = {
                 yBot, yTop,
                 xLeft: this.xLeft,
                 xRight: this.xRight,
                 width: this.width,
-                height: yBot - yTop
+                height: Math.max(yBot - yTop, 0)
             };
         }
         return this._contentRect;

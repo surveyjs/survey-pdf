@@ -1,11 +1,13 @@
-import { DocController } from '../src/doc_controller';
-import { CompositeBrick } from '../src/pdf_render/pdf_composite';
-import { ContainerBrick, InseparableBrick, InseparableBrickMode } from '../src/pdf_render/pdf_container';
+import { DocController, IPoint } from '../src/doc_controller';
+import { BorderMode, SurveyHelper } from '../src/helper_survey';
+import { TestHelper } from '../src/helper_test';
+import { PdfBrick } from '../src/pdf_render/pdf_brick';
+import { ContainerBrick } from '../src/pdf_render/pdf_container';
 import { EmptyBrick } from '../src/pdf_render/pdf_empty';
 
 test('check container bricks', async() =>{
     const controller = new DocController();
-    let container = new ContainerBrick(controller, { xLeft: 0, yTop: 0, width: 10 }, { paddingBottom: 0, paddingLeft: 0, paddingRight: 0, borderColor: '#000', borderWidth: 0, borderOutside: false, paddingTop: 0, backgroundColor: '#fff' });
+    let container = new ContainerBrick(controller, { xLeft: 0, yTop: 0, width: 10 }, { padding: 0, borderColor: '#000', borderWidth: 0, borderMode: BorderMode.Inside, backgroundColor: '#fff' });
     container.startSetup();
     const firstBrick = new EmptyBrick(controller, { xLeft: 0, yTop: 0, xRight: 10, yBot: 10 });
     const secondBrick = new EmptyBrick(controller, { xLeft: 0, yTop: 10, xRight: 10, yBot: 20 });
@@ -14,78 +16,34 @@ test('check container bricks', async() =>{
     container.finishSetup();
     let result = container.getBricks();
     expect(result.length).toBe(2);
-    expect(result[0]).toBeInstanceOf(InseparableBrick);
-    expect(result[0]['bricks'][1]).toBe(firstBrick);
-    expect(result[1]).toBeInstanceOf(InseparableBrick);
-    expect(result[1]['bricks'][0]).toBe(secondBrick);
-
-    container = new ContainerBrick(controller, { xLeft: 0, yTop: 0, width: 10 }, { paddingBottom: 0, paddingLeft: 0, paddingRight: 0, borderColor: '#000', borderWidth: 0, borderOutside: false, paddingTop: 0, backgroundColor: '#fff' });
+    container = new ContainerBrick(controller, { xLeft: 0, yTop: 0, width: 10 }, { padding: 0, borderColor: '#000', borderWidth: 0, borderMode: BorderMode.Inside, backgroundColor: '#fff' });
     container.startSetup();
     const brick = new EmptyBrick(controller, { xLeft: 0, yTop: 0, xRight: 10, yBot: 10 });
     container.addBrick(brick);
     container.finishSetup();
     result = container.getBricks();
     expect(result.length).toBe(1);
-    expect(result[0]).toBeInstanceOf(InseparableBrick);
-    expect(result[0]['bricks'].length).toBe(3);
-    expect(result[0]['bricks'][1]).toBe(brick);
 });
 
-test('check InseparableBrick', async() => {
+test('Check padding works correctly for container brick', async () => {
     const controller = new DocController();
-    const firstBrick = new EmptyBrick(controller, { xLeft: 0, yTop: 0, xRight: 10, yBot: 10 });
-    const secondBrick = new EmptyBrick(controller, { xLeft: 0, yTop: 10, xRight: 10, yBot: 20 });
-    const thirdBrick = new EmptyBrick(controller, { xLeft: 0, yTop: 20, xRight: 10, yBot: 30 });
-    const forthBrick = new EmptyBrick(controller, { xLeft: 0, yTop: 30, xRight: 10, yBot: 40 });
-    let inseparableBrick = new InseparableBrick(InseparableBrickMode.FIRST, firstBrick, secondBrick, thirdBrick);
-    let unfoldedBricks = inseparableBrick.unfold();
-    expect(unfoldedBricks.length).toBe(2);
-    expect(unfoldedBricks[0]['bricks'][0]).toBe(firstBrick);
-    expect(unfoldedBricks[0]['bricks'][1]).toBe(secondBrick);
-    expect(unfoldedBricks[1]).toBe(thirdBrick);
+    let container = new ContainerBrick(controller, { xLeft: 0, yTop: 0, width: 100 }, { padding: [40, 25, 30, 20], borderColor: '#000', borderWidth: 0, borderMode: BorderMode.Inside, backgroundColor: '#fff' });
+    await container.setup(async (point: IPoint, bricks) => {
+        bricks.push(new EmptyBrick(controller, { ...point, xRight: point.xLeft + SurveyHelper.getPageAvailableWidth(controller) / 2, yBot: point.yTop + 10 }));
+        bricks.push(new EmptyBrick(controller, { xLeft: point.xLeft + SurveyHelper.getPageAvailableWidth(controller) / 2, xRight: point.xLeft + SurveyHelper.getPageAvailableWidth(controller), yTop: point.yTop, yBot: point.yTop + 10 }));
+        bricks.push(new EmptyBrick(controller, { xLeft: point.xLeft, xRight: point.xLeft + SurveyHelper.getPageAvailableWidth(controller), yTop: point.yTop + 10, yBot: point.yTop + 20 }));
+    });
+    const bricks = container.getBricks() as Array<PdfBrick>;
+    expect(bricks.length).toBe(3);
+    expect(bricks[0]['padding']).toEqual({ top: 40, bottom: 0 });
+    expect(bricks[1]['padding']).toEqual({ top: 40, bottom: 0 });
+    expect(bricks[2]['padding']).toEqual({ top: 0, bottom: 30 });
+    TestHelper.equalRect(expect, bricks[0].contentRect, { yTop: 40, xLeft: 20, yBot: 50, xRight: 47.5 });
+    TestHelper.equalRect(expect, bricks[1].contentRect, { yTop: 40, xLeft: 47.5, yBot: 50, xRight: 75 });
+    TestHelper.equalRect(expect, bricks[2].contentRect, { yTop: 50, xLeft: 20, yBot: 60, xRight: 75 });
 
-    inseparableBrick = new InseparableBrick(InseparableBrickMode.LAST, firstBrick, secondBrick, thirdBrick);
-    unfoldedBricks = inseparableBrick.unfold();
-    expect(unfoldedBricks.length).toBe(2);
-    expect(unfoldedBricks[0]).toBe(firstBrick);
-    expect(unfoldedBricks[1]['bricks'][0]).toBe(secondBrick);
-    expect(unfoldedBricks[1]['bricks'][1]).toBe(thirdBrick);
+    TestHelper.equalRect(expect, bricks[0], { yTop: 0, xLeft: 20, yBot: 50, xRight: 47.5 });
+    TestHelper.equalRect(expect, bricks[1], { yTop: 0, xLeft: 47.5, yBot: 50, xRight: 75 });
+    TestHelper.equalRect(expect, bricks[2], { yTop: 50, xLeft: 20, yBot: 90, xRight: 75 });
 
-    inseparableBrick = new InseparableBrick(InseparableBrickMode.BOTH, firstBrick, secondBrick, thirdBrick, forthBrick);
-    unfoldedBricks = inseparableBrick.unfold();
-    expect(unfoldedBricks.length).toBe(2);
-    expect(unfoldedBricks[0]['bricks'][0]).toBe(firstBrick);
-    expect(unfoldedBricks[0]['bricks'][1]).toBe(secondBrick);
-    expect(unfoldedBricks[1]['bricks'][0]).toBe(thirdBrick);
-    expect(unfoldedBricks[1]['bricks'][1]).toBe(forthBrick);
-});
-
-test('check InseparableBrick with CompositeBrick', async() =>{
-    const controller = new DocController();
-    const firstBrick = new EmptyBrick(controller, { xLeft: 0, yTop: 0, xRight: 10, yBot: 10 });
-    const secondBrick = new EmptyBrick(controller, { xLeft: 0, yTop: 10, xRight: 10, yBot: 20 });
-    const thirdBrick = new EmptyBrick(controller, { xLeft: 0, yTop: 20, xRight: 10, yBot: 30 });
-    const forthBrick = new EmptyBrick(controller, { xLeft: 0, yTop: 30, xRight: 10, yBot: 40 });
-
-    let inseparableBrick = new InseparableBrick(InseparableBrickMode.FIRST, firstBrick, new CompositeBrick(secondBrick, thirdBrick));
-    let unfoldedBricks = inseparableBrick.unfold();
-    expect(unfoldedBricks.length).toBe(2);
-    expect(unfoldedBricks[0]['bricks'][0]).toBe(firstBrick);
-    expect(unfoldedBricks[0]['bricks'][1]).toBe(secondBrick);
-    expect(unfoldedBricks[1]).toBe(thirdBrick);
-
-    inseparableBrick = new InseparableBrick(InseparableBrickMode.LAST, firstBrick, new CompositeBrick(secondBrick, thirdBrick));
-    unfoldedBricks = inseparableBrick.unfold();
-    expect(unfoldedBricks.length).toBe(2);
-    expect(unfoldedBricks[0]).toBe(firstBrick);
-    expect(unfoldedBricks[1]['bricks'][0]).toBe(secondBrick);
-    expect(unfoldedBricks[1]['bricks'][1]).toBe(thirdBrick);
-
-    inseparableBrick = new InseparableBrick(InseparableBrickMode.BOTH, firstBrick, new CompositeBrick(secondBrick, thirdBrick), forthBrick);
-    unfoldedBricks = inseparableBrick.unfold();
-    expect(unfoldedBricks.length).toBe(2);
-    expect(unfoldedBricks[0]['bricks'][0]).toBe(firstBrick);
-    expect(unfoldedBricks[0]['bricks'][1]).toBe(secondBrick);
-    expect(unfoldedBricks[1]['bricks'][0]).toBe(thirdBrick);
-    expect(unfoldedBricks[1]['bricks'][1]).toBe(forthBrick);
 });

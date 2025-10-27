@@ -132,19 +132,13 @@ test('Check matrix multiple two columns one row horizontal layout narrow width',
             }
         ]
     };
-    const defaultOptions: IDocOptions = TestHelper.defaultOptions;
-    const pageWidth: number = defaultOptions.margins.left + defaultOptions.margins.right +
-        new DocController(defaultOptions).measureText(
-            SurveyHelper.MATRIX_COLUMN_WIDTH).width * 1.5 / DocOptions.MM_TO_PT;
-    new DocController(defaultOptions).unitWidth / DocOptions.MM_TO_PT;
-    defaultOptions.format = [pageWidth, <number>(defaultOptions.format[1])];
     await checkFlatSnapshot(json, {
         snapshotName: 'matrixdropdown_two_columns_one_row_narrow_width',
         isCorrectEvent: (options: AdornersOptions) => {
             return options.question.getType() == 'matrixdropdown';
         },
         controllerOptions: {
-            format: [pageWidth, defaultOptions.format[1]]
+            format: [50, 297]
         }
     });
 });
@@ -170,19 +164,13 @@ test('Check matrix multiple two columns one row vertical layout narrow width', a
             }
         ]
     };
-    const defaultOptions: IDocOptions = TestHelper.defaultOptions;
-    const pageWidth: number = defaultOptions.margins.left + defaultOptions.margins.right +
-        new DocController(defaultOptions).measureText(
-            SurveyHelper.MATRIX_COLUMN_WIDTH).width * 1.5 / DocOptions.MM_TO_PT;
-    new DocController(defaultOptions).unitWidth / DocOptions.MM_TO_PT;
-    defaultOptions.format = [pageWidth, <number>(defaultOptions.format[1])];
     await checkFlatSnapshot(json, {
         snapshotName: 'matrixdropdown_vertical_two_columns_one_row_narrow_width',
         isCorrectEvent: (options: AdornersOptions) => {
             return options.question.getType() == 'matrixdropdown';
         },
         controllerOptions: {
-            format: [pageWidth, defaultOptions.format[1]]
+            format: [50, 297]
         }
     });
 });
@@ -287,7 +275,7 @@ test('Check matrix multiple column widths', async () => {
     };
     survey = new SurveyPDF(json, options);
     question = <QuestionMatrixDropdownModel>survey.getAllQuestions()[0];
-    let flat = new FlatMatrixMultiple(survey, question, controller, survey.getStylesForElement(question));
+    flat = new FlatMatrixMultiple(survey, question, controller, survey.getStylesForElement(question));
     widths = flat['calculateColumnWidth'](flat['visibleRows'], 4);
     restWidth = (flat['getColumnsAvalableWidth'](4) - 75 - 37.5) / 2;
     expect(widths).toEqual([75, restWidth, 37.5, restWidth]);

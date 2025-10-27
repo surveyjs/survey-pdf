@@ -178,6 +178,7 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
         colCount: number, isWide: boolean): Promise<CompositeBrick[]> {
         const currPoint: IPoint = SurveyHelper.clone(point);
         const rowsFlats: CompositeBrick[] = [];
+        if(!rows || rows.length == 0) return;
         const columnWidths = this.calculateColumnWidth(rows, colCount);
         for (let i: number = 0; i < rows.length; i++) {
             let rowFlat: CompositeBrick = await this.generateOneRow(currPoint, rows[i],

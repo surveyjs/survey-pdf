@@ -214,7 +214,7 @@ export class SurveyHelper {
         }
         else {
             result = this.splitHtmlRect(controller, await this.createHTMLFlat(point, controller,
-                this.createHtmlContainerBlock(this.getLocString(text), controller)));
+                this.createHtmlContainerBlock(this.getLocString(text), controller, newApperance), newApperance));
         }
         controller.lineHeightFactor = oldLineHeightFactor;
         controller.fontSize = oldFontSize;
@@ -265,11 +265,12 @@ export class SurveyHelper {
     }
 
     public static createHTMLRect(point: IPoint, controller: DocController,
-        margins: { top: number, bottom: number, width: number }, resultY: number): IRect {
+        margins: { top: number, bottom: number, width: number }, resultY: number, appearance?: Readonly<Partial<ITextAppearanceOptions>>): IRect {
+        const newAppearance = this.getPatchedTextAppearanceOptions(controller, appearance);
         const availablePageHeight: number = controller.paperHeight - controller.margins.bot - controller.margins.top;
         const height: number = (controller.helperDoc.getNumberOfPages() - 1) *
-            (controller.fontSize * Math.floor(availablePageHeight / controller.fontSize))
-            + resultY - margins.top + SurveyHelper.HTML_TAIL_TEXT_SCALE * controller.fontSize;
+            (newAppearance.fontSize * Math.floor(availablePageHeight / newAppearance.fontSize))
+            + resultY - margins.top + SurveyHelper.HTML_TAIL_TEXT_SCALE * newAppearance.fontSize;
         const numberOfPages: number = controller.helperDoc.getNumberOfPages();
         controller.helperDoc.addPage();
         for (let i: number = 0; i < numberOfPages; i++) {
@@ -278,13 +279,13 @@ export class SurveyHelper {
         return SurveyHelper.createRect(point, margins.width, height);
     }
 
-    public static async createHTMLFlat(point: IPoint, controller: DocController, html: string): Promise<IPdfBrick> {
+    public static async createHTMLFlat(point: IPoint, controller: DocController, html: string, appearance?: Readonly<Partial<ITextAppearanceOptions>>): Promise<IPdfBrick> {
         const margins: { top: number, bottom: number, width: number } = this.getHtmlMargins(controller, point);
         return await new Promise<IPdfBrick>((resolve) => {
             controller.helperDoc.fromHTML(html, point.xLeft, margins.top, {
                 pagesplit: true, width: margins.width
             }, function (result: any) {
-                const rect: IRect = SurveyHelper.createHTMLRect(point, controller, margins, result.y);
+                const rect: IRect = SurveyHelper.createHTMLRect(point, controller, margins, result.y, appearance);
                 resolve(new HTMLBrick(controller, rect, { html }, SurveyHelper.getDefaultTextAppearanceOptions(controller)));
             }, margins);
         });

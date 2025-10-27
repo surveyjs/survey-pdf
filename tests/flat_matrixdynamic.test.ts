@@ -208,17 +208,13 @@ test('Check matrix dynamic one column no rows narrow width', async () => {
             }
         ]
     };
-    const defaultOptions = TestHelper.defaultOptions;
-    const pageWidth = defaultOptions.margins.left + TestHelper.defaultOptions.margins.right +
-        new DocController(defaultOptions).measureText(
-            SurveyHelper.MATRIX_COLUMN_WIDTH).width / DocOptions.MM_TO_PT;
     await checkFlatSnapshot(json, {
         snapshotName: 'matrixdynamic_one_column_no_rows_narrow_width',
         isCorrectEvent: (options: AdornersOptions) => {
             return options.question.getType() == 'matrixdynamic';
         },
         controllerOptions: {
-            format: [pageWidth, TestHelper.defaultOptions.format[1]]
+            format: [50, 297]
         }
     });
 });
@@ -239,18 +235,13 @@ test('Check matrix dynamic one column one row verical layout narrow width', asyn
             }
         ]
     };
-    const defaultOptions = TestHelper.defaultOptions;
-    const pageWidth: number = defaultOptions.margins.left + defaultOptions.margins.right +
-        new DocController(defaultOptions).measureText(
-            SurveyHelper.MATRIX_COLUMN_WIDTH).width / DocOptions.MM_TO_PT +
-        new DocController(defaultOptions).unitWidth / DocOptions.MM_TO_PT;
     await checkFlatSnapshot(json, {
         snapshotName: 'matrixdynamic_vertical_one_column_one_row_narrow_width',
         isCorrectEvent: (options: AdornersOptions) => {
             return options.question.getType() == 'matrixdynamic';
         },
         controllerOptions: {
-            format: [pageWidth, TestHelper.defaultOptions.format[1]]
+            format: [50, 297]
         }
     });
 });
@@ -273,18 +264,13 @@ test('Check matrix dynamic two columns one row narrow width', async () => {
             }
         ]
     };
-    const defaultOptions = TestHelper.defaultOptions;
-    const pageWidth: number = defaultOptions.margins.left + defaultOptions.margins.right +
-        new DocController(defaultOptions).measureText(
-            SurveyHelper.MATRIX_COLUMN_WIDTH).width / DocOptions.MM_TO_PT +
-        new DocController(defaultOptions).unitWidth / DocOptions.MM_TO_PT;
     await checkFlatSnapshot(json, {
         snapshotName: 'matrixdynamic_two_columns_one_row_narrow_width',
         isCorrectEvent: (options: AdornersOptions) => {
             return options.question.getType() == 'matrixdynamic';
         },
         controllerOptions: {
-            format: [pageWidth, TestHelper.defaultOptions.format[1]]
+            format: [50, 297]
         }
     });
 });

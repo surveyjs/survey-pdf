@@ -75,11 +75,7 @@ test('Check rating many elements', async () => {
     await checkFlatSnapshot(json, {
         snapshotName: 'rating_many_elements',
         controllerOptions: {
-            format: [
-                TestHelper.defaultOptions.margins.left + TestHelper.defaultOptions.margins.right +
-        SurveyHelper.getRatingMinWidth(new DocController(TestHelper.defaultOptions)) * 3 /
-        DocOptions.MM_TO_PT + new DocController(TestHelper.defaultOptions).unitWidth /
-        DocOptions.MM_TO_PT, 297.0
+            format: [50, 297.0
             ]
         }
     });

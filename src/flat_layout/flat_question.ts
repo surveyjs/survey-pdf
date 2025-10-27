@@ -21,20 +21,20 @@ export class FlatQuestion<T extends Question = Question> implements IFlatQuestio
     private async generateFlatTitle(point: IPoint): Promise<IPdfBrick> {
         const composite: CompositeBrick = new CompositeBrick();
         let currPoint: IPoint = SurveyHelper.clone(point);
-        const textOptions:Partial<ITextAppearanceOptions> = { ...this.styles.title };
+        const textAppearance:Partial<ITextAppearanceOptions> = { ...this.styles.title };
         if (this.question.no) {
             const noText: string = this.question.no + ' ';
             let noFlat: IPdfBrick;
             if (SurveyHelper.hasHtml(this.question.locTitle)) {
                 this.controller.pushMargins();
                 this.controller.margins.right = this.controller.paperWidth -
-                        this.controller.margins.left - this.controller.measureText(noText, textOptions).width;
+                        this.controller.margins.left - this.controller.measureText(noText, textAppearance).width;
                 noFlat = await SurveyHelper.createHTMLFlat(currPoint, this.controller,
-                    SurveyHelper.createHtmlContainerBlock(noText, this.controller, textOptions));
+                    SurveyHelper.createHtmlContainerBlock(noText, this.controller, textAppearance), textAppearance);
                 this.controller.popMargins();
             }
             else {
-                noFlat = await SurveyHelper.createTextFlat(currPoint, this.controller, noText, textOptions);
+                noFlat = await SurveyHelper.createTextFlat(currPoint, this.controller, noText, textAppearance);
             }
             composite.addBrick(noFlat);
             currPoint.xLeft = noFlat.xRight;
@@ -42,7 +42,7 @@ export class FlatQuestion<T extends Question = Question> implements IFlatQuestio
         this.controller.pushMargins();
         this.controller.margins.left = currPoint.xLeft;
         const textFlat: CompositeBrick = <CompositeBrick>await SurveyHelper.createTextFlat(
-            currPoint, this.controller, this.question.locTitle, textOptions);
+            currPoint, this.controller, this.question.locTitle, textAppearance);
         composite.addBrick(textFlat);
         this.controller.popMargins();
         if (this.question.isRequired) {
@@ -51,14 +51,14 @@ export class FlatQuestion<T extends Question = Question> implements IFlatQuestio
                 currPoint = SurveyHelper.createPoint(textFlat.unfold()[0], false, false);
                 this.controller.pushMargins();
                 this.controller.margins.right = this.controller.paperWidth -
-                        this.controller.margins.left - this.controller.measureText(requiredText, textOptions).width;
+                        this.controller.margins.left - this.controller.measureText(requiredText, textAppearance).width;
                 composite.addBrick(await SurveyHelper.createHTMLFlat(currPoint, this.controller,
-                    SurveyHelper.createHtmlContainerBlock(requiredText, this.controller, textOptions)));
+                    SurveyHelper.createHtmlContainerBlock(requiredText, this.controller, textAppearance), textAppearance));
                 this.controller.popMargins();
             }
             else {
                 currPoint = SurveyHelper.createPoint(textFlat.unfold().pop(), false, true);
-                composite.addBrick(await SurveyHelper.createTextFlat(currPoint, this.controller, requiredText, textOptions));
+                composite.addBrick(await SurveyHelper.createTextFlat(currPoint, this.controller, requiredText, textAppearance));
             }
         }
         return composite;

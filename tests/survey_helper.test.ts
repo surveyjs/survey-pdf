@@ -238,19 +238,19 @@ test('Check set column width', () => {
         }
     };
     let controller: DocController = new DocController(options);
-    let columnWidth: number = SurveyHelper.getColumnWidth(controller, 3, SurveyHelper.GAP_BETWEEN_COLUMNS);
-    let gap: number = controller.unitWidth * SurveyHelper.GAP_BETWEEN_COLUMNS;
+    let gap: number = controller.unitWidth;
+    let columnWidth: number = SurveyHelper.getColumnWidth(controller, 3, gap);
     controller.pushMargins();
-    SurveyHelper.setColumnMargins(controller, 3, 0, SurveyHelper.GAP_BETWEEN_COLUMNS);
+    SurveyHelper.setColumnMargins(controller, 3, 0, gap);
     expect(controller.margins.left).toBe(0);
     expect(controller.margins.right).toBe(2 * (columnWidth + gap));
     controller.popMargins();
     controller.pushMargins();
-    SurveyHelper.setColumnMargins(controller, 3, 1, SurveyHelper.GAP_BETWEEN_COLUMNS);
+    SurveyHelper.setColumnMargins(controller, 3, 1, gap);
     expect(controller.margins.left).toBe(columnWidth + gap);
     expect(controller.margins.right).toBe(columnWidth + gap);
     controller.popMargins();
-    SurveyHelper.setColumnMargins(controller, 3, 2, SurveyHelper.GAP_BETWEEN_COLUMNS);
+    SurveyHelper.setColumnMargins(controller, 3, 2, gap);
     expect(controller.margins.left).toBe(2 * (columnWidth + gap));
     expect(controller.margins.right).toBe(0);
 });
@@ -293,8 +293,8 @@ test('Check createSvgContent method', () => {
 });
 test('Check setCanvas method', () => {
     class ContextMock {
-        xScale: number;
-        yScale: number;
+        xScale!: number;
+        yScale!: number;
 
         scale = (xScale: number, yScale: number) => {
             this.xScale = xScale;
@@ -304,30 +304,26 @@ test('Check setCanvas method', () => {
         drawImage = () => { }
     }
     const canvas: HTMLCanvasElement = document.createElement('canvas');
-    let context: ContextMock;
+    let context!: ContextMock;
     (<any>canvas).getContext = () => {
         context = new ContextMock();
         return context;
     };
 
     const img = new Image();
-    const oldValue = SurveyHelper.HTML_TO_IMAGE_QUALITY;
-
-    SurveyHelper.HTML_TO_IMAGE_QUALITY = 4;
-    SurveyHelper['setCanvas'](canvas, 50, 20, img);
+    let controller = new DocController({ htmlToImageQuality: 4 });
+    SurveyHelper['setCanvas'](controller, canvas, 50, 20, img);
     expect(canvas.width).toBe(200);
     expect(canvas.height).toBe(80);
     expect(context.xScale).toBe(4);
     expect(context.yScale).toBe(4);
 
-    SurveyHelper.HTML_TO_IMAGE_QUALITY = 1;
-    SurveyHelper['setCanvas'](canvas, 60, 40, img);
+    controller = new DocController({ htmlToImageQuality: 1 });
+    SurveyHelper['setCanvas'](controller, canvas, 60, 40, img);
     expect(canvas.width).toBe(60);
     expect(canvas.height).toBe(40);
     expect(context.xScale).toBe(1);
     expect(context.yScale).toBe(1);
-
-    SurveyHelper.HTML_TO_IMAGE_QUALITY = oldValue;
 });
 test('Check getContentQuestionType method with renderAs', () => {
     let json: any = {
@@ -387,11 +383,11 @@ test('Check chooseHtmlFont method', async () => {
     let controller = new DocController(
         { fontName: 'custom_font' }
     );
-    expect(SurveyHelper.chooseHtmlFont(controller)).toBe(SurveyHelper.STANDARD_FONT);
+    expect(SurveyHelper.chooseHtmlFont(controller)).toBe('helvetica');
     controller = new DocController(
         { fontName: 'custom_font', useCustomFontInHtml: true }
     );
-    expect(SurveyHelper.chooseHtmlFont(controller)).toBe(SurveyHelper.STANDARD_FONT);
+    expect(SurveyHelper.chooseHtmlFont(controller)).toBe('helvetica');
     controller = new DocController(
         { fontName: 'custom_font', useCustomFontInHtml: true, base64Bold: 'base64font' }
     );
@@ -403,7 +399,7 @@ test('Check chooseHtmlFont method', async () => {
     controller = new DocController(
         { fontName: 'custom_font2', useCustomFontInHtml: true }
     );
-    expect(SurveyHelper.chooseHtmlFont(controller)).toBe(SurveyHelper.STANDARD_FONT);
+    expect(SurveyHelper.chooseHtmlFont(controller)).toBe('helvetica');
     DocController.addFont('custom_font2', 'base64', 'normal');
     controller = new DocController(
         { fontName: 'custom_font2', useCustomFontInHtml: true }

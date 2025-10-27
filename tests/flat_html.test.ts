@@ -73,16 +73,16 @@ test('Check createHTMLRect method with long html', async () => {
     const margins: any = { top: controller.margins.top, bottom: controller.margins.bot, width: controller.unitWidth };
     const result: number = descPoint.yTop;
 
-    let actualRect: IRect = SurveyHelper.createHTMLRect(descPoint, controller, margins, result);
+    let actualRect: IRect = SurveyHelper.createHTMLRect(descPoint, controller, margins, result, { fontSize: 30 });
     expect(actualRect.yBot - actualRect.yTop).toBeCloseTo(7.2, 8);
 
     controller.helperDoc.addPage();
-    actualRect = SurveyHelper.createHTMLRect(descPoint, controller, margins, result);
+    actualRect = SurveyHelper.createHTMLRect(descPoint, controller, margins, result, { fontSize: 30 });
     expect(actualRect.yBot - actualRect.yTop).toBeCloseTo(217.2, 8);
 
     controller.helperDoc.addPage();
     controller.helperDoc.addPage();
-    actualRect = SurveyHelper.createHTMLRect(descPoint, controller, margins, result);
+    actualRect = SurveyHelper.createHTMLRect(descPoint, controller, margins, result, { fontSize: 30 });
     expect(actualRect.yBot - actualRect.yTop).toBeCloseTo(427.2, 8);
 });
 

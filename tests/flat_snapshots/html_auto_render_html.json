@@ -19,6 +19,11 @@
 					"yTop": 31.34645669291339,
 					"yBot": 31.346456692913392
 				},
+				"appearance": {
+					"fontSize": 12,
+					"fontColor": "#000",
+					"lineHeight": 21
+				},
 				"padding": {
 					"top": 0,
 					"bottom": 0
