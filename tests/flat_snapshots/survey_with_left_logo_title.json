@@ -82,11 +82,11 @@
 		{
 			"brickType": "TextFieldBrick",
 			"width": 525.8326771653543,
-			"height": 24,
+			"height": 24.75,
 			"xLeft": 34.72145669291339,
 			"xRight": 560.5541338582677,
 			"yTop": 202.3464566929134,
-			"yBot": 226.3464566929134,
+			"yBot": 227.0964566929134,
 			"appearance": {
 				"fontSize": 15,
 				"fontName": "helvetica",
@@ -107,8 +107,8 @@
 				"isMultiline": false
 			},
 			"padding": {
-				"top": 3,
-				"bottom": 3
+				"top": 3.375,
+				"bottom": 3.375
 			}
 		}
 	]

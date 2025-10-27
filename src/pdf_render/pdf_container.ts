@@ -92,7 +92,7 @@ export class ContainerBrick extends CompositeBrick {
         this.appearance = SurveyHelper.mergeObjects({}, defaultContainerOptions, appearance);
     }
     getStartPoint(): IPoint {
-        return { yTop: this.layout.yTop + this.padding.top, xLeft: this.layout.xLeft + this.padding.left + this.includedBorderWidth };
+        return { yTop: this.layout.yTop + this.padding.top + this.includedBorderWidth, xLeft: this.layout.xLeft + this.padding.left + this.includedBorderWidth };
     }
     startSetup() {
         this.controller.pushMargins();
@@ -101,7 +101,7 @@ export class ContainerBrick extends CompositeBrick {
     }
     finishSetup() {
         this.controller.popMargins();
-        this.increasePadding({ top: this.padding.top, bottom: this.padding.bottom });
+        this.increasePadding({ top: this.padding.top + this.includedBorderWidth, bottom: this.padding.bottom + this.includedBorderWidth });
         let renderedPageIndex = -1;
         const callback = () => {
             const currentPageIndex = this.controller.getCurrentPageIndex();
