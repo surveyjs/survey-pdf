@@ -17,6 +17,8 @@ export function getDefaultStyles (baseSize: number) {
         contentGap: baseSize * 4.0,
         question: {
             titleLeftWidthPers: Math.E / 10.0,
+            titleRequiredGap: baseSize / 2,
+            titleNumberGap: baseSize / 2,
             contentGapVertical: baseSize * 0.5,
             contentGapHorizontal: baseSize * 1.0,
             contentIndent: 0,

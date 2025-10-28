@@ -23,21 +23,22 @@ export class FlatQuestion<T extends Question = Question> implements IFlatQuestio
         let currPoint: IPoint = SurveyHelper.clone(point);
         const textAppearance:Partial<ITextAppearanceOptions> = { ...this.styles.title };
         if (this.question.no) {
-            const noText: string = this.question.no + ' ';
+            const numberAppearance = SurveyHelper.mergeObjects({}, textAppearance, this.styles.number);
+            const noText: string = this.question.no;
             let noFlat: IPdfBrick;
             if (SurveyHelper.hasHtml(this.question.locTitle)) {
                 this.controller.pushMargins();
                 this.controller.margins.right = this.controller.paperWidth -
-                        this.controller.margins.left - this.controller.measureText(noText, textAppearance).width;
+                        this.controller.margins.left - this.controller.measureText(noText, numberAppearance).width;
                 noFlat = await SurveyHelper.createHTMLFlat(currPoint, this.controller,
-                    SurveyHelper.createHtmlContainerBlock(noText, this.controller, textAppearance), textAppearance);
+                    SurveyHelper.createHtmlContainerBlock(noText, this.controller, numberAppearance), numberAppearance);
                 this.controller.popMargins();
             }
             else {
-                noFlat = await SurveyHelper.createTextFlat(currPoint, this.controller, noText, textAppearance);
+                noFlat = await SurveyHelper.createTextFlat(currPoint, this.controller, noText, numberAppearance);
             }
             composite.addBrick(noFlat);
-            currPoint.xLeft = noFlat.xRight;
+            currPoint.xLeft = noFlat.xRight + this.styles.titleNumberGap;
         }
         this.controller.pushMargins();
         this.controller.margins.left = currPoint.xLeft;
@@ -46,19 +47,22 @@ export class FlatQuestion<T extends Question = Question> implements IFlatQuestio
         composite.addBrick(textFlat);
         this.controller.popMargins();
         if (this.question.isRequired) {
+            const requiredAppearance = SurveyHelper.mergeObjects({}, textAppearance, this.styles.required);
             const requiredText: string = this.question.requiredMark;
             if (SurveyHelper.hasHtml(this.question.locTitle)) {
                 currPoint = SurveyHelper.createPoint(textFlat.unfold()[0], false, false);
+                currPoint.xLeft += this.styles.titleRequiredGap;
                 this.controller.pushMargins();
                 this.controller.margins.right = this.controller.paperWidth -
-                        this.controller.margins.left - this.controller.measureText(requiredText, textAppearance).width;
+                        this.controller.margins.left - this.controller.measureText(requiredText, requiredAppearance).width;
                 composite.addBrick(await SurveyHelper.createHTMLFlat(currPoint, this.controller,
-                    SurveyHelper.createHtmlContainerBlock(requiredText, this.controller, textAppearance), textAppearance));
+                    SurveyHelper.createHtmlContainerBlock(requiredText, this.controller, requiredAppearance), requiredAppearance));
                 this.controller.popMargins();
             }
             else {
                 currPoint = SurveyHelper.createPoint(textFlat.unfold().pop(), false, true);
-                composite.addBrick(await SurveyHelper.createTextFlat(currPoint, this.controller, requiredText, textAppearance));
+                currPoint.xLeft += this.styles.titleRequiredGap;
+                composite.addBrick(await SurveyHelper.createTextFlat(currPoint, this.controller, requiredText, requiredAppearance));
             }
         }
         return composite;

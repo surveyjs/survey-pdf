@@ -39,7 +39,7 @@ async function checkTitleText(questionStartIndex: string, isRequired: boolean = 
     if (questionStartIndex !== null || isRequired) {
         internalContent = controller.doc.internal.pages[1][18];
         expect(internalContent).toBeDefined();
-        content += internalContent.match(regex)[1];
+        content += (questionStartIndex !== null ? ' ' : '') + internalContent.match(regex)[1];
     }
     expect(content).toBe(TestHelper.getTitleText(<Question>survey.getAllQuestions()[0]));
 }

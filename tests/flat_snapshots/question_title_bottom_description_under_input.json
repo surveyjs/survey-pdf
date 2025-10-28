@@ -77,28 +77,28 @@
 		"bricks": [
 			{
 				"brickType": "CompositeBrick",
-				"width": 26.520000000000003,
+				"width": 26.160000000000004,
 				"height": 18,
 				"xLeft": 34.72145669291339,
-				"xRight": 61.241456692913395,
+				"xRight": 60.881456692913396,
 				"yTop": 66.22145669291339,
 				"yBot": 84.22145669291339,
 				"bricks": [
 					{
 						"brickType": "CompositeBrick",
-						"width": 13.32,
+						"width": 9.96,
 						"height": 18,
 						"xLeft": 34.72145669291339,
-						"xRight": 48.04145669291339,
+						"xRight": 44.68145669291339,
 						"yTop": 66.22145669291339,
 						"yBot": 84.22145669291339,
 						"bricks": [
 							{
 								"brickType": "TextBrick",
-								"width": 13.32,
+								"width": 9.96,
 								"height": 18,
 								"xLeft": 34.72145669291339,
-								"xRight": 48.04145669291339,
+								"xRight": 44.68145669291339,
 								"yTop": 66.22145669291339,
 								"yBot": 84.22145669291339,
 								"appearance": {
@@ -110,7 +110,7 @@
 									"textAlign": "left"
 								},
 								"options": {
-									"text": "1. "
+									"text": "1."
 								},
 								"padding": {
 									"top": 0,
@@ -123,8 +123,8 @@
 						"brickType": "CompositeBrick",
 						"width": 13.200000000000003,
 						"height": 18,
-						"xLeft": 48.04145669291339,
-						"xRight": 61.241456692913395,
+						"xLeft": 47.68145669291339,
+						"xRight": 60.881456692913396,
 						"yTop": 66.22145669291339,
 						"yBot": 84.22145669291339,
 						"bricks": [
@@ -132,8 +132,8 @@
 								"brickType": "TextBrick",
 								"width": 13.200000000000003,
 								"height": 18,
-								"xLeft": 48.04145669291339,
-								"xRight": 61.241456692913395,
+								"xLeft": 47.68145669291339,
+								"xRight": 60.881456692913396,
 								"yTop": 66.22145669291339,
 								"yBot": 84.22145669291339,
 								"appearance": {
