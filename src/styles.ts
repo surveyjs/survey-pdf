@@ -119,9 +119,6 @@ export function getDefaultStyles (baseSize: number) {
             }
         },
         matrixbase: {
-            title: {
-                fontStyle: 'bold'
-            },
             columnMinWidth: baseSize * 15,
             contentGapVertical: 0,
             gapBetweenColumns: 0,
@@ -137,6 +134,9 @@ export function getDefaultStyles (baseSize: number) {
                 padding: [baseSize * 0.5, baseSize],
                 backgroundColor: '#E5E5E5',
                 borderColor: '#000',
+            },
+            title: {
+                fontStyle: 'bold'
             },
             cell: {
                 borderWidth: baseSize * 0.125,
@@ -196,14 +196,33 @@ export function getDefaultStyles (baseSize: number) {
             },
         },
         multipletext: {
-            itemTitleWidthPers: Math.E / 10.0,
-            gapBetweenColumns: 1.5,
-            rowsGap: baseSize * 0.195,
+            contentGapVertical: 0,
+            itemTitleWidthPers: 0.4,
+            gapBetweenColumns: 0,
+            gapBetweenRows: 0,
+            wrapper: {
+                padding: 0,
+                borderWidth: 0
+            },
+            header: {
+                borderWidth: baseSize * 0.125,
+                padding: [baseSize * 0.5, baseSize],
+                backgroundColor: '#E5E5E5',
+                borderColor: '#000',
+            },
+            title: {
+                fontStyle: 'bold'
+            },
             label: {
                 fontSize: baseSize * 2.5,
                 lineHeight: baseSize * 3,
                 fontStyle: 'normal',
                 fontColor: '#000',
+            },
+            cell: {
+                borderWidth: baseSize * 0.125,
+                borderColor: '#000',
+                padding: [baseSize * 0.5, baseSize]
             },
         },
         rating: {

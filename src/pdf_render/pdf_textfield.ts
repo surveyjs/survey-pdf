@@ -195,6 +195,8 @@ export class TextFieldBrick extends PdfBrick {
     public addBeforeRenderCallback(func: (brick: IPdfBrick) => void): void {
         if(this.getShouldRenderReadOnly() && this.options.inputType !== 'color') {
             this.textBrick.addBeforeRenderCallback(func);
+        } else {
+            super.addBeforeRenderCallback(func);
         }
     }
 }
