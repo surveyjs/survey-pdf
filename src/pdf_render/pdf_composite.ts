@@ -109,7 +109,8 @@ export class CompositeBrick implements IPdfBrick {
     increasePadding(val: { top: number, bottom: number }): void {
         if(val.top == 0 && val.bottom == 0) return;
         const tree = new IntervalTree<{ low: number, high: number, yTop: number, yBot: number }>();
-        this.bricks.forEach(brick => {
+        const notEmptyBricks = this.bricks.filter(brick => !brick.isEmpty);
+        notEmptyBricks.forEach(brick => {
             tree.insert({ low: brick.xLeft, high: brick.xRight, yTop: brick.yTop, yBot: brick.yBot });
         });
         this.bricks.forEach(brick => {

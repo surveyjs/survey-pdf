@@ -78,4 +78,7 @@ export class RowlineBrick implements IPdfBrick {
         return this._contentRect;
     }
     public updateRect(): void {}
+    public get isEmpty(): boolean {
+        return this.color === null;
+    }
 }

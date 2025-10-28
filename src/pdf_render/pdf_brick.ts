@@ -14,6 +14,7 @@ export interface IPdfBrick extends IRect, ISize {
     getPageNumber(): number;
     updateRect(): void;
     increasePadding(val: { top: number, bottom: number }): void;
+    isEmpty: boolean;
 }
 /**
  * An object that describes a PDF brick&mdash;a simple element with specified content, size, and location. Bricks are fundamental elements used to construct a PDF document.
@@ -180,4 +181,7 @@ export class PdfBrick implements IPdfBrick {
         this._contentRect = undefined;
     }
     public updateRect(): void {}
+    public get isEmpty(): boolean {
+        return false;
+    }
 }

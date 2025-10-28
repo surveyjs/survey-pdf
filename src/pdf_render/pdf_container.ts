@@ -109,7 +109,7 @@ export class ContainerBrick extends CompositeBrick {
                 return;
             } else {
                 renderedPageIndex = currentPageIndex;
-                const unfoldedBricks = this.unfold();
+                const unfoldedBricks = this.unfold().filter(brick => !brick.isEmpty);
                 const unfoldedBricksOnPage = unfoldedBricks.filter(brick => brick.getPageNumber() == currentPageIndex);
                 const mergedRect = SurveyHelper.mergeRects(...unfoldedBricksOnPage);
                 let borderRect = BorderRect.All;
