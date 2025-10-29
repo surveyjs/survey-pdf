@@ -178,7 +178,7 @@ test('Check questionsOnPageMode: "inputPerPage"', async () => {
         }
     );
     expect(survey.visiblePages.length).toBe(2);
-
+    survey.visiblePages.forEach(page => page.onFirstRendering());
     expect(survey.visiblePages[0].visibleQuestions.length).toBe(2);
     expect(survey.visiblePages[0].rows.length).toBe(2);
     expect(survey.visiblePages[0].rows[0].elements.length).toBe(1);
