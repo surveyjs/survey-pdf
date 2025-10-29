@@ -258,11 +258,19 @@ export function getDefaultStyles (baseSize: number) {
             gapBetweenRows: baseSize * 0.25,
         },
         slider: {
-            gapBetweenColumns: baseSize * 1.5,
+            gapBetweenColumns: baseSize * 8,
             input: {
                 fontSize: baseSize * 2.5,
                 lineHeight: baseSize * 3
-            }
+            },
+            rangeInput: {
+                width: baseSize * 5
+            },
+            rangeSeparator: {
+                width: baseSize * 3,
+                height: baseSize * 0.125,
+                backgroundColor: '#000'
+            },
         },
         dropdown: {
             contentGapVertical: baseSize * 0.5,
