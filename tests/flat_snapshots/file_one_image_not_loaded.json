@@ -1,0 +1,89 @@
+[
+	{
+		"brickType": "CompositeBrick",
+		"width": 150,
+		"height": 131.67,
+		"xLeft": 34.72145669291339,
+		"xRight": 184.7214566929134,
+		"yTop": 31.72145669291339,
+		"yBot": 163.39145669291338,
+		"bricks": [
+			{
+				"brickType": "CompositeBrick",
+				"width": 150,
+				"height": 131.67,
+				"xLeft": 34.72145669291339,
+				"xRight": 184.7214566929134,
+				"yTop": 31.72145669291339,
+				"yBot": 163.39145669291338,
+				"bricks": [
+					{
+						"brickType": "CompositeBrick",
+						"width": 48.900000000000006,
+						"height": 18.000000000000004,
+						"xLeft": 34.72145669291339,
+						"xRight": 83.6214566929134,
+						"yTop": 31.72145669291339,
+						"yBot": 49.72145669291339,
+						"bricks": [
+							{
+								"brickType": "LinkBrick",
+								"width": 48.900000000000006,
+								"height": 18.000000000000004,
+								"xLeft": 34.72145669291339,
+								"xRight": 83.6214566929134,
+								"yTop": 31.72145669291339,
+								"yBot": 49.72145669291339,
+								"appearance": {
+									"fontSize": 15,
+									"fontName": "helvetica",
+									"fontStyle": "normal",
+									"lineHeight": 18,
+									"fontColor": "#0000EE"
+								},
+								"options": {
+									"link": "some url",
+									"text": "cat.png",
+									"readOnlyShowLink": false,
+									"shouldRenderReadOnly": false
+								},
+								"padding": {
+									"top": 0,
+									"bottom": 0
+								}
+							},
+							{
+								"brickType": "RowlineBrick",
+								"width": 48.900000000000006,
+								"height": 0,
+								"xLeft": 34.72145669291339,
+								"xRight": 83.6214566929134,
+								"yTop": 49.72145669291339,
+								"yBot": 49.72145669291339
+							}
+						]
+					},
+					{
+						"brickType": "ImageBrick",
+						"width": 150,
+						"height": 112.49999999999999,
+						"xLeft": 34.72145669291339,
+						"xRight": 184.7214566929134,
+						"yTop": 50.891456692913394,
+						"yBot": 163.39145669291338,
+						"options": {
+							"link": "some url",
+							"width": 150,
+							"height": 112.5,
+							"objectFit": "contain"
+						},
+						"padding": {
+							"top": 0,
+							"bottom": 0
+						}
+					}
+				]
+			}
+		]
+	}
+]

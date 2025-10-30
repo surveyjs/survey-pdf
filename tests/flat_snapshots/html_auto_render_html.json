@@ -1,0 +1,34 @@
+[
+	{
+		"brickType": "CompositeBrick",
+		"width": null,
+		"height": null,
+		"xLeft": null,
+		"xRight": null,
+		"yTop": null,
+		"yBot": null,
+		"bricks": [
+			{
+				"brickType": "HTMLBrick",
+				"width": null,
+				"height": null,
+				"yBot": null,
+				"options": {
+					"xLeft": 34.72145669291339,
+					"xRight": 34.72145669291339,
+					"yTop": 31.72145669291339,
+					"yBot": 31.721456692913392
+				},
+				"appearance": {
+					"fontSize": 12,
+					"fontColor": "#000",
+					"lineHeight": 21
+				},
+				"padding": {
+					"top": 0,
+					"bottom": 0
+				}
+			}
+		]
+	}
+]
