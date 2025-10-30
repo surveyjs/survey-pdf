@@ -8,7 +8,10 @@ import { TestHelper } from '../src/helper_test';
 import { DocController, DocOptions } from '../src/doc_controller';
 import { FlatRepository } from '../src/flat_layout/flat_repository';
 import { SurveyHelper } from '../src/helper_survey';
+import { checkPDFSnapshot } from './snapshot_helper';
 import { TextBrick } from '../src/pdf_render/pdf_text';
+import '../src/flat_layout/flat_checkbox';
+import '../src/flat_layout/flat_radiogroup';
 let __dummy_tx = new FlatTextbox(null, null, null);
 
 test('Check raw method', async () => {
@@ -192,4 +195,63 @@ test('Check questionsOnPageMode: "inputPerPage"', async () => {
     expect(survey.visiblePages[1].rows[0].elements[0].name).toBe('q3');
     expect(survey.visiblePages[1].rows[1].elements.length).toBe(1);
     expect(survey.visiblePages[1].rows[1].elements[0].name).toBe('q4');
+});
+
+test('check rendered navigation for survey', async () => {
+    checkPDFSnapshot({
+        pages: [{
+            title: 'Page1',
+            elements: [
+                {
+                    type: 'checkbox',
+                    name: 'Checkbox',
+                    title: 'Checkbox',
+                    choices: ['Item1', 'Item2', 'Item3', 'Item4', 'Item5', 'Item6', 'Item7', 'Item8', 'Item9', 'Item10', 'Item11', 'Item12', 'Item13', 'Item14', 'Item15'],
+                },
+                {
+                    type: 'radiogroup',
+                    name: 'radiogroup',
+                    title: 'Radiogroup',
+                    choices: ['Item1', 'Item2', 'Item3', 'Item4', 'Item5', 'Item6', 'Item7', 'Item8', 'Item9', 'Item10', 'Item11', 'Item12', 'Item13', 'Item14', 'Item15'],
+                },
+                {
+                    type: 'panel',
+                    title: 'Panel',
+                    elements: [
+                        {
+                            type: 'text',
+                            name: 'question1',
+                            title: 'Question 1'
+                        },
+                        {
+                            type: 'text',
+                            name: 'question2',
+                            title: 'Question 2'
+                        },
+                    ]
+                },
+            ]
+        },
+        {
+            title: 'Page2',
+            elements: [
+                {
+                    type: 'text',
+                    name: 'question1',
+                    title: 'Question 3'
+                },
+                {
+                    type: 'text',
+                    name: 'question2',
+                    title: 'Question 4'
+                },
+            ]
+        }
+        ]
+    }, {
+        snapshotName: 'toc.pdf',
+        controllerOptions: {
+            showNavigation: true
+        }
+    });
 });

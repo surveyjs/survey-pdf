@@ -22,7 +22,9 @@ export class FlatPanel<T extends PanelModel = PanelModel> {
         const adornersOptions: AdornersPanelOptions = new AdornersPanelOptions(point,
             panelFlats, this.panel, this.controller, FlatRepository.getInstance());
         await this.survey.onRenderPanel.fire(this.survey, adornersOptions);
-        return [...adornersOptions.bricks];
+        const bricks = [...adornersOptions.bricks];
+        this.survey.afterRenderSurveyElement(this.panel, bricks);
+        return bricks;
     }
     protected async generateContentFlats(point: IPoint): Promise<IPdfBrick[]> {
         if (!this.panel.isVisible) return;

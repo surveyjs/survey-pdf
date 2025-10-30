@@ -234,6 +234,38 @@ export class SurveyPDF extends SurveyModel {
             });
         }
     }
+
+    private navigationMap: { [index: string]: number } = {};
+
+    public afterRenderSurveyElement(element: SurveyElement, bricks: Array<IPdfBrick>) {
+        bricks.forEach(brick => brick.addBeforeRenderCallback(() => {
+            if(brick.getPageNumber() !== undefined) {
+                this.navigationMap[element.uniqueId] = Math.min(this.navigationMap[element.uniqueId] ?? Number.MAX_VALUE, brick.getPageNumber() + 1);
+            }
+        }));
+    }
+    private renderPanelNavigation(controller: DocController, panel: PanelModel, rootChapter: any) {
+        const { doc } = controller;
+        if(!this.navigationMap[panel.uniqueId]) return;
+        const panelChapter = doc.outline.add(rootChapter, panel.title || panel.name, { pageNumber: this.navigationMap[panel.uniqueId] });
+        (panel.elements as any as Array<SurveyElement>).forEach((el: SurveyElement) => {
+            if(el.isVisible && this.navigationMap[el.uniqueId]) {
+                if(el.isPanel) {
+                    this.renderPanelNavigation(controller, el as PanelModel, panelChapter);
+                } else {
+                    doc.outline.add(panelChapter, el.title || el.name, { pageNumber: this.navigationMap[el.uniqueId] });
+                }
+            }
+        });
+    }
+    private renderNavigation(controller: DocController) {
+        if(this.options.showNavigation ?? true) {
+            this.visiblePages.forEach(page => {
+                this.renderPanelNavigation(controller, page, null);
+            });
+            this.navigationMap = {};
+        }
+    }
     protected async renderSurvey(controller: DocController): Promise<void> {
         this.visiblePages.forEach(page => page.onFirstRendering());
         const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(this, controller);
@@ -261,6 +293,7 @@ export class SurveyPDF extends SurveyModel {
                 await packs[i][j].render();
             }
         }
+        this.renderNavigation(controller);
     }
     /**
      * An asynchronous method that starts to download the generated PDF file in the web browser.

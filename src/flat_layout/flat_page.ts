@@ -17,6 +17,8 @@ export class FlatPage extends FlatPanel<PageModel> {
         const adornersOptions: AdornersPageOptions = new AdornersPageOptions(point,
             pageFlats, this.panel, this.controller, FlatRepository.getInstance());
         await this.survey.onRenderPage.fire(this.survey, adornersOptions);
-        return [...adornersOptions.bricks];
+        const bricks = [...adornersOptions.bricks];
+        this.survey.afterRenderSurveyElement(this.panel, bricks);
+        return bricks;
     }
 }

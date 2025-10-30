@@ -229,6 +229,7 @@ export interface IDocOptions {
 
     htmlToImageQuality?: number;
     otherRowsCount?: number;
+    showNavigation?: boolean;
 }
 
 export class DocOptions implements IDocOptions {
@@ -319,6 +320,8 @@ export class DocOptions implements IDocOptions {
         this._htmlToImageQuality = options.htmlToImageQuality ?? 1;
         this._otherRowsCount = options.otherRowsCount ?? 2;
     }
+    textFieldRenderAs?: 'singleLine' | 'multiLine';
+    showNavigation?: boolean;
     public get leftTopPoint(): IPoint {
         return {
             xLeft: this.margins.left,
