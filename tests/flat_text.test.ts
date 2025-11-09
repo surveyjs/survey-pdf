@@ -68,7 +68,7 @@ test('Check readonly text with readOnlyTextRenderMode set to div', async () => {
         const survey: SurveyPDF = new SurveyPDFTester(json, TestHelper.defaultOptions);
         const pdfAsString = await survey.raw();
         // Stream in result PDF document should be small - in this example 14
-        expect(pdfAsString.indexOf('/Length 387\n') > 0).toBeTruthy();
+        expect(pdfAsString.indexOf('/Length 252\n') > 0).toBeTruthy();
 
     } finally {
         Survey.settings.readOnlyTextRenderMode = oldRenderMode;

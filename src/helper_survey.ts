@@ -48,9 +48,12 @@ export interface IBorderAppearanceOptions {
     dashStyle?: { dashArray: [number, number] | [number], dashPhase: number };
     borderMode?: BorderMode;
     borderRect?: BorderRect;
+    borderRadius?: number;
 }
 
-export interface IInputAppearanceOptions extends IBorderAppearanceOptions, ITextAppearanceOptions {}
+export interface IInputAppearanceOptions extends IBorderAppearanceOptions, ITextAppearanceOptions {
+    backgroundColor?: string;
+}
 
 export class SurveyHelper {
     public static readonly EPSILON: number = 2.2204460492503130808472633361816e-15;
@@ -526,6 +529,70 @@ export class SurveyHelper {
         controller.popMargins();
         return textFlat;
     }
+    public static getRoundedShape(rect: IRect, appearance: IBorderAppearanceOptions): { lines: Array<Array<number>>, point: IPoint } {
+        const width = rect.xRight - rect.xLeft;
+        const height = rect.yBot - rect.yTop;
+        const k = 0.55228;
+        const borderRadius = appearance.borderRadius ?? 0;
+        const hasTopRight = !!(appearance.borderRect & BorderRect.Top) && !!(appearance.borderRect & BorderRect.Right);
+        const hasRightBottom = !!(appearance.borderRect & BorderRect.Right) && !!(appearance.borderRect & BorderRect.Bottom);
+        const hasBottomLeft = !!(appearance.borderRect & BorderRect.Bottom) && !!(appearance.borderRect & BorderRect.Left);
+        const hasLeftTop = !!(appearance.borderRect & BorderRect.Left) && !!(appearance.borderRect & BorderRect.Top);
+        const radiusTopRight = hasTopRight ? borderRadius : 0;
+        const radiusRightBottom = hasRightBottom ? borderRadius : 0;
+        const radiusBottomLeft = hasBottomLeft ? borderRadius : 0;
+        const radiusLeftTop = hasLeftTop ? borderRadius : 0;
+        const cornerPoints = [
+            {
+                xLeft: rect.xLeft + radiusLeftTop,
+                yTop: rect.yTop,
+            },
+            {
+                xLeft: rect.xRight,
+                yTop: rect.yTop + radiusTopRight
+            },
+            {
+                xLeft: rect.xRight - radiusRightBottom,
+                yTop: rect.yBot
+            },
+            {
+                xLeft: rect.xLeft,
+                yTop: rect.yBot - radiusBottomLeft
+            }
+        ];
+        const cornerConditions = [hasTopRight, hasRightBottom, hasBottomLeft, hasLeftTop];
+        const cornerLines = [
+            [[width - (radiusLeftTop + radiusTopRight), 0]].concat(!!radiusTopRight ? [[k * radiusTopRight, 0, radiusTopRight, (1 - k) * radiusTopRight, radiusTopRight, radiusTopRight]] : []),
+            [[0, height - (radiusTopRight + radiusRightBottom)]].concat(!!radiusRightBottom ? [[0, k * radiusRightBottom, (k - 1) * radiusRightBottom, radiusRightBottom, -radiusRightBottom, radiusRightBottom]] : []),
+            [[-(width - (radiusBottomLeft + radiusRightBottom)), 0]].concat(!!radiusBottomLeft ? [[-k * radiusBottomLeft, 0, -radiusBottomLeft, (k - 1) * radiusBottomLeft, -radiusBottomLeft, -radiusBottomLeft]] : []),
+            [[0, -(height - (radiusLeftTop + radiusBottomLeft))]].concat(!!radiusLeftTop ? [[0, -k * radiusLeftTop, (1 - k) * radiusLeftTop, -radiusLeftTop, radiusLeftTop, -radiusLeftTop]] : [])
+        ];
+        let firstCornerIndex = 0;
+        let maxCornerSequence = 0;
+        let currentCornerSequence = 0;
+        for(let i = 0; i < cornerConditions.length * 2; i++) {
+            const index = i % cornerConditions.length;
+            if(cornerConditions[index]) {
+                currentCornerSequence++;
+                if(maxCornerSequence < currentCornerSequence) {
+                    maxCornerSequence = currentCornerSequence;
+                    firstCornerIndex = (i - currentCornerSequence + 1) % cornerConditions.length;
+                    if(maxCornerSequence == cornerConditions.length - 1) {
+                        break;
+                    }
+                }
+            } else {
+                currentCornerSequence = 0;
+            }
+        }
+        const lines: Array<Array<number>> = [];
+        for(let i = 0; i < maxCornerSequence + 1; i ++) {
+            lines.push(...cornerLines[(firstCornerIndex + i) % cornerConditions.length]);
+        }
+        const point = cornerPoints[firstCornerIndex];
+
+        return { point, lines };
+    }
     public static renderFlatBorders(controller: DocController, options: IBorderDescription, appearance: IBorderAppearanceOptions): void {
         const newAppearance = SurveyHelper.mergeObjects({}, { borderMode: BorderMode.Inside, borderRect: BorderRect.All }, appearance);
         const borderWidth: number = newAppearance.borderWidth;
@@ -550,20 +617,17 @@ export class SurveyHelper {
                 dashStyle.dashPhase
             );
         }
-        if(newAppearance.borderRect & BorderRect.Top) {
+        if(newAppearance.borderRect == (BorderRect.Top | BorderRect.Bottom)) {
             controller.doc.line(scaledRect.xLeft, scaledRect.yTop, scaledRect.xRight, scaledRect.yTop);
-        }
-        if(newAppearance.borderRect & BorderRect.Bottom) {
             controller.doc.line(scaledRect.xLeft, scaledRect.yBot, scaledRect.xRight, scaledRect.yBot);
         }
-        if(newAppearance.borderRect & BorderRect.Left) {
+        else if(newAppearance.borderRect == (BorderRect.Right | BorderRect.Left)) {
             controller.doc.line(scaledRect.xLeft, scaledRect.yTop - borderWidth / 2, scaledRect.xLeft, scaledRect.yBot + borderWidth / 2);
-        }
-        if(newAppearance.borderRect & BorderRect.Right) {
             controller.doc.line(scaledRect.xRight, scaledRect.yTop - borderWidth / 2, scaledRect.xRight, scaledRect.yBot + borderWidth / 2);
+        } else {
+            const { lines, point } = SurveyHelper.getRoundedShape(scaledRect, newAppearance);
+            controller.doc.lines(lines, point.xLeft, point.yTop, [1, 1], 'S', newAppearance.borderRect == BorderRect.All);
         }
-
-        // controller.doc.rect(...this.createAcroformRect(scaledRect));
         if(newAppearance.dashStyle) {
             controller.doc.setLineDashPattern([]);
         }

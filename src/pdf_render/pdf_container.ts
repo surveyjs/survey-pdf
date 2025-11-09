@@ -122,12 +122,12 @@ export class ContainerBrick extends CompositeBrick {
                 if(this.appearance.backgroundColor !== null) {
                     const oldFillColor = this.controller.doc.getFillColor();
                     this.controller.doc.setFillColor(this.appearance.backgroundColor);
-                    this.controller.doc.rect(
-                        this.layout.xLeft + this.includedBorderWidth,
-                        mergedRect.yTop + this.includedBorderWidth,
+                    const rect = SurveyHelper.createRect(
+                        { xLeft: this.layout.xLeft + this.includedBorderWidth, yTop: mergedRect.yTop + this.includedBorderWidth },
                         this.layout.width - this.includedBorderWidth * 2,
-                        (mergedRect.yBot - mergedRect.yTop) - this.includedBorderWidth * 2,
-                        'F');
+                        (mergedRect.yBot - mergedRect.yTop) - this.includedBorderWidth * 2);
+                    const { lines, point } = SurveyHelper.getRoundedShape(rect, { ...this.appearance, borderRect });
+                    this.controller.doc.lines(lines, point.xLeft, point.yTop, [1, 1], 'F', true);
                     this.controller.doc.setFillColor(oldFillColor);
                 }
                 if(this.appearance.borderColor !== null) {

@@ -31,7 +31,7 @@ test('Check dropdown readonly', async () => {
     expect(typeof controller.doc.internal.acroformPlugin).toBe('undefined');
     let lastPage: any = controller.doc.internal.pages[
         controller.doc.internal.pages.length -1];
-    expect(lastPage[19].includes(json.questions[0].choices[0])).toBe(true);
+    expect(lastPage[14].includes(json.questions[0].choices[0])).toBe(true);
 });
 test('Dropdown MK appearence fix', async () => {
     let json: any = {

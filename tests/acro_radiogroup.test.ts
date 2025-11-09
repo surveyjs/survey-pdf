@@ -26,7 +26,7 @@ test('Has other radiogroup', async () => {
     const controller: DocController = new DocController(TestHelper.defaultOptions);
     await survey['renderSurvey'](controller);
     const internal: any = controller.doc.internal;
-    const internalOtherText: string = internal.pages[1][33];
+    const internalOtherText: string = internal.pages[1][23];
     expect(internalOtherText).toBeDefined();
     const regex: RegExp = /\((.*)\)/;
     const otherText: string = internalOtherText.match(regex)[1];
