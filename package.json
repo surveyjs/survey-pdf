@@ -1,3 +1,31 @@
+  "version": "2.3.14",
+  "name": "survey-pdf",
+  "homepage": "https://surveyjs.io/",
+  "author": "DevSoft Baltic OU <info@devsoftbaltic.com>",
+  "licenseUrl": "https://surveyjs.io/licensing",
+  "description": "A UI component that uses a SurveyJS form JSON schema to render a form as a PDF. It pulls data collected by Form Library to populate PDF fields with responses and lets you export your SurveyJS forms as editable or pre-filled PDFs."
+  "keywords": [
+      "survey",
+      "surveyjs",
+      "pdf",
+      "form",
+      "survey-export",
+      "pdf-generator",
+      "pdf-export",
+      "interactive-pdf-form",
+      "json-form",
+      "data-collection",
+      "client-side",
+      "javascript",
+      "typescript",
+      "survey-library",
+      "export-form",
+      "print-form",
+      "editable-pdf",
+      "fillable-pdf",
+      "jsPDF",
+      "json-schema"
+],
 {
   "scripts": {
     "start": "npm run build && http-server --port=7777",
@@ -20,9 +48,6 @@
     "type": "git",
     "url": "https://github.com/surveyjs/survey-pdf.git"
   },
-  "version": "2.3.14",
-  "name": "survey-pdf",
-  "license": "SEE LICENSE IN LICENSE",
   "dependencies": {
     "jspdf": "^3.0.1",
     "node-interval-tree": "^1.3.3",
