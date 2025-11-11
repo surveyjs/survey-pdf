@@ -150,7 +150,7 @@ export class PdfBrick implements IPdfBrick {
     }
     private beforeRenderEvent: EventAsync<PdfBrick, {}> = new EventAsync();
     addBeforeRenderCallback(func: (brick: IPdfBrick) => void): void {
-        this.beforeRenderEvent.add(func);
+        this.beforeRenderEvent.unshift(func);
     }
     private padding: { top: number, bottom: number } = { top: 0, bottom: 0 }
     public increasePadding(padding: { top: number, bottom: number }) {
