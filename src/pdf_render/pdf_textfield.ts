@@ -26,11 +26,10 @@ export class TextFieldBrick extends PdfBrick {
         options.value = options.value ?? '';
     }
     private renderColorQuestion(): void {
-        let oldFillColor: string = this.controller.doc.getFillColor();
-        this.controller.doc.setFillColor(this.options.value || 'black');
+        this.controller.setFillColor(this.options.value || 'black');
         this.controller.doc.rect(this.contentRect.xLeft, this.contentRect.yTop,
             this.contentRect.width, this.contentRect.height, 'F');
-        this.controller.doc.setFillColor(oldFillColor);
+        this.controller.restoreFillColor();
     }
     public async renderInteractive(): Promise<void> {
         if (this.options.inputType === 'color') {

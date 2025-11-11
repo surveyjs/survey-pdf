@@ -31,11 +31,10 @@ export class HTMLBrick extends PdfBrick {
         const oldFontSize: number = this.controller.fontSize;
         const oldFontStyle: string = this.controller.fontStyle;
         const oldFontName: string = this.controller.fontName;
-        const oldFontColor: string = this.controller.doc.getTextColor();
         this.controller.fontSize = this.appearance.fontSize;
         this.controller.fontStyle = this.appearance.fontStyle;
         this.controller.fontName = this.appearance.fontName;
-        this.controller.doc.setTextColor(this.appearance.fontColor);
+        this.controller.setTextColor(this.appearance.fontColor);
         await new Promise<void>((resolve) => {
             this.controller.doc.fromHTML(this.options.html, this.contentRect.xLeft, this.contentRect.yTop, {
                 width: this.contentRect.width, pagesplit: true,
@@ -48,7 +47,7 @@ export class HTMLBrick extends PdfBrick {
                 resolve();
             }, this.margins);
         });
-        this.controller.doc.setTextColor(oldFontColor);
+        this.controller.restoreTextColor();
         this.controller.fontSize = oldFontSize;
         this.controller.fontStyle = oldFontStyle;
         this.controller.fontName = oldFontName;

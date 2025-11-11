@@ -597,8 +597,7 @@ export class SurveyHelper {
         const newAppearance = SurveyHelper.mergeObjects({}, { borderMode: BorderMode.Inside, borderRect: BorderRect.All }, appearance);
         const borderWidth: number = newAppearance.borderWidth;
         if(!borderWidth || !newAppearance.borderColor) return;
-        const oldDrawColor: string = controller.doc.getDrawColor();
-        controller.doc.setDrawColor(newAppearance.borderColor);
+        controller.setDrawColor(newAppearance.borderColor);
         controller.doc.setLineWidth(borderWidth);
 
         const scaleFactor = newAppearance.borderMode == BorderMode.Middle ? 0 : (newAppearance.borderMode == BorderMode.Inside ? - 1 : 1) * borderWidth;
@@ -631,7 +630,7 @@ export class SurveyHelper {
         if(newAppearance.dashStyle) {
             controller.doc.setLineDashPattern([]);
         }
-        controller.doc.setDrawColor(oldDrawColor);
+        controller.restoreDrawColor();
     }
     public static getLocString(text: LocalizableString): string {
         if (this.hasHtml(text)) return text.renderedHtml;

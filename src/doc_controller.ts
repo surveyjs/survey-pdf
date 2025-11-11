@@ -400,7 +400,7 @@ export class DocController extends DocOptions {
             orientation: this.orientation,
             unit: 'pt',
             format: this.format,
-            compress: this.compress
+            compress: this.compress,
         };
         this._doc = new jsPDF(jspdfOptions);
         if (typeof this.base64Normal !== 'undefined' && !SurveyHelper.isFontExist(this, this.fontName)) {
@@ -556,5 +556,49 @@ export class DocController extends DocOptions {
     }
     public setPage(index: number): void {
         this.doc.setPage(index + 1);
+    }
+    private setColor(color: string, getOldColor: ()=> string, setColorFunc: (val: string) => void) {
+        const { doc } = this;
+        const oldColor = getOldColor();
+        let opacity: number;
+        let match: RegExpMatchArray;
+        if((match = color.match(/(#[A-Fa-f0-9]{6})([A-Fa-f0-9]{2})/))) {
+            color = match[1];
+            opacity = (Math.round(parseInt(match[2], 16) / 255 * 100)) / 100;
+        }
+        setColorFunc(color);
+        let needRestoreGraphicsState = false;
+        if(opacity !== undefined) {
+            doc.saveGraphicsState();
+            doc.setGState(new doc.GState({ opacity }));
+            needRestoreGraphicsState = true;
+        }
+        return () => {
+            setColorFunc(oldColor);
+            if(needRestoreGraphicsState) {
+                this.doc.restoreGraphicsState();
+            }
+        };
+    }
+    private drawColorRestoreCallbacks: Array<() => void> = [];
+    public setDrawColor(color: string) {
+        this.drawColorRestoreCallbacks.push(this.setColor(color, () => this.doc.getDrawColor(), (val) => this.doc.setDrawColor(val)));
+    }
+    public restoreDrawColor() {
+        this.drawColorRestoreCallbacks.pop()();
+    }
+    private fillColorRestoreCallbacks: Array<() => void> = [];
+    public setFillColor(color: string) {
+        this.fillColorRestoreCallbacks.push(this.setColor(color, () => this.doc.getFillColor(), (val) => this.doc.setFillColor(val)));
+    }
+    public restoreFillColor() {
+        this.fillColorRestoreCallbacks.pop()();
+    }
+    private textColorRestoreCallbacks: Array<() => void> = [];
+    public setTextColor(color: string) {
+        this.textColorRestoreCallbacks.push(this.setColor(color, () => this.doc.getTextColor(), (val) => this.doc.setTextColor(val)));
+    }
+    public restoreTextColor() {
+        this.textColorRestoreCallbacks.pop()();
     }
 }

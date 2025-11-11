@@ -30,13 +30,12 @@ export class TextBrick extends PdfBrick {
         const oldFontSize: number = this.controller.fontSize;
         const oldFontStyle: string = this.controller.fontStyle;
         const oldFontName: string = this.controller.fontName;
-        const oldFontColor: string = this.controller.doc.getTextColor();
         this.controller.fontSize = this.appearance.fontSize;
         this.controller.fontStyle = this.appearance.fontStyle;
         this.controller.fontName = this.appearance.fontName;
-        this.controller.doc.setTextColor(this.appearance.fontColor);
+        this.controller.setTextColor(this.appearance.fontColor);
         this.controller.doc.text(this.escapeText(), alignPoint.xLeft, alignPoint.yTop, this.align);
-        this.controller.doc.setTextColor(oldFontColor);
+        this.controller.restoreTextColor();
         this.controller.fontSize = oldFontSize;
         this.controller.fontStyle = oldFontStyle;
         this.controller.fontName = oldFontName;

@@ -26,10 +26,9 @@ export class RowlineBrick implements IPdfBrick {
     public async render(): Promise<void> {
         await this.beforeRenderEvent.fire(this, {});
         if (this.color !== null) {
-            let oldDrawColor: string = this.controller.doc.getDrawColor();
-            this.controller.doc.setDrawColor(this.color);
+            this.controller.setDrawColor(this.color);
             this.controller.doc.line(this.contentRect.xLeft, this.yTop, this.contentRect.xRight, this.contentRect.yTop);
-            this.controller.doc.setDrawColor(oldDrawColor);
+            this.controller.restoreDrawColor();
         }
     }
     public getPageNumber(): number {
