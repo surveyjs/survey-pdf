@@ -22,9 +22,18 @@ If your custom question extends one of the out-of-the-box question types ([`Ques
 
 ```js
 import { FlatRepository } from "survey-pdf";
+import { QuestionTextModel } from "survey-core";
 
+const CUSTOM_TYPE = "color-picker";
+
+export class QuestionColorPickerModel extends QuestionTextModel {
+  getType() {
+    return CUSTOM_TYPE;
+  }
+  //...
+}
 FlatRepository.register(
-  "color-picker",
+  CUSTOM_TYPE,
   FlatRepository.getRenderer("text")
 );
 ```
@@ -33,7 +42,7 @@ The image below illustrates the result:
 
 <img src="./images/export-custom-question-with-predefined-renderer.png" alt="SurveyJS PDF Generator: Export custom questions using a predefined renderer" width="772" height="358">
 
-[View CodeSandbox Example](https://codesandbox.io/p/sandbox/flamboyant-sky-s9p3l7 (linkStyle))
+[View CodeSandbox Example](https://codesandbox.io/p/sandbox/surveyjs-pdf-generator-use-a-predefined-renderer-forked-7xsdsm (linkStyle))
 
 ## Implement a Custom PDF Brick
 
