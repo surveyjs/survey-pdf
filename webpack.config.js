@@ -19,9 +19,9 @@ const buildPlatformJson = {
   version: packageJson.version,
   homepage: "https://surveyjs.io/",
   author: "DevSoft Baltic OÜ <info@devsoftbaltic.com>",
-  license: "SEE LICENSE IN LICENSE"
+  license: "SEE LICENSE IN LICENSE",
   licenseUrl: "https://surveyjs.io/licensing",
-  description: "A UI component that uses a SurveyJS form JSON schema to render a form as a PDF. It pulls data collected by Form Library to populate PDF fields with responses and lets you export your SurveyJS forms as editable or pre-filled PDFs.",
+  description: "A UI component that uses SurveyJS form JSON schemas to render forms as PDF documents. It populates PDF fields with data collected using SurveyJS Form Library and lets you export your SurveyJS forms as editable or pre-filled PDFs.",
   keywords: [
     "survey",
     "surveyjs",
