@@ -11,17 +11,39 @@ const year = today.getFullYear();
 var banner = [
   "surveyjs - SurveyJS PDF library v" + packageJson.version,
   "Copyright (c) 2015-" + year + " Devsoft Baltic OÜ  - http://surveyjs.io/",
-  "License: MIT (http://www.opensource.org/licenses/mit-license.php)"
+  "License: SEE LICENSE IN LICENSE"
 ].join("\n");
 
 const buildPlatformJson = {
   name: "survey-pdf",
   version: packageJson.version,
-  description:
-    "survey.pdf.js is a SurveyJS PDF Library. It is a easy way to export SurveyJS surveys to PDF. It uses JSON for survey metadata.",
-  keywords: ["Survey", "JavaScript", "PDF", "Library", "pdf"],
   homepage: "https://surveyjs.io/",
+  author: "DevSoft Baltic OÜ <info@devsoftbaltic.com>",
   license: "SEE LICENSE IN LICENSE",
+  licenseUrl: "https://surveyjs.io/licensing",
+  description: "A UI component that uses SurveyJS form JSON schemas to render forms as PDF documents. It populates PDF fields with data collected using SurveyJS Form Library and lets you export your SurveyJS forms as editable or pre-filled PDFs.",
+  keywords: [
+    "survey",
+    "surveyjs",
+    "pdf",
+    "form",
+    "survey-export",
+    "pdf-generator",
+    "pdf-export",
+    "interactive-pdf-form",
+    "json-form",
+    "data-collection",
+    "client-side",
+    "javascript",
+    "typescript",
+    "survey-library",
+    "export-form",
+    "print-form",
+    "editable-pdf",
+    "fillable-pdf",
+    "jsPDF",
+    "json-schema"
+  ],
   module: "fesm/survey.pdf.mjs",
   main: "survey.pdf.js",
   repository: {
