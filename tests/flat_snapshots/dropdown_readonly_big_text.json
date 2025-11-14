@@ -1,0 +1,47 @@
+[
+	{
+		"brickType": "CompositeBrick",
+		"width": 490.3499999999998,
+		"height": 54,
+		"xLeft": 34.72145669291339,
+		"xRight": 525.0714566929132,
+		"yTop": 31.72145669291339,
+		"yBot": 85.72145669291339,
+		"bricks": [
+			{
+				"brickType": "TextFieldBrick",
+				"width": 490.3499999999998,
+				"height": 54,
+				"xLeft": 34.72145669291339,
+				"xRight": 525.0714566929132,
+				"yTop": 31.72145669291339,
+				"yBot": 85.72145669291339,
+				"appearance": {
+					"fontSize": 15,
+					"fontStyle": "normal",
+					"lineHeight": 18,
+					"fontColor": "#000",
+					"borderColor": "#000",
+					"borderWidth": 0,
+					"width": 12,
+					"height": 12
+				},
+				"options": {
+					"fieldName": "testidquestion_question1",
+					"shouldRenderBorders": true,
+					"value": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
+					"isReadOnly": true,
+					"placeholder": "Select...",
+					"rows": 1,
+					"shouldRenderReadOnly": true,
+					"isMultiline": false,
+					"inputType": ""
+				},
+				"padding": {
+					"top": 0,
+					"bottom": 0
+				}
+			}
+		]
+	}
+]

@@ -1,10 +1,9 @@
-import { IQuestion, QuestionTextModel, settings } from 'survey-core';
-import { IRect, DocController } from '../doc_controller';
-import { IPdfBrick, PdfBrick, TranslateXFunction } from './pdf_brick';
-import { SurveyHelper } from '../helper_survey';
-import { CompositeBrick } from './pdf_composite';
+import { IRect, DocController, ISize } from '../doc_controller';
+import { IPdfBrick, IPdfBrickOptions, PdfBrick, TranslateXFunction } from './pdf_brick';
+import { IBorderAppearanceOptions, SurveyHelper, ITextAppearanceOptions } from '../helper_survey';
+import { mergeRects } from '../utils';
 
-export interface ITextFieldBrickOptions {
+export interface ITextFieldBrickOptions extends IPdfBrickOptions {
     isReadOnly: boolean;
     fieldName: string;
     shouldRenderBorders: boolean;
@@ -14,22 +13,23 @@ export interface ITextFieldBrickOptions {
     isMultiline?: boolean;
 }
 
+export type ITextFieldBrickAppearanceOptions = ITextAppearanceOptions & IBorderAppearanceOptions;
+
 export class TextFieldBrick extends PdfBrick {
-    public constructor(protected question: IQuestion, controller: DocController,
-        rect: IRect, protected options: ITextFieldBrickOptions
+    public constructor(controller: DocController,
+        rect: IRect, protected options: ITextFieldBrickOptions, protected appearance: ITextFieldBrickAppearanceOptions
     ) {
-        super(question, controller, rect);
+        super(controller, rect);
         options.isMultiline = options.isMultiline ?? false;
         options.placeholder = options.placeholder ?? '';
         options.inputType = options.inputType ?? '';
         options.value = options.value ?? '';
-        this.question = <QuestionTextModel>question;
     }
     private renderColorQuestion(): void {
         let oldFillColor: string = this.controller.doc.getFillColor();
-        this.controller.doc.setFillColor(this.question.value || 'black');
-        this.controller.doc.rect(this.xLeft, this.yTop,
-            this.width, this.height, 'F');
+        this.controller.doc.setFillColor(this.options.value || 'black');
+        this.controller.doc.rect(this.contentRect.xLeft, this.contentRect.yTop,
+            this.contentRect.width, this.contentRect.height, 'F');
         this.controller.doc.setFillColor(oldFillColor);
     }
     public async renderInteractive(): Promise<void> {
@@ -41,8 +41,8 @@ export class TextFieldBrick extends PdfBrick {
             new (<any>this.controller.doc.AcroFormPasswordField)() :
             new (<any>this.controller.doc.AcroFormTextField)();
         inputField.fieldName = this.options.fieldName;
-        inputField.fontName = this.controller.fontName;
-        inputField.fontSize = this.fontSize;
+        inputField.fontName = this.appearance.fontName;
+        inputField.fontSize = this.appearance.fontSize;
         inputField.isUnicode = SurveyHelper.isCustomFont(
             this.controller, inputField.fontName);
         if (this.options.inputType !== 'password') {
@@ -52,19 +52,16 @@ export class TextFieldBrick extends PdfBrick {
         else inputField.value = '';
         inputField.multiline = this.options.isMultiline;
         inputField.readOnly = this.options.isReadOnly;
-        inputField.color = this.textColor;
-        let formScale: number = SurveyHelper.formScale(this.controller, this);
-        inputField.maxFontSize = this.controller.fontSize * formScale;
+        inputField.color = this.appearance.fontColor;
+        let formScale = SurveyHelper.getRectBorderScale(this.contentRect, this.appearance.borderWidth);
+        inputField.maxFontSize = this.appearance.fontSize * formScale.scaleY;
         inputField.Rect = SurveyHelper.createAcroformRect(
-            SurveyHelper.scaleRect(this, formScale));
+            SurveyHelper.scaleRect(this.contentRect, formScale));
         this.controller.doc.addField(inputField);
-        SurveyHelper.renderFlatBorders(this.controller, this);
+        SurveyHelper.renderFlatBorders(this.controller, this.contentRect, this.appearance);
     }
     protected shouldRenderFlatBorders(): boolean {
         return this.options.shouldRenderBorders;
-    }
-    protected getShouldRenderReadOnly(): boolean {
-        return SurveyHelper.shouldRenderReadOnly(this.question, this.controller, this.options.isReadOnly);
     }
     private _textBrick: IPdfBrick;
     public get textBrick(): IPdfBrick {
@@ -75,7 +72,7 @@ export class TextFieldBrick extends PdfBrick {
         const unFoldedBricks = val.unfold();
         const bricksCount = unFoldedBricks.length;
         let renderedBricksCount = 0;
-        const bricksByPage: { [index: number]: Array<PdfBrick> } = {};
+        const bricksByPage: { [index: number]: Array<IRect & ISize> } = {};
         const afterRenderTextBrickCallback = (brick: PdfBrick) => {
             if(this.shouldRenderFlatBorders()) {
                 renderedBricksCount++;
@@ -83,39 +80,45 @@ export class TextFieldBrick extends PdfBrick {
                 if(!bricksByPage[currentPageNumber]) {
                     bricksByPage[currentPageNumber] = [];
                 }
-                bricksByPage[currentPageNumber].push(brick);
+                bricksByPage[currentPageNumber].push(brick.contentRect);
                 if(renderedBricksCount >= bricksCount) {
                     const keys = Object.keys(bricksByPage);
                     const renderedOnOnePage = keys.length == 1;
                     keys.forEach((key: string) => {
-                        const compositeBrick = new CompositeBrick();
-                        bricksByPage[key as any].forEach((brick: PdfBrick) => {
-                            compositeBrick.addBrick(brick);
-                        });
-                        const padding = this.controller.unitHeight * SurveyHelper.VALUE_READONLY_PADDING_SCALE;
+                        const mergedRect = mergeRects(...bricksByPage[key as any]);
                         const borderRect = {
-                            xLeft: this.xLeft,
-                            xRight: this.xRight,
-                            width: this.width,
-                            yTop: renderedOnOnePage ? this.yTop : compositeBrick.yTop - padding,
-                            yBot: renderedOnOnePage ? this.yBot : compositeBrick.yBot + padding,
-                            height: renderedOnOnePage ? this.height : compositeBrick.height + 2 * padding,
-                            formBorderColor: this.formBorderColor,
+                            xLeft: this.contentRect.xLeft,
+                            xRight: this.contentRect.xRight,
+                            width: this.contentRect.width,
+                            yTop: renderedOnOnePage ? this.contentRect.yTop : mergedRect.yTop,
+                            yBot: renderedOnOnePage ? this.contentRect.yBot : mergedRect.yBot,
+                            height: renderedOnOnePage ? this.contentRect.height : mergedRect.yBot - mergedRect.yTop,
                         };
                         this.controller.setPage(Number(key));
-                        SurveyHelper.renderFlatBorders(this.controller, borderRect);
+                        SurveyHelper.renderFlatBorders(this.controller, borderRect, this.appearance);
                         this.controller.setPage(currentPageNumber);
                     });
                 }
             }
         };
         unFoldedBricks.forEach((brick: PdfBrick) => {
-            brick.afterRenderCallback = afterRenderTextBrickCallback.bind(this, brick);
+            brick.afterRenderCallback = afterRenderTextBrickCallback.bind(this.contentRect, brick);
         });
+        this.updateRect();
     }
+    public updateRect(): void {
+        if(this.textBrick) {
+            this.textBrick.updateRect();
+            this._xLeft = this.textBrick.xLeft;
+            this._xRight = this.textBrick.xRight;
+            this._yTop = this.textBrick.yTop;
+            this._yBot = this.textBrick.yBot;
+        }
+    }
+
     public async renderReadOnly(): Promise<void> {
-        this.controller.pushMargins(this.xLeft,
-            this.controller.paperWidth - this.xRight);
+        this.controller.pushMargins(this.contentRect.xLeft,
+            this.controller.paperWidth - this.contentRect.xRight);
         if (this.options.inputType === 'color') {
             this.renderColorQuestion();
         } else {
@@ -131,7 +134,7 @@ export class TextFieldBrick extends PdfBrick {
         }
     }
     public translateX(func: TranslateXFunction): void {
-        const res = func(this.xLeft, this.xRight);
+        const res = func(this.contentRect.xLeft, this.contentRect.xRight);
         this._xLeft = res.xLeft;
         this._xRight = res.xRight;
         if(this.textBrick) {
@@ -164,6 +167,36 @@ export class TextFieldBrick extends PdfBrick {
         super.setYBottom(val);
         if(this.textBrick) {
             this.textBrick.yBot = this.textBrick.yBot + delta;
+        }
+    }
+    public setPageNumber(val: number): void {
+        if(this.getShouldRenderReadOnly() && this.options.inputType !== 'color') {
+            this.textBrick.setPageNumber(val);
+        } else {
+            super.setPageNumber(val);
+        }
+    }
+    public getPageNumber(): number {
+        if(this.getShouldRenderReadOnly() && this.options.inputType !== 'color') {
+            return this.textBrick.getPageNumber();
+        } else {
+            return super.getPageNumber();
+        }
+    }
+    public increasePadding(val: { top: number, bottom: number }): void {
+        if(val.top == 0 && val.bottom == 0) return;
+        if(this.getShouldRenderReadOnly() && this.options.inputType !== 'color') {
+            this.textBrick.increasePadding(val);
+            this.updateRect();
+        } else {
+            super.increasePadding(val);
+        }
+    }
+    public addBeforeRenderCallback(func: (brick: IPdfBrick) => void): void {
+        if(this.getShouldRenderReadOnly() && this.options.inputType !== 'color') {
+            this.textBrick.addBeforeRenderCallback(func);
+        } else {
+            super.addBeforeRenderCallback(func);
         }
     }
 }
