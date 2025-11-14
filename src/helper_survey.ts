@@ -533,7 +533,7 @@ export class SurveyHelper {
         const width = rect.xRight - rect.xLeft;
         const height = rect.yBot - rect.yTop;
         const k = 0.55228;
-        const borderRadius = appearance.borderRadius ?? 0;
+        const borderRadius = Math.min(appearance.borderRadius ?? 0, width / 2, height / 2);
         const hasTopRight = !!(appearance.borderRect & BorderRect.Top) && !!(appearance.borderRect & BorderRect.Right);
         const hasRightBottom = !!(appearance.borderRect & BorderRect.Right) && !!(appearance.borderRect & BorderRect.Bottom);
         const hasBottomLeft = !!(appearance.borderRect & BorderRect.Bottom) && !!(appearance.borderRect & BorderRect.Left);
