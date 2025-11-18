@@ -9,7 +9,8 @@ import { EventHandler } from './event_handler/event_handler';
 import { DrawCanvas } from './event_handler/draw_canvas';
 import { AdornersOptions, AdornersPanelOptions, AdornersPageOptions } from './event_handler/adorners';
 import { SurveyHelper } from './helper_survey';
-import { IStyles } from './styles';
+import { getDefaultStylesFromTheme, IStyles } from './styles';
+import { DefaultLight } from './themes/default-light';
 import { parsePadding } from './utils';
 
 /**
@@ -189,15 +190,19 @@ export class SurveyPDF extends SurveyModel {
     public onGetPageStyles: EventBase<SurveyPDF, { page: PanelModel, styles: IStyles }> = new EventBase<SurveyPDF, { page: PanelModel, styles: IStyles }>;
 
     private _styles: IStyles;
-
+    private theme: ITheme;
     public get styles(): IStyles {
         if(!this._styles) {
-            this._styles = SurveyHelper.mergeObjects({}, getDefaultStyles(this.options.fontSize || DocOptions.FONT_SIZE));
+            this._styles = getDefaultStylesFromTheme(this.theme ?? DefaultLight);
         }
         return this._styles;
     }
     public set styles(styles: IStyles) {
         SurveyHelper.mergeObjects(this.styles, styles);
+    }
+    public applyTheme(theme: ITheme): void {
+        this.theme = theme;
+        this._styles = undefined;
     }
 
     public getStylesForElement(element: SurveyElement): IStyles {
@@ -279,10 +284,10 @@ export class SurveyPDF extends SurveyModel {
         });
         await EventHandler.process_header_events(this, controller, packs);
         for (let i: number = 0; i < packs.length; i++) {
-                if (controller.getNumberOfPages() === i) {
-                    controller.addPage();
-                }
-                controller.setPage(i);
+            if (controller.getNumberOfPages() === i) {
+                controller.addPage();
+            }
+            controller.setPage(i);
             controller.setFillColor(this.styles.backgroundColor);
             controller.doc.rect(0, 0, controller.doc.internal.pageSize.getWidth(), controller.doc.internal.pageSize.getHeight(), 'F');
             controller.restoreFillColor();
