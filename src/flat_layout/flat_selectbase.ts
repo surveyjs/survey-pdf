@@ -6,7 +6,7 @@ import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { TextBrick } from '../pdf_render/pdf_text';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
-import { ChoiceItem } from 'survey-core/typings/src/question_baseselect';
+import { ChoiceItem } from 'survey-core';
 
 export abstract class FlatSelectBase extends FlatQuestion {
     protected question: QuestionCheckboxBase;
