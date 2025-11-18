@@ -10,16 +10,22 @@ export class FlatCheckbox<T extends QuestionCheckboxModel = QuestionCheckboxMode
     public generateFlatItem(point: IPoint, item: ItemValue, index: number): IPdfBrick {
         const rect: IRect = SurveyHelper.createRect(point, this.styles.input.width, this.styles.input.height);
         const isReadOnly = this.question.isReadOnly || !item.isEnabled;
+        const shouldRenderReadOnly = isReadOnly && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform' || this.controller.compress;
+        const isChecked = this.question.isItemSelected(item);
         return new CheckItemBrick(this.controller, rect,
             {
-                shouldRenderReadOnly: isReadOnly && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform' || this.controller.compress,
+                shouldRenderReadOnly,
                 readOnly: isReadOnly,
                 checked: this.question.isItemSelected(item),
                 fieldName: this.question.id + 'index' + index,
                 updateOptions: (options) => {
                     this.survey.updateCheckItemAcroformOptions(options, this.question, { item });
                 }
-            }, SurveyHelper.getPatchedTextAppearanceOptions(this.controller, this.styles.input as ICheckItemBrickAppearanceOptions));
+            }, SurveyHelper.getPatchedTextAppearanceOptions(this.controller,
+                SurveyHelper.mergeObjects({}, this.styles.input,
+                    shouldRenderReadOnly ? this.styles.inputReadOnly : {},
+                    shouldRenderReadOnly && isChecked ? this.styles.inputReadOnlyChecked : {}
+                )));
     }
 }
 export class FlatTagbox extends FlatCheckbox<QuestionTagboxModel> {

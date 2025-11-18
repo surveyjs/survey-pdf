@@ -1,6 +1,6 @@
 import { IRect, ISize, DocController, IPoint } from '../doc_controller';
 import { IPdfBrick, IPdfBrickOptions, PdfBrick } from './pdf_brick';
-import { IInputAppearanceOptions, SurveyHelper } from '../helper_survey';
+import { BorderRect, IInputAppearanceOptions, SurveyHelper } from '../helper_survey';
 export interface ICheckItemBrickOptions extends IPdfBrickOptions {
     checked: boolean;
     readOnly: boolean;
@@ -20,7 +20,7 @@ export class CheckItemBrick extends PdfBrick {
     }
     public async renderInteractive(): Promise<void> {
         const checkBox: any = new (<any>this.controller.doc.AcroFormCheckBox)();
-        const formScale = SurveyHelper.getRectBorderScale(this.contentRect, this.appearance.borderWidth);
+        const formScale = SurveyHelper.getRectBorderScale(this.contentRect, this.appearance.borderWidth ?? 0);
         const options: any = {};
         options.maxFontSize = this.contentRect.height * formScale.scaleY * CheckItemBrick.FONT_SIZE_SCALE;
         options.caption = this.appearance.checkMark;
@@ -49,6 +49,12 @@ export class CheckItemBrick extends PdfBrick {
         SurveyHelper.renderFlatBorders(this.controller, this.contentRect, this.appearance);
     }
     public async renderReadOnly(): Promise<void> {
+        if(!!this.appearance.backgroundColor) {
+            const { lines, point } = SurveyHelper.getRoundedShape(this.contentRect, { ...this.appearance, borderRect: BorderRect.All });
+            this.controller.setFillColor(this.appearance.backgroundColor);
+            this.controller.doc.lines(lines, point.xLeft, point.yTop, [1, 1], 'F');
+            this.controller.restoreFillColor();
+        }
         SurveyHelper.renderFlatBorders(this.controller, this.contentRect, this.appearance);
         if (this.options.checked) {
             const checkmarkPoint: IPoint = SurveyHelper.createPoint(this.contentRect, true, true);

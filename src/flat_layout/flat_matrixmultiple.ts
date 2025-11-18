@@ -203,7 +203,7 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
                 const currComposite: CompositeBrick = new CompositeBrick();
                 if(this.isMultiple && isWide) {
                     this.controller.pushMargins();
-                    panelPoint.xLeft+= columnWidths[0];
+                    panelPoint.xLeft+= columnWidths[0] + this.styles.gapBetweenColumns;
                     this.controller.margins.left = panelPoint.xLeft;
                 }
                 const panelBricks: IPdfBrick[] = await SurveyHelper.generatePanelFlats(this.survey, this.controller, currentDetailPanel, panelPoint, this.survey.getStylesForElement(currentDetailPanel));

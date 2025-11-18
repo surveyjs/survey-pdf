@@ -42,14 +42,25 @@ export class FlatRating extends FlatQuestion<QuestionRatingModel> {
         }
         return ratingItemLocText;
     }
+    private getInputAppearance(isReadOnly: boolean, isChecked: boolean): IRadioItemBrickAppearanceOptions {
+        const styles = { ...this.styles.input };
+        if(isReadOnly) {
+            SurveyHelper.mergeObjects(styles, this.styles.inputReadOnly);
+            if(isChecked) {
+                SurveyHelper.mergeObjects(styles, this.styles.inputReadOnlyChecked);
+            }
+        }
+        return styles;
+    }
     public generateFlatItem(rect: IRect, item: ItemValue, index: number): IPdfBrick {
         const isChecked: boolean = this.question.isItemSelected(item);
+        const shouldRenderReadOnly = this.radioGroupWrap.readOnly && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform' || this.controller.compress;
         return new RadioItemBrick(this.controller, rect, this.radioGroupWrap, {
             index,
             checked: isChecked,
-            shouldRenderReadOnly: this.radioGroupWrap.readOnly && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform' || this.controller.compress,
+            shouldRenderReadOnly: shouldRenderReadOnly,
             updateOptions: options => this.survey.updateRadioItemAcroformOptions(options, this.question, { item }),
-        }, SurveyHelper.getPatchedTextAppearanceOptions(this.controller, this.styles.input as IRadioItemBrickAppearanceOptions));
+        }, SurveyHelper.getPatchedTextAppearanceOptions(this.controller, this.getInputAppearance(shouldRenderReadOnly, isChecked)));
     }
     protected async generateItemComposite(point: IPoint, itemInfo: ItemInfo): Promise<IPdfBrick> {
         const currPoint = SurveyHelper.clone(point);
@@ -57,7 +68,7 @@ export class FlatRating extends FlatQuestion<QuestionRatingModel> {
         const textBrick = await SurveyHelper.
             createTextFlat(point, this.controller, this.getItemText(itemInfo.index, itemInfo.locText), { ...this.styles.label });
         compositeFlat.addBrick(textBrick);
-        currPoint.yTop = textBrick.yBot + this.styles.gapBetweenItemTextVertical;
+        currPoint.yTop = textBrick.yBot + this.styles.gapBetweenItemText;
         compositeFlat.addBrick(this.generateFlatItem(SurveyHelper.createRect(
             currPoint, itemInfo.width, this.styles.input.height), itemInfo.item, itemInfo.index));
         compositeFlat.translateX((xLeft, xRight) => {

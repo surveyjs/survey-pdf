@@ -557,15 +557,10 @@ export class DocController extends DocOptions {
     public setPage(index: number): void {
         this.doc.setPage(index + 1);
     }
-    private setColor(color: string, getOldColor: ()=> string, setColorFunc: (val: string) => void) {
+    private setColor(value: string, getOldColor: ()=> string, setColorFunc: (val: string) => void) {
         const { doc } = this;
         const oldColor = getOldColor();
-        let opacity: number;
-        let match: RegExpMatchArray;
-        if((match = color.match(/(#[A-Fa-f0-9]{6})([A-Fa-f0-9]{2})/))) {
-            color = match[1];
-            opacity = (Math.round(parseInt(match[2], 16) / 255 * 100)) / 100;
-        }
+        const { color, opacity } = SurveyHelper.parseColor(value);
         setColorFunc(color);
         let needRestoreGraphicsState = false;
         if(opacity !== undefined) {

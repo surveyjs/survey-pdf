@@ -1,4 +1,4 @@
-import { SurveyModel, EventBase, SurveyElement, Serializer, Question, ItemValue, PanelModel, PageModel } from 'survey-core';
+import { SurveyModel, EventBase, SurveyElement, Serializer, Question, PanelModel, PageModel, ITheme } from 'survey-core';
 import { hasLicense } from 'survey-core';
 import { IDocOptions, DocController, DocOptions } from './doc_controller';
 import { FlatSurvey } from './flat_layout/flat_survey';
@@ -9,7 +9,8 @@ import { EventHandler } from './event_handler/event_handler';
 import { DrawCanvas } from './event_handler/draw_canvas';
 import { AdornersOptions, AdornersPanelOptions, AdornersPageOptions } from './event_handler/adorners';
 import { SurveyHelper } from './helper_survey';
-import { getDefaultStyles, IStyles } from './styles';
+import { IStyles } from './styles';
+import { parsePadding } from './utils';
 
 /**
  * The `SurveyPDF` object enables you to export your surveys and forms to PDF documents.
@@ -278,11 +279,15 @@ export class SurveyPDF extends SurveyModel {
         });
         await EventHandler.process_header_events(this, controller, packs);
         for (let i: number = 0; i < packs.length; i++) {
-            for (let j: number = 0; j < packs[i].length; j++) {
                 if (controller.getNumberOfPages() === i) {
                     controller.addPage();
                 }
                 controller.setPage(i);
+            controller.setFillColor(this.styles.backgroundColor);
+            controller.doc.rect(0, 0, controller.doc.internal.pageSize.getWidth(), controller.doc.internal.pageSize.getHeight(), 'F');
+            controller.restoreFillColor();
+            for (let j: number = 0; j < packs[i].length; j++) {
+
                 //gizmos bricks borders for debug
                 // packs[i][j].unfold().forEach((rect: IPdfBrick) => {
                 //     controller.doc.setDrawColor('green');
@@ -295,15 +300,26 @@ export class SurveyPDF extends SurveyModel {
         }
         this.renderNavigation(controller);
     }
+    private createController(): DocController {
+        const marginsFromStyles = parsePadding(this.styles.padding);
+        Object.keys(marginsFromStyles).forEach((key: 'top' | 'left' | 'bot' | 'right') => {
+            marginsFromStyles[key] /= DocOptions.MM_TO_PT;
+        });
+        const options = SurveyHelper.mergeObjects({}, {
+            margins: marginsFromStyles
+        }, this.options);
+        return new DocController(options);
+    }
     /**
      * An asynchronous method that starts to download the generated PDF file in the web browser.
      *
      * [View Demo](https://surveyjs.io/pdf-generator/examples/save-completed-forms-as-pdf-files/ (linkStyle))
      * @param fileName *(Optional)* A file name with the ".pdf" extension. Default value: `"survey_result.pdf"`.
      */
+
     public async save(fileName: string = 'survey_result.pdf'): Promise<any> {
         if(!SurveyPDF.currentlySaving) {
-            const controller: DocController = new DocController(this.options);
+            const controller: DocController = this.createController();
             this.onDocControllerCreated.fire(this, { controller: controller });
             SurveyPDF.currentlySaving = true;
             SurveyHelper.fixFont(controller);
@@ -337,7 +353,7 @@ export class SurveyPDF extends SurveyModel {
     raw(type: 'bloburl'): Promise<URL>;
     raw(type: 'dataurlstring'): Promise<string>;
     public async raw(type?: string): Promise<ArrayBuffer | string | Blob | URL > {
-        const controller: DocController = new DocController(this.options);
+        const controller: DocController = this.createController();
         this.onDocControllerCreated.fire(this, { controller: controller });
         SurveyHelper.fixFont(controller);
         await this.renderSurvey(controller);

@@ -57,7 +57,7 @@ export class FlatFile extends FlatQuestion<QuestionFileModel> {
                 const compositeWidth = await this.getImagePreviewContentWidth(item);
                 if (availableWidth < compositeWidth) {
                     currPoint.xLeft = point.xLeft;
-                    currPoint.yTop = yBot;
+                    currPoint.yTop = yBot + this.styles.gapBetweenRows;
                     this.addLine(rowsFlats, currPoint, i, previewValue);
                 }
                 this.controller.pushMargins(currPoint.xLeft,
@@ -70,7 +70,7 @@ export class FlatFile extends FlatQuestion<QuestionFileModel> {
             } else {
                 if (availableWidth < this.controller.unitWidth) {
                     currPoint.xLeft = point.xLeft;
-                    currPoint.yTop = yBot;
+                    currPoint.yTop = yBot + this.styles.gapBetweenRows;
                     this.addLine(rowsFlats, currPoint, i, previewValue);
                 }
                 const itemFlat: IPdfBrick = await this.generateFlatItem(currPoint, item);
@@ -78,7 +78,7 @@ export class FlatFile extends FlatQuestion<QuestionFileModel> {
                 currPoint.xLeft += itemFlat.xRight - itemFlat.xLeft;
                 yBot = Math.max(yBot, itemFlat.yBot);
             }
-            currPoint.xLeft += this.controller.unitWidth;
+            currPoint.xLeft += this.styles.gapBetweenColumns;
         }
         return rowsFlats;
     }

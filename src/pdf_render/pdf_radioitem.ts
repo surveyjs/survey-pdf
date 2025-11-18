@@ -1,6 +1,6 @@
 import { IPoint, IRect, ISize, DocController } from '../doc_controller';
 import { IPdfBrick, IPdfBrickOptions, PdfBrick } from './pdf_brick';
-import { IInputAppearanceOptions, SurveyHelper } from '../helper_survey';
+import { BorderRect, IInputAppearanceOptions, SurveyHelper } from '../helper_survey';
 
 export type IRadioItemBrickAppearanceOptions = IInputAppearanceOptions & {
     checkMark: string,
@@ -56,7 +56,7 @@ export class RadioItemBrick extends PdfBrick {
         }
         const options: any = {};
         options.fieldName = this.radioGroupWrap.fieldName + 'index' + this.options.index;
-        let formScale = SurveyHelper.getRectBorderScale(this.contentRect, this.appearance.borderWidth);
+        let formScale = SurveyHelper.getRectBorderScale(this.contentRect, this.appearance.borderWidth ?? 0);
         options.Rect = SurveyHelper.createAcroformRect(
             SurveyHelper.scaleRect(this.contentRect, formScale));
         options.color = this.appearance.fontColor;
@@ -88,6 +88,12 @@ export class RadioItemBrick extends PdfBrick {
         );
     }
     public async renderReadOnly(): Promise<void> {
+        if(!!this.appearance.backgroundColor) {
+            const { lines, point } = SurveyHelper.getRoundedShape(this.contentRect, { ...this.appearance, borderRect: BorderRect.All });
+            this.controller.setFillColor(this.appearance.backgroundColor);
+            this.controller.doc.lines(lines, point.xLeft, point.yTop, [1, 1], 'F');
+            this.controller.restoreFillColor();
+        }
         SurveyHelper.renderFlatBorders(this.controller, this.contentRect, this.appearance);
         if (this.options.checked) {
             const textOptions = {

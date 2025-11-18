@@ -15,3 +15,47 @@ export function mergeRects(...rects: IRect[]): IRect {
     });
     return resultRect;
 }
+
+export interface IPadding {
+  top: number;
+  bot: number;
+  left: number;
+  right: number;
+}
+
+export function parsePadding(padding: Array<number> | number): IPadding {
+    if (Array.isArray(padding) && padding.length > 1) {
+        if (padding.length == 2) {
+            return {
+                top: padding[0],
+                bot: padding[0],
+                left: padding[1],
+                right: padding[1],
+            };
+        }
+        if (padding.length == 3) {
+            return {
+                top: padding[0],
+                left: padding[1],
+                right: padding[1],
+                bot: padding[2],
+            };
+        }
+        if (padding.length == 4) {
+            return {
+                top: padding[0],
+                right: padding[1],
+                bot: padding[2],
+                left: padding[3],
+            };
+        }
+    } else {
+        const value = Array.isArray(padding) ? padding[0] : padding;
+        return {
+            top: value,
+            bot: value,
+            right: value,
+            left: value,
+        };
+    }
+}

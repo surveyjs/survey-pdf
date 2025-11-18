@@ -29,7 +29,7 @@ export class FlatMultipleText extends FlatQuestion<QuestionMultipleTextModel> {
         this.controller.popMargins();
 
         this.controller.pushMargins();
-        this.controller.margins.left = point.xLeft + colWidth * this.styles.itemTitleWidthPers;
+        this.controller.margins.left = point.xLeft + colWidth * this.styles.itemTitleWidthPers + this.styles.gapBetweenItemText;
         bricks.push(await this.generateFlatCell({ xLeft: this.controller.margins.left, yTop: point.yTop }, async (point: IPoint, bricks: Array<IPdfBrick>) => {
             const flatMultipleTextItemQuestion: IFlatQuestion = FlatRepository.getInstance().create(
                 this.survey, item.editor, this.controller, this.survey.getStylesForElement(item.editor), 'text');

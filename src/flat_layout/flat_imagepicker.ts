@@ -21,9 +21,23 @@ export class FlatImagePicker extends FlatQuestion<QuestionImagePickerModel> {
         }
         return this._radioGroupWrap;
     }
+    public getInputAppearance(isReadOnly: boolean, isChecked: boolean, isMultiSelect: boolean):(ICheckItemBrickAppearanceOptions | IRadioItemBrickAppearanceOptions) & { width: number, height: number } {
+        const inputType = isMultiSelect ? 'checkbox' : 'radio';
+        const styles = SurveyHelper.mergeObjects({}, this.styles.input, this.styles[`${inputType}Input`]);
+        if(isReadOnly) {
+            SurveyHelper.mergeObjects(styles, this.styles.inputReadOnly, this.styles[`${inputType}InputReadOnly`]);
+            if(isChecked) {
+                SurveyHelper.mergeObjects(styles, this.styles.inputReadOnlyChecked, this.styles[`${inputType}InputReadOnlyChecked`]);
+            }
+        }
+        return styles;
+    }
     private async generateFlatItem(point: IPoint, item: ItemValue, index: number): Promise<IPdfBrick> {
         const pageAvailableWidth = SurveyHelper.getPageAvailableWidth(this.controller);
-        const itemAppearance = SurveyHelper.mergeObjects({}, this.styles.input, this.question.multiSelect ? this.styles.checkboxInput : this.styles.radioInput);
+        const isReadOnly = this.question.isReadOnly || !item.isEnabled;
+        const isChecked = this.question.isItemSelected(item);
+        const shouldRenderReadOnly = isReadOnly && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform' || this.controller.compress;
+        const itemAppearance = SurveyHelper.mergeObjects({}, this.getInputAppearance(isReadOnly, isChecked, this.question.multiSelect));
         const imageFlat = await SurveyHelper.createImageFlat(point, this.question, this.controller, { link: (<any>item).imageLink, width: pageAvailableWidth, height: pageAvailableWidth / this.styles.imageRatio });
         const compositeFlat: CompositeBrick = new CompositeBrick(imageFlat);
         let buttonPoint: IPoint = SurveyHelper.createPoint(compositeFlat);
@@ -36,9 +50,6 @@ export class FlatImagePicker extends FlatQuestion<QuestionImagePickerModel> {
         }
         const height: number = itemAppearance.height;
         const buttonRect: IRect = SurveyHelper.createRect(buttonPoint, pageAvailableWidth, height);
-        const isChecked = this.question.isItemSelected(item);
-        const isReadOnly = this.question.isReadOnly || !item.isEnabled;
-        const shouldRenderReadOnly = isReadOnly && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform' || this.controller.compress;
         if (this.question.multiSelect) {
             compositeFlat.addBrick(new CheckItemBrick(this.controller,
                 buttonRect,

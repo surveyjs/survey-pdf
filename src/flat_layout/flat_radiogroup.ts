@@ -31,12 +31,16 @@ export class FlatRadiogroup extends FlatSelectBase<QuestionRadiogroupModel> {
         const rect: IRect = SurveyHelper.createRect(point,
             this.styles.input.width, this.styles.input.height);
         const isChecked: boolean = this.isItemSelected(item);
+        const shouldRenderReadOnly = this.radioGroupWrap.readOnly && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform' || this.controller.compress;
         return new RadioItemBrick(this.controller, rect, this.radioGroupWrap, {
             index,
             checked: isChecked,
             shouldRenderReadOnly: this.radioGroupWrap.readOnly && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform' || this.controller.compress,
             updateOptions: options => this.survey.updateRadioItemAcroformOptions(options, this.question, { item }),
-        }, SurveyHelper.getPatchedTextAppearanceOptions(this.controller, this.styles.input as IRadioItemBrickAppearanceOptions));
+        }, SurveyHelper.getPatchedTextAppearanceOptions(this.controller, SurveyHelper.mergeObjects({}, this.styles.input,
+            shouldRenderReadOnly ? this.styles.inputReadOnly : {},
+            shouldRenderReadOnly && isChecked ? this.styles.inputReadOnlyChecked : {}
+        )));
     }
 }
 

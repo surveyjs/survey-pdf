@@ -56,18 +56,30 @@ export abstract class FlatMatrixContent {
         }
         return this.radioGroupWraps[fieldName];
     }
+    public getInputAppearance(isReadOnly: boolean, isChecked: boolean, isMultiSelect: boolean):(ICheckItemBrickAppearanceOptions | IRadioItemBrickAppearanceOptions) & { width: number, height: number } {
+        const inputType = isMultiSelect ? 'checkbox' : 'radio';
+        const styles = SurveyHelper.mergeObjects({}, this.styles.input, this.styles[`${inputType}Input`]);
+        if(isReadOnly) {
+            SurveyHelper.mergeObjects(styles, this.styles.inputReadOnly, this.styles[`${inputType}InputReadOnly`]);
+            if(isChecked) {
+                SurveyHelper.mergeObjects(styles, this.styles.inputReadOnlyChecked, this.styles[`${inputType}InputReadOnlyChecked`]);
+            }
+        }
+        return styles;
+    }
     protected generateFlatItem(point: IPoint, options: { item: ItemValue, row: MatrixRowModel, rowIndex: number, itemIndex: number }) {
         const { item, row, itemIndex, rowIndex } = options;
         const fieldName = this.question.id + 'row' + rowIndex;
         const isChecked: boolean = row.isChecked(item);
         const isReadOnly = this.question.isReadOnly;
-        const appearance = SurveyHelper.getPatchedTextAppearanceOptions(this.controller, SurveyHelper.mergeObjects({}, this.styles.input, this.question.isMultiSelect ? this.styles.checkboxInput : this.styles.radioInput) as ICheckItemBrickAppearanceOptions & { width: number, height: number });
+        const shouldRenderReadOnly = isReadOnly && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform' || this.controller.compress;
+        const appearance = SurveyHelper.getPatchedTextAppearanceOptions(this.controller, this.getInputAppearance(shouldRenderReadOnly, isChecked, this.question.isMultiSelect));
         const rect = SurveyHelper.createRect(point, appearance.width, appearance.height);
         if(this.question.isMultiSelect) {
             return new CheckItemBrick(this.controller, rect, {
                 fieldName: fieldName + 'index' + itemIndex,
                 checked: isChecked,
-                shouldRenderReadOnly: isReadOnly && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform' || this.controller.compress,
+                shouldRenderReadOnly,
                 readOnly: isReadOnly,
                 updateOptions: (options) => {
                     this.survey.updateCheckItemAcroformOptions(options, this.question, { item, row, rowIndex });
@@ -79,10 +91,13 @@ export abstract class FlatMatrixContent {
                 {
                     checked: isChecked,
                     index: itemIndex,
-                    shouldRenderReadOnly: radioGroupWrap.readOnly && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform' || this.controller.compress,
+                    shouldRenderReadOnly: shouldRenderReadOnly,
                     updateOptions: options => this.survey.updateRadioItemAcroformOptions(options, this.question, { item, row, rowIndex }),
                 }, appearance);
         }
+    }
+    protected getGapBetweenRows(): number {
+        return this.styles.gapBetweenRows;
     }
     public async generateFlats(point: IPoint) {
         const cells: IPdfBrick[] = [];
@@ -90,7 +105,7 @@ export abstract class FlatMatrixContent {
         for (let i: number = 0; i < this.question.visibleRows.length; i++) {
             const flatsRow = await this.generateFlatsRow(currPoint, this.question.visibleRows[i], i);
             currPoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(...flatsRow));
-            currPoint.yTop += this.styles.gapBetweenRows;
+            currPoint.yTop += this.getGapBetweenRows();
             cells.push(...flatsRow);
         }
         return cells;
@@ -107,6 +122,9 @@ export class FlatMatrixContentVertical extends FlatMatrixContent {
         SurveyHelper.alignVerticallyBricks('center', radioFlat, radioText.unfold()[0]);
         radioText.updateRect();
         return new CompositeBrick(radioFlat, radioText);
+    }
+    protected getGapBetweenRows(): number {
+        return this.styles.verticalGapBetweenRows;
     }
     protected async generateFlatsRow(point: IPoint, row: MatrixRowModel, rowIndex: number): Promise<Array<IPdfBrick>> {
         const currPoint: IPoint = SurveyHelper.clone(point);

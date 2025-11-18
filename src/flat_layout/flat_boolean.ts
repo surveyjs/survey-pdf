@@ -10,16 +10,27 @@ import { IStyles } from '../styles';
 import { CheckItemBrick, ICheckItemBrickAppearanceOptions } from '../pdf_render/pdf_checkitem';
 import { IRadioItemBrickAppearanceOptions, RadioGroupWrap, RadioItemBrick } from '../pdf_render/pdf_radioitem';
 export class FlatBooleanCheckbox extends FlatQuestion<QuestionBooleanModel> {
+    public getInputAppearance(isReadOnly: boolean, isChecked: boolean):ICheckItemBrickAppearanceOptions & { width: number, height: number } {
+        const styles = SurveyHelper.mergeObjects({}, this.styles.input, this.styles.checkboxInput);
+        if(isReadOnly) {
+            SurveyHelper.mergeObjects(styles, this.styles.inputReadOnly, this.styles.checkboxInputReadOnly);
+            if(isChecked) {
+                SurveyHelper.mergeObjects(styles, this.styles.inputReadOnlyChecked, this.styles.checkboxInputReadOnlyChecked);
+            }
+        }
+        return styles;
+    }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         const compositeFlat: CompositeBrick = new CompositeBrick();
         const isReadOnly = this.question.isReadOnly;
-        const appearance = SurveyHelper.getPatchedTextAppearanceOptions(this.controller, SurveyHelper.mergeObjects({}, this.styles.input, this.styles.checkboxInput) as ICheckItemBrickAppearanceOptions & { width: number, height: number });
+        const shouldRenderReadOnly = isReadOnly && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform' || this.controller.compress;
+        const appearance = SurveyHelper.getPatchedTextAppearanceOptions(this.controller, this.getInputAppearance(isReadOnly, this.question.booleanValue));
         const itemFlat: IPdfBrick = new CheckItemBrick(this.controller, SurveyHelper.createRect(point, appearance.width, appearance.height),
             {
                 fieldName: this.question.id,
                 readOnly: isReadOnly,
                 updateOptions: (options) => this.survey.updateCheckItemAcroformOptions(options, this.question),
-                shouldRenderReadOnly: isReadOnly && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform' || this.controller.compress,
+                shouldRenderReadOnly,
                 checked: this.question.booleanValue
             }, appearance);
         compositeFlat.addBrick(itemFlat);
@@ -43,6 +54,16 @@ export class FlatBoolean extends FlatQuestion<QuestionBooleanModel> {
         question: QuestionBooleanModel, protected controller: DocController, styles: IStyles) {
         super(survey, question, controller, styles);
     }
+    public getInputAppearance(isReadOnly: boolean, isChecked: boolean):IRadioItemBrickAppearanceOptions & { width: number, height: number } {
+        const styles = SurveyHelper.mergeObjects({}, this.styles.input, this.styles.radioInput);
+        if(isReadOnly) {
+            SurveyHelper.mergeObjects(styles, this.styles.inputReadOnly, this.styles.radioInputReadOnly);
+            if(isChecked) {
+                SurveyHelper.mergeObjects(styles, this.styles.inputReadOnlyChecked, this.styles.radioInputReadOnlyChecked);
+            }
+        }
+        return styles;
+    }
     protected get radioGroupWrap() {
         if(!this._radioGroupWrap) {
             this._radioGroupWrap = new RadioGroupWrap(
@@ -56,13 +77,14 @@ export class FlatBoolean extends FlatQuestion<QuestionBooleanModel> {
     }
     public generateFlatItem(point: IPoint, item: { value: string },
         index: number): IPdfBrick {
-        const appearance = SurveyHelper.getPatchedTextAppearanceOptions(this.controller, SurveyHelper.mergeObjects({}, this.styles.input, this.styles.radioInput) as IRadioItemBrickAppearanceOptions & { width: number, height: number });
-        const itemRect: IRect = SurveyHelper.createRect(point, appearance.width, appearance.height);
         const isChecked: boolean = this.question.value == item.value;
+        const shouldRenderReadOnly = this.radioGroupWrap.readOnly && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform' || this.controller.compress;
+        const appearance = SurveyHelper.getPatchedTextAppearanceOptions(this.controller, this.getInputAppearance(shouldRenderReadOnly, isChecked));
+        const itemRect: IRect = SurveyHelper.createRect(point, appearance.width, appearance.height);
         return new RadioItemBrick(this.controller, itemRect, this.radioGroupWrap, {
             index,
             checked: isChecked,
-            shouldRenderReadOnly: this.radioGroupWrap.readOnly && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform' || this.controller.compress,
+            shouldRenderReadOnly
         }, appearance);
     }
     protected async generateFlatComposite(point: IPoint, item: { value: string, locText: LocalizableString }, index: number): Promise<IPdfBrick> {

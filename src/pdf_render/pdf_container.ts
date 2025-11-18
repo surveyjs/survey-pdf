@@ -1,19 +1,12 @@
 import { DocController, IPoint } from '../doc_controller';
-import { BorderMode, BorderRect, SurveyHelper } from '../helper_survey';
+import { BorderMode, BorderRect, IBorderAppearanceOptions, SurveyHelper } from '../helper_survey';
 import { IPdfBrick } from './pdf_brick';
 import { CompositeBrick } from './pdf_composite';
-import { EmptyBrick } from './pdf_empty';
+import { type IPadding, parsePadding } from '../utils';
 
-interface IContainerBrickAppearance {
+interface IContainerBrickAppearance extends IBorderAppearanceOptions {
     padding: Array<number> | number;
-    borderWidth: number;
-    borderColor: string | null;
     backgroundColor: string | null;
-    borderMode: BorderMode;
-}
-
-export enum InseparableBrickMode {
-    FIRST = 1, LAST = 2, BOTH = 3
 }
 
 const defaultContainerOptions: IContainerBrickAppearance = {
@@ -22,51 +15,8 @@ const defaultContainerOptions: IContainerBrickAppearance = {
     backgroundColor: null,
     borderColor: null,
     borderMode: 1,
+    borderRadius: 0
 };
-
-interface IPadding {
-  top: number;
-  bottom: number;
-  left: number;
-  right: number;
-}
-
-function parsePadding(padding: Array<number> | number): IPadding {
-    if (Array.isArray(padding) && padding.length > 1) {
-        if (padding.length == 2) {
-            return {
-                top: padding[0],
-                bottom: padding[0],
-                left: padding[1],
-                right: padding[1],
-            };
-        }
-        if (padding.length == 3) {
-            return {
-                top: padding[0],
-                left: padding[1],
-                right: padding[1],
-                bottom: padding[2],
-            };
-        }
-        if (padding.length == 4) {
-            return {
-                top: padding[0],
-                right: padding[1],
-                bottom: padding[2],
-                left: padding[3],
-            };
-        }
-    } else {
-        const value = Array.isArray(padding) ? padding[0] : padding;
-        return {
-            top: value,
-            bottom: value,
-            right: value,
-            left: value,
-        };
-    }
-}
 
 export class ContainerBrick extends CompositeBrick {
     private appearance: Readonly<IContainerBrickAppearance>;
@@ -101,7 +51,7 @@ export class ContainerBrick extends CompositeBrick {
     }
     finishSetup() {
         this.controller.popMargins();
-        this.increasePadding({ top: this.padding.top + this.includedBorderWidth, bottom: this.padding.bottom + this.includedBorderWidth });
+        this.increasePadding({ top: this.padding.top + this.includedBorderWidth, bottom: this.padding.bot + this.includedBorderWidth });
         let renderedPageIndex = -1;
         const callback = () => {
             const currentPageIndex = this.controller.getCurrentPageIndex();
@@ -125,7 +75,7 @@ export class ContainerBrick extends CompositeBrick {
                         { xLeft: this.layout.xLeft + this.includedBorderWidth, yTop: mergedRect.yTop + this.includedBorderWidth },
                         this.layout.width - this.includedBorderWidth * 2,
                         (mergedRect.yBot - mergedRect.yTop) - this.includedBorderWidth * 2);
-                    const { lines, point } = SurveyHelper.getRoundedShape(rect, { ...this.appearance, borderRect });
+                    const { lines, point } = SurveyHelper.getRoundedShape(rect, { ...this.appearance, borderRect, borderRadius: Math.max(this.appearance.borderRadius - (this.appearance.borderWidth - this.includedBorderWidth), 0) });
                     this.controller.doc.lines(lines, point.xLeft, point.yTop, [1, 1], 'F', true);
                     this.controller.restoreFillColor();
                 }

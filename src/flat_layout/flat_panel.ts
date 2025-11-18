@@ -124,11 +124,11 @@ export class FlatPanel<T extends PanelModel = PanelModel> {
                 rowContainers.forEach((brick: ContainerBrick) => {
                     brick.fitToHeight(rowRect.yBot - rowRect.yTop);
                 });
-                currPoint.xLeft = point.xLeft;
-                currPoint.yTop += this.styles.gapBetweenRows;
                 rowContainers.forEach((elementFlat: ContainerBrick) => rowsFlats.push(...elementFlat.getBricks()));
                 rowsFlats.push(SurveyHelper.createRowlineFlat(currPoint, this.controller));
-                currPoint.yTop += SurveyHelper.EPSILON;
+                currPoint.xLeft = point.xLeft;
+                currPoint.yTop += this.styles.gapBetweenRows;
+                // currPoint.yTop += SurveyHelper.EPSILON;
             }
         }
         return rowsFlats;
