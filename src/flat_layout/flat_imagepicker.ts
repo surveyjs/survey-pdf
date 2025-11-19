@@ -103,12 +103,12 @@ export class FlatImagePicker extends FlatQuestion<QuestionImagePickerModel> {
                 this.controller.margins.left = currMarginLeft;
                 this.controller.margins.right = this.controller.paperWidth -
                     currMarginLeft - columnWidth;
-                currMarginLeft = this.controller.paperWidth -
-                    this.controller.margins.right + this.controller.unitWidth;
                 currPoint.xLeft = this.controller.margins.left;
                 const itemFlat: IPdfBrick = await this.generateFlatItem(currPoint,
                     this.question.visibleChoices[index], index);
                 rowsFlats[rowsFlats.length - 1].addBrick(itemFlat);
+                currMarginLeft = this.controller.paperWidth -
+                    this.controller.margins.right + this.styles.gapBetweenColumns;
                 yBot = Math.max(yBot, itemFlat.yBot);
             }
             this.controller.popMargins();
