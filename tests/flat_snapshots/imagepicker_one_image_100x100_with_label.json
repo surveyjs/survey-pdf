@@ -5,8 +5,8 @@
 		"height": 198.75,
 		"xLeft": 34.72145669291339,
 		"xRight": 259.7214566929134,
-		"yTop": 31.72145669291339,
-		"yBot": 230.4714566929134,
+		"yTop": 34.72145669291339,
+		"yBot": 233.4714566929134,
 		"bricks": [
 			{
 				"brickType": "CompositeBrick",
@@ -14,8 +14,8 @@
 				"height": 198.75,
 				"xLeft": 34.72145669291339,
 				"xRight": 259.7214566929134,
-				"yTop": 31.72145669291339,
-				"yBot": 230.4714566929134,
+				"yTop": 34.72145669291339,
+				"yBot": 233.4714566929134,
 				"bricks": [
 					{
 						"brickType": "HTMLBrick",
@@ -23,8 +23,8 @@
 						"height": 168.75,
 						"xLeft": 34.72145669291339,
 						"xRight": 259.7214566929134,
-						"yTop": 31.72145669291339,
-						"yBot": 200.4714566929134,
+						"yTop": 34.72145669291339,
+						"yBot": 203.4714566929134,
 						"appearance": {
 							"fontSize": 6,
 							"fontName": "helvetica",
@@ -43,27 +43,27 @@
 					},
 					{
 						"brickType": "CompositeBrick",
-						"width": 19.950000000000003,
+						"width": 15.96,
 						"height": 18,
 						"xLeft": 34.72145669291339,
-						"xRight": 54.671456692913395,
-						"yTop": 200.4714566929134,
-						"yBot": 218.4714566929134,
+						"xRight": 50.68145669291339,
+						"yTop": 203.4714566929134,
+						"yBot": 221.4714566929134,
 						"bricks": [
 							{
 								"brickType": "TextBrick",
-								"width": 19.950000000000003,
+								"width": 15.96,
 								"height": 18,
 								"xLeft": 34.72145669291339,
-								"xRight": 54.671456692913395,
-								"yTop": 200.4714566929134,
-								"yBot": 218.4714566929134,
+								"xRight": 50.68145669291339,
+								"yTop": 203.4714566929134,
+								"yBot": 221.4714566929134,
 								"appearance": {
-									"fontSize": 15,
+									"fontSize": 12,
 									"fontName": "helvetica",
 									"fontStyle": "normal",
 									"lineHeight": 18,
-									"fontColor": "#000",
+									"fontColor": "#1c1b20",
 									"textAlign": "left"
 								},
 								"options": {
@@ -82,15 +82,16 @@
 						"height": 12,
 						"xLeft": 34.72145669291339,
 						"xRight": 259.7214566929134,
-						"yTop": 218.4714566929134,
-						"yBot": 230.4714566929134,
+						"yTop": 221.4714566929134,
+						"yBot": 233.4714566929134,
 						"appearance": {
-							"borderColor": "#000",
-							"borderWidth": 0.75,
-							"fontColor": "#000",
+							"fontColor": "#1c1b20",
 							"fontSize": 7.5,
+							"lineHeight": 18,
 							"width": 12,
 							"height": 12,
+							"borderColor": "#1c1b20",
+							"borderWidth": 0.75,
 							"fontName": "zapfdingbats",
 							"checkMark": "l"
 						},

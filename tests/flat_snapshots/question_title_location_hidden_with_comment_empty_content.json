@@ -2,29 +2,29 @@
 	{
 		"brickType": "CompositeBrick",
 		"width": 525.8326771653543,
-		"height": 48,
+		"height": 45,
 		"xLeft": 34.72145669291339,
 		"xRight": 560.5541338582677,
-		"yTop": 31.72145669291339,
+		"yTop": 34.72145669291339,
 		"yBot": 79.72145669291339,
 		"bricks": [
 			{
 				"brickType": "CompositeBrick",
 				"width": 65.27999999999999,
-				"height": 6.0000000000000036,
+				"height": 6,
 				"xLeft": 34.72145669291339,
 				"xRight": 100.00145669291338,
-				"yTop": 31.72145669291339,
-				"yBot": 37.72145669291339,
+				"yTop": 34.72145669291339,
+				"yBot": 40.72145669291339,
 				"bricks": [
 					{
 						"brickType": "TextBrick",
 						"width": 65.27999999999999,
-						"height": 6.0000000000000036,
+						"height": 6,
 						"xLeft": 34.72145669291339,
 						"xRight": 100.00145669291338,
-						"yTop": 31.72145669291339,
-						"yBot": 37.72145669291339,
+						"yTop": 34.72145669291339,
+						"yBot": 40.72145669291339,
 						"appearance": {
 							"fontSize": 6,
 							"fontName": "helvetica",
@@ -52,13 +52,11 @@
 				"yTop": 43.72145669291339,
 				"yBot": 79.72145669291339,
 				"appearance": {
-					"fontSize": 15,
+					"fontSize": 12,
 					"fontName": "helvetica",
 					"fontStyle": "normal",
 					"lineHeight": 18,
-					"fontColor": "#000",
-					"borderColor": "#000",
-					"borderWidth": 0
+					"fontColor": "#1c1b20"
 				},
 				"options": {
 					"fieldName": "testidquestion_checkbox_comment",

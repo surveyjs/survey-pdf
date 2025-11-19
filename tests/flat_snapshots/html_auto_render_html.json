@@ -16,13 +16,13 @@
 				"options": {
 					"xLeft": 34.72145669291339,
 					"xRight": 34.72145669291339,
-					"yTop": 31.72145669291339,
-					"yBot": 31.721456692913392
+					"yTop": 34.72145669291339,
+					"yBot": 34.72145669291339
 				},
 				"appearance": {
 					"fontSize": 12,
-					"fontColor": "#000",
-					"lineHeight": 21
+					"fontColor": "#1c1b20",
+					"lineHeight": 18
 				},
 				"padding": {
 					"top": 0,

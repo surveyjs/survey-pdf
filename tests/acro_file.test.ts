@@ -79,11 +79,11 @@ test('Check hyperlink underline color', async () => {
     const controller: DocController = new DocController(TestHelper.defaultOptions);
     await survey['renderSurvey'](controller);
     const internal: any = controller.doc.internal;
-    const colorInfo: string[] = internal.pages[1][14].split(/(\.| )/);
+    const colorInfo: string[] = internal.pages[1][30].split(/(\.| )/);
     expect(colorInfo[0]).toBe('0');
     expect(colorInfo[4]).toBe('0');
     expect(colorInfo[8]).toBe('0');
-    expect(colorInfo[10]).toBe('93');
+    expect(colorInfo[10]).toBe('82');
 });
 test('Check hyperlink underline position', async () => {
     const json: any = {
@@ -107,11 +107,11 @@ test('Check hyperlink underline position', async () => {
     await survey['renderSurvey'](controller);
     const internal: any = controller.doc.internal;
     const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    const moveInfo: string[] = internal.pages[1][15].split(' ');
+    const moveInfo: string[] = internal.pages[1][31].split(' ');
     const assumeLeft: number = flats[0][0].unfold()[0].xLeft;
     const actualLeft: number = +moveInfo[0];
     expect(actualLeft).toBe(assumeLeft);
-    const lineInfo: string[] = internal.pages[1][16].split(' ');
+    const lineInfo: string[] = internal.pages[1][32].split(' ');
     const assumeRight: number = flats[0][0].unfold()[0].xRight;
     const actualRight: number = +lineInfo[0];
     expect(actualRight).toBe(assumeRight);
@@ -137,8 +137,8 @@ test('Check that border does not exist when FORM_BORDER_VISIBLE is false', async
     const controller: DocController = new DocController(TestHelper.defaultOptions);
     await survey['renderSurvey'](controller);
     const internal: any = controller.doc.internal;
-    expect(internal.pages[1].length).toBe(13);
-    const textDescription: string = internal.pages[1][12];
+    expect(internal.pages[1].length).toBe(26);
+    const textDescription: string = internal.pages[1][25];
     const textPosition: number = textDescription.indexOf('I\'m without border', 0);
     expect(textPosition).toBeGreaterThan(-1);
     const actualEnd: string = textDescription.substring(textDescription.length - 2);

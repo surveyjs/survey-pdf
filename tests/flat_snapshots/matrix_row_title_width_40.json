@@ -2,34 +2,34 @@
 	{
 		"brickType": "CompositeBrick",
 		"width": 538.5870866141731,
-		"height": 57.75,
+		"height": 30.75,
 		"xLeft": 28.34645669291339,
 		"xRight": 566.9335433070866,
 		"yTop": 28.346456692913392,
-		"yBot": 86.09645669291339,
+		"yBot": 59.09645669291339,
 		"bricks": [
 			{
 				"brickType": "ContainerBrick",
 				"width": 30,
-				"height": 57.75,
+				"height": 30.75,
 				"xLeft": 28.34645669291339,
 				"xRight": 58.34645669291339,
 				"yTop": 28.346456692913392,
-				"yBot": 86.09645669291339,
+				"yBot": 59.09645669291339,
 				"bricks": [
 					{
 						"brickType": "EmptyBrick",
-						"width": 0.25,
-						"height": 57.75,
-						"xLeft": 43.22145669291339,
-						"xRight": 43.47145669291339,
+						"width": 17.25,
+						"height": 30.75,
+						"xLeft": 34.72145669291339,
+						"xRight": 51.97145669291339,
 						"yTop": 28.346456692913392,
-						"yBot": 86.09645669291339,
+						"yBot": 59.09645669291339,
 						"appearance": {},
 						"options": {},
 						"padding": {
-							"top": 28.375,
-							"bottom": 28.375
+							"top": 14.875,
+							"bottom": 14.875
 						}
 					}
 				]
@@ -37,43 +37,43 @@
 			{
 				"brickType": "ContainerBrick",
 				"width": 254.29354330708657,
-				"height": 57.75,
+				"height": 30.75,
 				"xLeft": 58.34645669291339,
 				"xRight": 312.64,
 				"yTop": 28.346456692913392,
-				"yBot": 86.09645669291339,
+				"yBot": 59.09645669291339,
 				"bricks": [
 					{
 						"brickType": "CompositeBrick",
-						"width": 119.00000000000003,
-						"height": 57.75,
-						"xLeft": 73.22145669291339,
-						"xRight": 192.22145669291342,
+						"width": 51,
+						"height": 30.75,
+						"xLeft": 64.72145669291339,
+						"xRight": 115.72145669291339,
 						"yTop": 28.346456692913392,
-						"yBot": 86.09645669291339,
+						"yBot": 59.09645669291339,
 						"bricks": [
 							{
 								"brickType": "TextBrick",
-								"width": 119.00000000000003,
-								"height": 57.75,
-								"xLeft": 73.22145669291339,
-								"xRight": 192.22145669291342,
+								"width": 51,
+								"height": 30.75,
+								"xLeft": 64.72145669291339,
+								"xRight": 115.72145669291339,
 								"yTop": 28.346456692913392,
-								"yBot": 86.09645669291339,
+								"yBot": 59.09645669291339,
 								"appearance": {
-									"fontSize": 28,
+									"fontSize": 12,
 									"fontName": "helvetica",
 									"fontStyle": "normal",
-									"lineHeight": 42,
-									"fontColor": "#000",
+									"lineHeight": 18,
+									"fontColor": "#1c1b2099",
 									"textAlign": "left"
 								},
 								"options": {
 									"text": "Column 1"
 								},
 								"padding": {
-									"top": 7.875,
-									"bottom": 7.875
+									"top": 6.375,
+									"bottom": 6.375
 								}
 							}
 						]
@@ -83,43 +83,43 @@
 			{
 				"brickType": "ContainerBrick",
 				"width": 254.29354330708657,
-				"height": 57.75,
+				"height": 30.75,
 				"xLeft": 312.64,
 				"xRight": 566.9335433070866,
 				"yTop": 28.346456692913392,
-				"yBot": 86.09645669291339,
+				"yBot": 59.09645669291339,
 				"bricks": [
 					{
 						"brickType": "CompositeBrick",
-						"width": 119,
-						"height": 57.75,
-						"xLeft": 327.515,
-						"xRight": 446.515,
+						"width": 51,
+						"height": 30.75,
+						"xLeft": 319.015,
+						"xRight": 370.015,
 						"yTop": 28.346456692913392,
-						"yBot": 86.09645669291339,
+						"yBot": 59.09645669291339,
 						"bricks": [
 							{
 								"brickType": "TextBrick",
-								"width": 119,
-								"height": 57.75,
-								"xLeft": 327.515,
-								"xRight": 446.515,
+								"width": 51,
+								"height": 30.75,
+								"xLeft": 319.015,
+								"xRight": 370.015,
 								"yTop": 28.346456692913392,
-								"yBot": 86.09645669291339,
+								"yBot": 59.09645669291339,
 								"appearance": {
-									"fontSize": 28,
+									"fontSize": 12,
 									"fontName": "helvetica",
 									"fontStyle": "normal",
-									"lineHeight": 42,
-									"fontColor": "#000",
+									"lineHeight": 18,
+									"fontColor": "#1c1b2099",
 									"textAlign": "left"
 								},
 								"options": {
 									"text": "Column 2"
 								},
 								"padding": {
-									"top": 7.875,
-									"bottom": 7.875
+									"top": 6.375,
+									"bottom": 6.375
 								}
 							}
 						]
@@ -134,146 +134,74 @@
 		"height": 0,
 		"xLeft": 28.34645669291339,
 		"xRight": 58.34645669291342,
-		"yTop": 86.09645669291339,
-		"yBot": 86.09645669291339
+		"yTop": 59.09645669291339,
+		"yBot": 59.09645669291339
 	},
 	{
 		"brickType": "CompositeBrick",
 		"width": 538.5870866141731,
-		"height": 225.75000000000003,
+		"height": 48.75,
 		"xLeft": 28.34645669291339,
 		"xRight": 566.9335433070866,
-		"yTop": 86.09645669291339,
-		"yBot": 311.8464566929134,
+		"yTop": 59.09645669291339,
+		"yBot": 107.84645669291339,
 		"bricks": [
 			{
 				"brickType": "ContainerBrick",
 				"width": 30,
-				"height": 225.75000000000003,
+				"height": 48.75,
 				"xLeft": 28.34645669291339,
 				"xRight": 58.34645669291339,
-				"yTop": 86.09645669291339,
-				"yBot": 311.8464566929134,
+				"yTop": 59.09645669291339,
+				"yBot": 107.84645669291339,
 				"bricks": [
 					{
 						"brickType": "CompositeBrick",
-						"width": 20.159999999999997,
-						"height": 225.75000000000003,
-						"xLeft": 23.311456692913396,
-						"xRight": 43.47145669291339,
-						"yTop": 86.09645669291339,
-						"yBot": 311.8464566929134,
+						"width": 15.240000000000002,
+						"height": 48.75,
+						"xLeft": 36.73145669291339,
+						"xRight": 51.97145669291339,
+						"yTop": 59.09645669291339,
+						"yBot": 107.84645669291339,
 						"bricks": [
 							{
 								"brickType": "TextBrick",
-								"width": 0,
-								"height": 49.875,
-								"xLeft": 43.47145669291339,
-								"xRight": 43.47145669291339,
-								"yTop": 86.09645669291339,
-								"yBot": 135.9714566929134,
+								"width": 15.240000000000002,
+								"height": 24.375,
+								"xLeft": 36.73145669291339,
+								"xRight": 51.97145669291339,
+								"yTop": 59.09645669291339,
+								"yBot": 83.47145669291339,
 								"appearance": {
-									"fontSize": 28,
+									"fontSize": 12,
 									"fontName": "helvetica",
 									"fontStyle": "normal",
-									"lineHeight": 42,
-									"fontColor": "#000",
+									"lineHeight": 18,
+									"fontColor": "#1c1b2099",
 									"textAlign": "right"
 								},
 								"options": {
-									"text": ""
+									"text": "Ro"
 								},
 								"padding": {
-									"top": 7.875,
+									"top": 6.375,
 									"bottom": 0
 								}
 							},
 							{
 								"brickType": "TextBrick",
-								"width": 0,
-								"height": 42,
-								"xLeft": 43.47145669291339,
-								"xRight": 43.47145669291339,
-								"yTop": 135.9714566929134,
-								"yBot": 177.9714566929134,
+								"width": 8.64,
+								"height": 24.375,
+								"xLeft": 43.33145669291339,
+								"xRight": 51.97145669291339,
+								"yTop": 83.47145669291339,
+								"yBot": 107.84645669291339,
 								"appearance": {
-									"fontSize": 28,
+									"fontSize": 12,
 									"fontName": "helvetica",
 									"fontStyle": "normal",
-									"lineHeight": 42,
-									"fontColor": "#000",
-									"textAlign": "right"
-								},
-								"options": {
-									"text": ""
-								},
-								"padding": {
-									"top": 0,
-									"bottom": 0
-								}
-							},
-							{
-								"brickType": "TextBrick",
-								"width": 20.159999999999997,
-								"height": 42,
-								"xLeft": 23.311456692913396,
-								"xRight": 43.47145669291339,
-								"yTop": 177.9714566929134,
-								"yBot": 219.9714566929134,
-								"appearance": {
-									"fontSize": 28,
-									"fontName": "helvetica",
-									"fontStyle": "normal",
-									"lineHeight": 42,
-									"fontColor": "#000",
-									"textAlign": "right"
-								},
-								"options": {
-									"text": "R"
-								},
-								"padding": {
-									"top": 0,
-									"bottom": 0
-								}
-							},
-							{
-								"brickType": "TextBrick",
-								"width": 15.400000000000006,
-								"height": 42.00000000000003,
-								"xLeft": 28.071456692913387,
-								"xRight": 43.47145669291339,
-								"yTop": 219.9714566929134,
-								"yBot": 261.9714566929134,
-								"appearance": {
-									"fontSize": 28,
-									"fontName": "helvetica",
-									"fontStyle": "normal",
-									"lineHeight": 42,
-									"fontColor": "#000",
-									"textAlign": "right"
-								},
-								"options": {
-									"text": "o"
-								},
-								"padding": {
-									"top": 0,
-									"bottom": 0
-								}
-							},
-							{
-								"brickType": "TextBrick",
-								"width": 20.159999999999997,
-								"height": 49.875,
-								"xLeft": 23.311456692913396,
-								"xRight": 43.47145669291339,
-								"yTop": 261.9714566929134,
-								"yBot": 311.8464566929134,
-								"appearance": {
-									"fontSize": 28,
-									"fontName": "helvetica",
-									"fontStyle": "normal",
-									"lineHeight": 42,
-									"fontColor": "#000",
+									"lineHeight": 18,
+									"fontColor": "#1c1b2099",
 									"textAlign": "right"
 								},
 								"options": {
@@ -281,7 +209,7 @@
 								},
 								"padding": {
 									"top": 0,
-									"bottom": 7.875
+									"bottom": 6.375
 								}
 							}
 						]
@@ -291,30 +219,30 @@
 			{
 				"brickType": "ContainerBrick",
 				"width": 254.29354330708657,
-				"height": 225.75,
+				"height": 48.75,
 				"xLeft": 58.34645669291339,
 				"xRight": 312.64,
-				"yTop": 86.0964566929134,
-				"yBot": 311.8464566929134,
+				"yTop": 59.09645669291339,
+				"yBot": 107.84645669291339,
 				"bricks": [
 					{
 						"brickType": "RadioItemBrick",
-						"width": 28,
-						"height": 225.75,
-						"xLeft": 73.22145669291339,
-						"xRight": 101.22145669291339,
-						"yTop": 86.0964566929134,
-						"yBot": 311.8464566929134,
+						"width": 12,
+						"height": 48.75,
+						"xLeft": 64.72145669291339,
+						"xRight": 76.72145669291339,
+						"yTop": 59.09645669291339,
+						"yBot": 107.84645669291339,
 						"appearance": {
-							"fontSize": 17.5,
+							"fontSize": 7.5,
 							"fontName": "zapfdingbats",
 							"fontStyle": "normal",
-							"lineHeight": 17.5,
-							"fontColor": "#000",
-							"borderColor": "#000",
-							"borderWidth": 1.75,
-							"height": 28,
-							"width": 28,
+							"lineHeight": 18,
+							"fontColor": "#1c1b20",
+							"width": 12,
+							"height": 12,
+							"borderColor": "#1c1b20",
+							"borderWidth": 0.75,
 							"checkMark": "l"
 						},
 						"options": {
@@ -323,8 +251,8 @@
 							"shouldRenderReadOnly": false
 						},
 						"padding": {
-							"top": 98.87500000000001,
-							"bottom": 98.87500000000001
+							"top": 18.375,
+							"bottom": 18.375
 						}
 					}
 				]
@@ -332,30 +260,30 @@
 			{
 				"brickType": "ContainerBrick",
 				"width": 254.29354330708657,
-				"height": 225.75,
+				"height": 48.75,
 				"xLeft": 312.64,
 				"xRight": 566.9335433070866,
-				"yTop": 86.0964566929134,
-				"yBot": 311.8464566929134,
+				"yTop": 59.09645669291339,
+				"yBot": 107.84645669291339,
 				"bricks": [
 					{
 						"brickType": "RadioItemBrick",
-						"width": 28,
-						"height": 225.75,
-						"xLeft": 327.515,
-						"xRight": 355.515,
-						"yTop": 86.0964566929134,
-						"yBot": 311.8464566929134,
+						"width": 12,
+						"height": 48.75,
+						"xLeft": 319.015,
+						"xRight": 331.015,
+						"yTop": 59.09645669291339,
+						"yBot": 107.84645669291339,
 						"appearance": {
-							"fontSize": 17.5,
+							"fontSize": 7.5,
 							"fontName": "zapfdingbats",
 							"fontStyle": "normal",
-							"lineHeight": 17.5,
-							"fontColor": "#000",
-							"borderColor": "#000",
-							"borderWidth": 1.75,
-							"height": 28,
-							"width": 28,
+							"lineHeight": 18,
+							"fontColor": "#1c1b20",
+							"width": 12,
+							"height": 12,
+							"borderColor": "#1c1b20",
+							"borderWidth": 0.75,
 							"checkMark": "l"
 						},
 						"options": {
@@ -364,8 +292,8 @@
 							"shouldRenderReadOnly": false
 						},
 						"padding": {
-							"top": 98.87500000000001,
-							"bottom": 98.87500000000001
+							"top": 18.375,
+							"bottom": 18.375
 						}
 					}
 				]
@@ -378,7 +306,7 @@
 		"height": 0,
 		"xLeft": 28.34645669291339,
 		"xRight": 58.34645669291342,
-		"yTop": 311.8464566929134,
-		"yBot": 311.8464566929134
+		"yTop": 107.84645669291339,
+		"yBot": 107.84645669291339
 	}
 ]

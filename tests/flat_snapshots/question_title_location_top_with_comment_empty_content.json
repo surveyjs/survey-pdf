@@ -2,53 +2,53 @@
 	{
 		"brickType": "CompositeBrick",
 		"width": 525.8326771653543,
-		"height": 72,
+		"height": 63,
 		"xLeft": 34.72145669291339,
 		"xRight": 560.5541338582677,
-		"yTop": 31.72145669291339,
-		"yBot": 103.72145669291339,
+		"yTop": 34.72145669291339,
+		"yBot": 97.72145669291339,
 		"bricks": [
 			{
 				"brickType": "ContainerBrick",
 				"width": 525.8326771653543,
-				"height": 18.000000000000004,
+				"height": 12,
 				"xLeft": 34.72145669291339,
 				"xRight": 560.5541338582677,
-				"yTop": 31.72145669291339,
-				"yBot": 49.72145669291339,
+				"yTop": 34.72145669291339,
+				"yBot": 46.72145669291339,
 				"bricks": [
 					{
 						"brickType": "CompositeBrick",
-						"width": 19.32,
-						"height": 18.000000000000004,
+						"width": 14.490000000000002,
+						"height": 12,
 						"xLeft": 34.72145669291339,
-						"xRight": 54.04145669291339,
-						"yTop": 31.72145669291339,
-						"yBot": 49.72145669291339,
+						"xRight": 49.211456692913394,
+						"yTop": 34.72145669291339,
+						"yBot": 46.72145669291339,
 						"bricks": [
 							{
 								"brickType": "CompositeBrick",
-								"width": 19.32,
-								"height": 18.000000000000004,
+								"width": 14.490000000000002,
+								"height": 12,
 								"xLeft": 34.72145669291339,
-								"xRight": 54.04145669291339,
-								"yTop": 31.72145669291339,
-								"yBot": 49.72145669291339,
+								"xRight": 49.211456692913394,
+								"yTop": 34.72145669291339,
+								"yBot": 46.72145669291339,
 								"bricks": [
 									{
 										"brickType": "TextBrick",
-										"width": 19.32,
-										"height": 18.000000000000004,
+										"width": 14.490000000000002,
+										"height": 12,
 										"xLeft": 34.72145669291339,
-										"xRight": 54.04145669291339,
-										"yTop": 31.72145669291339,
-										"yBot": 49.72145669291339,
+										"xRight": 49.211456692913394,
+										"yTop": 34.72145669291339,
+										"yBot": 46.72145669291339,
 										"appearance": {
-											"fontSize": 12,
+											"fontSize": 9,
 											"fontName": "helvetica",
 											"fontStyle": "normal",
-											"lineHeight": 18,
-											"fontColor": "#000",
+											"lineHeight": 12,
+											"fontColor": "#1c1b20",
 											"textAlign": "left"
 										},
 										"options": {
@@ -71,17 +71,17 @@
 				"height": 0,
 				"xLeft": 34.72145669291339,
 				"xRight": 560.5541338582677,
-				"yTop": 49.72145669291339,
-				"yBot": 49.72145669291339
+				"yTop": 46.72145669291339,
+				"yBot": 46.72145669291339
 			},
 			{
 				"brickType": "CompositeBrick",
 				"width": 525.8326771653543,
-				"height": 48,
+				"height": 45,
 				"xLeft": 34.72145669291339,
 				"xRight": 560.5541338582677,
-				"yTop": 55.72145669291339,
-				"yBot": 103.72145669291339,
+				"yTop": 52.72145669291339,
+				"yBot": 97.72145669291339,
 				"bricks": [
 					{
 						"brickType": "CompositeBrick",
@@ -89,8 +89,8 @@
 						"height": 6,
 						"xLeft": 34.72145669291339,
 						"xRight": 100.00145669291338,
-						"yTop": 55.72145669291339,
-						"yBot": 61.72145669291339,
+						"yTop": 52.72145669291339,
+						"yBot": 58.72145669291339,
 						"bricks": [
 							{
 								"brickType": "TextBrick",
@@ -98,8 +98,8 @@
 								"height": 6,
 								"xLeft": 34.72145669291339,
 								"xRight": 100.00145669291338,
-								"yTop": 55.72145669291339,
-								"yBot": 61.72145669291339,
+								"yTop": 52.72145669291339,
+								"yBot": 58.72145669291339,
 								"appearance": {
 									"fontSize": 6,
 									"fontName": "helvetica",
@@ -124,16 +124,14 @@
 						"height": 36,
 						"xLeft": 34.72145669291339,
 						"xRight": 560.5541338582677,
-						"yTop": 67.72145669291339,
-						"yBot": 103.72145669291339,
+						"yTop": 61.72145669291339,
+						"yBot": 97.72145669291339,
 						"appearance": {
-							"fontSize": 15,
+							"fontSize": 12,
 							"fontName": "helvetica",
 							"fontStyle": "normal",
 							"lineHeight": 18,
-							"fontColor": "#000",
-							"borderColor": "#000",
-							"borderWidth": 0
+							"fontColor": "#1c1b20"
 						},
 						"options": {
 							"fieldName": "testidquestion_checkbox_comment",

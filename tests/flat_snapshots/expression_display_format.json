@@ -1,20 +1,18 @@
 [
 	{
 		"brickType": "TextFieldBrick",
-		"width": 21.6,
-		"height": 18.000000000000004,
+		"width": 17.28,
+		"height": 18,
 		"xLeft": 34.72145669291339,
-		"xRight": 56.321456692913394,
-		"yTop": 31.72145669291339,
-		"yBot": 49.72145669291339,
+		"xRight": 52.00145669291339,
+		"yTop": 34.72145669291339,
+		"yBot": 52.72145669291339,
 		"appearance": {
-			"fontSize": 15,
+			"fontSize": 12,
 			"fontName": "helvetica",
 			"fontStyle": "normal",
 			"lineHeight": 18,
-			"fontColor": "#000",
-			"borderColor": "#000",
-			"borderWidth": 0
+			"fontColor": "#1c1b20"
 		},
 		"options": {
 			"value": "5%",

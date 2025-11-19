@@ -335,7 +335,7 @@ test('Test file question getImagePreviewContentWidth always return correct image
     const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     const question = <QuestionFileModel>survey.getAllQuestions()[0];
     const controller: DocController = new DocController(Object.assign(TestHelper.defaultOptions, { fontSize: 30 }));
-    const flatFile = new FlatFile(survey, question, controller, { itemMinWidth: 20 });
+    const flatFile = new FlatFile(survey, question, controller, { itemMinWidth: 20, gapBetweenRows: 6, gapBetweenColumns: 6 });
     const questionBricks = await flatFile.generateFlatsContent({ xLeft: controller.margins.left || 10, yTop: controller.margins.top || 10 });
     expect(questionBricks.length).toBe(3);
     //check all item bricks have the same width

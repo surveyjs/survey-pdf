@@ -2,47 +2,47 @@
 	{
 		"brickType": "CompositeBrick",
 		"width": 538.5826771653543,
-		"height": 24.750000000000004,
+		"height": 30.75,
 		"xLeft": 28.34645669291342,
 		"xRight": 566.9291338582677,
-		"yTop": 28.34645669291339,
-		"yBot": 53.09645669291339,
+		"yTop": 28.346456692913392,
+		"yBot": 59.09645669291339,
 		"bricks": [
 			{
 				"brickType": "ContainerBrick",
 				"width": 538.5826771653543,
-				"height": 24.750000000000004,
+				"height": 30.75,
 				"xLeft": 28.34645669291342,
 				"xRight": 566.9291338582677,
-				"yTop": 28.34645669291339,
-				"yBot": 53.09645669291339,
+				"yTop": 28.346456692913392,
+				"yBot": 59.09645669291339,
 				"bricks": [
 					{
 						"brickType": "CompositeBrick",
 						"width": 525.8326771653543,
-						"height": 24.750000000000004,
+						"height": 30.75,
 						"xLeft": 34.72145669291342,
 						"xRight": 560.5541338582677,
-						"yTop": 28.34645669291339,
-						"yBot": 53.09645669291339,
+						"yTop": 28.346456692913392,
+						"yBot": 59.09645669291339,
 						"bricks": [
 							{
 								"brickType": "DropdownBrick",
 								"width": 525.8326771653543,
-								"height": 24.750000000000004,
+								"height": 30.75,
 								"xLeft": 34.72145669291342,
 								"xRight": 560.5541338582677,
-								"yTop": 28.34645669291339,
-								"yBot": 53.09645669291339,
+								"yTop": 28.346456692913392,
+								"yBot": 59.09645669291339,
 								"appearance": {
-									"fontSize": 15,
+									"fontSize": 12,
 									"fontStyle": "normal",
 									"lineHeight": 18,
-									"fontColor": "#000",
-									"borderColor": "#000",
-									"borderWidth": 0,
+									"fontColor": "#1c1b20",
 									"width": 12,
-									"height": 12
+									"height": 12,
+									"borderColor": "#1c1b20",
+									"borderWidth": 0
 								},
 								"options": {
 									"fieldName": "testidquestion_I'm just a list_row1_cell_0",
@@ -53,8 +53,8 @@
 									"items": []
 								},
 								"padding": {
-									"top": 3.375,
-									"bottom": 3.375
+									"top": 6.375,
+									"bottom": 6.375
 								}
 							}
 						]

@@ -2,35 +2,35 @@
 	{
 		"brickType": "ContainerBrick",
 		"width": 538.5826771653543,
-		"height": 21.000000000000004,
+		"height": 24.000000000000004,
 		"xLeft": 28.34645669291339,
 		"xRight": 566.9291338582677,
 		"yTop": 28.34645669291339,
-		"yBot": 49.34645669291339,
+		"yBot": 52.34645669291339,
 		"bricks": [
 			{
 				"brickType": "CompositeBrick",
-				"width": 47.040000000000006,
-				"height": 21.000000000000004,
+				"width": 70.56,
+				"height": 24.000000000000004,
 				"xLeft": 28.34645669291339,
-				"xRight": 75.3864566929134,
+				"xRight": 98.9064566929134,
 				"yTop": 28.34645669291339,
-				"yBot": 49.34645669291339,
+				"yBot": 52.34645669291339,
 				"bricks": [
 					{
 						"brickType": "TextBrick",
-						"width": 47.040000000000006,
-						"height": 21.000000000000004,
+						"width": 70.56,
+						"height": 24.000000000000004,
 						"xLeft": 28.34645669291339,
-						"xRight": 75.3864566929134,
+						"xRight": 98.9064566929134,
 						"yTop": 28.34645669291339,
-						"yBot": 49.34645669291339,
+						"yBot": 52.34645669291339,
 						"appearance": {
-							"fontSize": 12,
+							"fontSize": 18,
 							"fontName": "helvetica",
 							"fontStyle": "bold",
-							"lineHeight": 21,
-							"fontColor": "#000",
+							"lineHeight": 24,
+							"fontColor": "#1c1b20",
 							"textAlign": "left"
 						},
 						"options": {
@@ -49,27 +49,25 @@
 				"height": 0,
 				"xLeft": 28.34645669291339,
 				"xRight": 566.9291338582677,
-				"yTop": 49.34645669291339,
-				"yBot": 49.34645669291339
+				"yTop": 52.34645669291339,
+				"yBot": 52.34645669291339
 			}
 		]
 	},
 	{
 		"brickType": "TextFieldBrick",
 		"width": 525.8326771653543,
-		"height": 24.75,
+		"height": 30.75,
 		"xLeft": 34.72145669291339,
 		"xRight": 560.5541338582677,
-		"yTop": 61.34645669291339,
-		"yBot": 86.09645669291339,
+		"yTop": 70.34645669291339,
+		"yBot": 101.09645669291339,
 		"appearance": {
-			"fontSize": 15,
+			"fontSize": 12,
 			"fontName": "helvetica",
 			"fontStyle": "normal",
 			"lineHeight": 18,
-			"fontColor": "#000",
-			"borderColor": "#000",
-			"borderWidth": 0
+			"fontColor": "#1c1b20"
 		},
 		"options": {
 			"fieldName": "testidquestion_HiddenText",
@@ -82,8 +80,8 @@
 			"isMultiline": false
 		},
 		"padding": {
-			"top": 3.375,
-			"bottom": 3.375
+			"top": 6.375,
+			"bottom": 6.375
 		}
 	},
 	{
@@ -92,7 +90,7 @@
 		"height": 0,
 		"xLeft": 28.34645669291339,
 		"xRight": 566.9291338582677,
-		"yTop": 86.09645669291339,
-		"yBot": 86.09645669291339
+		"yTop": 101.09645669291339,
+		"yBot": 101.09645669291339
 	}
 ]

@@ -2,53 +2,53 @@
 	{
 		"brickType": "CompositeBrick",
 		"width": 525.8326771653543,
-		"height": 39,
+		"height": 36,
 		"xLeft": 34.72145669291339,
 		"xRight": 560.5541338582677,
-		"yTop": 31.72145669291339,
+		"yTop": 34.72145669291339,
 		"yBot": 70.72145669291339,
 		"bricks": [
 			{
 				"brickType": "ContainerBrick",
 				"width": 525.8326771653543,
-				"height": 18.000000000000004,
+				"height": 12,
 				"xLeft": 34.72145669291339,
 				"xRight": 560.5541338582677,
-				"yTop": 31.72145669291339,
-				"yBot": 49.72145669291339,
+				"yTop": 34.72145669291339,
+				"yBot": 46.72145669291339,
 				"bricks": [
 					{
 						"brickType": "CompositeBrick",
-						"width": 137.51999999999998,
-						"height": 18.000000000000004,
+						"width": 103.89000000000001,
+						"height": 12,
 						"xLeft": 34.72145669291339,
-						"xRight": 172.24145669291337,
-						"yTop": 31.72145669291339,
-						"yBot": 49.72145669291339,
+						"xRight": 138.6114566929134,
+						"yTop": 34.72145669291339,
+						"yBot": 46.72145669291339,
 						"bricks": [
 							{
 								"brickType": "CompositeBrick",
-								"width": 129.83999999999997,
-								"height": 18.000000000000004,
+								"width": 97.38000000000002,
+								"height": 12,
 								"xLeft": 34.72145669291339,
-								"xRight": 164.56145669291337,
-								"yTop": 31.72145669291339,
-								"yBot": 49.72145669291339,
+								"xRight": 132.10145669291342,
+								"yTop": 34.72145669291339,
+								"yBot": 46.72145669291339,
 								"bricks": [
 									{
 										"brickType": "TextBrick",
-										"width": 129.83999999999997,
-										"height": 18.000000000000004,
+										"width": 97.38000000000002,
+										"height": 12,
 										"xLeft": 34.72145669291339,
-										"xRight": 164.56145669291337,
-										"yTop": 31.72145669291339,
-										"yBot": 49.72145669291339,
+										"xRight": 132.10145669291342,
+										"yTop": 34.72145669291339,
+										"yBot": 46.72145669291339,
 										"appearance": {
-											"fontSize": 12,
+											"fontSize": 9,
 											"fontName": "helvetica",
 											"fontStyle": "normal",
-											"lineHeight": 18,
-											"fontColor": "#000",
+											"lineHeight": 12,
+											"fontColor": "#1c1b20",
 											"textAlign": "left"
 										},
 										"options": {
@@ -63,27 +63,27 @@
 							},
 							{
 								"brickType": "CompositeBrick",
-								"width": 4.680000000000007,
-								"height": 18.000000000000004,
-								"xLeft": 167.56145669291337,
-								"xRight": 172.24145669291337,
-								"yTop": 31.72145669291339,
-								"yBot": 49.72145669291339,
+								"width": 3.509999999999991,
+								"height": 12,
+								"xLeft": 135.10145669291342,
+								"xRight": 138.6114566929134,
+								"yTop": 34.72145669291339,
+								"yBot": 46.72145669291339,
 								"bricks": [
 									{
 										"brickType": "TextBrick",
-										"width": 4.680000000000007,
-										"height": 18.000000000000004,
-										"xLeft": 167.56145669291337,
-										"xRight": 172.24145669291337,
-										"yTop": 31.72145669291339,
-										"yBot": 49.72145669291339,
+										"width": 3.509999999999991,
+										"height": 12,
+										"xLeft": 135.10145669291342,
+										"xRight": 138.6114566929134,
+										"yTop": 34.72145669291339,
+										"yBot": 46.72145669291339,
 										"appearance": {
-											"fontSize": 12,
+											"fontSize": 9,
 											"fontName": "helvetica",
 											"fontStyle": "normal",
-											"lineHeight": 18,
-											"fontColor": "#000",
+											"lineHeight": 12,
+											"fontColor": "#1c1b20",
 											"textAlign": "left"
 										},
 										"options": {
@@ -106,8 +106,8 @@
 				"height": 0,
 				"xLeft": 34.72145669291339,
 				"xRight": 560.5541338582677,
-				"yTop": 49.72145669291339,
-				"yBot": 49.72145669291339
+				"yTop": 46.72145669291339,
+				"yBot": 46.72145669291339
 			},
 			{
 				"brickType": "TextFieldBrick",
@@ -118,13 +118,11 @@
 				"yTop": 52.72145669291339,
 				"yBot": 70.72145669291339,
 				"appearance": {
-					"fontSize": 15,
+					"fontSize": 12,
 					"fontName": "helvetica",
 					"fontStyle": "normal",
 					"lineHeight": 18,
-					"fontColor": "#000",
-					"borderColor": "#000",
-					"borderWidth": 0
+					"fontColor": "#1c1b20"
 				},
 				"options": {
 					"fieldName": "testidquestion_textbox",

@@ -2,52 +2,52 @@
 	{
 		"brickType": "CompositeBrick",
 		"width": 538.5826771653543,
-		"height": 24.750000000000004,
+		"height": 30.75,
 		"xLeft": 28.34645669291339,
 		"xRight": 566.9291338582677,
-		"yTop": 28.34645669291339,
-		"yBot": 53.09645669291339,
+		"yTop": 28.346456692913392,
+		"yBot": 59.09645669291339,
 		"bricks": [
 			{
 				"brickType": "ContainerBrick",
 				"width": 269.29133858267716,
-				"height": 24.750000000000004,
+				"height": 30.75,
 				"xLeft": 28.34645669291342,
 				"xRight": 297.6377952755906,
-				"yTop": 28.34645669291339,
-				"yBot": 53.09645669291339,
+				"yTop": 28.346456692913392,
+				"yBot": 59.09645669291339,
 				"bricks": [
 					{
 						"brickType": "CompositeBrick",
 						"width": 43.68000000000001,
-						"height": 24.750000000000004,
+						"height": 30.75,
 						"xLeft": 34.72145669291342,
 						"xRight": 78.40145669291343,
-						"yTop": 28.34645669291339,
-						"yBot": 53.09645669291339,
+						"yTop": 28.346456692913392,
+						"yBot": 59.09645669291339,
 						"bricks": [
 							{
 								"brickType": "TextBrick",
 								"width": 43.68000000000001,
-								"height": 24.750000000000004,
+								"height": 30.75,
 								"xLeft": 34.72145669291342,
 								"xRight": 78.40145669291343,
-								"yTop": 28.34645669291339,
-								"yBot": 53.09645669291339,
+								"yTop": 28.346456692913392,
+								"yBot": 59.09645669291339,
 								"appearance": {
 									"fontSize": 12,
 									"fontName": "helvetica",
 									"fontStyle": "normal",
 									"lineHeight": 18,
-									"fontColor": "#000",
+									"fontColor": "#1c1b2099",
 									"textAlign": "left"
 								},
 								"options": {
 									"text": "MulCol1"
 								},
 								"padding": {
-									"top": 3.375,
-									"bottom": 3.375
+									"top": 6.375,
+									"bottom": 6.375
 								}
 							}
 						]
@@ -57,43 +57,43 @@
 			{
 				"brickType": "ContainerBrick",
 				"width": 269.29133858267716,
-				"height": 24.750000000000004,
+				"height": 30.75,
 				"xLeft": 297.6377952755906,
 				"xRight": 566.9291338582677,
-				"yTop": 28.34645669291339,
-				"yBot": 53.09645669291339,
+				"yTop": 28.346456692913392,
+				"yBot": 59.09645669291339,
 				"bricks": [
 					{
 						"brickType": "CompositeBrick",
 						"width": 43.68000000000001,
-						"height": 24.750000000000004,
+						"height": 30.75,
 						"xLeft": 304.0127952755906,
 						"xRight": 347.6927952755906,
-						"yTop": 28.34645669291339,
-						"yBot": 53.09645669291339,
+						"yTop": 28.346456692913392,
+						"yBot": 59.09645669291339,
 						"bricks": [
 							{
 								"brickType": "TextBrick",
 								"width": 43.68000000000001,
-								"height": 24.750000000000004,
+								"height": 30.75,
 								"xLeft": 304.0127952755906,
 								"xRight": 347.6927952755906,
-								"yTop": 28.34645669291339,
-								"yBot": 53.09645669291339,
+								"yTop": 28.346456692913392,
+								"yBot": 59.09645669291339,
 								"appearance": {
 									"fontSize": 12,
 									"fontName": "helvetica",
 									"fontStyle": "normal",
 									"lineHeight": 18,
-									"fontColor": "#000",
+									"fontColor": "#1c1b2099",
 									"textAlign": "left"
 								},
 								"options": {
 									"text": "MulCol2"
 								},
 								"padding": {
-									"top": 3.375,
-									"bottom": 3.375
+									"top": 6.375,
+									"bottom": 6.375
 								}
 							}
 						]
@@ -106,47 +106,47 @@
 				"height": 0,
 				"xLeft": 28.34645669291339,
 				"xRight": 566.9291338582677,
-				"yTop": 53.09645669291339,
-				"yBot": 53.09645669291339
+				"yTop": 59.09645669291339,
+				"yBot": 59.09645669291339
 			}
 		]
 	},
 	{
 		"brickType": "CompositeBrick",
 		"width": 538.5826771653543,
-		"height": 18.75,
+		"height": 24.75,
 		"xLeft": 28.34645669291342,
 		"xRight": 566.9291338582677,
-		"yTop": 53.09645669291339,
-		"yBot": 71.84645669291339,
+		"yTop": 59.09645669291339,
+		"yBot": 83.84645669291339,
 		"bricks": [
 			{
 				"brickType": "ContainerBrick",
 				"width": 269.29133858267716,
-				"height": 18.75,
+				"height": 24.75,
 				"xLeft": 28.34645669291342,
 				"xRight": 297.6377952755906,
-				"yTop": 53.09645669291339,
-				"yBot": 71.84645669291339,
+				"yTop": 59.09645669291339,
+				"yBot": 83.84645669291339,
 				"bricks": [
 					{
 						"brickType": "CheckItemBrick",
 						"width": 12,
-						"height": 18.75,
+						"height": 24.75,
 						"xLeft": 34.72145669291342,
 						"xRight": 46.72145669291342,
-						"yTop": 53.09645669291339,
-						"yBot": 71.84645669291339,
+						"yTop": 59.09645669291339,
+						"yBot": 83.84645669291339,
 						"appearance": {
 							"fontSize": 7.5,
 							"fontName": "zapfdingbats",
 							"fontStyle": "normal",
-							"lineHeight": 7.5,
-							"fontColor": "#000",
-							"borderColor": "#000",
-							"borderWidth": 0.75,
+							"lineHeight": 18,
+							"fontColor": "#1c1b20",
 							"width": 12,
 							"height": 12,
+							"borderColor": "#1c1b20",
+							"borderWidth": 0.75,
 							"checkMark": "3"
 						},
 						"options": {
@@ -156,8 +156,8 @@
 							"fieldName": "testidquestion_madintotalsshowmulcol_row1_cell_1index0"
 						},
 						"padding": {
-							"top": 3.375,
-							"bottom": 3.375
+							"top": 6.375,
+							"bottom": 6.375
 						}
 					}
 				]
@@ -165,30 +165,30 @@
 			{
 				"brickType": "ContainerBrick",
 				"width": 269.29133858267716,
-				"height": 18.75,
+				"height": 24.75,
 				"xLeft": 297.6377952755906,
 				"xRight": 566.9291338582677,
-				"yTop": 53.09645669291339,
-				"yBot": 71.84645669291339,
+				"yTop": 59.09645669291339,
+				"yBot": 83.84645669291339,
 				"bricks": [
 					{
 						"brickType": "CheckItemBrick",
 						"width": 12,
-						"height": 18.75,
+						"height": 24.75,
 						"xLeft": 304.0127952755906,
 						"xRight": 316.0127952755906,
-						"yTop": 53.09645669291339,
-						"yBot": 71.84645669291339,
+						"yTop": 59.09645669291339,
+						"yBot": 83.84645669291339,
 						"appearance": {
 							"fontSize": 7.5,
 							"fontName": "zapfdingbats",
 							"fontStyle": "normal",
-							"lineHeight": 7.5,
-							"fontColor": "#000",
-							"borderColor": "#000",
-							"borderWidth": 0.75,
+							"lineHeight": 18,
+							"fontColor": "#1c1b20",
 							"width": 12,
 							"height": 12,
+							"borderColor": "#1c1b20",
+							"borderWidth": 0.75,
 							"checkMark": "3"
 						},
 						"options": {
@@ -198,8 +198,8 @@
 							"fieldName": "testidquestion_madintotalsshowmulcol_row1_cell_1index1"
 						},
 						"padding": {
-							"top": 3.375,
-							"bottom": 3.375
+							"top": 6.375,
+							"bottom": 6.375
 						}
 					}
 				]

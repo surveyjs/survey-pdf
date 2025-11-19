@@ -55,7 +55,7 @@ test('Long checkbox with indent', async () => {
         ]
     };
     let options: IDocOptions = TestHelper.defaultOptions;
-    options.format = [210.0, 50];
+    options.format = [210.0, 45];
     options.orientation = 'l';
     let survey: SurveyPDF = new SurveyPDF(json, options);
     survey.styles = { question: { wrapper: { padding: 0, borderWidth: 0 } } };
@@ -290,11 +290,11 @@ test('Check yTop on new page with panel', async () => {
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     survey.styles = { question: { wrapper: { padding: 0, borderWidth: 0 } } };
     const styles = survey.getStylesForElement(survey.getAllQuestions()[0]);
-    let controller: DocController = new DocController({ ...TestHelper.defaultOptions, format: [210, 187] });
+    let controller: DocController = new DocController({ ...TestHelper.defaultOptions, format: [210, 180] });
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
     expect(packs.length).toBe(3);
-    expect(packs[2][0].yTop).toBeCloseTo(packs[2][1].yTop - styles.label.lineHeight);
+    expect(packs[2][0].yTop).toBeCloseTo(packs[2][1].yTop - styles.label.lineHeight - styles.gapBetweenRows);
 });
 test('Check adding new page for lack of place before new page', async () => {
     let json: any = {
@@ -323,7 +323,7 @@ test('Check adding new page for lack of place before new page', async () => {
     };
     let options: IDocOptions = {
         fontSize: 16,
-        format: [10, 30],
+        format: [10, 10],
         margins:
         {
             left: 0,

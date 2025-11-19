@@ -2,53 +2,53 @@
 	{
 		"brickType": "CompositeBrick",
 		"width": 525.8326771653543,
-		"height": 51.375,
+		"height": 51,
 		"xLeft": 34.72145669291339,
 		"xRight": 560.5541338582677,
-		"yTop": 31.72145669291339,
-		"yBot": 83.09645669291339,
+		"yTop": 34.72145669291339,
+		"yBot": 85.72145669291339,
 		"bricks": [
 			{
 				"brickType": "ContainerBrick",
 				"width": 525.8326771653543,
-				"height": 30.375000000000004,
+				"height": 27,
 				"xLeft": 34.72145669291339,
 				"xRight": 560.5541338582677,
-				"yTop": 31.72145669291339,
-				"yBot": 62.09645669291339,
+				"yTop": 34.72145669291339,
+				"yBot": 61.72145669291339,
 				"bricks": [
 					{
 						"brickType": "CompositeBrick",
-						"width": 44.52000000000001,
-						"height": 18.000000000000004,
+						"width": 33.39,
+						"height": 12,
 						"xLeft": 34.72145669291339,
-						"xRight": 79.2414566929134,
-						"yTop": 31.72145669291339,
-						"yBot": 49.72145669291339,
+						"xRight": 68.11145669291339,
+						"yTop": 34.72145669291339,
+						"yBot": 46.72145669291339,
 						"bricks": [
 							{
 								"brickType": "CompositeBrick",
-								"width": 44.52000000000001,
-								"height": 18.000000000000004,
+								"width": 33.39,
+								"height": 12,
 								"xLeft": 34.72145669291339,
-								"xRight": 79.2414566929134,
-								"yTop": 31.72145669291339,
-								"yBot": 49.72145669291339,
+								"xRight": 68.11145669291339,
+								"yTop": 34.72145669291339,
+								"yBot": 46.72145669291339,
 								"bricks": [
 									{
 										"brickType": "TextBrick",
-										"width": 44.52000000000001,
-										"height": 18.000000000000004,
+										"width": 33.39,
+										"height": 12,
 										"xLeft": 34.72145669291339,
-										"xRight": 79.2414566929134,
-										"yTop": 31.72145669291339,
-										"yBot": 49.72145669291339,
+										"xRight": 68.11145669291339,
+										"yTop": 34.72145669291339,
+										"yBot": 46.72145669291339,
 										"appearance": {
-											"fontSize": 12,
+											"fontSize": 9,
 											"fontName": "helvetica",
 											"fontStyle": "normal",
-											"lineHeight": 18,
-											"fontColor": "#000",
+											"lineHeight": 12,
+											"fontColor": "#1c1b20",
 											"textAlign": "left"
 										},
 										"options": {
@@ -65,27 +65,27 @@
 					},
 					{
 						"brickType": "CompositeBrick",
-						"width": 219.60000000000002,
+						"width": 164.7,
 						"height": 12,
 						"xLeft": 34.72145669291339,
-						"xRight": 254.32145669291342,
-						"yTop": 50.09645669291339,
-						"yBot": 62.09645669291339,
+						"xRight": 199.42145669291338,
+						"yTop": 49.72145669291339,
+						"yBot": 61.72145669291339,
 						"bricks": [
 							{
 								"brickType": "TextBrick",
-								"width": 219.60000000000002,
+								"width": 164.7,
 								"height": 12,
 								"xLeft": 34.72145669291339,
-								"xRight": 254.32145669291342,
-								"yTop": 50.09645669291339,
-								"yBot": 62.09645669291339,
+								"xRight": 199.42145669291338,
+								"yTop": 49.72145669291339,
+								"yBot": 61.72145669291339,
 								"appearance": {
-									"fontSize": 12,
+									"fontSize": 9,
 									"fontName": "helvetica",
 									"fontStyle": "normal",
 									"lineHeight": 12,
-									"fontColor": "#404040",
+									"fontColor": "#1c1b2099",
 									"textAlign": "left"
 								},
 								"options": {
@@ -106,8 +106,8 @@
 				"height": 0,
 				"xLeft": 34.72145669291339,
 				"xRight": 560.5541338582677,
-				"yTop": 62.09645669291339,
-				"yBot": 62.09645669291339
+				"yTop": 61.72145669291339,
+				"yBot": 61.72145669291339
 			},
 			{
 				"brickType": "TextFieldBrick",
@@ -115,16 +115,14 @@
 				"height": 18,
 				"xLeft": 34.72145669291339,
 				"xRight": 560.5541338582677,
-				"yTop": 65.09645669291339,
-				"yBot": 83.09645669291339,
+				"yTop": 67.72145669291339,
+				"yBot": 85.72145669291339,
 				"appearance": {
-					"fontSize": 15,
+					"fontSize": 12,
 					"fontName": "helvetica",
 					"fontStyle": "normal",
 					"lineHeight": 18,
-					"fontColor": "#000",
-					"borderColor": "#000",
-					"borderWidth": 0
+					"fontColor": "#1c1b20"
 				},
 				"options": {
 					"fieldName": "testidquestion_box",

@@ -5,16 +5,14 @@
 		"height": 72,
 		"xLeft": 34.72145669291339,
 		"xRight": 560.5541338582677,
-		"yTop": 31.72145669291339,
-		"yBot": 103.72145669291339,
+		"yTop": 34.72145669291339,
+		"yBot": 106.72145669291339,
 		"appearance": {
-			"fontSize": 15,
+			"fontSize": 12,
 			"fontName": "helvetica",
 			"fontStyle": "normal",
 			"lineHeight": 18,
-			"fontColor": "#000",
-			"borderColor": "#000",
-			"borderWidth": 0
+			"fontColor": "#1c1b20"
 		},
 		"options": {
 			"rows": 4,

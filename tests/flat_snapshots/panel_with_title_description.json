@@ -2,51 +2,51 @@
 	{
 		"brickType": "ContainerBrick",
 		"width": 538.5826771653543,
-		"height": 42.75,
+		"height": 45.75,
 		"xLeft": 28.34645669291339,
 		"xRight": 566.9291338582677,
-		"yTop": 28.34645669291339,
-		"yBot": 71.09645669291339,
+		"yTop": 28.346456692913392,
+		"yBot": 74.09645669291339,
 		"bricks": [
 			{
 				"brickType": "CompositeBrick",
 				"width": 59.760000000000005,
-				"height": 24.375000000000004,
+				"height": 24.375,
 				"xLeft": 34.72145669291339,
 				"xRight": 94.4814566929134,
-				"yTop": 28.34645669291339,
+				"yTop": 28.346456692913392,
 				"yBot": 52.72145669291339,
 				"bricks": [
 					{
 						"brickType": "CompositeBrick",
 						"width": 59.760000000000005,
-						"height": 24.375000000000004,
+						"height": 24.375,
 						"xLeft": 34.72145669291339,
 						"xRight": 94.4814566929134,
-						"yTop": 28.34645669291339,
+						"yTop": 28.346456692913392,
 						"yBot": 52.72145669291339,
 						"bricks": [
 							{
 								"brickType": "TextBrick",
 								"width": 59.760000000000005,
-								"height": 24.375000000000004,
+								"height": 24.375,
 								"xLeft": 34.72145669291339,
 								"xRight": 94.4814566929134,
-								"yTop": 28.34645669291339,
+								"yTop": 28.346456692913392,
 								"yBot": 52.72145669291339,
 								"appearance": {
 									"fontSize": 12,
 									"fontName": "helvetica",
 									"fontStyle": "bold",
-									"lineHeight": 21,
-									"fontColor": "#000",
+									"lineHeight": 18,
+									"fontColor": "#1c1b20",
 									"textAlign": "left"
 								},
 								"options": {
 									"text": "Panel Title"
 								},
 								"padding": {
-									"top": 3.375,
+									"top": 6.375,
 									"bottom": 0
 								}
 							}
@@ -56,27 +56,27 @@
 			},
 			{
 				"brickType": "CompositeBrick",
-				"width": 91.32,
-				"height": 15.375,
+				"width": 68.49,
+				"height": 18.375,
 				"xLeft": 34.72145669291339,
-				"xRight": 126.04145669291339,
+				"xRight": 103.21145669291339,
 				"yTop": 55.72145669291339,
-				"yBot": 71.09645669291339,
+				"yBot": 74.09645669291339,
 				"bricks": [
 					{
 						"brickType": "TextBrick",
-						"width": 91.32,
-						"height": 15.375,
+						"width": 68.49,
+						"height": 18.375,
 						"xLeft": 34.72145669291339,
-						"xRight": 126.04145669291339,
+						"xRight": 103.21145669291339,
 						"yTop": 55.72145669291339,
-						"yBot": 71.09645669291339,
+						"yBot": 74.09645669291339,
 						"appearance": {
-							"fontSize": 12,
+							"fontSize": 9,
 							"fontName": "helvetica",
 							"fontStyle": "normal",
 							"lineHeight": 12,
-							"fontColor": "#404040",
+							"fontColor": "#1c1b2099",
 							"textAlign": "left"
 						},
 						"options": {
@@ -84,7 +84,7 @@
 						},
 						"padding": {
 							"top": 0,
-							"bottom": 3.375
+							"bottom": 6.375
 						}
 					}
 				]
@@ -92,71 +92,71 @@
 			{
 				"brickType": "RowlineBrick",
 				"width": 525.8326771653543,
-				"height": 3.375,
+				"height": 6.375,
 				"xLeft": 34.72145669291339,
 				"xRight": 560.5541338582677,
 				"yTop": 67.72145669291339,
-				"yBot": 71.09645669291339
+				"yBot": 74.09645669291339
 			}
 		]
 	},
 	{
 		"brickType": "CompositeBrick",
 		"width": 525.8326771653543,
-		"height": 45.75,
+		"height": 48.75,
 		"xLeft": 34.72145669291339,
 		"xRight": 560.5541338582677,
-		"yTop": 71.09645669291339,
-		"yBot": 116.84645669291339,
+		"yTop": 74.09645669291339,
+		"yBot": 122.84645669291339,
 		"bricks": [
 			{
 				"brickType": "ContainerBrick",
 				"width": 525.8326771653543,
-				"height": 21.375,
+				"height": 18.375,
 				"xLeft": 34.72145669291339,
 				"xRight": 560.5541338582677,
-				"yTop": 71.09645669291339,
+				"yTop": 74.09645669291339,
 				"yBot": 92.47145669291339,
 				"bricks": [
 					{
 						"brickType": "CompositeBrick",
-						"width": 88.19999999999999,
-						"height": 21.375,
+						"width": 66.15000000000002,
+						"height": 18.375,
 						"xLeft": 34.72145669291339,
-						"xRight": 122.92145669291338,
-						"yTop": 71.09645669291339,
+						"xRight": 100.87145669291341,
+						"yTop": 74.09645669291339,
 						"yBot": 92.47145669291339,
 						"bricks": [
 							{
 								"brickType": "CompositeBrick",
-								"width": 88.19999999999999,
-								"height": 21.375,
+								"width": 66.15000000000002,
+								"height": 18.375,
 								"xLeft": 34.72145669291339,
-								"xRight": 122.92145669291338,
-								"yTop": 71.09645669291339,
+								"xRight": 100.87145669291341,
+								"yTop": 74.09645669291339,
 								"yBot": 92.47145669291339,
 								"bricks": [
 									{
 										"brickType": "TextBrick",
-										"width": 88.19999999999999,
-										"height": 21.375,
+										"width": 66.15000000000002,
+										"height": 18.375,
 										"xLeft": 34.72145669291339,
-										"xRight": 122.92145669291338,
-										"yTop": 71.09645669291339,
+										"xRight": 100.87145669291341,
+										"yTop": 74.09645669291339,
 										"yBot": 92.47145669291339,
 										"appearance": {
-											"fontSize": 12,
+											"fontSize": 9,
 											"fontName": "helvetica",
 											"fontStyle": "normal",
-											"lineHeight": 18,
-											"fontColor": "#000",
+											"lineHeight": 12,
+											"fontColor": "#1c1b20",
 											"textAlign": "left"
 										},
 										"options": {
 											"text": "I am in the panel"
 										},
 										"padding": {
-											"top": 3.375,
+											"top": 6.375,
 											"bottom": 0
 										}
 									}
@@ -178,19 +178,17 @@
 			{
 				"brickType": "TextFieldBrick",
 				"width": 525.8326771653543,
-				"height": 21.375,
+				"height": 24.375,
 				"xLeft": 34.72145669291339,
 				"xRight": 560.5541338582677,
-				"yTop": 95.47145669291339,
-				"yBot": 116.84645669291339,
+				"yTop": 98.47145669291339,
+				"yBot": 122.84645669291339,
 				"appearance": {
-					"fontSize": 15,
+					"fontSize": 12,
 					"fontName": "helvetica",
 					"fontStyle": "normal",
 					"lineHeight": 18,
-					"fontColor": "#000",
-					"borderColor": "#000",
-					"borderWidth": 0
+					"fontColor": "#1c1b20"
 				},
 				"options": {
 					"fieldName": "testidquestion_I am in the panel",
@@ -204,7 +202,7 @@
 				},
 				"padding": {
 					"top": 0,
-					"bottom": 3.375
+					"bottom": 6.375
 				}
 			}
 		]
@@ -215,7 +213,7 @@
 		"height": 0,
 		"xLeft": 28.34645669291339,
 		"xRight": 566.9291338582677,
-		"yTop": 116.84645669291339,
-		"yBot": 116.84645669291339
+		"yTop": 122.84645669291339,
+		"yBot": 122.84645669291339
 	}
 ]
