@@ -11,7 +11,7 @@ This help topic describes how to export custom questions that use [third-party c
 
 SurveyJS PDF Generator exports custom questions as plain non-editable text that displays question values.
 
-<img src="./images/export-custom-question-as-text.png" alt="SurveyJS PDF Generator: Render custom questions as text" width="772" height="350">
+<img src="images/export-custom-question-as-text.png" alt="SurveyJS PDF Generator: Render custom questions as text" width="772" height="350">
 
 Since this is the default behavior, you do not need to specifically configure it.
 
@@ -40,7 +40,7 @@ FlatRepository.register(
 
 The image below illustrates the result:
 
-<img src="./images/export-custom-question-with-predefined-renderer.png" alt="SurveyJS PDF Generator: Export custom questions using a predefined renderer" width="772" height="358">
+<img src="images/export-custom-question-with-predefined-renderer.png" alt="SurveyJS PDF Generator: Export custom questions using a predefined renderer" width="772" height="358">
 
 [View CodeSandbox Example](https://codesandbox.io/p/sandbox/surveyjs-pdf-generator-use-a-predefined-renderer-forked-7xsdsm (linkStyle))
 
@@ -84,6 +84,6 @@ FlatRepository.register("color-picker", FlatCustomColor);
 
 The following image demonstrates the exported PDF document:
 
-<img src="./images/export-custom-question-with-custom-pdf-brick.png" alt="SurveyJS PDF Generator: Export custom questions using a custom PDF brick" width="772" height="358">
+<img src="images/export-custom-question-with-custom-pdf-brick.png" alt="SurveyJS PDF Generator: Export custom questions using a custom PDF brick" width="772" height="358">
 
 [View CodeSandbox Example](https://codesandbox.io/p/sandbox/focused-agnesi-qcn488 (linkStyle))

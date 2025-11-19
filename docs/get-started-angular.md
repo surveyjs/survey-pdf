@@ -79,7 +79,7 @@ export class AppComponent implements OnInit {
 
 The following image illustrates the resulting UI with the [Default theme](https://surveyjs.io/form-library/documentation/manage-default-themes-and-styles) applied:
 
-<img src="./images/surveypdf-navigation-button.png" alt="Export Survey to PDF - Save as PDF navigation button" width="772" height="404">
+<img src="images/surveypdf-navigation-button.png" alt="Export Survey to PDF - Save as PDF navigation button" width="772" height="404">
 
 To view the application, run `ng serve` in a command line and open [http://localhost:4200/](http://localhost:4200/) in your browser.
 
@@ -162,7 +162,7 @@ export class AppModule { }
 
 SurveyJS PDF Generator is not available for free commercial use. To integrate it into your application, you must purchase a [commercial license](https://surveyjs.io/licensing) for the software developer(s) who will be working with the PDF Generator APIs and implementing the integration. If you use SurveyJS PDF Generator without a license, an alert banner will appear at the top of each page in an exported PDF document:
 
-<img src="./images/alert-banner-pdf.png" alt="SurveyJS PDF Generator: Alert banner" width="772" height="494">
+<img src="images/alert-banner-pdf.png" alt="SurveyJS PDF Generator: Alert banner" width="772" height="494">
 
 After purchasing a license, follow the steps below to activate it and remove the alert banner:
 
