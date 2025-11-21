@@ -476,6 +476,7 @@ export function getDefaultStylesFromTheme (theme: ITheme) {
                 imageRatio: 4 / 3,
                 imageMinWidth: baseSize * 12.5,
                 imageMaxWidth: baseSize * 37.5,
+                gapBetweenImageInput: getSizeVariable('--sjs2-pdf-layout-image-picker-items-gap-image-check'),
                 inputReadOnly: {
                     borderRadius: getSizeVariable('--sjs2-pdf-radius-checkbox'),
                 },

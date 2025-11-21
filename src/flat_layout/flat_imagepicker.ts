@@ -48,6 +48,7 @@ export class FlatImagePicker extends FlatQuestion<QuestionImagePickerModel> {
             compositeFlat.addBrick(labelFlat);
             buttonPoint = SurveyHelper.createPoint(labelFlat);
         }
+        buttonPoint.yTop += this.styles.gapBetweenImageInput;
         const height: number = itemAppearance.height;
         const buttonRect: IRect = SurveyHelper.createRect(buttonPoint, pageAvailableWidth, height);
         if (this.question.multiSelect) {
