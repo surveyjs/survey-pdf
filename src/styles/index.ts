@@ -130,6 +130,8 @@ export function getDefaultStylesFromTheme (theme: ITheme) {
                     borderColor: getColorVariable('--sjs2-color-control-check-false-default-border'),
                     borderWidth: getSizeVariable('--sjs2-pdf-border-width-check'),
                     fontName: 'zapfdingbats',
+                    fontColor: getColorVariable('--sjs2-color-fg-basic-primary'),
+                    backgroundColor: getColorVariable('--sjs2-color-control-check-false-default-bg'),
                 },
                 inputReadOnly: {
                     fontColor: getColorVariable('--sjs2-color-control-check-true-default-icon'),
@@ -234,6 +236,8 @@ export function getDefaultStylesFromTheme (theme: ITheme) {
                     fontSize: baseSize * 1.25,
                     borderColor: getColorVariable('--sjs2-color-control-check-false-default-border'),
                     borderWidth: getSizeVariable('--sjs2-pdf-border-width-check'),
+                    fontColor: getColorVariable('--sjs2-color-fg-basic-primary'),
+                    backgroundColor: getColorVariable('--sjs2-color-control-check-false-default-bg'),
                     fontName: 'zapfdingbats',
                 },
                 inputReadOnly: {
@@ -346,6 +350,8 @@ export function getDefaultStylesFromTheme (theme: ITheme) {
                     fontSize: baseSize * 1.25,
                     borderColor: getColorVariable('--sjs2-color-control-check-false-default-border'),
                     borderWidth: getSizeVariable('--sjs2-pdf-border-width-check'),
+                    fontColor: getColorVariable('--sjs2-color-fg-basic-primary'),
+                    backgroundColor: getColorVariable('--sjs2-color-control-check-false-default-bg'),
                     fontName: 'zapfdingbats',
                     checkMark: 'l',
                 },
@@ -375,13 +381,10 @@ export function getDefaultStylesFromTheme (theme: ITheme) {
                     fontSize: baseSize * 2.5,
                     lineHeight: baseSize * 3
                 },
-                rangeInput: {
-                    width: baseSize * 5
-                },
                 rangeSeparator: {
                     width: baseSize * 3,
                     height: baseSize * 0.125,
-                    backgroundColor: '#000'
+                    backgroundColor: getColorVariable('--sjs2-color-fg-basic-primary')
                 },
             },
             dropdown: {
@@ -389,8 +392,12 @@ export function getDefaultStylesFromTheme (theme: ITheme) {
                     borderWidth: 0,
                     fontName: undefined as any,
                     fontColor: getColorVariable('--sjs2-color-fg-basic-primary'),
+                    backgroundColor: getColorVariable('--sjs2-color-control-check-false-default-bg'),
                     fontSize: getSizeVariable('--sjs2-typography-font-size-default'),
                     lineHeight: getColorVariable('--sjs2-typography-line-height-default')
+                },
+                inputReadOnly: {
+                    backgroundColor: undefined
                 }
             },
             file: {
@@ -449,6 +456,8 @@ export function getDefaultStylesFromTheme (theme: ITheme) {
                     fontSize: baseSize * 1.25,
                     borderColor: getColorVariable('--sjs2-color-control-check-false-default-border'),
                     borderWidth: getSizeVariable('--sjs2-pdf-border-width-check'),
+                    fontColor: getColorVariable('--sjs2-color-fg-basic-primary'),
+                    backgroundColor: getColorVariable('--sjs2-color-control-check-false-default-bg'),
                     fontName: 'zapfdingbats',
                 },
                 inputReadOnly: {

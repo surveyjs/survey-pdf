@@ -11,7 +11,7 @@ import { ImageBrick } from './pdf_render/pdf_image';
 import { EmptyBrick } from './pdf_render/pdf_empty';
 import { RowlineBrick } from './pdf_render/pdf_rowline';
 import { CompositeBrick } from './pdf_render/pdf_composite';
-import { ITextFieldBrickAppearanceOptions, ITextFieldBrickOptions, TextFieldBrick } from './pdf_render/pdf_textfield';
+import { ITextFieldBrickOptions, TextFieldBrick } from './pdf_render/pdf_textfield';
 import { FlatPanel } from './flat_layout/flat_panel';
 import { FlatPage } from './flat_layout/flat_page';
 import { IStyles } from './styles';
@@ -111,7 +111,7 @@ export class SurveyHelper {
     public static parseColor(color: string) {
         let opacity: number;
         let match: RegExpMatchArray;
-        if((match = color.match(/(#[A-Fa-f0-9]{6})([A-Fa-f0-9]{2})/))) {
+        if((match = (color ?? '').match(/(#[A-Fa-f0-9]{6})([A-Fa-f0-9]{2})/))) {
             color = match[1];
             opacity = (Math.round(parseInt(match[2], 16) / 255 * 100)) / 100;
         }
@@ -531,7 +531,7 @@ export class SurveyHelper {
         return this.createRect(point, width, height);
     }
     public static async createReadOnlyTextFieldTextFlat(point: IPoint,
-        controller: DocController, value: string, appearance: ITextFieldBrickAppearanceOptions): Promise<IPdfBrick> {
+        controller: DocController, value: string, appearance: IInputAppearanceOptions): Promise<IPdfBrick> {
         controller.pushMargins(point.xLeft, controller.margins.right);
         const textFlat: IPdfBrick = await this.createTextFlat(
             point, controller, value.toString(), appearance);

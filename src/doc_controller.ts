@@ -3,7 +3,7 @@ import { IHTMLRenderType } from './flat_layout/flat_html';
 import { SurveyHelper, ITextAppearanceOptions } from './helper_survey';
 import { LocalizableString } from 'survey-core';
 // import Fonts from './fonts';
-import setRadioAppearance from './jspdf_plugins/acroform_radio';
+import { getPatchedAcroFormCheckBox, getPatchedAcroFormComboBox, getPatchedAcroFormRadioButton, getPatchedAcroFormTextField } from './jspdf_plugins/acroform_patched';
 import './jspdf_plugins/acroform.js';
 import './jspdf_plugins/from_html.js';
 
@@ -408,7 +408,6 @@ export class DocController extends DocOptions {
             DocController.addFont(this.fontName, this.base64Bold, 'bold');
             this._doc = new jsPDF(jspdfOptions);
         }
-        setRadioAppearance(this._doc);
         this._useCustomFontInHtml = options.useCustomFontInHtml && SurveyHelper.isFontExist(this, this.fontName);
         this._helperDoc = new jsPDF(jspdfOptions);
         this._doc.setFont(this.fontName);
@@ -595,5 +594,33 @@ export class DocController extends DocOptions {
     }
     public restoreTextColor() {
         this.textColorRestoreCallbacks.pop()();
+    }
+    private _AcroFormCheckBox: ({ new(): any });
+    public get AcroFormCheckBox() {
+        if(!this._AcroFormCheckBox) {
+            this._AcroFormCheckBox = getPatchedAcroFormCheckBox(this.doc);
+        }
+        return this._AcroFormCheckBox;
+    }
+    private _AcroFormComboBox: ({ new(): any });
+    public get AcroFormComboBox() {
+        if(!this._AcroFormComboBox) {
+            this._AcroFormComboBox = getPatchedAcroFormComboBox(this.doc);
+        }
+        return this._AcroFormComboBox;
+    }
+    private _AcroFormTextField: ({ new(): any });
+    public get AcroFormTextField() {
+        if(!this._AcroFormTextField) {
+            this._AcroFormTextField = getPatchedAcroFormTextField(this.doc);
+        }
+        return this._AcroFormTextField;
+    }
+    private _AcroFormRadioButton: ({ new(): any });
+    public get AcroFormRadioButton() {
+        if(!this._AcroFormRadioButton) {
+            this._AcroFormRadioButton = getPatchedAcroFormRadioButton(this.doc);
+        }
+        return this._AcroFormRadioButton;
     }
 }

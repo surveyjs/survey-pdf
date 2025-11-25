@@ -1,8 +1,7 @@
 import { IRect, DocController, ISize } from '../doc_controller';
 import { IPdfBrick, IPdfBrickOptions, PdfBrick, TranslateXFunction } from './pdf_brick';
-import { IBorderAppearanceOptions, SurveyHelper, ITextAppearanceOptions } from '../helper_survey';
+import { SurveyHelper, IInputAppearanceOptions } from '../helper_survey';
 import { mergeRects } from '../utils';
-
 export interface ITextFieldBrickOptions extends IPdfBrickOptions {
     isReadOnly: boolean;
     fieldName: string;
@@ -13,11 +12,9 @@ export interface ITextFieldBrickOptions extends IPdfBrickOptions {
     isMultiline?: boolean;
 }
 
-export type ITextFieldBrickAppearanceOptions = ITextAppearanceOptions & IBorderAppearanceOptions;
-
 export class TextFieldBrick extends PdfBrick {
     public constructor(controller: DocController,
-        rect: IRect, protected options: ITextFieldBrickOptions, protected appearance: ITextFieldBrickAppearanceOptions
+        rect: IRect, protected options: ITextFieldBrickOptions, protected appearance: IInputAppearanceOptions
     ) {
         super(controller, rect);
         options.isMultiline = options.isMultiline ?? false;
@@ -36,9 +33,17 @@ export class TextFieldBrick extends PdfBrick {
             this.renderColorQuestion();
             return;
         }
+        const formScale = SurveyHelper.getRectBorderScale(this.contentRect, this.appearance.borderWidth ?? 0);
+        const scaledAcroformRect = SurveyHelper.createAcroformRect(SurveyHelper.scaleRect(this.contentRect, formScale));
+        if(this.appearance.backgroundColor) {
+            this.controller.setFillColor(this.appearance.backgroundColor);
+            this.controller.doc.rect(...scaledAcroformRect, 'F');
+            this.controller.restoreFillColor();
+        }
+        const { color: fontColor } = SurveyHelper.parseColor(this.appearance.fontColor);
         const inputField: any = this.options.inputType === 'password' ?
             new (<any>this.controller.doc.AcroFormPasswordField)() :
-            new (<any>this.controller.doc.AcroFormTextField)();
+            new (this.controller.AcroFormTextField)();
         inputField.fieldName = this.options.fieldName;
         inputField.fontName = this.appearance.fontName;
         inputField.fontSize = this.appearance.fontSize;
@@ -51,11 +56,9 @@ export class TextFieldBrick extends PdfBrick {
         else inputField.value = '';
         inputField.multiline = this.options.isMultiline;
         inputField.readOnly = this.options.isReadOnly;
-        inputField.color = this.appearance.fontColor;
-        const formScale = SurveyHelper.getRectBorderScale(this.contentRect, this.appearance.borderWidth ?? 0);
+        inputField.color = fontColor;
         inputField.maxFontSize = this.appearance.fontSize * formScale.scaleY;
-        inputField.Rect = SurveyHelper.createAcroformRect(
-            SurveyHelper.scaleRect(this.contentRect, formScale));
+        inputField.Rect = scaledAcroformRect;
         this.controller.doc.addField(inputField);
         SurveyHelper.renderFlatBorders(this.controller, this.contentRect, this.appearance);
     }

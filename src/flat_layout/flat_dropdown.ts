@@ -37,7 +37,7 @@ export class FlatDropdown extends FlatQuestion<QuestionDropdownModel> {
                 value: this.question.readOnlyText || '',
                 isReadOnly: this.question.isReadOnly,
                 placeholder: SurveyHelper.getLocString(this.question.locPlaceholder)
-            }, appearance);
+            }, SurveyHelper.mergeObjects({}, appearance, this.styles.inputReadOnly));
         const compositeFlat: CompositeBrick = new CompositeBrick(valueBrick);
         if (this.question.isShowingChoiceComment) {
             const otherPoint: IPoint = SurveyHelper.createPoint(compositeFlat);

@@ -16,13 +16,16 @@ export class DropdownBrick extends PdfBrick {
         super(controller, rect);
     }
     public async renderInteractive(): Promise<void> {
-        const comboBox = new (<any>this.controller.doc.AcroFormComboBox)();
+        const { color: fontColor } = SurveyHelper.parseColor(this.appearance.fontColor);
+        const { color: backgroundColor } = SurveyHelper.parseColor(this.appearance.backgroundColor);
+        const comboBox = new this.controller.AcroFormComboBox();
+        comboBox.backgroundColor = backgroundColor;
         comboBox.fieldName = this.options.fieldName;
         comboBox.Rect = SurveyHelper.createAcroformRect(
             SurveyHelper.scaleRect(this.contentRect,
                 SurveyHelper.getRectBorderScale(this.contentRect, this.appearance.borderWidth ?? 0)));
         comboBox.edit = false;
-        comboBox.color = this.appearance.fontColor;
+        comboBox.color = fontColor;
         const options: string[] = [];
         if (this.options.showOptionsCaption) {
             options.push(this.getCorrectedText(this.options.optionsCaption));

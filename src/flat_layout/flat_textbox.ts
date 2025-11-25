@@ -4,7 +4,7 @@ import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { IInputAppearanceOptions, SurveyHelper } from '../helper_survey';
-import { ITextFieldBrickAppearanceOptions, ITextFieldBrickOptions, TextFieldBrick } from '../pdf_render/pdf_textfield';
+import { ITextFieldBrickOptions, TextFieldBrick } from '../pdf_render/pdf_textfield';
 
 export class FlatTextbox extends FlatQuestion {
     public static readonly MULTILINE_TEXT_ROWS_COUNT: number = 1;

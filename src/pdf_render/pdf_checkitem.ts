@@ -19,29 +19,34 @@ export class CheckItemBrick extends PdfBrick {
         super(controller, rect);
     }
     public async renderInteractive(): Promise<void> {
-        const checkBox: any = new (<any>this.controller.doc.AcroFormCheckBox)();
+        const checkBox: any = new this.controller.AcroFormCheckBox();
         const formScale = SurveyHelper.getRectBorderScale(this.contentRect, this.appearance.borderWidth ?? 0);
+        const scaledAcroformRect = SurveyHelper.createAcroformRect(SurveyHelper.scaleRect(this.contentRect, formScale));
+        const { color: fontColor } = SurveyHelper.parseColor(this.appearance.fontColor);
+        if(this.appearance.backgroundColor) {
+            this.controller.setFillColor(this.appearance.backgroundColor);
+            this.controller.doc.rect(...scaledAcroformRect, 'F');
+            this.controller.restoreFillColor();
+        }
         const options: any = {};
         options.maxFontSize = this.contentRect.height * formScale.scaleY * CheckItemBrick.FONT_SIZE_SCALE;
         options.caption = this.appearance.checkMark;
         options.textAlign = 'center';
         options.fieldName = this.options.fieldName;
         options.readOnly = this.options.readOnly;
-        options.color = this.appearance.fontColor;
+        options.color = fontColor;
         options.value = this.options.checked ? 'On' : false;
         options.AS = this.options.checked ? '/On' : '/Off';
-
-        options.Rect = SurveyHelper.createAcroformRect(
-            SurveyHelper.scaleRect(this.contentRect, formScale));
+        options.Rect = scaledAcroformRect;
         this.controller.doc.addField(checkBox);
         this.options.updateOptions(options);
-
         checkBox.maxFontSize = options.maxFontSize;
         checkBox.caption = options.caption;
         checkBox.textAlign = options.textAlign;
         checkBox.fieldName = options.fieldName;
         checkBox.readOnly = options.readOnly;
         checkBox.color = options.color;
+        checkBox.fillColor = [0, 0, 0];
         checkBox.value = options.value;
         checkBox.AS = options.AS;
         checkBox.Rect = options.Rect;

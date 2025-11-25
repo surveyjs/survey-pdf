@@ -21,7 +21,7 @@ export class RadioGroupWrap {
     public constructor(private controller: DocController, private options: IRadiogroupWrapContext) {
     }
     public addToPdf(color: string) {
-        this._radioGroup = new this.controller.doc.AcroFormRadioButton();
+        this._radioGroup = new this.controller.AcroFormRadioButton();
         const options: any = {};
         options.fieldName = this.options.fieldName;
         options.readOnly = this.options.readOnly;
@@ -51,15 +51,23 @@ export class RadioItemBrick extends PdfBrick {
         super(controller, rect);
     }
     public async renderInteractive(): Promise<void> {
+        const formScale = SurveyHelper.getRectBorderScale(this.contentRect, this.appearance.borderWidth ?? 0);
+        const scaledAcroformRect = SurveyHelper.createAcroformRect(SurveyHelper.scaleRect(this.contentRect, formScale));
+        const { color: fontColor } = SurveyHelper.parseColor(this.appearance.fontColor);
         if (this.options.index == 0) {
-            this.radioGroupWrap.addToPdf(this.appearance.fontColor);
+            this.radioGroupWrap.addToPdf(fontColor);
+        }
+        if(this.appearance.backgroundColor) {
+            this.controller.setFillColor(this.appearance.backgroundColor);
+            this.controller.doc.rect(...scaledAcroformRect, 'F');
+            this.controller.restoreFillColor();
+
         }
         const options: any = {};
         options.fieldName = this.radioGroupWrap.fieldName + 'index' + this.options.index;
-        let formScale = SurveyHelper.getRectBorderScale(this.contentRect, this.appearance.borderWidth ?? 0);
-        options.Rect = SurveyHelper.createAcroformRect(
-            SurveyHelper.scaleRect(this.contentRect, formScale));
-        options.color = this.appearance.fontColor;
+        options.Rect = scaledAcroformRect;
+        options.color = fontColor;
+        options.multiSelect = true;
         options.appearance = this.controller.doc.AcroForm.Appearance.RadioButton.Circle;
         options.radioGroup = this.radioGroupWrap.radioGroup;
 
