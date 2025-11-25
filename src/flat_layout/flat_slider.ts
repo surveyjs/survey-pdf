@@ -20,7 +20,7 @@ export class FlatSlider extends FlatQuestion<QuestionSliderModel> {
         }
 
         if (this.question.sliderType === 'range') {
-            const appearance = SurveyHelper.getPatchedTextAppearanceOptions<IInputAppearanceOptions & { width: number }>(this.controller, SurveyHelper.mergeObjects(this.styles.input as IInputAppearanceOptions, this.styles.rangeInput));
+            const appearance = SurveyHelper.getPatchedTextAppearanceOptions<IInputAppearanceOptions>(this.controller, SurveyHelper.mergeObjects(this.styles.input as IInputAppearanceOptions));
             const compositeBrick: CompositeBrick = new CompositeBrick();
             const bricks = [];
             for (let i = 0; i < this.question.value.length; i++) {
@@ -28,15 +28,13 @@ export class FlatSlider extends FlatQuestion<QuestionSliderModel> {
                 const options = this.getOptionsByValue(valueItem);
                 const currentPoint = SurveyHelper.clone(point);
                 this.controller.pushMargins();
+                SurveyHelper.setColumnMargins(this.controller, 2, i, this.styles.gapBetweenColumns);
+                currentPoint.xLeft = this.controller.margins.left;
                 if(i > 0) {
-                    this.controller.margins.left += appearance.width;
-                    currentPoint.xLeft = this.controller.margins.left;
-                    const separatorXLeft = currentPoint.xLeft + (this.styles.gapBetweenColumns - this.styles.rangeSeparator.width) / 2;
-                    bricks.push(new EmptyBrick(this.controller, { yTop: currentPoint.yTop, xLeft: separatorXLeft, xRight: separatorXLeft + this.styles.rangeSeparator.width, yBot: currentPoint.yTop + this.styles.rangeSeparator.height }, this.styles.rangeSeparator));
-                    this.controller.margins.left += this.styles.gapBetweenColumns;
-                    currentPoint.xLeft = this.controller.margins.left;
+                    const separatorPoint = SurveyHelper.clone(currentPoint);
+                    separatorPoint.xLeft -= this.styles.gapBetweenColumns - (this.styles.gapBetweenColumns - this.styles.rangeSeparator.width) / 2;
+                    bricks.push(new EmptyBrick(this.controller, { ...separatorPoint, xRight: separatorPoint.xLeft + this.styles.rangeSeparator.width, yBot: separatorPoint.yTop + this.styles.rangeSeparator.height }, this.styles.rangeSeparator));
                 }
-                this.controller.margins.right += SurveyHelper.getPageAvailableWidth(this.controller) - appearance.width;
                 const inputBrick = await this.generateInputBrick(currentPoint, options, appearance);
                 this.controller.popMargins();
                 bricks.push(inputBrick);
