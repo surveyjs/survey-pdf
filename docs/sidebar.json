@@ -55,8 +55,9 @@
       "Title": "Export Custom Questions and Third-Party Components"
     },
     {
-      "Name": "pdf-generator-api",
+      "Name": "api-reference",
       "Title": "PDF Generator API",
+      "UseInPath": true,
       "Items": [
         {
           "Name": "surveypdf",
