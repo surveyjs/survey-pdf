@@ -366,13 +366,31 @@ export function getDefaultStylesFromTheme (theme: ITheme) {
                 }
             },
             ranking: {
-                gapBetweenItemText: baseSize * 0.25,
-                gapBetweenColumns: baseSize * 1.5,
-                gapBetweenRows: baseSize * 0.25,
+                gapBetweenColumns: getSizeVariable('--sjs2-pdf-layout-question-items-gap-horizontal'),
+                gapBetweenRows: getSizeVariable('--sjs2-pdf-layout-question-items-gap-vertical'),
+                gapBetweenItemText: getSizeVariable('--sjs2-pdf-layout-check-gap'),
                 input: {
-                    height: baseSize * 2,
+                //todo may be we need variable
                     width: baseSize * 2,
-                    fontSize: baseSize * 2
+                    height: baseSize * 2,
+                    fontSize: baseSize * 1.25,
+                    lineHeight: baseSize * 1.25,
+                    borderColor: getColorVariable('--sjs2-color-control-check-false-default-border'),
+                    borderWidth: getSizeVariable('--sjs2-pdf-border-width-check'),
+                    fontName: 'helvetica',
+                    fontStyle: 'normal',
+                    fontColor: getColorVariable('--sjs2-color-fg-basic-primary'),
+                    backgroundColor: getColorVariable('--sjs2-color-control-check-false-default-bg'),
+                },
+                selectToRankSeparator: {
+                    width: baseSize / 7,
+                    color: getColorVariable('--sjs2-color-fg-basic-primary')
+                },
+                label: {
+                    fontColor: getColorVariable('--sjs2-color-fg-basic-primary'),
+                    fontSize: getSizeVariable('--sjs2-typography-font-size-default'),
+                    fontStyle: 'normal',
+                    lineHeight: getSizeVariable('--sjs2-typography-line-height-default')
                 },
             },
             slider: {

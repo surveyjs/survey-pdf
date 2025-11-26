@@ -7,30 +7,20 @@ import { RankingItemBrick } from '../pdf_render/pdf_rankingitem';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
 import { ColoredBrick } from '../pdf_render/pdf_coloredbrick';
-import { CheckItemBrick } from '../pdf_render/pdf_checkitem';
 
 export class FlatRanking extends FlatQuestion<QuestionRankingModel> {
     protected async generateFlatComposite(point: IPoint, item: ItemValue, index: number, unrankedItem: boolean = false): Promise<IPdfBrick> {
-        const itemRect: IRect = SurveyHelper.createRect(point,
-            this.controller.unitWidth, this.controller.unitHeight);
         const itemFlat: IPdfBrick = new RankingItemBrick(this.controller,
             SurveyHelper.createRect(point, this.styles.input.width, this.styles.input.height),
             {
-                mark: unrankedItem ? '-' : this.question.getNumberByIndex(index)
+                mark: this.question.getNumberByIndex(index) || ''
             },
-            {
-                fontStyle: 'normal',
-                fontColor: this.styles.inputFontColor,
-                fontName: this.controller.fontName,
-                fontSize: this.styles.inputFontSize,
-                lineHeight: this.styles.inputFontSize,
-                borderColor: this.styles.inputBorderColor,
-                borderWidth: this.styles.inputBorderWidth,
-            });
+            SurveyHelper.getPatchedTextAppearanceOptions(this.controller, this.styles.input));
         const textPoint: IPoint = SurveyHelper.clone(point);
         textPoint.xLeft = itemFlat.xRight + this.styles.gapBetweenItemText;
         const textFlat: IPdfBrick = await SurveyHelper.createTextFlat(
-            textPoint, this.controller, item.locText);
+            textPoint, this.controller, item.locText, this.styles.label);
+        SurveyHelper.alignVerticallyBricks('center', itemFlat, textFlat.unfold()[0]);
         return new CompositeBrick(itemFlat, textFlat);
     }
     public async generateChoicesColumn(point: IPoint, choices: ItemValue[], unrankedChoices: boolean = false): Promise<IPdfBrick[]> {
@@ -53,8 +43,8 @@ export class FlatRanking extends FlatQuestion<QuestionRankingModel> {
         const separatorRect = SurveyHelper.createRect({
             xLeft: currPoint.xLeft,
             yTop: currPoint.yTop - this.styles.gapBetweenRows - 0.5,
-        }, this.controller.paperWidth - this.controller.margins.right - currPoint.xLeft, 1);
-        flats.push(new ColoredBrick(this.controller, separatorRect, { color: this.styles.inputFontColor, }));
+        }, this.controller.paperWidth - this.controller.margins.right - currPoint.xLeft, this.styles.selectToRankSeparator.width);
+        flats.push(new ColoredBrick(this.controller, separatorRect, { color: this.styles.selectToRankSeparator.color }));
 
         flats.push(...await this.generateChoicesColumn(currPoint, this.question.unRankingChoices, true));
         return flats;
@@ -89,8 +79,8 @@ export class FlatRanking extends FlatQuestion<QuestionRankingModel> {
             const gapBetweenRows = this.styles.gapBetweenRows;
             row.addBrick(new ColoredBrick(this.controller, separatorRect,
                 {
-                    color: this.styles.inputBorderColor,
-                    renderWidth: 1,
+                    color: this.styles.selectToRankSeparator.color,
+                    renderWidth: this.styles.selectToRankSeparator.width,
                     renderHeight: rowLineFlat.yBot - currPoint.yTop + (i !== rowsCount - 1 ? gapBetweenRows : 0)
                 }
             ));
