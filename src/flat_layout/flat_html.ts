@@ -33,12 +33,7 @@ export class FlatHTML extends FlatQuestion<QuestionHtmlModel> {
         }
         if (renderAs === 'auto') renderAs = this.controller.htmlRenderAs;
         if (renderAs === 'auto') renderAs = this.chooseRender(SurveyHelper.getLocString(this.question.locHtml));
-        const appearance = {
-            fontSize: this.styles.fontSize,
-            fontColor: this.styles.fontColor,
-            lineHeight: this.styles.lineHeight
-        };
-        const html: string = SurveyHelper.createHtmlContainerBlock(SurveyHelper.getLocString(this.question.locHtml), this.controller, appearance);
+        const html: string = SurveyHelper.createHtmlContainerBlock(SurveyHelper.getLocString(this.question.locHtml), this.controller, this.styles);
         if (renderAs === 'image') {
             const width: number = SurveyHelper.getPageAvailableWidth(this.controller);
             const { url, aspect }: { url: string, aspect: number } =
@@ -47,7 +42,7 @@ export class FlatHTML extends FlatQuestion<QuestionHtmlModel> {
             return [await SurveyHelper.createImageFlat(point, this.question, this.controller, { link: url, width, height })];
         }
         return [SurveyHelper.splitHtmlRect(this.controller, await SurveyHelper.createHTMLFlat(
-            point, this.controller, this.correctHtml(html), appearance))];
+            point, this.controller, this.correctHtml(html), this.styles))];
     }
 }
 
