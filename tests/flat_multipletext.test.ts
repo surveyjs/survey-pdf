@@ -78,9 +78,9 @@ test('Check multiple text with colCount and long text', async () => {
         snapshotName: 'multipletext_colCount_2_long_text',
         controllerOptions: {
             format: [options.margins.left + options.margins.right +
-        2.5 * signWidth / SurveyHelper.MULTIPLETEXT_TEXT_PERS +
+        2.5 * signWidth / 0.4 +
         new DocController(options).unitWidth /
-            SurveyHelper.MULTIPLETEXT_TEXT_PERS, 297.0
+            0.4, 297.0
             ] }
     });
 });
