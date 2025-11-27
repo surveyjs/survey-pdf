@@ -24,7 +24,7 @@ export class FlatSurvey {
             }
             if (survey.description) {
                 if (survey.title) {
-                    point.yTop += styles.descriptionGap;
+                    point.yTop += styles.titleDescriptionGap;
                 }
                 compositeFlat.addBrick(await SurveyHelper.createTextFlat(
                     point, controller, survey.locDescription, { ...styles.description }));

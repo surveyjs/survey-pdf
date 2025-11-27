@@ -91,110 +91,90 @@
 			},
 			{
 				"brickType": "CompositeBrick",
-				"width": 204.94826802524946,
+				"width": 12,
 				"height": 12,
 				"xLeft": 183.65759780776878,
-				"xRight": 388.60586583301824,
+				"xRight": 195.65759780776878,
 				"yTop": 34.72145669291339,
 				"yBot": 46.72145669291339,
 				"bricks": [
 					{
-						"brickType": "CompositeBrick",
+						"brickType": "CheckItemBrick",
 						"width": 12,
 						"height": 12,
 						"xLeft": 183.65759780776878,
 						"xRight": 195.65759780776878,
 						"yTop": 34.72145669291339,
 						"yBot": 46.72145669291339,
-						"bricks": [
-							{
-								"brickType": "CheckItemBrick",
-								"width": 12,
-								"height": 12,
-								"xLeft": 183.65759780776878,
-								"xRight": 195.65759780776878,
-								"yTop": 34.72145669291339,
-								"yBot": 46.72145669291339,
-								"appearance": {
-									"fontSize": 7.5,
-									"fontName": "zapfdingbats",
-									"fontStyle": "normal",
-									"lineHeight": 18,
-									"fontColor": "#1c1b20",
-									"width": 12,
-									"height": 12,
-									"borderColor": "#1c1b20",
-									"borderWidth": 0.75,
-									"backgroundColor": "#ffffff",
-									"checkMark": "3"
-								},
-								"options": {
-									"shouldRenderReadOnly": false,
-									"readOnly": false,
-									"checked": false,
-									"fieldName": "testidquestion_question1index0"
-								},
-								"padding": {
-									"top": 0,
-									"bottom": 0
-								}
-							}
-						]
-					},
-					{
-						"brickType": "CompositeBrick",
-						"width": 12,
-						"height": 12,
-						"xLeft": 376.60586583301824,
-						"xRight": 388.60586583301824,
-						"yTop": 34.72145669291339,
-						"yBot": 46.72145669291339,
-						"bricks": [
-							{
-								"brickType": "CheckItemBrick",
-								"width": 12,
-								"height": 12,
-								"xLeft": 376.60586583301824,
-								"xRight": 388.60586583301824,
-								"yTop": 34.72145669291339,
-								"yBot": 46.72145669291339,
-								"appearance": {
-									"fontSize": 7.5,
-									"fontName": "zapfdingbats",
-									"fontStyle": "normal",
-									"lineHeight": 18,
-									"fontColor": "#1c1b20",
-									"width": 12,
-									"height": 12,
-									"borderColor": "#1c1b20",
-									"borderWidth": 0.75,
-									"backgroundColor": "#ffffff",
-									"checkMark": "3"
-								},
-								"options": {
-									"shouldRenderReadOnly": false,
-									"readOnly": false,
-									"checked": false,
-									"fieldName": "testidquestion_question1index1"
-								},
-								"padding": {
-									"top": 0,
-									"bottom": 0
-								}
-							}
-						]
+						"appearance": {
+							"fontSize": 7.5,
+							"fontName": "zapfdingbats",
+							"fontStyle": "normal",
+							"lineHeight": 18,
+							"fontColor": "#1c1b20",
+							"width": 12,
+							"height": 12,
+							"borderColor": "#1c1b20",
+							"borderWidth": 0.75,
+							"backgroundColor": "#ffffff",
+							"checkMark": "3"
+						},
+						"options": {
+							"shouldRenderReadOnly": false,
+							"readOnly": false,
+							"checked": false,
+							"fieldName": "testidquestion_question1index0"
+						},
+						"padding": {
+							"top": 0,
+							"bottom": 0
+						}
 					}
 				]
 			}
 		]
 	},
 	{
-		"brickType": "RowlineBrick",
-		"width": 376.896536050499,
-		"height": 0,
+		"brickType": "CompositeBrick",
+		"width": 12,
+		"height": 12,
 		"xLeft": 183.65759780776878,
-		"xRight": 560.5541338582677,
-		"yTop": 46.72145669291339,
-		"yBot": 46.72145669291339
+		"xRight": 195.65759780776878,
+		"yTop": 49.72145669291339,
+		"yBot": 61.72145669291339,
+		"bricks": [
+			{
+				"brickType": "CheckItemBrick",
+				"width": 12,
+				"height": 12,
+				"xLeft": 183.65759780776878,
+				"xRight": 195.65759780776878,
+				"yTop": 49.72145669291339,
+				"yBot": 61.72145669291339,
+				"appearance": {
+					"fontSize": 7.5,
+					"fontName": "zapfdingbats",
+					"fontStyle": "normal",
+					"lineHeight": 18,
+					"fontColor": "#1c1b20",
+					"width": 12,
+					"height": 12,
+					"borderColor": "#1c1b20",
+					"borderWidth": 0.75,
+					"backgroundColor": "#ffffff",
+					"checkMark": "3"
+				},
+				"options": {
+					"shouldRenderReadOnly": false,
+					"readOnly": false,
+					"checked": false,
+					"fieldName": "testidquestion_question1index1"
+				},
+				"padding": {
+					"top": 0,
+					"bottom": 0
+				}
+			}
+		]
 	}
 ]

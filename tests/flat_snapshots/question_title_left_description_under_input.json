@@ -124,20 +124,20 @@
 	{
 		"brickType": "CompositeBrick",
 		"width": 43.20000000000002,
-		"height": null,
+		"height": 12,
 		"xLeft": 183.65759780776878,
 		"xRight": 226.8575978077688,
-		"yTop": null,
-		"yBot": null,
+		"yTop": 58.72145669291339,
+		"yBot": 70.72145669291339,
 		"bricks": [
 			{
 				"brickType": "TextBrick",
 				"width": 43.20000000000002,
-				"height": null,
+				"height": 12,
 				"xLeft": 183.65759780776878,
 				"xRight": 226.8575978077688,
-				"yTop": null,
-				"yBot": null,
+				"yTop": 58.72145669291339,
+				"yBot": 70.72145669291339,
 				"appearance": {
 					"fontSize": 9,
 					"fontName": "helvetica",

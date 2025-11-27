@@ -68,7 +68,7 @@ export class FlatPanel<T extends PanelModel = PanelModel> {
             }
             if (this.panel.description) {
                 if (this.panel.title) {
-                    currPoint.yTop += this.styles.descriptionGap;
+                    currPoint.yTop += this.styles.titleDescriptionGap;
                 }
                 const panelDescFlat: IPdfBrick = await SurveyHelper.createTextFlat(
                     currPoint, this.controller, this.panel.locDescription, { ...this.styles.description });

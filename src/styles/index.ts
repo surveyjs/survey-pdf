@@ -26,7 +26,7 @@ export function getDefaultStylesFromTheme (theme: ITheme) {
             },
             backgroundColor: getColorVariable('--sjs2-color-utility-body'),
             padding: [getSizeVariable('--sjs2-pdf-layout-page-padding-top'), getSizeVariable('--sjs2-pdf-layout-page-padding-right'), getSizeVariable('--sjs2-pdf-layout-page-padding-bottom'), getSizeVariable('--sjs2-pdf-layout-page-padding-left')],
-            descriptionGap: getSizeVariable('--sjs2-pdf-layout-title-large-gap'),
+            titleDescriptionGap: getSizeVariable('--sjs2-pdf-layout-title-large-gap'),
             contentGap: getSizeVariable('--sjs2-pdf-layout-page-gap-vertical') + getSizeVariable('--sjs2-pdf-layout-title-large-padding-bottom'),
             question: {
                 titleLeftWidthPers: Math.E / 10.0,
@@ -36,7 +36,9 @@ export function getDefaultStylesFromTheme (theme: ITheme) {
                 //TODO: need variable
                 contentGapHorizontal: baseSize * 1.0,
                 contentIndent: 0,
-                descriptionGap: getSizeVariable('--sjs2-pdf-layout-question-labels-gap-vertical'),
+                commentGap: getSizeVariable('--sjs2-pdf-layout-question-gap'),
+                contentDescriptionGap: getSizeVariable('--sjs2-pdf-layout-question-gap'),
+                titleDescriptionGap: getSizeVariable('--sjs2-pdf-layout-question-labels-gap-vertical'),
                 wrapper: {
                     padding: [getSizeVariable('--sjs2-pdf-layout-question-padding-vertical'), getSizeVariable('--sjs2-pdf-layout-question-padding-horizontal')],
                     borderRadius: getSizeVariable('--sjs2-pdf-radius-question'),
@@ -71,7 +73,7 @@ export function getDefaultStylesFromTheme (theme: ITheme) {
                 gapBetweenRows: getSizeVariable('--sjs2-pdf-layout-page-questions-gap-vertical'),
                 gapBetweenElements: getSizeVariable('--sjs2-pdf-layout-page-questions-gap-horizontal'),
                 contentGap: getSizeVariable('--sjs2-pdf-layout-page-questions-gap-vertical'),
-                descriptionGap: getSizeVariable('--sjs2-pdf-layout-title-default-gap'),
+                titleDescriptionGap: getSizeVariable('--sjs2-pdf-layout-title-default-gap'),
                 header: {
                     padding: [getSizeVariable('--sjs2-pdf-layout-section-padding-vertical'), getSizeVariable('--sjs2-pdf-layout-section-padding-horizontal')],
                     borderRadius: getSizeVariable('--sjs2-pdf-radius-section'),
@@ -112,7 +114,7 @@ export function getDefaultStylesFromTheme (theme: ITheme) {
                 }
             },
             selectbase: {
-                columnMinWidth: baseSize * 5,
+                columnMinWidth: baseSize * 75,
                 gapBetweenColumns: getSizeVariable('--sjs2-pdf-layout-question-items-gap-horizontal'),
                 gapBetweenRows: getSizeVariable('--sjs2-pdf-layout-question-items-gap-vertical'),
                 gapBetweenItemText: getSizeVariable('--sjs2-pdf-layout-check-gap'),
@@ -160,6 +162,7 @@ export function getDefaultStylesFromTheme (theme: ITheme) {
             },
             matrixbase: {
                 descriptionGap: getSizeVariable('--sjs2-pdf-layout-title-default-gap'),
+                titleDescriptionGap: getSizeVariable('--sjs2-pdf-layout-title-default-gap'),
                 columnMinWidth: baseSize * 15,
                 contentGapVertical: getSizeVariable('--sjs2-pdf-layout-page-questions-gap-vertical'),
                 gapBetweenColumns: getSizeVariable('--sjs2-pdf-layout-page-matrix-gap-horizontal'),
@@ -289,7 +292,7 @@ export function getDefaultStylesFromTheme (theme: ITheme) {
                 },
             },
             multipletext: {
-                descriptionGap: getSizeVariable('--sjs2-pdf-layout-title-default-gap'),
+                titleDescriptionGap: getSizeVariable('--sjs2-pdf-layout-title-default-gap'),
                 contentGapVertical: getSizeVariable('--sjs2-pdf-layout-page-questions-gap-vertical'),
                 gapBetweenColumns: getSizeVariable('--sjs2-pdf-layout-page-matrix-gap-horizontal'),
                 gapBetweenRows: getSizeVariable('--sjs2-pdf-layout-page-matrix-gap-vertical'),
@@ -432,7 +435,7 @@ export function getDefaultStylesFromTheme (theme: ITheme) {
             },
             paneldynamic: {
                 contentGapVertical: getSizeVariable('--sjs2-pdf-layout-page-questions-gap-vertical'),
-                descriptionGap: getSizeVariable('--sjs2-pdf-layout-title-default-gap'),
+                titleDescriptionGap: getSizeVariable('--sjs2-pdf-layout-title-default-gap'),
                 gapBetweenPanels: getSizeVariable('--sjs2-pdf-layout-page-questions-gap-vertical'),
                 wrapper: {
                     padding: 0,

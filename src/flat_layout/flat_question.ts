@@ -80,7 +80,7 @@ export class FlatQuestion<T extends Question = Question> implements IFlatQuestio
             bricks.push(titleFlat);
             if(this.question.hasDescriptionUnderTitle) {
                 const descPoint: IPoint = SurveyHelper.createPoint(titleFlat, true, false);
-                descPoint.yTop += this.styles.descriptionGap;
+                descPoint.yTop += this.styles.titleDescriptionGap;
                 descPoint.xLeft += this.styles.contentIndent;
                 bricks.push(await this.generateFlatDescription(descPoint));
             }
@@ -121,18 +121,17 @@ export class FlatQuestion<T extends Question = Question> implements IFlatQuestio
         if(Array.isArray(contentFlats)) {
             flats.push(...contentFlats);
         }
-        const getLatestPoint = (): IPoint => {
-            const res = SurveyHelper.clone(point);
-            if(contentFlats !== null && contentFlats.length !== 0) {
-                res.yTop = SurveyHelper.mergeRects(...flats).yBot + this.styles.gapBetweenRows;
-            }
-            return res;
-        };
+        const currPoint = SurveyHelper.clone(point);
+        if(contentFlats && contentFlats.length > 0) {
+            currPoint.yTop = SurveyHelper.mergeRects(...contentFlats).yBot;
+        }
         if (this.question.hasComment) {
-            flats.push(await this.generateFlatsComment(getLatestPoint()));
+            currPoint.yTop += this.styles.commentGap;
+            flats.push(await this.generateFlatsComment(currPoint));
         }
         if (this.question.hasDescriptionUnderInput) {
-            flats.push(await this.generateFlatDescription(getLatestPoint()));
+            currPoint.yTop += this.styles.contentDescriptionGap;
+            flats.push(await this.generateFlatDescription(currPoint));
         }
 
         return flats;
