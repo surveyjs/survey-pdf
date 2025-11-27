@@ -1,13 +1,17 @@
-import { SurveyModel, Question, EventBase } from 'survey-core';
-import * as SurveyCore from 'survey-core';
-import { IDocOptions, DocController } from './doc_controller';
+import { SurveyModel, EventBase, SurveyElement, Serializer, Question, PanelModel, PageModel, ITheme } from 'survey-core';
+import { hasLicense } from 'survey-core';
+import { IDocOptions, DocController, DocOptions } from './doc_controller';
 import { FlatSurvey } from './flat_layout/flat_survey';
 import { PagePacker } from './page_layout/page_packer';
 import { IPdfBrick } from './pdf_render/pdf_brick';
-import { EventAsync, EventHandler } from './event_handler/event_handler';
+import { EventAsync, } from './event_handler/event_async';
+import { EventHandler } from './event_handler/event_handler';
 import { DrawCanvas } from './event_handler/draw_canvas';
 import { AdornersOptions, AdornersPanelOptions, AdornersPageOptions } from './event_handler/adorners';
 import { SurveyHelper } from './helper_survey';
+import { getDefaultStylesFromTheme, IStyles } from './styles';
+import { DefaultLight } from './themes/default-light';
+import { parsePadding } from './utils';
 
 /**
  * The `SurveyPDF` object enables you to export your surveys and forms to PDF documents.
@@ -29,7 +33,7 @@ export class SurveyPDF extends SurveyModel {
         this.options = SurveyHelper.clone(options);
     }
     public get haveCommercialLicense(): boolean {
-        const f = SurveyCore.hasLicense;
+        const f = hasLicense;
         return !!f && f(2);
     }
     public set haveCommercialLicense(val: boolean) {
@@ -159,14 +163,70 @@ export class SurveyPDF extends SurveyModel {
     public onRenderRadioItemAcroform: EventAsync<SurveyPDF, any> =
     new EventAsync<SurveyPDF, any>();
 
-    public getUpdatedCheckItemAcroformOptions(options: any): void {
-        this.onRenderCheckItemAcroform.fire(this, options);
+    public updateCheckItemAcroformOptions(options: any, question: Question, context?: any): void {
+        this.onRenderCheckItemAcroform.fire(this, {
+            options: options,
+            question: question,
+            ...(context ?? {})
+        });
     }
-    public getUpdatedRadioGroupWrapOptions(options: any): void {
-        this.onRenderRadioGroupWrapAcroform.fire(this, options);
+    public getUpdatedRadioGroupWrapOptions(options: any, question: Question, context?: any): void {
+        this.onRenderRadioGroupWrapAcroform.fire(this, {
+            options: options,
+            question: question,
+            ...(context ?? {})
+        });
     }
-    public getUpdatedRadioItemAcroformOptions(options: any): void {
-        this.onRenderRadioItemAcroform.fire(this, options);
+    public updateRadioItemAcroformOptions(options: any, question: Question, context?: any): void {
+        this.onRenderRadioItemAcroform.fire(this, {
+            options: options,
+            question: question,
+            ...(context ?? {})
+        });
+    }
+
+    public onGetQuestionStyles: EventBase<SurveyPDF, { question: Question, styles: IStyles }> = new EventBase<SurveyPDF, { question: Question, styles: IStyles }>;
+    public onGetPanelStyles: EventBase<SurveyPDF, { panel: PanelModel, styles: IStyles }> = new EventBase<SurveyPDF, { panel: PanelModel, styles: IStyles }>;
+    public onGetPageStyles: EventBase<SurveyPDF, { page: PanelModel, styles: IStyles }> = new EventBase<SurveyPDF, { page: PanelModel, styles: IStyles }>;
+
+    private _styles: IStyles;
+    private theme: ITheme;
+    public get styles(): IStyles {
+        if(!this._styles) {
+            this._styles = getDefaultStylesFromTheme(this.theme ?? DefaultLight);
+        }
+        return this._styles;
+    }
+    public set styles(styles: IStyles) {
+        SurveyHelper.mergeObjects(this.styles, styles);
+    }
+    public applyTheme(theme: ITheme): void {
+        this.theme = theme;
+        this._styles = undefined;
+    }
+
+    public getStylesForElement(element: SurveyElement): IStyles {
+        const styles = this.styles;
+        const types = [element.getType()];
+        let currentClass = Serializer.findClass(element.getType());
+        while(!!currentClass.parentName) {
+            types.unshift(currentClass.parentName);
+            currentClass = Serializer.findClass(currentClass.parentName);
+        }
+        const res = {};
+        types.forEach(type => {
+            SurveyHelper.mergeObjects(res, styles[type] ?? {});
+        });
+        if(element.isPanel) {
+            this.onGetPanelStyles.fire(this, { panel: element as PanelModel, styles: res });
+        }
+        if(element.isPage) {
+            this.onGetPageStyles.fire(this, { page: element as PageModel, styles: res });
+        }
+        if(element.isQuestion) {
+            this.onGetQuestionStyles.fire(this, { question: element as Question, styles: res });
+        }
+        return res;
     }
     private correctBricksPosition(controller: DocController, flats: IPdfBrick[][]) {
         if(controller.isRTL) {
@@ -180,18 +240,59 @@ export class SurveyPDF extends SurveyModel {
             });
         }
     }
+
+    private navigationMap: { [index: string]: number } = {};
+
+    public afterRenderSurveyElement(element: SurveyElement, bricks: Array<IPdfBrick>) {
+        bricks.forEach(brick => brick.addBeforeRenderCallback(() => {
+            if(brick.getPageNumber() !== undefined) {
+                this.navigationMap[element.uniqueId] = Math.min(this.navigationMap[element.uniqueId] ?? Number.MAX_VALUE, brick.getPageNumber() + 1);
+            }
+        }));
+    }
+    private renderPanelNavigation(controller: DocController, panel: PanelModel, rootChapter: any) {
+        const { doc } = controller;
+        if(!this.navigationMap[panel.uniqueId]) return;
+        const panelChapter = doc.outline.add(rootChapter, panel.title || panel.name, { pageNumber: this.navigationMap[panel.uniqueId] });
+        (panel.elements as any as Array<SurveyElement>).forEach((el: SurveyElement) => {
+            if(el.isVisible && this.navigationMap[el.uniqueId]) {
+                if(el.isPanel) {
+                    this.renderPanelNavigation(controller, el as PanelModel, panelChapter);
+                } else {
+                    doc.outline.add(panelChapter, el.title || el.name, { pageNumber: this.navigationMap[el.uniqueId] });
+                }
+            }
+        });
+    }
+    private renderNavigation(controller: DocController) {
+        if(this.options.showNavigation ?? true) {
+            this.visiblePages.forEach(page => {
+                this.renderPanelNavigation(controller, page, null);
+            });
+            this.navigationMap = {};
+        }
+    }
     protected async renderSurvey(controller: DocController): Promise<void> {
         this.visiblePages.forEach(page => page.onFirstRendering());
         const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(this, controller);
         this.correctBricksPosition(controller, flats);
         const packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
+        packs.forEach((pagePack, i) => {
+            pagePack.forEach(pack => {
+                pack.setPageNumber(i);
+            });
+        });
         await EventHandler.process_header_events(this, controller, packs);
         for (let i: number = 0; i < packs.length; i++) {
+            if (controller.getNumberOfPages() === i) {
+                controller.addPage();
+            }
+            controller.setPage(i);
+            controller.setFillColor(this.styles.backgroundColor);
+            controller.doc.rect(0, 0, controller.doc.internal.pageSize.getWidth(), controller.doc.internal.pageSize.getHeight(), 'F');
+            controller.restoreFillColor();
             for (let j: number = 0; j < packs[i].length; j++) {
-                if (controller.getNumberOfPages() === i) {
-                    controller.addPage();
-                }
-                controller.setPage(i);
+
                 //gizmos bricks borders for debug
                 // packs[i][j].unfold().forEach((rect: IPdfBrick) => {
                 //     controller.doc.setDrawColor('green');
@@ -202,6 +303,17 @@ export class SurveyPDF extends SurveyModel {
                 await packs[i][j].render();
             }
         }
+        this.renderNavigation(controller);
+    }
+    private createController(): DocController {
+        const marginsFromStyles = parsePadding(this.styles.padding);
+        Object.keys(marginsFromStyles).forEach((key: 'top' | 'left' | 'bot' | 'right') => {
+            marginsFromStyles[key] /= DocOptions.MM_TO_PT;
+        });
+        const options = SurveyHelper.mergeObjects({}, {
+            margins: marginsFromStyles
+        }, this.options);
+        return new DocController(options);
     }
     /**
      * An asynchronous method that starts to download the generated PDF file in the web browser.
@@ -209,9 +321,10 @@ export class SurveyPDF extends SurveyModel {
      * [View Demo](https://surveyjs.io/pdf-generator/examples/save-completed-forms-as-pdf-files/ (linkStyle))
      * @param fileName *(Optional)* A file name with the ".pdf" extension. Default value: `"survey_result.pdf"`.
      */
+
     public async save(fileName: string = 'survey_result.pdf'): Promise<any> {
         if(!SurveyPDF.currentlySaving) {
-            const controller: DocController = new DocController(this.options);
+            const controller: DocController = this.createController();
             this.onDocControllerCreated.fire(this, { controller: controller });
             SurveyPDF.currentlySaving = true;
             SurveyHelper.fixFont(controller);
@@ -245,7 +358,7 @@ export class SurveyPDF extends SurveyModel {
     raw(type: 'bloburl'): Promise<URL>;
     raw(type: 'dataurlstring'): Promise<string>;
     public async raw(type?: string): Promise<ArrayBuffer | string | Blob | URL > {
-        const controller: DocController = new DocController(this.options);
+        const controller: DocController = this.createController();
         this.onDocControllerCreated.fire(this, { controller: controller });
         SurveyHelper.fixFont(controller);
         await this.renderSurvey(controller);
