@@ -180,7 +180,8 @@
 									"width": 12,
 									"height": 12,
 									"borderColor": "#1c1b20",
-									"borderWidth": 0
+									"borderWidth": 0,
+									"backgroundColor": "#ffffff"
 								},
 								"options": {
 									"fieldName": "testidquestion_matrixmultiple_onecolumnonerow_vertical_row1_cell_1",
@@ -299,7 +300,8 @@
 									"width": 12,
 									"height": 12,
 									"borderColor": "#1c1b20",
-									"borderWidth": 0
+									"borderWidth": 0,
+									"backgroundColor": "#ffffff"
 								},
 								"options": {
 									"fieldName": "testidquestion_matrixmultiple_onecolumnonerow_vertical_row3_cell_1",

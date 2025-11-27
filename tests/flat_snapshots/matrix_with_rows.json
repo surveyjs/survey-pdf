@@ -173,6 +173,7 @@
 							"height": 12,
 							"borderColor": "#1c1b20",
 							"borderWidth": 0.75,
+							"backgroundColor": "#ffffff",
 							"checkMark": "l"
 						},
 						"options": {

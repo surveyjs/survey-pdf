@@ -1,12 +1,12 @@
 [
 	{
 		"brickType": "CompositeBrick",
-		"width": 17.46,
-		"height": 12,
+		"width": 25.92,
+		"height": 18,
 		"xLeft": 34.72145669291339,
-		"xRight": 52.18145669291339,
+		"xRight": 60.641456692913394,
 		"yTop": 34.72145669291339,
-		"yBot": 46.72145669291339,
+		"yBot": 52.72145669291339,
 		"bricks": [
 			{
 				"brickType": "RankingItemBrick",
@@ -14,11 +14,20 @@
 				"height": 12,
 				"xLeft": 34.72145669291339,
 				"xRight": 46.72145669291339,
-				"yTop": 34.72145669291339,
-				"yBot": 46.72145669291339,
+				"yTop": 37.72145669291339,
+				"yBot": 49.72145669291339,
 				"appearance": {
+					"fontSize": 7.5,
+					"fontName": "helvetica",
 					"fontStyle": "normal",
-					"fontName": "helvetica"
+					"lineHeight": 7.5,
+					"fontColor": "#1c1b20",
+					"width": 12,
+					"height": 12,
+					"borderColor": "#1c1b20",
+					"borderWidth": 0.75,
+					"backgroundColor": "#ffffff",
+					"checkMark": "3"
 				},
 				"options": {
 					"mark": ""
@@ -30,27 +39,27 @@
 			},
 			{
 				"brickType": "CompositeBrick",
-				"width": 3.960000000000001,
-				"height": 6,
-				"xLeft": 48.22145669291339,
-				"xRight": 52.18145669291339,
+				"width": 7.920000000000002,
+				"height": 18,
+				"xLeft": 52.72145669291339,
+				"xRight": 60.641456692913394,
 				"yTop": 34.72145669291339,
-				"yBot": 40.72145669291339,
+				"yBot": 52.72145669291339,
 				"bricks": [
 					{
 						"brickType": "TextBrick",
-						"width": 3.960000000000001,
-						"height": 6,
-						"xLeft": 48.22145669291339,
-						"xRight": 52.18145669291339,
+						"width": 7.920000000000002,
+						"height": 18,
+						"xLeft": 52.72145669291339,
+						"xRight": 60.641456692913394,
 						"yTop": 34.72145669291339,
-						"yBot": 40.72145669291339,
+						"yBot": 52.72145669291339,
 						"appearance": {
-							"fontSize": 6,
+							"fontSize": 12,
 							"fontName": "helvetica",
 							"fontStyle": "normal",
-							"lineHeight": 6,
-							"fontColor": "#404040",
+							"lineHeight": 18,
+							"fontColor": "#1c1b20",
 							"textAlign": "left"
 						},
 						"options": {
@@ -67,12 +76,12 @@
 	},
 	{
 		"brickType": "CompositeBrick",
-		"width": 17.46,
-		"height": 12,
+		"width": 25.92,
+		"height": 18,
 		"xLeft": 34.72145669291339,
-		"xRight": 52.18145669291339,
-		"yTop": 48.22145669291339,
-		"yBot": 60.22145669291339,
+		"xRight": 60.641456692913394,
+		"yTop": 55.72145669291339,
+		"yBot": 73.72145669291339,
 		"bricks": [
 			{
 				"brickType": "RankingItemBrick",
@@ -80,11 +89,20 @@
 				"height": 12,
 				"xLeft": 34.72145669291339,
 				"xRight": 46.72145669291339,
-				"yTop": 48.22145669291339,
-				"yBot": 60.22145669291339,
+				"yTop": 58.72145669291339,
+				"yBot": 70.72145669291339,
 				"appearance": {
+					"fontSize": 7.5,
+					"fontName": "helvetica",
 					"fontStyle": "normal",
-					"fontName": "helvetica"
+					"lineHeight": 7.5,
+					"fontColor": "#1c1b20",
+					"width": 12,
+					"height": 12,
+					"borderColor": "#1c1b20",
+					"borderWidth": 0.75,
+					"backgroundColor": "#ffffff",
+					"checkMark": "3"
 				},
 				"options": {
 					"mark": ""
@@ -96,27 +114,27 @@
 			},
 			{
 				"brickType": "CompositeBrick",
-				"width": 3.960000000000001,
-				"height": 6,
-				"xLeft": 48.22145669291339,
-				"xRight": 52.18145669291339,
-				"yTop": 48.22145669291339,
-				"yBot": 54.22145669291339,
+				"width": 7.920000000000002,
+				"height": 18,
+				"xLeft": 52.72145669291339,
+				"xRight": 60.641456692913394,
+				"yTop": 55.72145669291339,
+				"yBot": 73.72145669291339,
 				"bricks": [
 					{
 						"brickType": "TextBrick",
-						"width": 3.960000000000001,
-						"height": 6,
-						"xLeft": 48.22145669291339,
-						"xRight": 52.18145669291339,
-						"yTop": 48.22145669291339,
-						"yBot": 54.22145669291339,
+						"width": 7.920000000000002,
+						"height": 18,
+						"xLeft": 52.72145669291339,
+						"xRight": 60.641456692913394,
+						"yTop": 55.72145669291339,
+						"yBot": 73.72145669291339,
 						"appearance": {
-							"fontSize": 6,
+							"fontSize": 12,
 							"fontName": "helvetica",
 							"fontStyle": "normal",
-							"lineHeight": 6,
-							"fontColor": "#404040",
+							"lineHeight": 18,
+							"fontColor": "#1c1b20",
 							"textAlign": "left"
 						},
 						"options": {

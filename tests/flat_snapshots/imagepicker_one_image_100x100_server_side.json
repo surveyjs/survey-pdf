@@ -52,6 +52,7 @@
 							"borderColor": "#1c1b20",
 							"borderWidth": 0.75,
 							"fontName": "zapfdingbats",
+							"backgroundColor": "#ffffff",
 							"checkMark": "l"
 						},
 						"options": {

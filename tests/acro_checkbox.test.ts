@@ -72,7 +72,7 @@ test('Check has other checkbox', async () => {
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     await survey['renderSurvey'](controller);
     let internal: any = controller.doc.internal;
-    let internalOtherText: string = internal.pages[1][36];
+    let internalOtherText: string = internal.pages[1][40];
     expect(internalOtherText).toBeDefined();
     let regex: RegExp = /\((.*)\)/;
     let otherText: string = internalOtherText.match(regex)[1];

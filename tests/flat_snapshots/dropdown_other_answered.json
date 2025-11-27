@@ -99,7 +99,8 @@
 							"width": 12,
 							"height": 12,
 							"borderColor": "#1c1b20",
-							"borderWidth": 0
+							"borderWidth": 0,
+							"backgroundColor": "#ffffff"
 						},
 						"options": {
 							"fieldName": "testidquestion_dropdown_other_answered",
