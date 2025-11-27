@@ -22,7 +22,8 @@ module.exports = {
     }]
   },
   moduleNameMapper: {
-    "\\.(scss|html)$": "<rootDir>/tests/empty-module.js"
+    "\\.(scss|html)$": "<rootDir>/tests/empty-module.js",
+    '^jspdf$': '<rootDir>/node_modules/jspdf/dist/jspdf.node.js',
   },
   testRegex: "(/tests/.*\\.(test))\\.ts$",
   moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"]
