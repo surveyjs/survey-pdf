@@ -50,8 +50,8 @@ export class TextFieldBrick extends PdfBrick {
         inputField.isUnicode = SurveyHelper.isCustomFont(
             this.controller, inputField.fontName);
         if (this.options.inputType !== 'password') {
-            inputField.V = ' ' + this.getCorrectedText(this.options.value);
-            inputField.DV = ' ' + this.getCorrectedText(this.options.placeholder);
+            inputField.V = this.getCorrectedText(this.options.value);
+            inputField.DV = this.getCorrectedText(this.options.placeholder);
         }
         else inputField.value = '';
         inputField.multiline = this.options.isMultiline;
