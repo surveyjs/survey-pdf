@@ -266,7 +266,7 @@ test('Check readOnly comment flat is moving text brick inside', async () => {
     const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     const controller: DocController = new DocController(TestHelper.defaultOptions);
     const question = survey.getAllQuestions()[0];
-    const comment = <TextFieldBrick>await SurveyHelper.createCommentFlat({ xLeft: 0, yTop: 0 }, question, controller, { isMultiline: true, value: question.value, rows: question.rows });
+    const comment = <TextFieldBrick>await SurveyHelper.createCommentFlat({ xLeft: 0, yTop: 0 }, controller, { shouldRenderReadOnly: true, isReadOnly: true, isMultiline: true, value: question.value, rows: question.rows });
     const textBrick = comment['textBrick'];
     expect(textBrick).toBeDefined();
     const initialXLeft = textBrick.xLeft;

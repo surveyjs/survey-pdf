@@ -10,34 +10,39 @@ import { IInputAppearanceOptions, SurveyHelper } from '../helper_survey';
 export class FlatDropdown extends FlatQuestion<QuestionDropdownModel> {
     protected async generateItemComment(point: IPoint): Promise<IPdfBrick> {
         const commentModel = this.question.getCommentTextAreaModel(this.question.selectedItem);
+        const shouldRenderReadOnly = SurveyHelper.shouldRenderReadOnly(this.question, this.controller, this.question.isReadOnly);
+        const appearance = SurveyHelper.getPatchedTextAppearanceOptions(this.controller, SurveyHelper.mergeObjects({}, this.styles.comment, shouldRenderReadOnly ? this.styles.commentReadOnly : undefined));
         return await SurveyHelper.createCommentFlat(
-            point, this.question, this.controller, {
+            point, this.controller, {
+                shouldRenderReadOnly,
                 fieldName: commentModel.id,
                 rows: this.controller.otherRowsCount,
                 value: commentModel.getTextValue(),
                 shouldRenderBorders: settings.readOnlyCommentRenderMode === 'textarea',
                 isReadOnly: this.question.isReadOnly,
                 isMultiline: true,
-            }, SurveyHelper.getPatchedTextAppearanceOptions(this.controller, this.styles.comment as IInputAppearanceOptions)
+            }, SurveyHelper.getPatchedTextAppearanceOptions(this.controller, appearance)
         );
     }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
-        const appearance = SurveyHelper.getPatchedTextAppearanceOptions(this.controller, this.styles.input as IInputAppearanceOptions);
-        const valueBrick = !this.shouldRenderAsComment ? new DropdownBrick(this.controller, SurveyHelper.createTextFieldRect(point, this.controller, 1, appearance.lineHeight), {
+        const shouldRenderReadOnly = SurveyHelper.shouldRenderReadOnly(this.question, this.controller, this.question.isReadOnly);
+        const appearance = SurveyHelper.getPatchedTextAppearanceOptions(this.controller, SurveyHelper.mergeObjects({}, this.styles.input, shouldRenderReadOnly ? this.styles.inputReadOnly : undefined));
+        const valueBrick = !shouldRenderReadOnly ? new DropdownBrick(this.controller, SurveyHelper.createTextFieldRect(point, this.controller, 1, appearance.lineHeight), {
             fieldName: this.question.id,
             value: this.question.readOnlyText,
             isReadOnly: this.question.isReadOnly,
             optionsCaption: this.question.optionsCaption,
             showOptionsCaption: this.question.showOptionsCaption,
             items: this.question.visibleChoices.map(item => SurveyHelper.getLocString(item.locText))
-        }, appearance) : await SurveyHelper.createCommentFlat(point, this.question, this.controller,
+        }, appearance) : await SurveyHelper.createCommentFlat(point, this.controller,
             {
                 fieldName: this.question.id,
+                shouldRenderReadOnly: shouldRenderReadOnly,
                 shouldRenderBorders: settings.readOnlyTextRenderMode === 'input',
                 value: this.question.readOnlyText || '',
                 isReadOnly: this.question.isReadOnly,
                 placeholder: SurveyHelper.getLocString(this.question.locPlaceholder)
-            }, SurveyHelper.mergeObjects({}, appearance, this.styles.inputReadOnly));
+            }, appearance);
         const compositeFlat: CompositeBrick = new CompositeBrick(valueBrick);
         if (this.question.isShowingChoiceComment) {
             const otherPoint: IPoint = SurveyHelper.createPoint(compositeFlat);

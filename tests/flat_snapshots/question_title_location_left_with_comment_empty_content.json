@@ -111,17 +111,18 @@
 							"fontName": "helvetica",
 							"fontStyle": "normal",
 							"lineHeight": 18,
-							"fontColor": "#1c1b20"
+							"fontColor": "#1c1b20",
+							"backgroundColor": "#ffffff"
 						},
 						"options": {
 							"fieldName": "testidquestion_checkbox_comment",
 							"rows": 2,
 							"value": "",
 							"shouldRenderBorders": true,
+							"shouldRenderReadOnly": false,
 							"isReadOnly": false,
 							"isMultiline": true,
 							"placeholder": "",
-							"shouldRenderReadOnly": false,
 							"inputType": ""
 						},
 						"padding": {

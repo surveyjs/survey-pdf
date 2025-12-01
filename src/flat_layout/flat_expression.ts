@@ -7,9 +7,10 @@ import { IInputAppearanceOptions, SurveyHelper } from '../helper_survey';
 
 export class FlatExpression extends FlatQuestion<QuestionExpressionModel> {
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
-        return [await SurveyHelper.createCommentFlat(point, this.question, this.controller, {
+        return [await SurveyHelper.createCommentFlat(point, this.controller, {
             value: this.question.displayValue,
             isReadOnly: true,
+            shouldRenderReadOnly: SurveyHelper.shouldRenderReadOnly(this.question, this.controller, true),
             fieldName: this.question.id,
             shouldRenderBorders: settings.readOnlyTextRenderMode === 'input',
         }, SurveyHelper.getPatchedTextAppearanceOptions(this.controller, this.styles.input as IInputAppearanceOptions))];

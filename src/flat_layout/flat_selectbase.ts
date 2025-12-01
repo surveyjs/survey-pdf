@@ -9,16 +9,19 @@ import { ChoiceItem } from 'survey-core';
 export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSelectBase> extends FlatQuestion<T> {
     public abstract generateFlatItem(point: IPoint, item: ItemValue, index: number): IPdfBrick;
     protected async generateItemComment(point: IPoint, item: ItemValue) {
+        const shouldRenderReadOnly = SurveyHelper.shouldRenderReadOnly(this.question, this.controller, this.question.isReadOnly);
+        const appearance = SurveyHelper.getPatchedTextAppearanceOptions(this.controller, SurveyHelper.mergeObjects({}, this.styles.comment, shouldRenderReadOnly ? this.styles.commentReadOnly : undefined));
         const commentModel = this.question.getCommentTextAreaModel(item);
         return await SurveyHelper.createCommentFlat(
-            point, this.question, this.controller, {
+            point, this.controller, {
+                shouldRenderReadOnly,
                 fieldName: commentModel.id,
                 rows: this.controller.otherRowsCount,
                 value: commentModel.getTextValue(),
                 shouldRenderBorders: settings.readOnlyCommentRenderMode === 'textarea',
                 isReadOnly: this.question.isReadOnly,
                 isMultiline: true,
-            }, SurveyHelper.getPatchedTextAppearanceOptions(this.controller, this.styles.comment as IInputAppearanceOptions));
+            }, appearance);
     }
     protected async generateFlatComposite(point: IPoint, item: ItemValue | ChoiceItem, index: number): Promise<IPdfBrick> {
         const compositeFlat: CompositeBrick = new CompositeBrick();

@@ -59,14 +59,19 @@ export function getDefaultStylesFromTheme (theme: ITheme) {
                     lineHeight: getSizeVariable('--sjs2-typography-line-height-small')
                 },
                 comment: {
-                    fontColor: getColorVariable('--sjs2-color-fg-basic-primary'),
                     fontSize: getSizeVariable('--sjs2-typography-font-size-default'),
                     lineHeight: getSizeVariable('--sjs2-typography-line-height-default'),
+                    fontColor: getColorVariable('--sjs2-color-control-input-default-value'),
+                    backgroundColor: getColorVariable('--sjs2-color-control-formbox-default-bg'),
+                },
+                commentReadOnly: {
+                    backgroundColor: null,
+                    fontColor: getColorVariable('--sjs2-color-fg-basic-primary'),
                 },
                 input: {
                     fontColor: getColorVariable('--sjs2-color-fg-basic-primary'),
                     fontSize: getSizeVariable('--sjs2-typography-font-size-default'),
-                    lineHeight: getColorVariable('--sjs2-typography-line-height-default')
+                    lineHeight: getSizeVariable('--sjs2-typography-line-height-default')
                 }
             },
             panel: {
@@ -399,8 +404,14 @@ export function getDefaultStylesFromTheme (theme: ITheme) {
             slider: {
                 gapBetweenColumns: baseSize * 8,
                 input: {
-                    fontSize: baseSize * 2.5,
-                    lineHeight: baseSize * 3
+                    fontSize: getSizeVariable('--sjs2-typography-font-size-default'),
+                    lineHeight: getSizeVariable('--sjs2-typography-line-height-default'),
+                    backgroundColor: getColorVariable('--sjs2-color-control-formbox-default-bg'),
+                    fontColor: getColorVariable('--sjs2-color-control-input-default-value'),
+                },
+                inputReadOnly: {
+                    backgroundColor: null as any,
+                    fontColor: getColorVariable('--sjs2-color-fg-basic-primary'),
                 },
                 rangeSeparator: {
                     width: baseSize * 3,
@@ -412,14 +423,16 @@ export function getDefaultStylesFromTheme (theme: ITheme) {
                 input: {
                     borderWidth: 0,
                     fontName: undefined as any,
-                    fontColor: getColorVariable('--sjs2-color-fg-basic-primary'),
-                    backgroundColor: getColorVariable('--sjs2-color-control-check-false-default-bg'),
                     fontSize: getSizeVariable('--sjs2-typography-font-size-default'),
-                    lineHeight: getColorVariable('--sjs2-typography-line-height-default')
+                    lineHeight: getSizeVariable('--sjs2-typography-line-height-default'),
+                    fontColor: getColorVariable('--sjs2-color-control-input-default-value'),
+                    backgroundColor: getColorVariable('--sjs2-color-control-formbox-default-bg'),
+
                 },
                 inputReadOnly: {
-                    backgroundColor: undefined
-                }
+                    backgroundColor: null,
+                    fontColor: getColorVariable('--sjs2-color-fg-basic-primary'),
+                },
             },
             file: {
                 imageGap: getSizeVariable('--sjs2-pdf-layout-question-items-gap-vertical'),
@@ -519,16 +532,21 @@ export function getDefaultStylesFromTheme (theme: ITheme) {
             },
             textbase: {
                 input: {
-                    fontColor: getColorVariable('--sjs2-color-fg-basic-primary'),
                     fontSize: getSizeVariable('--sjs2-typography-font-size-default'),
-                    lineHeight: getColorVariable('--sjs2-typography-line-height-default')
+                    lineHeight: getSizeVariable('--sjs2-typography-line-height-default'),
+                    backgroundColor: getColorVariable('--sjs2-color-control-formbox-default-bg'),
+                    fontColor: getColorVariable('--sjs2-color-control-input-default-value'),
+                },
+                inputReadOnly: {
+                    backgroundColor: null,
+                    fontColor: getColorVariable('--sjs2-color-fg-basic-primary'),
                 }
             },
             expression: {
                 input: {
                     fontColor: getColorVariable('--sjs2-color-fg-basic-primary'),
                     fontSize: getSizeVariable('--sjs2-typography-font-size-default'),
-                    lineHeight: getColorVariable('--sjs2-typography-line-height-default')
+                    lineHeight: getSizeVariable('--sjs2-typography-line-height-default')
                 }
             },
             html: {

@@ -65,14 +65,16 @@
 							"fontName": "helvetica",
 							"fontStyle": "normal",
 							"lineHeight": 18,
-							"fontColor": "#1c1b20"
+							"fontColor": "#1c1b20",
+							"backgroundColor": "#ffffff"
 						},
 						"options": {
+							"shouldRenderReadOnly": false,
+							"rows": 1,
 							"fieldName": "testidquestion_panel_row1_cell_1",
 							"inputType": "text",
 							"value": "",
 							"isReadOnly": false,
-							"shouldRenderReadOnly": false,
 							"shouldRenderBorders": true,
 							"placeholder": "",
 							"isMultiline": false
@@ -141,14 +143,16 @@
 							"fontName": "helvetica",
 							"fontStyle": "normal",
 							"lineHeight": 18,
-							"fontColor": "#1c1b20"
+							"fontColor": "#1c1b20",
+							"backgroundColor": "#ffffff"
 						},
 						"options": {
+							"shouldRenderReadOnly": false,
+							"rows": 1,
 							"fieldName": "testidquestion_panel_row1_cell_2",
 							"inputType": "text",
 							"value": "",
 							"isReadOnly": false,
-							"shouldRenderReadOnly": false,
 							"shouldRenderBorders": true,
 							"placeholder": "",
 							"isMultiline": false
@@ -217,14 +221,16 @@
 							"fontName": "helvetica",
 							"fontStyle": "normal",
 							"lineHeight": 18,
-							"fontColor": "#1c1b20"
+							"fontColor": "#1c1b20",
+							"backgroundColor": "#ffffff"
 						},
 						"options": {
+							"shouldRenderReadOnly": false,
+							"rows": 1,
 							"fieldName": "testidquestion_panel_row1_cell_3",
 							"inputType": "text",
 							"value": "",
 							"isReadOnly": false,
-							"shouldRenderReadOnly": false,
 							"shouldRenderBorders": true,
 							"placeholder": "",
 							"isMultiline": false
@@ -293,14 +299,16 @@
 							"fontName": "helvetica",
 							"fontStyle": "normal",
 							"lineHeight": 18,
-							"fontColor": "#1c1b20"
+							"fontColor": "#1c1b20",
+							"backgroundColor": "#ffffff"
 						},
 						"options": {
+							"shouldRenderReadOnly": false,
+							"rows": 1,
 							"fieldName": "testidquestion_panel_row1_cell_4",
 							"inputType": "text",
 							"value": "",
 							"isReadOnly": false,
-							"shouldRenderReadOnly": false,
 							"shouldRenderBorders": true,
 							"placeholder": "",
 							"isMultiline": false
@@ -369,14 +377,16 @@
 							"fontName": "helvetica",
 							"fontStyle": "normal",
 							"lineHeight": 18,
-							"fontColor": "#1c1b20"
+							"fontColor": "#1c1b20",
+							"backgroundColor": "#ffffff"
 						},
 						"options": {
+							"shouldRenderReadOnly": false,
+							"rows": 1,
 							"fieldName": "testidquestion_panel_row1_cell_5",
 							"inputType": "text",
 							"value": "",
 							"isReadOnly": false,
-							"shouldRenderReadOnly": false,
 							"shouldRenderBorders": true,
 							"placeholder": "",
 							"isMultiline": false
@@ -445,14 +455,16 @@
 							"fontName": "helvetica",
 							"fontStyle": "normal",
 							"lineHeight": 18,
-							"fontColor": "#1c1b20"
+							"fontColor": "#1c1b20",
+							"backgroundColor": "#ffffff"
 						},
 						"options": {
+							"shouldRenderReadOnly": false,
+							"rows": 1,
 							"fieldName": "testidquestion_panel_row1_cell_6",
 							"inputType": "text",
 							"value": "",
 							"isReadOnly": false,
-							"shouldRenderReadOnly": false,
 							"shouldRenderBorders": true,
 							"placeholder": "",
 							"isMultiline": false

@@ -109,10 +109,10 @@
 						"options": {
 							"value": "test",
 							"isReadOnly": true,
+							"shouldRenderReadOnly": true,
 							"fieldName": "testidquestion_madintotals_row2_cell_0",
 							"shouldRenderBorders": true,
 							"rows": 1,
-							"shouldRenderReadOnly": true,
 							"isMultiline": false,
 							"placeholder": "",
 							"inputType": ""

@@ -132,13 +132,13 @@
 						"yTop": 73.72145669291339,
 						"yBot": 109.72145669291339,
 						"options": {
+							"shouldRenderReadOnly": false,
 							"fieldName": "testidquestion_question1_Item 2_comment",
 							"rows": 2,
 							"value": "aaaaa",
 							"shouldRenderBorders": true,
 							"isReadOnly": false,
 							"isMultiline": true,
-							"shouldRenderReadOnly": false,
 							"placeholder": "",
 							"inputType": ""
 						},
@@ -147,7 +147,8 @@
 							"fontName": "helvetica",
 							"fontStyle": "normal",
 							"lineHeight": 18,
-							"fontColor": "#1c1b20"
+							"fontColor": "#1c1b20",
+							"backgroundColor": "#ffffff"
 						},
 						"padding": {
 							"top": 0,

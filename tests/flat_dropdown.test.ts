@@ -112,17 +112,6 @@ test('Check dropdown when survey mode is display and textFieldRenderAs is multil
     });
 });
 
-test('Check shouldRenderAsComment flag for text flat', async () => {
-    const question = new QuestionDropdownModel('');
-    const controller = new DocController({});
-    const flat = new FlatDropdown(<any>undefined, question, controller, {});
-    expect(flat['shouldRenderAsComment']).toBeFalsy();
-    question.readOnly = true;
-    expect(flat['shouldRenderAsComment']).toBeTruthy();
-    question.readonlyRenderAs = 'acroform';
-    expect(flat['shouldRenderAsComment']).toBeFalsy();
-});
-
 test('Check item comment', async () => {
     await checkFlatSnapshot({ 'elements': [{
         'type': 'dropdown',

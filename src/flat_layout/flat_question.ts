@@ -93,16 +93,19 @@ export class FlatQuestion<T extends Question = Question> implements IFlatQuestio
         const otherTextFlat: IPdfBrick = await SurveyHelper.createTextFlat(point, this.controller, text);
         const otherPoint: IPoint = SurveyHelper.createPoint(otherTextFlat);
         otherPoint.yTop += this.styles.gapBetweenRows;
+        const shouldRenderReadOnly = SurveyHelper.shouldRenderReadOnly(this.question, this.controller, this.question.isReadOnly);
+        const appearance = SurveyHelper.getPatchedTextAppearanceOptions(this.controller, SurveyHelper.mergeObjects({}, this.styles.comment, shouldRenderReadOnly ? this.styles.commentReadOnly : undefined));
         return new CompositeBrick(otherTextFlat, await SurveyHelper.createCommentFlat(
-            otherPoint, this.question, this.controller, {
+            otherPoint, this.controller, {
                 fieldName: this.question.id + '_comment',
                 rows: this.controller.otherRowsCount,
                 value: this.question.comment !== undefined && this.question.comment !== null ? this.question.comment : '',
                 shouldRenderBorders: settings.readOnlyCommentRenderMode === 'textarea',
+                shouldRenderReadOnly,
                 isReadOnly: this.question.isReadOnly,
                 isMultiline: true,
                 placeholder: ''
-            }, SurveyHelper.getPatchedTextAppearanceOptions(this.controller, this.styles.comment as IInputAppearanceOptions)));
+            }, appearance));
     }
     public async generateFlatsComposite(point: IPoint): Promise<IPdfBrick[]> {
         const contentPanel = (<any>this.question).contentPanel;
@@ -229,9 +232,6 @@ export class FlatQuestion<T extends Question = Question> implements IFlatQuestio
         await this.survey.onRenderQuestion.fire(this.survey, adornersOptions);
         this.survey.afterRenderSurveyElement(this.question, flats);
         return flats;
-    }
-    protected get shouldRenderAsComment(): boolean {
-        return SurveyHelper.shouldRenderReadOnly(this.question, this.controller);
     }
 }
 

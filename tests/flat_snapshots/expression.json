@@ -17,10 +17,10 @@
 		"options": {
 			"value": "1",
 			"isReadOnly": true,
+			"shouldRenderReadOnly": true,
 			"fieldName": "testidquestion_expque",
 			"shouldRenderBorders": true,
 			"rows": 1,
-			"shouldRenderReadOnly": true,
 			"isMultiline": false,
 			"placeholder": "",
 			"inputType": ""

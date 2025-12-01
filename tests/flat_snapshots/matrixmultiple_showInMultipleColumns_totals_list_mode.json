@@ -382,10 +382,10 @@
 						"options": {
 							"value": "0",
 							"isReadOnly": true,
+							"shouldRenderReadOnly": true,
 							"fieldName": "testidquestion_matrix_row2_cell_2",
 							"shouldRenderBorders": true,
 							"rows": 1,
-							"shouldRenderReadOnly": true,
 							"isMultiline": false,
 							"placeholder": "",
 							"inputType": ""

@@ -131,16 +131,17 @@
 							"fontName": "helvetica",
 							"fontStyle": "normal",
 							"lineHeight": 18,
-							"fontColor": "#1c1b20"
+							"fontColor": "#1c1b20",
+							"backgroundColor": "#ffffff"
 						},
 						"options": {
+							"shouldRenderReadOnly": false,
 							"fieldName": "testidquestion_dropdown_other_answered_other_comment",
 							"rows": 2,
 							"value": "",
 							"shouldRenderBorders": true,
 							"isReadOnly": false,
 							"isMultiline": true,
-							"shouldRenderReadOnly": false,
 							"placeholder": "",
 							"inputType": ""
 						},

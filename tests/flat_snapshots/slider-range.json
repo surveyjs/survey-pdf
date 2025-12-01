@@ -23,15 +23,17 @@
 					"isReadOnly": false,
 					"shouldRenderReadOnly": false,
 					"shouldRenderBorders": true,
+					"rows": 1,
 					"isMultiline": false,
 					"placeholder": ""
 				},
 				"appearance": {
-					"fontSize": 15,
+					"fontSize": 12,
 					"fontName": "helvetica",
 					"fontStyle": "normal",
 					"lineHeight": 18,
-					"fontColor": "#1c1b20"
+					"fontColor": "#1c1b20",
+					"backgroundColor": "#ffffff"
 				},
 				"padding": {
 					"top": 0,
@@ -72,15 +74,17 @@
 					"isReadOnly": false,
 					"shouldRenderReadOnly": false,
 					"shouldRenderBorders": true,
+					"rows": 1,
 					"isMultiline": false,
 					"placeholder": ""
 				},
 				"appearance": {
-					"fontSize": 15,
+					"fontSize": 12,
 					"fontName": "helvetica",
 					"fontStyle": "normal",
 					"lineHeight": 18,
-					"fontColor": "#1c1b20"
+					"fontColor": "#1c1b20",
+					"backgroundColor": "#ffffff"
 				},
 				"padding": {
 					"top": 0,

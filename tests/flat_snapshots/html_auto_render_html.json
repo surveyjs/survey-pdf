@@ -52,9 +52,14 @@
 						"lineHeight": 12
 					},
 					"comment": {
-						"fontColor": "#1c1b20",
 						"fontSize": 12,
-						"lineHeight": 18
+						"lineHeight": 18,
+						"fontColor": "#1c1b20",
+						"backgroundColor": "#ffffff"
+					},
+					"commentReadOnly": {
+						"backgroundColor": null,
+						"fontColor": "#1c1b20"
 					},
 					"input": {
 						"fontColor": "#1c1b20",

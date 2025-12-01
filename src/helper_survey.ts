@@ -395,15 +395,13 @@ export class SurveyHelper {
     public static getReadonlyRenderAs(question: Question, controller: DocController): 'auto' | 'text' | 'acroform' {
         return (<any>question).readonlyRenderAs === 'auto' ? controller.readonlyRenderAs : (<any>question).readonlyRenderAs;
     }
-    public static async createCommentFlat(point: IPoint, question: Question,
-        controller: DocController, options: { rows?: number } & ITextFieldBrickOptions, appearance?: Readonly<Partial<IInputAppearanceOptions>>): Promise<IPdfBrick> {
+    public static async createCommentFlat(point: IPoint, controller: DocController, options: { rows?: number } & ITextFieldBrickOptions, appearance?: Readonly<Partial<IInputAppearanceOptions>>): Promise<IPdfBrick> {
         const newAppearance: ITextAppearanceOptions = SurveyHelper.getPatchedTextAppearanceOptions(controller, appearance);
         options.rows = options.rows ?? 1;
         options.value = options.value ?? '';
-        options.shouldRenderReadOnly = SurveyHelper.shouldRenderReadOnly(question, controller, options.isReadOnly);
         const rect: IRect = this.createTextFieldRect(point, controller, options.rows, newAppearance.lineHeight);
         let textFlat;
-        if (SurveyHelper.shouldRenderReadOnly(question, controller, options.isReadOnly)) {
+        if (options.shouldRenderReadOnly) {
             textFlat = await this.createReadOnlyTextFieldTextFlat(
                 point, controller, options.value, newAppearance);
         }

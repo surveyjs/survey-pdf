@@ -67,14 +67,16 @@
 					"fontName": "helvetica",
 					"fontStyle": "normal",
 					"lineHeight": 18,
-					"fontColor": "#1c1b20"
+					"fontColor": "#1c1b20",
+					"backgroundColor": "#ffffff"
 				},
 				"options": {
+					"shouldRenderReadOnly": false,
+					"rows": 1,
 					"fieldName": "sq_67",
 					"inputType": "text",
 					"value": "",
 					"isReadOnly": false,
-					"shouldRenderReadOnly": false,
 					"shouldRenderBorders": true,
 					"placeholder": "",
 					"isMultiline": false
@@ -154,14 +156,16 @@
 					"fontName": "helvetica",
 					"fontStyle": "normal",
 					"lineHeight": 18,
-					"fontColor": "#1c1b20"
+					"fontColor": "#1c1b20",
+					"backgroundColor": "#ffffff"
 				},
 				"options": {
+					"shouldRenderReadOnly": false,
+					"rows": 1,
 					"fieldName": "sq_71",
 					"inputType": "text",
 					"value": "",
 					"isReadOnly": false,
-					"shouldRenderReadOnly": false,
 					"shouldRenderBorders": true,
 					"placeholder": "",
 					"isMultiline": false
@@ -250,14 +254,16 @@
 					"fontName": "helvetica",
 					"fontStyle": "normal",
 					"lineHeight": 18,
-					"fontColor": "#1c1b20"
+					"fontColor": "#1c1b20",
+					"backgroundColor": "#ffffff"
 				},
 				"options": {
+					"shouldRenderReadOnly": false,
+					"rows": 1,
 					"fieldName": "sq_75",
 					"inputType": "text",
 					"value": "",
 					"isReadOnly": false,
-					"shouldRenderReadOnly": false,
 					"shouldRenderBorders": true,
 					"placeholder": "",
 					"isMultiline": false

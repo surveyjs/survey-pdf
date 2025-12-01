@@ -75,17 +75,6 @@ test('Check readonly text with readOnlyTextRenderMode set to div', async () => {
     }
 });
 
-test('Check shouldRenderAsComment flag for text flat', async () => {
-    const question = new QuestionTextModel('');
-    const controller = new DocController({});
-    const flat = new FlatTextbox(<any>undefined, question, controller, {});
-    expect(flat['shouldRenderAsComment']).toBeFalsy();
-    question.readOnly = true;
-    expect(flat['shouldRenderAsComment']).toBeTruthy();
-    question.readonlyRenderAs = 'acroform';
-    expect(flat['shouldRenderAsComment']).toBeFalsy();
-});
-
 test('Check text field value when mask is applied', async () => {
     let question = new QuestionTextModel('');
     const controller = new DocController({});

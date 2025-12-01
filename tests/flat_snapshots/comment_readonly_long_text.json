@@ -12,9 +12,11 @@
 			"fontName": "helvetica",
 			"fontStyle": "normal",
 			"lineHeight": 18,
-			"fontColor": "#1c1b20"
+			"fontColor": "#1c1b20",
+			"backgroundColor": null
 		},
 		"options": {
+			"shouldRenderReadOnly": true,
 			"rows": 4,
 			"isReadOnly": true,
 			"isMultiline": true,
@@ -22,7 +24,6 @@
 			"placeholder": "",
 			"shouldRenderBorders": true,
 			"value": "Loooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooong",
-			"shouldRenderReadOnly": true,
 			"inputType": ""
 		},
 		"padding": {

@@ -159,13 +159,13 @@
 						"yTop": 73.72145669291339,
 						"yBot": 109.72145669291339,
 						"options": {
+							"shouldRenderReadOnly": false,
 							"fieldName": "testidquestion_question1_Item 1_comment",
 							"rows": 2,
 							"value": "aaaaa",
 							"shouldRenderBorders": true,
 							"isReadOnly": false,
 							"isMultiline": true,
-							"shouldRenderReadOnly": false,
 							"placeholder": "",
 							"inputType": ""
 						},
@@ -174,7 +174,8 @@
 							"fontName": "helvetica",
 							"fontStyle": "normal",
 							"lineHeight": 18,
-							"fontColor": "#1c1b20"
+							"fontColor": "#1c1b20",
+							"backgroundColor": "#ffffff"
 						},
 						"padding": {
 							"top": 0,
@@ -270,13 +271,13 @@
 				"yTop": 133.7214566929134,
 				"yBot": 169.7214566929134,
 				"options": {
+					"shouldRenderReadOnly": false,
 					"fieldName": "testidquestion_question1_Item 2_comment",
 					"rows": 2,
 					"value": "ccccc",
 					"shouldRenderBorders": true,
 					"isReadOnly": false,
 					"isMultiline": true,
-					"shouldRenderReadOnly": false,
 					"placeholder": "",
 					"inputType": ""
 				},
@@ -285,7 +286,8 @@
 					"fontName": "helvetica",
 					"fontStyle": "normal",
 					"lineHeight": 18,
-					"fontColor": "#1c1b20"
+					"fontColor": "#1c1b20",
+					"backgroundColor": "#ffffff"
 				},
 				"padding": {
 					"top": 0,
@@ -379,13 +381,13 @@
 				"yTop": 193.7214566929134,
 				"yBot": 229.7214566929134,
 				"options": {
+					"shouldRenderReadOnly": false,
 					"fieldName": "testidquestion_question1_Item 3_comment",
 					"rows": 2,
 					"value": "bbbbb",
 					"shouldRenderBorders": true,
 					"isReadOnly": false,
 					"isMultiline": true,
-					"shouldRenderReadOnly": false,
 					"placeholder": "",
 					"inputType": ""
 				},
@@ -394,7 +396,8 @@
 					"fontName": "helvetica",
 					"fontStyle": "normal",
 					"lineHeight": 18,
-					"fontColor": "#1c1b20"
+					"fontColor": "#1c1b20",
+					"backgroundColor": "#ffffff"
 				},
 				"padding": {
 					"top": 0,

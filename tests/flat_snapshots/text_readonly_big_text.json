@@ -12,18 +12,19 @@
 			"fontName": "helvetica",
 			"fontStyle": "normal",
 			"lineHeight": 18,
-			"fontColor": "#1c1b20"
+			"fontColor": "#1c1b20",
+			"backgroundColor": null
 		},
 		"options": {
+			"shouldRenderReadOnly": true,
 			"rows": 1,
-			"isMultiline": true,
 			"fieldName": "testidquestion_text_textrenderasset",
 			"inputType": "text",
 			"value": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
 			"isReadOnly": true,
-			"shouldRenderReadOnly": true,
 			"shouldRenderBorders": true,
-			"placeholder": ""
+			"placeholder": "",
+			"isMultiline": false
 		},
 		"padding": {
 			"top": 0,

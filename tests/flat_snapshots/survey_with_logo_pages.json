@@ -121,14 +121,16 @@
 						"fontName": "helvetica",
 						"fontStyle": "normal",
 						"lineHeight": 18,
-						"fontColor": "#1c1b20"
+						"fontColor": "#1c1b20",
+						"backgroundColor": "#ffffff"
 					},
 					"options": {
+						"shouldRenderReadOnly": false,
+						"rows": 1,
 						"fieldName": "testidquestion_First page qw",
 						"inputType": "text",
 						"value": "",
 						"isReadOnly": false,
-						"shouldRenderReadOnly": false,
 						"shouldRenderBorders": true,
 						"placeholder": "",
 						"isMultiline": false
@@ -230,14 +232,16 @@
 						"fontName": "helvetica",
 						"fontStyle": "normal",
 						"lineHeight": 18,
-						"fontColor": "#1c1b20"
+						"fontColor": "#1c1b20",
+						"backgroundColor": "#ffffff"
 					},
 					"options": {
+						"shouldRenderReadOnly": false,
+						"rows": 1,
 						"fieldName": "testidquestion_Second page qw",
 						"inputType": "text",
 						"value": "",
 						"isReadOnly": false,
-						"shouldRenderReadOnly": false,
 						"shouldRenderBorders": true,
 						"placeholder": "",
 						"isMultiline": false

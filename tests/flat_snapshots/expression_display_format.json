@@ -17,10 +17,10 @@
 		"options": {
 			"value": "5%",
 			"isReadOnly": true,
+			"shouldRenderReadOnly": true,
 			"fieldName": "testidquestion_exp",
 			"shouldRenderBorders": true,
 			"rows": 1,
-			"shouldRenderReadOnly": true,
 			"isMultiline": false,
 			"placeholder": "",
 			"inputType": ""

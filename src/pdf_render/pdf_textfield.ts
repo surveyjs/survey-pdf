@@ -47,6 +47,7 @@ export class TextFieldBrick extends PdfBrick {
         inputField.fieldName = this.options.fieldName;
         inputField.fontName = this.appearance.fontName;
         inputField.fontSize = this.appearance.fontSize;
+        inputField.maxFontSize = this.appearance.fontSize;
         inputField.isUnicode = SurveyHelper.isCustomFont(
             this.controller, inputField.fontName);
         if (this.options.inputType !== 'password') {
@@ -57,7 +58,6 @@ export class TextFieldBrick extends PdfBrick {
         inputField.multiline = this.options.isMultiline;
         inputField.readOnly = this.options.isReadOnly;
         inputField.color = fontColor;
-        inputField.maxFontSize = this.appearance.fontSize * formScale.scaleY;
         inputField.Rect = scaledAcroformRect;
         this.controller.doc.addField(inputField);
         SurveyHelper.renderFlatBorders(this.controller, this.contentRect, this.appearance);

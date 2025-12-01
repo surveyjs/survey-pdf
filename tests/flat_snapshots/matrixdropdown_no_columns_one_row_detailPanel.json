@@ -146,9 +146,11 @@
 					"fontName": "helvetica",
 					"fontStyle": "normal",
 					"lineHeight": 18,
-					"fontColor": "#1c1b20"
+					"fontColor": "#1c1b20",
+					"backgroundColor": "#ffffff"
 				},
 				"options": {
+					"shouldRenderReadOnly": false,
 					"rows": 4,
 					"isReadOnly": false,
 					"isMultiline": true,
@@ -156,7 +158,6 @@
 					"placeholder": "",
 					"shouldRenderBorders": true,
 					"value": "",
-					"shouldRenderReadOnly": false,
 					"inputType": ""
 				},
 				"padding": {
