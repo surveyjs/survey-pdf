@@ -1,34 +1,43 @@
-import { Question } from 'survey-core';
-import { TextBrick } from './pdf_text';
-import { SurveyHelper } from '../helper_survey';
+import { ITextBrickOptions, TextBrick } from './pdf_text';
+import { ITextAppearanceOptions } from '../helper_survey';
+import { IRect, DocController } from '../doc_controller';
+
+export interface ILinkOptions extends ITextBrickOptions {
+    link: string;
+    readOnlyShowLink: boolean;
+}
 
 export class LinkBrick extends TextBrick {
     private static readonly SCALE_FACTOR_MAGIC: number = 0.955;
-    public static readonly COLOR: string = '#0000EE';
-    public constructor(textFlat: TextBrick, protected link: string) {
-        super((<LinkBrick>textFlat).question,
-            (<LinkBrick>textFlat).controller,
-            textFlat, (<LinkBrick>textFlat).text);
-        this.textColor = LinkBrick.COLOR;
+    public constructor(controller: DocController, rect: IRect, public options: ILinkOptions, public appearance: ITextAppearanceOptions) {
+        super(controller, rect, options, appearance);
     }
     public async renderInteractive(): Promise<void> {
-        let oldTextColor: string = this.controller.doc.getTextColor();
-        this.controller.doc.setTextColor(SurveyHelper.BACKGROUND_COLOR);
+        const oldFontSize: number = this.controller.fontSize;
+        const oldFontStyle: string = this.controller.fontStyle;
+        const oldFontName: string = this.controller.fontName;
+        this.controller.fontSize = this.appearance.fontSize;
+        this.controller.fontStyle = this.appearance.fontStyle;
+        this.controller.fontName = this.appearance.fontName;
+        this.controller.setTextColor('#FFFFFF00');
         let descent: number = this.controller.unitHeight *
             (this.controller.doc.getLineHeightFactor() -
                 LinkBrick.SCALE_FACTOR_MAGIC);
-        let yTopLink: number = this.yTop +
-            (this.yBot - this.yTop) - descent;
-        this.controller.doc.textWithLink(this.text, this.xLeft,
-            yTopLink, { url: this.link });
+        let yTopLink: number = this.contentRect.yTop +
+            (this.contentRect.yBot - this.contentRect.yTop) - descent;
+        this.controller.doc.textWithLink(this.options.text, this.contentRect.xLeft,
+            yTopLink, { url: this.options.link });
+        this.controller.restoreTextColor();
+        this.controller.fontSize = oldFontSize;
+        this.controller.fontStyle = oldFontStyle;
+        this.controller.fontName = oldFontName;
         await super.renderInteractive();
-        this.controller.doc.setTextColor(oldTextColor);
     }
     public async renderReadOnly(): Promise<void> {
-        if (SurveyHelper.getReadonlyRenderAs(<Question>this.question,
-            this.controller) !== 'text') {
-            return this.renderInteractive();
+        if (this.options.readOnlyShowLink) {
+            super.renderInteractive();
+        } else {
+            this.renderInteractive();
         }
-        await super.renderInteractive();
     }
 }

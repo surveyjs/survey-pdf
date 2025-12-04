@@ -1,28 +1,32 @@
-import { IQuestion, ItemValue, Question } from 'survey-core';
 import { IPoint, IRect, ISize, DocController } from '../doc_controller';
-import { IPdfBrick, PdfBrick } from './pdf_brick';
-import { TextBrick } from './pdf_text';
-import { SurveyPDF } from '../survey';
-import { SurveyHelper } from '../helper_survey';
+import { IPdfBrick, IPdfBrickOptions, PdfBrick } from './pdf_brick';
+import { BorderRect, IInputAppearanceOptions, SurveyHelper } from '../helper_survey';
+
+export type IRadioItemBrickAppearanceOptions = IInputAppearanceOptions & {
+    checkMark: string,
+}
+export interface IRadioItemBrickOptions extends IPdfBrickOptions {
+    checked: boolean;
+    index: number;
+    updateOptions?: (options: any) => void;
+}
 
 export interface IRadiogroupWrapContext {
-    question: IQuestion;
+    fieldName: string;
     readOnly: boolean;
+    updateOptions: (options: any) => void;
 }
 export class RadioGroupWrap {
     private _radioGroup: any;
-    public constructor(public name: string,
-        private controller: DocController,
-        private context: IRadiogroupWrapContext) {
+    public constructor(private controller: DocController, private options: IRadiogroupWrapContext) {
     }
     public addToPdf(color: string) {
-        this._radioGroup = new this.controller.doc.AcroFormRadioButton();
+        this._radioGroup = new this.controller.AcroFormRadioButton();
         const options: any = {};
-        options.fieldName = this.name;
-        options.readOnly = this.readOnly;
+        options.fieldName = this.options.fieldName;
+        options.readOnly = this.options.readOnly;
         options.color = color;
-        options.context = this.context;
-        (<SurveyPDF>this.context.question.survey)?.getUpdatedRadioGroupWrapOptions(options);
+        this.options.updateOptions(options);
         this._radioGroup.fieldName = options.fieldName;
         this._radioGroup.readOnly = options.readOnly;
         this._radioGroup.color = options.color;
@@ -34,49 +38,43 @@ export class RadioGroupWrap {
         return this._radioGroup;
     }
     get readOnly(): boolean {
-        return this.context.readOnly;
+        return this.options.readOnly;
     }
-}
-
-export interface IRadioGroupItemBrickContext {
-    question: IQuestion;
-    checked: boolean;
-    index: number;
-    item: ItemValue;
+    get fieldName(): string {
+        return this.options.fieldName;
+    }
 }
 
 export class RadioItemBrick extends PdfBrick {
-    private static readonly RADIOMARKER_READONLY_SYMBOL: string = 'l';
-    private static readonly RADIOMARKER_READONLY_FONT: string = 'zapfdingbats';
-    public static readonly RADIOMARKER_READONLY_FONT_SIZE_SCALE: number = 1.0 - ((2.0 + Math.E) / 10.0);
     public constructor(controller: DocController,
-        rect: IRect, private context: IRadioGroupItemBrickContext,
-        private radioGroupWrap: RadioGroupWrap) {
-        super(context.question, controller, rect);
-        this.textColor = this.formBorderColor;
-    }
-    protected getShouldRenderReadOnly(): boolean {
-        return this.radioGroupWrap.readOnly && SurveyHelper.getReadonlyRenderAs(
-            <Question>this.question, this.controller) !== 'acroform' || this.controller.compress;
+        rect: IRect, private radioGroupWrap: RadioGroupWrap, protected options: IRadioItemBrickOptions, protected appearance: IRadioItemBrickAppearanceOptions) {
+        super(controller, rect);
     }
     public async renderInteractive(): Promise<void> {
-        if (this.context.index == 0) {
-            this.radioGroupWrap.addToPdf(this.formBorderColor);
+        const formScale = SurveyHelper.getRectBorderScale(this.contentRect, this.appearance.borderWidth ?? 0);
+        const scaledAcroformRect = SurveyHelper.createAcroformRect(SurveyHelper.scaleRect(this.contentRect, formScale));
+        const { color: fontColor } = SurveyHelper.parseColor(this.appearance.fontColor);
+        if (this.options.index == 0) {
+            this.radioGroupWrap.addToPdf(fontColor);
+        }
+        if(this.appearance.backgroundColor) {
+            this.controller.setFillColor(this.appearance.backgroundColor);
+            this.controller.doc.rect(...scaledAcroformRect, 'F');
+            this.controller.restoreFillColor();
+
         }
         const options: any = {};
-        options.fieldName = this.radioGroupWrap.name + 'index' + this.context.index;
-        let formScale: number = SurveyHelper.formScale(this.controller, this);
-        options.Rect = SurveyHelper.createAcroformRect(
-            SurveyHelper.scaleRect(this, formScale));
-        options.color = this.formBorderColor;
+        options.fieldName = this.radioGroupWrap.fieldName + 'index' + this.options.index;
+        options.Rect = scaledAcroformRect;
+        options.color = fontColor;
+        options.multiSelect = true;
         options.appearance = this.controller.doc.AcroForm.Appearance.RadioButton.Circle;
         options.radioGroup = this.radioGroupWrap.radioGroup;
-        options.context = this.context;
 
-        (<SurveyPDF>this.context.question.survey)?.getUpdatedRadioItemAcroformOptions(options);
+        this.options.updateOptions && this.options.updateOptions(options);
         let radioButton: any = this.radioGroupWrap.radioGroup.createOption(options.fieldName);
 
-        if (this.context.checked) {
+        if (this.options.checked) {
             if(!options.AS) {
                 radioButton.AS = '/' + options.fieldName;
             }
@@ -92,31 +90,35 @@ export class RadioItemBrick extends PdfBrick {
         radioButton.Rect = options.Rect;
         radioButton.color = options.color;
 
-        SurveyHelper.renderFlatBorders(this.controller, this);
+        SurveyHelper.renderFlatBorders(this.controller, this.contentRect, this.appearance);
         this.radioGroupWrap.radioGroup.setAppearance(
             options.appearance
         );
     }
     public async renderReadOnly(): Promise<void> {
-        SurveyHelper.renderFlatBorders(this.controller, this);
-        if (this.context.checked) {
-            const radiomarkerPoint: IPoint = SurveyHelper.createPoint(this, true, true);
-            const oldFontSize: number = this.controller.fontSize;
-            const oldFontName: string = this.controller.fontName;
-            this.controller.fontName = RadioItemBrick.RADIOMARKER_READONLY_FONT;
-            this.controller.fontSize = oldFontSize *
-                RadioItemBrick.RADIOMARKER_READONLY_FONT_SIZE_SCALE;
-            let radiomarkerSize: ISize = this.controller.measureText(
-                RadioItemBrick.RADIOMARKER_READONLY_SYMBOL);
-            radiomarkerPoint.xLeft += this.width / 2.0 - radiomarkerSize.width / 2.0;
-            radiomarkerPoint.yTop += this.height / 2.0 - radiomarkerSize.height / 2.0;
+        if(!!this.appearance.backgroundColor) {
+            const { lines, point } = SurveyHelper.getRoundedShape(this.contentRect, { ...this.appearance, borderRect: BorderRect.All });
+            this.controller.setFillColor(this.appearance.backgroundColor);
+            this.controller.doc.lines(lines, point.xLeft, point.yTop, [1, 1], 'F');
+            this.controller.restoreFillColor();
+        }
+        SurveyHelper.renderFlatBorders(this.controller, this.contentRect, this.appearance);
+        if (this.options.checked) {
+            const textOptions = {
+                fontName: this.appearance.fontName,
+                fontSize: this.appearance.fontSize,
+                fontColor: this.appearance.fontColor,
+                lineHeight: this.appearance.lineHeight
+            };
+            const radiomarkerPoint: IPoint = SurveyHelper.createPoint(this.contentRect, true, true);
+            const radiomarkerSize: ISize = this.controller.measureText(
+                this.appearance.checkMark, textOptions);
+            radiomarkerPoint.xLeft += this.contentRect.width / 2.0 - radiomarkerSize.width / 2.0;
+            radiomarkerPoint.yTop += this.contentRect.height / 2.0 - radiomarkerSize.height / 2.0;
             let radiomarkerFlat: IPdfBrick = await SurveyHelper.createTextFlat(
-                radiomarkerPoint, this.question, this.controller,
-                RadioItemBrick.RADIOMARKER_READONLY_SYMBOL, TextBrick);
-            (<any>radiomarkerFlat.unfold()[0]).textColor = this.textColor;
+                radiomarkerPoint, this.controller,
+                this.appearance.checkMark, textOptions);
             await radiomarkerFlat.render();
-            this.controller.fontSize = oldFontSize;
-            this.controller.fontName = oldFontName;
         }
     }
 }
