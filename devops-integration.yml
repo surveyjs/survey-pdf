@@ -175,11 +175,13 @@ steps:
   - powershell: |
       cd $(Build.SourcesDirectory)/service
       git pull origin master
+      git merge -X ours master
       git fetch origin master --tags --force
       git checkout master
       git add surveyjs.io/App_Data/DocsPdf
       git commit -m "updated survey-pdf docs [azurepipelines skip]"
       git pull origin master
+      git merge -X ours master
       git push origin master
     displayName: "git surveyjs/service push updated docs"
   # - powershell: |
