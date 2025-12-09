@@ -10,10 +10,10 @@ import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 import { ImageBrick } from '../src/pdf_render/pdf_image';
+import { getImageUtils, registerImageUtils } from '../src/utils/image';
 const __dummy_im: FlatImage = new FlatImage(null, null, null);
 
 test('Check image question 100x100px', async () => {
-    SurveyHelper.shouldConvertImageToPng = false;
     const json: any = {
         elements: [
             {
@@ -41,15 +41,12 @@ test('Check image question 100x100px', async () => {
         yBot: controller.leftTopPoint.yTop + heightPt
     };
     TestHelper.equalRect(expect, flats[0][0], assumeImage);
-    SurveyHelper.shouldConvertImageToPng = true;
 });
 
 test('Check image question with "auto"', async () => {
-    const getOldImageSize = SurveyHelper.getImageSize;
-    SurveyHelper.getImageSize = async () => {
-        return { width: 100, height: 75 };
-    };
-    SurveyHelper.shouldConvertImageToPng = false;
+    const oldImageUtils = getImageUtils();
+    registerImageUtils({ getImageInfo: async (url) => { return { imageData: url, width: 100, height: 75 }; },
+        applyImageFit: async (imageInfo) => { return imageInfo; } });
     const json: any = {
         elements: [
             {
@@ -96,17 +93,13 @@ test('Check image question with "auto"', async () => {
         yBot: controller.leftTopPoint.yTop + heightPt
     };
     TestHelper.equalRect(expect, flats[0][0], assumeImage);
-
-    SurveyHelper.shouldConvertImageToPng = true;
-    SurveyHelper.getImageSize = getOldImageSize;
+    registerImageUtils(oldImageUtils);
 });
 
 test('Check image question with "auto" and 100%', async () => {
-    const getOldImageSize = SurveyHelper.getImageSize;
-    SurveyHelper.getImageSize = async () => {
-        return { width: 100, height: 75 };
-    };
-    SurveyHelper.shouldConvertImageToPng = false;
+    const oldImageUtils = getImageUtils();
+    registerImageUtils({ getImageInfo: async (url) => { return { imageData: url, width: 100, height: 75 }; },
+        applyImageFit: async (imageInfo) => { return imageInfo; } });
     const json: any = {
         elements: [
             {
@@ -135,7 +128,7 @@ test('Check image question with "auto" and 100%', async () => {
         yBot: controller.leftTopPoint.yTop + heightPt
     };
     TestHelper.equalRect(expect, flats[0][0], assumeImage);
-    SurveyHelper.getImageSize = getOldImageSize;
+    registerImageUtils(oldImageUtils);
 });
 
 test('Check image question 100x100px with set size server-side', async () => {

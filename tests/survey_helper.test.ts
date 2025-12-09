@@ -362,29 +362,6 @@ test('Check getContentQuestionType method with renderAs', () => {
     type = SurveyHelper.getContentQuestionType(question, survey);
     expect(type).toEqual('boolean-checkbox');
 });
-
-test('Check getImageLink method', async () => {
-    const oldHtmlToImage = SurveyHelper.htmlToImage;
-    const oldXMLSerializer = window.XMLSerializer;
-    const oldshouldConvertImageToPng = SurveyHelper.shouldConvertImageToPng;
-    const oldGetImageBase64 = SurveyHelper.getImageBase64;
-
-    const controller = new DocController();
-    SurveyHelper.shouldConvertImageToPng = false;
-    expect(await SurveyHelper.getImageLink(controller, { link: 'svg_16x16', width: 10, height: 10, objectFit: 'contain' }, false)).toEqual('svg_16x16');
-    (<any>SurveyHelper).htmlToImage = () => { return { url: 'jpeg_16x16' }; };
-    (<any>SurveyHelper).getImageBase64 = () => { return 'png_16x16'; };
-    (<any>window).XMLSerializer = () => {};
-    SurveyHelper.shouldConvertImageToPng = true;
-    expect(await SurveyHelper.getImageLink(controller, { link: 'svg_16x16', width: 10, height: 10, objectFit: 'contain' }, true)).toEqual('jpeg_16x16');
-    expect(await SurveyHelper.getImageLink(controller, { link: 'svg_16x16', width: 10, height: 10, objectFit: 'contain' }, false)).toEqual('png_16x16');
-
-    SurveyHelper.shouldConvertImageToPng = oldshouldConvertImageToPng;
-    SurveyHelper.htmlToImage = oldHtmlToImage;
-    SurveyHelper.getImageBase64 = oldGetImageBase64;
-    window.XMLSerializer = oldXMLSerializer;
-});
-
 test('Check chooseHtmlFont method', async () => {
     let controller = new DocController(
         { fontName: 'custom_font' }

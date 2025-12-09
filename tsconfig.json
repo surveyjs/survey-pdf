@@ -25,6 +25,7 @@
   },
   "include": [
     "src/entries/pdf.ts",
+    "src/entries/pdf-node.ts",
     "src/fonts.ts"
   ]
 }

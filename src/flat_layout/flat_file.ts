@@ -26,7 +26,7 @@ export class FlatFile extends FlatQuestion {
         if (SurveyHelper.canPreviewImage(this.question, item, item.content)) {
             const imagePoint: IPoint = SurveyHelper.createPoint(compositeFlat);
             imagePoint.yTop += this.controller.unitHeight * FlatFile.IMAGE_GAP_SCALE;
-            compositeFlat.addBrick(await SurveyHelper.createImageFlat(imagePoint, this.question, this.controller, { link: item.content, width: item.imageSize.width, height: item.imageSize.height, objectFit: FlatFile.DEFAULT_IMAGE_FIT }));
+            compositeFlat.addBrick(await SurveyHelper.createImageFlat(imagePoint, this.question, this.controller, { link: item.content, width: item.imageSize.width, height: item.imageSize.height, objectFit: FlatFile.DEFAULT_IMAGE_FIT as any }));
         }
         return compositeFlat;
     }

@@ -16,6 +16,7 @@ import { CompositeBrick } from '../src/pdf_render/pdf_composite';
 import { LinkBrick } from '../src/pdf_render/pdf_link';
 import { AdornersOptions } from '../src/event_handler/adorners';
 import { checkFlatSnapshot } from './snapshot_helper';
+import { getImageUtils, registerImageUtils } from '../src/utils/image';
 let __dummy_fl = new FlatFile(null, null, null);
 
 test('Check no files', async () => {
@@ -135,9 +136,9 @@ test('Check two text files', async () => {
 });
 test('Check one image 16x16px file', async () => {
     const imageSize: ISize = { width: 170, height: 50 };
-    const oldGetImageSize = SurveyHelper.getImageSize;
-    SurveyHelper.shouldConvertImageToPng = false;
-    SurveyHelper.getImageSize = async (url: string) => { return imageSize; };
+    const oldImageUtils = getImageUtils();
+    registerImageUtils({ getImageInfo: async (url) => { return { imageData: url, ...imageSize }; },
+        applyImageFit: async (imageInfo) => { return imageInfo; } });
     const json: any = {
         elements: [
             {
@@ -169,14 +170,13 @@ test('Check one image 16x16px file', async () => {
             controller.unitHeight * (1.0 + FlatFile.IMAGE_GAP_SCALE)
     };
     TestHelper.equalRect(expect, flats[0][0], assumeFile);
-    SurveyHelper.getImageSize = oldGetImageSize;
-    SurveyHelper.shouldConvertImageToPng = true;
+    registerImageUtils(oldImageUtils);
 });
 test('Check one image 16x16px file shorter than text', async () => {
     const imageSize: ISize = { width: 50, height: 50 };
-    const oldGetImageSize = SurveyHelper.getImageSize;
-    SurveyHelper.shouldConvertImageToPng = false;
-    SurveyHelper.getImageSize = async (url: string) => { return imageSize; };
+    const oldImageUtils = getImageUtils();
+    registerImageUtils({ getImageInfo: async (url) => { return { imageData: url, ...imageSize }; },
+        applyImageFit: async (imageInfo) => { return imageInfo; } });
     const json: any = {
         elements: [
             {
@@ -208,14 +208,13 @@ test('Check one image 16x16px file shorter than text', async () => {
             controller.unitHeight * (1.0 + FlatFile.IMAGE_GAP_SCALE)
     };
     TestHelper.equalRect(expect, flats[0][0], assumeFile);
-    SurveyHelper.getImageSize = oldGetImageSize;
-    SurveyHelper.shouldConvertImageToPng = true;
+    registerImageUtils(oldImageUtils);
 });
 test('Check one image 16x16px with set size', async () => {
     const imageSize: ISize = { width: 50, height: 50 };
-    const oldGetImageSize = SurveyHelper.getImageSize;
-    SurveyHelper.shouldConvertImageToPng = false;
-    SurveyHelper.getImageSize = async (url: string) => { return imageSize; };
+    const oldImageUtils = getImageUtils();
+    registerImageUtils({ getImageInfo: async (url) => { return { imageData: url, ...imageSize }; },
+        applyImageFit: async (imageInfo) => { return imageInfo; } });
     const json: any = {
         elements: [
             {
@@ -252,8 +251,7 @@ test('Check one image 16x16px with set size', async () => {
             controller.unitHeight * (1.0 + FlatFile.IMAGE_GAP_SCALE)
     };
     TestHelper.equalRect(expect, flats[0][0], assumeFile);
-    SurveyHelper.getImageSize = oldGetImageSize;
-    SurveyHelper.shouldConvertImageToPng = true;
+    registerImageUtils(oldImageUtils);
 });
 
 test('Check one image 16x16px file server-side', async () => {
