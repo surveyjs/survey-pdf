@@ -6,9 +6,9 @@ import { FlatImage } from '../src/flat_layout/flat_image';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 import '../src/flat_layout/flat_image';
+import { getImageUtils, registerImageUtils } from '../src/utils/image';
 
 test('Check image question 100x100px', async () => {
-    SurveyHelper.shouldConvertImageToPng = false;
     const json: any = {
         elements: [
             {
@@ -22,15 +22,12 @@ test('Check image question 100x100px', async () => {
     await checkFlatSnapshot(json, {
         snapshotName: 'image_100x100'
     });
-    SurveyHelper.shouldConvertImageToPng = true;
 });
 
 test('Check image question with "auto"', async () => {
-    const getOldImageSize = SurveyHelper.getImageSize;
-    SurveyHelper.getImageSize = async () => {
-        return { width: 100, height: 75 };
-    };
-    SurveyHelper.shouldConvertImageToPng = false;
+    const oldImageUtils = getImageUtils();
+    registerImageUtils({ getImageInfo: async (url) => { return { imageData: url, width: 100, height: 75 }; },
+        applyImageFit: async (imageInfo) => { return imageInfo; }, clear: () => {} });
     const json: any = {
         elements: [
             {
@@ -53,16 +50,13 @@ test('Check image question with "auto"', async () => {
             survey.getAllQuestions()[0].imageHeight = '100';
         }
     });
-    SurveyHelper.shouldConvertImageToPng = true;
-    SurveyHelper.getImageSize = getOldImageSize;
+    registerImageUtils(oldImageUtils);
 });
 
 test('Check image question with "auto" and 100%', async () => {
-    const getOldImageSize = SurveyHelper.getImageSize;
-    SurveyHelper.getImageSize = async () => {
-        return { width: 100, height: 75 };
-    };
-    SurveyHelper.shouldConvertImageToPng = false;
+    const oldImageUtils = getImageUtils();
+    registerImageUtils({ getImageInfo: async (url) => { return { imageData: url, width: 100, height: 75 }; },
+        applyImageFit: async (imageInfo) => { return imageInfo; }, clear: () => {} });
     const json: any = {
         elements: [
             {
@@ -78,7 +72,7 @@ test('Check image question with "auto" and 100%', async () => {
     await checkFlatSnapshot(json, {
         snapshotName: 'image_100%xauto',
     });
-    SurveyHelper.getImageSize = getOldImageSize;
+    registerImageUtils(oldImageUtils);
 });
 
 test('Check image question 100x100px with set size server-side', async () => {

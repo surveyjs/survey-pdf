@@ -304,6 +304,7 @@ export class SurveyPDF extends SurveyModel {
             }
         }
         this.renderNavigation(controller);
+        SurveyHelper.clear();
     }
     private createController(): DocController {
         const marginsFromStyles = parsePadding(this.styles.padding);
