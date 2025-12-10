@@ -13,7 +13,6 @@ import { ImageBrick } from '../src/pdf_render/pdf_image';
 let __dummy_ip = new FlatImagePicker(null, null, null);
 
 test('Check imagepicker one image 100x100px', async () => {
-    SurveyHelper.shouldConvertImageToPng = false;
     let json: any = {
         elements: [
             {
@@ -44,10 +43,8 @@ test('Check imagepicker one image 100x100px', async () => {
         yBot: controller.leftTopPoint.yTop + height + controller.unitHeight
     };
     TestHelper.equalRect(expect, flats[0][0], assumeimagePicker);
-    SurveyHelper.shouldConvertImageToPng = true;
 });
 test('Check imagepicker one image 100x100px with label', async () => {
-    SurveyHelper.shouldConvertImageToPng = false;
     let json: any = {
         elements: [
             {
@@ -79,10 +76,8 @@ test('Check imagepicker one image 100x100px with label', async () => {
         yBot: controller.leftTopPoint.yTop + height + 2.0 * controller.unitHeight
     };
     TestHelper.equalRect(expect, flats[0][0], assumeimagePicker);
-    SurveyHelper.shouldConvertImageToPng = true;
 });
 test('Check imagepicker two images 100x100px', async () => {
-    SurveyHelper.shouldConvertImageToPng = false;
     let json: any = {
         elements: [
             {
@@ -117,7 +112,6 @@ test('Check imagepicker two images 100x100px', async () => {
         yBot: controller.leftTopPoint.yTop + height + controller.unitHeight
     };
     TestHelper.equalRect(expect, flats[0][0], assumeimagePicker);
-    SurveyHelper.shouldConvertImageToPng = true;
 });
 
 test('Check imagepicker one image 100x100px server-side', async () => {

@@ -81,7 +81,6 @@ test('Check createHTMLRect method with long html', async () => {
 
 test('Check correctHtml method with multiple br tags', async () => {
     let survey: SurveyPDF = new SurveyPDF({}, TestHelper.defaultOptions);
-    SurveyHelper.shouldConvertImageToPng = false;
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     const htmlFlat = new FlatHTML(survey, new QuestionHtmlModel('q1'), controller);
     expect(htmlFlat['correctHtml']('<span>Test</span><br>')).toEqual('<span>Test</span><br>');
