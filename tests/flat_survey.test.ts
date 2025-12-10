@@ -67,7 +67,6 @@ test('Survey with title and description', async () => {
     });
 });
 test('Survey with logo', async () => {
-    SurveyHelper.shouldConvertImageToPng = false;
     const json: any = {
         logo: TestHelper.BASE64_IMAGE_16PX,
         logoWidth: '300px',
@@ -78,10 +77,8 @@ test('Survey with logo', async () => {
         eventName: 'onRenderSurvey',
         snapshotName: 'survey_with_logo'
     });
-    SurveyHelper.shouldConvertImageToPng = true;
 });
 test('Survey with left logo and title', async () => {
-    SurveyHelper.shouldConvertImageToPng = false;
     const json: any = {
         title: 'TitleLogoLeft',
         logo: TestHelper.BASE64_IMAGE_16PX,
@@ -100,11 +97,9 @@ test('Survey with left logo and title', async () => {
         eventName: 'onRenderSurvey',
         snapshotName: 'survey_with_left_logo_title'
     });
-    SurveyHelper.shouldConvertImageToPng = true;
 
 });
 test('Survey with left logo and big title', async () => {
-    SurveyHelper.shouldConvertImageToPng = false;
     const json: any = {
         title: 'TitleLogoLeftBiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiig',
         logo: TestHelper.BASE64_IMAGE_16PX,
@@ -123,11 +118,9 @@ test('Survey with left logo and big title', async () => {
         eventName: 'onRenderSurvey',
         snapshotName: 'survey_with_left_logo_big_title'
     });
-    SurveyHelper.shouldConvertImageToPng = true;
 
 });
 test('Survey with right logo and title', async () => {
-    SurveyHelper.shouldConvertImageToPng = false;
     const json: any = {
         title: 'TitleRight',
         logo: TestHelper.BASE64_IMAGE_16PX,
@@ -146,11 +139,9 @@ test('Survey with right logo and title', async () => {
         eventName: 'onRenderSurvey',
         snapshotName: 'survey_with_right_logo_title',
     });
-    SurveyHelper.shouldConvertImageToPng = true;
 
 });
 test('Survey with bottom logo and title', async () => {
-    SurveyHelper.shouldConvertImageToPng = false;
     const json: any = {
         title: 'TitleLogoBottom',
         logo: TestHelper.BASE64_IMAGE_16PX,
@@ -164,11 +155,9 @@ test('Survey with bottom logo and title', async () => {
         eventName: 'onRenderSurvey',
         snapshotName: 'survey_with_bottom_logo_title'
     });
-    SurveyHelper.shouldConvertImageToPng = true;
 
 });
 test('Survey with botton logo without title', async () => {
-    SurveyHelper.shouldConvertImageToPng = false;
     const json: any = {
         logo: TestHelper.BASE64_IMAGE_16PX,
         logoPosition: 'bottom',
@@ -180,7 +169,6 @@ test('Survey with botton logo without title', async () => {
         eventName: 'onRenderSurvey',
         snapshotName: 'survey_with_bottom_logo'
     });
-    SurveyHelper.shouldConvertImageToPng = true;
 });
 
 test('Survey with logo server-side', async () => {
@@ -222,12 +210,10 @@ test('Survey with logo and pages', async () => {
             }
         ]
     };
-    SurveyHelper.shouldConvertImageToPng = false;
     await checkFlatSnapshot(json, {
         eventName: 'onRenderSurvey',
         snapshotName: 'survey_with_logo_pages'
     });
-    SurveyHelper.shouldConvertImageToPng = true;
 });
 
 test('Check default renderer for custom questions', async () => {

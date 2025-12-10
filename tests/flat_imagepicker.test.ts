@@ -8,7 +8,6 @@ import { TestHelper } from '../src/helper_test';
 import '../src/flat_layout/flat_imagepicker';
 
 test('Check imagepicker one image 100x100px', async () => {
-    SurveyHelper.shouldConvertImageToPng = false;
     let json: any = {
         elements: [
             {
@@ -27,10 +26,8 @@ test('Check imagepicker one image 100x100px', async () => {
     await checkFlatSnapshot(json, {
         snapshotName: 'imagepicker_one_image_100x100'
     });
-    SurveyHelper.shouldConvertImageToPng = true;
 });
 test('Check imagepicker one image 100x100px with label', async () => {
-    SurveyHelper.shouldConvertImageToPng = false;
     let json: any = {
         elements: [
             {
@@ -50,10 +47,8 @@ test('Check imagepicker one image 100x100px with label', async () => {
     await checkFlatSnapshot(json, {
         snapshotName: 'imagepicker_one_image_100x100_with_label'
     });
-    SurveyHelper.shouldConvertImageToPng = true;
 });
 test('Check imagepicker two images 100x100px', async () => {
-    SurveyHelper.shouldConvertImageToPng = false;
     let json: any = {
         elements: [
             {
@@ -76,7 +71,6 @@ test('Check imagepicker two images 100x100px', async () => {
     await checkFlatSnapshot(json, {
         snapshotName: 'imagepicker_two_images_100x100'
     });
-    SurveyHelper.shouldConvertImageToPng = true;
 });
 
 test('Check imagepicker one image 100x100px server-side', async () => {
