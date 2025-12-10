@@ -12,7 +12,7 @@ export class ImageUtils extends BaseImageUtils implements IImageUtils {
                 canvas.width = image.naturalWidth;
                 ctx?.drawImage(image, 0, 0);
                 const dataUrl = canvas.toDataURL();
-                resolve({ imageData: dataUrl, width: image.naturalWidth * pxToPt, height: image.naturalHeight * pxToPt, imageId: this.getImageId() });
+                resolve({ data: dataUrl, width: image.naturalWidth * pxToPt, height: image.naturalHeight * pxToPt, id: this.getImageId() });
             };
             image.onerror = () => {
                 reject();
@@ -38,8 +38,8 @@ export class ImageUtils extends BaseImageUtils implements IImageUtils {
         if(imageFit == 'cover') {
             try {
                 const image = new Image();
-                if(!imageInfo.width || !imageInfo.height || !imageInfo.imageData || !targetWidth || !targetHeight) return imageInfo;
-                image.src = imageInfo.imageData instanceof Uint8Array ? URL.createObjectURL(new Blob([imageInfo.imageData])): imageInfo.imageData;
+                if(!imageInfo.width || !imageInfo.height || !imageInfo.data || !targetWidth || !targetHeight) return imageInfo;
+                image.src = imageInfo.data instanceof Uint8Array ? URL.createObjectURL(new Blob([imageInfo.data])): imageInfo.data;
                 await image.decode();
                 const canvasOptions = this.getCoverCanvasOptions(imageInfo.width, imageInfo.height, targetWidth, targetHeight);
                 const canvas = document.createElement('canvas');
@@ -47,7 +47,7 @@ export class ImageUtils extends BaseImageUtils implements IImageUtils {
                 canvas.width = canvasOptions.canvasWidth;
                 canvas.height = canvasOptions.canvasHeight;
                 ctx?.drawImage(image, canvasOptions.imageX, canvasOptions.imageY, canvasOptions.imageWidth, canvasOptions.imageHeight);
-                return { imageData: canvas.toDataURL(), width: targetWidth, height: targetHeight };
+                return { data: canvas.toDataURL(), width: targetWidth, height: targetHeight };
             } catch {
                 return imageInfo;
             }

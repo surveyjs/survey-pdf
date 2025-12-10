@@ -26,7 +26,7 @@ test('Check image question 100x100px', async () => {
 
 test('Check image question with "auto"', async () => {
     const oldImageUtils = getImageUtils();
-    registerImageUtils({ getImageInfo: async (url) => { return { imageData: url, width: 100, height: 75 }; },
+    registerImageUtils({ getImageInfo: async (url) => { return { data: url, width: 100, height: 75 }; },
         applyImageFit: async (imageInfo) => { return imageInfo; }, clear: () => {} });
     const json: any = {
         elements: [
@@ -55,7 +55,7 @@ test('Check image question with "auto"', async () => {
 
 test('Check image question with "auto" and 100%', async () => {
     const oldImageUtils = getImageUtils();
-    registerImageUtils({ getImageInfo: async (url) => { return { imageData: url, width: 100, height: 75 }; },
+    registerImageUtils({ getImageInfo: async (url) => { return { data: url, width: 100, height: 75 }; },
         applyImageFit: async (imageInfo) => { return imageInfo; }, clear: () => {} });
     const json: any = {
         elements: [

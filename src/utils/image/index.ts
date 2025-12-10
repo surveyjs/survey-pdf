@@ -1,7 +1,7 @@
 export interface IImageInfo {
-    imageData: string | Uint8Array<ArrayBuffer>;
+    data: string | Uint8Array<ArrayBuffer>;
     width: number;
-    imageId?: string;
+    id?: string;
     height: number;
 }
 export interface IImageUtils {
@@ -17,7 +17,7 @@ export class BaseImageUtils implements IImageUtils {
         return `image_${this.imageId++}`;
     }
     protected async _getImageInfo(url: string): Promise<IImageInfo> {
-        return { imageData: url, width: 0, height: 0, imageId: this.getImageId() };
+        return { data: url, width: 0, height: 0, id: this.getImageId() };
     }
     async getImageInfo(url: string): Promise<IImageInfo> {
         if(!this.hash[url]) {
@@ -31,17 +31,17 @@ export class BaseImageUtils implements IImageUtils {
     }
     async applyImageFit(imageInfo: IImageInfo, imageFit: 'cover' | 'fill' | 'contain', targetWidth: number, targetHeight: number): Promise<IImageInfo> {
         if(imageFit == 'fill') {
-            return { imageData: imageInfo.imageData, imageId: imageInfo.imageId, width: targetWidth, height: targetHeight };
+            return { data: imageInfo.data, id: imageInfo.id, width: targetWidth, height: targetHeight };
         }
         if((imageFit == 'contain' || imageFit == 'cover') && !!imageInfo.width && !!imageInfo.height && !!targetWidth && !!targetWidth) {
             const scale = Math.min(targetWidth / imageInfo.width, targetHeight / imageInfo.height);
-            return { imageData: imageInfo.imageData, imageId: imageInfo.imageId, width: imageInfo.width * scale, height: imageInfo.height * scale };
+            return { data: imageInfo.data, id: imageInfo.id, width: imageInfo.width * scale, height: imageInfo.height * scale };
         } else {
             return imageInfo;
         }
     }
     protected get emptyImage(): IImageInfo {
-        return { imageData: '', width: 0, height: 0, imageId: 'image_0' };
+        return { data: '', width: 0, height: 0, id: 'image_0' };
     }
     clear() {
         this.hash = {};

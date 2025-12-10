@@ -5,8 +5,8 @@ export class ImageUtils extends BaseImageUtils implements IImageUtils {
     protected async _getImageInfo(url: string): Promise<IImageInfo> {
         const res = await fetch(url);
         const pxToPt: number = 72.0 / 96.0;
-        const imageData = new Uint8Array(await res.arrayBuffer());
-        const size = imageSize(imageData);
-        return { imageData, width: size.width * pxToPt, height: size.height * pxToPt, imageId: this.getImageId() };
+        const data = new Uint8Array(await res.arrayBuffer());
+        const size = imageSize(data);
+        return { data, width: size.width * pxToPt, height: size.height * pxToPt, id: this.getImageId() };
     }
 }

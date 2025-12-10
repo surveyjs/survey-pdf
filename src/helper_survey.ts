@@ -412,7 +412,6 @@ export class SurveyHelper {
         }
         return comment;
     }
-    public static inBrowser = typeof Image === 'function';
 
     public static get hasDocument(): boolean {
         return typeof document !== 'undefined';
@@ -426,7 +425,7 @@ export class SurveyHelper {
             imageInfo = await imageUtils.applyImageFit(imageInfo, options.objectFit || 'fill', options.width, options.height);
         }
         const rect = SurveyHelper.createRect(point, options.width, options.height);
-        return new ImageBrick(controller, rect, { width: imageInfo.width, height: imageInfo.height, imageId: imageInfo.imageId, link: imageInfo.imageData });
+        return new ImageBrick(controller, rect, { width: imageInfo.width, height: imageInfo.height, imageId: imageInfo.id, link: imageInfo.data });
     }
     public static createRowlineFlat(point: IPoint, controller: DocController,
         width?: number, color?: string): IPdfBrick {
