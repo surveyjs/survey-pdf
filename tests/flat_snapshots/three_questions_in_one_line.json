@@ -1,0 +1,100 @@
+[
+	[
+		{
+			"brickType": "TextFieldBrick",
+			"width": 166.7775590551181,
+			"height": 30.75,
+			"xLeft": 34.72145669291339,
+			"xRight": 201.4990157480315,
+			"yTop": 28.346456692913392,
+			"yBot": 59.09645669291339,
+			"appearance": {
+				"fontSize": 12,
+				"fontName": "helvetica",
+				"fontStyle": "normal",
+				"lineHeight": 18,
+				"fontColor": "#1c1b20",
+				"backgroundColor": "#ffffff"
+			},
+			"options": {
+				"shouldRenderReadOnly": false,
+				"rows": 1,
+				"fieldName": "testidquestion_startWithNewLineFlase1",
+				"inputType": "text",
+				"value": "",
+				"isReadOnly": false,
+				"shouldRenderBorders": true,
+				"placeholder": "",
+				"isMultiline": false
+			},
+			"padding": {
+				"top": 6.375,
+				"bottom": 6.375
+			}
+		},
+		{
+			"brickType": "TextFieldBrick",
+			"width": 68.03740157480311,
+			"height": 30.75,
+			"xLeft": 214.2490157480315,
+			"xRight": 282.2864173228346,
+			"yTop": 28.346456692913392,
+			"yBot": 59.09645669291339,
+			"appearance": {
+				"fontSize": 12,
+				"fontName": "helvetica",
+				"fontStyle": "normal",
+				"lineHeight": 18,
+				"fontColor": "#1c1b20",
+				"backgroundColor": "#ffffff"
+			},
+			"options": {
+				"shouldRenderReadOnly": false,
+				"rows": 1,
+				"fieldName": "testidquestion_startWithNewLineFlase2",
+				"inputType": "text",
+				"value": "",
+				"isReadOnly": false,
+				"shouldRenderBorders": true,
+				"placeholder": "",
+				"isMultiline": false
+			},
+			"padding": {
+				"top": 6.375,
+				"bottom": 6.375
+			}
+		},
+		{
+			"brickType": "TextFieldBrick",
+			"width": 166.7775590551181,
+			"height": 30.75,
+			"xLeft": 295.03641732283467,
+			"xRight": 461.81397637795277,
+			"yTop": 28.346456692913392,
+			"yBot": 59.09645669291339,
+			"appearance": {
+				"fontSize": 12,
+				"fontName": "helvetica",
+				"fontStyle": "normal",
+				"lineHeight": 18,
+				"fontColor": "#1c1b20",
+				"backgroundColor": "#ffffff"
+			},
+			"options": {
+				"shouldRenderReadOnly": false,
+				"rows": 1,
+				"fieldName": "testidquestion_startWithNewLineFlase3",
+				"inputType": "text",
+				"value": "",
+				"isReadOnly": false,
+				"shouldRenderBorders": true,
+				"placeholder": "",
+				"isMultiline": false
+			},
+			"padding": {
+				"top": 6.375,
+				"bottom": 6.375
+			}
+		}
+	]
+]
