@@ -137,8 +137,8 @@ test('Check two text files', async () => {
 test('Check one image 16x16px file', async () => {
     const imageSize: ISize = { width: 170, height: 50 };
     const oldImageUtils = getImageUtils();
-    registerImageUtils({ getImageInfo: async (url) => { return { imageData: url, ...imageSize }; },
-        applyImageFit: async (imageInfo) => { return imageInfo; } });
+    registerImageUtils({ getImageInfo: async (url) => { return { data: url, ...imageSize }; },
+        applyImageFit: async (imageInfo) => { return imageInfo; }, clear: () => {} });
     const json: any = {
         elements: [
             {
@@ -175,8 +175,8 @@ test('Check one image 16x16px file', async () => {
 test('Check one image 16x16px file shorter than text', async () => {
     const imageSize: ISize = { width: 50, height: 50 };
     const oldImageUtils = getImageUtils();
-    registerImageUtils({ getImageInfo: async (url) => { return { imageData: url, ...imageSize }; },
-        applyImageFit: async (imageInfo) => { return imageInfo; } });
+    registerImageUtils({ getImageInfo: async (url) => { return { data: url, ...imageSize }; },
+        applyImageFit: async (imageInfo) => { return imageInfo; }, clear: () => {} });
     const json: any = {
         elements: [
             {
@@ -213,8 +213,8 @@ test('Check one image 16x16px file shorter than text', async () => {
 test('Check one image 16x16px with set size', async () => {
     const imageSize: ISize = { width: 50, height: 50 };
     const oldImageUtils = getImageUtils();
-    registerImageUtils({ getImageInfo: async (url) => { return { imageData: url, ...imageSize }; },
-        applyImageFit: async (imageInfo) => { return imageInfo; } });
+    registerImageUtils({ getImageInfo: async (url) => { return { data: url, ...imageSize }; },
+        applyImageFit: async (imageInfo) => { return imageInfo; }, clear: () => {} });
     const json: any = {
         elements: [
             {
