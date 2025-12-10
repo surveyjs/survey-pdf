@@ -255,7 +255,6 @@ test('Check one image 16x16px with set size', async () => {
 });
 
 test('Check one image 16x16px file server-side', async () => {
-    SurveyHelper.inBrowser = false;
     const json: any = {
         elements: [
             {
@@ -291,7 +290,6 @@ test('Check one image 16x16px file server-side', async () => {
         yBot: controller.leftTopPoint.yTop + 112.5 + controller.unitHeight * (1.0 + FlatFile.IMAGE_GAP_SCALE)
     };
     TestHelper.equalRect(expect, flats[0][0], assumeFile);
-    SurveyHelper.inBrowser = true;
 });
 
 test('Check one image 16x16px with set size server-side', async () => {
@@ -314,7 +312,6 @@ test('Check one image 16x16px with set size server-side', async () => {
             }
         ]
     };
-    SurveyHelper.inBrowser = false;
     const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     const controller: DocController = new DocController(TestHelper.defaultOptions);
     const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
@@ -332,7 +329,6 @@ test('Check one image 16x16px with set size server-side', async () => {
         yBot: controller.leftTopPoint.yTop + questionHeightPt + controller.unitHeight * (1.0 + FlatFile.IMAGE_GAP_SCALE)
     };
     TestHelper.equalRect(expect, flats[0][0], assumeFile);
-    SurveyHelper.inBrowser = true;
 });
 
 test('Test file question getImagePreviewContentWidth ', async () => {
@@ -346,7 +342,6 @@ test('Test file question getImagePreviewContentWidth ', async () => {
             }
         ]
     };
-    SurveyHelper.inBrowser = false;
     const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     const question = <QuestionFileModel>survey.getAllQuestions()[0];
     const controller: DocController = new DocController(TestHelper.defaultOptions);
@@ -360,7 +355,6 @@ test('Test file question getImagePreviewContentWidth ', async () => {
 });
 
 test('Test file question doesnt throw exception if could not load image preview', async () => {
-    SurveyHelper.getImageSize = async (url: string) => { return null as any; };
     const json: any = {
         elements: [
             {
@@ -446,7 +440,6 @@ test('Test file question getImagePreviewContentWidth always return correct image
             }
         ]
     };
-    SurveyHelper.inBrowser = false;
     const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     const question = <QuestionFileModel>survey.getAllQuestions()[0];
     const controller: DocController = new DocController(TestHelper.defaultOptions);
@@ -495,7 +488,6 @@ test('Test file question inside paneldynamic waits preview loading', async () =>
             }
         ]
     };
-    SurveyHelper.inBrowser = false;
     const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     survey.onDownloadFile.add((_, options) => {
         setTimeout(() => {

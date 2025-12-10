@@ -121,7 +121,6 @@ test('Check imagepicker two images 100x100px', async () => {
 });
 
 test('Check imagepicker one image 100x100px server-side', async () => {
-    SurveyHelper.inBrowser = false;
     let json: any = {
         elements: [
             {
@@ -154,5 +153,4 @@ test('Check imagepicker one image 100x100px server-side', async () => {
         yBot: controller.leftTopPoint.yTop + height + controller.unitHeight
     };
     TestHelper.equalRect(expect, flats[0][0], assumeimagePicker);
-    SurveyHelper.inBrowser = true;
 });

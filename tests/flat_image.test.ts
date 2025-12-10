@@ -132,7 +132,6 @@ test('Check image question with "auto" and 100%', async () => {
 });
 
 test('Check image question 100x100px with set size server-side', async () => {
-    SurveyHelper.inBrowser = false;
     const json: any = {
         elements: [
             {
@@ -164,5 +163,4 @@ test('Check image question 100x100px with set size server-side', async () => {
         yBot: controller.leftTopPoint.yTop + heightPt
     };
     TestHelper.equalRect(expect, flats[0][0], assumeImage);
-    SurveyHelper.inBrowser = true;
 });

@@ -328,7 +328,6 @@ test('Survey with botton logo without title', async () => {
 });
 
 test('Survey with logo server-side', async () => {
-    SurveyHelper.inBrowser = false;
     const json: any = {
         logo: TestHelper.BASE64_IMAGE_16PX,
         logoWidth: '420px',
@@ -349,7 +348,6 @@ test('Survey with logo server-side', async () => {
         yBot: controller.leftTopPoint.yTop + SurveyHelper.pxToPt(survey.logoHeight)
     };
     TestHelper.equalRect(expect, flats[0][0], assumeLogo);
-    SurveyHelper.inBrowser = true;
 });
 
 test('Survey with logo and pages', async () => {

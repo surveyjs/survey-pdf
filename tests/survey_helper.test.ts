@@ -394,8 +394,6 @@ test('check getCorrectedImageSize works incorrectly if image could not be loaded
     const controller = new DocController(
         { fontName: 'custom_font' }
     );
-    const oldInBrowser = SurveyHelper.inBrowser;
-    SurveyHelper.inBrowser = false;
     let imageSize = await SurveyHelper.getCorrectedImageSize(controller, { imageLink: '' });
     expect(imageSize.width).toBe(0);
     expect(imageSize.height).toBe(0);
@@ -408,5 +406,4 @@ test('check getCorrectedImageSize works incorrectly if image could not be loaded
     imageSize = await SurveyHelper.getCorrectedImageSize(controller, { imageLink: '', defaultImageWidth: 300, defaultImageHeight: 400 });
     expect(imageSize.width).toBe(225);
     expect(imageSize.height).toBe(300);
-    SurveyHelper.inBrowser = oldInBrowser;
 });

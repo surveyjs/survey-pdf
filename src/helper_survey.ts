@@ -445,7 +445,6 @@ export class SurveyHelper {
         }
         return comment;
     }
-    public static inBrowser = typeof Image === 'function';
 
     public static get hasDocument(): boolean {
         return typeof document !== 'undefined';
@@ -458,7 +457,7 @@ export class SurveyHelper {
         if(applyImageFit ?? controller.applyImageFit) {
             imageInfo = await imageUtils.applyImageFit(imageInfo, options.objectFit || 'fill', options.width, options.height);
         }
-        return new ImageBrick(question, controller, imageInfo.imageData, point, options.width, options.height, imageInfo.width, imageInfo.height, imageInfo.imageId);
+        return new ImageBrick(question, controller, imageInfo.data, point, options.width, options.height, imageInfo.width, imageInfo.height, imageInfo.id);
     }
     public static canPreviewImage(question: QuestionFileModel, item: { name: string, type: string, content: string }, url: string): boolean {
         return question.canPreviewImage(item);
