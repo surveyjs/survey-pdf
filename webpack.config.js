@@ -55,13 +55,20 @@ const buildPlatformJson = {
     "survey-core": packageJson.version
   },
   dependencies: {
-    jspdf: "^2.3.0 || ^3"
+    "@types/node-fetch": "^2",
+    "jspdf": "^2.3.0 || ^3",
+    "image-size": "^2",
+    "node-fetch": "^2",
   },
   exports: {
     ".": {
       "types": "./typings/entries/pdf.d.ts",
+      "node": {
+        "import": "./fesm/survey.pdf.node.mjs",
+        "require": "./survey.pdf.node.js"  
+      },
       "import": "./fesm/survey.pdf.mjs",
-      "require": "./survey.pdf.js"
+      "require": "./survey.pdf.js",
     },
     "./survey.pdf.fonts": {
       "import": "./fesm/survey.pdf.fonts.mjs",
@@ -110,7 +117,10 @@ module.exports = function (options) {
 
   var config = {
     mode: options.buildType === "prod" ? "production" : "development",
-    entry: {},
+    entry:  {
+      "survey.pdf": path.resolve(__dirname, "./src/entries/" + "pdf"),
+      "survey.pdf.node": path.resolve(__dirname, "./src/entries/" + "pdf-node")
+    },
     resolve: {
       extensions: [".ts", ".js", ".tsx"],
       alias: {
@@ -160,6 +170,8 @@ module.exports = function (options) {
         commonjs: "jspdf",
         amd: "jspdf"
       },
+      "node-fetch": "node-fetch",
+      "image-size": "image-size",
       "survey-core": {
         root: "Survey",
         commonjs2: "survey-core",
@@ -192,11 +204,5 @@ module.exports = function (options) {
       new webpack.LoaderOptionsPlugin({ debug: true })
     ]);
   }
-
-  config.entry["survey." + "pdf"] = path.resolve(
-    __dirname,
-    "./src/entries/" + "pdf"
-  );
-
   return config;
 };

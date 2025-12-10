@@ -1,5 +1,5 @@
 import { IQuestion, Question, QuestionRatingModel, QuestionFileModel, LocalizableString, QuestionSelectBase, QuestionDropdownModel, settings } from 'survey-core';
-import * as SurveyPDFModule from './entries/pdf';
+import * as SurveyPDFModule from './entries/pdf-base';
 import { SurveyPDF } from './survey';
 import { IPoint, IRect, ISize, DocController } from './doc_controller';
 import { FlatRepository } from './flat_layout/flat_repository';
@@ -18,6 +18,7 @@ import { RowlineBrick } from './pdf_render/pdf_rowline';
 import { CompositeBrick } from './pdf_render/pdf_composite';
 import { AdornersOptions } from './event_handler/adorners';
 import { ITextFieldBrickOptions, TextFieldBrick } from './pdf_render/pdf_textfield';
+import { getImageUtils } from './utils/image';
 
 export type IBorderDescription = IRect & ISize & Pick<PdfBrick, 'formBorderColor'> & { rounded?: boolean, dashStyle?: { dashArray: [number, number] | [number], dashPhase: number }, outside?: boolean };
 
@@ -449,73 +450,18 @@ export class SurveyHelper {
     public static get hasDocument(): boolean {
         return typeof document !== 'undefined';
     }
-
-    public static async getImageBase64(imageLink: string): Promise<string> {
-        const image = new Image();
-        image.crossOrigin='anonymous';
-        return new Promise((resolve) => {
-            image.onload = () => {
-                const canvas = document.createElement('canvas');
-                const ctx = canvas.getContext('2d');
-                canvas.height = image.naturalHeight;
-                canvas.width = image.naturalWidth;
-                ctx.drawImage(image, 0, 0);
-                const dataUrl = canvas.toDataURL();
-                resolve(dataUrl);
-            };
-            image.onerror = () => {
-                resolve('');
-            };
-            image.src = imageLink;
-        });
-    }
-    public static shouldConvertImageToPng = true;
-    public static async getImageLink(controller: DocController, imageOptions: { link: string, width: number, height: number, objectFit?: string }, applyImageFit: boolean): Promise<string> {
-        const ptToPx: number = 96.0 / 72.0;
-        let url = this.shouldConvertImageToPng ? await SurveyHelper.getImageBase64(imageOptions.link) : imageOptions.link;
-        if(typeof XMLSerializer === 'function' && applyImageFit) {
-            const canvasHtml: string =
-               `<div style='overflow: hidden; width: ${imageOptions.width * ptToPx}px; height: ${imageOptions.height * ptToPx}px;'>
-                   <img src='${url}' style='object-fit: ${imageOptions.objectFit}; width: 100%; height: 100%;'/>
-               </div>`;
-            url = (await SurveyHelper.htmlToImage(canvasHtml, imageOptions.width, controller)).url;
-        }
-        return url;
-    }
     public static async createImageFlat(point: IPoint, question: any,
-        controller: DocController, imageOptions: { link: string, width: number, height: number, objectFit?: string }, applyImageFit?: boolean): Promise<IPdfBrick> {
-        if (SurveyHelper.inBrowser) {
-            imageOptions.objectFit = !!question && !!question.imageFit ? question.imageFit : (imageOptions.objectFit || 'contain');
-            if (applyImageFit ?? controller.applyImageFit) {
-                if (imageOptions.width > controller.paperWidth - controller.margins.left - controller.margins.right) {
-                    const newWidth: number = controller.paperWidth - controller.margins.left - controller.margins.right;
-                    imageOptions.height *= newWidth / imageOptions.width;
-                    imageOptions.width = newWidth;
-                }
-            }
-            const html: string = `<img src='${await SurveyHelper.getImageLink(controller, imageOptions, applyImageFit ?? controller.applyImageFit)}' width='${imageOptions.width}' height='${imageOptions.height}'/>`;
-            return new HTMLBrick(question, controller, this.createRect(point, imageOptions.width, imageOptions.height), html, true);
+        controller: DocController, options: { link: string, width: number, height: number, objectFit?: 'cover' | 'contain' | 'fill' }, applyImageFit?: boolean): Promise<IPdfBrick> {
+        const imageUtils = getImageUtils();
+
+        let imageInfo = await imageUtils.getImageInfo(options.link);
+        if(applyImageFit ?? controller.applyImageFit) {
+            imageInfo = await imageUtils.applyImageFit(imageInfo, options.objectFit || 'fill', options.width, options.height);
         }
-        return new ImageBrick(question, controller, imageOptions.link, point, imageOptions.width, imageOptions.height);
+        return new ImageBrick(question, controller, imageInfo.imageData, point, options.width, options.height, imageInfo.width, imageInfo.height, imageInfo.imageId);
     }
     public static canPreviewImage(question: QuestionFileModel, item: { name: string, type: string, content: string }, url: string): boolean {
         return question.canPreviewImage(item);
-        //  &&  await this.getImageSize(url) !== null;
-    }
-    public static async getImageSize(url: string): Promise<ISize> {
-        if (!SurveyHelper.inBrowser) {
-            return await new Promise((resolve) => {
-                return resolve({ width: undefined, height: undefined });
-            });
-        }
-        return await new Promise((resolve) => {
-            const image: any = new Image();
-            image.src = url;
-            image.onload = function () {
-                return resolve({ width: image.width, height: image.height });
-            };
-            image.onerror = function () { return resolve(null); };
-        });
     }
     public static createRowlineFlat(point: IPoint, controller: DocController,
         width?: number, color?: string): IPdfBrick {
@@ -746,7 +692,7 @@ export class SurveyHelper {
         let defaultHeightPt: number = defaultImageHeight && SurveyHelper.parseWidth(defaultImageHeight, SurveyHelper.getPageAvailableWidth(controller), 1, 'px');
 
         if(SurveyHelper.isSizeEmpty(imageWidth) || SurveyHelper.isHeightEmpty(imageHeight)) {
-            const imageSize = await SurveyHelper.getImageSize(imageLink);
+            const imageSize = await getImageUtils().getImageInfo(imageLink);
             if(!SurveyHelper.isSizeEmpty(imageWidth)) {
                 if(imageSize && imageSize.width) {
                     heightPt = imageSize.height * widthPt / imageSize.width;
@@ -763,5 +709,8 @@ export class SurveyHelper {
             }
         }
         return { width: widthPt || defaultWidthPt || 0, height: heightPt || defaultHeightPt || 0 };
+    }
+    public static clear() {
+        getImageUtils().clear();
     }
 }

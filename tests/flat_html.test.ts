@@ -11,6 +11,9 @@ import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { HTMLBrick } from '../src/pdf_render/pdf_html';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
+import { getImageUtils, registerImageUtils } from '../src/utils/image';
+import { ImageUtils } from '../src/utils/image/browser';
+import { ImageBrick } from '../src/pdf_render/pdf_image';
 let __dummy_hl = new FlatHTML(null, null, null);
 
 SurveyHelper.createHTMLFlat = async function(
@@ -45,16 +48,13 @@ test('Check choose auto render', async () => {
         ]
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    SurveyHelper.shouldConvertImageToPng = false;
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(3);
     expect(flats[0][0].unfold()[0] instanceof HTMLBrick).toBe(true);
     expect((<any>flats[0][0].unfold())[0]['html'].startsWith('<img')).toBe(false);
-    expect(flats[0][2].unfold()[0] instanceof HTMLBrick).toBe(true);
-    expect((<any>flats[0][2])['html'].startsWith('<img')).toBe(true);
-    SurveyHelper.shouldConvertImageToPng = true;
+    expect(flats[0][2].unfold()[0] instanceof ImageBrick).toBe(true);
 });
 
 test('Check createHTMLRect method with long html', async () => {

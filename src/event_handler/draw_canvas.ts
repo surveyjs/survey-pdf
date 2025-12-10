@@ -262,7 +262,7 @@ export class DrawCanvas {
             SurveyHelper.createPoint(imageRect, true, true),
             null, this.controller, { link: imageOptions.base64,
                 width: imageRect.xRight - imageRect.xLeft,
-                height: imageRect.yBot - imageRect.yTop, objectFit: imageOptions.imageFit }, !!imageOptions.imageFit || this.controller.applyImageFit));
+                height: imageRect.yBot - imageRect.yTop, objectFit: imageOptions.imageFit as any }, !!imageOptions.imageFit || this.controller.applyImageFit));
         this.controller.popMargins();
     }
 }

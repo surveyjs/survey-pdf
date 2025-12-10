@@ -9,7 +9,7 @@
 		"yBot": 103.34645669291339,
 		"bricks": [
 			{
-				"brickType": "HTMLBrick",
+				"brickType": "ImageBrick",
 				"width": 150,
 				"height": 75,
 				"xLeft": 62.84645669291339,

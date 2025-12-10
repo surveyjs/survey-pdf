@@ -202,6 +202,7 @@ export class SurveyPDF extends SurveyModel {
                 await packs[i][j].render();
             }
         }
+        SurveyHelper.clear();
     }
     /**
      * An asynchronous method that starts to download the generated PDF file in the web browser.

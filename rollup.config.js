@@ -12,7 +12,7 @@ const banner = [
     "Copyright (c) 2015-" + new Date().getFullYear() + " Devsoft Baltic OÜ  - http://surveyjs.io/",
     "License: MIT (http://www.opensource.org/licenses/mit-license.php)"
   ].join("\n");
-const input = { "survey.pdf": path.resolve(__dirname, "./src/entries/pdf.ts") };
+const input = { "survey.pdf": path.resolve(__dirname, "./src/entries/pdf.ts"), "survey.pdf.node": path.resolve(__dirname, "./src/entries/pdf-node.ts") };
 module.exports = (options) => {
   options = options ?? {};
   if(!options.tsconfig) {
@@ -49,6 +49,8 @@ module.exports = (options) => {
     external: [
       "jspdf",
       "survey-core",
+      "image-size",
+      "node-fetch"
     ],
     output: [
       {
@@ -57,6 +59,11 @@ module.exports = (options) => {
         format: "esm",
         exports: "named",
         sourcemap: true,
+        chunkFileNames: (chunkInfo) => {
+          if(!chunkInfo.isEntry) {
+            return "pdf-shared.mjs"
+          }
+        },
       },
     ],
   };
