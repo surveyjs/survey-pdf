@@ -719,8 +719,8 @@ export class SurveyHelper {
                 }
             }
             else if(imageSize && imageSize.height && imageSize.width) {
-                heightPt = SurveyHelper.parseWidth(imageSize.height.toString(), SurveyHelper.getPageAvailableWidth(controller), 1, 'px');
-                widthPt = SurveyHelper.parseWidth(imageSize.width.toString(), SurveyHelper.getPageAvailableWidth(controller), 1, 'px');
+                heightPt = Math.min(imageSize.height, SurveyHelper.getPageAvailableWidth(controller));
+                widthPt = Math.min(imageSize.width, SurveyHelper.getPageAvailableWidth(controller));
             }
         }
         return { width: widthPt || defaultWidthPt || 0, height: heightPt || defaultHeightPt || 0 };

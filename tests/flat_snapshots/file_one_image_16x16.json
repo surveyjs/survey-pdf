@@ -1,21 +1,21 @@
 [
 	{
 		"brickType": "CompositeBrick",
-		"width": 127.5,
-		"height": 58.5,
+		"width": 170,
+		"height": 71,
 		"xLeft": 34.72145669291339,
-		"xRight": 162.2214566929134,
+		"xRight": 204.7214566929134,
 		"yTop": 34.72145669291339,
-		"yBot": 93.22145669291339,
+		"yBot": 105.72145669291339,
 		"bricks": [
 			{
 				"brickType": "CompositeBrick",
-				"width": 127.5,
-				"height": 58.5,
+				"width": 170,
+				"height": 71,
 				"xLeft": 34.72145669291339,
-				"xRight": 162.2214566929134,
+				"xRight": 204.7214566929134,
 				"yTop": 34.72145669291339,
-				"yBot": 93.22145669291339,
+				"yBot": 105.72145669291339,
 				"bricks": [
 					{
 						"brickType": "CompositeBrick",
@@ -65,12 +65,12 @@
 					},
 					{
 						"brickType": "ImageBrick",
-						"width": 127.5,
-						"height": 37.5,
+						"width": 170,
+						"height": 50,
 						"xLeft": 34.72145669291339,
-						"xRight": 162.2214566929134,
+						"xRight": 204.7214566929134,
 						"yTop": 55.72145669291339,
-						"yBot": 93.22145669291339,
+						"yBot": 105.72145669291339,
 						"options": {
 							"width": 170,
 							"height": 50,
