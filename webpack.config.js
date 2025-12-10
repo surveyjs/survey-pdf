@@ -55,7 +55,8 @@ const buildPlatformJson = {
     "survey-core": packageJson.version
   },
   dependencies: {
-    jspdf: "^2.3.0 || ^3",
+    "@types/node-fetch": "^2",
+    "jspdf": "^2.3.0 || ^3",
     "image-size": "^2",
     "node-fetch": "^2",
   },
