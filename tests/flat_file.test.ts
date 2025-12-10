@@ -164,9 +164,9 @@ test('Check one image 16x16px file', async () => {
     controller.margins.left += controller.unitWidth;
     const assumeFile: IRect = {
         xLeft: controller.leftTopPoint.xLeft,
-        xRight: controller.leftTopPoint.xLeft + SurveyHelper.pxToPt(imageSize.width),
+        xRight: controller.leftTopPoint.xLeft + imageSize.width,
         yTop: controller.leftTopPoint.yTop,
-        yBot: controller.leftTopPoint.yTop + SurveyHelper.pxToPt(imageSize.height) +
+        yBot: controller.leftTopPoint.yTop + imageSize.height +
             controller.unitHeight * (1.0 + FlatFile.IMAGE_GAP_SCALE)
     };
     TestHelper.equalRect(expect, flats[0][0], assumeFile);
@@ -204,7 +204,7 @@ test('Check one image 16x16px file shorter than text', async () => {
         xLeft: controller.leftTopPoint.xLeft,
         xRight: controller.leftTopPoint.xLeft + controller.measureText(json.elements[0].defaultValue[0].name).width,
         yTop: controller.leftTopPoint.yTop,
-        yBot: controller.leftTopPoint.yTop + SurveyHelper.pxToPt(imageSize.height) +
+        yBot: controller.leftTopPoint.yTop + imageSize.height +
             controller.unitHeight * (1.0 + FlatFile.IMAGE_GAP_SCALE)
     };
     TestHelper.equalRect(expect, flats[0][0], assumeFile);
