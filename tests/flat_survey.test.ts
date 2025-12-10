@@ -184,7 +184,6 @@ test('Survey with botton logo without title', async () => {
 });
 
 test('Survey with logo server-side', async () => {
-    SurveyHelper.inBrowser = false;
     const json: any = {
         logo: TestHelper.BASE64_IMAGE_16PX,
         logoWidth: '420px',
@@ -195,7 +194,6 @@ test('Survey with logo server-side', async () => {
         eventName: 'onRenderSurvey',
         snapshotName: 'survey_with_logo_server_side'
     });
-    SurveyHelper.inBrowser = true;
 });
 
 test('Survey with logo and pages', async () => {

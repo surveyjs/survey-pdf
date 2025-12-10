@@ -72,10 +72,9 @@
 						"yTop": 55.72145669291339,
 						"yBot": 168.2214566929134,
 						"options": {
-							"link": "some url",
-							"width": 150,
-							"height": 112.5,
-							"objectFit": "contain"
+							"width": 0,
+							"height": 0,
+							"link": "some url"
 						},
 						"padding": {
 							"top": 0,

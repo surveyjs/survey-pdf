@@ -13,7 +13,7 @@ import { CompositeBrick } from '../src/pdf_render/pdf_composite';
 import { LinkBrick } from '../src/pdf_render/pdf_link';
 import { AdornersOptions } from '../src/event_handler/adorners';
 import { checkFlatSnapshot } from './snapshot_helper';
-import '../src/entries/pdf';
+import '../src/entries/pdf-base';
 import { getImageUtils, registerImageUtils } from '../src/utils/image';
 
 test('Check no files', async () => {
@@ -180,7 +180,6 @@ test('Check one image 16x16px with set size', async () => {
 });
 
 test('Check one image 16x16px file server-side', async () => {
-    SurveyHelper.inBrowser = false;
     const json: any = {
         elements: [
             {
@@ -201,7 +200,6 @@ test('Check one image 16x16px file server-side', async () => {
     await checkFlatSnapshot(json, {
         snapshotName: 'file_one_image_16x16_server_side',
     });
-    SurveyHelper.inBrowser = true;
 });
 
 test('Check one image 16x16px with set size server-side', async () => {
@@ -224,11 +222,9 @@ test('Check one image 16x16px with set size server-side', async () => {
             }
         ]
     };
-    SurveyHelper.inBrowser = false;
     await checkFlatSnapshot(json, {
         snapshotName: 'file_one_image_16x16_set_size_server_side',
     });
-    SurveyHelper.inBrowser = true;
 });
 
 test('Test file question getImagePreviewContentWidth ', async () => {
@@ -242,7 +238,6 @@ test('Test file question getImagePreviewContentWidth ', async () => {
             }
         ]
     };
-    SurveyHelper.inBrowser = false;
     const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     const question = <QuestionFileModel>survey.getAllQuestions()[0];
     const controller: DocController = new DocController(TestHelper.defaultOptions);
@@ -256,7 +251,9 @@ test('Test file question getImagePreviewContentWidth ', async () => {
 });
 
 test('Test file question doesnt throw exception if could not load image preview', async () => {
-    SurveyHelper.getImageSize = async (url: string) => { return null as any; };
+    const oldImageUtils = getImageUtils();
+    registerImageUtils({ getImageInfo: async (url) => { return { imageData: url, width: 0, height: 0 }; },
+        applyImageFit: async (imageInfo) => { return imageInfo; }, clear: () => {} });
     const json: any = {
         elements: [
             {
@@ -277,6 +274,7 @@ test('Test file question doesnt throw exception if could not load image preview'
     await checkFlatSnapshot(json, {
         snapshotName: 'file_one_image_not_loaded',
     });
+    registerImageUtils(oldImageUtils);
 });
 
 test('Test file question getImagePreviewContentWidth always return correct image width', async () => {
@@ -327,7 +325,6 @@ test('Test file question getImagePreviewContentWidth always return correct image
             }
         ]
     };
-    SurveyHelper.inBrowser = false;
     const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     const question = <QuestionFileModel>survey.getAllQuestions()[0];
     const controller: DocController = new DocController(Object.assign(TestHelper.defaultOptions, { fontSize: 30 }));
@@ -376,7 +373,6 @@ test('Test file question inside paneldynamic waits preview loading', async () =>
             }
         ]
     };
-    SurveyHelper.inBrowser = false;
     const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     survey.onDownloadFile.add((_, options) => {
         setTimeout(() => {

@@ -1,6 +1,6 @@
 [
 	{
-		"brickType": "HTMLBrick",
+		"brickType": "ImageBrick",
 		"width": 525.8326771653543,
 		"height": 0,
 		"xLeft": 34.72145669291339,
@@ -8,15 +8,10 @@
 		"yTop": 34.72145669291339,
 		"yBot": 34.72145669291339,
 		"options": {
-			"html": "<img src='data:,' width='525.8326771653543' height='2.220446049250313e-15'/>",
-			"isImage": true
-		},
-		"appearance": {
-			"fontSize": 6,
-			"fontName": "helvetica",
-			"fontStyle": "normal",
-			"lineHeight": 6,
-			"fontColor": "#404040"
+			"width": 0,
+			"height": 0,
+			"imageId": "image_1",
+			"link": "data:,"
 		},
 		"padding": {
 			"top": 0,

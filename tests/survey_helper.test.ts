@@ -7,7 +7,7 @@ import { TextBrick } from '../src/pdf_render/pdf_text';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 import { SurveyPDF } from '../src/survey';
-import '../src/entries/pdf';
+import '../src/entries/pdf-base';
 
 test('Merge rects 2 count', () => {
     let rectKeys: string[] = Object.keys(TestHelper.defaultRect);
@@ -388,8 +388,6 @@ test('check getCorrectedImageSize works incorrectly if image could not be loaded
     const controller = new DocController(
         { fontName: 'custom_font' }
     );
-    const oldInBrowser = SurveyHelper.inBrowser;
-    SurveyHelper.inBrowser = false;
     let imageSize = await SurveyHelper.getCorrectedImageSize(controller, { imageLink: '' });
     expect(imageSize.width).toBe(0);
     expect(imageSize.height).toBe(0);
@@ -402,5 +400,4 @@ test('check getCorrectedImageSize works incorrectly if image could not be loaded
     imageSize = await SurveyHelper.getCorrectedImageSize(controller, { imageLink: '', defaultImageWidth: 300, defaultImageHeight: 400 });
     expect(imageSize.width).toBe(225);
     expect(imageSize.height).toBe(300);
-    SurveyHelper.inBrowser = oldInBrowser;
 });

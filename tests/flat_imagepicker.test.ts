@@ -80,7 +80,6 @@ test('Check imagepicker two images 100x100px', async () => {
 });
 
 test('Check imagepicker one image 100x100px server-side', async () => {
-    SurveyHelper.inBrowser = false;
     let json: any = {
         elements: [
             {
@@ -99,5 +98,4 @@ test('Check imagepicker one image 100x100px server-side', async () => {
     await checkFlatSnapshot(json, {
         snapshotName: 'imagepicker_one_image_100x100_server_side'
     });
-    SurveyHelper.inBrowser = true;
 });

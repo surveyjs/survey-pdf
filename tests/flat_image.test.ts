@@ -76,7 +76,6 @@ test('Check image question with "auto" and 100%', async () => {
 });
 
 test('Check image question 100x100px with set size server-side', async () => {
-    SurveyHelper.inBrowser = false;
     const json: any = {
         elements: [
             {
@@ -92,5 +91,4 @@ test('Check image question 100x100px with set size server-side', async () => {
     await checkFlatSnapshot(json, {
         snapshotName: 'image_100x100_server_side_set_size',
     });
-    SurveyHelper.inBrowser = true;
 });
