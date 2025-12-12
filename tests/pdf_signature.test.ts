@@ -1,6 +1,6 @@
 import { checkPDFSnapshot } from './snapshot_helper';
 import { FlatSignaturePad } from '../src/flat_layout/flat_signaturepad';
-import '../src/entries/pdf';
+import '../src/entries/pdf-base';
 
 var json = {
     showQuestionNumbers: 'on',

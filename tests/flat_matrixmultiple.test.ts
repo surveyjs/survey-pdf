@@ -10,7 +10,7 @@ import { TestHelper } from '../src/helper_test';
 import { QuestionMatrixDropdownModel } from 'survey-core';
 import { checkFlatSnapshot } from './snapshot_helper';
 import { AdornersOptions } from '../src/event_handler/adorners';
-import '../src/entries/pdf';
+import '../src/entries/pdf-base';
 
 test('Check matrix multiple one column no rows', async () => {
     const json: any = {

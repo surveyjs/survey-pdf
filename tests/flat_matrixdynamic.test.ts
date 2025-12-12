@@ -7,7 +7,7 @@ import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 import { checkFlatSnapshot } from './snapshot_helper';
 import { AdornersOptions } from '../src/event_handler/adorners';
-import '../src/entries/pdf';
+import '../src/entries/pdf-base';
 
 test('Check matrix dynamic one column no rows', async () => {
     await checkFlatSnapshot({

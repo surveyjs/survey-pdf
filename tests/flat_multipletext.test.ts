@@ -5,7 +5,7 @@ import { checkFlatSnapshot } from './snapshot_helper';
 import { IDocOptions, DocOptions, DocController } from '../src/doc_controller';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
-import '../src/entries/pdf';
+import '../src/entries/pdf-base';
 
 test('Check multiple text one item', async () => {
     const json: any = {

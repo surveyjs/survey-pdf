@@ -1,11 +1,15 @@
-import { getColorVariable, getSizeVariable } from './utils';
+import { getVariablesManager } from './utils';
 import { ITheme } from 'survey-core';
 export type IStyles = { [index: string]: any }
 
 export function createStylesFromTheme(theme: ITheme, callback: (options: { cssVariables: { [index: string]: string }, getColorVariable: (varName: string) => string, getSizeVariable:(varName: string) => number }) => IStyles) {
-    const hash = {};
     const { cssVariables } = theme;
-    return callback({ cssVariables: cssVariables, getColorVariable: getColorVariable.bind(this, cssVariables, hash), getSizeVariable: getSizeVariable.bind(this, cssVariables, hash) });
+    const variablesManager = getVariablesManager();
+    variablesManager.setup(cssVariables);
+    variablesManager.startCollectingVariables();
+    const res = callback({ cssVariables: cssVariables, getColorVariable: (name: string) => variablesManager.getColorVariable(name), getSizeVariable: (name: string) => variablesManager.getSizeVariable(name) });
+    variablesManager.stopCollectingVariables();
+    return res;
 }
 export function getDefaultStylesFromTheme (theme: ITheme) {
     return createStylesFromTheme(theme, ({ getSizeVariable, getColorVariable }) => {

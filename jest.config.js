@@ -4,6 +4,7 @@ module.exports = {
   testEnvironment: "jsdom",
   "setupFilesAfterEnv": ["jest-expect-message"],
   setupFiles: ["<rootDir>/setupFile.js"],
+  setupFilesAfterEnv: ["<rootDir>/beforeAllTests.js"],
   reporters: [
     "default",
     ["jest-junit", {
