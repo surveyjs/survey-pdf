@@ -104,7 +104,8 @@ export class FlatRating extends FlatQuestion<QuestionRatingModel> {
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         const currPoint: IPoint = SurveyHelper.clone(point);
         const rowsFlats: CompositeBrick[] = [];
-        for(const row of this.getRows()) {
+        const rows = this.getRows();
+        for(const row of rows) {
             const rowFlat = new CompositeBrick();
             for(const itemInfo of row) {
                 this.controller.pushMargins();
@@ -114,9 +115,11 @@ export class FlatRating extends FlatQuestion<QuestionRatingModel> {
                 this.controller.popMargins();
                 currPoint.xLeft = rowFlat.xRight + this.styles.gapBetweenColumns;
             }
-            currPoint.yTop = rowFlat.yBot + this.styles.gapBetweenRows;
-            currPoint.xLeft = rowFlat.xLeft;
             rowFlat.addBrick(SurveyHelper.createRowlineFlat(currPoint, this.controller, rowFlat.width));
+            if(row !== rows[rows.length - 1]) {
+                currPoint.yTop = rowFlat.yBot + this.styles.gapBetweenRows;
+                currPoint.xLeft = rowFlat.xLeft;
+            }
             rowsFlats.push(rowFlat);
         }
         return rowsFlats;
