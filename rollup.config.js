@@ -50,7 +50,8 @@ module.exports = (options) => {
       "jspdf",
       "survey-core",
       "image-size",
-      "node-fetch"
+      "node-fetch",
+      "@csstools/css-color-parser",
     ],
     output: [
       {
