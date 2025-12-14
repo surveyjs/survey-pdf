@@ -173,7 +173,10 @@ module.exports = function (options) {
       },
       "node-fetch": "node-fetch",
       "image-size": "image-size",
-      "@csstools/css-color-parser": "@csstools/css-color-parser",
+      '@csstools/css-calc': '@csstools/css-calc',
+      '@csstools/css-color-parser': '@csstools/css-color-parser',
+      '@csstools/css-parser-algorithms': '@csstools/css-parser-algorithms',
+      '@csstools/css-tokenizer': '@csstools/css-tokenizer',
       "survey-core": {
         root: "Survey",
         commonjs2: "survey-core",

@@ -51,7 +51,10 @@ module.exports = (options) => {
       "survey-core",
       "image-size",
       "node-fetch",
-      "@csstools/css-color-parser",
+      '@csstools/css-calc',
+      '@csstools/css-color-parser',
+      '@csstools/css-parser-algorithms',
+      '@csstools/css-tokenizer'
     ],
     output: [
       {
