@@ -112,7 +112,14 @@ export class SurveyHelper {
     public static parseColor(color: string) {
         let opacity: number;
         let match: RegExpMatchArray;
-        if((match = (color ?? '').match(/(#[A-Fa-f0-9]{6})([A-Fa-f0-9]{2})/))) {
+        if((color ?? '').match(/^rgba/)) {
+            const matches = color.match(/[\d.]+/g);
+            if(matches.length == 4) {
+                color = `rgb(${matches[0]}, ${matches[1]}, ${matches[2]})`;
+                opacity = parseFloat(matches[3]);
+            }
+        }
+        else if((match = (color ?? '').match(/(#[A-Fa-f0-9]{6})([A-Fa-f0-9]{2})/))) {
             color = match[1];
             opacity = (Math.round(parseInt(match[2], 16) / 255 * 100)) / 100;
         }
