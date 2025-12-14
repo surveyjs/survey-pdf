@@ -51,7 +51,7 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
                     const flatMultipleColumnsQuestion: IFlatQuestion = FlatRepository.getInstance().create(
                         this.survey, cell.question, this.controller, this.survey.getStylesForElement(cell.question), cell.question.getType());
                     bricks.push((<FlatSelectBase>flatMultipleColumnsQuestion)
-                        .generateFlatItem(point, cell.item, cell.choiceIndex));
+                        .generateFlatItem(point, cell.item, cell.choiceIndex, (<FlatSelectBase>flatMultipleColumnsQuestion).getStylesForItem(cell.item)));
                 }
                 else {
                     cell.question.titleLocation = 'matrix';

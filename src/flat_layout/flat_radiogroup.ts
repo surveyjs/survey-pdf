@@ -5,6 +5,7 @@ import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { IRadioItemBrickAppearanceOptions, RadioGroupWrap, RadioItemBrick } from '../pdf_render/pdf_radioitem';
 import { FlatSelectBase } from './flat_selectbase';
 import { SurveyHelper } from '../helper_survey';
+import { IStyles } from 'src/styles';
 
 export class FlatRadiogroup extends FlatSelectBase<QuestionRadiogroupModel> {
     private _radioGroupWrap: RadioGroupWrap;
@@ -20,27 +21,14 @@ export class FlatRadiogroup extends FlatSelectBase<QuestionRadiogroupModel> {
         }
         return this._radioGroupWrap;
     }
-    protected isItemSelected(item: ItemValue, checked?: boolean): boolean {
-        return (typeof checked === 'undefined') ?
-            (item === this.question.otherItem ? this.question.isOtherSelected :
-                (item.value === this.question.value ||
-                    (typeof this.question.isItemSelected !== 'undefined' &&
-                        this.question.isItemSelected(item)))) : checked;
-    }
-    public generateFlatItem(point: IPoint, item: ItemValue, index: number): IPdfBrick {
-        const rect: IRect = SurveyHelper.createRect(point,
-            this.styles.input.width, this.styles.input.height);
-        const isChecked: boolean = this.isItemSelected(item);
-        const shouldRenderReadOnly = this.radioGroupWrap.readOnly && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform' || this.controller.compress;
+    public generateFlatItem(point: IPoint, item: ItemValue, index: number, styles: IStyles): IPdfBrick {
+        const rect: IRect = SurveyHelper.createRect(point, styles.width, styles.height);
         return new RadioItemBrick(this.controller, rect, this.radioGroupWrap, {
             index,
-            checked: isChecked,
+            checked: this.question.isItemSelected(item),
             shouldRenderReadOnly: this.radioGroupWrap.readOnly && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform' || this.controller.compress,
             updateOptions: options => this.survey.updateRadioItemAcroformOptions(options, this.question, { item }),
-        }, SurveyHelper.getPatchedTextAppearanceOptions(this.controller, SurveyHelper.mergeObjects({}, this.styles.input,
-            shouldRenderReadOnly ? this.styles.inputReadOnly : {},
-            shouldRenderReadOnly && isChecked ? this.styles.inputReadOnlyChecked : {}
-        )));
+        }, SurveyHelper.getPatchedTextAppearanceOptions(this.controller, { ...styles } as IRadioItemBrickAppearanceOptions));
     }
 }
 

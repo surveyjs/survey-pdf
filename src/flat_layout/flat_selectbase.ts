@@ -5,9 +5,10 @@ import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper, ITextAppearanceOptions, IInputAppearanceOptions } from '../helper_survey';
 import { ChoiceItem } from 'survey-core';
+import { IStyles } from 'src/styles';
 
 export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSelectBase> extends FlatQuestion<T> {
-    public abstract generateFlatItem(point: IPoint, item: ItemValue, index: number): IPdfBrick;
+    public abstract generateFlatItem(point: IPoint, item: ItemValue, index: number, styles: IStyles): IPdfBrick;
     protected async generateItemComment(point: IPoint, item: ItemValue) {
         const shouldRenderReadOnly = SurveyHelper.shouldRenderReadOnly(this.question, this.controller, this.question.isReadOnly);
         const appearance = SurveyHelper.getPatchedTextAppearanceOptions(this.controller, SurveyHelper.mergeObjects({}, this.styles.comment, shouldRenderReadOnly ? this.styles.commentReadOnly : undefined));
@@ -23,10 +24,19 @@ export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSele
                 isMultiline: true,
             }, appearance);
     }
+    public getStylesForItem(item: ItemValue): IStyles {
+        const isChecked: boolean = this.question.isItemSelected(item);
+        const shouldRenderReadOnly = this.question.isReadOnly || !item.isEnabled && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform' || this.controller.compress;
+        const styles = { input: SurveyHelper.mergeObjects({},
+            this.styles.input,
+            shouldRenderReadOnly ? this.styles.inputReadOnly : {},
+            shouldRenderReadOnly && isChecked ? this.styles.inputReadOnlyChecked : {}), label: { ...this.styles.label } };
+        return this.survey.getStylesForItem(this.question, item, styles);
+    }
     protected async generateFlatComposite(point: IPoint, item: ItemValue | ChoiceItem, index: number): Promise<IPdfBrick> {
         const compositeFlat: CompositeBrick = new CompositeBrick();
-        const textOptions:Partial<ITextAppearanceOptions> = { ...this.styles.label };
-        const itemFlat: IPdfBrick = this.generateFlatItem(point, item, index);
+        const styles = this.getStylesForItem(item);
+        const itemFlat: IPdfBrick = this.generateFlatItem(point, item, index, styles.input);
 
         compositeFlat.addBrick(itemFlat);
         const textPoint: IPoint = SurveyHelper.clone(point);
@@ -34,7 +44,7 @@ export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSele
 
         if (item.locText.renderedHtml !== null) {
             const textFlat = await SurveyHelper.createTextFlat(
-                textPoint, this.controller, item.locText, textOptions);
+                textPoint, this.controller, item.locText, { ...styles.label });
             SurveyHelper.alignVerticallyBricks('center', itemFlat, textFlat.unfold()[0]);
             textFlat.updateRect();
             compositeFlat.addBrick(textFlat);

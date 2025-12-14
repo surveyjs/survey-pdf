@@ -1,4 +1,4 @@
-import { SurveyModel, EventBase, SurveyElement, Serializer, Question, PanelModel, PageModel, ITheme } from 'survey-core';
+import { SurveyModel, EventBase, SurveyElement, Serializer, Question, PanelModel, PageModel, ITheme, ItemValue, IQuestion } from 'survey-core';
 import { hasLicense } from 'survey-core';
 import { IDocOptions, DocController, DocOptions } from './doc_controller';
 import { FlatSurvey } from './flat_layout/flat_survey';
@@ -9,7 +9,7 @@ import { EventHandler } from './event_handler/event_handler';
 import { DrawCanvas } from './event_handler/draw_canvas';
 import { AdornersOptions, AdornersPanelOptions, AdornersPageOptions } from './event_handler/adorners';
 import { SurveyHelper } from './helper_survey';
-import { getDefaultStylesFromTheme, IStyles } from './styles';
+import { createStylesFromTheme, getDefaultStylesFromTheme, IStyles } from './styles';
 import { DefaultLight } from './themes/default-light';
 import { parsePadding } from './utils';
 
@@ -185,26 +185,40 @@ export class SurveyPDF extends SurveyModel {
         });
     }
 
-    public onGetQuestionStyles: EventBase<SurveyPDF, { question: Question, styles: IStyles }> = new EventBase<SurveyPDF, { question: Question, styles: IStyles }>;
-    public onGetPanelStyles: EventBase<SurveyPDF, { panel: PanelModel, styles: IStyles }> = new EventBase<SurveyPDF, { panel: PanelModel, styles: IStyles }>;
-    public onGetPageStyles: EventBase<SurveyPDF, { page: PanelModel, styles: IStyles }> = new EventBase<SurveyPDF, { page: PanelModel, styles: IStyles }>;
+    public onGetQuestionStyles = new EventBase<SurveyPDF, { question: Question, styles: IStyles, getColorVariable: (name: string) => string, getSizeVariable: (name: string) => number }>;
+    public onGetPanelStyles = new EventBase<SurveyPDF, { panel: PanelModel, styles: IStyles, getColorVariable: (name: string) => string, getSizeVariable: (name: string) => number }>;
+    public onGetPageStyles = new EventBase<SurveyPDF, { page: PanelModel, styles: IStyles, getColorVariable: (name: string) => string, getSizeVariable: (name: string) => number }>;
+    public onGetItemStyles = new EventBase<SurveyPDF, { question: Question, item: ItemValue, styles: IStyles, getColorVariable: (name: string) => string, getSizeVariable: (name: string) => number}>;
 
     private _styles: IStyles;
-    private theme: ITheme;
     public get styles(): IStyles {
         if(!this._styles) {
-            this._styles = getDefaultStylesFromTheme(this.theme ?? DefaultLight);
+            this._styles = getDefaultStylesFromTheme(this.theme);
         }
         return this._styles;
     }
     public set styles(styles: IStyles) {
         SurveyHelper.mergeObjects(this.styles, styles);
     }
+    private _theme: ITheme;
+    public get theme(): ITheme {
+        return this._theme || DefaultLight;
+    }
     public applyTheme(theme: ITheme): void {
-        this.theme = theme;
+        this._theme = theme;
         this._styles = undefined;
     }
-
+    public getStylesForItem(question: Question, item: ItemValue, styles: IStyles): IStyles {
+        return createStylesFromTheme(this.theme, (options) => {
+            const eventOptions = {
+                getColorVariable: options.getColorVariable,
+                getSizeVariable: options.getSizeVariable,
+                styles: styles
+            };
+            this.onGetItemStyles.fire(this, { question, item, ...eventOptions });
+            return styles;
+        });
+    }
     public getStylesForElement(element: SurveyElement): IStyles {
         const styles = this.styles;
         const types = [element.getType()];
@@ -217,16 +231,23 @@ export class SurveyPDF extends SurveyModel {
         types.forEach(type => {
             SurveyHelper.mergeObjects(res, styles[type] ?? {});
         });
-        if(element.isPanel) {
-            this.onGetPanelStyles.fire(this, { panel: element as PanelModel, styles: res });
-        }
-        if(element.isPage) {
-            this.onGetPageStyles.fire(this, { page: element as PageModel, styles: res });
-        }
-        if(element.isQuestion) {
-            this.onGetQuestionStyles.fire(this, { question: element as Question, styles: res });
-        }
-        return res;
+        return createStylesFromTheme(this.theme, (options) => {
+            const eventOptions = {
+                getColorVariable: options.getColorVariable,
+                getSizeVariable: options.getSizeVariable,
+                styles: res
+            };
+            if(element.isPanel) {
+                this.onGetPanelStyles.fire(this, { panel: element as PanelModel, ...eventOptions });
+            }
+            if(element.isPage) {
+                this.onGetPageStyles.fire(this, { page: element as PageModel, ...eventOptions });
+            }
+            if(element.isQuestion) {
+                this.onGetQuestionStyles.fire(this, { question: element as Question, ...eventOptions });
+            }
+            return res;
+        });
     }
     private correctBricksPosition(controller: DocController, flats: IPdfBrick[][]) {
         if(controller.isRTL) {

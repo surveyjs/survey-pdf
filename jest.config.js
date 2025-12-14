@@ -2,9 +2,8 @@ process.env.TZ = 'GMT';
 
 module.exports = {
   testEnvironment: "jsdom",
-  "setupFilesAfterEnv": ["jest-expect-message"],
   setupFiles: ["<rootDir>/setupFile.js"],
-  setupFilesAfterEnv: ["<rootDir>/beforeAllTests.js"],
+  setupFilesAfterEnv: ["<rootDir>/beforeAllTests.js", "jest-expect-message"],
   reporters: [
     "default",
     ["jest-junit", {
