@@ -211,6 +211,7 @@ export class SurveyPDF extends SurveyModel {
     public applyTheme(theme: ITheme): void {
         this._theme = theme;
         this._styles = undefined;
+        this.stylesHash = {};
     }
     public getStylesForItem(question: Question, item: ItemValue, styles: IStyles): IStyles {
         return createStylesFromTheme(this.theme, (options) => {
@@ -223,35 +224,40 @@ export class SurveyPDF extends SurveyModel {
             return styles;
         });
     }
+    private stylesHash: { [id: number]: IStyles } = {}
     public getStylesForElement(element: SurveyElement): IStyles {
-        const styles = this.styles;
-        const types = [element.getType()];
-        let currentClass = Serializer.findClass(element.getType());
-        while(!!currentClass.parentName) {
-            types.unshift(currentClass.parentName);
-            currentClass = Serializer.findClass(currentClass.parentName);
+        const uniqueId = element.uniqueId;
+        if(!this.stylesHash[uniqueId]) {
+            const styles = this.styles;
+            const types = [element.getType()];
+            let currentClass = Serializer.findClass(element.getType());
+            while(!!currentClass.parentName) {
+                types.unshift(currentClass.parentName);
+                currentClass = Serializer.findClass(currentClass.parentName);
+            }
+            const res = {};
+            types.forEach(type => {
+                SurveyHelper.mergeObjects(res, styles[type] ?? {});
+            });
+            this.stylesHash[uniqueId] = createStylesFromTheme(this.theme, (options) => {
+                const eventOptions = {
+                    getColorVariable: options.getColorVariable,
+                    getSizeVariable: options.getSizeVariable,
+                    styles: res
+                };
+                if(element.isPanel) {
+                    this.onGetPanelStyles.fire(this, { panel: element as PanelModel, ...eventOptions });
+                }
+                if(element.isPage) {
+                    this.onGetPageStyles.fire(this, { page: element as PageModel, ...eventOptions });
+                }
+                if(element.isQuestion) {
+                    this.onGetQuestionStyles.fire(this, { question: element as Question, ...eventOptions });
+                }
+                return res;
+            });
         }
-        const res = {};
-        types.forEach(type => {
-            SurveyHelper.mergeObjects(res, styles[type] ?? {});
-        });
-        return createStylesFromTheme(this.theme, (options) => {
-            const eventOptions = {
-                getColorVariable: options.getColorVariable,
-                getSizeVariable: options.getSizeVariable,
-                styles: res
-            };
-            if(element.isPanel) {
-                this.onGetPanelStyles.fire(this, { panel: element as PanelModel, ...eventOptions });
-            }
-            if(element.isPage) {
-                this.onGetPageStyles.fire(this, { page: element as PageModel, ...eventOptions });
-            }
-            if(element.isQuestion) {
-                this.onGetQuestionStyles.fire(this, { question: element as Question, ...eventOptions });
-            }
-            return res;
-        });
+        return this.stylesHash[uniqueId];
     }
     private correctBricksPosition(controller: DocController, flats: IPdfBrick[][]) {
         if(controller.isRTL) {
@@ -330,6 +336,7 @@ export class SurveyPDF extends SurveyModel {
         }
         this.renderNavigation(controller);
         SurveyHelper.clear();
+        this.stylesHash = {};
     }
     private createController(): DocController {
         const marginsFromStyles = parsePadding(this.styles.padding);

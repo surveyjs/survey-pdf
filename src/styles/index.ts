@@ -33,6 +33,7 @@ export function getDefaultStylesFromTheme (theme: ITheme) {
             titleDescriptionGap: getSizeVariable('--sjs2-pdf-layout-title-large-gap'),
             contentGap: getSizeVariable('--sjs2-pdf-layout-page-gap-vertical') + getSizeVariable('--sjs2-pdf-layout-title-large-padding-bottom'),
             question: {
+                minWidth: baseSize * 25,
                 titleLeftWidthPers: Math.E / 10.0,
                 titleRequiredGap: baseSize / 2,
                 titleNumberGap: baseSize / 2,
@@ -79,6 +80,7 @@ export function getDefaultStylesFromTheme (theme: ITheme) {
                 }
             },
             panel: {
+                minWidth: baseSize * 75,
                 gapBetweenRows: getSizeVariable('--sjs2-pdf-layout-page-questions-gap-vertical'),
                 gapBetweenElements: getSizeVariable('--sjs2-pdf-layout-page-questions-gap-horizontal'),
                 contentGap: getSizeVariable('--sjs2-pdf-layout-page-questions-gap-vertical'),
@@ -171,6 +173,7 @@ export function getDefaultStylesFromTheme (theme: ITheme) {
             },
             matrixbase: {
                 descriptionGap: getSizeVariable('--sjs2-pdf-layout-title-default-gap'),
+                minWidth: baseSize * 40,
                 titleDescriptionGap: getSizeVariable('--sjs2-pdf-layout-title-default-gap'),
                 columnMinWidth: baseSize * 15,
                 contentGapVertical: getSizeVariable('--sjs2-pdf-layout-page-questions-gap-vertical'),

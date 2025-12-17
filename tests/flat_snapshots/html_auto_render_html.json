@@ -20,6 +20,7 @@
 					"html": "<div class=\"__surveypdf_html\" style=\"font-size: 12pt; font-weight: normal; font-family: helvetica; color: #1c1b20; lineHeight: 18\"><style>.__surveypdf_html p { margin: 0; line-height: 18pt } body { margin: 0; }</style><b>STRONG POWER</b></div>"
 				},
 				"appearance": {
+					"minWidth": 150,
 					"titleLeftWidthPers": 0.2718281828459045,
 					"titleRequiredGap": 3,
 					"titleNumberGap": 3,
