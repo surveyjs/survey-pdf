@@ -2,12 +2,12 @@ import { getVariablesManager } from './utils';
 import { ITheme } from 'survey-core';
 export type IStyles = { [index: string]: any }
 
-export function createStylesFromTheme(theme: ITheme, callback: (options: { cssVariables: { [index: string]: string }, getColorVariable: (varName: string) => string, getSizeVariable:(varName: string) => number }) => IStyles) {
+export function createStylesFromTheme(theme: ITheme, callback: (options: { getColorVariable: (varName: string) => string, getSizeVariable:(varName: string) => number }) => IStyles) {
     const { cssVariables } = theme;
     const variablesManager = getVariablesManager();
     variablesManager.setup(cssVariables);
     variablesManager.startCollectingVariables();
-    const res = callback({ cssVariables: cssVariables, getColorVariable: (name: string) => variablesManager.getColorVariable(name), getSizeVariable: (name: string) => variablesManager.getSizeVariable(name) });
+    const res = callback({ getColorVariable: (name: string) => variablesManager.getColorVariable(name), getSizeVariable: (name: string) => variablesManager.getSizeVariable(name) });
     variablesManager.stopCollectingVariables();
     return res;
 }

@@ -200,6 +200,10 @@ export class SurveyPDF extends SurveyModel {
     public set styles(styles: IStyles) {
         SurveyHelper.mergeObjects(this.styles, styles);
     }
+
+    public setStyles(callback: (options: { getColorVariable: (name: string) => string, getSizeVariable: (name: string) => number }) => IStyles) {
+        this.styles = createStylesFromTheme(this.theme, callback);
+    }
     private _theme: ITheme;
     public get theme(): ITheme {
         return this._theme || DefaultLight;
