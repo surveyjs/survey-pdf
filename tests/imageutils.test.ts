@@ -1,5 +1,9 @@
+/**
+ * @jest-environment node
+ */
 import { BaseImageUtils } from '../src/utils/image/index';
 import { ImageUtils } from '../src/utils/image/browser';
+import { ImageUtils as NodeImageUtils } from '../src/utils/image/node';
 test('check hash is working correctly', async () => {
     const imageUtils = new BaseImageUtils();
     const testImageInfo = { width: 30, height: 30, data: 'base64' };
@@ -81,4 +85,12 @@ test('check getCoverCanvasOptions', () => {
         imageWidth: 200,
         imageHeight: 400
     });
+});
+
+test('check base64 url can be passed to node image utils', async() => {
+    const imageUtils = new NodeImageUtils();
+    const imageInfo = await imageUtils.getImageInfo('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==');
+    expect(imageInfo.width).toBe(0.75);
+    expect(imageInfo.height).toBe(0.75);
+    expect(imageInfo.data instanceof Uint8Array).toBeTruthy();
 });
