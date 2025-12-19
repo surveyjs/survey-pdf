@@ -21,8 +21,9 @@ export class FlatFile extends FlatQuestion {
     private async generateFlatItem(point: IPoint, item: {
         name: string, type: string, content: string, imageSize?: ISize,
     }): Promise<IPdfBrick> {
-        const compositeFlat: CompositeBrick = new CompositeBrick(await SurveyHelper.createLinkFlat(
-            point, this.question, this.controller, item.name === undefined ? 'image' : item.name, item.content));
+        const compositeFlat: CompositeBrick = new CompositeBrick(
+            await SurveyHelper.createLinkFlat(
+                point, this.question, this.controller, item.name === undefined ? 'image' : item.name, typeof item.content == 'string' ? item.content : ''));
         if (SurveyHelper.canPreviewImage(this.question, item, item.content)) {
             const imagePoint: IPoint = SurveyHelper.createPoint(compositeFlat);
             imagePoint.yTop += this.controller.unitHeight * FlatFile.IMAGE_GAP_SCALE;
