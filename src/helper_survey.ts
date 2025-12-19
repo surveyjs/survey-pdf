@@ -154,7 +154,7 @@ export class SurveyHelper {
         return controller.useCustomFontInHtml ? controller.fontName : this.STANDARD_FONT;
     }
     public static generateCssTextRule(fontSize: number, fontStyle: string, fontName: string): string {
-        return `"font-size: ${fontSize}pt; font-weight: ${fontStyle}; font-family: ${fontName}; color: ${this.TEXT_COLOR};"`;
+        return `"font-size: ${fontSize}pt; font-weight: ${fontStyle}; font-family: ${fontName}; color: ${this.TEXT_COLOR}; margin: 0"`;
     }
     public static createHtmlContainerBlock(html: string, controller: DocController, renderAs: IHTMLRenderType): string {
         const font = this.chooseHtmlFont(controller);
