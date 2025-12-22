@@ -2,62 +2,38 @@
 	{
 		"brickType": "CompositeBrick",
 		"width": 134.52,
-		"height": 54,
+		"height": 36,
 		"xLeft": 34.72145669291339,
 		"xRight": 169.2414566929134,
 		"yTop": 34.72145669291339,
-		"yBot": 88.72145669291339,
+		"yBot": 70.72145669291339,
 		"bricks": [
 			{
 				"brickType": "CompositeBrick",
 				"width": 62.760000000000005,
-				"height": 54,
+				"height": 36,
 				"xLeft": 34.72145669291339,
 				"xRight": 97.4814566929134,
 				"yTop": 34.72145669291339,
-				"yBot": 88.72145669291339,
+				"yBot": 70.72145669291339,
 				"bricks": [
 					{
 						"brickType": "CompositeBrick",
 						"width": 62.760000000000005,
-						"height": 36,
+						"height": 18,
 						"xLeft": 34.72145669291339,
 						"xRight": 97.4814566929134,
 						"yTop": 34.72145669291339,
-						"yBot": 70.72145669291339,
+						"yBot": 52.72145669291339,
 						"bricks": [
-							{
-								"brickType": "TextBrick",
-								"width": 52.800000000000004,
-								"height": 18,
-								"xLeft": 39.70145669291339,
-								"xRight": 92.5014566929134,
-								"yTop": 34.72145669291339,
-								"yBot": 52.72145669291339,
-								"appearance": {
-									"fontSize": 12,
-									"fontName": "helvetica",
-									"fontStyle": "normal",
-									"lineHeight": 18,
-									"fontColor": "#1c1b20",
-									"textAlign": "left"
-								},
-								"options": {
-									"text": "12345678"
-								},
-								"padding": {
-									"top": 0,
-									"bottom": 0
-								}
-							},
 							{
 								"brickType": "TextBrick",
 								"width": 62.760000000000005,
 								"height": 18,
 								"xLeft": 34.72145669291339,
 								"xRight": 97.4814566929134,
-								"yTop": 52.72145669291339,
-								"yBot": 70.72145669291339,
+								"yTop": 34.72145669291339,
+								"yBot": 52.72145669291339,
 								"appearance": {
 									"fontSize": 12,
 									"fontName": "helvetica",
@@ -82,8 +58,8 @@
 						"height": 12,
 						"xLeft": 50.7864566929134,
 						"xRight": 81.41645669291339,
-						"yTop": 76.72145669291339,
-						"yBot": 88.72145669291339,
+						"yTop": 58.72145669291339,
+						"yBot": 70.72145669291339,
 						"appearance": {
 							"fontSize": 7.5,
 							"fontName": "zapfdingbats",

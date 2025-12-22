@@ -66,7 +66,7 @@ export class FlatRating extends FlatQuestion<QuestionRatingModel> {
         const currPoint = SurveyHelper.clone(point);
         const compositeFlat: CompositeBrick = new CompositeBrick();
         const textBrick = await SurveyHelper.
-            createTextFlat(point, this.controller, this.getItemText(itemInfo.index, itemInfo.locText), { ...this.styles.label });
+            createTextFlat(point, this.controller, itemInfo.locText, { ...this.styles.label });
         compositeFlat.addBrick(textBrick);
         currPoint.yTop = textBrick.yBot + this.styles.gapBetweenItemText;
         compositeFlat.addBrick(this.generateFlatItem(SurveyHelper.createRect(
