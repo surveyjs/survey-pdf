@@ -125,7 +125,7 @@ export function getDefaultStylesFromTheme (theme: ITheme) {
                 }
             },
             selectbase: {
-                columnMinWidth: baseSize * 75,
+                columnMinWidth: baseSize * 20,
                 gapBetweenColumns: getSizeVariable('--sjs2-pdf-layout-question-items-gap-horizontal'),
                 gapBetweenRows: getSizeVariable('--sjs2-pdf-layout-question-items-gap-vertical'),
                 gapBetweenItemText: getSizeVariable('--sjs2-pdf-layout-check-gap'),

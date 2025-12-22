@@ -59,11 +59,8 @@ export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSele
     protected getVisibleChoices(): Array<ItemValue> {
         return this.question.visibleChoices;
     }
-    protected getColCount(): number {
-        return this.question.colCount;
-    }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
-        const colCount = this.getColCount();
+        const colCount = this.question.colCount;
         const visibleChoices = this.getVisibleChoices();
         let currentColCount: number = colCount;
         if (colCount == 0) {
