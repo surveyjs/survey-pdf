@@ -11,7 +11,7 @@ export interface IImageUtils {
 }
 
 export class BaseImageUtils implements IImageUtils {
-    private hash: {[index: string]: IImageInfo} = {}
+    private hash: {[index: string]: IImageInfo} = {};
     private imageId: number = 1;
     protected getImageId(): string {
         return `image_${this.imageId++}`;

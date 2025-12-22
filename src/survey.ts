@@ -158,10 +158,10 @@ export class SurveyPDF extends SurveyModel {
         new EventAsync<SurveyPDF, any>();
 
     public onRenderRadioGroupWrapAcroform: EventAsync<SurveyPDF, any> =
-    new EventAsync<SurveyPDF, any>();
+        new EventAsync<SurveyPDF, any>();
 
     public onRenderRadioItemAcroform: EventAsync<SurveyPDF, any> =
-    new EventAsync<SurveyPDF, any>();
+        new EventAsync<SurveyPDF, any>();
 
     public updateCheckItemAcroformOptions(options: any, question: Question, context?: any): void {
         this.onRenderCheckItemAcroform.fire(this, {
