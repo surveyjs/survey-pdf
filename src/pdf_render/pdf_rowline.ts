@@ -51,17 +51,17 @@ export class RowlineBrick implements IPdfBrick {
         this.yTop = res.yTop;
         this.yBot = res.yBot;
     }
-     private padding: { top: number, bottom: number } = { top: 0, bottom: 0 }
-     public increasePadding(padding: { top: number, bottom: number }) {
-         if(padding.top == 0 && padding.bottom == 0) return;
-         Object.keys(this.padding).forEach((key: 'top' | 'bottom') => {
-             this.padding[key] += padding[key];
-         });
-         this.yTop -= padding.top;
-         this.yBot += padding.bottom;
-         this._contentRect = undefined;
-     }
-    private _contentRect: IRect & ISize
+    private padding: { top: number, bottom: number } = { top: 0, bottom: 0 };
+    public increasePadding(padding: { top: number, bottom: number }) {
+        if(padding.top == 0 && padding.bottom == 0) return;
+        Object.keys(this.padding).forEach((key: 'top' | 'bottom') => {
+            this.padding[key] += padding[key];
+        });
+        this.yTop -= padding.top;
+        this.yBot += padding.bottom;
+        this._contentRect = undefined;
+    }
+    private _contentRect: IRect & ISize;
     public get contentRect(): IRect & ISize {
         if(!this._contentRect) {
             const yTop = this.yTop += this.padding.top;

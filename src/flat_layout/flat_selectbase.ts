@@ -1,9 +1,9 @@
 import { ItemValue, QuestionSelectBase, settings } from 'survey-core';
-import { IPoint, IRect } from '../doc_controller';
+import { IPoint } from '../doc_controller';
 import { FlatQuestion } from './flat_question';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
-import { SurveyHelper, ITextAppearanceOptions, IInputAppearanceOptions } from '../helper_survey';
+import { SurveyHelper } from '../helper_survey';
 import { ChoiceItem } from 'survey-core';
 import { IStyles } from 'src/styles';
 
@@ -116,7 +116,7 @@ export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSele
             flats.push(itemFlat);
         }
         return flats;
-    }
+    };
 
     protected async generateColumns(point: IPoint): Promise<IPdfBrick[]> {
         const columns = this.question.columns;

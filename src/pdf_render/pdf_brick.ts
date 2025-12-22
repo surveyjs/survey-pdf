@@ -152,7 +152,7 @@ export class PdfBrick implements IPdfBrick {
     addBeforeRenderCallback(func: (brick: IPdfBrick) => void): void {
         this.beforeRenderEvent.unshift(func);
     }
-    private padding: { top: number, bottom: number } = { top: 0, bottom: 0 }
+    private padding: { top: number, bottom: number } = { top: 0, bottom: 0 };
     public increasePadding(padding: { top: number, bottom: number }) {
         if(padding.top == 0 && padding.bottom == 0) return;
         Object.keys(this.padding).forEach((key: 'top' | 'bottom') => {
@@ -162,7 +162,7 @@ export class PdfBrick implements IPdfBrick {
         this._yBot += padding.bottom;
         this.resetContentRect();
     }
-    private _contentRect: IRect & ISize
+    private _contentRect: IRect & ISize;
     public get contentRect(): IRect & ISize {
         if(!this._contentRect) {
             const yBot = this.yBot - this.padding.bottom;

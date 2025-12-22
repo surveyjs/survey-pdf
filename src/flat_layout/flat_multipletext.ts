@@ -3,7 +3,6 @@ import { IPoint } from '../doc_controller';
 import { FlatQuestion, IFlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
-import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { ContainerBrick } from '../pdf_render/pdf_container';
 import { SurveyHelper } from '../helper_survey';
 import { FlatTextbox } from './flat_textbox';

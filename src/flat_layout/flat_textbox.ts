@@ -1,10 +1,10 @@
 import { settings } from 'survey-core';
-import { IPoint, IRect } from '../doc_controller';
+import { IPoint } from '../doc_controller';
 import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
-import { IInputAppearanceOptions, SurveyHelper } from '../helper_survey';
-import { ITextFieldBrickOptions, TextFieldBrick } from '../pdf_render/pdf_textfield';
+import { SurveyHelper } from '../helper_survey';
+import { ITextFieldBrickOptions } from '../pdf_render/pdf_textfield';
 
 export class FlatTextbox extends FlatQuestion {
     public static readonly MULTILINE_TEXT_ROWS_COUNT: number = 1;

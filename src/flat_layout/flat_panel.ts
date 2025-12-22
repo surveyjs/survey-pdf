@@ -1,4 +1,4 @@
-import { IElement, PanelModel, Question, QuestionRowModel, SurveyElement } from 'survey-core';
+import { PanelModel, Question, SurveyElement } from 'survey-core';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { DocController, IPoint } from '../doc_controller';
 import { SurveyPDF } from '../survey';

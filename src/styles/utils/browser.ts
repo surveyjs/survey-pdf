@@ -2,7 +2,7 @@ import { IVariablesManager } from './index';
 import { parseColorCssFunction, rgbaToHex } from './color';
 export class VariablesManager implements IVariablesManager {
     private variables?: { [index: string]: string };
-    private hash?: { [index: string]: string | number }
+    private hash?: { [index: string]: string | number };
     private computedStyles?: CSSStyleDeclaration;
     private container?: HTMLElement;
     setup(variables: { [index: string]: string }): void {

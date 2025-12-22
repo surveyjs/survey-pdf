@@ -5,7 +5,7 @@ import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { DropdownBrick } from '../pdf_render/pdf_dropdown';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
-import { IInputAppearanceOptions, SurveyHelper } from '../helper_survey';
+import { SurveyHelper } from '../helper_survey';
 
 export class FlatDropdown extends FlatQuestion<QuestionDropdownModel> {
     protected async generateItemComment(point: IPoint): Promise<IPdfBrick> {

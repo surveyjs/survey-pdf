@@ -3,7 +3,7 @@ import {
     QuestionMatrixDropdownRenderedRow, QuestionMatrixDropdownRenderedCell, Serializer, PanelModel } from 'survey-core';
 import { SurveyPDF } from '../survey';
 import { IPoint, DocController } from '../doc_controller';
-import { IFlatQuestion, FlatQuestion } from './flat_question';
+import { FlatQuestion } from './flat_question';
 import { FlatSelectBase } from './flat_selectbase';
 import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';

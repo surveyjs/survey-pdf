@@ -1,4 +1,4 @@
-import { SurveyModel, EventBase, SurveyElement, Serializer, Question, PanelModel, PageModel, ITheme, ItemValue, IQuestion } from 'survey-core';
+import { SurveyModel, EventBase, SurveyElement, Serializer, Question, PanelModel, PageModel, ITheme, ItemValue } from 'survey-core';
 import { hasLicense } from 'survey-core';
 import { IDocOptions, DocController, DocOptions } from './doc_controller';
 import { FlatSurvey } from './flat_layout/flat_survey';
@@ -224,7 +224,7 @@ export class SurveyPDF extends SurveyModel {
             return styles;
         });
     }
-    private stylesHash: { [id: number]: IStyles } = {}
+    private stylesHash: { [id: number]: IStyles } = {};
     public getStylesForElement(element: SurveyElement): IStyles {
         const uniqueId = element.uniqueId;
         if(!this.stylesHash[uniqueId]) {

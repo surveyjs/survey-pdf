@@ -1,7 +1,7 @@
 import { QuestionMatrixModel, MatrixRowModel,
     ItemValue, Serializer } from 'survey-core';
 import { SurveyPDF } from '../survey';
-import { DocController, IPoint, IRect } from '../doc_controller';
+import { DocController, IPoint } from '../doc_controller';
 import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
@@ -44,7 +44,7 @@ export abstract class FlatMatrixContent {
             this.question.getCellDisplayLocText(row.name, item));
         return new CompositeBrick(radioFlat, cellTextFlat);
     }
-    private radioGroupWraps: {[index: string]: RadioGroupWrap } = {}
+    private radioGroupWraps: {[index: string]: RadioGroupWrap } = {};
     private getRadioGroupWrap(fieldName: string, row: MatrixRowModel, rowIndex: number): RadioGroupWrap {
         if(!this.radioGroupWraps[fieldName]) {
             this.radioGroupWraps[fieldName] = new RadioGroupWrap(

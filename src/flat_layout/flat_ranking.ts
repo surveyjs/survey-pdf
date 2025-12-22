@@ -1,5 +1,5 @@
 import { ItemValue, QuestionRankingModel } from 'survey-core';
-import { IPoint, IRect } from '../doc_controller';
+import { IPoint } from '../doc_controller';
 import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';

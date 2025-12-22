@@ -3,7 +3,7 @@ import { SurveyPDF } from '../survey';
 import { IPoint, DocController } from '../doc_controller';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
-import { SurveyHelper, ITextAppearanceOptions, IInputAppearanceOptions } from '../helper_survey';
+import { SurveyHelper, ITextAppearanceOptions } from '../helper_survey';
 import { AdornersOptions } from '../event_handler/adorners';
 import { FlatRepository } from './flat_repository';
 import { IStyles } from '../styles';
