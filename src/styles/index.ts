@@ -11,6 +11,7 @@ export function createStylesFromTheme(theme: ITheme, callback: (options: { getCo
     variablesManager.stopCollectingVariables();
     return res;
 }
+
 export function getDefaultStylesFromTheme (theme: ITheme) {
     return createStylesFromTheme(theme, ({ getSizeVariable, getColorVariable }) => {
         const baseSize = getSizeVariable('--sjs2-base-unit-size');
