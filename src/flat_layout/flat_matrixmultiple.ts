@@ -211,7 +211,7 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
                 if(this.isMultiple && isWide) {
                     this.controller.popMargins();
                     const panelRect = SurveyHelper.mergeRects(...panelBricks);
-                    const emptyBrick = new EmptyBrick(this.controller, { ...currPoint, xRight: currPoint.xLeft + columnWidths[0], yBot: currPoint.yTop + panelRect.yBot - panelRect.yTop }, SurveyHelper.mergeObjects({}, this.styles.cell, this.styles.cellDetail));
+                    const emptyBrick = new EmptyBrick(this.controller, { ...currPoint, xRight: currPoint.xLeft + columnWidths[0], yBot: currPoint.yTop + panelRect.yBot - panelRect.yTop }, SurveyHelper.mergeObjects({}, this.styles.cell, { borderMode: BorderMode.Middle, padding: 0 }));
                     currComposite.addBrick(emptyBrick);
                 }
                 currComposite.addBrick(...panelBricks);

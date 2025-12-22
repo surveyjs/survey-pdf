@@ -276,10 +276,6 @@ export function getDefaultStylesFromTheme (theme: ITheme) {
                 }
             },
             matrixdropdownbase: {
-                cellDetail: {
-                    borderMode: 1,
-                    padding: 0
-                },
                 verticalColumnTitle: {
                     fontColor: getColorVariable('--sjs2-color-fg-basic-primary'),
                     fontSize: getSizeVariable('--sjs2-typography-font-size-small'),
