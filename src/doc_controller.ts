@@ -246,7 +246,7 @@ export class DocOptions implements IDocOptions {
     protected _readonlyRenderAs: 'auto' | 'text' | 'acroform';
     protected _compress: boolean;
     protected _applyImageFit: boolean;
-    protected _useLegacyBooleanRendering: boolean
+    protected _useLegacyBooleanRendering: boolean;
     protected _isRTL: boolean;
     protected _tagboxSelectedChoicesOnly: boolean;
     public constructor(options: IDocOptions) {

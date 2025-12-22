@@ -1,4 +1,4 @@
-import { IQuestion, QuestionSliderModel, QuestionTextModel, settings } from 'survey-core';
+import { IQuestion, QuestionSliderModel } from 'survey-core';
 import { SurveyPDF } from '../survey';
 import { IPoint, IRect, DocController } from '../doc_controller';
 import { FlatQuestion } from './flat_question';

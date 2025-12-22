@@ -1,4 +1,4 @@
-import { IQuestion, PanelModel, PageModel, Question } from 'survey-core';
+import { PanelModel, PageModel, Question } from 'survey-core';
 import { IPoint, DocController } from '../doc_controller';
 import { FlatRepository } from '../flat_layout/flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';

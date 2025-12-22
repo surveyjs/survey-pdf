@@ -25,7 +25,7 @@ export class FlatHTML extends FlatQuestion {
 
     private static correctHtmlRules: [{ searchRegExp: RegExp, replaceString: string }] = [
         { searchRegExp: /(<\/?br\s*?\/?\s*?>\s*){2,}/g, replaceString: '<br>' }
-    ]
+    ];
     protected correctHtml(html: string): string {
         FlatHTML.correctHtmlRules.forEach((rule) => {
             html = html.replace(rule.searchRegExp, rule.replaceString);

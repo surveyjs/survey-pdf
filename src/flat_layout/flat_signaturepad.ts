@@ -2,7 +2,7 @@ import { IQuestion, QuestionSignaturePadModel } from 'survey-core';
 import { SurveyPDF } from '../survey';
 import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
-import { IPoint, DocController, IRect, ISize } from '../doc_controller';
+import { IPoint, DocController, ISize } from '../doc_controller';
 import { IPdfBrick, PdfBrick } from '../pdf_render/pdf_brick';
 import { IBorderDescription, SurveyHelper } from '../helper_survey';
 import { EmptyBrick } from '../pdf_render/pdf_empty';

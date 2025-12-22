@@ -1,4 +1,4 @@
-import { SurveyModel, Question, EventBase } from 'survey-core';
+import { SurveyModel, EventBase } from 'survey-core';
 import * as SurveyCore from 'survey-core';
 import { IDocOptions, DocController } from './doc_controller';
 import { FlatSurvey } from './flat_layout/flat_survey';
@@ -154,10 +154,10 @@ export class SurveyPDF extends SurveyModel {
         new EventAsync<SurveyPDF, any>();
 
     public onRenderRadioGroupWrapAcroform: EventAsync<SurveyPDF, any> =
-    new EventAsync<SurveyPDF, any>();
+        new EventAsync<SurveyPDF, any>();
 
     public onRenderRadioItemAcroform: EventAsync<SurveyPDF, any> =
-    new EventAsync<SurveyPDF, any>();
+        new EventAsync<SurveyPDF, any>();
 
     public getUpdatedCheckItemAcroformOptions(options: any): void {
         this.onRenderCheckItemAcroform.fire(this, options);

@@ -1,4 +1,4 @@
-import { Event, EventBase } from 'survey-core';
+import { EventBase } from 'survey-core';
 import { SurveyPDF } from '../survey';
 import { DocController } from '../doc_controller';
 import { IPdfBrick } from '../pdf_render/pdf_brick';

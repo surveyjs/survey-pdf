@@ -1,4 +1,4 @@
-import { IQuestion, QuestionFileModel, surveyLocalization } from 'survey-core';
+import { IQuestion, QuestionFileModel } from 'survey-core';
 import { SurveyPDF } from '../survey';
 import { IPoint, ISize, DocController } from '../doc_controller';
 import { FlatQuestion } from './flat_question';
