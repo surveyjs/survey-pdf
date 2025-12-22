@@ -172,7 +172,6 @@ export function getDefaultStylesFromTheme (theme: ITheme) {
                 }
             },
             matrixbase: {
-                descriptionGap: getSizeVariable('--sjs2-pdf-layout-title-default-gap'),
                 minWidth: baseSize * 40,
                 titleDescriptionGap: getSizeVariable('--sjs2-pdf-layout-title-default-gap'),
                 columnMinWidth: baseSize * 15,
