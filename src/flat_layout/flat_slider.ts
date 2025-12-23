@@ -21,9 +21,9 @@ export class FlatSlider extends FlatQuestion<QuestionSliderModel> {
         if (this.question.sliderType === 'range') {
             const compositeBrick: CompositeBrick = new CompositeBrick();
             const bricks = [];
-            for (let i = 0; i < this.question.value.length; i++) {
-                const valueItem = this.question.value[i];
-                const options = this.getOptionsByValue(valueItem);
+            for (let i = 0; i < this.question.renderedValue.length; i++) {
+                const valueItem = this.question.renderedValue[i];
+                const options = this.getOptionsByValue(valueItem.toString());
                 const currentPoint = SurveyHelper.clone(point);
                 this.controller.pushMargins();
                 SurveyHelper.setColumnMargins(this.controller, 2, i, this.styles.gapBetweenColumns);
