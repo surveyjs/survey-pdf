@@ -2,11 +2,11 @@
 	{
 		"brickType": "ContainerBrick",
 		"width": 142.9361411148554,
-		"height": 51,
+		"height": 48,
 		"xLeft": 34.72145669291339,
 		"xRight": 177.65759780776878,
 		"yTop": 34.72145669291339,
-		"yBot": 85.72145669291339,
+		"yBot": 82.72145669291339,
 		"bricks": [
 			{
 				"brickType": "CompositeBrick",
@@ -57,11 +57,11 @@
 			{
 				"brickType": "CompositeBrick",
 				"width": 376.896536050499,
-				"height": 45,
+				"height": 42,
 				"xLeft": 183.65759780776878,
 				"xRight": 560.5541338582677,
 				"yTop": 40.72145669291339,
-				"yBot": 85.72145669291339,
+				"yBot": 82.72145669291339,
 				"bricks": [
 					{
 						"brickType": "CompositeBrick",
@@ -104,8 +104,8 @@
 						"height": 36,
 						"xLeft": 183.65759780776878,
 						"xRight": 560.5541338582677,
-						"yTop": 49.72145669291339,
-						"yBot": 85.72145669291339,
+						"yTop": 46.72145669291339,
+						"yBot": 82.72145669291339,
 						"appearance": {
 							"fontSize": 12,
 							"fontName": "helvetica",

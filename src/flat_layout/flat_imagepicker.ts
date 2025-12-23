@@ -7,8 +7,9 @@ import { CheckItemBrick, ICheckItemBrickAppearanceOptions } from '../pdf_render/
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
 import { IRadioItemBrickAppearanceOptions, RadioGroupWrap, RadioItemBrick } from '../pdf_render/pdf_radioitem';
+import { IQuestionImagePickerStyle } from '../styles/types';
 
-export class FlatImagePicker extends FlatQuestion<QuestionImagePickerModel> {
+export class FlatImagePicker extends FlatQuestion<QuestionImagePickerModel, IQuestionImagePickerStyle> {
     private _radioGroupWrap: any;
     protected get radioGroupWrap(): RadioGroupWrap {
         if(!this._radioGroupWrap) {
@@ -48,7 +49,7 @@ export class FlatImagePicker extends FlatQuestion<QuestionImagePickerModel> {
             compositeFlat.addBrick(labelFlat);
             buttonPoint = SurveyHelper.createPoint(labelFlat);
         }
-        buttonPoint.yTop += this.styles.gapBetweenImageInput;
+        buttonPoint.yTop += this.styles.spacing.gapBetweenImageInput;
         const height: number = itemAppearance.height;
         const buttonRect: IRect = SurveyHelper.createRect(buttonPoint, pageAvailableWidth, height);
         if (this.question.multiSelect) {
@@ -74,7 +75,8 @@ export class FlatImagePicker extends FlatQuestion<QuestionImagePickerModel> {
         return compositeFlat;
     }
     protected getColumnsInfo(): { columnsCount: number, columnWidth: number } {
-        const { gapBetweenColumns, imageMinWidth, imageMaxWidth } = this.styles;
+        const { imageMinWidth, imageMaxWidth } = this.styles;
+        const { gapBetweenColumns } = this.styles.spacing;
         const availableWidth = SurveyHelper.getPageAvailableWidth(this.controller);
         let columnsCount = this.question.colCount == 0 ? this.question.visibleChoices.length : this.question.colCount;
         let columnWidth: number;
@@ -109,7 +111,7 @@ export class FlatImagePicker extends FlatQuestion<QuestionImagePickerModel> {
                     this.question.visibleChoices[index], index);
                 rowsFlats[rowsFlats.length - 1].addBrick(itemFlat);
                 currMarginLeft = this.controller.paperWidth -
-                    this.controller.margins.right + this.styles.gapBetweenColumns;
+                    this.controller.margins.right + this.styles.spacing.gapBetweenColumns;
                 yBot = Math.max(yBot, itemFlat.yBot);
             }
             this.controller.popMargins();
@@ -118,7 +120,7 @@ export class FlatImagePicker extends FlatQuestion<QuestionImagePickerModel> {
             if (i !== rows - 1) {
                 rowsFlats[rowsFlats.length - 1].addBrick(
                     SurveyHelper.createRowlineFlat(currPoint, this.controller));
-                currPoint.yTop += this.styles.gapBetweenRows;
+                currPoint.yTop += this.styles.spacing.gapBetweenRows;
                 rowsFlats.push(new CompositeBrick());
             }
         }

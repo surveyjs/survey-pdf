@@ -7,10 +7,10 @@ import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { ContainerBrick } from '../pdf_render/pdf_container';
 import { AdornersPanelOptions } from '../event_handler/adorners';
 import { FlatRepository } from './flat_repository';
-import { IStyles } from '../styles';
+import { IPanelStyle, IQuestionStyle } from '../styles/types';
 
-export class FlatPanel<T extends PanelModel = PanelModel> {
-    constructor(protected survey: SurveyPDF, protected panel: T, protected controller: DocController, protected styles: IStyles) {}
+export class FlatPanel<T extends PanelModel = PanelModel, S extends IPanelStyle = IPanelStyle> {
+    constructor(protected survey: SurveyPDF, protected panel: T, protected controller: DocController, protected styles: S) {}
     public async generateFlats(point: IPoint): Promise<IPdfBrick[]> {
         const panelFlats: IPdfBrick[] = [];
         const panelContentPoint: IPoint = SurveyHelper.clone(point);
@@ -34,7 +34,7 @@ export class FlatPanel<T extends PanelModel = PanelModel> {
         if(this.panel.hasDescriptionUnderTitle || this.panel.hasTitle) {
             const headerFlats = await this.createHeaderFlats(currPoint);
             panelFlats.push(...headerFlats);
-            currPoint.yTop = headerFlats[headerFlats.length - 1].yBot + this.styles.contentGap + SurveyHelper.EPSILON;
+            currPoint.yTop = headerFlats[headerFlats.length - 1].yBot + this.styles.spacing.contentGap + SurveyHelper.EPSILON;
         }
         panelFlats.push(...await this.generateRowsFlats(currPoint));
         return panelFlats;
@@ -68,7 +68,7 @@ export class FlatPanel<T extends PanelModel = PanelModel> {
             }
             if (this.panel.description) {
                 if (this.panel.title) {
-                    currPoint.yTop += this.styles.titleDescriptionGap;
+                    currPoint.yTop += this.styles.spacing.titleDescriptionGap;
                 }
                 const panelDescFlat: IPdfBrick = await SurveyHelper.createTextFlat(
                     currPoint, this.controller, this.panel.locDescription, { ...this.styles.description });
@@ -83,7 +83,7 @@ export class FlatPanel<T extends PanelModel = PanelModel> {
     protected getRows(controller: DocController): Array<Array<{ element: SurveyElement, width: number }>> {
         const availableWidth = SurveyHelper.getPageAvailableWidth(controller);
         const rows: Array<Array<{ element: SurveyElement, width: number }>> = [];
-        const gapBetweenElements = this.styles.gapBetweenElements;
+        const gapBetweenElements = this.styles.spacing.gapBetweenElements;
         this.panel.rows.forEach(row => {
             let currentAvailableWidth = availableWidth + gapBetweenElements;
             let currentRow: Array<{ element: SurveyElement, width: number }> = [];
@@ -139,21 +139,21 @@ export class FlatPanel<T extends PanelModel = PanelModel> {
             const rowContainers: Array<ContainerBrick> = [];
             for (let i: number = 0; i < rowInfo.length; i++) {
                 const { element, width } = rowInfo[i];
-                const gap = this.styles.gapBetweenElements;
+                const gap = this.styles.spacing.gapBetweenElements;
                 this.controller.pushMargins();
                 this.controller.margins.left = nextMarginLeft;
                 this.controller.margins.right = this.controller.paperWidth - this.controller.margins.left - width;
                 currPoint.xLeft = this.controller.margins.left;
-                const elementStyles = this.survey.getStylesForElement(element as any as SurveyElement);
+                const elementStyles: IQuestionStyle | IPanelStyle = this.survey.getStylesForElement(element as any as SurveyElement);
                 const containerBrick = new ContainerBrick(this.controller, { ...currPoint, width: SurveyHelper.getPageAvailableWidth(this.controller) }, elementStyles.wrapper);
                 await containerBrick.setup(async (point, bricks) => {
                     if (element instanceof PanelModel) {
-                        bricks.push(...await SurveyHelper.generatePanelFlats(this.survey, this.controller, element, point, elementStyles));
+                        bricks.push(...await SurveyHelper.generatePanelFlats(this.survey, this.controller, element, point, elementStyles as IPanelStyle));
                     }
                     else {
                         await (<Question>element).waitForQuestionIsReady();
                         bricks.push(...await SurveyHelper.generateQuestionFlats(this.survey,
-                            this.controller, <Question>element, point, elementStyles));
+                            this.controller, <Question>element, point, elementStyles as IQuestionStyle));
                     }
                 });
                 rowContainers.push(containerBrick);
@@ -171,7 +171,7 @@ export class FlatPanel<T extends PanelModel = PanelModel> {
                 rowContainers.forEach((elementFlat: ContainerBrick) => rowsFlats.push(...elementFlat.getBricks()));
                 rowsFlats.push(SurveyHelper.createRowlineFlat(currPoint, this.controller));
                 currPoint.xLeft = point.xLeft;
-                currPoint.yTop += this.styles.gapBetweenRows;
+                currPoint.yTop += this.styles.spacing.gapBetweenRows;
                 nextMarginLeft = currPoint.xLeft;
             }
         }

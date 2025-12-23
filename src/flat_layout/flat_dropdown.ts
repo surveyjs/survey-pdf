@@ -6,8 +6,9 @@ import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { DropdownBrick } from '../pdf_render/pdf_dropdown';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
+import { IQuestionDropdownStyle } from '../styles/types';
 
-export class FlatDropdown extends FlatQuestion<QuestionDropdownModel> {
+export class FlatDropdown extends FlatQuestion<QuestionDropdownModel, IQuestionDropdownStyle> {
     protected async generateItemComment(point: IPoint): Promise<IPdfBrick> {
         const commentModel = this.question.getCommentTextAreaModel(this.question.selectedItem);
         const shouldRenderReadOnly = SurveyHelper.shouldRenderReadOnly(this.question, this.controller, this.question.isReadOnly);
@@ -46,7 +47,7 @@ export class FlatDropdown extends FlatQuestion<QuestionDropdownModel> {
         const compositeFlat: CompositeBrick = new CompositeBrick(valueBrick);
         if (this.question.isShowingChoiceComment) {
             const otherPoint: IPoint = SurveyHelper.createPoint(compositeFlat);
-            otherPoint.yTop += this.styles.gapBetweenRows;
+            otherPoint.yTop += this.styles.spacing.commentGap;
             compositeFlat.addBrick(await this.generateItemComment(otherPoint));
         }
         return [compositeFlat];

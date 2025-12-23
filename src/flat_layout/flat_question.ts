@@ -6,17 +6,17 @@ import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper, ITextAppearanceOptions } from '../helper_survey';
 import { AdornersOptions } from '../event_handler/adorners';
 import { FlatRepository } from './flat_repository';
-import { IStyles } from '../styles';
 import { ContainerBrick } from '../pdf_render/pdf_container';
+import { IQuestionStyle } from '../styles/types';
 
 export interface IFlatQuestion {
     generateFlatsContent(point: IPoint): Promise<IPdfBrick[]>;
     generateFlats(point: IPoint): Promise<IPdfBrick[]>;
 }
 
-export class FlatQuestion<T extends Question = Question> implements IFlatQuestion {
+export class FlatQuestion<T extends Question = Question, S extends IQuestionStyle = IQuestionStyle> implements IFlatQuestion {
     public constructor(protected survey: SurveyPDF,
-        protected question: T, protected controller: DocController, protected styles: Readonly<IStyles>) {
+        protected question: T, protected controller: DocController, protected styles: S) {
     }
     private async generateFlatTitle(point: IPoint): Promise<IPdfBrick> {
         const composite: CompositeBrick = new CompositeBrick();
@@ -38,7 +38,7 @@ export class FlatQuestion<T extends Question = Question> implements IFlatQuestio
                 noFlat = await SurveyHelper.createTextFlat(currPoint, this.controller, noText, numberAppearance);
             }
             composite.addBrick(noFlat);
-            currPoint.xLeft = noFlat.xRight + this.styles.titleNumberGap;
+            currPoint.xLeft = noFlat.xRight + this.styles.spacing.titleNumberGap;
         }
         this.controller.pushMargins();
         this.controller.margins.left = currPoint.xLeft;
@@ -51,7 +51,7 @@ export class FlatQuestion<T extends Question = Question> implements IFlatQuestio
             const requiredText: string = this.question.requiredMark;
             if (SurveyHelper.hasHtml(this.question.locTitle)) {
                 currPoint = SurveyHelper.createPoint(textFlat.unfold()[0], false, false);
-                currPoint.xLeft += this.styles.titleRequiredGap;
+                currPoint.xLeft += this.styles.spacing.titleRequiredGap;
                 this.controller.pushMargins();
                 this.controller.margins.right = this.controller.paperWidth -
                         this.controller.margins.left - this.controller.measureText(requiredText, requiredAppearance).width;
@@ -61,7 +61,7 @@ export class FlatQuestion<T extends Question = Question> implements IFlatQuestio
             }
             else {
                 currPoint = SurveyHelper.createPoint(textFlat.unfold().pop(), false, true);
-                currPoint.xLeft += this.styles.titleRequiredGap;
+                currPoint.xLeft += this.styles.spacing.titleRequiredGap;
                 composite.addBrick(await SurveyHelper.createTextFlat(currPoint, this.controller, requiredText, requiredAppearance));
             }
         }
@@ -80,8 +80,8 @@ export class FlatQuestion<T extends Question = Question> implements IFlatQuestio
             bricks.push(titleFlat);
             if(this.question.hasDescriptionUnderTitle) {
                 const descPoint: IPoint = SurveyHelper.createPoint(titleFlat, true, false);
-                descPoint.yTop += this.styles.titleDescriptionGap;
-                descPoint.xLeft += this.styles.contentIndent;
+                descPoint.yTop += this.styles.spacing.titleDescriptionGap;
+                descPoint.xLeft += this.styles.spacing.contentIndent;
                 bricks.push(await this.generateFlatDescription(descPoint));
             }
         });
@@ -92,7 +92,6 @@ export class FlatQuestion<T extends Question = Question> implements IFlatQuestio
         const text: LocalizableString = this.question.locCommentText;
         const otherTextFlat: IPdfBrick = await SurveyHelper.createTextFlat(point, this.controller, text);
         const otherPoint: IPoint = SurveyHelper.createPoint(otherTextFlat);
-        otherPoint.yTop += this.styles.gapBetweenRows;
         const shouldRenderReadOnly = SurveyHelper.shouldRenderReadOnly(this.question, this.controller, this.question.isReadOnly);
         const appearance = SurveyHelper.getPatchedTextAppearanceOptions(this.controller, SurveyHelper.mergeObjects({}, this.styles.comment, shouldRenderReadOnly ? this.styles.commentReadOnly : undefined));
         return new CompositeBrick(otherTextFlat, await SurveyHelper.createCommentFlat(
@@ -129,11 +128,11 @@ export class FlatQuestion<T extends Question = Question> implements IFlatQuestio
             currPoint.yTop = SurveyHelper.mergeRects(...contentFlats).yBot;
         }
         if (this.question.hasComment) {
-            currPoint.yTop += this.styles.commentGap;
+            currPoint.yTop += this.styles.spacing.commentGap;
             flats.push(await this.generateFlatsComment(currPoint));
         }
         if (this.question.hasDescriptionUnderInput) {
-            currPoint.yTop += this.styles.contentDescriptionGap;
+            currPoint.yTop += this.styles.spacing.contentDescriptionGap;
             flats.push(await this.generateFlatDescription(currPoint));
         }
 
@@ -157,11 +156,11 @@ export class FlatQuestion<T extends Question = Question> implements IFlatQuestio
                 const headerFlat = await this.generateFlatHeader(indentPoint);
                 compositeBrick.addBrick(headerFlat);
                 let contentPoint: IPoint = SurveyHelper.createPoint(headerFlat);
-                const indent = this.styles.contentIndent;
+                const indent = this.styles.spacing.contentIndent;
                 contentPoint.xLeft += indent;
                 compositeBrick.addBrick(SurveyHelper.createRowlineFlat(
                     SurveyHelper.createPoint(headerFlat), this.controller));
-                contentPoint.yTop += this.styles.contentGapVertical + SurveyHelper.EPSILON;
+                contentPoint.yTop += this.styles.spacing.contentGapVertical + SurveyHelper.EPSILON;
                 this.controller.pushMargins();
                 this.controller.margins.left += indent;
                 const contentFlats: IPdfBrick[] = await this.generateFlatsContentWithOptionalElements(contentPoint);
@@ -176,7 +175,7 @@ export class FlatQuestion<T extends Question = Question> implements IFlatQuestio
             case 'bottom': {
                 const contentPoint: IPoint = SurveyHelper.clone(indentPoint);
                 this.controller.pushMargins();
-                const indent = this.styles.contentIndent;
+                const indent = this.styles.spacing.contentIndent;
                 contentPoint.xLeft += indent;
                 this.controller.margins.left += indent;
                 const contentFlats: IPdfBrick[] = await this.generateFlatsContentWithOptionalElements(contentPoint);
@@ -186,7 +185,7 @@ export class FlatQuestion<T extends Question = Question> implements IFlatQuestio
                 if (flats.length !== 0) {
                     titlePoint.yTop = flats[flats.length - 1].yBot;
                 }
-                titlePoint.yTop += this.styles.contentGapVertical;
+                titlePoint.yTop += this.styles.spacing.contentGapVertical;
                 flats.push(await this.generateFlatHeader(titlePoint));
                 break;
             }
@@ -197,7 +196,7 @@ export class FlatQuestion<T extends Question = Question> implements IFlatQuestio
                 const headerFlat: CompositeBrick = await this.generateFlatHeader(indentPoint);
                 const contentPoint: IPoint = SurveyHelper.createPoint(headerFlat, false, true);
                 this.controller.popMargins();
-                contentPoint.xLeft += this.styles.contentGapHorizontal;
+                contentPoint.xLeft += this.styles.spacing.contentGapHorizontal;
                 this.controller.margins.left = contentPoint.xLeft;
                 const contentFlats: IPdfBrick[] = await this.generateFlatsContentWithOptionalElements(contentPoint);
                 if(contentFlats !== null && contentFlats.length !== 0) {
@@ -213,7 +212,7 @@ export class FlatQuestion<T extends Question = Question> implements IFlatQuestio
                 const contentPoint: IPoint = SurveyHelper.clone(indentPoint);
                 this.controller.pushMargins();
                 if (titleLocation !== titleLocationMatrix) {
-                    const indent = this.styles.contentIndent;
+                    const indent = this.styles.spacing.contentIndent;
                     contentPoint.xLeft += indent;
                     this.controller.margins.left += indent;
                 }

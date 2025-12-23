@@ -4,8 +4,9 @@ import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { IInputAppearanceOptions, SurveyHelper } from '../helper_survey';
+import { IQuestionExpressionStyle } from '../styles/types';
 
-export class FlatExpression extends FlatQuestion<QuestionExpressionModel> {
+export class FlatExpression extends FlatQuestion<QuestionExpressionModel, IQuestionExpressionStyle> {
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         return [await SurveyHelper.createCommentFlat(point, this.controller, {
             value: this.question.displayValue,

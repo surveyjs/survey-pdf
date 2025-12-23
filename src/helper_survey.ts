@@ -14,9 +14,9 @@ import { CompositeBrick } from './pdf_render/pdf_composite';
 import { ITextFieldBrickOptions, TextFieldBrick } from './pdf_render/pdf_textfield';
 import { FlatPanel } from './flat_layout/flat_panel';
 import { FlatPage } from './flat_layout/flat_page';
-import { IStyles } from './styles';
 import { mergeRects } from './utils';
 import { getImageUtils } from './utils/image';
+import { IPageStyle, IPanelStyle, IQuestionStyle } from './styles/types';
 
 export interface ITextAppearanceOptions {
     fontStyle: string;
@@ -653,7 +653,7 @@ export class SurveyHelper {
         return { scaleX: (flat.width - borderWidth * 2) / flat.width, scaleY: (flat.height - borderWidth * 2) / flat.height };
     }
     public static async generateQuestionFlats(survey: SurveyPDF,
-        controller: DocController, question: Question, point: IPoint, styles: IStyles): Promise<IPdfBrick[]> {
+        controller: DocController, question: Question, point: IPoint, styles: IQuestionStyle): Promise<IPdfBrick[]> {
         const questionType: string = this.getContentQuestionType(question, survey);
         const flatQuestion: IFlatQuestion = FlatRepository.getInstance().
             create(survey, question, controller, styles, questionType);
@@ -661,12 +661,12 @@ export class SurveyHelper {
         return [...questionFlats];
     }
     public static async generatePanelFlats(survey: SurveyPDF,
-        controller: DocController, panel: PanelModel, point: IPoint, styles: IStyles): Promise<IPdfBrick[]> {
+        controller: DocController, panel: PanelModel, point: IPoint, styles: IPanelStyle): Promise<IPdfBrick[]> {
         const panelFlats = await new FlatPanel(survey, panel, controller, styles).generateFlats(point);
         return [...panelFlats];
     }
     public static async generatePageFlats(survey: SurveyPDF,
-        controller: DocController, page: PageModel, point: IPoint, styles: IStyles): Promise<IPdfBrick[]> {
+        controller: DocController, page: PageModel, point: IPoint, styles: IPageStyle): Promise<IPdfBrick[]> {
         const pageFlats = await new FlatPage(survey, page, controller, styles).generateFlats(point);
         return [...pageFlats];
     }

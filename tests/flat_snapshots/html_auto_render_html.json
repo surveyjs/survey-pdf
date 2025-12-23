@@ -20,53 +20,6 @@
 					"html": "<div class=\"__surveypdf_html\" style=\"font-size: 12pt; font-weight: normal; font-family: helvetica; color: #1c1b20; lineHeight: 18\"><style>.__surveypdf_html p { margin: 0; line-height: 18pt } body { margin: 0; }</style><b>STRONG POWER</b></div>"
 				},
 				"appearance": {
-					"minWidth": 150,
-					"titleLeftWidthPers": 0.2718281828459045,
-					"titleRequiredGap": 3,
-					"titleNumberGap": 3,
-					"contentGapVertical": 6,
-					"contentGapHorizontal": 6,
-					"contentIndent": 0,
-					"commentGap": 6,
-					"contentDescriptionGap": 6,
-					"titleDescriptionGap": 3,
-					"wrapper": {
-						"padding": [
-							6,
-							6
-						],
-						"borderRadius": 0,
-						"borderWidth": 0.75,
-						"borderColor": "#d4d4d4",
-						"backgroundColor": "#ffffff"
-					},
-					"title": {
-						"fontColor": "#1c1b20",
-						"fontSize": 9,
-						"lineHeight": 12,
-						"fontStyle": "normal"
-					},
-					"description": {
-						"fontColor": "#1c1b2099",
-						"fontSize": 9,
-						"fontStyle": "normal",
-						"lineHeight": 12
-					},
-					"comment": {
-						"fontSize": 12,
-						"lineHeight": 18,
-						"fontColor": "#1c1b20",
-						"backgroundColor": "#ffffff"
-					},
-					"commentReadOnly": {
-						"backgroundColor": null,
-						"fontColor": "#1c1b20"
-					},
-					"input": {
-						"fontColor": "#1c1b20",
-						"fontSize": 12,
-						"lineHeight": 18
-					},
 					"fontColor": "#1c1b20",
 					"fontSize": 12,
 					"lineHeight": 18

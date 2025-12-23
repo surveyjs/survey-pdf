@@ -5,9 +5,10 @@ import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { SurveyHelper } from '../helper_survey';
 import { EmptyBrick } from '../pdf_render/pdf_empty';
+import { IQuestionHtmlStyle } from '../styles/types';
 
 export type IHTMLRenderType = 'auto' | 'standard' | 'image';
-export class FlatHTML extends FlatQuestion<QuestionHtmlModel> {
+export class FlatHTML extends FlatQuestion<QuestionHtmlModel, IQuestionHtmlStyle> {
     private chooseRender(html: string): IHTMLRenderType {
         if (/<[^>]*style[^<]*>/.test(html) ||
             /<[^>]*table[^<]*>/.test(html) ||
@@ -33,7 +34,7 @@ export class FlatHTML extends FlatQuestion<QuestionHtmlModel> {
         }
         if (renderAs === 'auto') renderAs = this.controller.htmlRenderAs;
         if (renderAs === 'auto') renderAs = this.chooseRender(SurveyHelper.getLocString(this.question.locHtml));
-        const html: string = SurveyHelper.createHtmlContainerBlock(SurveyHelper.getLocString(this.question.locHtml), this.controller, this.styles);
+        const html: string = SurveyHelper.createHtmlContainerBlock(SurveyHelper.getLocString(this.question.locHtml), this.controller, this.styles.text);
         if (renderAs === 'image') {
             const width: number = SurveyHelper.getPageAvailableWidth(this.controller);
             const { url, aspect }: { url: string, aspect: number } =
@@ -42,7 +43,7 @@ export class FlatHTML extends FlatQuestion<QuestionHtmlModel> {
             return [await SurveyHelper.createImageFlat(point, this.question, this.controller, { link: url, width, height })];
         }
         return [SurveyHelper.splitHtmlRect(this.controller, await SurveyHelper.createHTMLFlat(
-            point, this.controller, this.correctHtml(html), this.styles))];
+            point, this.controller, this.correctHtml(html), this.styles.text))];
     }
 }
 

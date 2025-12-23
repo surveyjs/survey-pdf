@@ -3,7 +3,7 @@ import { DocController, IRect } from '../doc_controller';
 import { BorderRect, IBorderAppearanceOptions, SurveyHelper } from '../helper_survey';
 
 export interface IEmptyBrickAppearanceOptions extends IBorderAppearanceOptions {
-    backgroundColor?: string;
+    color?: string;
 }
 
 export class EmptyBrick extends PdfBrick {
@@ -13,8 +13,8 @@ export class EmptyBrick extends PdfBrick {
     }
 
     public async renderInteractive(): Promise<void> {
-        if(this.appearance.backgroundColor) {
-            this.controller.setFillColor(this.appearance.backgroundColor);
+        if(this.appearance.color) {
+            this.controller.setFillColor(this.appearance.color);
             const { lines, point } = SurveyHelper.getRoundedShape(this.contentRect, { ...this.appearance, borderRect: BorderRect.All });
             this.controller.doc.lines(lines, point.xLeft, point.yTop, [1, 1], 'F');
             this.controller.restoreFillColor();

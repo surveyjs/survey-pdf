@@ -17,17 +17,17 @@ export class FlatSurvey {
         if (survey.showTitle) {
             const styles = survey.styles;
             if (survey.title) {
-                const textOptions:Partial<ITextAppearanceOptions> = { ...styles.title };
+                const textOptions:Partial<ITextAppearanceOptions> = { ...styles.survey.title };
                 const surveyTitleFlat: IPdfBrick = await SurveyHelper.createTextFlat(point, controller, survey.locTitle, textOptions);
                 compositeFlat.addBrick(surveyTitleFlat);
                 point = SurveyHelper.createPoint(surveyTitleFlat);
             }
             if (survey.description) {
                 if (survey.title) {
-                    point.yTop += styles.titleDescriptionGap;
+                    point.yTop += styles.survey.spacing.titleDescriptionGap;
                 }
                 compositeFlat.addBrick(await SurveyHelper.createTextFlat(
-                    point, controller, survey.locDescription, { ...styles.description }));
+                    point, controller, survey.locDescription, { ...styles.survey.description }));
             }
         }
         return compositeFlat;
@@ -109,7 +109,7 @@ export class FlatSurvey {
             point.yTop = SurveyHelper.createPoint(SurveyHelper.mergeRects(...flats[0])).yTop;
             flats[0].push(SurveyHelper.createRowlineFlat(point, controller));
             const styles = survey.styles;
-            point.yTop += styles.contentGap + SurveyHelper.EPSILON;
+            point.yTop += styles.survey.spacing.contentGap + SurveyHelper.EPSILON;
         }
         for (let i: number = 0; i < survey.visiblePages.length; i++) {
             survey.currentPage = survey.visiblePages[i];

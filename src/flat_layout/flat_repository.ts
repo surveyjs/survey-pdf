@@ -3,13 +3,13 @@ import { SurveyPDF } from '../survey';
 import { DocController } from '../doc_controller';
 import { IFlatQuestion, FlatQuestion } from './flat_question';
 import { FlatQuestionDefault } from './flat_default';
-import { IStyles } from '../styles';
+import { IQuestionStyle } from '../styles/types';
 
 export type FlatConstructor = new (
     survey: SurveyPDF,
     question: IQuestion,
     controller: DocController,
-    styles: IStyles
+    styles: IQuestionStyle
 ) => IFlatQuestion;
 export class FlatRepository {
     private questions: { [index: string]: FlatConstructor } = {};
@@ -27,7 +27,7 @@ export class FlatRepository {
         return this.questions[type];
     }
     public create(survey: SurveyPDF, question: Question,
-        docController: DocController, styles: IStyles, type?: string): IFlatQuestion {
+        docController: DocController, styles: IQuestionStyle, type?: string): IFlatQuestion {
         const questionType: string = typeof type === 'undefined' ? question.getType() : type;
         let rendererConstructor = this.getRenderer(questionType);
         if(!rendererConstructor) {

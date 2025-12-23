@@ -2,11 +2,9 @@
     return {};
 };
 
-import { Question } from 'survey-core';
 import { SurveyPDF } from '../src/survey';
 import { IPoint, IRect, IDocOptions, DocOptions, DocController } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
-import { FlatQuestion } from '../src/flat_layout/flat_question';
 import { FlatTextbox } from '../src/flat_layout/flat_textbox';
 import { FlatCheckbox } from '../src/flat_layout/flat_checkbox';
 import { FlatRadiogroup } from '../src/flat_layout/flat_radiogroup';
@@ -14,7 +12,6 @@ import { PagePacker } from '../src/page_layout/page_packer';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
-import { title } from 'process';
 let __dummy_tx = new FlatTextbox(null, null, null);
 let __dummy_cb = new FlatCheckbox(null, null, null);
 let __dummy_rg = new FlatRadiogroup(null, null, null);
@@ -71,12 +68,12 @@ test('Long checkbox with indent', async () => {
     leftTopPoint.xLeft += controller.measureText(json.questions[0].indent).width;
     const styles = survey.getStylesForElement(survey.getAllQuestions()[0]);
     TestHelper.equalPoint(expect, packs[0][0], { xLeft: leftTopPoint.xLeft, yTop: leftTopPoint.yTop });
-    leftTopPoint.yTop += styles.title.lineHeight + styles.label.lineHeight + styles.gapBetweenRows + styles.contentGapVertical;
+    leftTopPoint.yTop += styles.title.lineHeight + styles.label.lineHeight + styles.spacing.gapBetweenRows + styles.spacing.contentGapVertical;
     TestHelper.equalPoint(expect, packs[0][1], leftTopPoint);
     leftTopPoint.yTop = controller.leftTopPoint.yTop;
     for (let i: number = 0; i < 3; i++) {
         TestHelper.equalPoint(expect, packs[1][i], leftTopPoint);
-        leftTopPoint.yTop += styles.label.lineHeight + styles.gapBetweenRows;
+        leftTopPoint.yTop += styles.label.lineHeight + styles.spacing.gapBetweenRows;
     }
 });
 test('Check two textbox flats sort order', async () => {
@@ -294,7 +291,7 @@ test('Check yTop on new page with panel', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
     expect(packs.length).toBe(3);
-    expect(packs[2][0].yTop).toBeCloseTo(packs[2][1].yTop - styles.label.lineHeight - styles.gapBetweenRows);
+    expect(packs[2][0].yTop).toBeCloseTo(packs[2][1].yTop - styles.label.lineHeight - styles.spacing.gapBetweenRows);
 });
 test('Check adding new page for lack of place before new page', async () => {
     let json: any = {

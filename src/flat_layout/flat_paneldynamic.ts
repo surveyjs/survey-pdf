@@ -4,8 +4,9 @@ import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { SurveyHelper } from '../helper_survey';
+import { IQuestionPanelDynamicStyle } from '../styles/types';
 
-export class FlatPanelDynamic extends FlatQuestion<QuestionPanelDynamicModel> {
+export class FlatPanelDynamic extends FlatQuestion<QuestionPanelDynamicModel, IQuestionPanelDynamicStyle> {
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         const flats: IPdfBrick[] = [];
         const currPoint: IPoint = SurveyHelper.clone(point);
@@ -14,7 +15,7 @@ export class FlatPanelDynamic extends FlatQuestion<QuestionPanelDynamicModel> {
 
             if (panelFlats.length !== 0) {
                 currPoint.yTop = SurveyHelper.mergeRects(...panelFlats).yBot;
-                currPoint.yTop += this.styles.gapBetweenPanels;
+                currPoint.yTop += this.styles.spacing.gapBetweenPanels;
                 flats.push(...panelFlats);
             }
         }

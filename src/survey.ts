@@ -9,9 +9,11 @@ import { EventHandler } from './event_handler/event_handler';
 import { DrawCanvas } from './event_handler/draw_canvas';
 import { AdornersOptions, AdornersPanelOptions, AdornersPageOptions } from './event_handler/adorners';
 import { SurveyHelper } from './helper_survey';
-import { createStylesFromTheme, getDefaultStylesFromTheme, IStyles } from './styles';
+import { IDocStyles } from './styles/types';
+import { createStylesFromTheme, getDefaultStylesFromTheme } from './styles';
 import { DefaultLight } from './themes/default-light';
 import { parsePadding } from './utils';
+import { ITextStyle, ISelectionInputStyle, IQuestionStyle, IPageStyle, IPanelStyle } from './styles/types';
 
 /**
  * The `SurveyPDF` object enables you to export your surveys and forms to PDF documents.
@@ -185,23 +187,23 @@ export class SurveyPDF extends SurveyModel {
         });
     }
 
-    public onGetQuestionStyles = new EventBase<SurveyPDF, { question: Question, styles: IStyles, getColorVariable: (name: string) => string, getSizeVariable: (name: string) => number }>;
-    public onGetPanelStyles = new EventBase<SurveyPDF, { panel: PanelModel, styles: IStyles, getColorVariable: (name: string) => string, getSizeVariable: (name: string) => number }>;
-    public onGetPageStyles = new EventBase<SurveyPDF, { page: PanelModel, styles: IStyles, getColorVariable: (name: string) => string, getSizeVariable: (name: string) => number }>;
-    public onGetItemStyles = new EventBase<SurveyPDF, { question: Question, item: ItemValue, styles: IStyles, getColorVariable: (name: string) => string, getSizeVariable: (name: string) => number}>;
+    public onGetQuestionStyles = new EventBase<SurveyPDF, { question: Question, styles: IQuestionStyle, getColorVariable: (name: string) => string, getSizeVariable: (name: string) => number }>;
+    public onGetPanelStyles = new EventBase<SurveyPDF, { panel: PanelModel, styles: IPanelStyle, getColorVariable: (name: string) => string, getSizeVariable: (name: string) => number }>;
+    public onGetPageStyles = new EventBase<SurveyPDF, { page: PanelModel, styles: IPageStyle, getColorVariable: (name: string) => string, getSizeVariable: (name: string) => number }>;
+    public onGetItemStyles = new EventBase<SurveyPDF, { question: Question, item: ItemValue, styles: { label: ITextStyle, input: ISelectionInputStyle }, getColorVariable: (name: string) => string, getSizeVariable: (name: string) => number}>;
 
-    private _styles: IStyles;
-    public get styles(): IStyles {
+    private _styles: IDocStyles;
+    public get styles(): IDocStyles {
         if(!this._styles) {
             this._styles = getDefaultStylesFromTheme(this.theme);
         }
         return this._styles;
     }
-    public set styles(styles: IStyles) {
+    public set styles(styles: IDocStyles) {
         SurveyHelper.mergeObjects(this.styles, styles);
     }
 
-    public setStyles(callback: (options: { getColorVariable: (name: string) => string, getSizeVariable: (name: string) => number }) => IStyles) {
+    public setStyles(callback: (options: { getColorVariable: (name: string) => string, getSizeVariable: (name: string) => number }) => IDocStyles) {
         this.styles = createStylesFromTheme(this.theme, callback);
     }
     private _theme: ITheme;
@@ -213,7 +215,7 @@ export class SurveyPDF extends SurveyModel {
         this._styles = undefined;
         this.stylesHash = {};
     }
-    public getStylesForItem(question: Question, item: ItemValue, styles: IStyles): IStyles {
+    public getStylesForItem(question: Question, item: ItemValue, styles: { label: ITextStyle, input: ISelectionInputStyle }): { label: ITextStyle, input: ISelectionInputStyle } {
         return createStylesFromTheme(this.theme, (options) => {
             const eventOptions = {
                 getColorVariable: options.getColorVariable,
@@ -224,8 +226,8 @@ export class SurveyPDF extends SurveyModel {
             return styles;
         });
     }
-    private stylesHash: { [id: number]: IStyles } = {};
-    public getStylesForElement(element: SurveyElement): IStyles {
+    private stylesHash: { [id: number]: IQuestionStyle | IPanelStyle | IPageStyle } = {};
+    public getStylesForElement<T extends IQuestionStyle | IPanelStyle | IPageStyle = IQuestionStyle>(element: SurveyElement): T {
         const uniqueId = element.uniqueId;
         if(!this.stylesHash[uniqueId]) {
             const styles = this.styles;
@@ -237,7 +239,7 @@ export class SurveyPDF extends SurveyModel {
             }
             const res = {};
             types.forEach(type => {
-                SurveyHelper.mergeObjects(res, styles[type] ?? {});
+                SurveyHelper.mergeObjects(res, (styles as any)[type] ?? {});
             });
             this.stylesHash[uniqueId] = createStylesFromTheme(this.theme, (options) => {
                 const eventOptions = {
@@ -257,7 +259,7 @@ export class SurveyPDF extends SurveyModel {
                 return res;
             });
         }
-        return this.stylesHash[uniqueId];
+        return this.stylesHash[uniqueId] as T;
     }
     private correctBricksPosition(controller: DocController, flats: IPdfBrick[][]) {
         if(controller.isRTL) {
@@ -319,7 +321,7 @@ export class SurveyPDF extends SurveyModel {
                 controller.addPage();
             }
             controller.setPage(i);
-            controller.setFillColor(this.styles.backgroundColor);
+            controller.setFillColor(this.styles.survey.backgroundColor);
             controller.doc.rect(0, 0, controller.doc.internal.pageSize.getWidth(), controller.doc.internal.pageSize.getHeight(), 'F');
             controller.restoreFillColor();
             for (let j: number = 0; j < packs[i].length; j++) {
@@ -339,7 +341,7 @@ export class SurveyPDF extends SurveyModel {
         this.stylesHash = {};
     }
     private createController(): DocController {
-        const marginsFromStyles = parsePadding(this.styles.padding);
+        const marginsFromStyles = parsePadding(this.styles.survey.padding);
         Object.keys(marginsFromStyles).forEach((key: 'top' | 'left' | 'bot' | 'right') => {
             marginsFromStyles[key] /= DocOptions.MM_TO_PT;
         });

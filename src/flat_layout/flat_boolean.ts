@@ -1,15 +1,14 @@
 import { LocalizableString, QuestionBooleanModel } from 'survey-core';
-import { SurveyPDF } from '../survey';
-import { IPoint, DocController, IRect } from '../doc_controller';
+import { IPoint, IRect } from '../doc_controller';
 import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper, ITextAppearanceOptions } from '../helper_survey';
-import { IStyles } from '../styles';
 import { CheckItemBrick, ICheckItemBrickAppearanceOptions } from '../pdf_render/pdf_checkitem';
 import { IRadioItemBrickAppearanceOptions, RadioGroupWrap, RadioItemBrick } from '../pdf_render/pdf_radioitem';
-export class FlatBooleanCheckbox extends FlatQuestion<QuestionBooleanModel> {
+import { IQuestionBooleanStyle } from '../styles/types';
+export class FlatBooleanCheckbox extends FlatQuestion<QuestionBooleanModel, IQuestionBooleanStyle> {
     public getInputAppearance(isReadOnly: boolean, isChecked: boolean):ICheckItemBrickAppearanceOptions & { width: number, height: number } {
         const styles = SurveyHelper.mergeObjects({}, this.styles.input, this.styles.checkboxInput);
         if(isReadOnly) {
@@ -35,7 +34,7 @@ export class FlatBooleanCheckbox extends FlatQuestion<QuestionBooleanModel> {
             }, appearance);
         compositeFlat.addBrick(itemFlat);
         const textPoint: IPoint = SurveyHelper.clone(point);
-        textPoint.xLeft = itemFlat.xRight + this.styles.gapBetweenItemText;
+        textPoint.xLeft = itemFlat.xRight + this.styles.spacing.gapBetweenItemText;
         const locLabelText: LocalizableString = this.question.isIndeterminate ? null :
             this.question.booleanValue ? this.question.locLabelTrue : this.question.locLabelFalse;
         if (locLabelText !== null && locLabelText.renderedHtml !== null) {
@@ -48,12 +47,8 @@ export class FlatBooleanCheckbox extends FlatQuestion<QuestionBooleanModel> {
         return [compositeFlat];
     }
 }
-export class FlatBoolean extends FlatQuestion<QuestionBooleanModel> {
+export class FlatBoolean extends FlatQuestion<QuestionBooleanModel, IQuestionBooleanStyle> {
     private _radioGroupWrap: RadioGroupWrap;
-    constructor(protected survey: SurveyPDF,
-        question: QuestionBooleanModel, protected controller: DocController, styles: IStyles) {
-        super(survey, question, controller, styles);
-    }
     public getInputAppearance(isReadOnly: boolean, isChecked: boolean):IRadioItemBrickAppearanceOptions & { width: number, height: number } {
         const styles = SurveyHelper.mergeObjects({}, this.styles.input, this.styles.radioInput);
         if(isReadOnly) {
@@ -94,7 +89,7 @@ export class FlatBoolean extends FlatQuestion<QuestionBooleanModel> {
 
         compositeFlat.addBrick(itemFlat);
         const textPoint: IPoint = SurveyHelper.clone(point);
-        textPoint.xLeft = itemFlat.xRight + this.styles.gapBetweenItemText;
+        textPoint.xLeft = itemFlat.xRight + this.styles.spacing.gapBetweenItemText;
         if (item.locText.renderedHtml !== null) {
             const textFlat = await SurveyHelper.createTextFlat(
                 textPoint, this.controller, item.locText, textOptions);
@@ -120,7 +115,7 @@ export class FlatBoolean extends FlatQuestion<QuestionBooleanModel> {
         let index = 0;
         for(let item of items) {
             this.controller.pushMargins();
-            SurveyHelper.setColumnMargins(this.controller, 2, index, this.styles.gapBetweenColumns);
+            SurveyHelper.setColumnMargins(this.controller, 2, index, this.styles.spacing.gapBetweenColumns);
             currPoint.xLeft = this.controller.margins.left;
             const itemFlat: IPdfBrick = await this.generateFlatComposite(
                 currPoint, item, index);

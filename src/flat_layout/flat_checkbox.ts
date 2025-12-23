@@ -5,10 +5,10 @@ import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { CheckItemBrick, ICheckItemBrickAppearanceOptions } from '../pdf_render/pdf_checkitem';
 import { SurveyHelper } from '../helper_survey';
-import { IStyles } from 'src/styles';
+import { ISelectionInputStyle, IQuestionCheckboxStyle } from '../styles/types';
 
-export class FlatCheckbox<T extends QuestionCheckboxModel = QuestionCheckboxModel> extends FlatSelectBase<T> {
-    public generateFlatItem(point: IPoint, item: ItemValue, index: number, styles: IStyles): IPdfBrick {
+export class FlatCheckbox<T extends QuestionCheckboxModel = QuestionCheckboxModel> extends FlatSelectBase<T, IQuestionCheckboxStyle> {
+    public generateFlatItem(point: IPoint, item: ItemValue, index: number, styles: ISelectionInputStyle): IPdfBrick {
         const rect: IRect = SurveyHelper.createRect(point, styles.width, styles.height);
         const isReadOnly = this.question.isReadOnly || !item.isEnabled;
         const shouldRenderReadOnly = isReadOnly && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform' || this.controller.compress;

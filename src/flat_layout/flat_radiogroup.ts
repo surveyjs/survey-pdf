@@ -5,9 +5,9 @@ import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { IRadioItemBrickAppearanceOptions, RadioGroupWrap, RadioItemBrick } from '../pdf_render/pdf_radioitem';
 import { FlatSelectBase } from './flat_selectbase';
 import { SurveyHelper } from '../helper_survey';
-import { IStyles } from 'src/styles';
+import { IQuestionRadiogroupStyle, ISelectionInputStyle } from '../styles/types';
 
-export class FlatRadiogroup extends FlatSelectBase<QuestionRadiogroupModel> {
+export class FlatRadiogroup extends FlatSelectBase<QuestionRadiogroupModel, IQuestionRadiogroupStyle> {
     private _radioGroupWrap: RadioGroupWrap;
     private get radioGroupWrap(): RadioGroupWrap {
         if(!this._radioGroupWrap) {
@@ -24,7 +24,7 @@ export class FlatRadiogroup extends FlatSelectBase<QuestionRadiogroupModel> {
         }
         return this._radioGroupWrap;
     }
-    public generateFlatItem(point: IPoint, item: ItemValue, index: number, styles: IStyles): IPdfBrick {
+    public generateFlatItem(point: IPoint, item: ItemValue, index: number, styles: ISelectionInputStyle): IPdfBrick {
         const rect: IRect = SurveyHelper.createRect(point, styles.width, styles.height);
         return new RadioItemBrick(this.controller, rect, this.radioGroupWrap, {
             index,

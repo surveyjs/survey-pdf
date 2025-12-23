@@ -1,22 +1,17 @@
 import { ItemValue, QuestionRatingModel, LocalizableString } from 'survey-core';
-import { SurveyPDF } from '../survey';
-import { IPoint, IRect, DocController } from '../doc_controller';
+import { IPoint, IRect } from '../doc_controller';
 import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
-import { IStyles } from '../styles';
 import { FlatQuestion } from './flat_question';
 import { IRadioItemBrickAppearanceOptions, RadioGroupWrap, RadioItemBrick } from '../pdf_render/pdf_radioitem';
+import { IQuestionRatingStyle } from '../styles/types';
 
 interface ItemInfo { item: ItemValue, index: number, locText: LocalizableString, width: number }
 
-export class FlatRating extends FlatQuestion<QuestionRatingModel> {
+export class FlatRating extends FlatQuestion<QuestionRatingModel, IQuestionRatingStyle> {
     private _radioGroupWrap: RadioGroupWrap;
-    public constructor(protected survey: SurveyPDF,
-        question: QuestionRatingModel, protected controller: DocController, styles: IStyles) {
-        super(survey, question, controller, styles);
-    }
     protected get radioGroupWrap(): RadioGroupWrap {
         if(!this._radioGroupWrap) {
             this._radioGroupWrap = new RadioGroupWrap(
@@ -43,7 +38,7 @@ export class FlatRating extends FlatQuestion<QuestionRatingModel> {
         return ratingItemLocText;
     }
     private getInputAppearance(isReadOnly: boolean, isChecked: boolean): IRadioItemBrickAppearanceOptions {
-        const styles = { ...this.styles.input };
+        const styles = { ...this.styles.input } as IRadioItemBrickAppearanceOptions;
         if(isReadOnly) {
             SurveyHelper.mergeObjects(styles, this.styles.inputReadOnly);
             if(isChecked) {
@@ -68,7 +63,7 @@ export class FlatRating extends FlatQuestion<QuestionRatingModel> {
         const textBrick = await SurveyHelper.
             createTextFlat(point, this.controller, itemInfo.locText, { ...this.styles.label });
         compositeFlat.addBrick(textBrick);
-        currPoint.yTop = textBrick.yBot + this.styles.gapBetweenItemText;
+        currPoint.yTop = textBrick.yBot + this.styles.spacing.gapBetweenItemText;
         compositeFlat.addBrick(this.generateFlatItem(SurveyHelper.createRect(
             currPoint, itemInfo.width, this.styles.input.height), itemInfo.item, itemInfo.index));
         compositeFlat.translateX((xLeft, xRight) => {
@@ -89,12 +84,12 @@ export class FlatRating extends FlatQuestion<QuestionRatingModel> {
             }
             const locText = this.getItemText(index, item.locText);
             const width = this.getItemWidth(locText);
-            if(currentColumnIndex !== 0 && width + this.styles.gapBetweenColumns > leftWidth) {
+            if(currentColumnIndex !== 0 && width + this.styles.spacing.gapBetweenColumns > leftWidth) {
                 currentRowsIndex++;
                 currentColumnIndex = 0;
                 leftWidth = availableWidth;
             } else {
-                leftWidth -= width + (currentColumnIndex == 0 ? 0 : this.styles.gapBetweenColumns);
+                leftWidth -= width + (currentColumnIndex == 0 ? 0 : this.styles.spacing.gapBetweenColumns);
                 currentColumnIndex++;
                 res[currentRowsIndex].push({ index, item, locText, width });
             }
@@ -113,11 +108,11 @@ export class FlatRating extends FlatQuestion<QuestionRatingModel> {
                 this.controller.margins.right = SurveyHelper.getPageAvailableWidth(this.controller) - itemInfo.width - currPoint.xLeft;
                 rowFlat.addBrick(await this.generateItemComposite(currPoint, itemInfo));
                 this.controller.popMargins();
-                currPoint.xLeft = rowFlat.xRight + this.styles.gapBetweenColumns;
+                currPoint.xLeft = rowFlat.xRight + this.styles.spacing.gapBetweenColumns;
             }
             rowFlat.addBrick(SurveyHelper.createRowlineFlat(currPoint, this.controller, rowFlat.width));
             if(row !== rows[rows.length - 1]) {
-                currPoint.yTop = rowFlat.yBot + this.styles.gapBetweenRows;
+                currPoint.yTop = rowFlat.yBot + this.styles.spacing.gapBetweenRows;
                 currPoint.xLeft = rowFlat.xLeft;
             }
             rowsFlats.push(rowFlat);
