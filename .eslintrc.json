@@ -12,11 +12,13 @@
     "plugins": [
 	    "unused-imports",
         "@typescript-eslint",
+        "@stylistic",
         "surveyjs/eslint-plugin-i18n"
     ],
     "rules": {
         "no-console": 2, // Remember, this means error!
-        "indent": [
+        "indent": "off", 
+        "@stylistic/indent": [
             "error",
             4,
             {
