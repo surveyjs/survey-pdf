@@ -401,3 +401,10 @@ test('check getCorrectedImageSize works incorrectly if image could not be loaded
     expect(imageSize.width).toBe(225);
     expect(imageSize.height).toBe(300);
 });
+
+test('check SurveyHelper.generateCssTextRule method', () => {
+    let css = SurveyHelper.generateCssTextRule(12, 'bold', 'MyFont');
+    expect(css).toBe('"font-size: 12pt; font-weight: bold; font-family: MyFont; color: #404040; margin: 0"');
+    css = SurveyHelper.generateCssTextRule(8, 'normal', 'Arial');
+    expect(css).toBe('"font-size: 8pt; font-weight: normal; font-family: Arial; color: #404040; margin: 0"');
+});

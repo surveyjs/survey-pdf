@@ -162,7 +162,7 @@ export class SurveyHelper {
         return controller.useCustomFontInHtml ? fontName ?? controller.fontName : 'helvetica';
     }
     public static generateCssTextRule(appearance: ITextAppearanceOptions): string {
-        return `"font-size: ${appearance.fontSize}pt; font-weight: ${appearance.fontStyle}; font-family: ${appearance.fontName}; color: ${SurveyHelper.parseColor(appearance.fontColor).color}; lineHeight: ${appearance.lineHeight}"`;
+        return `"font-size: ${appearance.fontSize}pt; font-weight: ${appearance.fontStyle}; font-family: ${appearance.fontName}; color: ${SurveyHelper.parseColor(appearance.fontColor).color}; lineHeight: ${appearance.lineHeight}; margin: 0"`;
     }
     public static createHtmlContainerBlock(html: string, controller: DocController, appearance?: Partial<ITextAppearanceOptions>): string {
         const newApperance: ITextAppearanceOptions = SurveyHelper.getPatchedTextAppearanceOptions(controller, appearance);

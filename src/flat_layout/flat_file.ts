@@ -14,7 +14,7 @@ export class FlatFile extends FlatQuestion<QuestionFileModel, IQuestionFileStyle
         const compositeFlat: CompositeBrick = new CompositeBrick(await SurveyHelper.createLinkFlat(
             point, this.controller, {
                 text: item.name === undefined ? 'image' : item.name,
-                link: item.content,
+                link: typeof item.content == 'string' ? item.content : '',
                 readOnlyShowLink: SurveyHelper.getReadonlyRenderAs(this.question, this.controller) === 'text',
                 shouldRenderReadOnly: SurveyHelper.shouldRenderReadOnly(this.question, this.controller),
             }, { ...this.styles.fileName }));

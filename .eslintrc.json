@@ -10,13 +10,16 @@
         "sourceType": "module"
     },
     "plugins": [
+        "@stylistic",
 	    "unused-imports",
         "@typescript-eslint",
         "surveyjs/eslint-plugin-i18n"
     ],
     "rules": {
         "no-console": 2, // Remember, this means error!
-        "indent": [
+        "indent": "off", 
+        "@typescript-eslint/indent": "off",
+        "@stylistic/indent": [
             "error",
             4,
             {
