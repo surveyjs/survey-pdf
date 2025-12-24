@@ -20,10 +20,7 @@ export class TextBrick extends PdfBrick {
         };
     }
     private escapeText() {
-        while (this.options.text.indexOf('\t') > -1) {
-            this.options.text = this.options.text.replace('\t', Array(5).join(String.fromCharCode(160)));
-        }
-        return this.options.text;
+        return this.options.text.replace(/\t/g, Array(5).join(String.fromCharCode(160)));
     }
     public async renderInteractive(): Promise<void> {
         const alignPoint: IPoint = this.alignPoint(this.contentRect);
