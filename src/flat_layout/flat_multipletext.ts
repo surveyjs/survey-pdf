@@ -13,7 +13,7 @@ export class FlatMultipleText extends FlatQuestion<QuestionMultipleTextModel, IQ
         return this.question.getRows().filter(row => row.isVisible);
     }
     private async generateFlatCell(point: IPoint, callback: (point: IPoint, bricks: Array<IPdfBrick>) => Promise<void>): Promise<ContainerBrick> {
-        const container = new ContainerBrick(this.controller, { ...point, width: SurveyHelper.getPageAvailableWidth(this.controller) }, this.styles.cell);
+        const container = new ContainerBrick(this.controller, { ...point, width: SurveyHelper.getPageAvailableWidth(this.controller) }, this.styles.itemCell);
         await container.setup(callback);
         return container;
     }

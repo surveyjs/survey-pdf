@@ -346,7 +346,7 @@ export function getDefaultStylesFromTheme (theme: ITheme): IDocStyles {
                     fontColor: getColorVariable('--sjs2-color-fg-basic-secondary'),
                     fontStyle: 'normal',
                 },
-                cell: {
+                itemCell: {
                     padding: [getSizeVariable('--sjs2-pdf-layout-question-padding-vertical'), getSizeVariable('--sjs2-pdf-layout-question-padding-horizontal')],
                     borderRadius: getSizeVariable('--sjs2-pdf-radius-matrix'),
                     borderWidth: getSizeVariable('--sjs2-pdf-border-width-question'),

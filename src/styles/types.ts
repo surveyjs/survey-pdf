@@ -36,11 +36,11 @@ export interface ISeparatorStyle {
     color?: string;
 }
 
-export interface ISurveySpacing {
+export interface ISpacingBase {
     headerContentGap?: number;
     titleDescriptionGap?: number;
 }
-
+export interface ISurveySpacing extends ISpacingBase {}
 export interface ISurveyStyle {
     title?: ITextStyle;
     description?: ITextStyle;
@@ -48,11 +48,9 @@ export interface ISurveyStyle {
     padding?: number[] | number;
     spacing?: ISurveySpacing;
 }
-export interface IPanelSpacing {
-    headerContentGap?: number;
+export interface IPanelSpacing extends ISpacingBase {
     elementGap?: number;
     inlineElementGap?: number;
-    titleDescriptionGap?: number;
 }
 export interface IPanelStyle {
     title?: ITextStyle;
@@ -65,20 +63,18 @@ export interface IPanelStyle {
 
 export interface IPageStyle extends IPanelStyle {}
 
-export interface IQuestionSpacing {
+export interface IQuestionSpacing extends ISpacingBase {
     titleRequiredMarkGap?: number;
     titleNumberGap?: number;
-    headerContentGap?: number;
     inlineHeaderContentGap?: number;
     contentIndentStart?: number;
     contentCommentGap?: number;
     contentDescriptionGap?: number;
-    titleDescriptionGap?: number;
 }
 export interface IQuestionStyle {
     title?: ITextStyle;
     //added this props (required and number are used to render asterix and number for question)
-    required?: ITextStyle;
+    requiredMark?: ITextStyle;
     number?: ITextStyle;
     header?: IContainerStyle;
     //
@@ -160,15 +156,11 @@ export interface IQuestionMultipleTextSpacing extends IQuestionSpacing {
 export interface IQuestionMultipleTextStyle extends IQuestionStyle {
     itemTitleWidthPercentage?: number;
     itemTitle?: ITextStyle;
-    cell?: IContainerStyle;
+    itemCell?: IContainerStyle;
     spacing?: IQuestionMultipleTextSpacing;
 }
 
-export interface IQuestionRatingSpacing extends IQuestionSpacing {
-    choiceColumnGap?: number;
-    choiceGap?: number;
-    choiceTextGap?: number;
-}
+export interface IQuestionRatingSpacing extends ISelectBaseSpacing {}
 
 export interface IQuestionRatingStyle extends IQuestionStyle {
     choiceMinWidth?: number;
@@ -178,11 +170,7 @@ export interface IQuestionRatingStyle extends IQuestionStyle {
     inputReadOnlyChecked?: ISelectionInputStyle;
     spacing?: IQuestionRatingSpacing;
 }
-export interface IQuestionRankingSpacing extends IQuestionSpacing {
-    choiceColumnGap?: number;
-    choiceGap?: number;
-    choiceTextGap?: number;
-}
+export interface IQuestionRankingSpacing extends ISelectBaseSpacing {}
 export interface IQuestionRankingStyle extends IQuestionStyle {
     input?: ISelectionInputStyle;
     selectToRankAreaSeparator?: ISeparatorStyle;

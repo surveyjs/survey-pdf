@@ -47,7 +47,7 @@ export class FlatQuestion<T extends Question = Question, S extends IQuestionStyl
         composite.addBrick(textFlat);
         this.controller.popMargins();
         if (this.question.isRequired) {
-            const requiredAppearance = SurveyHelper.mergeObjects({}, textAppearance, this.styles.required);
+            const requiredAppearance = SurveyHelper.mergeObjects({}, textAppearance, this.styles.requiredMark);
             const requiredText: string = this.question.requiredMark;
             if (SurveyHelper.hasHtml(this.question.locTitle)) {
                 currPoint = SurveyHelper.createPoint(textFlat.unfold()[0], false, false);
