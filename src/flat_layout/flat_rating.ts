@@ -63,7 +63,7 @@ export class FlatRating extends FlatQuestion<QuestionRatingModel, IQuestionRatin
         const textBrick = await SurveyHelper.
             createTextFlat(point, this.controller, itemInfo.locText, { ...this.styles.choiceText });
         compositeFlat.addBrick(textBrick);
-        currPoint.yTop = textBrick.yBot + this.styles.spacing. choiceTextGap;
+        currPoint.yTop = textBrick.yBot + this.styles.spacing.choiceTextGap;
         compositeFlat.addBrick(this.generateFlatItem(SurveyHelper.createRect(
             currPoint, itemInfo.width, this.styles.input.height), itemInfo.item, itemInfo.index));
         compositeFlat.translateX((xLeft, xRight) => {
