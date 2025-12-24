@@ -82,7 +82,7 @@ export class VariablesManager implements IVariablesManager {
             return out;
         };
         const replacedComponentValues = replaceVars(componentValues);
-        const processedValue = calcFromComponentValues([replacedComponentValues])[0].map((componentValue) => stringify(...componentValue.tokens())).join('');
+        const processedValue = calcFromComponentValues([replacedComponentValues]).map(componentValues => componentValues.map((componentValue) => stringify(...componentValue.tokens())).join('')).join(',');
         this.hash[name] = processedValue;
         return processedValue;
     }
