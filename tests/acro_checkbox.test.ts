@@ -6,9 +6,9 @@ import { SurveyPDF } from '../src/survey';
 import { IRect, DocController } from '../src/doc_controller';
 import { FlatCheckbox } from '../src/flat_layout/flat_checkbox';
 import { PdfBrick } from '../src/pdf_render/pdf_brick';
-import { CheckItemBrick } from '../src/pdf_render/pdf_checkitem';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
+import { IQuestionCheckboxStyle } from '../src/styles/types';
 let __dummy_cb = new FlatCheckbox(null, null, null);
 
 test('Check that checkbox has square boundaries', async () => {
@@ -27,7 +27,7 @@ test('Check that checkbox has square boundaries', async () => {
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     survey.styles = {
         question: {
-            wrapper: {
+            container: {
                 padding: 0,
                 borderWidth: 0
             }
@@ -36,8 +36,8 @@ test('Check that checkbox has square boundaries', async () => {
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     await survey['renderSurvey'](controller);
     const question = survey.getAllQuestions()[0];
-    const labelStyles = survey.getStylesForElement(question).label;
-    const inputStyles = survey.getStylesForElement(question).input;
+    const labelStyles = (survey.getStylesForElement(question) as IQuestionCheckboxStyle).choiceText;
+    const inputStyles = (survey.getStylesForElement(question) as IQuestionCheckboxStyle).input;
     let assumeCheckbox: IRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(SurveyHelper.createRect(
         controller.leftTopPoint, inputStyles.width, inputStyles.height),
     1), controller.leftTopPoint.xLeft);

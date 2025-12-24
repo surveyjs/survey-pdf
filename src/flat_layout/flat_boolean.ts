@@ -34,12 +34,12 @@ export class FlatBooleanCheckbox extends FlatQuestion<QuestionBooleanModel, IQue
             }, appearance);
         compositeFlat.addBrick(itemFlat);
         const textPoint: IPoint = SurveyHelper.clone(point);
-        textPoint.xLeft = itemFlat.xRight + this.styles.spacing.gapBetweenItemText;
+        textPoint.xLeft = itemFlat.xRight + this.styles.spacing.choiceTextGap;
         const locLabelText: LocalizableString = this.question.isIndeterminate ? null :
             this.question.booleanValue ? this.question.locLabelTrue : this.question.locLabelFalse;
         if (locLabelText !== null && locLabelText.renderedHtml !== null) {
             const textFlat = await SurveyHelper.createTextFlat(
-                textPoint, this.controller, locLabelText, this.styles.label);
+                textPoint, this.controller, locLabelText, this.styles.choiceText);
             SurveyHelper.alignVerticallyBricks('center', itemFlat, textFlat.unfold()[0]);
             textFlat.updateRect();
             compositeFlat.addBrick(textFlat);
@@ -84,12 +84,12 @@ export class FlatBoolean extends FlatQuestion<QuestionBooleanModel, IQuestionBoo
     }
     protected async generateFlatComposite(point: IPoint, item: { value: string, locText: LocalizableString }, index: number): Promise<IPdfBrick> {
         const compositeFlat: CompositeBrick = new CompositeBrick();
-        const textOptions: Partial<ITextAppearanceOptions> = this.styles.label;
+        const textOptions: Partial<ITextAppearanceOptions> = this.styles.choiceText;
         const itemFlat: IPdfBrick = this.generateFlatItem(point, item, index);
 
         compositeFlat.addBrick(itemFlat);
         const textPoint: IPoint = SurveyHelper.clone(point);
-        textPoint.xLeft = itemFlat.xRight + this.styles.spacing.gapBetweenItemText;
+        textPoint.xLeft = itemFlat.xRight + this.styles.spacing.choiceTextGap;
         if (item.locText.renderedHtml !== null) {
             const textFlat = await SurveyHelper.createTextFlat(
                 textPoint, this.controller, item.locText, textOptions);
@@ -115,7 +115,7 @@ export class FlatBoolean extends FlatQuestion<QuestionBooleanModel, IQuestionBoo
         let index = 0;
         for(let item of items) {
             this.controller.pushMargins();
-            SurveyHelper.setColumnMargins(this.controller, 2, index, this.styles.spacing.gapBetweenColumns);
+            SurveyHelper.setColumnMargins(this.controller, 2, index, this.styles.spacing.choiceColumnGap);
             currPoint.xLeft = this.controller.margins.left;
             const itemFlat: IPdfBrick = await this.generateFlatComposite(
                 currPoint, item, index);

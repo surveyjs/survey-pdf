@@ -18,9 +18,9 @@ export class FlatRanking extends FlatQuestion<QuestionRankingModel, IQuestionRan
             },
             SurveyHelper.getPatchedTextAppearanceOptions(this.controller, this.styles.input));
         const textPoint: IPoint = SurveyHelper.clone(point);
-        textPoint.xLeft = itemFlat.xRight + this.styles.spacing.gapBetweenItemText;
+        textPoint.xLeft = itemFlat.xRight + this.styles.spacing.choiceTextGap;
         const textFlat: IPdfBrick = await SurveyHelper.createTextFlat(
-            textPoint, this.controller, item.locText, this.styles.label);
+            textPoint, this.controller, item.locText, this.styles.choiceText);
         SurveyHelper.alignVerticallyBricks('center', itemFlat, textFlat.unfold()[0]);
         return new CompositeBrick(itemFlat, textFlat);
     }
@@ -29,7 +29,7 @@ export class FlatRanking extends FlatQuestion<QuestionRankingModel, IQuestionRan
         const flats: IPdfBrick[] = [];
         for (let i: number = 0; i < choices.length; i++) {
             const itemFlat: IPdfBrick = await this.generateFlatComposite(currPoint, choices[i], i, unrankedChoices);
-            currPoint.yTop = itemFlat.yBot + this.styles.spacing.gapBetweenRows;
+            currPoint.yTop = itemFlat.yBot + this.styles.spacing.choiceGap;
             flats.push(itemFlat);
         }
         return flats;
@@ -39,13 +39,13 @@ export class FlatRanking extends FlatQuestion<QuestionRankingModel, IQuestionRan
         const flats: IPdfBrick[] = [];
         if(this.question.rankingChoices.length !== 0) {
             flats.push(...await this.generateChoicesColumn(currPoint, this.question.rankingChoices));
-            currPoint.yTop = flats[flats.length - 1].yBot + 2 * this.styles.spacing.gapBetweenRows;
+            currPoint.yTop = flats[flats.length - 1].yBot + 2 * this.styles.spacing.choiceGap;
         }
         const separatorRect = SurveyHelper.createRect({
             xLeft: currPoint.xLeft,
-            yTop: currPoint.yTop - this.styles.spacing.gapBetweenRows - 0.5,
-        }, this.controller.paperWidth - this.controller.margins.right - currPoint.xLeft, this.styles.selectToRankSeparator.width);
-        flats.push(new ColoredBrick(this.controller, separatorRect, { color: this.styles.selectToRankSeparator.color }));
+            yTop: currPoint.yTop - this.styles.spacing.choiceGap - 0.5,
+        }, this.controller.paperWidth - this.controller.margins.right - currPoint.xLeft, this.styles.selectToRankAreaSeparator.width);
+        flats.push(new ColoredBrick(this.controller, separatorRect, { color: this.styles.selectToRankAreaSeparator.color }));
 
         flats.push(...await this.generateChoicesColumn(currPoint, this.question.unRankingChoices, true));
         return flats;
@@ -61,7 +61,7 @@ export class FlatRanking extends FlatQuestion<QuestionRankingModel, IQuestionRan
             for (let item of [this.question.unRankingChoices[i], this.question.rankingChoices[i]]) {
                 if(!!item) {
                     this.controller.pushMargins(this.controller.margins.left, this.controller.margins.right);
-                    SurveyHelper.setColumnMargins(this.controller, colCount, colIndex, this.styles.spacing.gapBetweenColumns);
+                    SurveyHelper.setColumnMargins(this.controller, colCount, colIndex, this.styles.spacing.choiceColumnGap);
                     currPoint.xLeft = this.controller.margins.left;
                     const itemFlat: IPdfBrick = await this.generateFlatComposite(
                         currPoint, item, i, colIndex == 0);
@@ -77,11 +77,11 @@ export class FlatRanking extends FlatQuestion<QuestionRankingModel, IQuestionRan
                 xLeft: this.controller.margins.left + SurveyHelper.getPageAvailableWidth(this.controller) / 2 - 0.5,
                 yTop: currPoint.yTop,
             }, 0, 0);
-            const gapBetweenRows = this.styles.spacing.gapBetweenRows;
+            const gapBetweenRows = this.styles.spacing.choiceGap;
             row.addBrick(new ColoredBrick(this.controller, separatorRect,
                 {
-                    color: this.styles.selectToRankSeparator.color,
-                    renderWidth: this.styles.selectToRankSeparator.width,
+                    color: this.styles.selectToRankAreaSeparator.color,
+                    renderWidth: this.styles.selectToRankAreaSeparator.width,
                     renderHeight: rowLineFlat.yBot - currPoint.yTop + (i !== rowsCount - 1 ? gapBetweenRows : 0)
                 }
             ));

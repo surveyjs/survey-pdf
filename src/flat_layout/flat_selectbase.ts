@@ -24,13 +24,13 @@ export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSele
                 isMultiline: true,
             }, appearance);
     }
-    public getStylesForItem(item: ItemValue): { label: ITextStyle, input: ISelectionInputStyle } {
+    public getStylesForItem(item: ItemValue): { choiceText: ITextStyle, input: ISelectionInputStyle } {
         const isChecked: boolean = this.question.isItemSelected(item);
         const shouldRenderReadOnly = this.question.isReadOnly || !item.isEnabled && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform' || this.controller.compress;
         const styles = { input: SurveyHelper.mergeObjects({},
             this.styles.input,
             shouldRenderReadOnly ? this.styles.inputReadOnly : {},
-            shouldRenderReadOnly && isChecked ? this.styles.inputReadOnlyChecked : {}), label: { ...this.styles.label } };
+            shouldRenderReadOnly && isChecked ? this.styles.inputReadOnlyChecked : {}), choiceText: { ...this.styles.choiceText } };
         return this.survey.getStylesForItem(this.question, item, styles);
     }
     protected async generateFlatComposite(point: IPoint, item: ItemValue | ChoiceItem, index: number): Promise<IPdfBrick> {
@@ -40,18 +40,18 @@ export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSele
 
         compositeFlat.addBrick(itemFlat);
         const textPoint: IPoint = SurveyHelper.clone(point);
-        textPoint.xLeft = itemFlat.xRight + this.styles.spacing.gapBetweenItemText;
+        textPoint.xLeft = itemFlat.xRight + this.styles.spacing.choiceTextGap;
 
         if (item.locText.renderedHtml !== null) {
             const textFlat = await SurveyHelper.createTextFlat(
-                textPoint, this.controller, item.locText, { ...styles.label });
+                textPoint, this.controller, item.locText, { ...styles.choiceText });
             SurveyHelper.alignVerticallyBricks('center', itemFlat, textFlat.unfold()[0]);
             textFlat.updateRect();
             compositeFlat.addBrick(textFlat);
         }
         if(item.isCommentShowing) {
             const otherPoint: IPoint = SurveyHelper.createPoint(compositeFlat, true, false);
-            otherPoint.yTop += this.styles.spacing.gapBetweenRows;
+            otherPoint.yTop += this.styles.spacing.choiceGap;
             compositeFlat.addBrick(await this.generateItemComment(otherPoint, item));
         }
         return compositeFlat;
@@ -71,7 +71,7 @@ export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSele
             }
         }
         else if (colCount > 1) {
-            currentColCount = (SurveyHelper.getColumnWidth(this.controller, colCount, this.styles.spacing.gapBetweenColumns) <
+            currentColCount = (SurveyHelper.getColumnWidth(this.controller, colCount, this.styles.spacing.choiceColumnGap) <
                 this.styles.columnMinWidth) ? 1 : colCount;
             if(currentColCount == colCount) {
                 return await this.generateColumns(point);
@@ -92,7 +92,7 @@ export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSele
             for (let colIndex = 0; colIndex < row.length; colIndex ++) {
                 const item = row[colIndex];
                 this.controller.pushMargins();
-                SurveyHelper.setColumnMargins(this.controller, colCount, colIndex, this.styles.spacing.gapBetweenColumns);
+                SurveyHelper.setColumnMargins(this.controller, colCount, colIndex, this.styles.spacing.choiceColumnGap);
                 currPoint.xLeft = this.controller.margins.left;
                 const itemFlat: IPdfBrick = await this.generateFlatComposite(
                     currPoint, item, visibleChoices.indexOf(item));
@@ -101,7 +101,7 @@ export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSele
             }
             const rowLineFlat: IPdfBrick = SurveyHelper.createRowlineFlat(
                 SurveyHelper.createPoint(rowFlat), this.controller);
-            currPoint.yTop = rowLineFlat.yBot + this.styles.spacing.gapBetweenRows;
+            currPoint.yTop = rowLineFlat.yBot + this.styles.spacing.choiceGap;
             flats.push(rowFlat, rowLineFlat);
         }
         return flats;
@@ -112,7 +112,7 @@ export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSele
         const flats: IPdfBrick[] = [];
         for (let i: number = 0; i < itemValues.length; i++) {
             const itemFlat: IPdfBrick = await this.generateFlatComposite(currPoint, itemValues[i], i);
-            currPoint.yTop = itemFlat.yBot + (customGap || this.styles.spacing.gapBetweenRows);
+            currPoint.yTop = itemFlat.yBot + (customGap || this.styles.spacing.choiceGap);
             flats.push(itemFlat);
         }
         return flats;

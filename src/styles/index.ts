@@ -13,7 +13,7 @@ export function createStylesFromTheme<T>(theme: ITheme, callback: (options: { ge
 }
 
 export function getDefaultStylesFromTheme (theme: ITheme): IDocStyles {
-    return createStylesFromTheme(theme, ({ getSizeVariable, getColorVariable }) => {
+    return createStylesFromTheme<IDocStyles>(theme, ({ getSizeVariable, getColorVariable }) => {
         const baseSize = getSizeVariable('--sjs2-base-unit-size');
         return {
             survey: {
@@ -32,16 +32,16 @@ export function getDefaultStylesFromTheme (theme: ITheme): IDocStyles {
                 },
                 spacing: {
                     titleDescriptionGap: getSizeVariable('--sjs2-pdf-layout-title-large-gap'),
-                    contentGap: getSizeVariable('--sjs2-pdf-layout-page-gap-vertical') + getSizeVariable('--sjs2-pdf-layout-title-large-padding-bottom'),
+                    headerContentGap: getSizeVariable('--sjs2-pdf-layout-page-gap-vertical') + getSizeVariable('--sjs2-pdf-layout-title-large-padding-bottom'),
                 },
                 backgroundColor: getColorVariable('--sjs2-color-utility-body'),
                 padding: [getSizeVariable('--sjs2-pdf-layout-page-padding-top'), getSizeVariable('--sjs2-pdf-layout-page-padding-right'), getSizeVariable('--sjs2-pdf-layout-page-padding-bottom'), getSizeVariable('--sjs2-pdf-layout-page-padding-left')],
             },
             question: {
                 minWidth: baseSize * 25,
-                titleLeftWidthPers: Math.E / 10.0,
+                inlineHeaderWidthPercentage: Math.E / 10.0,
                 //TODO: need variable
-                wrapper: {
+                container: {
                     padding: [getSizeVariable('--sjs2-pdf-layout-question-padding-vertical'), getSizeVariable('--sjs2-pdf-layout-question-padding-horizontal')],
                     borderRadius: getSizeVariable('--sjs2-pdf-radius-question'),
                     borderWidth: getSizeVariable('--sjs2-pdf-border-width-question'),
@@ -76,13 +76,13 @@ export function getDefaultStylesFromTheme (theme: ITheme): IDocStyles {
                     lineHeight: getSizeVariable('--sjs2-typography-line-height-default')
                 },
                 spacing: {
-                    contentGapVertical: getSizeVariable('--sjs2-pdf-layout-question-gap'),
-                    contentGapHorizontal: baseSize * 1.0,
-                    contentIndent: 0,
-                    commentGap: getSizeVariable('--sjs2-pdf-layout-question-gap'),
+                    headerContentGap: getSizeVariable('--sjs2-pdf-layout-question-gap'),
+                    inlineHeaderContentGap: baseSize * 1.0,
+                    contentIndentStart: 0,
+                    contentCommentGap: getSizeVariable('--sjs2-pdf-layout-question-gap'),
                     contentDescriptionGap: getSizeVariable('--sjs2-pdf-layout-question-gap'),
                     titleDescriptionGap: getSizeVariable('--sjs2-pdf-layout-question-labels-gap-vertical'),
-                    titleRequiredGap: baseSize / 2,
+                    titleRequiredMarkGap: baseSize / 2,
                     titleNumberGap: baseSize / 2,
                 }
             },
@@ -107,9 +107,9 @@ export function getDefaultStylesFromTheme (theme: ITheme): IDocStyles {
                     lineHeight: getSizeVariable('--sjs2-typography-line-height-small'),
                 },
                 spacing: {
-                    gapBetweenRows: getSizeVariable('--sjs2-pdf-layout-page-questions-gap-vertical'),
-                    gapBetweenElements: getSizeVariable('--sjs2-pdf-layout-page-questions-gap-horizontal'),
-                    contentGap: getSizeVariable('--sjs2-pdf-layout-page-questions-gap-vertical'),
+                    elementGap: getSizeVariable('--sjs2-pdf-layout-page-questions-gap-vertical'),
+                    inlineElementGap: getSizeVariable('--sjs2-pdf-layout-page-questions-gap-horizontal'),
+                    headerContentGap: getSizeVariable('--sjs2-pdf-layout-page-questions-gap-vertical'),
                     titleDescriptionGap: getSizeVariable('--sjs2-pdf-layout-title-default-gap'),
                 }
             },
@@ -131,13 +131,13 @@ export function getDefaultStylesFromTheme (theme: ITheme): IDocStyles {
                     lineHeight: getSizeVariable('--sjs2-typography-line-height-default')
                 },
                 spacing: {
-                    contentGap: getSizeVariable('--sjs2-pdf-layout-page-gap-vertical') + getSizeVariable('--sjs2-pdf-layout-title-medium-padding-bottom'),
-                    gapBetweenRows: getSizeVariable('--sjs2-pdf-layout-page-gap-vertical'),
+                    headerContentGap: getSizeVariable('--sjs2-pdf-layout-page-gap-vertical') + getSizeVariable('--sjs2-pdf-layout-title-medium-padding-bottom'),
+                    elementGap: getSizeVariable('--sjs2-pdf-layout-page-gap-vertical'),
                 }
             },
             selectbase: {
                 columnMinWidth: baseSize * 20,
-                label: {
+                choiceText: {
                     fontColor: getColorVariable('--sjs2-color-fg-basic-primary'),
                     fontSize: getSizeVariable('--sjs2-typography-font-size-default'),
                     fontStyle: 'normal',
@@ -163,9 +163,9 @@ export function getDefaultStylesFromTheme (theme: ITheme): IDocStyles {
                     backgroundColor: getColorVariable('--sjs2-color-control-check-true-default-bg')
                 },
                 spacing: {
-                    gapBetweenColumns: getSizeVariable('--sjs2-pdf-layout-question-items-gap-horizontal'),
-                    gapBetweenRows: getSizeVariable('--sjs2-pdf-layout-question-items-gap-vertical'),
-                    gapBetweenItemText: getSizeVariable('--sjs2-pdf-layout-check-gap'),
+                    choiceColumnGap: getSizeVariable('--sjs2-pdf-layout-question-items-gap-horizontal'),
+                    choiceGap: getSizeVariable('--sjs2-pdf-layout-question-items-gap-vertical'),
+                    choiceTextGap: getSizeVariable('--sjs2-pdf-layout-check-gap'),
                 }
             },
             checkbox: {
@@ -187,7 +187,7 @@ export function getDefaultStylesFromTheme (theme: ITheme): IDocStyles {
             matrixbase: {
                 minWidth: baseSize * 40,
                 columnMinWidth: baseSize * 15,
-                wrapper: {
+                container: {
                     padding: 0,
                     borderWidth: 0,
                     backgroundColor: null as any
@@ -230,26 +230,26 @@ export function getDefaultStylesFromTheme (theme: ITheme): IDocStyles {
                     fontColor: getColorVariable('--sjs2-color-fg-basic-secondary'),
                     fontStyle: 'normal'
                 },
-                verticalRowTitle: {
+                listSectionTitle: {
                     textAlign: 'left',
                 },
                 spacing: {
                     titleDescriptionGap: getSizeVariable('--sjs2-pdf-layout-title-default-gap'),
-                    contentGapVertical: getSizeVariable('--sjs2-pdf-layout-page-questions-gap-vertical'),
-                    gapBetweenColumns: getSizeVariable('--sjs2-pdf-layout-page-matrix-gap-horizontal'),
-                    gapBetweenRows: getSizeVariable('--sjs2-pdf-layout-page-matrix-gap-vertical'),
-                    verticalGapBetweenRows: getSizeVariable('--sjs2-pdf-layout-page-questions-gap-vertical'),
-                    verticalGapBetweenRowTitleQuestion: getSizeVariable('--sjs2-pdf-layout-question-gap'),
+                    headerContentGap: getSizeVariable('--sjs2-pdf-layout-page-questions-gap-vertical'),
+                    tableColumnGap: getSizeVariable('--sjs2-pdf-layout-page-matrix-gap-horizontal'),
+                    tableRowGap: getSizeVariable('--sjs2-pdf-layout-page-matrix-gap-vertical'),
+                    listSectionGap: getSizeVariable('--sjs2-pdf-layout-page-questions-gap-vertical'),
+                    listItemTitleContentGap: getSizeVariable('--sjs2-pdf-layout-question-gap'),
                 }
             },
             matrix: {
-                verticalColumnTitle: {
+                listChoiceText: {
                     fontColor: getColorVariable('--sjs2-color-fg-basic-primary'),
                     fontSize: getSizeVariable('--sjs2-typography-font-size-default'),
                     fontStyle: 'normal',
                     lineHeight: getSizeVariable('--sjs2-typography-line-height-default')
                 },
-                verticalRowTitle: {
+                listSectionTitle: {
                     fontColor: getColorVariable('--sjs2-color-fg-basic-primary'),
                     fontSize: getSizeVariable('--sjs2-typography-font-size-small'),
                     lineHeight: getSizeVariable('--sjs2-typography-line-height-small'),
@@ -288,12 +288,12 @@ export function getDefaultStylesFromTheme (theme: ITheme): IDocStyles {
                 },
                 spacing: {
                     gapBetweenItemText: getSizeVariable('--sjs2-pdf-layout-check-gap'),
-                    verticalGapBetweenItems: getSizeVariable('--sjs2-pdf-layout-question-items-gap-vertical'),
-                    verticalGapBetweenItemText: getSizeVariable('--sjs2-pdf-layout-check-gap'),
+                    listChoiceGap: getSizeVariable('--sjs2-pdf-layout-question-items-gap-vertical'),
+                    listChoiceTextGap: getSizeVariable('--sjs2-pdf-layout-check-gap'),
                 }
             },
             matrixdropdownbase: {
-                verticalColumnTitle: {
+                listItemTitle: {
                     fontColor: getColorVariable('--sjs2-color-fg-basic-primary'),
                     fontSize: getSizeVariable('--sjs2-typography-font-size-small'),
                     lineHeight: getSizeVariable('--sjs2-typography-line-height-small'),
@@ -301,14 +301,14 @@ export function getDefaultStylesFromTheme (theme: ITheme): IDocStyles {
                 },
             },
             matrixdropdown: {
-                cellVerticalRowTitle: {
+                listSectionTitleContainer: {
                     padding: [getSizeVariable('--sjs2-pdf-layout-section-padding-vertical'), getSizeVariable('--sjs2-pdf-layout-section-padding-horizontal')],
                     borderRadius: getSizeVariable('--sjs2-pdf-radius-section'),
                     backgroundColor: getColorVariable('--sjs2-color-bg-basic-secondary'),
                     borderWidth: getSizeVariable('--sjs2-pdf-border-width-section'),
                     borderColor: getColorVariable('--sjs2-color-border-basic-secondary'),
                 },
-                verticalRowTitle: {
+                listSectionTitle: {
                     fontSize: getSizeVariable('--sjs2-typography-font-size-default'),
                     fontColor: getColorVariable('--sjs2-color-fg-basic-primary'),
                     fontStyle: 'bold',
@@ -316,8 +316,8 @@ export function getDefaultStylesFromTheme (theme: ITheme): IDocStyles {
                 },
             },
             multipletext: {
-                itemTitleWidthPers: 0.4,
-                wrapper: {
+                itemTitleWidthPercentage: 0.4,
+                container: {
                     padding: 0,
                     borderWidth: 0,
                     backgroundColor: null as any
@@ -340,7 +340,7 @@ export function getDefaultStylesFromTheme (theme: ITheme): IDocStyles {
                     fontSize: getSizeVariable('--sjs2-typography-font-size-small'),
                     lineHeight: getSizeVariable('--sjs2-typography-line-height-small'),
                 },
-                label: {
+                itemTitle: {
                     fontSize: getSizeVariable('--sjs2-typography-font-size-default'),
                     lineHeight: getSizeVariable('--sjs2-typography-line-height-default'),
                     fontColor: getColorVariable('--sjs2-color-fg-basic-secondary'),
@@ -355,15 +355,15 @@ export function getDefaultStylesFromTheme (theme: ITheme): IDocStyles {
                 },
                 spacing: {
                     titleDescriptionGap: getSizeVariable('--sjs2-pdf-layout-title-default-gap'),
-                    contentGapVertical: getSizeVariable('--sjs2-pdf-layout-page-questions-gap-vertical'),
-                    gapBetweenColumns: getSizeVariable('--sjs2-pdf-layout-page-matrix-gap-horizontal'),
-                    gapBetweenRows: getSizeVariable('--sjs2-pdf-layout-page-matrix-gap-vertical'),
-                    gapBetweenItemText: getSizeVariable('--sjs2-pdf-layout-page-matrix-gap-horizontal'),
+                    headerContentGap: getSizeVariable('--sjs2-pdf-layout-page-questions-gap-vertical'),
+                    itemColumnGap: getSizeVariable('--sjs2-pdf-layout-page-matrix-gap-horizontal'),
+                    itemGap: getSizeVariable('--sjs2-pdf-layout-page-matrix-gap-vertical'),
+                    itemTitleGap: getSizeVariable('--sjs2-pdf-layout-page-matrix-gap-horizontal'),
                 }
             },
             rating: {
-                itemMinWidth: baseSize * 3,
-                label: {
+                choiceMinWidth: baseSize * 3,
+                choiceText: {
                     fontColor: getColorVariable('--sjs2-color-fg-basic-primary'),
                     fontSize: getSizeVariable('--sjs2-typography-font-size-default'),
                     fontStyle: 'normal',
@@ -391,9 +391,9 @@ export function getDefaultStylesFromTheme (theme: ITheme): IDocStyles {
                     backgroundColor: getColorVariable('--sjs2-color-control-check-true-default-bg')
                 },
                 spacing: {
-                    gapBetweenColumns: getSizeVariable('--sjs2-pdf-layout-question-items-gap-horizontal'),
-                    gapBetweenRows: getSizeVariable('--sjs2-pdf-layout-question-items-gap-vertical'),
-                    gapBetweenItemText: getSizeVariable('--sjs2-pdf-layout-check-gap'),
+                    choiceColumnGap: getSizeVariable('--sjs2-pdf-layout-question-items-gap-horizontal'),
+                    choiceGap: getSizeVariable('--sjs2-pdf-layout-question-items-gap-vertical'),
+                    choiceTextGap: getSizeVariable('--sjs2-pdf-layout-check-gap'),
                 }
             },
             ranking: {
@@ -410,20 +410,20 @@ export function getDefaultStylesFromTheme (theme: ITheme): IDocStyles {
                     fontColor: getColorVariable('--sjs2-color-fg-basic-primary'),
                     backgroundColor: getColorVariable('--sjs2-color-control-check-false-default-bg'),
                 },
-                selectToRankSeparator: {
+                selectToRankAreaSeparator: {
                     width: baseSize / 7,
                     color: getColorVariable('--sjs2-color-fg-basic-primary')
                 },
-                label: {
+                choiceText: {
                     fontColor: getColorVariable('--sjs2-color-fg-basic-primary'),
                     fontSize: getSizeVariable('--sjs2-typography-font-size-default'),
                     fontStyle: 'normal',
                     lineHeight: getSizeVariable('--sjs2-typography-line-height-default')
                 },
                 spacing: {
-                    gapBetweenColumns: getSizeVariable('--sjs2-pdf-layout-question-items-gap-horizontal'),
-                    gapBetweenRows: getSizeVariable('--sjs2-pdf-layout-question-items-gap-vertical'),
-                    gapBetweenItemText: getSizeVariable('--sjs2-pdf-layout-check-gap'),
+                    choiceColumnGap: getSizeVariable('--sjs2-pdf-layout-question-items-gap-horizontal'),
+                    choiceGap: getSizeVariable('--sjs2-pdf-layout-question-items-gap-vertical'),
+                    choiceTextGap: getSizeVariable('--sjs2-pdf-layout-check-gap'),
                 }
             },
             slider: {
@@ -440,10 +440,10 @@ export function getDefaultStylesFromTheme (theme: ITheme): IDocStyles {
                 rangeSeparator: {
                     width: baseSize * 3,
                     height: baseSize * 0.125,
-                    backgroundColor: getColorVariable('--sjs2-color-fg-basic-primary')
+                    color: getColorVariable('--sjs2-color-fg-basic-primary')
                 },
                 spacing: {
-                    gapBetweenColumns: baseSize * 8,
+                    inputRangeGap: baseSize * 8,
                 }
             },
             dropdown: {
@@ -462,21 +462,21 @@ export function getDefaultStylesFromTheme (theme: ITheme): IDocStyles {
                 },
             },
             file: {
-                itemMinWidth: baseSize * 5,
+                fileItemMinWidth: baseSize * 5,
                 defaultImageFit: 'contain',
-                label: {
+                fileName: {
                     fontColor: getColorVariable('--sjs2-color-fg-note-primary'),
                     fontSize: getSizeVariable('--sjs2-typography-font-size-default'),
                     lineHeight: getSizeVariable('--sjs2-typography-line-height-default')
                 },
                 spacing: {
-                    imageGap: getSizeVariable('--sjs2-pdf-layout-question-items-gap-vertical'),
-                    gapBetweenColumns: getSizeVariable('--sjs2-pdf-layout-question-items-gap-horizontal'),
-                    gapBetweenRows: getSizeVariable('--sjs2-pdf-layout-question-items-gap-vertical'),
+                    imageFileNameGap: getSizeVariable('--sjs2-pdf-layout-question-items-gap-vertical'),
+                    fileItemColumnGap: getSizeVariable('--sjs2-pdf-layout-question-items-gap-horizontal'),
+                    fileItemGap: getSizeVariable('--sjs2-pdf-layout-question-items-gap-vertical'),
                 }
             },
             paneldynamic: {
-                wrapper: {
+                container: {
                     padding: 0,
                     borderWidth: 0,
                     backgroundColor: null as any
@@ -500,13 +500,13 @@ export function getDefaultStylesFromTheme (theme: ITheme): IDocStyles {
                     lineHeight: getSizeVariable('--sjs2-typography-line-height-small'),
                 },
                 spacing: {
-                    contentGapVertical: getSizeVariable('--sjs2-pdf-layout-page-questions-gap-vertical'),
+                    headerContentGap: getSizeVariable('--sjs2-pdf-layout-page-questions-gap-vertical'),
                     titleDescriptionGap: getSizeVariable('--sjs2-pdf-layout-title-default-gap'),
-                    gapBetweenPanels: getSizeVariable('--sjs2-pdf-layout-page-questions-gap-vertical'),
+                    panelGap: getSizeVariable('--sjs2-pdf-layout-page-questions-gap-vertical'),
                 }
             },
             boolean: {
-                label: {
+                choiceText: {
                     fontColor: getColorVariable('--sjs2-color-fg-basic-primary'),
                     fontSize: getSizeVariable('--sjs2-typography-font-size-default'),
                     fontStyle: 'normal',
@@ -544,8 +544,8 @@ export function getDefaultStylesFromTheme (theme: ITheme): IDocStyles {
                     borderRadius: getSizeVariable('--sjs2-pdf-radius-checkbox'),
                 },
                 spacing: {
-                    gapBetweenColumns: getSizeVariable('--sjs2-pdf-layout-question-items-gap-horizontal'),
-                    gapBetweenItemText: getSizeVariable('--sjs2-pdf-layout-check-gap'),
+                    choiceColumnGap: getSizeVariable('--sjs2-pdf-layout-question-items-gap-horizontal'),
+                    choiceTextGap: getSizeVariable('--sjs2-pdf-layout-check-gap'),
                 }
             },
             imagepicker: {
@@ -562,7 +562,7 @@ export function getDefaultStylesFromTheme (theme: ITheme): IDocStyles {
                     checkMark: '3'
                 },
                 spacing: {
-                    gapBetweenImageInput: getSizeVariable('--sjs2-pdf-layout-image-picker-items-gap-image-check'),
+                    imageInputGap: getSizeVariable('--sjs2-pdf-layout-image-picker-items-gap-image-check'),
                 }
             },
             textbase: {
@@ -592,5 +592,6 @@ export function getDefaultStylesFromTheme (theme: ITheme): IDocStyles {
                 }
             }
         };
+        // return res;
     });
 }

@@ -21,15 +21,15 @@ export class FlatMultipleText extends FlatQuestion<QuestionMultipleTextModel, IQ
         const colWidth: number = SurveyHelper.getPageAvailableWidth(this.controller);
         const bricks: Array<ContainerBrick> = [];
         this.controller.pushMargins();
-        this.controller.margins.right = this.controller.paperWidth - this.controller.margins.left - colWidth * this.styles.itemTitleWidthPers;
+        this.controller.margins.right = this.controller.paperWidth - this.controller.margins.left - colWidth * this.styles.itemTitleWidthPercentage;
         bricks.push(await this.generateFlatCell(point, async (point: IPoint, bricks: Array<IPdfBrick>) => {
             bricks.push(await SurveyHelper.
-                createTextFlat(point, this.controller, item.locTitle, { ... this.styles.label }));
+                createTextFlat(point, this.controller, item.locTitle, { ... this.styles.itemTitle }));
         }));
         this.controller.popMargins();
 
         this.controller.pushMargins();
-        this.controller.margins.left = point.xLeft + colWidth * this.styles.itemTitleWidthPers + this.styles.spacing.gapBetweenItemText;
+        this.controller.margins.left = point.xLeft + colWidth * this.styles.itemTitleWidthPercentage + this.styles.spacing.itemTitleGap;
         bricks.push(await this.generateFlatCell({ xLeft: this.controller.margins.left, yTop: point.yTop }, async (point: IPoint, bricks: Array<IPdfBrick>) => {
             const flatMultipleTextItemQuestion: IFlatQuestion = FlatRepository.getInstance().create(
                 this.survey, item.editor, this.controller, this.survey.getStylesForElement(item.editor), 'text');
@@ -47,7 +47,7 @@ export class FlatMultipleText extends FlatQuestion<QuestionMultipleTextModel, IQ
             const currentRowFlats: Array<ContainerBrick> = [];
             for (let j: number = 0; j < rows[i].cells.length; j++) {
                 this.controller.pushMargins();
-                SurveyHelper.setColumnMargins(this.controller, this.question.colCount, j, this.styles.spacing.gapBetweenColumns);
+                SurveyHelper.setColumnMargins(this.controller, this.question.colCount, j, this.styles.spacing.itemColumnGap);
                 currPoint.xLeft = this.controller.margins.left;
                 currentRowFlats.push(...await this.generateFlatItemCells(currPoint, rows[i].cells[j].item));
                 this.controller.popMargins();
@@ -58,7 +58,7 @@ export class FlatMultipleText extends FlatQuestion<QuestionMultipleTextModel, IQ
             currentRowFlats.forEach((flat) => { flat.fitToHeight(rowRect.yBot - rowRect.yTop); });
             currPoint.yTop = rowRect.yBot;
             rowsFlats.push(...currentRowFlats, SurveyHelper.createRowlineFlat(currPoint, this.controller));
-            currPoint.yTop += this.styles.spacing.gapBetweenRows;
+            currPoint.yTop += this.styles.spacing.itemGap;
         }
         return rowsFlats;
     }

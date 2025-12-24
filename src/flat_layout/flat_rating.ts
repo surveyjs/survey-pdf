@@ -24,7 +24,7 @@ export class FlatRating extends FlatQuestion<QuestionRatingModel, IQuestionRatin
         return this._radioGroupWrap;
     }
     protected getItemWidth(title: LocalizableString): number {
-        return Math.min(Math.max(this.controller.measureText(title, { ...this.styles.label }).width, this.styles.itemMinWidth), SurveyHelper.getPageAvailableWidth(this.controller));
+        return Math.min(Math.max(this.controller.measureText(title, { ...this.styles.choiceText }).width, this.styles.choiceMinWidth), SurveyHelper.getPageAvailableWidth(this.controller));
     }
     protected getItemText(index: number, locText: LocalizableString): LocalizableString {
         const ratingItemLocText: LocalizableString = new LocalizableString(locText.owner, locText.useMarkdown);
@@ -61,9 +61,9 @@ export class FlatRating extends FlatQuestion<QuestionRatingModel, IQuestionRatin
         const currPoint = SurveyHelper.clone(point);
         const compositeFlat: CompositeBrick = new CompositeBrick();
         const textBrick = await SurveyHelper.
-            createTextFlat(point, this.controller, itemInfo.locText, { ...this.styles.label });
+            createTextFlat(point, this.controller, itemInfo.locText, { ...this.styles.choiceText });
         compositeFlat.addBrick(textBrick);
-        currPoint.yTop = textBrick.yBot + this.styles.spacing.gapBetweenItemText;
+        currPoint.yTop = textBrick.yBot + this.styles.spacing. choiceTextGap;
         compositeFlat.addBrick(this.generateFlatItem(SurveyHelper.createRect(
             currPoint, itemInfo.width, this.styles.input.height), itemInfo.item, itemInfo.index));
         compositeFlat.translateX((xLeft, xRight) => {
@@ -84,12 +84,12 @@ export class FlatRating extends FlatQuestion<QuestionRatingModel, IQuestionRatin
             }
             const locText = this.getItemText(index, item.locText);
             const width = this.getItemWidth(locText);
-            if(currentColumnIndex !== 0 && width + this.styles.spacing.gapBetweenColumns > leftWidth) {
+            if(currentColumnIndex !== 0 && width + this.styles.spacing.choiceColumnGap > leftWidth) {
                 currentRowsIndex++;
                 currentColumnIndex = 0;
                 leftWidth = availableWidth;
             } else {
-                leftWidth -= width + (currentColumnIndex == 0 ? 0 : this.styles.spacing.gapBetweenColumns);
+                leftWidth -= width + (currentColumnIndex == 0 ? 0 : this.styles.spacing.choiceColumnGap);
                 currentColumnIndex++;
                 res[currentRowsIndex].push({ index, item, locText, width });
             }
@@ -108,11 +108,11 @@ export class FlatRating extends FlatQuestion<QuestionRatingModel, IQuestionRatin
                 this.controller.margins.right = SurveyHelper.getPageAvailableWidth(this.controller) - itemInfo.width - currPoint.xLeft;
                 rowFlat.addBrick(await this.generateItemComposite(currPoint, itemInfo));
                 this.controller.popMargins();
-                currPoint.xLeft = rowFlat.xRight + this.styles.spacing.gapBetweenColumns;
+                currPoint.xLeft = rowFlat.xRight + this.styles.spacing.choiceColumnGap;
             }
             rowFlat.addBrick(SurveyHelper.createRowlineFlat(currPoint, this.controller, rowFlat.width));
             if(row !== rows[rows.length - 1]) {
-                currPoint.yTop = rowFlat.yBot + this.styles.spacing.gapBetweenRows;
+                currPoint.yTop = rowFlat.yBot + this.styles.spacing.choiceGap;
                 currPoint.xLeft = rowFlat.xLeft;
             }
             rowsFlats.push(rowFlat);

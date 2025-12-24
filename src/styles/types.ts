@@ -1,5 +1,6 @@
 export interface ITextStyle {
   fontColor?: string;
+  fontName?: string;
   fontSize?: number;
   fontStyle?: string;
   lineHeight?: number;
@@ -36,7 +37,7 @@ export interface ISeparatorStyle {
 }
 
 export interface ISurveySpacing {
-    contentGap?: number; // headerContentGap
+    headerContentGap?: number;
     titleDescriptionGap?: number;
 }
 
@@ -48,16 +49,16 @@ export interface ISurveyStyle {
     spacing?: ISurveySpacing;
 }
 export interface IPanelSpacing {
-    contentGap?: number; // headerContentGap
-    gapBetweenRows?: number; // elementGap
-    gapBetweenElements?: number; // inlineElementGap
+    headerContentGap?: number;
+    elementGap?: number;
+    inlineElementGap?: number;
     titleDescriptionGap?: number;
 }
 export interface IPanelStyle {
     title?: ITextStyle;
     description?: ITextStyle;
     header?: IContainerStyle;
-    wrapper?: IContainerStyle; // container
+    container?: IContainerStyle;
     minWidth?: number;
     spacing?: IPanelSpacing;
 }
@@ -65,12 +66,12 @@ export interface IPanelStyle {
 export interface IPageStyle extends IPanelStyle {}
 
 export interface IQuestionSpacing {
-  titleRequiredGap?: number; // titleRequiredMarkGap
+  titleRequiredMarkGap?: number;
   titleNumberGap?: number;
-  contentGapVertical?: number; // headerContentGap
-  contentGapHorizontal?: number; // inlineHeaderContentGap
-  contentIndent?: number; // contentIndentStart
-  commentGap?: number; // contentCommentGap
+  headerContentGap?: number;
+  inlineHeaderContentGap?: number;
+  contentIndentStart?: number;
+  contentCommentGap?: number;
   contentDescriptionGap?: number;
   titleDescriptionGap?: number;
 }
@@ -83,21 +84,21 @@ export interface IQuestionStyle {
     //
     description?: ITextStyle;
     minWidth?: number;
-    titleLeftWidthPers?: number; // inlineHeaderWidthPercentage
-    wrapper?: IContainerStyle; // container
+    inlineHeaderWidthPercentage?: number;
+    container?: IContainerStyle;
     comment?: IInputStyle;
     commentReadOnly?: IInputStyle;
     input?: IInputStyle;
     spacing?: IQuestionSpacing;
 }
 export interface ISelectBaseSpacing extends IQuestionSpacing {
-  gapBetweenColumns?: number; // choiceColumnGap
-  gapBetweenRows?: number; // choiceGap
-  gapBetweenItemText?: number; // choiceTextGap
+  choiceColumnGap?: number;
+  choiceGap?: number;
+  choiceTextGap?: number;
 }
 export interface ISelectBaseStyle extends IQuestionStyle {
   columnMinWidth?: number;
-  label?: ITextStyle; // choiceText
+  choiceText?: ITextStyle;
   input?: ISelectionInputStyle;
   inputReadOnly?: ISelectionInputStyle;
   inputReadOnlyChecked?: ISelectionInputStyle;
@@ -108,13 +109,11 @@ export interface IQuestionCheckboxStyle extends ISelectBaseStyle {}
 export interface IQuestionRadiogroupStyle extends ISelectBaseStyle {}
 
 export interface IMatrixBaseSpacing extends IQuestionSpacing {
-    titleDescriptionGap?: number;
-    contentGapVertical?: number; // headerContentGap
-    gapBetweenColumns?: number; // tableColumnGap
-    gapBetweenRows?: number; // tableRowGap
-    verticalGapBetweenRows?: number; // listSectionGap
+    tableColumnGap?: number;
+    tableRowGap?: number;
+    listSectionGap?: number;
     listItemGap?: number; // distance between questions in a matrix rendered as a list
-    verticalGapBetweenRowTitleQuestion?: number; // listItemTitleContentGap
+    listItemTitleContentGap?: number;
 }
 export interface IMatrixBaseStyle extends IQuestionStyle {
     minWidth?: number;
@@ -122,16 +121,16 @@ export interface IMatrixBaseStyle extends IQuestionStyle {
     cell?: IContainerStyle;
     rowTitle?: IAlignedTextStyle;
     columnTitle?: ITextStyle;
-    verticalRowTitle?: IAlignedTextStyle; // listSectionTitle
+    listSectionTitle?: IAlignedTextStyle;
     spacing?: IMatrixBaseSpacing;
 }
 export interface IQuestionMatrixSpacing extends IMatrixBaseSpacing {
     gapBetweenItemText?: number; // remove this property
-    verticalGapBetweenItems?: number; // listChoiceGap
-    verticalGapBetweenItemText?: number; // listChoiceTextGap
+    listChoiceGap?: number;
+    listChoiceTextGap?: number;
 }
 export interface IQuestionMatrixStyle extends IMatrixBaseStyle {
-    verticalColumnTitle?: ITextStyle; // listChoiceText
+    listChoiceText?: ITextStyle;
     input?: ISelectionInputStyle;
     inputReadOnly?: ISelectionInputStyle;
     inputReadOnlyChecked?: ISelectionInputStyle;
@@ -145,57 +144,55 @@ export interface IQuestionMatrixStyle extends IMatrixBaseStyle {
 }
 
 export interface IMatrixDropdownBaseStyle extends IMatrixBaseStyle {
-    verticalColumnTitle?: ITextStyle; // listItemTitle
+    listItemTitle?: ITextStyle;
 }
 export interface IQuestionMatrixDropdownStyle extends IMatrixDropdownBaseStyle {
-    cellVerticalRowTitle?: IContainerStyle; // listSectionTitleContainer
-    verticalRowTitle?: IAlignedTextStyle; // listSectionTitle
+    listSectionTitleContainer?: IContainerStyle;
+    listSectionTitle?: IAlignedTextStyle;
 }
 export interface IQuestionMatrixDynamicStyle extends IMatrixDropdownBaseStyle {}
 
 export interface IQuestionMultipleTextSpacing extends IQuestionSpacing {
-    titleDescriptionGap?: number;
-    contentGapVertical?: number; // headerContentGap
-    gapBetweenColumns?: number; // itemColumnGap
-    gapBetweenRows?: number; // itemGap
-    gapBetweenItemText?: number; // itemTitleGap
+    itemColumnGap?: number;
+    itemGap?: number;
+    itemTitleGap?: number;
 }
 export interface IQuestionMultipleTextStyle extends IQuestionStyle {
-    itemTitleWidthPers?: number; // itemTitleWidthPercentage?
-    label?: ITextStyle; // itemTitle
+    itemTitleWidthPercentage?: number;
+    itemTitle?: ITextStyle;
     cell?: IContainerStyle;
     spacing?: IQuestionMultipleTextSpacing;
 }
 
 export interface IQuestionRatingSpacing extends IQuestionSpacing {
-    gapBetweenColumns?: number; // choiceColumnGap
-    gapBetweenRows?: number; // choiceGap
-    gapBetweenItemText?: number; // choiceTextGap
+    choiceColumnGap?: number;
+    choiceGap?: number;
+    choiceTextGap?: number;
 }
 
 export interface IQuestionRatingStyle extends IQuestionStyle {
-    itemMinWidth?: number; // choiceMinWidth
-    label?: ITextStyle; // choiceText
+    choiceMinWidth?: number;
+    choiceText?: ITextStyle;
     input?: ISelectionInputStyle;
     inputReadOnly?: ISelectionInputStyle;
     inputReadOnlyChecked?: ISelectionInputStyle;
     spacing?: IQuestionRatingSpacing;
 }
 export interface IQuestionRankingSpacing extends IQuestionSpacing {
-    gapBetweenColumns?: number; // choiceColumnGap
-    gapBetweenRows?: number; // choiceGap
-    gapBetweenItemText?: number; // choiceTextGap
+    choiceColumnGap?: number;
+    choiceGap?: number;
+    choiceTextGap?: number;
 }
 export interface IQuestionRankingStyle extends IQuestionStyle {
     input?: ISelectionInputStyle;
-    selectToRankSeparator?: ISeparatorStyle; // selectToRankAreaSeparator
-    label?: ITextStyle; // choiceText
+    selectToRankAreaSeparator?: ISeparatorStyle;
+    choiceText?: ITextStyle;
     spacing?: IQuestionRankingSpacing;
 }
 export interface IQuestionSliderSpacing extends IQuestionSpacing {
-    gapBetweenColumns?: number; // inputRangeGap
+    inputRangeGap?: number;
 }
-export interface IQuestionSliderStyle extends IQuestionStyle { // IQuestionSliderStyle
+export interface IQuestionSliderStyle extends IQuestionStyle {
     input?: IInputStyle;
     inputReadOnly?: IInputStyle;
     rangeSeparator?: ISeparatorStyle;
@@ -206,28 +203,28 @@ export interface IQuestionDropdownStyle extends IQuestionStyle {
 }
 export interface IQuestionTagboxStyle extends IQuestionCheckboxStyle {}
 export interface IQuestionFileSpacing extends IQuestionSpacing {
-    imageGap?: number; // imageFileNameGap
-    gapBetweenColumns?: number; // fileItemColumnGap
-    gapBetweenRows?: number; // fileItemGap
+    imageFileNameGap?: number;
+    fileItemColumnGap?: number;
+    fileItemGap?: number;
 }
 export interface IQuestionFileStyle extends IQuestionStyle {
-    itemMinWidth?: number; // fileItemMinWidth
+    fileItemMinWidth?: number;
     defaultImageFit?: string;
-    label?: ITextStyle; // fileName
-    spacing: IQuestionFileSpacing;
+    fileName?: ITextStyle;
+    spacing?: IQuestionFileSpacing;
 }
 export interface IQuestionPanelDynamicSpacing extends IQuestionSpacing {
-    gapBetweenPanels?: number; // panelGap
+    panelGap?: number;
 }
 export interface IQuestionPanelDynamicStyle extends IQuestionStyle {
     spacing?: IQuestionPanelDynamicSpacing;
 }
 export interface IQuestionBooleanSpacing extends IQuestionSpacing {
-    gapBetweenColumns?: number; // choiceColumnGap
-    gapBetweenItemText?: number; // choiceTextGap
+    choiceColumnGap?: number;
+    choiceTextGap?: number;
 }
 export interface IQuestionBooleanStyle extends IQuestionStyle {
-    label?: ITextStyle; // choiceText
+    choiceText?: ITextStyle;
     input?: ISelectionInputStyle;
     inputReadOnly?: ISelectionInputStyle;
     inputReadOnlyChecked?: ISelectionInputStyle;
@@ -242,7 +239,7 @@ export interface IQuestionBooleanStyle extends IQuestionStyle {
     spacing?: IQuestionBooleanSpacing;
 }
 export interface IQuestionImagePickerSpacing extends ISelectBaseSpacing {
-    gapBetweenImageInput?: number; // imageInputGap
+    imageInputGap?: number;
 }
 export interface IQuestionImagePickerStyle extends ISelectBaseStyle {
     imageRatio?: number;
@@ -274,6 +271,7 @@ export interface IDocStyles {
   paneldynamic?: IQuestionPanelDynamicStyle;
   matrixbase?: IMatrixBaseStyle;
   matrix?: IQuestionMatrixStyle;
+  matrixdropdownbase?: IMatrixDropdownBaseStyle;
   matrixdropdown?: IQuestionMatrixDropdownStyle;
   matrixdynamic?: IQuestionMatrixDynamicStyle;
   textbase?: ITextBaseStyle;

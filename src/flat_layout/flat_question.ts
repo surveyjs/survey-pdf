@@ -51,7 +51,7 @@ export class FlatQuestion<T extends Question = Question, S extends IQuestionStyl
             const requiredText: string = this.question.requiredMark;
             if (SurveyHelper.hasHtml(this.question.locTitle)) {
                 currPoint = SurveyHelper.createPoint(textFlat.unfold()[0], false, false);
-                currPoint.xLeft += this.styles.spacing.titleRequiredGap;
+                currPoint.xLeft += this.styles.spacing.titleRequiredMarkGap;
                 this.controller.pushMargins();
                 this.controller.margins.right = this.controller.paperWidth -
                         this.controller.margins.left - this.controller.measureText(requiredText, requiredAppearance).width;
@@ -61,7 +61,7 @@ export class FlatQuestion<T extends Question = Question, S extends IQuestionStyl
             }
             else {
                 currPoint = SurveyHelper.createPoint(textFlat.unfold().pop(), false, true);
-                currPoint.xLeft += this.styles.spacing.titleRequiredGap;
+                currPoint.xLeft += this.styles.spacing.titleRequiredMarkGap;
                 composite.addBrick(await SurveyHelper.createTextFlat(currPoint, this.controller, requiredText, requiredAppearance));
             }
         }
@@ -81,7 +81,7 @@ export class FlatQuestion<T extends Question = Question, S extends IQuestionStyl
             if(this.question.hasDescriptionUnderTitle) {
                 const descPoint: IPoint = SurveyHelper.createPoint(titleFlat, true, false);
                 descPoint.yTop += this.styles.spacing.titleDescriptionGap;
-                descPoint.xLeft += this.styles.spacing.contentIndent;
+                descPoint.xLeft += this.styles.spacing.contentIndentStart;
                 bricks.push(await this.generateFlatDescription(descPoint));
             }
         });
@@ -128,7 +128,7 @@ export class FlatQuestion<T extends Question = Question, S extends IQuestionStyl
             currPoint.yTop = SurveyHelper.mergeRects(...contentFlats).yBot;
         }
         if (this.question.hasComment) {
-            currPoint.yTop += this.styles.spacing.commentGap;
+            currPoint.yTop += this.styles.spacing.contentCommentGap;
             flats.push(await this.generateFlatsComment(currPoint));
         }
         if (this.question.hasDescriptionUnderInput) {
@@ -156,11 +156,11 @@ export class FlatQuestion<T extends Question = Question, S extends IQuestionStyl
                 const headerFlat = await this.generateFlatHeader(indentPoint);
                 compositeBrick.addBrick(headerFlat);
                 let contentPoint: IPoint = SurveyHelper.createPoint(headerFlat);
-                const indent = this.styles.spacing.contentIndent;
+                const indent = this.styles.spacing.contentIndentStart;
                 contentPoint.xLeft += indent;
                 compositeBrick.addBrick(SurveyHelper.createRowlineFlat(
                     SurveyHelper.createPoint(headerFlat), this.controller));
-                contentPoint.yTop += this.styles.spacing.contentGapVertical + SurveyHelper.EPSILON;
+                contentPoint.yTop += this.styles.spacing.headerContentGap + SurveyHelper.EPSILON;
                 this.controller.pushMargins();
                 this.controller.margins.left += indent;
                 const contentFlats: IPdfBrick[] = await this.generateFlatsContentWithOptionalElements(contentPoint);
@@ -175,7 +175,7 @@ export class FlatQuestion<T extends Question = Question, S extends IQuestionStyl
             case 'bottom': {
                 const contentPoint: IPoint = SurveyHelper.clone(indentPoint);
                 this.controller.pushMargins();
-                const indent = this.styles.spacing.contentIndent;
+                const indent = this.styles.spacing.contentIndentStart;
                 contentPoint.xLeft += indent;
                 this.controller.margins.left += indent;
                 const contentFlats: IPdfBrick[] = await this.generateFlatsContentWithOptionalElements(contentPoint);
@@ -185,18 +185,18 @@ export class FlatQuestion<T extends Question = Question, S extends IQuestionStyl
                 if (flats.length !== 0) {
                     titlePoint.yTop = flats[flats.length - 1].yBot;
                 }
-                titlePoint.yTop += this.styles.spacing.contentGapVertical;
+                titlePoint.yTop += this.styles.spacing.headerContentGap;
                 flats.push(await this.generateFlatHeader(titlePoint));
                 break;
             }
             case 'left': {
                 this.controller.pushMargins(this.controller.margins.left,
                     this.controller.paperWidth - this.controller.margins.left -
-                        SurveyHelper.getPageAvailableWidth(this.controller) * this.styles.titleLeftWidthPers);
+                        SurveyHelper.getPageAvailableWidth(this.controller) * this.styles.inlineHeaderWidthPercentage);
                 const headerFlat: CompositeBrick = await this.generateFlatHeader(indentPoint);
                 const contentPoint: IPoint = SurveyHelper.createPoint(headerFlat, false, true);
                 this.controller.popMargins();
-                contentPoint.xLeft += this.styles.spacing.contentGapHorizontal;
+                contentPoint.xLeft += this.styles.spacing.inlineHeaderContentGap;
                 this.controller.margins.left = contentPoint.xLeft;
                 const contentFlats: IPdfBrick[] = await this.generateFlatsContentWithOptionalElements(contentPoint);
                 if(contentFlats !== null && contentFlats.length !== 0) {
@@ -212,7 +212,7 @@ export class FlatQuestion<T extends Question = Question, S extends IQuestionStyl
                 const contentPoint: IPoint = SurveyHelper.clone(indentPoint);
                 this.controller.pushMargins();
                 if (titleLocation !== titleLocationMatrix) {
-                    const indent = this.styles.spacing.contentIndent;
+                    const indent = this.styles.spacing.contentIndentStart;
                     contentPoint.xLeft += indent;
                     this.controller.margins.left += indent;
                 }

@@ -220,12 +220,11 @@
 				"yTop": 89.84645669291339,
 				"yBot": 174.5964566929134,
 				"appearance": {
-					"padding": 0,
-					"borderRadius": 0,
-					"borderWidth": 0.75,
+					"borderMode": 1,
+					"color": "#ffffff",
 					"borderColor": "#d4d4d4",
-					"backgroundColor": "#ffffff",
-					"borderMode": 1
+					"borderRadius": 0,
+					"borderWidth": 0.75
 				},
 				"options": {},
 				"padding": {

@@ -12,6 +12,7 @@ import { PagePacker } from '../src/page_layout/page_packer';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
+import { IQuestionCheckboxStyle, IQuestionRadiogroupStyle } from '../src/styles/types';
 let __dummy_tx = new FlatTextbox(null, null, null);
 let __dummy_cb = new FlatCheckbox(null, null, null);
 let __dummy_rg = new FlatRadiogroup(null, null, null);
@@ -55,7 +56,7 @@ test('Long checkbox with indent', async () => {
     options.format = [210.0, 45];
     options.orientation = 'l';
     let survey: SurveyPDF = new SurveyPDF(json, options);
-    survey.styles = { question: { wrapper: { padding: 0, borderWidth: 0 } } };
+    survey.styles = { question: { container: { padding: 0, borderWidth: 0 } } };
     let controller: DocController = new DocController(options);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
@@ -66,14 +67,14 @@ test('Long checkbox with indent', async () => {
     expect(packs[1].length).toBe(3);
     let leftTopPoint: IPoint = controller.leftTopPoint;
     leftTopPoint.xLeft += controller.measureText(json.questions[0].indent).width;
-    const styles = survey.getStylesForElement(survey.getAllQuestions()[0]);
+    const styles = survey.getStylesForElement(survey.getAllQuestions()[0]) as IQuestionCheckboxStyle;
     TestHelper.equalPoint(expect, packs[0][0], { xLeft: leftTopPoint.xLeft, yTop: leftTopPoint.yTop });
-    leftTopPoint.yTop += styles.title.lineHeight + styles.label.lineHeight + styles.spacing.gapBetweenRows + styles.spacing.contentGapVertical;
+    leftTopPoint.yTop += styles.title.lineHeight + styles.choiceText.lineHeight + styles.spacing?.choiceGap + styles.spacing?.headerContentGap;
     TestHelper.equalPoint(expect, packs[0][1], leftTopPoint);
     leftTopPoint.yTop = controller.leftTopPoint.yTop;
     for (let i: number = 0; i < 3; i++) {
         TestHelper.equalPoint(expect, packs[1][i], leftTopPoint);
-        leftTopPoint.yTop += styles.label.lineHeight + styles.spacing.gapBetweenRows;
+        leftTopPoint.yTop += styles.choiceText.lineHeight + styles.spacing?.choiceGap;
     }
 });
 test('Check two textbox flats sort order', async () => {
@@ -166,7 +167,7 @@ test('Unfold compose brick', async () => {
         unitHeight / DocOptions.MM_TO_PT + options.margins.bot];
     options.orientation = 'l';
     let survey: SurveyPDF = new SurveyPDF(json, options);
-    survey.styles = { question: { wrapper: { padding: 0, borderWidth: 0 } } };
+    survey.styles = { question: { container: { padding: 0, borderWidth: 0 } } };
     let controller: DocController = new DocController(options);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
@@ -198,7 +199,7 @@ test('Pack to little page', async () => {
     options.format = [210.0, 30];
     options.orientation = 'l';
     let survey: SurveyPDF = new SurveyPDF(json, options);
-    survey.styles = { question: { wrapper: { padding: 0, borderWidth: 0 } } };
+    survey.styles = { question: { container: { padding: 0, borderWidth: 0 } } };
     let controller: DocController = new DocController(options);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
@@ -285,13 +286,13 @@ test('Check yTop on new page with panel', async () => {
         ]
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    survey.styles = { question: { wrapper: { padding: 0, borderWidth: 0 } } };
-    const styles = survey.getStylesForElement(survey.getAllQuestions()[0]);
+    survey.styles = { question: { container: { padding: 0, borderWidth: 0 } } };
+    const styles = survey.getStylesForElement(survey.getAllQuestions()[0]) as IQuestionRadiogroupStyle;
     let controller: DocController = new DocController({ ...TestHelper.defaultOptions, format: [210, 180] });
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
     expect(packs.length).toBe(3);
-    expect(packs[2][0].yTop).toBeCloseTo(packs[2][1].yTop - styles.label.lineHeight - styles.spacing.gapBetweenRows);
+    expect(packs[2][0].yTop).toBeCloseTo(packs[2][1].yTop - styles.choiceText.lineHeight - styles.spacing?.choiceGap);
 });
 test('Check adding new page for lack of place before new page', async () => {
     let json: any = {
@@ -331,7 +332,7 @@ test('Check adding new page for lack of place before new page', async () => {
         }
     };
     let survey: SurveyPDF = new SurveyPDF(json, options);
-    survey.styles = { question: { wrapper: { padding: 0, borderWidth: 0 } } };
+    survey.styles = { question: { container: { padding: 0, borderWidth: 0 } } };
     let controller: DocController = new DocController(options);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);

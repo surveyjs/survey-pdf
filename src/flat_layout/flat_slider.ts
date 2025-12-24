@@ -27,11 +27,11 @@ export class FlatSlider extends FlatQuestion<QuestionSliderModel, IQuestionSlide
                 const options = this.getOptionsByValue(valueItem.toString());
                 const currentPoint = SurveyHelper.clone(point);
                 this.controller.pushMargins();
-                SurveyHelper.setColumnMargins(this.controller, 2, i, this.styles.spacing.gapBetweenColumns);
+                SurveyHelper.setColumnMargins(this.controller, 2, i, this.styles.spacing.inputRangeGap);
                 currentPoint.xLeft = this.controller.margins.left;
                 if(i > 0) {
                     const separatorPoint = SurveyHelper.clone(currentPoint);
-                    separatorPoint.xLeft -= this.styles.spacing.gapBetweenColumns - (this.styles.spacing.gapBetweenColumns - this.styles.rangeSeparator.width) / 2;
+                    separatorPoint.xLeft -= this.styles.spacing.inputRangeGap - (this.styles.spacing.inputRangeGap - this.styles.rangeSeparator.width) / 2;
                     bricks.push(new EmptyBrick(this.controller, { ...separatorPoint, xRight: separatorPoint.xLeft + this.styles.rangeSeparator.width, yBot: separatorPoint.yTop + this.styles.rangeSeparator.height }, this.styles.rangeSeparator));
                 }
                 const inputBrick = await this.generateInputBrick(currentPoint, options);

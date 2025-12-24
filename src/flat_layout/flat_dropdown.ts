@@ -47,7 +47,7 @@ export class FlatDropdown extends FlatQuestion<QuestionDropdownModel, IQuestionD
         const compositeFlat: CompositeBrick = new CompositeBrick(valueBrick);
         if (this.question.isShowingChoiceComment) {
             const otherPoint: IPoint = SurveyHelper.createPoint(compositeFlat);
-            otherPoint.yTop += this.styles.spacing.commentGap;
+            otherPoint.yTop += this.styles.spacing.contentCommentGap;
             compositeFlat.addBrick(await this.generateItemComment(otherPoint));
         }
         return [compositeFlat];

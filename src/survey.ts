@@ -190,7 +190,7 @@ export class SurveyPDF extends SurveyModel {
     public onGetQuestionStyles = new EventBase<SurveyPDF, { question: Question, styles: IQuestionStyle, getColorVariable: (name: string) => string, getSizeVariable: (name: string) => number }>;
     public onGetPanelStyles = new EventBase<SurveyPDF, { panel: PanelModel, styles: IPanelStyle, getColorVariable: (name: string) => string, getSizeVariable: (name: string) => number }>;
     public onGetPageStyles = new EventBase<SurveyPDF, { page: PanelModel, styles: IPageStyle, getColorVariable: (name: string) => string, getSizeVariable: (name: string) => number }>;
-    public onGetItemStyles = new EventBase<SurveyPDF, { question: Question, item: ItemValue, styles: { label: ITextStyle, input: ISelectionInputStyle }, getColorVariable: (name: string) => string, getSizeVariable: (name: string) => number}>;
+    public onGetItemStyles = new EventBase<SurveyPDF, { question: Question, item: ItemValue, styles: { choiceText: ITextStyle, input: ISelectionInputStyle }, getColorVariable: (name: string) => string, getSizeVariable: (name: string) => number}>;
 
     private _styles: IDocStyles;
     public get styles(): IDocStyles {
@@ -215,7 +215,7 @@ export class SurveyPDF extends SurveyModel {
         this._styles = undefined;
         this.stylesHash = {};
     }
-    public getStylesForItem(question: Question, item: ItemValue, styles: { label: ITextStyle, input: ISelectionInputStyle }): { label: ITextStyle, input: ISelectionInputStyle } {
+    public getStylesForItem(question: Question, item: ItemValue, styles: { choiceText: ITextStyle, input: ISelectionInputStyle }): { choiceText: ITextStyle, input: ISelectionInputStyle } {
         return createStylesFromTheme(this.theme, (options) => {
             const eventOptions = {
                 getColorVariable: options.getColorVariable,

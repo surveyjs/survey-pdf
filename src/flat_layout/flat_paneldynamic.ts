@@ -15,7 +15,7 @@ export class FlatPanelDynamic extends FlatQuestion<QuestionPanelDynamicModel, IQ
 
             if (panelFlats.length !== 0) {
                 currPoint.yTop = SurveyHelper.mergeRects(...panelFlats).yBot;
-                currPoint.yTop += this.styles.spacing.gapBetweenPanels;
+                currPoint.yTop += this.styles.spacing.panelGap;
                 flats.push(...panelFlats);
             }
         }
