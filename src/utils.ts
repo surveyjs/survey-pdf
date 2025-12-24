@@ -17,10 +17,10 @@ export function mergeRects(...rects: IRect[]): IRect {
 }
 
 export interface IPadding {
-  top: number;
-  bot: number;
-  left: number;
-  right: number;
+    top: number;
+    bot: number;
+    left: number;
+    right: number;
 }
 
 export function parsePadding(padding: Array<number> | number): IPadding {

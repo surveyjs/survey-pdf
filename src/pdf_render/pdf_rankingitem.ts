@@ -3,7 +3,7 @@ import { IPdfBrick, IPdfBrickOptions, PdfBrick } from './pdf_brick';
 import { SurveyHelper, IInputAppearanceOptions } from '../helper_survey';
 
 export interface IRankingItemBrickOptions extends IPdfBrickOptions {
-        mark: string;
+    mark: string;
 }
 
 export class RankingItemBrick extends PdfBrick {

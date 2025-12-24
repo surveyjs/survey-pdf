@@ -9,7 +9,7 @@ export interface ICheckItemBrickOptions extends IPdfBrickOptions {
 }
 
 export type ICheckItemBrickAppearanceOptions = IInputAppearanceOptions & {
-     checkMark: string,
+    checkMark: string,
 }
 
 export class CheckItemBrick extends PdfBrick {

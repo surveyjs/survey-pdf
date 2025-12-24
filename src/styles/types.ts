@@ -1,39 +1,39 @@
 export interface ITextStyle {
-  fontColor?: string;
-  fontName?: string;
-  fontSize?: number;
-  fontStyle?: string;
-  lineHeight?: number;
+    fontColor?: string;
+    fontName?: string;
+    fontSize?: number;
+    fontStyle?: string;
+    lineHeight?: number;
 }
 
 export interface IAlignedTextStyle extends ITextStyle {
-  textAlign?: 'center' | 'left' | 'right';
+    textAlign?: 'center' | 'left' | 'right';
 }
 
 export interface IBorderStyle {
-  borderColor?: string;
-  borderWidth?: number;
-  borderRadius?: number;
+    borderColor?: string;
+    borderWidth?: number;
+    borderRadius?: number;
 }
 
 export interface IInputStyle extends IBorderStyle, ITextStyle {
-  backgroundColor?: string;
+    backgroundColor?: string;
 }
 
 export interface IContainerStyle extends IBorderStyle {
-  backgroundColor?: string;
-  padding?: number | number[];
+    backgroundColor?: string;
+    padding?: number | number[];
 }
 export interface ISelectionInputStyle extends IInputStyle {
-  checkMark?: string;
-  width?: number;
-  height?: number;
+    checkMark?: string;
+    width?: number;
+    height?: number;
 }
 
 export interface ISeparatorStyle {
-  width?: number;
-  height?: number;
-  color?: string;
+    width?: number;
+    height?: number;
+    color?: string;
 }
 
 export interface ISurveySpacing {
@@ -66,14 +66,14 @@ export interface IPanelStyle {
 export interface IPageStyle extends IPanelStyle {}
 
 export interface IQuestionSpacing {
-  titleRequiredMarkGap?: number;
-  titleNumberGap?: number;
-  headerContentGap?: number;
-  inlineHeaderContentGap?: number;
-  contentIndentStart?: number;
-  contentCommentGap?: number;
-  contentDescriptionGap?: number;
-  titleDescriptionGap?: number;
+    titleRequiredMarkGap?: number;
+    titleNumberGap?: number;
+    headerContentGap?: number;
+    inlineHeaderContentGap?: number;
+    contentIndentStart?: number;
+    contentCommentGap?: number;
+    contentDescriptionGap?: number;
+    titleDescriptionGap?: number;
 }
 export interface IQuestionStyle {
     title?: ITextStyle;
@@ -92,17 +92,17 @@ export interface IQuestionStyle {
     spacing?: IQuestionSpacing;
 }
 export interface ISelectBaseSpacing extends IQuestionSpacing {
-  choiceColumnGap?: number;
-  choiceGap?: number;
-  choiceTextGap?: number;
+    choiceColumnGap?: number;
+    choiceGap?: number;
+    choiceTextGap?: number;
 }
 export interface ISelectBaseStyle extends IQuestionStyle {
-  columnMinWidth?: number;
-  choiceText?: ITextStyle;
-  input?: ISelectionInputStyle;
-  inputReadOnly?: ISelectionInputStyle;
-  inputReadOnlyChecked?: ISelectionInputStyle;
-  spacing?: ISelectBaseSpacing;
+    columnMinWidth?: number;
+    choiceText?: ITextStyle;
+    input?: ISelectionInputStyle;
+    inputReadOnly?: ISelectionInputStyle;
+    inputReadOnlyChecked?: ISelectionInputStyle;
+    spacing?: ISelectBaseSpacing;
 }
 
 export interface IQuestionCheckboxStyle extends ISelectBaseStyle {}
@@ -256,40 +256,40 @@ export interface IQuestionImagePickerStyle extends ISelectBaseStyle {
     spacing?: IQuestionImagePickerSpacing;
 }
 export interface ITextBaseStyle extends IQuestionStyle {
-  inputReadOnly?: IInputStyle;
+    inputReadOnly?: IInputStyle;
 }
 export interface IQuestionTextStyle extends ITextBaseStyle {}
 export interface IQuestionCommentStyle extends ITextBaseStyle{}
 export interface IQuestionExpressionStyle extends IQuestionStyle {}
 export interface IQuestionHtmlStyle extends IQuestionStyle {
-  text?: ITextStyle;
+    text?: ITextStyle;
 }
 export interface IDocStyles {
-  survey?: ISurveyStyle;
-  page?: IPageStyle;
-  panel?: IPanelStyle;
-  paneldynamic?: IQuestionPanelDynamicStyle;
-  matrixbase?: IMatrixBaseStyle;
-  matrix?: IQuestionMatrixStyle;
-  matrixdropdownbase?: IMatrixDropdownBaseStyle;
-  matrixdropdown?: IQuestionMatrixDropdownStyle;
-  matrixdynamic?: IQuestionMatrixDynamicStyle;
-  textbase?: ITextBaseStyle;
-  text?: IQuestionTextStyle;
-  comment?: IQuestionCommentStyle;
-  multipletext?: IQuestionMultipleTextStyle;
-  question?: IQuestionStyle;
-  selectbase?: ISelectBaseStyle;
-  checkbox?: IQuestionCheckboxStyle;
-  radiogroup?: IQuestionRadiogroupStyle;
-  imagepicker?: IQuestionImagePickerStyle;
-  dropdown?: IQuestionDropdownStyle;
-  tagbox?: IQuestionTagboxStyle;
-  boolean?: IQuestionBooleanStyle;
-  rating?: IQuestionRatingStyle;
-  ranking?: IQuestionRankingStyle;
-  expression?: IQuestionExpressionStyle;
-  html?: IQuestionHtmlStyle;
-  file?: IQuestionFileStyle;
-  slider?: IQuestionSliderStyle;
+    survey?: ISurveyStyle;
+    page?: IPageStyle;
+    panel?: IPanelStyle;
+    paneldynamic?: IQuestionPanelDynamicStyle;
+    matrixbase?: IMatrixBaseStyle;
+    matrix?: IQuestionMatrixStyle;
+    matrixdropdownbase?: IMatrixDropdownBaseStyle;
+    matrixdropdown?: IQuestionMatrixDropdownStyle;
+    matrixdynamic?: IQuestionMatrixDynamicStyle;
+    textbase?: ITextBaseStyle;
+    text?: IQuestionTextStyle;
+    comment?: IQuestionCommentStyle;
+    multipletext?: IQuestionMultipleTextStyle;
+    question?: IQuestionStyle;
+    selectbase?: ISelectBaseStyle;
+    checkbox?: IQuestionCheckboxStyle;
+    radiogroup?: IQuestionRadiogroupStyle;
+    imagepicker?: IQuestionImagePickerStyle;
+    dropdown?: IQuestionDropdownStyle;
+    tagbox?: IQuestionTagboxStyle;
+    boolean?: IQuestionBooleanStyle;
+    rating?: IQuestionRatingStyle;
+    ranking?: IQuestionRankingStyle;
+    expression?: IQuestionExpressionStyle;
+    html?: IQuestionHtmlStyle;
+    file?: IQuestionFileStyle;
+    slider?: IQuestionSliderStyle;
 }

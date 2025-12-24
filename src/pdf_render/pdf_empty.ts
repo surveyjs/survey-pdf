@@ -8,7 +8,7 @@ export interface IEmptyBrickAppearanceOptions extends IBorderAppearanceOptions {
 
 export class EmptyBrick extends PdfBrick {
     constructor(controller: DocController, rect: IRect,
-         protected appearance: IEmptyBrickAppearanceOptions = {}) {
+        protected appearance: IEmptyBrickAppearanceOptions = {}) {
         super(controller, rect);
     }
 
