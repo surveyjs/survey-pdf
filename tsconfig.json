@@ -12,7 +12,7 @@
     "noImplicitAny": true,
     "importHelpers": true,
     "experimentalDecorators": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "paths": {
