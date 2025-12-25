@@ -55,6 +55,7 @@ const buildPlatformJson = {
     "survey-core": packageJson.version
   },
   dependencies: {
+    "@csstools/css-color-parser": "^3.1.0",
     "@types/node-fetch": "^2",
     "jspdf": "^2.3.0 || ^3",
     "image-size": "^2",
@@ -172,6 +173,10 @@ module.exports = function (options) {
       },
       "node-fetch": "node-fetch",
       "image-size": "image-size",
+      '@csstools/css-calc': '@csstools/css-calc',
+      '@csstools/css-color-parser': '@csstools/css-color-parser',
+      '@csstools/css-parser-algorithms': '@csstools/css-parser-algorithms',
+      '@csstools/css-tokenizer': '@csstools/css-tokenizer',
       "survey-core": {
         root: "Survey",
         commonjs2: "survey-core",
