@@ -270,6 +270,7 @@ test('Check textfield with negative width', () => {
     TestHelper.equalRect(expect, resultRect, assumeRect);
 });
 test('Check createSvgContent method', () => {
+    const spy = jest.spyOn(console, 'warn').mockImplementation((warning) => {});
     const options: IDocOptions = {
         useCustomFontInHtml: true
     };
@@ -289,6 +290,7 @@ test('Check createSvgContent method', () => {
     } finally {
         SurveyHelper.htmlToXml = old;
         DocController.customFonts = {};
+        spy.mockRestore();
     }
 });
 test('Check setCanvas method', () => {
@@ -357,6 +359,8 @@ test('Check getContentQuestionType method with renderAs', () => {
     expect(type).toEqual('boolean-checkbox');
 });
 test('Check chooseHtmlFont method', async () => {
+    const errorSpy = jest.spyOn(console, 'error').mockImplementation((error) => {});
+    const warningSpy = jest.spyOn(console, 'warn').mockImplementation((warning) => {});
     let controller = new DocController(
         { fontName: 'custom_font' }
     );
@@ -382,9 +386,13 @@ test('Check chooseHtmlFont method', async () => {
         { fontName: 'custom_font2', useCustomFontInHtml: true }
     );
     expect(SurveyHelper.chooseHtmlFont(controller)).toBe('custom_font2');
+    errorSpy.mockRestore();
+    warningSpy.mockRestore();
 });
 
 test('check getCorrectedImageSize works incorrectly if image could not be loaded', async () => {
+    const errorSpy = jest.spyOn(console, 'error').mockImplementation((error) => {});
+    const warningSpy = jest.spyOn(console, 'warn').mockImplementation((warning) => {});
     const controller = new DocController(
         { fontName: 'custom_font' }
     );
@@ -400,6 +408,8 @@ test('check getCorrectedImageSize works incorrectly if image could not be loaded
     imageSize = await SurveyHelper.getCorrectedImageSize(controller, { imageLink: '', defaultImageWidth: 300, defaultImageHeight: 400 });
     expect(imageSize.width).toBe(225);
     expect(imageSize.height).toBe(300);
+    errorSpy.mockRestore();
+    warningSpy.mockRestore();
 });
 
 test('check SurveyHelper.generateCssTextRule method', () => {

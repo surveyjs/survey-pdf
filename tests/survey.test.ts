@@ -7,7 +7,6 @@ import { FlatTextbox } from '../src/flat_layout/flat_textbox';
 import { TestHelper } from '../src/helper_test';
 import { DocController, DocOptions } from '../src/doc_controller';
 import { FlatRepository } from '../src/flat_layout/flat_repository';
-import { SurveyHelper } from '../src/helper_survey';
 import { checkPDFSnapshot } from './snapshot_helper';
 import { TextBrick } from '../src/pdf_render/pdf_text';
 import '../src/flat_layout/flat_checkbox';
@@ -57,7 +56,7 @@ test('check that default font name is set correct in DocOptions', async () => {
 });
 
 class Log {
-    public log: string = ''
+    public log: string = '';
 }
 class SurveyPDFSaveTester extends SurveyPDF {
     private logger: Log;
