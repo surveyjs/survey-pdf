@@ -53,7 +53,7 @@ export interface IDrawRectOptions {
     rect?: IRect;
 }
 /**
- * An object that configures rendering a piece of text.
+ * An object that configures rendering a text fragment.
  */
 export interface IDrawTextOptions extends IDrawRectOptions {
     /**
@@ -100,7 +100,7 @@ export interface IDrawImageOptions extends IDrawRectOptions {
 }
 
 /**
- * An object that describes a drawing area and enables you to draw an image or a piece of text within the area. You can access this object within functions that handle `SurveyPDF`'s [`onRenderHeader`](https://surveyjs.io/pdf-generator/documentation/api-reference/surveypdf#onRenderHeader) and [`onRenderFooter`](https://surveyjs.io/pdf-generator/documentation/api-reference/surveypdf#onRenderFooter) events.
+ * An object that describes a drawing area and enables you to draw an image or a text fragment within the area. You can access this object within functions that handle `SurveyPDF`'s [`onRenderHeader`](https://surveyjs.io/pdf-generator/documentation/api-reference/surveypdf#onRenderHeader) and [`onRenderFooter`](https://surveyjs.io/pdf-generator/documentation/api-reference/surveypdf#onRenderFooter) events.
  *
  * [View Demo](https://surveyjs.io/pdf-generator/examples/customize-header-and-footer-of-pdf-form/ (linkStyle))
  */
@@ -211,7 +211,7 @@ export class DrawCanvas {
         return rect;
     }
     /**
-     * Draws a piece of text within the drawing area.
+     * Draws a text fragment within the drawing area.
      *
      * [View Demo](https://surveyjs.io/pdf-generator/examples/customize-header-and-footer-of-pdf-form/ (linkStyle))
      * @param textOptions An [`IDrawTextOptions`](https://surveyjs.io/pdf-generator/documentation/api-reference/idrawtextoptions) object that configures the drawing.
