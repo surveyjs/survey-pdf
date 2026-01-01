@@ -26,7 +26,7 @@ test('Has other radiogroup', async () => {
     const controller: DocController = new DocController(TestHelper.defaultOptions);
     await survey['renderSurvey'](controller);
     const internal: any = controller.doc.internal;
-    const internalOtherText: string = internal.pages[1][21];
+    const internalOtherText: string = internal.pages[1][40];
     expect(internalOtherText).toBeDefined();
     const regex: RegExp = /\((.*)\)/;
     const otherText: string = internalOtherText.match(regex)[1];
@@ -53,7 +53,7 @@ test('Other selected with value radiogroup', async () => {
     await survey['renderSurvey'](controller);
     const fields: any = controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields;
     expect(fields[1].AS).toBe('/' + survey.getAllQuestions()[0].id + 'index0');
-    expect(fields[2].V).toBe('( ' + json.questions[0].defaultValue + ')');
+    expect(fields[2].V).toBe('(' + json.questions[0].defaultValue + ')');
 });
 test('Check all items disabled or enabled', async () => {
     const json: any = {
@@ -92,11 +92,11 @@ test('Check onRenderRadio* events', async () => {
     survey.getAllQuestions()[0].id = 'questionId';
     const controller: DocController = new DocController(TestHelper.defaultOptions);
     survey.onRenderRadioGroupWrapAcroform.add((_, opt) => {
-        opt.fieldName = opt.context.question.name;
+        opt.options.fieldName = opt.question.name;
     });
 
     survey.onRenderRadioItemAcroform.add((_, opt) => {
-        opt.fieldName = opt.context.item.value;
+        opt.options.fieldName = opt.item.value;
     });
     await survey['renderSurvey'](controller);
     const fields: any = controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields;

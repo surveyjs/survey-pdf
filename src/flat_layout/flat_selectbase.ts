@@ -1,51 +1,57 @@
-import { IQuestion, ItemValue, QuestionCheckboxBase, settings } from 'survey-core';
-import { SurveyPDF } from '../survey';
-import { IPoint, IRect, DocController } from '../doc_controller';
+import { ItemValue, QuestionSelectBase, settings } from 'survey-core';
+import { IPoint } from '../doc_controller';
 import { FlatQuestion } from './flat_question';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
-import { TextBrick } from '../pdf_render/pdf_text';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
 import { ChoiceItem } from 'survey-core';
+import { ISelectBaseStyle, ISelectionInputStyle, ITextStyle } from '../styles/types';
 
-export abstract class FlatSelectBase extends FlatQuestion {
-    protected question: QuestionCheckboxBase;
-    public constructor(protected survey: SurveyPDF,
-        question: IQuestion, protected controller: DocController) {
-        super(survey, question, controller);
-        this.question = <QuestionCheckboxBase>question;
-    }
-    public abstract generateFlatItem(rect: IRect, item: ItemValue, index: number): IPdfBrick;
+export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSelectBase, S extends ISelectBaseStyle = ISelectBaseStyle> extends FlatQuestion<T, S> {
+    public abstract generateFlatItem(point: IPoint, item: ItemValue, index: number, styles: ISelectionInputStyle): IPdfBrick;
     protected async generateItemComment(point: IPoint, item: ItemValue) {
+        const shouldRenderReadOnly = SurveyHelper.shouldRenderReadOnly(this.question, this.controller, this.question.isReadOnly);
+        const appearance = SurveyHelper.getPatchedTextAppearanceOptions(this.controller, SurveyHelper.mergeObjects({}, this.styles.comment, shouldRenderReadOnly ? this.styles.commentReadOnly : undefined));
         const commentModel = this.question.getCommentTextAreaModel(item);
         return await SurveyHelper.createCommentFlat(
-            point, this.question, this.controller, {
+            point, this.controller, {
+                shouldRenderReadOnly,
                 fieldName: commentModel.id,
-                rows: SurveyHelper.OTHER_ROWS_COUNT,
+                rows: this.controller.otherRowsCount,
                 value: commentModel.getTextValue(),
                 shouldRenderBorders: settings.readOnlyCommentRenderMode === 'textarea',
                 isReadOnly: this.question.isReadOnly,
                 isMultiline: true,
-            });
+            }, appearance);
+    }
+    public getStylesForItem(item: ItemValue): { choiceText: ITextStyle, input: ISelectionInputStyle } {
+        const isChecked: boolean = this.question.isItemSelected(item);
+        const shouldRenderReadOnly = this.question.isReadOnly || !item.isEnabled && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform' || this.controller.compress;
+        const styles = { input: SurveyHelper.mergeObjects({},
+            this.styles.input,
+            shouldRenderReadOnly ? this.styles.inputReadOnly : {},
+            shouldRenderReadOnly && isChecked ? this.styles.inputReadOnlyChecked : {}), choiceText: { ...this.styles.choiceText } };
+        return this.survey.getStylesForItem(this.question, item, styles);
     }
     protected async generateFlatComposite(point: IPoint, item: ItemValue | ChoiceItem, index: number): Promise<IPdfBrick> {
         const compositeFlat: CompositeBrick = new CompositeBrick();
-        const itemRect: IRect = SurveyHelper.createRect(point,
-            this.controller.unitWidth, this.controller.unitHeight);
-        const itemFlat: IPdfBrick = this.generateFlatItem(SurveyHelper.moveRect(
-            SurveyHelper.scaleRect(itemRect, SurveyHelper.SELECT_ITEM_FLAT_SCALE),
-            point.xLeft), item, index);
+        const styles = this.getStylesForItem(item);
+        const itemFlat: IPdfBrick = this.generateFlatItem(point, item, index, styles.input);
 
         compositeFlat.addBrick(itemFlat);
         const textPoint: IPoint = SurveyHelper.clone(point);
-        textPoint.xLeft = itemFlat.xRight + this.controller.unitWidth * SurveyHelper.GAP_BETWEEN_ITEM_TEXT;
+        textPoint.xLeft = itemFlat.xRight + this.styles.spacing.choiceTextGap;
+
         if (item.locText.renderedHtml !== null) {
-            compositeFlat.addBrick(await SurveyHelper.createTextFlat(
-                textPoint, this.question, this.controller, item.locText, TextBrick));
+            const textFlat = await SurveyHelper.createTextFlat(
+                textPoint, this.controller, item.locText, { ...styles.choiceText });
+            SurveyHelper.alignVerticallyBricks('center', itemFlat, textFlat.unfold()[0]);
+            textFlat.updateRect();
+            compositeFlat.addBrick(textFlat);
         }
         if(item.isCommentShowing) {
             const otherPoint: IPoint = SurveyHelper.createPoint(compositeFlat, true, false);
-            otherPoint.yTop += this.controller.unitHeight * SurveyHelper.GAP_BETWEEN_ROWS;
+            otherPoint.yTop += this.styles.spacing.choiceGap;
             compositeFlat.addBrick(await this.generateItemComment(otherPoint, item));
         }
         return compositeFlat;
@@ -53,23 +59,20 @@ export abstract class FlatSelectBase extends FlatQuestion {
     protected getVisibleChoices(): Array<ItemValue> {
         return this.question.visibleChoices;
     }
-    protected getColCount(): number {
-        return this.question.colCount;
-    }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
-        const colCount = this.getColCount();
+        const colCount = this.question.colCount;
         const visibleChoices = this.getVisibleChoices();
         let currentColCount: number = colCount;
         if (colCount == 0) {
             currentColCount = Math.floor(SurveyHelper.getPageAvailableWidth(this.controller)
-                / this.controller.measureText(SurveyHelper.MATRIX_COLUMN_WIDTH).width) || 1;
+                / this.styles.columnMinWidth) || 1;
             if (visibleChoices.length < currentColCount) {
                 currentColCount = visibleChoices.length;
             }
         }
         else if (colCount > 1) {
-            currentColCount = (SurveyHelper.getColumnWidth(this.controller, colCount) <
-                this.controller.measureText(SurveyHelper.MATRIX_COLUMN_WIDTH).width) ? 1 : colCount;
+            currentColCount = (SurveyHelper.getColumnWidth(this.controller, colCount, this.styles.spacing.choiceColumnGap) <
+                this.styles.columnMinWidth) ? 1 : colCount;
             if(currentColCount == colCount) {
                 return await this.generateColumns(point);
             }
@@ -89,7 +92,7 @@ export abstract class FlatSelectBase extends FlatQuestion {
             for (let colIndex = 0; colIndex < row.length; colIndex ++) {
                 const item = row[colIndex];
                 this.controller.pushMargins();
-                SurveyHelper.setColumnMargins(this.controller, colCount, colIndex);
+                SurveyHelper.setColumnMargins(this.controller, colCount, colIndex, this.styles.spacing.choiceColumnGap);
                 currPoint.xLeft = this.controller.margins.left;
                 const itemFlat: IPdfBrick = await this.generateFlatComposite(
                     currPoint, item, visibleChoices.indexOf(item));
@@ -98,23 +101,22 @@ export abstract class FlatSelectBase extends FlatQuestion {
             }
             const rowLineFlat: IPdfBrick = SurveyHelper.createRowlineFlat(
                 SurveyHelper.createPoint(rowFlat), this.controller);
-            currPoint.yTop = rowLineFlat.yBot +
-                    SurveyHelper.GAP_BETWEEN_ROWS * this.controller.unitHeight;
+            currPoint.yTop = rowLineFlat.yBot + this.styles.spacing.choiceGap;
             flats.push(rowFlat, rowLineFlat);
         }
         return flats;
     }
 
-    protected async generateVerticallyItems(point: IPoint, itemValues: ItemValue[]): Promise<IPdfBrick[]> {
+    protected generateVerticallyItems = async (point: IPoint, itemValues: ItemValue[], customGap?: number): Promise<IPdfBrick[]> => {
         const currPoint: IPoint = SurveyHelper.clone(point);
         const flats: IPdfBrick[] = [];
         for (let i: number = 0; i < itemValues.length; i++) {
             const itemFlat: IPdfBrick = await this.generateFlatComposite(currPoint, itemValues[i], i);
-            currPoint.yTop = itemFlat.yBot + SurveyHelper.GAP_BETWEEN_ROWS * this.controller.unitHeight;
+            currPoint.yTop = itemFlat.yBot + (customGap || this.styles.spacing.choiceGap);
             flats.push(itemFlat);
         }
         return flats;
-    }
+    };
 
     protected async generateColumns(point: IPoint): Promise<IPdfBrick[]> {
         const columns = this.question.columns;
