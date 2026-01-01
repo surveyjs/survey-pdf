@@ -73,7 +73,7 @@
 				"options": {
 					"shouldRenderReadOnly": false,
 					"rows": 1,
-					"fieldName": "sq_6",
+					"fieldName": "testidquestion_multi one item_row_0_cell_0",
 					"inputType": "text",
 					"value": "",
 					"isReadOnly": false,

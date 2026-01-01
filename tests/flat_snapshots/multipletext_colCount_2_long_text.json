@@ -97,7 +97,7 @@
 				"options": {
 					"shouldRenderReadOnly": false,
 					"rows": 1,
-					"fieldName": "sq_42",
+					"fieldName": "testidquestion_multi_row_0_cell_0",
 					"inputType": "text",
 					"value": "",
 					"isReadOnly": false,
@@ -234,7 +234,7 @@
 				"options": {
 					"shouldRenderReadOnly": false,
 					"rows": 1,
-					"fieldName": "sq_46",
+					"fieldName": "testidquestion_multi_row_0_cell_1",
 					"inputType": "text",
 					"value": "",
 					"isReadOnly": false,
@@ -356,7 +356,7 @@
 				"options": {
 					"shouldRenderReadOnly": false,
 					"rows": 1,
-					"fieldName": "sq_50",
+					"fieldName": "testidquestion_multi_row_1_cell_0",
 					"inputType": "text",
 					"value": "",
 					"isReadOnly": false,

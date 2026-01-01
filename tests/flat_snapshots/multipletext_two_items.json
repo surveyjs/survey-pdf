@@ -73,7 +73,7 @@
 				"options": {
 					"shouldRenderReadOnly": false,
 					"rows": 1,
-					"fieldName": "sq_21",
+					"fieldName": "testidquestion_multi_row_0_cell_0",
 					"inputType": "text",
 					"value": "",
 					"isReadOnly": false,
@@ -171,7 +171,7 @@
 				"options": {
 					"shouldRenderReadOnly": false,
 					"rows": 1,
-					"fieldName": "sq_25",
+					"fieldName": "testidquestion_multi_row_1_cell_0",
 					"inputType": "text",
 					"value": "",
 					"isReadOnly": false,
