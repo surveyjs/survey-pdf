@@ -1,4 +1,4 @@
-import { EventBase, PanelModel } from 'survey-core';
+import { EventBase, MutlipleTextErrorRow, MutlipleTextRow, PanelModel, QuestionMultipleTextModel } from 'survey-core';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { DocController, IDocOptions } from '../src/doc_controller';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
@@ -22,6 +22,13 @@ function correctSurveyElementIds(survey: SurveyPDF) {
                 p.id = `${q.id}_panel_${i}`;
                 p.questions.forEach((pq)=> {
                     pq.id = `${p.id}_${q.name}`;
+                });
+            });
+        }
+        if(q.getType() === 'multipletext') {
+            (q as QuestionMultipleTextModel).getRows().filter(row => !(row instanceof MutlipleTextErrorRow)).forEach((row: MutlipleTextRow, rowIndex: number) => {
+                row.cells.filter(cell => !cell.isErrorsCell).forEach((cell, cellIndex) => {
+                    cell.item.editor.id = `${q.id}_row_${rowIndex}_cell_${cellIndex}`;
                 });
             });
         }
