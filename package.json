@@ -1,5 +1,5 @@
 {
-  "version": "2.5.2",
+  "version": "2.5.4",
   "name": "survey-pdf",
   "scripts": {
     "start": "npm run build && http-server --port=7777",
