@@ -1,6 +1,6 @@
-// Auto-generated theme: default-light
-export const DefaultLight = {
-    'themeName': 'default-light',
+// Auto-generated theme: spacious-light
+export const SpaciousLight = {
+    'themeName': 'spacious-light',
     'iconSet': 'v2',
     'isLight': true,
     'cssVariables': {
@@ -326,30 +326,30 @@ export const DefaultLight = {
         '--sjs2-typography-line-height-large': 'var(--sjs2-line-height-x500)',
         '--sjs2-typography-font-weight-default': 'var(--sjs2-font-weight-regular)',
         '--sjs2-typography-font-weight-strong': 'var(--sjs2-font-weight-semibold)',
-        '--sjs2-pdf-radius-question': 'var(--sjs2-radius-x000)',
-        '--sjs2-pdf-radius-matrix': 'var(--sjs2-radius-x000)',
-        '--sjs2-pdf-radius-checkbox': 'var(--sjs2-radius-x000)',
+        '--sjs2-pdf-radius-question': 'var(--sjs2-radius-x100)',
+        '--sjs2-pdf-radius-matrix': 'var(--sjs2-radius-x100)',
+        '--sjs2-pdf-radius-checkbox': 'var(--sjs2-radius-x050)',
         '--sjs2-pdf-radius-radio': 'var(--sjs2-radius-round)',
-        '--sjs2-pdf-radius-section': 'var(--sjs2-radius-x000)',
-        '--sjs2-pdf-border-width-section': 'var(--sjs2-border-width-x100)',
+        '--sjs2-pdf-radius-section': 'var(--sjs2-radius-x100)',
+        '--sjs2-pdf-border-width-section': 'var(--sjs2-border-width-x000)',
         '--sjs2-pdf-border-width-question': 'var(--sjs2-border-width-x100)',
         '--sjs2-pdf-border-width-check': 'var(--sjs2-border-width-x100)',
         '--sjs2-pdf-layout-page-padding-top': 'var(--sjs2-spacing-x550)',
         '--sjs2-pdf-layout-page-padding-bottom': 'var(--sjs2-spacing-x550)',
         '--sjs2-pdf-layout-page-padding-left': 'var(--sjs2-spacing-x550)',
         '--sjs2-pdf-layout-page-padding-right': 'var(--sjs2-spacing-x550)',
-        '--sjs2-pdf-layout-page-gap-vertical': 'var(--sjs2-spacing-x000)',
-        '--sjs2-pdf-layout-page-gap-horizontal': 'var(--sjs2-spacing-x000)',
-        '--sjs2-pdf-layout-page-questions-gap-horizontal': 'var(--sjs2-spacing-x000)',
-        '--sjs2-pdf-layout-page-questions-gap-vertical': 'var(--sjs2-spacing-x000)',
-        '--sjs2-pdf-layout-page-matrix-gap-horizontal': 'var(--sjs2-spacing-x000)',
-        '--sjs2-pdf-layout-page-matrix-gap-vertical': 'var(--sjs2-spacing-x000)',
+        '--sjs2-pdf-layout-page-gap-vertical': 'var(--sjs2-spacing-x400)',
+        '--sjs2-pdf-layout-page-gap-horizontal': 'var(--sjs2-spacing-x400)',
+        '--sjs2-pdf-layout-page-questions-gap-horizontal': 'var(--sjs2-spacing-x100)',
+        '--sjs2-pdf-layout-page-questions-gap-vertical': 'var(--sjs2-spacing-x100)',
+        '--sjs2-pdf-layout-page-matrix-gap-horizontal': 'var(--sjs2-spacing-x100)',
+        '--sjs2-pdf-layout-page-matrix-gap-vertical': 'var(--sjs2-spacing-x100)',
         '--sjs2-pdf-layout-title-large-gap': 'var(--sjs2-spacing-x150)',
-        '--sjs2-pdf-layout-title-large-padding-bottom': 'var(--sjs2-spacing-x400)',
+        '--sjs2-pdf-layout-title-large-padding-bottom': 'var(--sjs2-spacing-x000)',
         '--sjs2-pdf-layout-title-medium-gap': 'var(--sjs2-spacing-x100)',
-        '--sjs2-pdf-layout-title-medium-padding-bottom': 'var(--sjs2-spacing-x300)',
+        '--sjs2-pdf-layout-title-medium-padding-bottom': 'var(--sjs2-spacing-x000)',
         '--sjs2-pdf-layout-title-default-gap': 'var(--sjs2-spacing-x050)',
-        '--sjs2-pdf-layout-title-default-padding-bottom': 'var(--sjs2-spacing-x150)',
+        '--sjs2-pdf-layout-title-default-padding-bottom': 'var(--sjs2-spacing-x000)',
         '--sjs2-pdf-layout-section-padding-vertical': 'var(--sjs2-spacing-x100)',
         '--sjs2-pdf-layout-section-padding-horizontal': 'var(--sjs2-spacing-x100)',
         '--sjs2-pdf-layout-section-gap': 'var(--sjs2-spacing-x050)',
@@ -365,7 +365,7 @@ export const DefaultLight = {
         '--sjs2-pdf-layout-question-labels-gap-vertical': 'var(--sjs2-spacing-x050)',
         '--sjs2-pdf-layout-question-items-gap-vertical': 'var(--sjs2-spacing-x050)',
         '--sjs2-pdf-layout-question-items-gap-horizontal': 'var(--sjs2-spacing-x150)',
-        '--sjs2-pdf-layout-image-picker-items-gap-image-check': 'var(--sjs2-spacing-x000)',
+        '--sjs2-pdf-layout-image-picker-items-gap-image-check': 'var(--sjs2-spacing-x100)',
         '--sjs2-color-project-brand-400': 'hsl(from var(--sjs2-color-project-brand-600) h s calc(l * 1.1))',
         '--sjs2-color-project-brand-600': '#000',
         '--sjs2-color-project-brand-700': 'hsl(from var(--sjs2-color-project-brand-600) h s calc(l * 0.85))',
@@ -800,4 +800,4 @@ export const DefaultLight = {
     }
 } as const;
 
-export default DefaultLight;
+export default SpaciousLight;

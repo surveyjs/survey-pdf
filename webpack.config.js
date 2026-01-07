@@ -75,6 +75,20 @@ const buildPlatformJson = {
       "import": "./fesm/survey.pdf.fonts.mjs",
       "require": "./survey.pdf.fonts.js"
     },
+    "./themes": {
+      "types": "./themes/index.d.ts",
+      "import": "./fesm/themes/index.mjs",
+      "require": "./themes/index.js"
+    },
+    "./themes/index": {
+      "types": "./themes/index.d.ts",
+      "import": "./fesm/themes/index.mjs",
+      "require": "./themes/index.js"
+    },
+    "./themes/*": {
+      "types": "./themes/*.d.ts",
+      "default": "./themes/*.js",
+    },
     "./pdf-form-filler": {
       "types": "./forms-typings/entries/forms.d.ts",
       "node": {
