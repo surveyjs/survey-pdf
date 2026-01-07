@@ -323,7 +323,7 @@ export function getDefaultStylesFromTheme (theme: ITheme): IDocStyles {
                     backgroundColor: null as any
                 },
                 header: {
-                    padding: [getSizeVariable('--sjgetColorVariables2-pdf-layout-section-padding-vertical'), getSizeVariable('--sjs2-pdf-layout-section-padding-horizontal')],
+                    padding: [getSizeVariable('--sjs2-pdf-layout-section-padding-vertical'), getSizeVariable('--sjs2-pdf-layout-section-padding-horizontal')],
                     borderRadius: getSizeVariable('--sjs2-pdf-radius-section'),
                     backgroundColor: getColorVariable('--sjs2-color-bg-basic-secondary'),
                     borderWidth: getSizeVariable('--sjs2-pdf-border-width-section'),
