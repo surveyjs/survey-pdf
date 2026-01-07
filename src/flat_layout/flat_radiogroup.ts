@@ -11,16 +11,13 @@ export class FlatRadiogroup extends FlatSelectBase<QuestionRadiogroupModel, IQue
     private _radioGroupWrap: RadioGroupWrap;
     private get radioGroupWrap(): RadioGroupWrap {
         if(!this._radioGroupWrap) {
-            if(!(<any>this.question).pdfRadioGroupWrap) {
-                (<any>this.question).pdfRadioGroupWrap = new RadioGroupWrap(
-                    this.controller, {
-                        readOnly: this.question.isReadOnly,
-                        fieldName: this.question.id,
-                        updateOptions: (options) => {
-                            this.survey.getUpdatedRadioGroupWrapOptions(options, this.question); }
-                    });
-            }
-            this._radioGroupWrap = (<any>this.question).pdfRadioGroupWrap;
+            this._radioGroupWrap = new RadioGroupWrap(
+                this.controller, {
+                    readOnly: this.question.isReadOnly,
+                    fieldName: this.question.id,
+                    updateOptions: (options) => {
+                        this.survey.getUpdatedRadioGroupWrapOptions(options, this.question); }
+                });
         }
         return this._radioGroupWrap;
     }

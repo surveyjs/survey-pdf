@@ -16,7 +16,7 @@ import { FlatPanel } from './flat_layout/flat_panel';
 import { FlatPage } from './flat_layout/flat_page';
 import { mergeRects } from './utils';
 import { getImageUtils } from './utils/image';
-import { IPageStyle, IPanelStyle, IQuestionStyle } from './styles/types';
+import { IPageStyle, IPanelStyle } from './styles/types';
 
 export interface ITextAppearanceOptions {
     fontStyle: string;
@@ -652,11 +652,16 @@ export class SurveyHelper {
     public static getRectBorderScale(flat: ISize, borderWidth: number): { scaleX: number, scaleY: number } {
         return { scaleX: (flat.width - borderWidth * 2) / flat.width, scaleY: (flat.height - borderWidth * 2) / flat.height };
     }
-    public static async generateQuestionFlats(survey: SurveyPDF,
-        controller: DocController, question: Question, point: IPoint, styles: IQuestionStyle): Promise<IPdfBrick[]> {
+    public static getFlatQuestion(survey: SurveyPDF, controller: DocController, question: Question) {
         const questionType: string = this.getContentQuestionType(question, survey);
+        const styles = survey.getStylesForElement(question);
         const flatQuestion: IFlatQuestion = FlatRepository.getInstance().
             create(survey, question, controller, styles, questionType);
+        return flatQuestion;
+    }
+    public static async generateQuestionFlats(survey: SurveyPDF,
+        controller: DocController, question: Question, point: IPoint): Promise<IPdfBrick[]> {
+        const flatQuestion = SurveyHelper.getFlatQuestion(survey, controller, question);
         const questionFlats: IPdfBrick[] = await flatQuestion.generateFlats(point);
         return [...questionFlats];
     }

@@ -153,7 +153,7 @@ export class FlatPanel<T extends PanelModel = PanelModel, S extends IPanelStyle 
                     else {
                         await (<Question>element).waitForQuestionIsReady();
                         bricks.push(...await SurveyHelper.generateQuestionFlats(this.survey,
-                            this.controller, <Question>element, point, elementStyles as IQuestionStyle));
+                            this.controller, <Question>element, point));
                     }
                 });
                 rowContainers.push(containerBrick);
