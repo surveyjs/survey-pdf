@@ -191,6 +191,9 @@ export interface ISeparatorStyle {
     color?: string;
 }
 
+/**
+ * A base interface extended by other interfaces that define spacing values in an exported PDF document.
+ */
 export interface ISpacingBase {
     /**
      * Specifies the gap between the header (title and description) and the content, in points.
@@ -206,7 +209,7 @@ export interface ISpacingBase {
  */
 export interface ISurveySpacing extends ISpacingBase {}
 /**
- * Defines the visual style applied to survey UI elements in an exported PDF document.
+ * Defines the visual style applied to [survey](https://surveyjs.io/form-library/documentation/api-reference/survey-data-model) UI elements in an exported PDF document.
  */
 export interface ISurveyStyle extends IContainerStyle {
     /**
@@ -223,7 +226,7 @@ export interface ISurveyStyle extends IContainerStyle {
     spacing?: ISurveySpacing;
 }
 /**
- * Defines spacing values applied to panel or page UI elements in an exported PDF document.
+ * Defines spacing values applied to [panel](https://surveyjs.io/form-library/documentation/api-reference/panel-model) or [page](https://surveyjs.io/form-library/documentation/api-reference/page-model) UI elements in an exported PDF document.
  */
 export interface IPanelSpacing extends ISpacingBase {
     /**
@@ -236,7 +239,7 @@ export interface IPanelSpacing extends ISpacingBase {
     inlineElementGap?: number;
 }
 /**
- * Defines the visual style applied to panel UI elements in an exported PDF document.
+ * Defines the visual style applied to [panel](https://surveyjs.io/form-library/documentation/api-reference/panel-model) UI elements in an exported PDF document.
  */
 export interface IPanelStyle {
     /**
@@ -266,12 +269,12 @@ export interface IPanelStyle {
 }
 
 /**
- * Defines the visual style applied to page UI elements in an exported PDF document.
+ * Defines the visual style applied to [page](https://surveyjs.io/form-library/documentation/api-reference/page-model) UI elements in an exported PDF document.
  */
 export interface IPageStyle extends IPanelStyle {}
 
 /**
- * Defines spacing values applied to question UI elements in an exported PDF document.
+ * Defines spacing values applied to [question](https://surveyjs.io/form-library/documentation/api-reference/question) UI elements in an exported PDF document.
  */
 export interface IQuestionSpacing extends ISpacingBase {
     /**
@@ -300,7 +303,7 @@ export interface IQuestionSpacing extends ISpacingBase {
     contentDescriptionGap?: number;
 }
 /**
- * Defines the visual style applied to question UI elements in an exported PDF document.
+ * Defines the visual style applied to [question](https://surveyjs.io/form-library/documentation/api-reference/question) UI elements in an exported PDF document.
  */
 export interface IQuestionStyle {
     /**
@@ -356,7 +359,7 @@ export interface IQuestionStyle {
 }
 
 /**
- * Defines spacing values applied to UI elements within Checkboxes, Radio Button Group, Image Picker, Ranking, and Rating Scale questions in an exported PDF document.
+ * Defines spacing values applied to UI elements within [Checkboxes](https://surveyjs.io/form-library/documentation/api-reference/checkbox-question-model), [Radio Button Group](https://surveyjs.io/form-library/documentation/api-reference/radio-button-question-model), [Image Picker](https://surveyjs.io/form-library/documentation/api-reference/image-picker-question-model), [Ranking](https://surveyjs.io/form-library/documentation/api-reference/ranking-question-model), and [Rating Scale](https://surveyjs.io/form-library/documentation/api-reference/rating-scale-question-model) questions in an exported PDF document.
  */
 export interface ISelectBaseSpacing extends IQuestionSpacing {
     /**
@@ -372,6 +375,9 @@ export interface ISelectBaseSpacing extends IQuestionSpacing {
      */
     choiceTextGap?: number;
 }
+/**
+ * A base interface extended by other interfaces that define visual styles for UI elements within select-like questions in an exported PDF document.
+ */
 export interface ISelectBaseStyle extends IQuestionStyle {
     /**
      * Specifies the minimum width of choice columns, in points. Applies when choice options are [arranged in two or more columns](https://surveyjs.io/form-library/documentation/api-reference/checkbox-question-model#colCount).
@@ -400,14 +406,17 @@ export interface ISelectBaseStyle extends IQuestionStyle {
 }
 
 /**
- * Defines the visual style applied to UI elements within Checkboxes questions in an exported PDF document.
+ * Defines the visual style applied to UI elements within [Checkboxes](https://surveyjs.io/form-library/documentation/api-reference/checkbox-question-model) questions in an exported PDF document.
  */
 export interface IQuestionCheckboxStyle extends ISelectBaseStyle {}
 /**
- * Defines the visual style applied to UI elements within Radio Button Group questions in an exported PDF document.
+ * Defines the visual style applied to UI elements within [Radio Button Group](https://surveyjs.io/form-library/documentation/api-reference/radio-button-question-model) questions in an exported PDF document.
  */
 export interface IQuestionRadiogroupStyle extends ISelectBaseStyle {}
 
+/**
+ * A base interface extended by other interfaces that define spacing values for matrix questions in an exported PDF document.
+ */
 export interface IMatrixBaseSpacing extends IQuestionSpacing {
     /**
      * Specifies the horizontal gap between matrix table columns, in points. Applies only to matrices [rendered as tables](https://surveyjs.io/pdf-generator/documentation/api-reference/idocoptions#matrixRenderAs).
@@ -430,6 +439,9 @@ export interface IMatrixBaseSpacing extends IQuestionSpacing {
      */
     listItemTitleContentGap?: number;
 }
+/**
+ * A base interface extended by other interfaces that define visual styles for UI elements within matrix questions in an exported PDF document.
+ */
 export interface IMatrixBaseStyle extends IQuestionStyle {
     /**
      * Specifies the minimum width of the container in which the matrix is rendered, in points.
@@ -463,7 +475,7 @@ export interface IMatrixBaseStyle extends IQuestionStyle {
     spacing?: IMatrixBaseSpacing;
 }
 /**
- * Defines spacing values applied to UI elements within Single-Select Matrix questions in an exported PDF document.
+ * Defines spacing values applied to UI elements within [Single-Select Matrix](https://surveyjs.io/form-library/documentation/api-reference/matrix-table-question-model) questions in an exported PDF document.
  */
 export interface IQuestionMatrixSpacing extends IMatrixBaseSpacing {
     gapBetweenItemText?: number; // remove this property
@@ -477,7 +489,7 @@ export interface IQuestionMatrixSpacing extends IMatrixBaseSpacing {
     listChoiceTextGap?: number;
 }
 /**
- * Defines the visual style applied to UI elements within Single-Select Matrix questions in an exported PDF document.
+ * Defines the visual style applied to UI elements within [Single-Select Matrix](https://surveyjs.io/form-library/documentation/api-reference/matrix-table-question-model) questions in an exported PDF document.
  */
 export interface IQuestionMatrixStyle extends IMatrixBaseStyle {
     /**
@@ -552,6 +564,9 @@ export interface IQuestionMatrixStyle extends IMatrixBaseStyle {
     spacing?: IQuestionMatrixSpacing;
 }
 
+/**
+ * A base interface extended by other interfaces that define visual styles for UI elements within Multi-Select Matrix and Dynamic Matrix questions in an exported PDF document.
+ */
 export interface IMatrixDropdownBaseStyle extends IMatrixBaseStyle {
     /**
      * Specifies the visual style applied to list item titles. Applies only to matrices [rendered as lists](https://surveyjs.io/pdf-generator/documentation/api-reference/idocoptions#matrixRenderAs).
@@ -559,7 +574,7 @@ export interface IMatrixDropdownBaseStyle extends IMatrixBaseStyle {
     listItemTitle?: ITextStyle;
 }
 /**
- * Defines the visual style applied to UI elements within Multi-Select Matrix questions in an exported PDF document.
+ * Defines the visual style applied to UI elements within [Multi-Select Matrix](https://surveyjs.io/form-library/documentation/api-reference/matrix-table-with-dropdown-list) questions in an exported PDF document.
  */
 export interface IQuestionMatrixDropdownStyle extends IMatrixDropdownBaseStyle {
     /**
@@ -568,12 +583,12 @@ export interface IQuestionMatrixDropdownStyle extends IMatrixDropdownBaseStyle {
     listSectionTitleContainer?: IContainerStyle;
 }
 /**
- * Defines the visual style applied to UI elements within Dynamic Matrix questions in an exported PDF document.
+ * Defines the visual style applied to UI elements within [Dynamic Matrix](https://surveyjs.io/form-library/documentation/api-reference/dynamic-matrix-table-question-model) questions in an exported PDF document.
  */
 export interface IQuestionMatrixDynamicStyle extends IMatrixDropdownBaseStyle {}
 
 /**
- * Defines spacing values applied to UI elements within Multiple Textboxes questions in an exported PDF document.
+ * Defines spacing values applied to UI elements within [Multiple Textboxes](https://surveyjs.io/form-library/documentation/api-reference/multiple-text-entry-question-model) questions in an exported PDF document.
  */
 export interface IQuestionMultipleTextSpacing extends IQuestionSpacing {
     /**
@@ -590,7 +605,7 @@ export interface IQuestionMultipleTextSpacing extends IQuestionSpacing {
     itemTitleGap?: number;
 }
 /**
- * Defines the visual style applied to UI elements within Multiple Textboxes questions in an exported PDF document.
+ * Defines the visual style applied to UI elements within [Multiple Textboxes](https://surveyjs.io/form-library/documentation/api-reference/multiple-text-entry-question-model) questions in an exported PDF document.
  */
 export interface IQuestionMultipleTextStyle extends IQuestionStyle {
     /**
@@ -614,7 +629,7 @@ export interface IQuestionMultipleTextStyle extends IQuestionStyle {
 }
 
 /**
- * Defines the visual style applied to UI elements within Rating Scale questions in an exported PDF document.
+ * Defines the visual style applied to UI elements within [Rating Scale](https://surveyjs.io/form-library/documentation/api-reference/rating-scale-question-model) questions in an exported PDF document.
  */
 export interface IQuestionRatingStyle extends IQuestionStyle {
     /**
@@ -649,7 +664,7 @@ export interface IQuestionRatingStyle extends IQuestionStyle {
     spacing?: ISelectBaseSpacing;
 }
 /**
- * Defines the visual style applied to UI elements within Ranking questions in an exported PDF document.
+ * Defines the visual style applied to UI elements within [Ranking](https://surveyjs.io/form-library/documentation/api-reference/ranking-question-model) questions in an exported PDF document.
  */
 export interface IQuestionRankingStyle extends IQuestionStyle {
     /**
@@ -670,7 +685,7 @@ export interface IQuestionRankingStyle extends IQuestionStyle {
     spacing?: ISelectBaseSpacing;
 }
 /**
- * Defines spacing values applied to UI elements within Slider questions in an exported PDF document.
+ * Defines spacing values applied to UI elements within [Slider](https://surveyjs.io/form-library/documentation/api-reference/questionslidermodel) questions in an exported PDF document.
  */
 export interface IQuestionSliderSpacing extends IQuestionSpacing {
     /**
@@ -679,7 +694,7 @@ export interface IQuestionSliderSpacing extends IQuestionSpacing {
     inputRangeGap?: number;
 }
 /**
- * Defines the visual style applied to UI elements within Slider questions in an exported PDF document.
+ * Defines the visual style applied to UI elements within [Slider](https://surveyjs.io/form-library/documentation/api-reference/questionslidermodel) questions in an exported PDF document.
  */
 export interface IQuestionSliderStyle extends IQuestionStyle {
     /**
@@ -702,7 +717,7 @@ export interface IQuestionSliderStyle extends IQuestionStyle {
     spacing?: IQuestionSliderSpacing;
 }
 /**
- * Defines the visual style applied to UI elements within Dropdown questions in an exported PDF document.
+ * Defines the visual style applied to UI elements within [Dropdown](https://surveyjs.io/form-library/documentation/api-reference/dropdown-menu-model) questions in an exported PDF document.
  */
 export interface IQuestionDropdownStyle extends IQuestionStyle {
     /**
@@ -713,12 +728,12 @@ export interface IQuestionDropdownStyle extends IQuestionStyle {
     inputReadOnly?: IInputStyle;
 }
 /**
- * Defines the visual style applied to UI elements within Multi-Select Dropdown (Tag Box) questions in an exported PDF document.
+ * Defines the visual style applied to UI elements within [Multi-Select Dropdown (Tag Box)](https://surveyjs.io/form-library/documentation/api-reference/dropdown-tag-box-model) questions in an exported PDF document.
  */
 export interface IQuestionTagboxStyle extends IQuestionCheckboxStyle {}
 
 /**
- * Defines spacing values applied to UI elements within File Upload questions in an exported PDF document.
+ * Defines spacing values applied to UI elements within [File Upload](https://surveyjs.io/form-library/documentation/api-reference/file-model) questions in an exported PDF document.
  */
 export interface IQuestionFileSpacing extends IQuestionSpacing {
     /**
@@ -735,7 +750,7 @@ export interface IQuestionFileSpacing extends IQuestionSpacing {
     fileItemGap?: number;
 }
 /**
- * Defines the visual style applied to UI elements within File Upload questions in an exported PDF document.
+ * Defines the visual style applied to UI elements within [File Upload](https://surveyjs.io/form-library/documentation/api-reference/file-model) questions in an exported PDF document.
  */
 export interface IQuestionFileStyle extends IQuestionStyle {
     /**
@@ -762,7 +777,7 @@ export interface IQuestionFileStyle extends IQuestionStyle {
     spacing?: IQuestionFileSpacing;
 }
 /**
- * Defines spacing values applied to UI elements within Dynamic Panels in an exported PDF document.
+ * Defines spacing values applied to UI elements within [Dynamic Panels](https://surveyjs.io/form-library/documentation/api-reference/dynamic-panel-model) in an exported PDF document.
  */
 export interface IQuestionPanelDynamicSpacing extends IQuestionSpacing {
     /**
@@ -771,7 +786,7 @@ export interface IQuestionPanelDynamicSpacing extends IQuestionSpacing {
     panelGap?: number;
 }
 /**
- * Defines the visual style applied to UI elements within Dynamic Panels in an exported PDF document.
+ * Defines the visual style applied to UI elements within [Dynamic Panels](https://surveyjs.io/form-library/documentation/api-reference/dynamic-panel-model) in an exported PDF document.
  */
 export interface IQuestionPanelDynamicStyle extends IQuestionStyle {
     /**
@@ -780,7 +795,7 @@ export interface IQuestionPanelDynamicStyle extends IQuestionStyle {
     spacing?: IQuestionPanelDynamicSpacing;
 }
 /**
- * Defines spacing values applied to UI elements within Yes/No (Boolean) questions in an exported PDF document.
+ * Defines spacing values applied to UI elements within [Yes/No (Boolean)](https://surveyjs.io/form-library/documentation/api-reference/boolean-question-model) questions in an exported PDF document.
  */
 export interface IQuestionBooleanSpacing extends IQuestionSpacing {
     /**
@@ -793,7 +808,7 @@ export interface IQuestionBooleanSpacing extends IQuestionSpacing {
     choiceTextGap?: number;
 }
 /**
- * Defines the visual style applied to UI elements within Yes/No (Boolean) questions in an exported PDF document.
+ * Defines the visual style applied to UI elements within [Yes/No (Boolean)](https://surveyjs.io/form-library/documentation/api-reference/boolean-question-model) questions in an exported PDF document.
  */
 export interface IQuestionBooleanStyle extends IQuestionStyle {
     /**
@@ -868,7 +883,7 @@ export interface IQuestionBooleanStyle extends IQuestionStyle {
     spacing?: IQuestionBooleanSpacing;
 }
 /**
- * Defines spacing values applied to UI elements within Image Picker questions in an exported PDF document.
+ * Defines spacing values applied to UI elements within [Image Picker](https://surveyjs.io/form-library/documentation/api-reference/image-picker-question-model) questions in an exported PDF document.
  */
 export interface IQuestionImagePickerSpacing extends ISelectBaseSpacing {
     /**
@@ -877,7 +892,7 @@ export interface IQuestionImagePickerSpacing extends ISelectBaseSpacing {
     imageInputGap?: number;
 }
 /**
- * Defines the visual style applied to UI elements within Image Picker questions in an exported PDF document.
+ * Defines the visual style applied to UI elements within [Image Picker](https://surveyjs.io/form-library/documentation/api-reference/image-picker-question-model) questions in an exported PDF document.
  */
 export interface IQuestionImagePickerStyle extends ISelectBaseStyle {
     /**
@@ -941,6 +956,9 @@ export interface IQuestionImagePickerStyle extends ISelectBaseStyle {
      */
     spacing?: IQuestionImagePickerSpacing;
 }
+/**
+ * A base interface extended by other interfaces that define visual styles for UI elements within text questions in an exported PDF document.
+ */
 export interface ITextBaseStyle extends IQuestionStyle {
     /**
      * Specifies the visual style applied to the question input in read-only mode.
@@ -950,19 +968,19 @@ export interface ITextBaseStyle extends IQuestionStyle {
     inputReadOnly?: IInputStyle;
 }
 /**
- * Defines the visual style applied to UI elements within Single-Line Input questions in an exported PDF document.
+ * Defines the visual style applied to UI elements within [Single-Line Input](https://surveyjs.io/form-library/documentation/api-reference/text-entry-question-model) questions in an exported PDF document.
  */
 export interface IQuestionTextStyle extends ITextBaseStyle {}
 /**
- * Defines the visual style applied to UI elements within Long Text questions in an exported PDF document.
+ * Defines the visual style applied to UI elements within [Long Text](https://surveyjs.io/form-library/documentation/api-reference/comment-field-model) questions in an exported PDF document.
  */
 export interface IQuestionCommentStyle extends ITextBaseStyle {}
 /**
- * Defines the visual style applied to Expression survey elements in an exported PDF document.
+ * Defines the visual style applied to [Expression](https://surveyjs.io/form-library/documentation/api-reference/expression-model) survey elements in an exported PDF document.
  */
 export interface IQuestionExpressionStyle extends IQuestionStyle {}
 /**
- * Defines the visual style applied to HTML survey elements in an exported PDF document.
+ * Defines the visual style applied to [HTML](https://surveyjs.io/form-library/documentation/api-reference/add-custom-html-to-survey) survey elements in an exported PDF document.
  */
 export interface IQuestionHtmlStyle extends IQuestionStyle {
     /**
@@ -970,32 +988,104 @@ export interface IQuestionHtmlStyle extends IQuestionStyle {
      */
     text?: ITextStyle;
 }
+/**
+ * Defines visual styles applied to UI elements in an exported PDF document.
+ */
 export interface IDocStyles {
+    /**
+     * Defines the visual style applied to [survey](https://surveyjs.io/form-library/documentation/api-reference/survey-data-model) UI elements in an exported PDF document.
+     */
     survey?: ISurveyStyle;
+    /**
+     * Defines the visual style applied to [page](https://surveyjs.io/form-library/documentation/api-reference/page-model) UI elements in an exported PDF document.
+     */
     page?: IPageStyle;
+    /**
+     * Defines the visual style applied to [panel](https://surveyjs.io/form-library/documentation/api-reference/panel-model) UI elements in an exported PDF document.
+     */
     panel?: IPanelStyle;
+    /**
+     * Defines the visual style applied to UI elements within [Dynamic Panels](https://surveyjs.io/form-library/documentation/api-reference/dynamic-panel-model) in an exported PDF document.
+     */
     paneldynamic?: IQuestionPanelDynamicStyle;
     matrixbase?: IMatrixBaseStyle;
+    /**
+     * Defines the visual style applied to UI elements within [Single-Select Matrix](https://surveyjs.io/form-library/documentation/api-reference/matrix-table-question-model) questions in an exported PDF document.
+     */
     matrix?: IQuestionMatrixStyle;
     matrixdropdownbase?: IMatrixDropdownBaseStyle;
+    /**
+     * Defines the visual style applied to UI elements within [Multi-Select Matrix](https://surveyjs.io/form-library/documentation/api-reference/matrix-table-with-dropdown-list) questions in an exported PDF document.
+     */
     matrixdropdown?: IQuestionMatrixDropdownStyle;
+    /**
+     * Defines the visual style applied to UI elements within [Dynamic Matrix](https://surveyjs.io/form-library/documentation/api-reference/dynamic-matrix-table-question-model) questions in an exported PDF document.
+     */
     matrixdynamic?: IQuestionMatrixDynamicStyle;
     textbase?: ITextBaseStyle;
+    /**
+     * Defines the visual style applied to UI elements within [Single-Line Input](https://surveyjs.io/form-library/documentation/api-reference/text-entry-question-model) questions in an exported PDF document.
+     */
     text?: IQuestionTextStyle;
+    /**
+     * Defines the visual style applied to UI elements within [Long Text](https://surveyjs.io/form-library/documentation/api-reference/comment-field-model) questions in an exported PDF document.
+     */
     comment?: IQuestionCommentStyle;
+    /**
+     * Defines the visual style applied to UI elements within [Multiple Textboxes](https://surveyjs.io/form-library/documentation/api-reference/multiple-text-entry-question-model) questions in an exported PDF document.
+     */
     multipletext?: IQuestionMultipleTextStyle;
+    /**
+     * Defines the visual style applied to [question](https://surveyjs.io/form-library/documentation/api-reference/question) UI elements in an exported PDF document.
+     */
     question?: IQuestionStyle;
     selectbase?: ISelectBaseStyle;
+    /**
+     * Defines the visual style applied to UI elements within [Checkboxes](https://surveyjs.io/form-library/documentation/api-reference/checkbox-question-model) questions in an exported PDF document.
+     */
     checkbox?: IQuestionCheckboxStyle;
+    /**
+     * Defines the visual style applied to UI elements within [Radio Button Group](https://surveyjs.io/form-library/documentation/api-reference/radio-button-question-model) questions in an exported PDF document.
+     */
     radiogroup?: IQuestionRadiogroupStyle;
+    /**
+     * Defines the visual style applied to UI elements within [Image Picker](https://surveyjs.io/form-library/documentation/api-reference/image-picker-question-model) questions in an exported PDF document.
+     */
     imagepicker?: IQuestionImagePickerStyle;
+    /**
+     * Defines the visual style applied to UI elements within [Dropdown](https://surveyjs.io/form-library/documentation/api-reference/dropdown-menu-model) questions in an exported PDF document.
+     */
     dropdown?: IQuestionDropdownStyle;
+    /**
+     * Defines the visual style applied to UI elements within [Multi-Select Dropdown (Tag Box)](https://surveyjs.io/form-library/documentation/api-reference/dropdown-tag-box-model) questions in an exported PDF document.
+     */
     tagbox?: IQuestionTagboxStyle;
+    /**
+     * Defines the visual style applied to UI elements within [Yes/No (Boolean)](https://surveyjs.io/form-library/documentation/api-reference/boolean-question-model) questions in an exported PDF document.
+     */
     boolean?: IQuestionBooleanStyle;
+    /**
+     * Defines the visual style applied to UI elements within [Rating Scale](https://surveyjs.io/form-library/documentation/api-reference/rating-scale-question-model) questions in an exported PDF document.
+     */
     rating?: IQuestionRatingStyle;
+    /**
+     * Defines the visual style applied to UI elements within [Ranking](https://surveyjs.io/form-library/documentation/api-reference/ranking-question-model) questions in an exported PDF document.
+     */
     ranking?: IQuestionRankingStyle;
+    /**
+     * Defines the visual style applied to [Expression](https://surveyjs.io/form-library/documentation/api-reference/expression-model) survey elements in an exported PDF document.
+     */
     expression?: IQuestionExpressionStyle;
+    /**
+     * Defines the visual style applied to [HTML](https://surveyjs.io/form-library/documentation/api-reference/add-custom-html-to-survey) survey elements in an exported PDF document.
+     */
     html?: IQuestionHtmlStyle;
+    /**
+     * Defines the visual style applied to UI elements within [File Upload](https://surveyjs.io/form-library/documentation/api-reference/file-model) questions in an exported PDF document.
+     */
     file?: IQuestionFileStyle;
+    /**
+     * Defines the visual style applied to UI elements within [Slider](https://surveyjs.io/form-library/documentation/api-reference/questionslidermodel) questions in an exported PDF document.
+     */
     slider?: IQuestionSliderStyle;
 }
