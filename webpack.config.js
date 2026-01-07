@@ -57,7 +57,7 @@ const buildPlatformJson = {
   dependencies: {
     "@csstools/css-color-parser": "^3.1.0",
     "@types/node-fetch": "^2",
-    "jspdf": "^2.3.0 || ^3",
+    "jspdf": "^2.3.0 || ^3 || ^4",
     "image-size": "^2",
     "node-fetch": "^2",
   },
