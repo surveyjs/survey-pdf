@@ -244,6 +244,11 @@ export class SurveyPDF extends SurveyModel {
     public onGetItemStyle = new EventBase<SurveyPDF, { question: Question, item: ItemValue, style: { choiceText: ITextStyle, input: ISelectionInputStyle }, getColorVariable: (name: string) => string, getSizeVariable: (name: string) => number}>;
 
     private _styles: IDocStyles;
+    /**
+     * An object that defines visual styles applied to UI elements in an exported PDF document.
+     *
+     * Modify the properties of this object to control how survey elements are rendered in the PDF.
+     */
     public get styles(): IDocStyles {
         if(!this._styles) {
             this._styles = getDefaultStylesFromTheme(this.theme);
