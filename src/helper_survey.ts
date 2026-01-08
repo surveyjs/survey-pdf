@@ -654,7 +654,7 @@ export class SurveyHelper {
     }
     public static getFlatQuestion(survey: SurveyPDF, controller: DocController, question: Question) {
         const questionType: string = this.getContentQuestionType(question, survey);
-        const styles = survey.getStylesForElement(question);
+        const styles = survey.getElementStyle(question);
         const flatQuestion: IFlatQuestion = FlatRepository.getInstance().
             create(survey, question, controller, styles, questionType);
         return flatQuestion;
