@@ -3,7 +3,7 @@ import { ITheme, PanelModel } from 'survey-core';
 import { DefaultLight } from '../src/themes/default-light';
 import { FlatCheckbox } from '../src/flat_layout/flat_checkbox';
 import { DocController } from '../src/doc_controller';
-test('onGetQuestionStyles is fired and can modify question styles', () => {
+test('onGetQuestionStyle is fired and can modify question styles', () => {
     const survey = new SurveyPDF({
         pages: [
             {
@@ -20,23 +20,23 @@ test('onGetQuestionStyles is fired and can modify question styles', () => {
     theme.cssVariables['--test-size-variable'] = '80px';
     theme.cssVariables['--test-color-variable'] = 'rgba(237, 231, 225, 0.1)';
     survey.applyTheme(theme);
-    survey.onGetQuestionStyles.add((_, options) => {
-        options.styles.title.fontColor = options.getColorVariable('--test-color-variable');
-        options.styles.title.fontSize = options.getSizeVariable('--test-size-variable');
-        options.styles.title.lineHeight = 90;
-        options.styles.container.backgroundColor = '#00ff00';
+    survey.onGetQuestionStyle.add((_, options) => {
+        options.style.title.fontColor = options.getColorVariable('--test-color-variable');
+        options.style.title.fontSize = options.getSizeVariable('--test-size-variable');
+        options.style.title.lineHeight = 90;
+        options.style.container.backgroundColor = '#00ff00';
         expect(options.question.name).toBe('q1');
 
     });
     const question = survey.getAllQuestions()[0];
-    const styles = survey.getStylesForElement(question);
+    const styles = survey.getElementStyle(question);
     expect(styles.title.fontColor).toBe('#ede7e11a');
     expect(styles.title.lineHeight).toBe(90);
     expect(styles.title.fontSize).toBe(60);
     expect(styles.container.backgroundColor).toBe('#00ff00');
 });
 
-test('onGetPanelStyles is fired and can modify panel styles', () => {
+test('onGetPanelStyle is fired and can modify panel styles', () => {
     const survey = new SurveyPDF({
         pages: [
             {
@@ -57,23 +57,23 @@ test('onGetPanelStyles is fired and can modify panel styles', () => {
     theme.cssVariables['--test-size-variable'] = '80px';
     theme.cssVariables['--test-color-variable'] = 'rgba(237, 231, 225, 0.1)';
     survey.applyTheme(theme);
-    survey.onGetPanelStyles.add((_, options) => {
-        options.styles.title.fontColor = options.getColorVariable('--test-color-variable');
-        options.styles.title.fontSize = options.getSizeVariable('--test-size-variable');
-        options.styles.title.lineHeight = 90;
-        options.styles.container = { backgroundColor: '#00ff00' };
+    survey.onGetPanelStyle.add((_, options) => {
+        options.style.title.fontColor = options.getColorVariable('--test-color-variable');
+        options.style.title.fontSize = options.getSizeVariable('--test-size-variable');
+        options.style.title.lineHeight = 90;
+        options.style.container = { backgroundColor: '#00ff00' };
         expect(options.panel.name).toBe('panel1');
     });
 
     const panel = survey.getAllPanels()[0];
-    const styles = survey.getStylesForElement(panel as PanelModel);
+    const styles = survey.getElementStyle(panel as PanelModel);
     expect(styles.title.fontColor).toBe('#ede7e11a');
     expect(styles.title.lineHeight).toBe(90);
     expect(styles.title.fontSize).toBe(60);
     expect(styles.container.backgroundColor).toBe('#00ff00');
 });
 
-test('onGetPageStyles is fired and can modify page styles', () => {
+test('onGetPageStyle is fired and can modify page styles', () => {
     const survey = new SurveyPDF({
         pages: [
             {
@@ -87,23 +87,23 @@ test('onGetPageStyles is fired and can modify page styles', () => {
     theme.cssVariables['--test-size-variable'] = '80px';
     theme.cssVariables['--test-color-variable'] = 'rgba(237, 231, 225, 0.1)';
     survey.applyTheme(theme);
-    survey.onGetPageStyles.add((_, options) => {
-        options.styles.title.fontColor = options.getColorVariable('--test-color-variable');
-        options.styles.title.fontSize = options.getSizeVariable('--test-size-variable');
-        options.styles.title.lineHeight = 90;
-        options.styles.container = { backgroundColor: '#00ff00' };
+    survey.onGetPageStyle.add((_, options) => {
+        options.style.title.fontColor = options.getColorVariable('--test-color-variable');
+        options.style.title.fontSize = options.getSizeVariable('--test-size-variable');
+        options.style.title.lineHeight = 90;
+        options.style.container = { backgroundColor: '#00ff00' };
         expect(options.page.name).toBe('page1');
     });
 
     const page = survey.pages[0];
-    const styles = survey.getStylesForElement(page);
+    const styles = survey.getElementStyle(page);
     expect(styles.title.fontColor).toBe('#ede7e11a');
     expect(styles.title.lineHeight).toBe(90);
     expect(styles.title.fontSize).toBe(60);
     expect(styles.container.backgroundColor).toBe('#00ff00');
 });
 
-test('onGetItemStyles is fired and can modify item styles', () => {
+test('onGetItemStyle is fired and can modify item styles', () => {
     const survey = new SurveyPDF({
         pages: [
             {
@@ -126,27 +126,27 @@ test('onGetItemStyles is fired and can modify item styles', () => {
     theme.cssVariables['--test-size-variable'] = '80px';
     theme.cssVariables['--test-color-variable'] = 'rgba(237, 231, 225, 0.1)';
     survey.applyTheme(theme);
-    survey.onGetItemStyles.add((_, options) => {
+    survey.onGetItemStyle.add((_, options) => {
         if(options.item.value == 'a') {
-            options.styles.choiceText.fontColor = options.getColorVariable('--test-color-variable');
-            options.styles.choiceText.fontSize = options.getSizeVariable('--test-size-variable');
-            options.styles.choiceText.lineHeight = 90;
-            options.styles.input = { fontColor: '#00ff00' };
+            options.style.choiceText.fontColor = options.getColorVariable('--test-color-variable');
+            options.style.choiceText.fontSize = options.getSizeVariable('--test-size-variable');
+            options.style.choiceText.lineHeight = 90;
+            options.style.input = { fontColor: '#00ff00' };
         } else if(options.item.value == 'b') {
-            options.styles.choiceText.fontColor = '#ffffff';
-            options.styles.choiceText.fontSize = 40;
-            options.styles.choiceText.lineHeight = 70;
+            options.style.choiceText.fontColor = '#ffffff';
+            options.style.choiceText.fontSize = 40;
+            options.style.choiceText.lineHeight = 70;
         }
     });
 
     const q = survey.getAllQuestions()[0] as any;
     const flat = new FlatCheckbox(survey, q, new DocController({}), survey.styles);
-    let resStyles = flat.getStylesForItem(q.visibleChoices[0]);
+    let resStyles = flat.getItemStyle(q.visibleChoices[0]);
     expect(resStyles.choiceText.fontColor).toBe('#ede7e11a');
     expect(resStyles.choiceText.lineHeight).toBe(90);
     expect(resStyles.choiceText.fontSize).toBe(60);
     expect(resStyles.input.fontColor).toBe('#00ff00');
-    resStyles = flat.getStylesForItem(q.visibleChoices[1]);
+    resStyles = flat.getItemStyle(q.visibleChoices[1]);
     expect(resStyles.choiceText.fontColor).toBe('#ffffff');
     expect(resStyles.choiceText.fontSize).toBe(40);
     expect(resStyles.choiceText.lineHeight).toBe(70);

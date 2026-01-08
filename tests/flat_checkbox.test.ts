@@ -269,7 +269,7 @@ test('Check margins are correct after generating content', async() => {
     const oldMarginLeft: number = controller.margins.left as number;
     const oldMarginRight: number = controller.margins.right as number;
     const question = survey.getAllQuestions()[0] as QuestionCheckboxModel;
-    await new FlatCheckbox(survey, question, controller, survey.getStylesForElement(question)).generateFlats({ xLeft: oldMarginLeft, yTop: controller.margins.top as number });
+    await new FlatCheckbox(survey, question, controller, survey.getElementStyle(question)).generateFlats({ xLeft: oldMarginLeft, yTop: controller.margins.top as number });
     expect(controller.margins.left).toBe(oldMarginLeft);
     expect(controller.margins.right).toBe(oldMarginRight);
 });

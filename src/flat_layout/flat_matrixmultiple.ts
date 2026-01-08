@@ -59,7 +59,7 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
                     const questionFlatRenderer: IFlatQuestion = this.getFlatQuestion(this.survey, this.controller, cell.question);
                     if (isWide && cell.isChoice) {
                         bricks.push((questionFlatRenderer as FlatSelectBase)
-                            .generateFlatItem(point, cell.item, cell.choiceIndex, (questionFlatRenderer as FlatSelectBase).getStylesForItem(cell.item).input));
+                            .generateFlatItem(point, cell.item, cell.choiceIndex, (questionFlatRenderer as FlatSelectBase).getItemStyle(cell.item).input));
                     }
                     else {
                         cell.question.titleLocation = 'matrix';
@@ -214,7 +214,7 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
                     panelPoint.xLeft+= columnWidths[0] + this.styles.spacing.tableColumnGap;
                     this.controller.margins.left = panelPoint.xLeft;
                 }
-                const panelBricks: IPdfBrick[] = await SurveyHelper.generatePanelFlats(this.survey, this.controller, currentDetailPanel, panelPoint, this.survey.getStylesForElement(currentDetailPanel));
+                const panelBricks: IPdfBrick[] = await SurveyHelper.generatePanelFlats(this.survey, this.controller, currentDetailPanel, panelPoint, this.survey.getElementStyle(currentDetailPanel));
 
                 if(this.isMultiple && isWide) {
                     this.controller.popMargins();

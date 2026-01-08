@@ -67,7 +67,7 @@ test('Long checkbox with indent', async () => {
     expect(packs[1].length).toBe(3);
     let leftTopPoint: IPoint = controller.leftTopPoint;
     leftTopPoint.xLeft += controller.measureText(json.questions[0].indent).width;
-    const styles = survey.getStylesForElement(survey.getAllQuestions()[0]) as IQuestionCheckboxStyle;
+    const styles = survey.getElementStyle(survey.getAllQuestions()[0]) as IQuestionCheckboxStyle;
     TestHelper.equalPoint(expect, packs[0][0], { xLeft: leftTopPoint.xLeft, yTop: leftTopPoint.yTop });
     leftTopPoint.yTop += styles.title.lineHeight + styles.choiceText.lineHeight + styles.spacing?.choiceGap + styles.spacing?.headerContentGap;
     TestHelper.equalPoint(expect, packs[0][1], leftTopPoint);
@@ -176,7 +176,7 @@ test('Unfold compose brick', async () => {
     expect(packs.length).toBe(3);
     expect(packs[0].length).toBe(1);
     expect(packs[1].length).toBe(1);
-    const styles = survey.getStylesForElement(survey.getAllQuestions()[0]);
+    const styles = survey.getElementStyle(survey.getAllQuestions()[0]);
     const titleFlat = await SurveyHelper.createTextFlat(
         controller.leftTopPoint, controller, survey.getAllQuestions()[0].locTitle, styles.title);
     TestHelper.equalRect(expect, packs[0][0], titleFlat);
@@ -208,7 +208,7 @@ test('Pack to little page', async () => {
     expect(packs.length).toBe(2);
     expect(packs[0].length).toBe(2);
     expect(packs[1].length).toBe(1);
-    const styles = survey.getStylesForElement(survey.getAllQuestions()[0]);
+    const styles = survey.getElementStyle(survey.getAllQuestions()[0]);
     TestHelper.equalRect(expect, packs[0][0], await SurveyHelper.createTextFlat(
         controller.leftTopPoint, controller, survey.getAllQuestions()[0].locTitle, styles.title));
     let textBoxPoint: IPoint = controller.leftTopPoint;
@@ -287,7 +287,7 @@ test('Check yTop on new page with panel', async () => {
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     survey.styles = { question: { container: { padding: 0, borderWidth: 0 } } };
-    const styles = survey.getStylesForElement(survey.getAllQuestions()[0]) as IQuestionRadiogroupStyle;
+    const styles = survey.getElementStyle(survey.getAllQuestions()[0]) as IQuestionRadiogroupStyle;
     let controller: DocController = new DocController({ ...TestHelper.defaultOptions, format: [210, 180] });
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);

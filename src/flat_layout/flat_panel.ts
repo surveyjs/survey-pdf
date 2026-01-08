@@ -90,7 +90,7 @@ export class FlatPanel<T extends PanelModel = PanelModel, S extends IPanelStyle 
             if (!row.visible) return;
             const visibleElements = row.elements.filter(el => el.isVisible);
             (visibleElements as any as Array<SurveyElement>).forEach((el, i) => {
-                const styles = this.survey.getStylesForElement(el);
+                const styles = this.survey.getElementStyle(el);
                 const minWidth = el.minWidth !== 'auto' ? SurveyHelper.parseWidth(el.minWidth, availableWidth, undefined, 'px') : styles.minWidth;
                 const renderWidth = !!el.width ? SurveyHelper.parseWidth(el.width, availableWidth, undefined, 'px') : 0;
                 const maxWidth = SurveyHelper.parseWidth(el.maxWidth, availableWidth, undefined, 'px');
@@ -144,7 +144,7 @@ export class FlatPanel<T extends PanelModel = PanelModel, S extends IPanelStyle 
                 this.controller.margins.left = nextMarginLeft;
                 this.controller.margins.right = this.controller.paperWidth - this.controller.margins.left - width;
                 currPoint.xLeft = this.controller.margins.left;
-                const elementStyles: IQuestionStyle | IPanelStyle = this.survey.getStylesForElement(element as any as SurveyElement);
+                const elementStyles: IQuestionStyle | IPanelStyle = this.survey.getElementStyle(element as any as SurveyElement);
                 const containerBrick = new ContainerBrick(this.controller, { ...currPoint, width: SurveyHelper.getPageAvailableWidth(this.controller) }, elementStyles.container);
                 await containerBrick.setup(async (point, bricks) => {
                     if (element instanceof PanelModel) {

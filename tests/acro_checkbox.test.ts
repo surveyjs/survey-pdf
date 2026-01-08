@@ -36,8 +36,8 @@ test('Check that checkbox has square boundaries', async () => {
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     await survey['renderSurvey'](controller);
     const question = survey.getAllQuestions()[0];
-    const labelStyles = (survey.getStylesForElement(question) as IQuestionCheckboxStyle).choiceText;
-    const inputStyles = (survey.getStylesForElement(question) as IQuestionCheckboxStyle).input;
+    const labelStyles = (survey.getElementStyle(question) as IQuestionCheckboxStyle).choiceText;
+    const inputStyles = (survey.getElementStyle(question) as IQuestionCheckboxStyle).input;
     let assumeCheckbox: IRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(SurveyHelper.createRect(
         controller.leftTopPoint, inputStyles.width, inputStyles.height),
     1), controller.leftTopPoint.xLeft);

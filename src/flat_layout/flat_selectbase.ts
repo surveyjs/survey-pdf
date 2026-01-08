@@ -24,18 +24,18 @@ export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSele
                 isMultiline: true,
             }, appearance);
     }
-    public getStylesForItem(item: ItemValue): { choiceText: ITextStyle, input: ISelectionInputStyle } {
+    public getItemStyle(item: ItemValue): { choiceText: ITextStyle, input: ISelectionInputStyle } {
         const isChecked: boolean = this.question.isItemSelected(item);
         const shouldRenderReadOnly = this.question.isReadOnly || !item.isEnabled && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform' || this.controller.compress;
         const styles = { input: SurveyHelper.mergeObjects({},
             this.styles.input,
             shouldRenderReadOnly ? this.styles.inputReadOnly : {},
             shouldRenderReadOnly && isChecked ? this.styles.inputReadOnlyChecked : {}), choiceText: { ...this.styles.choiceText } };
-        return this.survey.getStylesForItem(this.question, item, styles);
+        return this.survey.getItemStyle(this.question, item, styles);
     }
     protected async generateFlatComposite(point: IPoint, item: ItemValue | ChoiceItem, index: number): Promise<IPdfBrick> {
         const compositeFlat: CompositeBrick = new CompositeBrick();
-        const styles = this.getStylesForItem(item);
+        const styles = this.getItemStyle(item);
         const itemFlat: IPdfBrick = this.generateFlatItem(point, item, index, styles.input);
 
         compositeFlat.addBrick(itemFlat);

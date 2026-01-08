@@ -113,7 +113,7 @@ export class FlatSurvey {
         }
         for (let i: number = 0; i < survey.visiblePages.length; i++) {
             survey.currentPage = survey.visiblePages[i];
-            let pageFlats: IPdfBrick[] = await SurveyHelper.generatePageFlats(survey, controller, survey.currentPage, point, survey.getStylesForElement(survey.currentPage));
+            let pageFlats: IPdfBrick[] = await SurveyHelper.generatePageFlats(survey, controller, survey.currentPage, point, survey.getElementStyle(survey.currentPage));
             if (i === 0 && flats.length !== 0) {
                 flats[0].push(...pageFlats);
             }
