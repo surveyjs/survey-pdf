@@ -16,6 +16,11 @@ export interface IPdfBrick extends IRect, ISize {
     increasePadding(val: { top: number, bottom: number }): void;
     isEmpty: boolean;
 }
+
+export interface IPdfBrickOptions {
+    shouldRenderReadOnly?: boolean;
+}
+
 /**
  * An object that describes a PDF brick&mdash;a simple element with specified content, size, and location. Bricks are fundamental elements used to construct a PDF document.
  *
@@ -23,11 +28,6 @@ export interface IPdfBrick extends IRect, ISize {
  *
  * [View Demo](https://surveyjs.io/pdf-generator/examples/add-markup-to-customize-pdf-forms/ (linkStyle))
  */
-
-export interface IPdfBrickOptions {
-    shouldRenderReadOnly?: boolean;
-}
-
 export class PdfBrick implements IPdfBrick {
     protected _xLeft: number;
     protected _xRight: number;
