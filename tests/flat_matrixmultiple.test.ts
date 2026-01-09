@@ -242,7 +242,7 @@ test('Check matrix multiple column widths', async () => {
     const controller: DocController = new DocController(options);
     let flat = new FlatMatrixMultiple(survey, question, controller, survey.getElementStyle(question));
     let widths = flat['calculateColumnWidth'](flat['visibleRows'], 4);
-    let restWidth = flat['styles'].columnMinWidth;
+    let restWidth = flat['style'].columnMinWidth;
     expect(widths).toEqual([375, restWidth, 37.5, restWidth]);
     expect(flat['calculateIsWide'](question.renderedTable, 4)).toBeFalsy();
 

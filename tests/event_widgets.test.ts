@@ -72,7 +72,7 @@ test('Render custom widget via callback', async () => {
             if (options.question.getType() === 'customquestion') {
                 options.bricks = [SurveyHelper.createPlainTextFlat(
                     options.point, options.controller,
-                    'Hello there', SurveyHelper.getDefaultTextAppearanceOptions(options.controller)
+                    'Hello there', SurveyHelper.getDefaultTextStyle(options.controller)
                 )];
             }
         }

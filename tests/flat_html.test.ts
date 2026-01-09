@@ -13,11 +13,11 @@ import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 
 SurveyHelper.createHTMLFlat = async function(
-    point: IPoint, controller: DocController, html: string, appearance: any): Promise<IPdfBrick> {
+    point: IPoint, controller: DocController, html: string, style: any): Promise<IPdfBrick> {
     return await new Promise((resolve) => {
         let rect: IRect = SurveyHelper.createRect(point,
             SurveyHelper.EPSILON, SurveyHelper.EPSILON);
-        resolve(new HTMLBrick(controller, rect, { html }, appearance));
+        resolve(new HTMLBrick(controller, rect, { html }, style));
     });
 };
 SurveyHelper.htmlToImage = async function(_: string, width: number):

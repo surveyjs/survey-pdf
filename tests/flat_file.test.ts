@@ -14,7 +14,7 @@ import { AdornersOptions } from '../src/event_handler/adorners';
 import { checkFlatSnapshot } from './snapshot_helper';
 import '../src/entries/pdf-base';
 import { getImageUtils, registerImageUtils } from '../src/utils/image';
-import { IQuestionFileStyle } from '../src/styles/types';
+import { IQuestionFileStyle } from '../src/style/types';
 
 test('Check no files', async () => {
     const json: any = {
@@ -244,7 +244,7 @@ test('Test file question getImagePreviewContentWidth ', async () => {
     const flatFile = new FlatFile(survey, question, controller, { fileItemMinWidth: 200 });
 
     let width = await flatFile['getImagePreviewContentWidth']({ content: '', type: 'image', name: 'file', imageSize: { width: 150, height: 50 } });
-    expect(width).toBe(flatFile['styles'].fileItemMinWidth);
+    expect(width).toBe(flatFile['style'].fileItemMinWidth);
 
     width = await flatFile['getImagePreviewContentWidth']({ content: '', type: 'image', name: 'file', imageSize: { width: 300, height: 50 } });
     expect(width).toBe(300);

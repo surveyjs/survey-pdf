@@ -40,7 +40,7 @@
 									"readOnlyShowLink": false,
 									"shouldRenderReadOnly": false
 								},
-								"appearance": {
+								"style": {
 									"fontSize": 12,
 									"fontName": "helvetica",
 									"fontStyle": "normal",
@@ -97,7 +97,7 @@
 									"readOnlyShowLink": false,
 									"shouldRenderReadOnly": false
 								},
-								"appearance": {
+								"style": {
 									"fontSize": 12,
 									"fontName": "helvetica",
 									"fontStyle": "normal",

@@ -364,7 +364,7 @@ test('Check question\'s content indent with CONTENT_INDENT_SCALE', async () => {
     await checkFlatSnapshot(json, {
         snapshotName: 'question_content_indent_scale_0',
         onSurveyCreated(survey) {
-            survey.applyStyles({
+            survey.applyStyle({
                 question: {
                     spacing: {
                         contentIndentStart: 0

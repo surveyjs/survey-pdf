@@ -991,7 +991,7 @@ export interface IQuestionHtmlStyle extends IQuestionStyle {
 /**
  * Defines visual styles applied to UI elements in an exported PDF document.
  */
-export interface IDocStyles {
+export interface IDocStyle {
     /**
      * Defines the visual style applied to [survey](https://surveyjs.io/form-library/documentation/api-reference/survey-data-model) UI elements in an exported PDF document.
      */

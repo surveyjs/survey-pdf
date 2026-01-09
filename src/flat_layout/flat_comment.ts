@@ -4,12 +4,12 @@ import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { SurveyHelper } from '../helper_survey';
-import { IQuestionCommentStyle } from '../styles/types';
+import { IQuestionCommentStyle } from '../style/types';
 
 export class FlatComment extends FlatQuestion<QuestionCommentModel, IQuestionCommentStyle> {
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         const shouldRenderReadOnly = SurveyHelper.shouldRenderReadOnly(this.question, this.controller, this.question.isReadOnly);
-        const appearance = SurveyHelper.getPatchedTextAppearanceOptions(this.controller, SurveyHelper.mergeObjects({}, this.styles.input, shouldRenderReadOnly ? this.styles.inputReadOnly : undefined));
+        const style = SurveyHelper.getPatchedTextStyle(this.controller, SurveyHelper.mergeObjects({}, this.style.input, shouldRenderReadOnly ? this.style.inputReadOnly : undefined));
         return [await SurveyHelper.createCommentFlat(
             point, this.controller,
             {
@@ -21,7 +21,7 @@ export class FlatComment extends FlatQuestion<QuestionCommentModel, IQuestionCom
                 placeholder: SurveyHelper.getLocString(this.question.locPlaceHolder),
                 shouldRenderBorders: settings.readOnlyCommentRenderMode === 'textarea',
                 value: this.question.value
-            }, SurveyHelper.getPatchedTextAppearanceOptions(this.controller, appearance))];
+            }, SurveyHelper.getPatchedTextStyle(this.controller, style))];
     }
 }
 

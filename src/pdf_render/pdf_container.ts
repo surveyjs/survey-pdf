@@ -1,15 +1,15 @@
 import { DocController, IPoint } from '../doc_controller';
-import { BorderMode, BorderRect, IBorderAppearanceOptions, SurveyHelper } from '../helper_survey';
+import { BorderMode, BorderRect, IBorderExtendedStyle, SurveyHelper } from '../helper_survey';
 import { IPdfBrick } from './pdf_brick';
 import { CompositeBrick } from './pdf_composite';
 import { type IPadding, parsePadding } from '../utils';
 
-interface IContainerBrickAppearance extends IBorderAppearanceOptions {
+interface IContainerBrickStyle extends IBorderExtendedStyle {
     padding: Array<number> | number;
     backgroundColor: string | null;
 }
 
-const defaultContainerOptions: IContainerBrickAppearance = {
+const defaultContainerOptions: IContainerBrickStyle = {
     padding: 0,
     borderWidth: 0,
     backgroundColor: null,
@@ -19,13 +19,13 @@ const defaultContainerOptions: IContainerBrickAppearance = {
 };
 
 export class ContainerBrick extends CompositeBrick {
-    private appearance: Readonly<IContainerBrickAppearance>;
+    private style: Readonly<IContainerBrickStyle>;
     private get includedBorderWidth() {
-        switch(this.appearance.borderMode) {
+        switch(this.style.borderMode) {
             case BorderMode.Inside:
-                return this.appearance.borderWidth;
+                return this.style.borderWidth;
             case BorderMode.Middle:
-                return this.appearance.borderWidth / 2;
+                return this.style.borderWidth / 2;
             default:
                 return 0;
         }
@@ -33,13 +33,13 @@ export class ContainerBrick extends CompositeBrick {
     private _padding: IPadding;
     private get padding(): IPadding {
         if(!this._padding) {
-            this._padding = parsePadding(this.appearance.padding);
+            this._padding = parsePadding(this.style.padding);
         }
         return this._padding;
     }
-    constructor(private controller: DocController, private layout: { xLeft: number, yTop: number, width: number }, appearance?: Partial<Readonly<IContainerBrickAppearance>>) {
+    constructor(private controller: DocController, private layout: { xLeft: number, yTop: number, width: number }, style?: Partial<Readonly<IContainerBrickStyle>>) {
         super();
-        this.appearance = SurveyHelper.mergeObjects({}, defaultContainerOptions, appearance);
+        this.style = SurveyHelper.mergeObjects({}, defaultContainerOptions, style);
     }
     getStartPoint(): IPoint {
         return { yTop: this.layout.yTop + this.padding.top + this.includedBorderWidth, xLeft: this.layout.xLeft + this.padding.left + this.includedBorderWidth };
@@ -69,24 +69,24 @@ export class ContainerBrick extends CompositeBrick {
                 if(unfoldedBricks[unfoldedBricks.length - 1] !== unfoldedBricksOnPage[unfoldedBricksOnPage.length - 1]) {
                     borderRect ^= BorderRect.Bottom;
                 }
-                if(this.appearance.backgroundColor !== null) {
-                    this.controller.setFillColor(this.appearance.backgroundColor);
+                if(this.style.backgroundColor !== null) {
+                    this.controller.setFillColor(this.style.backgroundColor);
                     const rect = SurveyHelper.createRect(
                         { xLeft: this.layout.xLeft + this.includedBorderWidth, yTop: mergedRect.yTop + this.includedBorderWidth },
                         this.layout.width - this.includedBorderWidth * 2,
                         (mergedRect.yBot - mergedRect.yTop) - this.includedBorderWidth * 2);
-                    const { lines, point } = SurveyHelper.getRoundedShape(rect, { ...this.appearance, borderRect, borderRadius: Math.max(this.appearance.borderRadius - (this.appearance.borderWidth - this.includedBorderWidth), 0) });
+                    const { lines, point } = SurveyHelper.getRoundedShape(rect, { ...this.style, borderRect, borderRadius: Math.max(this.style.borderRadius - (this.style.borderWidth - this.includedBorderWidth), 0) });
                     this.controller.doc.lines(lines, point.xLeft, point.yTop, [1, 1], 'F', true);
                     this.controller.restoreFillColor();
                 }
-                if(this.appearance.borderColor !== null) {
+                if(this.style.borderColor !== null) {
                     SurveyHelper.renderFlatBorders(this.controller, {
                         xLeft: this.layout.xLeft,
                         xRight: this.layout.xLeft + this.layout.width,
                         yTop: mergedRect.yTop,
                         yBot: mergedRect.yBot,
                         width: this.layout.width,
-                        height: mergedRect.yBot - mergedRect.yTop }, { ...this.appearance, borderRect });
+                        height: mergedRect.yBot - mergedRect.yTop }, { ...this.style, borderRect });
                 }
             }
         };

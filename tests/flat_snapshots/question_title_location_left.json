@@ -34,7 +34,7 @@
 								"xRight": 42.19145669291339,
 								"yTop": 34.72145669291339,
 								"yBot": 46.72145669291339,
-								"appearance": {
+								"style": {
 									"fontSize": 9,
 									"fontName": "helvetica",
 									"fontStyle": "normal",
@@ -69,7 +69,7 @@
 								"xRight": 60.58145669291339,
 								"yTop": 34.72145669291339,
 								"yBot": 46.72145669291339,
-								"appearance": {
+								"style": {
 									"fontSize": 9,
 									"fontName": "helvetica",
 									"fontStyle": "normal",
@@ -115,7 +115,7 @@
 								"xRight": 195.65759780776878,
 								"yTop": 34.72145669291339,
 								"yBot": 46.72145669291339,
-								"appearance": {
+								"style": {
 									"fontSize": 7.5,
 									"fontName": "zapfdingbats",
 									"fontStyle": "normal",
@@ -158,7 +158,7 @@
 								"xRight": 388.60586583301824,
 								"yTop": 34.72145669291339,
 								"yBot": 46.72145669291339,
-								"appearance": {
+								"style": {
 									"fontSize": 7.5,
 									"fontName": "zapfdingbats",
 									"fontStyle": "normal",

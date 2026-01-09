@@ -1,6 +1,6 @@
 import { ITextBrickOptions, TextBrick } from './pdf_text';
-import { ITextAppearanceOptions } from '../helper_survey';
 import { IRect, DocController } from '../doc_controller';
+import { ITextStyle } from '../style/types';
 
 export interface ILinkOptions extends ITextBrickOptions {
     link: string;
@@ -9,16 +9,16 @@ export interface ILinkOptions extends ITextBrickOptions {
 
 export class LinkBrick extends TextBrick {
     private static readonly SCALE_FACTOR_MAGIC: number = 0.955;
-    public constructor(controller: DocController, rect: IRect, public options: ILinkOptions, public appearance: ITextAppearanceOptions) {
-        super(controller, rect, options, appearance);
+    public constructor(controller: DocController, rect: IRect, public options: ILinkOptions, public style: ITextStyle) {
+        super(controller, rect, options, style);
     }
     public async renderInteractive(): Promise<void> {
         const oldFontSize: number = this.controller.fontSize;
         const oldFontStyle: string = this.controller.fontStyle;
         const oldFontName: string = this.controller.fontName;
-        this.controller.fontSize = this.appearance.fontSize;
-        this.controller.fontStyle = this.appearance.fontStyle;
-        this.controller.fontName = this.appearance.fontName;
+        this.controller.fontSize = this.style.fontSize;
+        this.controller.fontStyle = this.style.fontStyle;
+        this.controller.fontName = this.style.fontName;
         this.controller.setTextColor('#FFFFFF00');
         let descent: number = this.controller.unitHeight *
             (this.controller.doc.getLineHeightFactor() -

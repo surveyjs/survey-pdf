@@ -6,14 +6,14 @@ import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { ContainerBrick } from '../pdf_render/pdf_container';
 import { SurveyHelper } from '../helper_survey';
 import { FlatTextbox } from './flat_textbox';
-import { IQuestionMultipleTextStyle } from '../styles/types';
+import { IQuestionMultipleTextStyle } from '../style/types';
 
 export class FlatMultipleText extends FlatQuestion<QuestionMultipleTextModel, IQuestionMultipleTextStyle> {
     private getVisibleRows() {
         return this.question.getRows().filter(row => row.isVisible);
     }
     private async generateFlatCell(point: IPoint, callback: (point: IPoint, bricks: Array<IPdfBrick>) => Promise<void>): Promise<ContainerBrick> {
-        const container = new ContainerBrick(this.controller, { ...point, width: SurveyHelper.getPageAvailableWidth(this.controller) }, this.styles.itemCell);
+        const container = new ContainerBrick(this.controller, { ...point, width: SurveyHelper.getPageAvailableWidth(this.controller) }, this.style.itemCell);
         await container.setup(callback);
         return container;
     }
@@ -21,15 +21,15 @@ export class FlatMultipleText extends FlatQuestion<QuestionMultipleTextModel, IQ
         const colWidth: number = SurveyHelper.getPageAvailableWidth(this.controller);
         const bricks: Array<ContainerBrick> = [];
         this.controller.pushMargins();
-        this.controller.margins.right = this.controller.paperWidth - this.controller.margins.left - colWidth * this.styles.itemTitleWidthPercentage;
+        this.controller.margins.right = this.controller.paperWidth - this.controller.margins.left - colWidth * this.style.itemTitleWidthPercentage;
         bricks.push(await this.generateFlatCell(point, async (point: IPoint, bricks: Array<IPdfBrick>) => {
             bricks.push(await SurveyHelper.
-                createTextFlat(point, this.controller, item.locTitle, { ... this.styles.itemTitle }));
+                createTextFlat(point, this.controller, item.locTitle, { ... this.style.itemTitle }));
         }));
         this.controller.popMargins();
 
         this.controller.pushMargins();
-        this.controller.margins.left = point.xLeft + colWidth * this.styles.itemTitleWidthPercentage + this.styles.spacing.itemTitleGap;
+        this.controller.margins.left = point.xLeft + colWidth * this.style.itemTitleWidthPercentage + this.style.spacing.itemTitleGap;
         bricks.push(await this.generateFlatCell({ xLeft: this.controller.margins.left, yTop: point.yTop }, async (point: IPoint, bricks: Array<IPdfBrick>) => {
             const flatMultipleTextItemQuestion: IFlatQuestion = FlatRepository.getInstance().create(
                 this.survey, item.editor, this.controller, this.survey.getElementStyle(item.editor), 'text');
@@ -47,7 +47,7 @@ export class FlatMultipleText extends FlatQuestion<QuestionMultipleTextModel, IQ
             const currentRowFlats: Array<ContainerBrick> = [];
             for (let j: number = 0; j < rows[i].cells.length; j++) {
                 this.controller.pushMargins();
-                SurveyHelper.setColumnMargins(this.controller, this.question.colCount, j, this.styles.spacing.itemColumnGap);
+                SurveyHelper.setColumnMargins(this.controller, this.question.colCount, j, this.style.spacing.itemColumnGap);
                 currPoint.xLeft = this.controller.margins.left;
                 currentRowFlats.push(...await this.generateFlatItemCells(currPoint, rows[i].cells[j].item));
                 this.controller.popMargins();
@@ -58,7 +58,7 @@ export class FlatMultipleText extends FlatQuestion<QuestionMultipleTextModel, IQ
             currentRowFlats.forEach((flat) => { flat.fitToHeight(rowRect.yBot - rowRect.yTop); });
             currPoint.yTop = rowRect.yBot;
             rowsFlats.push(...currentRowFlats, SurveyHelper.createRowlineFlat(currPoint, this.controller));
-            currPoint.yTop += this.styles.spacing.itemGap;
+            currPoint.yTop += this.style.spacing.itemGap;
         }
         return rowsFlats;
     }

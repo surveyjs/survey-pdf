@@ -1,4 +1,4 @@
-import { ITextAppearanceOptions } from '../helper_survey';
+import { ITextStyle } from '../style/types';
 import { IPoint, IRect, DocController } from '../doc_controller';
 import { IPdfBrickOptions, PdfBrick } from './pdf_brick';
 
@@ -9,7 +9,7 @@ export interface ITextBrickOptions extends IPdfBrickOptions {
 export class TextBrick extends PdfBrick {
     protected align: any;
     public constructor(controller: DocController,
-        rect: IRect, public options: ITextBrickOptions, public appearance: ITextAppearanceOptions) {
+        rect: IRect, public options: ITextBrickOptions, public style: ITextStyle) {
         super(controller, rect, options);
         this.align = {
             isInputRtl: false,
@@ -27,10 +27,10 @@ export class TextBrick extends PdfBrick {
         const oldFontSize: number = this.controller.fontSize;
         const oldFontStyle: string = this.controller.fontStyle;
         const oldFontName: string = this.controller.fontName;
-        this.controller.fontSize = this.appearance.fontSize;
-        this.controller.fontStyle = this.appearance.fontStyle;
-        this.controller.fontName = this.appearance.fontName;
-        this.controller.setTextColor(this.appearance.fontColor);
+        this.controller.fontSize = this.style.fontSize;
+        this.controller.fontStyle = this.style.fontStyle;
+        this.controller.fontName = this.style.fontName;
+        this.controller.setTextColor(this.style.fontColor);
         this.controller.doc.text(this.escapeText(), alignPoint.xLeft, alignPoint.yTop, this.align);
         this.controller.restoreTextColor();
         this.controller.fontSize = oldFontSize;

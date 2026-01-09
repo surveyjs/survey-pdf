@@ -3,11 +3,11 @@ import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
 import { IPoint, IRect } from '../doc_controller';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
-import { CheckItemBrick, ICheckItemBrickAppearanceOptions } from '../pdf_render/pdf_checkitem';
+import { CheckItemBrick } from '../pdf_render/pdf_checkitem';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
-import { IRadioItemBrickAppearanceOptions, RadioGroupWrap, RadioItemBrick } from '../pdf_render/pdf_radioitem';
-import { IQuestionImagePickerStyle } from '../styles/types';
+import { RadioGroupWrap, RadioItemBrick } from '../pdf_render/pdf_radioitem';
+import { IQuestionImagePickerStyle, ISelectionInputStyle } from '../style/types';
 
 export class FlatImagePicker extends FlatQuestion<QuestionImagePickerModel, IQuestionImagePickerStyle> {
     private _radioGroupWrap: any;
@@ -22,35 +22,35 @@ export class FlatImagePicker extends FlatQuestion<QuestionImagePickerModel, IQue
         }
         return this._radioGroupWrap;
     }
-    public getInputAppearance(isReadOnly: boolean, isChecked: boolean, isMultiSelect: boolean):(ICheckItemBrickAppearanceOptions | IRadioItemBrickAppearanceOptions) & { width: number, height: number } {
+    public getInputStyle(isReadOnly: boolean, isChecked: boolean, isMultiSelect: boolean):ISelectionInputStyle {
         const inputType = isMultiSelect ? 'checkbox' : 'radio';
-        const styles = SurveyHelper.mergeObjects({}, this.styles.input, this.styles[`${inputType}Input`]);
+        const style = SurveyHelper.mergeObjects({}, this.style.input, this.style[`${inputType}Input`]);
         if(isReadOnly) {
-            SurveyHelper.mergeObjects(styles, this.styles.inputReadOnly, this.styles[`${inputType}InputReadOnly`]);
+            SurveyHelper.mergeObjects(style, this.style.inputReadOnly, this.style[`${inputType}InputReadOnly`]);
             if(isChecked) {
-                SurveyHelper.mergeObjects(styles, this.styles.inputReadOnlyChecked, this.styles[`${inputType}InputReadOnlyChecked`]);
+                SurveyHelper.mergeObjects(style, this.style.inputReadOnlyChecked, this.style[`${inputType}InputReadOnlyChecked`]);
             }
         }
-        return styles;
+        return style;
     }
     private async generateFlatItem(point: IPoint, item: ItemValue, index: number): Promise<IPdfBrick> {
         const pageAvailableWidth = SurveyHelper.getPageAvailableWidth(this.controller);
         const isReadOnly = this.question.isReadOnly || !item.isEnabled;
         const isChecked = this.question.isItemSelected(item);
         const shouldRenderReadOnly = isReadOnly && SurveyHelper.getReadonlyRenderAs(this.question, this.controller) !== 'acroform' || this.controller.compress;
-        const itemAppearance = SurveyHelper.mergeObjects({}, this.getInputAppearance(isReadOnly, isChecked, this.question.multiSelect));
-        const imageFlat = await SurveyHelper.createImageFlat(point, this.question, this.controller, { link: (<any>item).imageLink, width: pageAvailableWidth, height: pageAvailableWidth / this.styles.imageRatio });
+        const itemStyle = SurveyHelper.mergeObjects({}, this.getInputStyle(isReadOnly, isChecked, this.question.multiSelect));
+        const imageFlat = await SurveyHelper.createImageFlat(point, this.question, this.controller, { link: (<any>item).imageLink, width: pageAvailableWidth, height: pageAvailableWidth / this.style.imageRatio });
         const compositeFlat: CompositeBrick = new CompositeBrick(imageFlat);
         let buttonPoint: IPoint = SurveyHelper.createPoint(compositeFlat);
         if (this.question.showLabel) {
             let labelFlat: IPdfBrick = await SurveyHelper.createTextFlat(buttonPoint, this.controller, item.text || item.value, {
-                ...this.styles.choiceText
+                ...this.style.choiceText
             });
             compositeFlat.addBrick(labelFlat);
             buttonPoint = SurveyHelper.createPoint(labelFlat);
         }
-        buttonPoint.yTop += this.styles.spacing.imageInputGap;
-        const height: number = itemAppearance.height;
+        buttonPoint.yTop += this.style.spacing.imageInputGap;
+        const height: number = itemStyle.height;
         const buttonRect: IRect = SurveyHelper.createRect(buttonPoint, pageAvailableWidth, height);
         if (this.question.multiSelect) {
             compositeFlat.addBrick(new CheckItemBrick(this.controller,
@@ -62,7 +62,7 @@ export class FlatImagePicker extends FlatQuestion<QuestionImagePickerModel, IQue
                     shouldRenderReadOnly: shouldRenderReadOnly,
                     updateOptions: (options) => this.survey.updateCheckItemAcroformOptions(options, this.question, { item }),
                 },
-                itemAppearance));
+                itemStyle));
         }
         else {
             compositeFlat.addBrick(new RadioItemBrick(this.controller, buttonRect, this.radioGroupWrap, {
@@ -70,13 +70,13 @@ export class FlatImagePicker extends FlatQuestion<QuestionImagePickerModel, IQue
                 checked: isChecked,
                 shouldRenderReadOnly: shouldRenderReadOnly,
                 updateOptions: options => this.survey.updateRadioItemAcroformOptions(options, this.question, { item }),
-            }, itemAppearance));
+            }, itemStyle));
         }
         return compositeFlat;
     }
     protected getColumnsInfo(): { columnsCount: number, columnWidth: number } {
-        const { imageMinWidth, imageMaxWidth } = this.styles;
-        const { choiceColumnGap: gapBetweenColumns } = this.styles.spacing;
+        const { imageMinWidth, imageMaxWidth } = this.style;
+        const { choiceColumnGap: gapBetweenColumns } = this.style.spacing;
         const availableWidth = SurveyHelper.getPageAvailableWidth(this.controller);
         let columnsCount = this.question.colCount == 0 ? this.question.visibleChoices.length : this.question.colCount;
         let columnWidth: number;
@@ -111,7 +111,7 @@ export class FlatImagePicker extends FlatQuestion<QuestionImagePickerModel, IQue
                     this.question.visibleChoices[index], index);
                 rowsFlats[rowsFlats.length - 1].addBrick(itemFlat);
                 currMarginLeft = this.controller.paperWidth -
-                    this.controller.margins.right + this.styles.spacing.choiceColumnGap;
+                    this.controller.margins.right + this.style.spacing.choiceColumnGap;
                 yBot = Math.max(yBot, itemFlat.yBot);
             }
             this.controller.popMargins();
@@ -120,7 +120,7 @@ export class FlatImagePicker extends FlatQuestion<QuestionImagePickerModel, IQue
             if (i !== rows - 1) {
                 rowsFlats[rowsFlats.length - 1].addBrick(
                     SurveyHelper.createRowlineFlat(currPoint, this.controller));
-                currPoint.yTop += this.styles.spacing.choiceGap;
+                currPoint.yTop += this.style.spacing.choiceGap;
                 rowsFlats.push(new CompositeBrick());
             }
         }

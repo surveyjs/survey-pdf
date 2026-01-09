@@ -44,7 +44,7 @@
 						"xRight": 259.7214566929134,
 						"yTop": 203.4714566929134,
 						"yBot": 215.4714566929134,
-						"appearance": {
+						"style": {
 							"fontColor": "#000000",
 							"fontSize": 7.5,
 							"lineHeight": 18,
@@ -104,7 +104,7 @@
 						"xRight": 493.7214566929134,
 						"yTop": 203.4714566929134,
 						"yBot": 215.4714566929134,
-						"appearance": {
+						"style": {
 							"fontColor": "#000000",
 							"fontSize": 7.5,
 							"lineHeight": 18,

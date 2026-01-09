@@ -5,12 +5,12 @@ import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { AdornersPageOptions } from '../event_handler/adorners';
 import { SurveyHelper } from '../helper_survey';
-import { IPageStyle } from '../styles/types';
+import { IPageStyle } from '../style/types';
 
 export class FlatPage extends FlatPanel<PageModel, IPageStyle> {
     protected async generateTitleFlat(point: IPoint): Promise<IPdfBrick> {
         return await SurveyHelper.createTextFlat(
-            point, this.controller, this.panel.locTitle, { ...this.styles.title });
+            point, this.controller, this.panel.locTitle, { ...this.style.title });
     }
     async generateFlats(point: IPoint): Promise<IPdfBrick[]> {
         const pageFlats: IPdfBrick[] = [];

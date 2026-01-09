@@ -8,7 +8,7 @@ import { FlatCheckbox } from '../src/flat_layout/flat_checkbox';
 import { PdfBrick } from '../src/pdf_render/pdf_brick';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
-import { IQuestionCheckboxStyle } from '../src/styles/types';
+import { IQuestionCheckboxStyle } from '../src/style/types';
 let __dummy_cb = new FlatCheckbox(null, null, null);
 
 test('Check that checkbox has square boundaries', async () => {
@@ -25,7 +25,7 @@ test('Check that checkbox has square boundaries', async () => {
         ]
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    survey.applyStyles({
+    survey.applyStyle({
         question: {
             container: {
                 padding: 0,
@@ -36,17 +36,17 @@ test('Check that checkbox has square boundaries', async () => {
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     await survey['renderSurvey'](controller);
     const question = survey.getAllQuestions()[0];
-    const labelStyles = (survey.getElementStyle(question) as IQuestionCheckboxStyle).choiceText;
-    const inputStyles = (survey.getElementStyle(question) as IQuestionCheckboxStyle).input;
+    const labelStyle = (survey.getElementStyle(question) as IQuestionCheckboxStyle).choiceText;
+    const inputStyle = (survey.getElementStyle(question) as IQuestionCheckboxStyle).input;
     let assumeCheckbox: IRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(SurveyHelper.createRect(
-        controller.leftTopPoint, inputStyles.width, inputStyles.height),
+        controller.leftTopPoint, inputStyle.width, inputStyle.height),
     1), controller.leftTopPoint.xLeft);
-    const textHeight = controller.measureText(1, labelStyles).height;
+    const textHeight = controller.measureText(1, labelStyle).height;
     const shift = (textHeight - (assumeCheckbox.yBot - assumeCheckbox.yTop)) / 2;
     assumeCheckbox.yTop += shift;
     assumeCheckbox.yBot += shift;
     let checkboxFlat: PdfBrick = new PdfBrick(null, assumeCheckbox);
-    assumeCheckbox = SurveyHelper.scaleRect(assumeCheckbox, SurveyHelper.getRectBorderScale(checkboxFlat, inputStyles.borderWidth));
+    assumeCheckbox = SurveyHelper.scaleRect(assumeCheckbox, SurveyHelper.getRectBorderScale(checkboxFlat, inputStyle.borderWidth));
     let acroFormFields: any = controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields;
     let internalRect: any = acroFormFields[0].Rect;
     TestHelper.equalRect(expect, SurveyHelper.createRect(

@@ -9,11 +9,11 @@ import { EventHandler } from './event_handler/event_handler';
 import { DrawCanvas } from './event_handler/draw_canvas';
 import { AdornersOptions, AdornersPanelOptions, AdornersPageOptions } from './event_handler/adorners';
 import { SurveyHelper } from './helper_survey';
-import { IDocStyles } from './styles/types';
-import { createStylesFromTheme, getDefaultStylesFromTheme } from './styles';
+import { IDocStyle } from './style/types';
+import { createStyleFromTheme, getDefaultStyleFromTheme } from './style';
 import { DefaultLight } from './themes/default-light';
 import { parsePadding } from './utils';
-import { ITextStyle, ISelectionInputStyle, IQuestionStyle, IPageStyle, IPanelStyle } from './styles/types';
+import { ITextStyle, ISelectionInputStyle, IQuestionStyle, IPageStyle, IPanelStyle } from './style/types';
 
 /**
  * The `SurveyPDF` object enables you to export your surveys and forms to PDF documents.
@@ -243,24 +243,24 @@ export class SurveyPDF extends SurveyModel {
      */
     public onGetItemStyle = new EventBase<SurveyPDF, { question: Question, item: ItemValue, style: { choiceText: ITextStyle, input: ISelectionInputStyle }, getColorVariable: (name: string) => string, getSizeVariable: (name: string) => number}>;
 
-    private stylesValue: IDocStyles;
+    private styleValue: IDocStyle;
     /**
      * An object that defines visual styles applied to UI elements in an exported PDF document.
      *
      * Modify the properties of this object to control how survey elements are rendered in the PDF.
      */
-    public get styles(): IDocStyles {
-        if(!this.stylesValue) {
-            this.stylesValue = getDefaultStylesFromTheme(this.theme);
+    public get style(): IDocStyle {
+        if(!this.styleValue) {
+            this.styleValue = getDefaultStyleFromTheme(this.theme);
         }
-        return this.stylesValue;
+        return this.styleValue;
     }
 
-    public applyStyles(value: IDocStyles | ((options: { getColorVariable: (name: string) => string, getSizeVariable: (name: string) => number }) => IDocStyles)): void {
+    public applyStyle(value: IDocStyle | ((options: { getColorVariable: (name: string) => string, getSizeVariable: (name: string) => number }) => IDocStyle)): void {
         if(typeof value == 'function') {
-            this.stylesValue = SurveyHelper.mergeObjects({}, this.styles, createStylesFromTheme(this.theme, value));
+            this.styleValue = SurveyHelper.mergeObjects({}, this.style, createStyleFromTheme(this.theme, value));
         } else {
-            this.stylesValue = SurveyHelper.mergeObjects({}, this.styles, value);
+            this.styleValue = SurveyHelper.mergeObjects({}, this.style, value);
         }
     }
     private _theme: ITheme;
@@ -269,25 +269,25 @@ export class SurveyPDF extends SurveyModel {
     }
     public applyTheme(theme: ITheme): void {
         this._theme = SurveyHelper.mergeObjects({}, this.theme, theme);
-        this.stylesValue = undefined;
+        this.styleValue = undefined;
         this.stylesHash = {};
     }
-    public getItemStyle(question: Question, item: ItemValue, styles: { choiceText: ITextStyle, input: ISelectionInputStyle }): { choiceText: ITextStyle, input: ISelectionInputStyle } {
-        return createStylesFromTheme(this.theme, (options) => {
+    public getItemStyle(question: Question, item: ItemValue, style: { choiceText: ITextStyle, input: ISelectionInputStyle }): { choiceText: ITextStyle, input: ISelectionInputStyle } {
+        return createStyleFromTheme(this.theme, (options) => {
             const eventOptions = {
                 getColorVariable: options.getColorVariable,
                 getSizeVariable: options.getSizeVariable,
-                style: styles
+                style: style
             };
             this.onGetItemStyle.fire(this, { question, item, ...eventOptions });
-            return styles;
+            return style;
         });
     }
     private stylesHash: { [id: number]: IQuestionStyle | IPanelStyle | IPageStyle } = {};
     public getElementStyle<T extends IQuestionStyle | IPanelStyle | IPageStyle = IQuestionStyle>(element: SurveyElement): T {
         const uniqueId = element.uniqueId;
         if(!this.stylesHash[uniqueId]) {
-            const styles = this.styles;
+            const style = this.style;
             const types = [element.getType()];
             let currentClass = Serializer.findClass(element.getType());
             while(!!currentClass.parentName) {
@@ -296,9 +296,9 @@ export class SurveyPDF extends SurveyModel {
             }
             const res = {};
             types.forEach(type => {
-                SurveyHelper.mergeObjects(res, (styles as any)[type] ?? {});
+                SurveyHelper.mergeObjects(res, (style as any)[type] ?? {});
             });
-            this.stylesHash[uniqueId] = createStylesFromTheme(this.theme, (options) => {
+            this.stylesHash[uniqueId] = createStyleFromTheme(this.theme, (options) => {
                 const eventOptions = {
                     getColorVariable: options.getColorVariable,
                     getSizeVariable: options.getSizeVariable,
@@ -378,7 +378,7 @@ export class SurveyPDF extends SurveyModel {
                 controller.addPage();
             }
             controller.setPage(i);
-            controller.setFillColor(this.styles.survey.backgroundColor);
+            controller.setFillColor(this.style.survey.backgroundColor);
             controller.doc.rect(0, 0, controller.doc.internal.pageSize.getWidth(), controller.doc.internal.pageSize.getHeight(), 'F');
             controller.restoreFillColor();
             for (let j: number = 0; j < packs[i].length; j++) {
@@ -398,12 +398,12 @@ export class SurveyPDF extends SurveyModel {
         this.stylesHash = {};
     }
     private createController(): DocController {
-        const marginsFromStyles = parsePadding(this.styles.survey.padding);
-        Object.keys(marginsFromStyles).forEach((key: 'top' | 'left' | 'bot' | 'right') => {
-            marginsFromStyles[key] /= DocOptions.MM_TO_PT;
+        const marginsFromStyle = parsePadding(this.style.survey.padding);
+        Object.keys(marginsFromStyle).forEach((key: 'top' | 'left' | 'bot' | 'right') => {
+            marginsFromStyle[key] /= DocOptions.MM_TO_PT;
         });
         const options = SurveyHelper.mergeObjects({}, {
-            margins: marginsFromStyles
+            margins: marginsFromStyle
         }, this.options);
         return new DocController(options);
     }

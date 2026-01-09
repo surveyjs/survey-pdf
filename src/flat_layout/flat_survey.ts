@@ -3,7 +3,8 @@ import { IPoint, DocController } from '../doc_controller';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { RowlineBrick } from '../pdf_render/pdf_rowline';
-import { SurveyHelper, ITextAppearanceOptions } from '../helper_survey';
+import { SurveyHelper } from '../helper_survey';
+import { ITextStyle } from '../style/types';
 
 export class FlatSurvey {
     private static popRowlines(flats: IPdfBrick[]) {
@@ -15,19 +16,19 @@ export class FlatSurvey {
         point: IPoint): Promise<CompositeBrick> {
         const compositeFlat: CompositeBrick = new CompositeBrick();
         if (survey.showTitle) {
-            const styles = survey.styles;
+            const style = survey.style;
             if (survey.title) {
-                const textOptions:Partial<ITextAppearanceOptions> = { ...styles.survey.title };
+                const textOptions:Partial<ITextStyle> = { ...style.survey.title };
                 const surveyTitleFlat: IPdfBrick = await SurveyHelper.createTextFlat(point, controller, survey.locTitle, textOptions);
                 compositeFlat.addBrick(surveyTitleFlat);
                 point = SurveyHelper.createPoint(surveyTitleFlat);
             }
             if (survey.description) {
                 if (survey.title) {
-                    point.yTop += styles.survey.spacing.titleDescriptionGap;
+                    point.yTop += style.survey.spacing.titleDescriptionGap;
                 }
                 compositeFlat.addBrick(await SurveyHelper.createTextFlat(
-                    point, controller, survey.locDescription, { ...styles.survey.description }));
+                    point, controller, survey.locDescription, { ...style.survey.description }));
             }
         }
         return compositeFlat;
@@ -108,8 +109,8 @@ export class FlatSurvey {
         if (flats.length !== 0) {
             point.yTop = SurveyHelper.createPoint(SurveyHelper.mergeRects(...flats[0])).yTop;
             flats[0].push(SurveyHelper.createRowlineFlat(point, controller));
-            const styles = survey.styles;
-            point.yTop += styles.survey.spacing.headerContentGap + SurveyHelper.EPSILON;
+            const style = survey.style;
+            point.yTop += style.survey.spacing.headerContentGap + SurveyHelper.EPSILON;
         }
         for (let i: number = 0; i < survey.visiblePages.length; i++) {
             survey.currentPage = survey.visiblePages[i];

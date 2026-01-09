@@ -43,7 +43,7 @@
 										"xRight": 44.62145669291339,
 										"yTop": 34.72145669291339,
 										"yBot": 46.72145669291339,
-										"appearance": {
+										"style": {
 											"fontSize": 9,
 											"fontName": "helvetica",
 											"fontStyle": "normal",
@@ -91,7 +91,7 @@
 						"xRight": 46.72145669291339,
 						"yTop": 55.72145669291339,
 						"yBot": 67.72145669291339,
-						"appearance": {
+						"style": {
 							"fontSize": 7.5,
 							"fontName": "zapfdingbats",
 							"fontStyle": "normal",
@@ -132,7 +132,7 @@
 								"xRight": 81.88145669291339,
 								"yTop": 52.72145669291339,
 								"yBot": 70.72145669291339,
-								"appearance": {
+								"style": {
 									"fontSize": 12,
 									"fontName": "helvetica",
 									"fontStyle": "normal",
@@ -171,7 +171,7 @@
 				"xRight": 46.72145669291339,
 				"yTop": 76.72145669291339,
 				"yBot": 88.72145669291339,
-				"appearance": {
+				"style": {
 					"fontSize": 7.5,
 					"fontName": "zapfdingbats",
 					"fontStyle": "normal",
@@ -212,7 +212,7 @@
 						"xRight": 81.88145669291339,
 						"yTop": 73.72145669291339,
 						"yBot": 91.72145669291339,
-						"appearance": {
+						"style": {
 							"fontSize": 12,
 							"fontName": "helvetica",
 							"fontStyle": "normal",
@@ -249,7 +249,7 @@
 				"xRight": 46.72145669291339,
 				"yTop": 97.72145669291339,
 				"yBot": 109.72145669291339,
-				"appearance": {
+				"style": {
 					"fontSize": 7.5,
 					"fontName": "zapfdingbats",
 					"fontStyle": "normal",
@@ -290,7 +290,7 @@
 						"xRight": 81.88145669291339,
 						"yTop": 94.72145669291339,
 						"yBot": 112.72145669291339,
-						"appearance": {
+						"style": {
 							"fontSize": 12,
 							"fontName": "helvetica",
 							"fontStyle": "normal",
@@ -327,7 +327,7 @@
 				"xRight": 46.72145669291339,
 				"yTop": 118.72145669291339,
 				"yBot": 130.7214566929134,
-				"appearance": {
+				"style": {
 					"fontSize": 7.5,
 					"fontName": "zapfdingbats",
 					"fontStyle": "normal",
@@ -368,7 +368,7 @@
 						"xRight": 81.88145669291339,
 						"yTop": 115.72145669291339,
 						"yBot": 133.7214566929134,
-						"appearance": {
+						"style": {
 							"fontSize": 12,
 							"fontName": "helvetica",
 							"fontStyle": "normal",
@@ -405,7 +405,7 @@
 				"xRight": 46.72145669291339,
 				"yTop": 139.7214566929134,
 				"yBot": 151.7214566929134,
-				"appearance": {
+				"style": {
 					"fontSize": 7.5,
 					"fontName": "zapfdingbats",
 					"fontStyle": "normal",
@@ -446,7 +446,7 @@
 						"xRight": 81.88145669291339,
 						"yTop": 136.7214566929134,
 						"yBot": 154.7214566929134,
-						"appearance": {
+						"style": {
 							"fontSize": 12,
 							"fontName": "helvetica",
 							"fontStyle": "normal",
@@ -483,7 +483,7 @@
 				"xRight": 46.72145669291339,
 				"yTop": 160.7214566929134,
 				"yBot": 172.7214566929134,
-				"appearance": {
+				"style": {
 					"fontSize": 7.5,
 					"fontName": "zapfdingbats",
 					"fontStyle": "normal",
@@ -524,7 +524,7 @@
 						"xRight": 81.88145669291339,
 						"yTop": 157.7214566929134,
 						"yBot": 175.7214566929134,
-						"appearance": {
+						"style": {
 							"fontSize": 12,
 							"fontName": "helvetica",
 							"fontStyle": "normal",
@@ -561,7 +561,7 @@
 				"xRight": 46.72145669291339,
 				"yTop": 181.7214566929134,
 				"yBot": 193.7214566929134,
-				"appearance": {
+				"style": {
 					"fontSize": 7.5,
 					"fontName": "zapfdingbats",
 					"fontStyle": "normal",
@@ -602,7 +602,7 @@
 						"xRight": 81.88145669291339,
 						"yTop": 178.7214566929134,
 						"yBot": 196.7214566929134,
-						"appearance": {
+						"style": {
 							"fontSize": 12,
 							"fontName": "helvetica",
 							"fontStyle": "normal",
@@ -639,7 +639,7 @@
 				"xRight": 46.72145669291339,
 				"yTop": 202.7214566929134,
 				"yBot": 214.7214566929134,
-				"appearance": {
+				"style": {
 					"fontSize": 7.5,
 					"fontName": "zapfdingbats",
 					"fontStyle": "normal",
@@ -680,7 +680,7 @@
 						"xRight": 81.88145669291339,
 						"yTop": 199.7214566929134,
 						"yBot": 217.7214566929134,
-						"appearance": {
+						"style": {
 							"fontSize": 12,
 							"fontName": "helvetica",
 							"fontStyle": "normal",

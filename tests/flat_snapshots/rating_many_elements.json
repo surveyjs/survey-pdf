@@ -34,7 +34,7 @@
 								"xRight": 47.02145669291339,
 								"yTop": 34.72145669291339,
 								"yBot": 52.72145669291339,
-								"appearance": {
+								"style": {
 									"fontSize": 12,
 									"fontName": "helvetica",
 									"fontStyle": "normal",
@@ -60,7 +60,7 @@
 						"xRight": 52.72145669291339,
 						"yTop": 58.72145669291339,
 						"yBot": 70.72145669291339,
-						"appearance": {
+						"style": {
 							"fontSize": 7.5,
 							"fontName": "zapfdingbats",
 							"fontStyle": "normal",
@@ -111,7 +111,7 @@
 								"xRight": 74.02145669291339,
 								"yTop": 34.72145669291339,
 								"yBot": 52.72145669291339,
-								"appearance": {
+								"style": {
 									"fontSize": 12,
 									"fontName": "helvetica",
 									"fontStyle": "normal",
@@ -137,7 +137,7 @@
 						"xRight": 79.72145669291339,
 						"yTop": 58.72145669291339,
 						"yBot": 70.72145669291339,
-						"appearance": {
+						"style": {
 							"fontSize": 7.5,
 							"fontName": "zapfdingbats",
 							"fontStyle": "normal",
@@ -188,7 +188,7 @@
 								"xRight": 101.02145669291339,
 								"yTop": 34.72145669291339,
 								"yBot": 52.72145669291339,
-								"appearance": {
+								"style": {
 									"fontSize": 12,
 									"fontName": "helvetica",
 									"fontStyle": "normal",
@@ -214,7 +214,7 @@
 						"xRight": 106.72145669291339,
 						"yTop": 58.72145669291339,
 						"yBot": 70.72145669291339,
-						"appearance": {
+						"style": {
 							"fontSize": 7.5,
 							"fontName": "zapfdingbats",
 							"fontStyle": "normal",
@@ -285,7 +285,7 @@
 								"xRight": 47.02145669291339,
 								"yTop": 73.72145669291339,
 								"yBot": 91.72145669291339,
-								"appearance": {
+								"style": {
 									"fontSize": 12,
 									"fontName": "helvetica",
 									"fontStyle": "normal",
@@ -311,7 +311,7 @@
 						"xRight": 52.72145669291339,
 						"yTop": 97.72145669291339,
 						"yBot": 109.72145669291339,
-						"appearance": {
+						"style": {
 							"fontSize": 7.5,
 							"fontName": "zapfdingbats",
 							"fontStyle": "normal",
@@ -362,7 +362,7 @@
 								"xRight": 74.02145669291339,
 								"yTop": 73.72145669291339,
 								"yBot": 91.72145669291339,
-								"appearance": {
+								"style": {
 									"fontSize": 12,
 									"fontName": "helvetica",
 									"fontStyle": "normal",
@@ -388,7 +388,7 @@
 						"xRight": 79.72145669291339,
 						"yTop": 97.72145669291339,
 						"yBot": 109.72145669291339,
-						"appearance": {
+						"style": {
 							"fontSize": 7.5,
 							"fontName": "zapfdingbats",
 							"fontStyle": "normal",

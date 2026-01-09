@@ -3,12 +3,12 @@ import { SurveyPDF } from '../survey';
 import { DocController } from '../doc_controller';
 import { FlatRepository } from './flat_repository';
 import { FlatMatrixMultiple } from './flat_matrixmultiple';
-import { IQuestionMatrixDynamicStyle } from '../styles/types';
+import { IQuestionMatrixDynamicStyle } from '../style/types';
 
 export class FlatMatrixDynamic extends FlatMatrixMultiple<QuestionMatrixDynamicModel> {
     public constructor(protected survey: SurveyPDF,
-        question: QuestionMatrixDynamicModel, controller: DocController, styles: IQuestionMatrixDynamicStyle) {
-        super(survey, question, controller, styles, false);
+        question: QuestionMatrixDynamicModel, controller: DocController, style: IQuestionMatrixDynamicStyle) {
+        super(survey, question, controller, style, false);
     }
 }
 

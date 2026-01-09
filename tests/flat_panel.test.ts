@@ -212,8 +212,8 @@ test('Check FlatPanel.getRows: two small elements stay in one row', async () => 
     const survey = new SurveyPDF(json, TestHelper.defaultOptions);
     const panel = survey.getAllPanels()[0] as PanelModel;
     const controller = new DocController(TestHelper.defaultOptions);
-    const styles = survey.getElementStyle(panel as PanelModel);
-    const flatPanel = new FlatPanel(survey, panel, controller, styles);
+    const style = survey.getElementStyle(panel as PanelModel);
+    const flatPanel = new FlatPanel(survey, panel, controller, style);
     panel.onFirstRendering();
     const rows = (flatPanel as any).getRows(controller);
 
@@ -243,8 +243,8 @@ test('Check FlatPanel.getRows: very wide element forces wrapping', async () => {
     panel.onFirstRendering();
 
     const controller = new DocController(TestHelper.defaultOptions);
-    const styles = survey.getElementStyle(panel);
-    const flatPanel = new FlatPanel(survey, panel, controller, styles);
+    const style = survey.getElementStyle(panel);
+    const flatPanel = new FlatPanel(survey, panel, controller, style);
     const rows = flatPanel['getRows'](controller);
 
     expect(rows.length).toBeGreaterThanOrEqual(2);
@@ -275,8 +275,8 @@ test('Check FlatPanel.getRows: respects minWidth and maxWidth constraints', asyn
     const controller = new DocController({ ...TestHelper.defaultOptions, margins: { top: 0, left: 0, bot: 0, right: 0 } });
     controller.margins.left = 0;
     controller.margins.right = 0;
-    const styles = survey.getElementStyle(panel);
-    const flatPanel = new FlatPanel(survey, panel, controller, styles);
+    const style = survey.getElementStyle(panel);
+    const flatPanel = new FlatPanel(survey, panel, controller, style);
     let rows = flatPanel['getRows'](controller);
 
     expect(rows.length).toBe(1);
@@ -313,8 +313,8 @@ test('Check FlatPanel.getRows: check with three elements', async () => {
     const controller = new DocController({ ...TestHelper.defaultOptions, margins: { top: 0, left: 0, bot: 0, right: 0 } });
     controller.margins.left = 0;
     controller.margins.right = 0;
-    const styles = survey.getElementStyle(panel);
-    const flatPanel = new FlatPanel(survey, panel, controller, styles);
+    const style = survey.getElementStyle(panel);
+    const flatPanel = new FlatPanel(survey, panel, controller, style);
     let rows = flatPanel['getRows'](controller);
 
     expect(rows.length).toBe(1);

@@ -7,7 +7,7 @@ import { SurveyHelper } from '../helper_survey';
 import { ITextFieldBrickOptions } from '../pdf_render/pdf_textfield';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { EmptyBrick } from '../pdf_render/pdf_empty';
-import { IQuestionSliderStyle } from '../styles/types';
+import { IQuestionSliderStyle } from '../style/types';
 
 export class FlatSlider extends FlatQuestion<QuestionSliderModel, IQuestionSliderStyle> {
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
@@ -27,12 +27,12 @@ export class FlatSlider extends FlatQuestion<QuestionSliderModel, IQuestionSlide
                 const options = this.getOptionsByValue(valueItem.toString());
                 const currentPoint = SurveyHelper.clone(point);
                 this.controller.pushMargins();
-                SurveyHelper.setColumnMargins(this.controller, 2, i, this.styles.spacing.inputRangeGap);
+                SurveyHelper.setColumnMargins(this.controller, 2, i, this.style.spacing.inputRangeGap);
                 currentPoint.xLeft = this.controller.margins.left;
                 if(i > 0) {
                     const separatorPoint = SurveyHelper.clone(currentPoint);
-                    separatorPoint.xLeft -= this.styles.spacing.inputRangeGap - (this.styles.spacing.inputRangeGap - this.styles.rangeSeparator.width) / 2;
-                    bricks.push(new EmptyBrick(this.controller, { ...separatorPoint, xRight: separatorPoint.xLeft + this.styles.rangeSeparator.width, yBot: separatorPoint.yTop + this.styles.rangeSeparator.height }, this.styles.rangeSeparator));
+                    separatorPoint.xLeft -= this.style.spacing.inputRangeGap - (this.style.spacing.inputRangeGap - this.style.rangeSeparator.width) / 2;
+                    bricks.push(new EmptyBrick(this.controller, { ...separatorPoint, xRight: separatorPoint.xLeft + this.style.rangeSeparator.width, yBot: separatorPoint.yTop + this.style.rangeSeparator.height }, this.style.rangeSeparator));
                 }
                 const inputBrick = await this.generateInputBrick(currentPoint, options);
                 this.controller.popMargins();
@@ -64,8 +64,8 @@ export class FlatSlider extends FlatQuestion<QuestionSliderModel, IQuestionSlide
 
     private async generateInputBrick(point: IPoint, options:ITextFieldBrickOptions): Promise<IPdfBrick> {
         const shouldRenderReadOnly = SurveyHelper.shouldRenderReadOnly(this.question, this.controller, this.question.isReadOnly);
-        const appearance = SurveyHelper.getPatchedTextAppearanceOptions(this.controller, SurveyHelper.mergeObjects({}, this.styles.input, shouldRenderReadOnly ? this.styles.inputReadOnly : undefined));
-        return await SurveyHelper.createCommentFlat(point, this.controller, { ...options, shouldRenderReadOnly }, appearance);
+        const style = SurveyHelper.getPatchedTextStyle(this.controller, SurveyHelper.mergeObjects({}, this.style.input, shouldRenderReadOnly ? this.style.inputReadOnly : undefined));
+        return await SurveyHelper.createCommentFlat(point, this.controller, { ...options, shouldRenderReadOnly }, style);
     }
 }
 

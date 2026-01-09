@@ -25,7 +25,7 @@
 						"xRight": 291.2627952755906,
 						"yTop": 28.346456692913392,
 						"yBot": 59.09645669291339,
-						"appearance": {},
+						"style": {},
 						"options": {},
 						"padding": {
 							"top": 6.375,
@@ -60,7 +60,7 @@
 								"xRight": 328.4927952755906,
 								"yTop": 28.346456692913392,
 								"yBot": 59.09645669291339,
-								"appearance": {
+								"style": {
 									"fontSize": 12,
 									"fontName": "helvetica",
 									"fontStyle": "normal",
@@ -126,7 +126,7 @@
 								"xRight": 291.2627952755906,
 								"yTop": 59.09645669291339,
 								"yBot": 89.84645669291339,
-								"appearance": {
+								"style": {
 									"fontSize": 12,
 									"fontName": "helvetica",
 									"fontStyle": "normal",
@@ -172,7 +172,7 @@
 								"xRight": 560.5541338582677,
 								"yTop": 59.09645669291339,
 								"yBot": 89.84645669291339,
-								"appearance": {
+								"style": {
 									"fontSize": 12,
 									"fontStyle": "normal",
 									"lineHeight": 18,
@@ -219,7 +219,7 @@
 				"xRight": 297.6377952755905,
 				"yTop": 89.84645669291339,
 				"yBot": 174.5964566929134,
-				"appearance": {
+				"style": {
 					"borderMode": 1,
 					"color": "#ffffff",
 					"borderColor": "#d4d4d4",
@@ -240,7 +240,7 @@
 				"xRight": 560.5541338582677,
 				"yTop": 89.84645669291339,
 				"yBot": 174.5964566929134,
-				"appearance": {
+				"style": {
 					"fontSize": 12,
 					"fontName": "helvetica",
 					"fontStyle": "normal",

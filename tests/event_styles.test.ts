@@ -3,7 +3,7 @@ import { ITheme, PanelModel } from 'survey-core';
 import { DefaultLight } from '../src/themes/default-light';
 import { FlatCheckbox } from '../src/flat_layout/flat_checkbox';
 import { DocController } from '../src/doc_controller';
-test('onGetQuestionStyle is fired and can modify question styles', () => {
+test('onGetQuestionStyle is fired and can modify question style', () => {
     const survey = new SurveyPDF({
         pages: [
             {
@@ -29,14 +29,14 @@ test('onGetQuestionStyle is fired and can modify question styles', () => {
 
     });
     const question = survey.getAllQuestions()[0];
-    const styles = survey.getElementStyle(question);
-    expect(styles.title.fontColor).toBe('#ede7e11a');
-    expect(styles.title.lineHeight).toBe(90);
-    expect(styles.title.fontSize).toBe(60);
-    expect(styles.container.backgroundColor).toBe('#00ff00');
+    const style = survey.getElementStyle(question);
+    expect(style.title.fontColor).toBe('#ede7e11a');
+    expect(style.title.lineHeight).toBe(90);
+    expect(style.title.fontSize).toBe(60);
+    expect(style.container.backgroundColor).toBe('#00ff00');
 });
 
-test('onGetPanelStyle is fired and can modify panel styles', () => {
+test('onGetPanelStyle is fired and can modify panel style', () => {
     const survey = new SurveyPDF({
         pages: [
             {
@@ -66,14 +66,14 @@ test('onGetPanelStyle is fired and can modify panel styles', () => {
     });
 
     const panel = survey.getAllPanels()[0];
-    const styles = survey.getElementStyle(panel as PanelModel);
-    expect(styles.title.fontColor).toBe('#ede7e11a');
-    expect(styles.title.lineHeight).toBe(90);
-    expect(styles.title.fontSize).toBe(60);
-    expect(styles.container.backgroundColor).toBe('#00ff00');
+    const style = survey.getElementStyle(panel as PanelModel);
+    expect(style.title.fontColor).toBe('#ede7e11a');
+    expect(style.title.lineHeight).toBe(90);
+    expect(style.title.fontSize).toBe(60);
+    expect(style.container.backgroundColor).toBe('#00ff00');
 });
 
-test('onGetPageStyle is fired and can modify page styles', () => {
+test('onGetPageStyle is fired and can modify page style', () => {
     const survey = new SurveyPDF({
         pages: [
             {
@@ -96,14 +96,14 @@ test('onGetPageStyle is fired and can modify page styles', () => {
     });
 
     const page = survey.pages[0];
-    const styles = survey.getElementStyle(page);
-    expect(styles.title.fontColor).toBe('#ede7e11a');
-    expect(styles.title.lineHeight).toBe(90);
-    expect(styles.title.fontSize).toBe(60);
-    expect(styles.container.backgroundColor).toBe('#00ff00');
+    const style = survey.getElementStyle(page);
+    expect(style.title.fontColor).toBe('#ede7e11a');
+    expect(style.title.lineHeight).toBe(90);
+    expect(style.title.fontSize).toBe(60);
+    expect(style.container.backgroundColor).toBe('#00ff00');
 });
 
-test('onGetItemStyle is fired and can modify item styles', () => {
+test('onGetItemStyle is fired and can modify item style', () => {
     const survey = new SurveyPDF({
         pages: [
             {
@@ -140,14 +140,14 @@ test('onGetItemStyle is fired and can modify item styles', () => {
     });
 
     const q = survey.getAllQuestions()[0] as any;
-    const flat = new FlatCheckbox(survey, q, new DocController({}), survey.styles);
-    let resStyles = flat.getItemStyle(q.visibleChoices[0]);
-    expect(resStyles.choiceText.fontColor).toBe('#ede7e11a');
-    expect(resStyles.choiceText.lineHeight).toBe(90);
-    expect(resStyles.choiceText.fontSize).toBe(60);
-    expect(resStyles.input.fontColor).toBe('#00ff00');
-    resStyles = flat.getItemStyle(q.visibleChoices[1]);
-    expect(resStyles.choiceText.fontColor).toBe('#ffffff');
-    expect(resStyles.choiceText.fontSize).toBe(40);
-    expect(resStyles.choiceText.lineHeight).toBe(70);
+    const flat = new FlatCheckbox(survey, q, new DocController({}), survey.style);
+    let resStyle = flat.getItemStyle(q.visibleChoices[0]);
+    expect(resStyle.choiceText.fontColor).toBe('#ede7e11a');
+    expect(resStyle.choiceText.lineHeight).toBe(90);
+    expect(resStyle.choiceText.fontSize).toBe(60);
+    expect(resStyle.input.fontColor).toBe('#00ff00');
+    resStyle = flat.getItemStyle(q.visibleChoices[1]);
+    expect(resStyle.choiceText.fontColor).toBe('#ffffff');
+    expect(resStyle.choiceText.fontSize).toBe(40);
+    expect(resStyle.choiceText.lineHeight).toBe(70);
 });

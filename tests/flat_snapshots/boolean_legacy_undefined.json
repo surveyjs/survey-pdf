@@ -16,7 +16,7 @@
 				"xRight": 46.72145669291339,
 				"yTop": 34.72145669291339,
 				"yBot": 46.72145669291339,
-				"appearance": {
+				"style": {
 					"fontSize": 7.5,
 					"fontName": "zapfdingbats",
 					"fontStyle": "normal",

@@ -1,5 +1,5 @@
-import { registerVariablesManager } from "./src/styles/utils";
-import { VariablesManager } from "./src/styles/utils/node";
+import { registerVariablesManager } from "./src/style/utils";
+import { VariablesManager } from "./src/style/utils/node";
 global.beforeAll(() => {
     registerVariablesManager(new VariablesManager());
 })

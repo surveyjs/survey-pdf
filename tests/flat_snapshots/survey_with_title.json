@@ -26,7 +26,7 @@
 							"xRight": 293.0664566929133,
 							"yTop": 28.34645669291339,
 							"yBot": 58.34645669291339,
-							"appearance": {
+							"style": {
 								"fontSize": 24,
 								"fontName": "helvetica",
 								"fontStyle": "bold",
@@ -63,7 +63,7 @@
 			"xRight": 560.5541338582677,
 			"yTop": 82.34645669291339,
 			"yBot": 113.09645669291339,
-			"appearance": {
+			"style": {
 				"fontSize": 12,
 				"fontName": "helvetica",
 				"fontStyle": "normal",

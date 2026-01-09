@@ -27,7 +27,7 @@
 					"isMultiline": false,
 					"placeholder": ""
 				},
-				"appearance": {
+				"style": {
 					"fontSize": 12,
 					"fontName": "helvetica",
 					"fontStyle": "normal",
@@ -48,7 +48,7 @@
 				"xRight": 306.6377952755905,
 				"yTop": 43.34645669291339,
 				"yBot": 44.09645669291339,
-				"appearance": {
+				"style": {
 					"width": 18,
 					"height": 0.75,
 					"color": "#1c1b20"
@@ -78,7 +78,7 @@
 					"isMultiline": false,
 					"placeholder": ""
 				},
-				"appearance": {
+				"style": {
 					"fontSize": 12,
 					"fontName": "helvetica",
 					"fontStyle": "normal",

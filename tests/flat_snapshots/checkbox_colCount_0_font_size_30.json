@@ -25,7 +25,7 @@
 						"xRight": 46.72145669291339,
 						"yTop": 37.72145669291339,
 						"yBot": 49.72145669291339,
-						"appearance": {
+						"style": {
 							"fontSize": 7.5,
 							"fontName": "zapfdingbats",
 							"fontStyle": "normal",
@@ -66,7 +66,7 @@
 								"xRight": 81.88145669291339,
 								"yTop": 34.72145669291339,
 								"yBot": 52.72145669291339,
-								"appearance": {
+								"style": {
 									"fontSize": 12,
 									"fontName": "helvetica",
 									"fontStyle": "normal",
@@ -103,7 +103,7 @@
 						"xRight": 181.92962598425197,
 						"yTop": 37.72145669291339,
 						"yBot": 49.72145669291339,
-						"appearance": {
+						"style": {
 							"fontSize": 7.5,
 							"fontName": "zapfdingbats",
 							"fontStyle": "normal",
@@ -144,7 +144,7 @@
 								"xRight": 217.08962598425197,
 								"yTop": 34.72145669291339,
 								"yBot": 52.72145669291339,
-								"appearance": {
+								"style": {
 									"fontSize": 12,
 									"fontName": "helvetica",
 									"fontStyle": "normal",
@@ -181,7 +181,7 @@
 						"xRight": 317.1377952755905,
 						"yTop": 37.72145669291339,
 						"yBot": 49.72145669291339,
-						"appearance": {
+						"style": {
 							"fontSize": 7.5,
 							"fontName": "zapfdingbats",
 							"fontStyle": "normal",
@@ -222,7 +222,7 @@
 								"xRight": 352.29779527559054,
 								"yTop": 34.72145669291339,
 								"yBot": 52.72145669291339,
-								"appearance": {
+								"style": {
 									"fontSize": 12,
 									"fontName": "helvetica",
 									"fontStyle": "normal",
@@ -259,7 +259,7 @@
 						"xRight": 452.3459645669292,
 						"yTop": 37.72145669291339,
 						"yBot": 49.72145669291339,
-						"appearance": {
+						"style": {
 							"fontSize": 7.5,
 							"fontName": "zapfdingbats",
 							"fontStyle": "normal",
@@ -300,7 +300,7 @@
 								"xRight": 487.5059645669292,
 								"yTop": 34.72145669291339,
 								"yBot": 52.72145669291339,
-								"appearance": {
+								"style": {
 									"fontSize": 12,
 									"fontName": "helvetica",
 									"fontStyle": "normal",

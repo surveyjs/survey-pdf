@@ -25,7 +25,7 @@
 						"xRight": 560.5541338582677,
 						"yTop": 28.346456692913392,
 						"yBot": 41.09645669291339,
-						"appearance": {},
+						"style": {},
 						"options": {},
 						"padding": {
 							"top": 6.375,
@@ -80,7 +80,7 @@
 								"xRight": 560.5541338582677,
 								"yTop": 41.09645669291339,
 								"yBot": 71.84645669291339,
-								"appearance": {
+								"style": {
 									"fontSize": 12,
 									"fontName": "helvetica",
 									"fontStyle": "normal",

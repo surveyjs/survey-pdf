@@ -1,11 +1,12 @@
 import { jsPDF, jsPDFOptions } from 'jspdf';
 import { IHTMLRenderType } from './flat_layout/flat_html';
-import { SurveyHelper, ITextAppearanceOptions } from './helper_survey';
+import { SurveyHelper } from './helper_survey';
 import { LocalizableString } from 'survey-core';
 // import Fonts from './fonts';
 import { getPatchedAcroFormCheckBox, getPatchedAcroFormComboBox, getPatchedAcroFormRadioButton, getPatchedAcroFormTextField } from './jspdf_plugins/acroform_patched';
 import './jspdf_plugins/acroform.js';
 import './jspdf_plugins/from_html.js';
+import { ITextStyle } from './style/types';
 
 export interface IPoint {
     /**
@@ -483,8 +484,8 @@ export class DocController extends DocOptions {
         this._doc.setFont(this._fontName, fontStyle);
         this._helperDoc.setFont(this._fontName, fontStyle);
     }
-    public measureText(text: string | LocalizableString | number = 1, options?: Readonly<Partial<ITextAppearanceOptions>>): ISize {
-        const newOptions: ITextAppearanceOptions = SurveyHelper.getPatchedTextAppearanceOptions(this, options);
+    public measureText(text: string | LocalizableString | number = 1, options?: Readonly<Partial<ITextStyle>>): ISize {
+        const newOptions: ITextStyle = SurveyHelper.getPatchedTextStyle(this, options);
         const oldFontSize: number = this._helperDoc.getFontSize();
         const oldFontName: string = this._helperDoc.getFont().fontName;
         const oldFontStyle: string = this._helperDoc.getFont().fontStyle;

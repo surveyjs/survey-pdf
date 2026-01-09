@@ -19,7 +19,7 @@
 				"options": {
 					"html": "<div class=\"__surveypdf_html\" style=\"font-size: 12pt; font-weight: normal; font-family: helvetica; color: #1c1b20; lineHeight: 18; margin: 0\"><style>.__surveypdf_html p { margin: 0; line-height: 18pt } body { margin: 0; }</style><b>STRONG POWER</b></div>"
 				},
-				"appearance": {
+				"style": {
 					"fontColor": "#1c1b20",
 					"fontSize": 12,
 					"lineHeight": 18

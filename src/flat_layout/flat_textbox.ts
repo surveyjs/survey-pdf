@@ -5,13 +5,13 @@ import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { SurveyHelper } from '../helper_survey';
 import { ITextFieldBrickOptions } from '../pdf_render/pdf_textfield';
-import { IQuestionTextStyle } from '../styles/types';
+import { IQuestionTextStyle } from '../style/types';
 
 export class FlatTextbox extends FlatQuestion<QuestionTextModel, IQuestionTextStyle> {
     public static readonly MULTILINE_TEXT_ROWS_COUNT: number = 1;
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         const shouldRenderReadOnly = SurveyHelper.shouldRenderReadOnly(this.question, this.controller, this.question.isReadOnly);
-        const appearance = SurveyHelper.getPatchedTextAppearanceOptions(this.controller, SurveyHelper.mergeObjects({}, this.styles.input, shouldRenderReadOnly ? this.styles.inputReadOnly : undefined));
+        const style = SurveyHelper.getPatchedTextStyle(this.controller, SurveyHelper.mergeObjects({}, this.style.input, shouldRenderReadOnly ? this.style.inputReadOnly : undefined));
         const options: Omit<ITextFieldBrickOptions, 'isMultiline'> = {
             fieldName: this.question.id,
             inputType: this.question.inputType,
@@ -22,7 +22,7 @@ export class FlatTextbox extends FlatQuestion<QuestionTextModel, IQuestionTextSt
             placeholder: SurveyHelper.getLocString(this.question.locPlaceHolder)
         };
         return [await SurveyHelper.createCommentFlat(point,
-            this.controller, { shouldRenderReadOnly, rows: FlatTextbox.MULTILINE_TEXT_ROWS_COUNT, ...options }, appearance)];
+            this.controller, { shouldRenderReadOnly, rows: FlatTextbox.MULTILINE_TEXT_ROWS_COUNT, ...options }, style)];
     }
 }
 

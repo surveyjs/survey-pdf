@@ -25,7 +25,7 @@
 						"xRight": 399.92381889763783,
 						"yTop": 28.346456692913392,
 						"yBot": 59.09645669291339,
-						"appearance": {},
+						"style": {},
 						"options": {},
 						"padding": {
 							"top": 6.375,
@@ -60,7 +60,7 @@
 								"xRight": 419.27381889763785,
 								"yTop": 28.346456692913392,
 								"yBot": 59.09645669291339,
-								"appearance": {
+								"style": {
 									"fontSize": 12,
 									"fontName": "helvetica",
 									"fontStyle": "normal",
@@ -106,7 +106,7 @@
 								"xRight": 797.2261811023624,
 								"yTop": 28.346456692913392,
 								"yBot": 59.09645669291339,
-								"appearance": {
+								"style": {
 									"fontSize": 12,
 									"fontName": "helvetica",
 									"fontStyle": "normal",
@@ -172,7 +172,7 @@
 								"xRight": 399.92381889763783,
 								"yTop": 59.09645669291339,
 								"yBot": 89.84645669291339,
-								"appearance": {
+								"style": {
 									"fontSize": 12,
 									"fontName": "helvetica",
 									"fontStyle": "normal",
@@ -209,7 +209,7 @@
 						"xRight": 424.67381889763783,
 						"yTop": 59.09645669291339,
 						"yBot": 89.84645669291339,
-						"appearance": {
+						"style": {
 							"fontSize": 7.5,
 							"fontName": "zapfdingbats",
 							"fontStyle": "normal",
@@ -251,7 +251,7 @@
 						"xRight": 802.6261811023624,
 						"yTop": 59.09645669291339,
 						"yBot": 89.84645669291339,
-						"appearance": {
+						"style": {
 							"fontSize": 7.5,
 							"fontName": "zapfdingbats",
 							"fontStyle": "normal",
@@ -322,7 +322,7 @@
 								"xRight": 399.92381889763783,
 								"yTop": 89.84645669291339,
 								"yBot": 120.59645669291339,
-								"appearance": {
+								"style": {
 									"fontSize": 12,
 									"fontName": "helvetica",
 									"fontStyle": "normal",
@@ -359,7 +359,7 @@
 						"xRight": 419.27381889763785,
 						"yTop": 89.84645669291339,
 						"yBot": 120.59645669291339,
-						"appearance": {
+						"style": {
 							"fontSize": 12,
 							"fontName": "helvetica",
 							"fontStyle": "normal",
@@ -401,7 +401,7 @@
 						"xRight": 797.2261811023624,
 						"yTop": 89.84645669291339,
 						"yBot": 120.59645669291339,
-						"appearance": {
+						"style": {
 							"fontSize": 12,
 							"fontName": "helvetica",
 							"fontStyle": "normal",
