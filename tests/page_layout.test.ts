@@ -56,7 +56,7 @@ test('Long checkbox with indent', async () => {
     options.format = [210.0, 45];
     options.orientation = 'l';
     let survey: SurveyPDF = new SurveyPDF(json, options);
-    survey.styles = { question: { container: { padding: 0, borderWidth: 0 } } };
+    survey.applyStyles({ question: { container: { padding: 0, borderWidth: 0 } } });
     let controller: DocController = new DocController(options);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
@@ -167,7 +167,7 @@ test('Unfold compose brick', async () => {
         unitHeight / DocOptions.MM_TO_PT + options.margins.bot];
     options.orientation = 'l';
     let survey: SurveyPDF = new SurveyPDF(json, options);
-    survey.styles = { question: { container: { padding: 0, borderWidth: 0 } } };
+    survey.applyStyles({ question: { container: { padding: 0, borderWidth: 0 } } });
     let controller: DocController = new DocController(options);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
@@ -199,7 +199,7 @@ test('Pack to little page', async () => {
     options.format = [210.0, 30];
     options.orientation = 'l';
     let survey: SurveyPDF = new SurveyPDF(json, options);
-    survey.styles = { question: { container: { padding: 0, borderWidth: 0 } } };
+    survey.applyStyles({ question: { container: { padding: 0, borderWidth: 0 } } });
     let controller: DocController = new DocController(options);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
@@ -286,7 +286,7 @@ test('Check yTop on new page with panel', async () => {
         ]
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    survey.styles = { question: { container: { padding: 0, borderWidth: 0 } } };
+    survey.applyStyles({ question: { container: { padding: 0, borderWidth: 0 } } });
     const styles = survey.getElementStyle(survey.getAllQuestions()[0]) as IQuestionRadiogroupStyle;
     let controller: DocController = new DocController({ ...TestHelper.defaultOptions, format: [210, 180] });
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
@@ -332,7 +332,7 @@ test('Check adding new page for lack of place before new page', async () => {
         }
     };
     let survey: SurveyPDF = new SurveyPDF(json, options);
-    survey.styles = { question: { container: { padding: 0, borderWidth: 0 } } };
+    survey.applyStyles({ question: { container: { padding: 0, borderWidth: 0 } } });
     let controller: DocController = new DocController(options);
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);

@@ -3,7 +3,6 @@
 };
 
 import { checkFlatSnapshot } from './snapshot_helper';
-import { FlatQuestion } from '../src/flat_layout/flat_question';
 import '../src/flat_layout/flat_textbox';
 import '../src/flat_layout/flat_checkbox';
 
@@ -365,11 +364,13 @@ test('Check question\'s content indent with CONTENT_INDENT_SCALE', async () => {
     await checkFlatSnapshot(json, {
         snapshotName: 'question_content_indent_scale_0',
         onSurveyCreated(survey) {
-            survey.styles = {
+            survey.applyStyles({
                 question: {
-                    contentIndentScale: 0
+                    spacing: {
+                        contentIndentStart: 0
+                    }
                 }
-            };
+            });
         },
     });
 });

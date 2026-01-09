@@ -25,14 +25,14 @@ test('Check that checkbox has square boundaries', async () => {
         ]
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    survey.styles = {
+    survey.applyStyles({
         question: {
             container: {
                 padding: 0,
                 borderWidth: 0
             }
         }
-    };
+    });
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     await survey['renderSurvey'](controller);
     const question = survey.getAllQuestions()[0];

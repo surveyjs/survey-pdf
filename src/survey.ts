@@ -243,24 +243,25 @@ export class SurveyPDF extends SurveyModel {
      */
     public onGetItemStyle = new EventBase<SurveyPDF, { question: Question, item: ItemValue, style: { choiceText: ITextStyle, input: ISelectionInputStyle }, getColorVariable: (name: string) => string, getSizeVariable: (name: string) => number}>;
 
-    private _styles: IDocStyles;
+    private stylesValue: IDocStyles;
     /**
      * An object that defines visual styles applied to UI elements in an exported PDF document.
      *
      * Modify the properties of this object to control how survey elements are rendered in the PDF.
      */
     public get styles(): IDocStyles {
-        if(!this._styles) {
-            this._styles = getDefaultStylesFromTheme(this.theme);
+        if(!this.stylesValue) {
+            this.stylesValue = getDefaultStylesFromTheme(this.theme);
         }
-        return this._styles;
-    }
-    public set styles(styles: IDocStyles) {
-        SurveyHelper.mergeObjects(this.styles, styles);
+        return this.stylesValue;
     }
 
-    public setStyles(callback: (options: { getColorVariable: (name: string) => string, getSizeVariable: (name: string) => number }) => IDocStyles) {
-        this.styles = createStylesFromTheme(this.theme, callback);
+    public applyStyles(value: IDocStyles | ((options: { getColorVariable: (name: string) => string, getSizeVariable: (name: string) => number }) => IDocStyles)): void {
+        if(typeof value == 'function') {
+            this.stylesValue = SurveyHelper.mergeObjects({}, this.styles, createStylesFromTheme(this.theme, value));
+        } else {
+            this.stylesValue = SurveyHelper.mergeObjects({}, this.styles, value);
+        }
     }
     private _theme: ITheme;
     public get theme(): ITheme {
@@ -268,7 +269,7 @@ export class SurveyPDF extends SurveyModel {
     }
     public applyTheme(theme: ITheme): void {
         this._theme = SurveyHelper.mergeObjects({}, this.theme, theme);
-        this._styles = undefined;
+        this.stylesValue = undefined;
         this.stylesHash = {};
     }
     public getItemStyle(question: Question, item: ItemValue, styles: { choiceText: ITextStyle, input: ISelectionInputStyle }): { choiceText: ITextStyle, input: ISelectionInputStyle } {

@@ -11,6 +11,7 @@ import { checkPDFSnapshot } from './snapshot_helper';
 import { TextBrick } from '../src/pdf_render/pdf_text';
 import '../src/flat_layout/flat_checkbox';
 import '../src/flat_layout/flat_radiogroup';
+import { IDocStyles } from '../src/styles/types';
 let __dummy_tx = new FlatTextbox(null, null, null);
 
 test('Check raw method', async () => {
@@ -253,4 +254,16 @@ test('check rendered navigation for survey', async () => {
             showNavigation: true
         }
     });
+});
+
+test('check applyStyles method', async () => {
+    const survey = new SurveyPDF({});
+    expect((survey.styles as any).test).toBe(undefined);
+    expect((survey.styles as any).test2).toBe(undefined);
+    survey.applyStyles({ test: 'testValue' } as IDocStyles);
+    expect((survey.styles as any).test).toBe('testValue');
+    expect((survey.styles as any).test2).toBe(undefined);
+    survey.applyStyles(() => { return { test2: 'testValue2' } as IDocStyles; });
+    expect((survey.styles as any).test).toBe('testValue');
+    expect((survey.styles as any).test2).toBe('testValue2');
 });
