@@ -33,7 +33,8 @@ function correctSurveyElementIds(survey: SurveyPDF) {
             });
         }
         if (q.getType() === 'matrixdynamic' || q.getType() === 'matrixdropdown') {
-            q.renderedTable.rows.forEach((row: any, rowIndex: number) => {
+            const rows = ([] as Array<any>).concat(q.renderedTable.rows, q.renderedTable.footerRow ?? []);
+            rows.forEach((row: any, rowIndex: number) => {
                 if (row.row) {
                     row.row.idValue = `${q.id}row${rowIndex}`;
                 }
@@ -41,14 +42,17 @@ function correctSurveyElementIds(survey: SurveyPDF) {
                     if (cell.hasQuestion) {
                         cell.question.id = `${q.id}_row${rowIndex}_cell_${cellIndex}`;
                     }
-                    if (cell.hasPanel) {
-                        cell.panel.id = `${q.id}row${rowIndex}cell${cellIndex}detailPanel`;
-                        cell.panel.questions.forEach((detailQuestion) => {
-                            detailQuestion.id = `${q.id}_row${rowIndex}_cell${cellIndex}_detailPanelQuestion_${detailQuestion.name}`;
-                        });
-                    }
                 });
-            });
+                if (!!row.row && row.row.hasPanel) {
+                    row.row.showDetailPanel();
+                    const detailPanel = row.row.detailPanel;
+                    detailPanel.id = `${q.id}row${rowIndex}_detailPanel`;
+                    detailPanel.questions.forEach((detailQuestion) => {
+                        detailQuestion.id = `${q.id}_row${rowIndex}_detailPanelQuestion_${detailQuestion.name}`;
+                    });
+                }
+            }
+            );
         }
         if(typeof q.getCommentTextAreaModel == 'function' && Array.isArray(q.visibleChoices)) {
             q.visibleChoices.forEach(choice => {
@@ -112,8 +116,9 @@ interface IFlatSnaphotOptions extends ISnapshotOptions {
 
 export const globalAllowedPropertiesHash: PropertiesHash = {
     'default': ['width', 'height', 'xLeft', 'xRight', 'yTop', 'yBot'],
-    'CompositeBrick': [{ name: 'bricks', deep: true }],
-    'TextBrick': ['text'],
+    'PdfBrick': ['style', 'options', 'padding'],
+    'RowLineBrick': ['padding'],
+    'CompositeBrick': [{ name: 'bricks', deep: true }]
 };
 
 function processBrick(brick: IPdfBrick, propertiesHash: PropertiesHash): any {
@@ -151,39 +156,57 @@ function processBrick(brick: IPdfBrick, propertiesHash: PropertiesHash): any {
     return res;
 }
 
-function processBricks(bricks: Array<IPdfBrick>, propertiesHash: PropertiesHash) {
+function processBricks(bricks: Array<Array<IPdfBrick>> | Array<IPdfBrick>, propertiesHash: PropertiesHash) {
     const res: Array<any> = [];
-    bricks.forEach((brick) => {
-        res.push(processBrick(brick, propertiesHash));
+    bricks.forEach((bricks: Array<IPdfBrick> | IPdfBrick) => {
+        if(Array.isArray(bricks)) {
+            const result: Array<IPdfBrick> = [];
+            bricks.forEach(brick => {
+                result.push(processBrick(brick, propertiesHash));
+
+            });
+            res.push(result);
+        } else {
+            res.push(processBrick(bricks, propertiesHash));
+        }
     });
     return res;
 }
 
 export async function checkFlatSnapshot(surveyJSON: any, snapshotOptions: IFlatSnaphotOptions): Promise<void> {
-    const survey = new SurveyPDF(surveyJSON);
+    const survey = new SurveyPDF(surveyJSON, snapshotOptions.controllerOptions ?? TestHelper.defaultOptions);
     snapshotOptions.onSurveyCreated && snapshotOptions.onSurveyCreated(survey);
     correctSurveyElementIds(survey);
     const controller = new DocController(snapshotOptions.controllerOptions ?? TestHelper.defaultOptions);
-    (survey[snapshotOptions.eventName || 'onRenderQuestion'] as EventBase<SurveyPDF, any>).add((_, options) => {
-        if(!snapshotOptions.isCorrectEvent || snapshotOptions.isCorrectEvent(options)) {
-            const allowedPropertiesHash = Object.assign({}, globalAllowedPropertiesHash, snapshotOptions.allowedPropertiesHash ?? {}) as PropertiesHash;
-            const actual = processBricks(options.bricks, allowedPropertiesHash);
-            const fileName = `${__dirname}/flat_snapshots/${snapshotOptions.snapshotName}.json`;
-            const compare = () => {
-                const expected = JSON.parse(readFileSync(fileName, 'utf8'));
-                expect(actual, `snapshot: "${snapshotOptions.snapshotName}" did not match`).toEqual(expected);
-            };
-            //eslint-disable-next-line
-            if((global as any).updateSnapshots) {
-                try {
-                    compare();
-                } catch {
-                    writeFileSync(fileName, JSON.stringify(actual, null, '\t'));
-                }
-            } else {
+    const compareCallback = (bricks: Array<Array<IPdfBrick>> | Array<IPdfBrick>) => {
+        const allowedPropertiesHash = Object.assign({}, globalAllowedPropertiesHash, snapshotOptions.allowedPropertiesHash ?? {}) as PropertiesHash;
+        const actual = JSON.parse(JSON.stringify(processBricks(bricks, allowedPropertiesHash), null, '\t'));
+        const fileName = `${__dirname}/flat_snapshots/${snapshotOptions.snapshotName}.json`;
+        const compare = () => {
+            const expected = JSON.parse(readFileSync(fileName, 'utf8'));
+            expect(actual, `snapshot: "${snapshotOptions.snapshotName}" did not match`).toEqual(expected);
+        };
+        //eslint-disable-next-line
+        if((global as any).updateSnapshots) {
+            try {
                 compare();
+            } catch {
+                writeFileSync(fileName, JSON.stringify(actual, null, '\t'));
             }
+        } else {
+            compare();
         }
-    });
-    await FlatSurvey.generateFlats(survey, controller);
+    };
+    if(snapshotOptions.eventName !== 'onRenderSurvey') {
+        (survey[snapshotOptions.eventName || 'onRenderQuestion'] as EventBase<SurveyPDF, any>).add((_, options) => {
+            if(!snapshotOptions.isCorrectEvent || snapshotOptions.isCorrectEvent(options)) {
+                compareCallback(options.bricks);
+            }
+        });
+    }
+    const res = await FlatSurvey.generateFlats(survey, controller);
+    if(snapshotOptions.eventName == 'onRenderSurvey') {
+        compareCallback(res);
+
+    }
 }

@@ -1,22 +1,19 @@
-import { IQuestion, QuestionCommentModel, settings } from 'survey-core';
-import { SurveyPDF } from '../survey';
-import { IPoint, DocController } from '../doc_controller';
+import { QuestionCommentModel, settings } from 'survey-core';
+import { IPoint } from '../doc_controller';
 import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { SurveyHelper } from '../helper_survey';
+import { IQuestionCommentStyle } from '../style/types';
 
-export class FlatComment extends FlatQuestion {
-    protected question: QuestionCommentModel;
-    public constructor(protected survey: SurveyPDF,
-        question: IQuestion, protected controller: DocController) {
-        super(survey, question, controller);
-        this.question = <QuestionCommentModel>question;
-    }
+export class FlatComment extends FlatQuestion<QuestionCommentModel, IQuestionCommentStyle> {
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
+        const shouldRenderReadOnly = SurveyHelper.shouldRenderReadOnly(this.question, this.controller, this.question.isReadOnly);
+        const style = SurveyHelper.getPatchedTextStyle(this.controller, SurveyHelper.mergeObjects({}, this.style.input, shouldRenderReadOnly ? this.style.inputReadOnly : undefined));
         return [await SurveyHelper.createCommentFlat(
-            point, this.question, this.controller,
+            point, this.controller,
             {
+                shouldRenderReadOnly,
                 rows: this.question.rows,
                 isReadOnly: this.question.isReadOnly,
                 isMultiline: true,
@@ -24,7 +21,7 @@ export class FlatComment extends FlatQuestion {
                 placeholder: SurveyHelper.getLocString(this.question.locPlaceHolder),
                 shouldRenderBorders: settings.readOnlyCommentRenderMode === 'textarea',
                 value: this.question.value
-            })];
+            }, SurveyHelper.getPatchedTextStyle(this.controller, style))];
     }
 }
 
