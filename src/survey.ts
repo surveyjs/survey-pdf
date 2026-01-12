@@ -183,6 +183,8 @@ export class SurveyPDF extends SurveyModel {
      * A helper function that returns the value of a size variable by name.
      * - `options.style`: [`IQuestionStyle`](https://surveyjs.io/pdf-generator/documentation/api-reference/IQuestionStyle)\
      * An object that defines the question's visual style. Modify its properties to control how the question is rendered in the exported PDF document.
+     *
+     * [Customize Individual Element Styles in PDF](https://surveyjs.io/pdf-generator/documentation/customize-survey-question-rendering-in-pdf-form#customize-individual-element-styles (linkStyle))
      */
     public onGetQuestionStyle = new EventBase<SurveyPDF, { question: Question, style: IQuestionStyle, getColorVariable: (name: string) => string, getSizeVariable: (name: string) => number }>;
     /**
@@ -200,6 +202,8 @@ export class SurveyPDF extends SurveyModel {
      * A helper function that returns the value of a size variable by name.
      * - `options.style`: [`IPanelStyle`](https://surveyjs.io/pdf-generator/documentation/api-reference/IPanelStyle)\
      * An object that defines the panel's visual style. Modify its properties to control how the panel is rendered in the exported PDF document.
+     *
+     * [Customize Individual Element Styles in PDF](https://surveyjs.io/pdf-generator/documentation/customize-survey-question-rendering-in-pdf-form#customize-individual-element-styles (linkStyle))
      */
     public onGetPanelStyle = new EventBase<SurveyPDF, { panel: PanelModel, style: IPanelStyle, getColorVariable: (name: string) => string, getSizeVariable: (name: string) => number }>;
     /**
@@ -217,10 +221,12 @@ export class SurveyPDF extends SurveyModel {
      * A helper function that returns the value of a size variable by name.
      * - `options.style`: [`IPageStyle`](https://surveyjs.io/pdf-generator/documentation/api-reference/IPageStyle)\
      * An object that defines the page's visual style. Modify its properties to control how the page is rendered in the exported PDF document.
+     *
+     * [Customize Individual Element Styles in PDF](https://surveyjs.io/pdf-generator/documentation/customize-survey-question-rendering-in-pdf-form#customize-individual-element-styles (linkStyle))
      */
     public onGetPageStyle = new EventBase<SurveyPDF, { page: PanelModel, style: IPageStyle, getColorVariable: (name: string) => string, getSizeVariable: (name: string) => number }>;
     /**
-     * An event that allows you to customize the visual style applied to a collection item in an exported PDF document.
+     * An event that allows you to customize the visual style applied to a choice item in an exported PDF document.
      *
      * Parameters:
      *
@@ -229,7 +235,7 @@ export class SurveyPDF extends SurveyModel {
      * - `options.question`: [`Question`](https://surveyjs.io/form-library/documentation/api-reference/question)\
      * A question to which the item belongs.
      * - `options.item`: `ItemValue`\
-     * A collection item whose style is being customized.
+     * A choice item whose style is being customized.
      * - `options.getColorVariable`: `(name: string) => string`\
      * A helper function that returns the value of a color variable by name.
      * - `options.getSizeVariable`: `(name: string) => number`\
@@ -240,14 +246,18 @@ export class SurveyPDF extends SurveyModel {
      * An object that defines the visual style applied to the item's input control.
      *
      * Modify the properties of `options.style.choiceText` and `options.style.input` to control how the item is rendered in the exported PDF document.
+     *
+     * [Customize Individual Element Styles in PDF](https://surveyjs.io/pdf-generator/documentation/customize-survey-question-rendering-in-pdf-form#customize-individual-element-styles (linkStyle))
      */
     public onGetItemStyle = new EventBase<SurveyPDF, { question: Question, item: ItemValue, style: { choiceText: ITextStyle, input: ISelectionInputStyle }, getColorVariable: (name: string) => string, getSizeVariable: (name: string) => number}>;
 
     private styleValue: IDocStyle;
     /**
-     * An object that defines visual styles applied to UI elements in an exported PDF document.
+     * An object that defines the visual style applied to UI elements in an exported PDF document.
      *
-     * Modify the properties of this object to control how survey elements are rendered in the PDF.
+     * To apply a new visual style to the PDF document, call the [`applyStyle`](https://surveyjs.io/pdf-generator/documentation/api-reference/surveypdf#applyStyle) method.
+     *
+     * [Customize Styling and Layout in PDF](https://surveyjs.io/pdf-generator/documentation/customize-survey-question-rendering-in-pdf-form#styling-and-layout (linkStyle))
      */
     public get style(): IDocStyle {
         if(!this.styleValue) {
@@ -255,7 +265,14 @@ export class SurveyPDF extends SurveyModel {
         }
         return this.styleValue;
     }
-
+    /**
+     * Applies a visual style to UI elements in an exported PDF document.
+     *
+     * This method accepts either an [`IDocStyle`](https://surveyjs.io/pdf-generator/documentation/api-reference/IDocStyle) object that overrides properties in the default visual style, or a callback function that returns such an object. When a callback is used, it receives helper functions&mdash;`getSizeVariable(name)` and `getColorVariable(name)`&mdash;which allow you to derive dimensions and colors from the currently applied UI theme.
+     *
+     * [Customize Styling and Layout in PDF](https://surveyjs.io/pdf-generator/documentation/customize-survey-question-rendering-in-pdf-form#styling-and-layout (linkStyle))
+     * @param value An [`IDocStyle`](https://surveyjs.io/pdf-generator/documentation/api-reference/IDocStyle) object, or a callback function that returns an `IDocStyle` object.
+     */
     public applyStyle(value: IDocStyle | ((options: { getColorVariable: (name: string) => string, getSizeVariable: (name: string) => number }) => IDocStyle)): void {
         if(typeof value == 'function') {
             this.styleValue = SurveyHelper.mergeObjects({}, this.style, createStyleFromTheme(this.theme, value));
