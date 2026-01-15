@@ -246,7 +246,7 @@ export class DocOptions implements IDocOptions {
     protected _base64Normal: string = undefined;
     protected _base64Bold: string = undefined;
     protected _useCustomFontInHtml: boolean;
-    protected _margins: IMargin;
+    protected _margins!: IMargin;
     protected _htmlRenderAs: IHTMLRenderType;
     protected _matrixRenderAs: 'auto' | 'list';
     protected _readonlyRenderAs: 'auto' | 'text' | 'acroform';
