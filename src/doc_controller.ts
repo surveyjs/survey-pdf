@@ -580,21 +580,27 @@ export class DocController extends DocOptions {
         this.drawColorRestoreCallbacks.push(this.setColor(color, () => this.doc.getDrawColor(), (val) => this.doc.setDrawColor(val)));
     }
     public restoreDrawColor() {
-        this.drawColorRestoreCallbacks.pop()();
+        if(this.drawColorRestoreCallbacks.length > 0) {
+            this.drawColorRestoreCallbacks.pop()();
+        }
     }
     private fillColorRestoreCallbacks: Array<() => void> = [];
     public setFillColor(color: string) {
         this.fillColorRestoreCallbacks.push(this.setColor(color, () => this.doc.getFillColor(), (val) => this.doc.setFillColor(val)));
     }
     public restoreFillColor() {
-        this.fillColorRestoreCallbacks.pop()();
+        if(this.fillColorRestoreCallbacks.length > 0) {
+            this.fillColorRestoreCallbacks.pop()();
+        }
     }
     private textColorRestoreCallbacks: Array<() => void> = [];
     public setTextColor(color: string) {
         this.textColorRestoreCallbacks.push(this.setColor(color, () => this.doc.getTextColor(), (val) => this.doc.setTextColor(val)));
     }
     public restoreTextColor() {
-        this.textColorRestoreCallbacks.pop()();
+        if(this.textColorRestoreCallbacks.length > 0) {
+            this.textColorRestoreCallbacks.pop()();
+        }
     }
     private _AcroFormCheckBox: ({ new(): any });
     public get AcroFormCheckBox() {
