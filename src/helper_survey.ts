@@ -147,11 +147,11 @@ export class SurveyHelper {
     public static generateCssTextRule(style: ITextStyle): string {
         return `"font-size: ${style.fontSize}pt; font-weight: ${style.fontStyle}; font-family: ${style.fontName}; color: ${SurveyHelper.parseColor(style.fontColor).color}; lineHeight: ${style.lineHeight}; margin: 0"`;
     }
-    public static createHtmlContainerBlock(html: string, controller: DocController, style?: Partial<ITextStyle>): string {
-        const newApperance: ITextStyle = SurveyHelper.getPatchedTextStyle(controller, style);
-        const font = this.chooseHtmlFont(controller, newApperance.fontName);
-        return `<div class="__surveypdf_html" style=${this.generateCssTextRule(newApperance)}>` +
-            `<style>.__surveypdf_html p { margin: 0; line-height: ${newApperance.lineHeight}pt } body { margin: 0; }</style>${html}</div>`;
+    public static createHtmlContainerBlock(html: string, controller: DocController, style?: Readonly<ITextStyle>): string {
+        const newStyle: Required<ITextStyle> = SurveyHelper.getPatchedTextStyle(controller, style);
+        const font = this.chooseHtmlFont(controller, newStyle.fontName);
+        return `<div class="__surveypdf_html" style=${this.generateCssTextRule(newStyle)}>` +
+            `<style>.__surveypdf_html p { margin: 0; line-height: ${newStyle.lineHeight}pt } body { margin: 0; }</style>${html}</div>`;
     }
     public static splitHtmlRect(controller: DocController, htmlBrick: IPdfBrick): IPdfBrick {
         const bricks: IPdfBrick[] = [];
@@ -199,8 +199,8 @@ export class SurveyHelper {
         return composite;
     }
     public static async createTextFlat(point: IPoint,
-        controller: DocController, text: string | LocalizableString, style?: Partial<IAlignedTextStyle>): Promise<IPdfBrick> {
-        const newApperance: IAlignedTextStyle = SurveyHelper.getPatchedTextStyle(controller, style);
+        controller: DocController, text: string | LocalizableString, style?: Readonly<IAlignedTextStyle>): Promise<IPdfBrick> {
+        const newApperance: IAlignedTextStyle & Required<ITextStyle> = SurveyHelper.getPatchedTextStyle(controller, style);
         newApperance.textAlign = newApperance.textAlign ?? 'left';
         const oldFontSize: number = controller.fontSize;
         const oldFontStyle: string = controller.fontStyle;
@@ -238,14 +238,14 @@ export class SurveyHelper {
         });
         return dest;
     }
-    public static getPatchedTextStyle<T extends Partial<ITextStyle> = ITextStyle>(controller: DocController, options?: Readonly<Partial<T>>): T & ITextStyle {
-        const newOptions = SurveyHelper.mergeObjects(SurveyHelper.getDefaultTextStyle(controller), options ?? {});
-        if(options && options.lineHeight == undefined) {
-            newOptions.lineHeight = newOptions.fontSize;
+    public static getPatchedTextStyle<T extends ITextStyle = ITextStyle>(controller: DocController, style?: Readonly<T>): T & Required<ITextStyle> {
+        const newStyle = SurveyHelper.mergeObjects(SurveyHelper.getDefaultTextStyle(controller), style ?? {});
+        if(style && style.lineHeight == undefined) {
+            newStyle.lineHeight = newStyle.fontSize;
         }
-        return newOptions;
+        return newStyle;
     }
-    public static getDefaultTextStyle(controller: DocController):ITextStyle {
+    public static getDefaultTextStyle(controller: DocController):Required<ITextStyle> {
         return {
             fontSize: controller.fontSize,
             fontName: controller.fontName,
@@ -268,7 +268,7 @@ export class SurveyHelper {
     }
 
     public static createHTMLRect(point: IPoint, controller: DocController,
-        margins: { top: number, bottom: number, width: number }, resultY: number, style?: Readonly<Partial<ITextStyle>>): IRect {
+        margins: { top: number, bottom: number, width: number }, resultY: number, style?: Readonly<ITextStyle>): IRect {
         const newStyle = this.getPatchedTextStyle(controller, style);
         const availablePageHeight: number = controller.paperHeight - controller.margins.bot - controller.margins.top;
         const height: number = (controller.helperDoc.getNumberOfPages() - 1) *
@@ -282,14 +282,15 @@ export class SurveyHelper {
         return SurveyHelper.createRect(point, margins.width, height);
     }
 
-    public static async createHTMLFlat(point: IPoint, controller: DocController, html: string, style?: Readonly<Partial<ITextStyle>>): Promise<IPdfBrick> {
+    public static async createHTMLFlat(point: IPoint, controller: DocController, html: string, style?: Readonly<ITextStyle>): Promise<IPdfBrick> {
         const margins: { top: number, bottom: number, width: number } = this.getHtmlMargins(controller, point);
+        const newStyle = this.getPatchedTextStyle(controller, style);
         return await new Promise<IPdfBrick>((resolve) => {
             controller.helperDoc.fromHTML(html, point.xLeft, margins.top, {
                 pagesplit: true, width: margins.width
             }, function (result: any) {
-                const rect: IRect = SurveyHelper.createHTMLRect(point, controller, margins, result.y, style);
-                resolve(new HTMLBrick(controller, rect, { html }, SurveyHelper.getDefaultTextStyle(controller)));
+                const rect: IRect = SurveyHelper.createHTMLRect(point, controller, margins, result.y, newStyle);
+                resolve(new HTMLBrick(controller, rect, { html }, newStyle));
             }, margins);
         });
     }
@@ -386,8 +387,8 @@ export class SurveyHelper {
     public static getReadonlyRenderAs(question: Question, controller: DocController): 'auto' | 'text' | 'acroform' {
         return (<any>question).readonlyRenderAs === 'auto' ? controller.readonlyRenderAs : (<any>question).readonlyRenderAs;
     }
-    public static async createCommentFlat(point: IPoint, controller: DocController, options: { rows?: number } & ITextFieldBrickOptions, style?: Readonly<Partial<IInputStyle>>): Promise<IPdfBrick> {
-        const newStyle: ITextStyle = SurveyHelper.getPatchedTextStyle(controller, style);
+    public static async createCommentFlat(point: IPoint, controller: DocController, options: { rows?: number } & ITextFieldBrickOptions, style?: Readonly<IInputStyle>): Promise<IPdfBrick> {
+        const newStyle: IInputStyle & Required<ITextStyle> = SurveyHelper.getPatchedTextStyle(controller, style);
         options.rows = options.rows ?? 1;
         options.value = options.value ?? '';
         const rect: IRect = this.createTextFieldRect(point, controller, options.rows, newStyle.lineHeight);
@@ -430,8 +431,8 @@ export class SurveyHelper {
             yBot: point.yTop + this.EPSILON
         }, typeof color === 'undefined' ? null : color);
     }
-    public static async createLinkFlat(point: IPoint, controller: DocController, options: ILinkOptions, style?: Readonly<Partial<ITextStyle>>): Promise<IPdfBrick> {
-        const newStyle: ITextStyle = SurveyHelper.getPatchedTextStyle(controller, style);
+    public static async createLinkFlat(point: IPoint, controller: DocController, options: ILinkOptions, style?: Readonly<ITextStyle>): Promise<IPdfBrick> {
+        const newStyle: Required<ITextStyle> = SurveyHelper.getPatchedTextStyle(controller, style);
         const compositeText: CompositeBrick = <CompositeBrick>await this.
             createTextFlat(point, controller, options.text, newStyle);
         const compositeLink: CompositeBrick = new CompositeBrick();
