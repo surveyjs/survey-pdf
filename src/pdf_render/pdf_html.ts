@@ -4,26 +4,12 @@ import { ITextStyle } from '../style/types';
 
 export interface IHTMLOptions extends IPdfBrickOptions {
     html: string;
-    isImage?: boolean;
 }
 
 export class HTMLBrick extends PdfBrick {
-    private margins: { top: number, bottom: number };
     public constructor(controller: DocController,
         rect: IRect, protected options: IHTMLOptions, protected style: ITextStyle) {
         super(controller, rect);
-        if (options.isImage) {
-            this.margins = {
-                top: 0.0,
-                bottom: 0.0
-            };
-        }
-        else {
-            this.margins = {
-                top: controller.margins.top,
-                bottom: controller.margins.bot
-            };
-        }
     }
     public async renderInteractive(): Promise<void> {
         const oldFontSize: number = this.controller.fontSize;
@@ -43,7 +29,10 @@ export class HTMLBrick extends PdfBrick {
                     }
                 );
                 resolve();
-            }, this.margins);
+            }, {
+                top: this.controller.margins.top,
+                bottom: this.controller.margins.bot
+            });
         });
         this.controller.restoreTextColor();
         this.controller.fontSize = oldFontSize;
