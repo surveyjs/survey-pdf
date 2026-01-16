@@ -172,7 +172,7 @@ export class SurveyHelper {
         return new CompositeBrick(...bricks);
     }
     public static createPlainTextFlat(point: IPoint,
-        controller: DocController, text: string, options: IAlignedTextStyle): CompositeBrick {
+        controller: DocController, text: string, options: Required<IAlignedTextStyle>): CompositeBrick {
         const lines: string[] = controller.doc.splitTextToSize(text,
             controller.paperWidth - controller.margins.right - point.xLeft);
         const currPoint: IPoint = this.clone(point);
@@ -200,24 +200,23 @@ export class SurveyHelper {
     }
     public static async createTextFlat(point: IPoint,
         controller: DocController, text: string | LocalizableString, style?: Readonly<IAlignedTextStyle>): Promise<IPdfBrick> {
-        const newApperance: IAlignedTextStyle & Required<ITextStyle> = SurveyHelper.getPatchedTextStyle(controller, style);
-        newApperance.textAlign = newApperance.textAlign ?? 'left';
+        const newStyle: Required<IAlignedTextStyle> = { ... SurveyHelper.getPatchedTextStyle(controller, style), textAlign: style.textAlign ?? 'left' };
         const oldFontSize: number = controller.fontSize;
         const oldFontStyle: string = controller.fontStyle;
         const oldFontName: string = controller.fontName;
         const oldLineHeightFactor = controller.lineHeightFactor;
-        controller.fontSize = newApperance.fontSize;
-        controller.fontStyle = newApperance.fontStyle;
-        controller.fontName = newApperance.fontName;
-        controller.lineHeightFactor = newApperance.lineHeight / newApperance.fontSize;
+        controller.fontSize = newStyle.fontSize;
+        controller.fontStyle = newStyle.fontStyle;
+        controller.fontName = newStyle.fontName;
+        controller.lineHeightFactor = newStyle.lineHeight / newStyle.fontSize;
         let result: IPdfBrick;
         if (typeof text === 'string' || !this.hasHtml(text)) {
             result = this.createPlainTextFlat(point, controller, typeof text === 'string' ?
-                text : this.getLocString(<LocalizableString>text), newApperance);
+                text : this.getLocString(<LocalizableString>text), newStyle);
         }
         else {
             result = this.splitHtmlRect(controller, await this.createHTMLFlat(point, controller,
-                this.createHtmlContainerBlock(this.getLocString(text), controller, newApperance), newApperance));
+                this.createHtmlContainerBlock(this.getLocString(text), controller, newStyle), newStyle));
         }
         controller.lineHeightFactor = oldLineHeightFactor;
         controller.fontSize = oldFontSize;
