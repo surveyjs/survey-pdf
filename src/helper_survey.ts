@@ -172,24 +172,26 @@ export class SurveyHelper {
         return new CompositeBrick(...bricks);
     }
     public static createPlainTextFlat(point: IPoint,
-        controller: DocController, text: string, options: Required<IAlignedTextStyle>): CompositeBrick {
-        const lines: string[] = controller.doc.splitTextToSize(text,
+        controller: DocController, text: string, style: Required<IAlignedTextStyle>): CompositeBrick {
+        controller.setTextStyle(style, true);
+        const lines: string[] = controller.helperDoc.splitTextToSize(text,
             controller.paperWidth - controller.margins.right - point.xLeft);
+        controller.restoreTextStyle(true);
         const currPoint: IPoint = this.clone(point);
         const composite: CompositeBrick = new CompositeBrick();
         lines.forEach((text: string) => {
-            const size: ISize = controller.measureText(text, options);
+            const size: ISize = controller.measureText(text, style);
             composite.addBrick(new TextBrick(controller,
-                this.createRect(currPoint, size.width, size.height), { text }, options));
+                this.createRect(currPoint, size.width, size.height), { text }, style));
             currPoint.yTop += size.height;
         });
-        if(options.textAlign == 'right') {
+        if(style.textAlign == 'right') {
             const spaceXRight = point.xLeft + SurveyHelper.getPageAvailableWidth(controller);
             composite.translateX((xLeft, xRight) => {
                 return { xLeft: xLeft + (spaceXRight - xRight), xRight: spaceXRight };
             });
         }
-        if(options.textAlign == 'center') {
+        if(style.textAlign == 'center') {
             const spaceXCenter = point.xLeft + SurveyHelper.getPageAvailableWidth(controller) / 2;
             composite.translateX((xLeft, xRight) => {
                 const shift = spaceXCenter - (xLeft + xRight) / 2;
@@ -200,15 +202,7 @@ export class SurveyHelper {
     }
     public static async createTextFlat(point: IPoint,
         controller: DocController, text: string | LocalizableString, style?: Readonly<IAlignedTextStyle>): Promise<IPdfBrick> {
-        const newStyle: Required<IAlignedTextStyle> = { ... SurveyHelper.getPatchedTextStyle(controller, style), textAlign: style.textAlign ?? 'left' };
-        const oldFontSize: number = controller.fontSize;
-        const oldFontStyle: string = controller.fontStyle;
-        const oldFontName: string = controller.fontName;
-        const oldLineHeightFactor = controller.lineHeightFactor;
-        controller.fontSize = newStyle.fontSize;
-        controller.fontStyle = newStyle.fontStyle;
-        controller.fontName = newStyle.fontName;
-        controller.lineHeightFactor = newStyle.lineHeight / newStyle.fontSize;
+        const newStyle: Required<IAlignedTextStyle> = { ... SurveyHelper.getPatchedTextStyle(controller, style), textAlign: style?.textAlign ?? 'left' };
         let result: IPdfBrick;
         if (typeof text === 'string' || !this.hasHtml(text)) {
             result = this.createPlainTextFlat(point, controller, typeof text === 'string' ?
@@ -218,10 +212,6 @@ export class SurveyHelper {
             result = this.splitHtmlRect(controller, await this.createHTMLFlat(point, controller,
                 this.createHtmlContainerBlock(this.getLocString(text), controller, newStyle), newStyle));
         }
-        controller.lineHeightFactor = oldLineHeightFactor;
-        controller.fontSize = oldFontSize;
-        controller.fontStyle = oldFontStyle;
-        controller.fontName = oldFontName;
         return result;
     }
     public static mergeObjects(dest:any, ...sources:Array<any>):any {

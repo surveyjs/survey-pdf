@@ -484,15 +484,8 @@ export class DocController extends DocOptions {
         this._doc.setFont(this._fontName, fontStyle);
         this._helperDoc.setFont(this._fontName, fontStyle);
     }
-    public measureText(text: string | LocalizableString | number = 1, options?: Readonly<Partial<ITextStyle>>): ISize {
-        const newOptions: ITextStyle = SurveyHelper.getPatchedTextStyle(this, options);
-        const oldFontSize: number = this._helperDoc.getFontSize();
-        const oldFontName: string = this._helperDoc.getFont().fontName;
-        const oldFontStyle: string = this._helperDoc.getFont().fontStyle;
-        const oldLineHeightFactor = this._helperDoc.getLineHeightFactor();
-        this._helperDoc.setFontSize(newOptions.fontSize);
-        this._helperDoc.setFont(newOptions.fontName, newOptions.fontStyle);
-        this._helperDoc.setLineHeightFactor(newOptions.lineHeight / newOptions.fontSize);
+    public measureText(text: string | LocalizableString | number = 1, style?: Readonly<Partial<ITextStyle>>): ISize {
+        this.setTextStyle(style, true);
         const height: number = this._helperDoc.getLineHeight() / this._helperDoc.internal.scaleFactor;
         let width: number = 0.0;
         if (typeof text === 'number') {
@@ -503,9 +496,7 @@ export class DocController extends DocOptions {
             width = text.split('').reduce((sm: number, cr: string) =>
                 sm + this._helperDoc.getTextWidth(cr), 0.0);
         }
-        this._helperDoc.setFontSize(oldFontSize);
-        this._helperDoc.setLineHeightFactor(oldLineHeightFactor);
-        this._helperDoc.setFont(oldFontName, oldFontStyle);
+        this.restoreTextStyle(true);
         return {
             width: width,
             height: height
@@ -602,6 +593,38 @@ export class DocController extends DocOptions {
             this.textColorRestoreCallbacks.pop()();
         }
     }
+    private textStyleRestoreCallbacks: Array<{ isHelper: boolean, callback: () => void }> = [];
+    public setTextStyle(style?: ITextStyle, isHelper: boolean = false) {
+        const doc = isHelper ? this.helperDoc : this.doc;
+        const oldFontSize = doc.getFontSize();
+        const oldFont = doc.getFont();
+        const oldLineHeightFactor = doc.getLineHeightFactor();
+        const fontSize = style?.fontSize ?? oldFontSize;
+        const needApplyColor = style?.fontColor && !isHelper;
+        doc.setFont(style?.fontName ?? oldFont.fontName, style?.fontStyle ?? oldFont.fontStyle);
+        doc.setFontSize(fontSize);
+        doc.setLineHeightFactor((style?.lineHeight ?? fontSize) / fontSize);
+        if(needApplyColor) {
+            this.setTextColor(style.fontColor);
+        }
+        this.textStyleRestoreCallbacks.push({ isHelper: isHelper, callback: () => {
+            doc.setFont(oldFont.fontName, oldFont.fontStyle);
+            doc.setFontSize(oldFontSize);
+            doc.setLineHeightFactor(oldLineHeightFactor);
+            if(needApplyColor) {
+                this.restoreTextColor();
+            }
+        } });
+    }
+    public restoreTextStyle(isHelper: boolean = false) {
+        const index = this.textStyleRestoreCallbacks.length - 1 - this.textStyleRestoreCallbacks.reverse().findIndex((value) => {
+            return value.isHelper === isHelper;
+        });
+        if(index < this.textStyleRestoreCallbacks.length) {
+            this.textStyleRestoreCallbacks.splice(index, 1)[0].callback();
+        }
+    }
+
     private _AcroFormCheckBox: ({ new(): any });
     public get AcroFormCheckBox() {
         if(!this._AcroFormCheckBox) {

@@ -13,12 +13,7 @@ export class LinkBrick extends TextBrick {
         super(controller, rect, options, style);
     }
     public async renderInteractive(): Promise<void> {
-        const oldFontSize: number = this.controller.fontSize;
-        const oldFontStyle: string = this.controller.fontStyle;
-        const oldFontName: string = this.controller.fontName;
-        this.controller.fontSize = this.style.fontSize;
-        this.controller.fontStyle = this.style.fontStyle;
-        this.controller.fontName = this.style.fontName;
+        this.controller.setTextStyle(this.style);
         this.controller.setTextColor('#FFFFFF00');
         let descent: number = this.controller.unitHeight *
             (this.controller.doc.getLineHeightFactor() -
@@ -27,10 +22,7 @@ export class LinkBrick extends TextBrick {
             (this.contentRect.yBot - this.contentRect.yTop) - descent;
         this.controller.doc.textWithLink(this.options.text, this.contentRect.xLeft,
             yTopLink, { url: this.options.link });
-        this.controller.restoreTextColor();
-        this.controller.fontSize = oldFontSize;
-        this.controller.fontStyle = oldFontStyle;
-        this.controller.fontName = oldFontName;
+        this.controller.restoreTextStyle();
         await super.renderInteractive();
     }
     public async renderReadOnly(): Promise<void> {

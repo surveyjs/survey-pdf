@@ -24,18 +24,9 @@ export class TextBrick extends PdfBrick {
     }
     public async renderInteractive(): Promise<void> {
         const alignPoint: IPoint = this.alignPoint(this.contentRect);
-        const oldFontSize: number = this.controller.fontSize;
-        const oldFontStyle: string = this.controller.fontStyle;
-        const oldFontName: string = this.controller.fontName;
-        this.controller.fontSize = this.style.fontSize;
-        this.controller.fontStyle = this.style.fontStyle;
-        this.controller.fontName = this.style.fontName;
-        this.controller.setTextColor(this.style.fontColor);
+        this.controller.setTextStyle(this.style);
         this.controller.doc.text(this.escapeText(), alignPoint.xLeft, alignPoint.yTop, this.align);
-        this.controller.restoreTextColor();
-        this.controller.fontSize = oldFontSize;
-        this.controller.fontStyle = oldFontStyle;
-        this.controller.fontName = oldFontName;
+        this.controller.restoreTextStyle();
     }
     protected alignPoint(rect: IRect): IPoint {
         return {
