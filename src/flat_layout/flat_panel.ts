@@ -31,12 +31,20 @@ export class FlatPanel<T extends PanelModel = PanelModel, S extends IPanelStyle 
         this.panel.onFirstRendering();
         const panelFlats: IPdfBrick[] = [];
         let currPoint: IPoint = SurveyHelper.clone(point);
+        const headerContentBrick = new CompositeBrick();
         if(this.panel.hasDescriptionUnderTitle || this.panel.hasTitle) {
             const headerFlats = await this.createHeaderFlats(currPoint);
-            panelFlats.push(...headerFlats);
+            headerContentBrick.addBrick(...headerFlats);
             currPoint.yTop = headerFlats[headerFlats.length - 1].yBot + this.style.spacing.headerContentGap + SurveyHelper.EPSILON;
         }
-        panelFlats.push(...await this.generateRowsFlats(currPoint));
+        const rowFlats = await this.generateRowsFlats(currPoint);
+        if(!headerContentBrick.isEmpty && rowFlats.length > 0) {
+            headerContentBrick.addBrick(rowFlats.shift());
+        }
+        if(!headerContentBrick.isEmpty) {
+            panelFlats.push(headerContentBrick);
+        }
+        panelFlats.push(...rowFlats);
         return panelFlats;
     }
     protected async generateTitleFlat(point: IPoint): Promise<IPdfBrick> {
