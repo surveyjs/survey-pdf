@@ -1,47 +1,94 @@
 [
 	{
 		"brickType": "CompositeBrick",
-		"width": 504.0826771653543,
-		"height": 34.5,
-		"xLeft": 62.84645669291339,
-		"xRight": 566.9291338582677,
-		"yTop": 28.34645669291339,
-		"yBot": 62.84645669291339,
+		"width": 525.8326771653543,
+		"height": 18,
+		"xLeft": 34.72145669291339,
+		"xRight": 560.5541338582677,
+		"yTop": 34.72145669291339,
+		"yBot": 52.72145669291339,
 		"bricks": [
 			{
 				"brickType": "TextFieldBrick",
-				"width": 226.16633858267713,
-				"height": 34.5,
-				"xLeft": 62.84645669291339,
-				"xRight": 289.0127952755905,
-				"yTop": 28.34645669291339,
-				"yBot": 62.84645669291339,
+				"width": 238.91633858267713,
+				"height": 18,
+				"xLeft": 34.72145669291339,
+				"xRight": 273.6377952755905,
+				"yTop": 34.72145669291339,
+				"yBot": 52.72145669291339,
 				"options": {
 					"fieldName": "testidquestion_q2",
 					"inputType": "number",
-					"value": 30,
+					"value": "30",
 					"isReadOnly": false,
+					"shouldRenderReadOnly": false,
 					"shouldRenderBorders": true,
+					"rows": 1,
 					"isMultiline": false,
 					"placeholder": ""
+				},
+				"style": {
+					"fontSize": 12,
+					"fontName": "helvetica",
+					"fontStyle": "normal",
+					"lineHeight": 18,
+					"fontColor": "#1c1b20",
+					"backgroundColor": "#ffffff"
+				},
+				"padding": {
+					"top": 0,
+					"bottom": 0
+				}
+			},
+			{
+				"brickType": "EmptyBrick",
+				"width": 18,
+				"height": 0.75,
+				"xLeft": 288.6377952755905,
+				"xRight": 306.6377952755905,
+				"yTop": 43.34645669291339,
+				"yBot": 44.09645669291339,
+				"style": {
+					"width": 18,
+					"height": 0.75,
+					"color": "#1c1b20"
+				},
+				"options": {},
+				"padding": {
+					"top": 0,
+					"bottom": 0
 				}
 			},
 			{
 				"brickType": "TextFieldBrick",
-				"width": 226.1663385826772,
-				"height": 34.5,
-				"xLeft": 340.7627952755905,
-				"xRight": 566.9291338582677,
-				"yTop": 28.34645669291339,
-				"yBot": 62.84645669291339,
+				"width": 238.9163385826772,
+				"height": 18,
+				"xLeft": 321.6377952755905,
+				"xRight": 560.5541338582677,
+				"yTop": 34.72145669291339,
+				"yBot": 52.72145669291339,
 				"options": {
 					"fieldName": "testidquestion_q2",
 					"inputType": "number",
-					"value": 60,
+					"value": "60",
 					"isReadOnly": false,
+					"shouldRenderReadOnly": false,
 					"shouldRenderBorders": true,
+					"rows": 1,
 					"isMultiline": false,
 					"placeholder": ""
+				},
+				"style": {
+					"fontSize": 12,
+					"fontName": "helvetica",
+					"fontStyle": "normal",
+					"lineHeight": 18,
+					"fontColor": "#1c1b20",
+					"backgroundColor": "#ffffff"
+				},
+				"padding": {
+					"top": 0,
+					"bottom": 0
 				}
 			}
 		]

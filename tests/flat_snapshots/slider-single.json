@@ -1,20 +1,34 @@
 [
 	{
 		"brickType": "TextFieldBrick",
-		"width": 504.0826771653543,
-		"height": 34.5,
-		"xLeft": 62.84645669291339,
-		"xRight": 566.9291338582677,
-		"yTop": 28.34645669291339,
-		"yBot": 62.84645669291339,
+		"width": 525.8326771653543,
+		"height": 18,
+		"xLeft": 34.72145669291339,
+		"xRight": 560.5541338582677,
+		"yTop": 34.72145669291339,
+		"yBot": 52.72145669291339,
 		"options": {
 			"fieldName": "testidquestion_q1",
 			"inputType": "number",
 			"value": 50,
 			"isReadOnly": false,
+			"shouldRenderReadOnly": false,
 			"shouldRenderBorders": true,
+			"rows": 1,
 			"isMultiline": false,
 			"placeholder": ""
+		},
+		"style": {
+			"fontSize": 12,
+			"fontName": "helvetica",
+			"fontStyle": "normal",
+			"lineHeight": 18,
+			"fontColor": "#1c1b20",
+			"backgroundColor": "#ffffff"
+		},
+		"padding": {
+			"top": 0,
+			"bottom": 0
 		}
 	}
 ]

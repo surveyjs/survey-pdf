@@ -1,0 +1,100 @@
+[
+	{
+		"brickType": "ContainerBrick",
+		"width": 215.43307086614175,
+		"height": 30.75,
+		"xLeft": 28.34645669291339,
+		"xRight": 243.77952755905514,
+		"yTop": 28.346456692913392,
+		"yBot": 59.09645669291339,
+		"bricks": [
+			{
+				"brickType": "CompositeBrick",
+				"width": 46.44,
+				"height": 30.75,
+				"xLeft": 34.72145669291339,
+				"xRight": 81.16145669291339,
+				"yTop": 28.346456692913392,
+				"yBot": 59.09645669291339,
+				"bricks": [
+					{
+						"brickType": "TextBrick",
+						"width": 46.44,
+						"height": 30.75,
+						"xLeft": 34.72145669291339,
+						"xRight": 81.16145669291339,
+						"yTop": 28.346456692913392,
+						"yBot": 59.09645669291339,
+						"style": {
+							"fontSize": 12,
+							"fontName": "helvetica",
+							"fontStyle": "normal",
+							"lineHeight": 18,
+							"fontColor": "#1c1b2099",
+							"textAlign": "left"
+						},
+						"options": {
+							"text": "Input me"
+						},
+						"padding": {
+							"top": 6.375,
+							"bottom": 6.375
+						}
+					}
+				]
+			}
+		]
+	},
+	{
+		"brickType": "ContainerBrick",
+		"width": 323.14960629921256,
+		"height": 30.75,
+		"xLeft": 243.77952755905514,
+		"xRight": 566.9291338582677,
+		"yTop": 28.346456692913392,
+		"yBot": 59.09645669291339,
+		"bricks": [
+			{
+				"brickType": "TextFieldBrick",
+				"width": 310.39960629921256,
+				"height": 30.75,
+				"xLeft": 250.15452755905514,
+				"xRight": 560.5541338582677,
+				"yTop": 28.346456692913392,
+				"yBot": 59.09645669291339,
+				"style": {
+					"fontSize": 12,
+					"fontName": "helvetica",
+					"fontStyle": "normal",
+					"lineHeight": 18,
+					"fontColor": "#1c1b20",
+					"backgroundColor": "#ffffff"
+				},
+				"options": {
+					"shouldRenderReadOnly": false,
+					"rows": 1,
+					"fieldName": "testidquestion_multi one item_row_0_cell_0",
+					"inputType": "text",
+					"value": "",
+					"isReadOnly": false,
+					"shouldRenderBorders": true,
+					"placeholder": "",
+					"isMultiline": false
+				},
+				"padding": {
+					"top": 6.375,
+					"bottom": 6.375
+				}
+			}
+		]
+	},
+	{
+		"brickType": "RowlineBrick",
+		"width": 538.5826771653543,
+		"height": 0,
+		"xLeft": 28.34645669291339,
+		"xRight": 566.9291338582677,
+		"yTop": 59.09645669291339,
+		"yBot": 59.09645669291339
+	}
+]

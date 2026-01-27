@@ -55,6 +55,7 @@ const buildPlatformJson = {
     "survey-core": packageJson.version
   },
   dependencies: {
+    "@csstools/css-color-parser": "^3.1.0",
     "@types/node-fetch": "^2",
     "jspdf": "^2.3.0 || ^3 || ^4",
     "image-size": "^2",
@@ -73,6 +74,20 @@ const buildPlatformJson = {
     "./survey.pdf.fonts": {
       "import": "./fesm/survey.pdf.fonts.mjs",
       "require": "./survey.pdf.fonts.js"
+    },
+    "./themes": {
+      "types": "./themes/index.d.ts",
+      "import": "./fesm/themes/index.mjs",
+      "require": "./themes/index.js"
+    },
+    "./themes/index": {
+      "types": "./themes/index.d.ts",
+      "import": "./fesm/themes/index.mjs",
+      "require": "./themes/index.js"
+    },
+    "./themes/*": {
+      "types": "./themes/*.d.ts",
+      "default": "./themes/*.js",
     },
     "./pdf-form-filler": {
       "types": "./forms-typings/entries/forms.d.ts",
@@ -172,6 +187,10 @@ module.exports = function (options) {
       },
       "node-fetch": "node-fetch",
       "image-size": "image-size",
+      '@csstools/css-calc': '@csstools/css-calc',
+      '@csstools/css-color-parser': '@csstools/css-color-parser',
+      '@csstools/css-parser-algorithms': '@csstools/css-parser-algorithms',
+      '@csstools/css-tokenizer': '@csstools/css-tokenizer',
       "survey-core": {
         root: "Survey",
         commonjs2: "survey-core",

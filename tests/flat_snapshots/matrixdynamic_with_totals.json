@@ -1,39 +1,62 @@
 [
 	{
 		"brickType": "CompositeBrick",
-		"width": 504.0826771653543,
-		"height": 34.5,
-		"xLeft": 62.84645669291339,
+		"width": 538.5826771653543,
+		"height": 30.75,
+		"xLeft": 28.34645669291339,
 		"xRight": 566.9291338582677,
-		"yTop": 28.34645669291339,
-		"yBot": 62.84645669291339,
+		"yTop": 28.346456692913392,
+		"yBot": 59.09645669291339,
 		"bricks": [
 			{
-				"brickType": "CompositeBrick",
-				"width": 504.0826771653543,
-				"height": 34.5,
-				"xLeft": 62.84645669291342,
+				"brickType": "ContainerBrick",
+				"width": 538.5826771653543,
+				"height": 30.75,
+				"xLeft": 28.34645669291342,
 				"xRight": 566.9291338582677,
-				"yTop": 28.34645669291339,
-				"yBot": 62.84645669291339,
+				"yTop": 28.346456692913392,
+				"yBot": 59.09645669291339,
 				"bricks": [
 					{
 						"brickType": "CompositeBrick",
-						"width": 504.0826771653543,
-						"height": 34.5,
-						"xLeft": 62.84645669291342,
-						"xRight": 566.9291338582677,
-						"yTop": 28.34645669291339,
-						"yBot": 62.84645669291339,
+						"width": 525.8326771653543,
+						"height": 30.75,
+						"xLeft": 34.72145669291342,
+						"xRight": 560.5541338582677,
+						"yTop": 28.346456692913392,
+						"yBot": 59.09645669291339,
 						"bricks": [
 							{
 								"brickType": "DropdownBrick",
-								"width": 504.0826771653543,
-								"height": 34.5,
-								"xLeft": 62.84645669291342,
-								"xRight": 566.9291338582677,
-								"yTop": 28.34645669291339,
-								"yBot": 62.84645669291339
+								"width": 525.8326771653543,
+								"height": 30.75,
+								"xLeft": 34.72145669291342,
+								"xRight": 560.5541338582677,
+								"yTop": 28.346456692913392,
+								"yBot": 59.09645669291339,
+								"style": {
+									"fontSize": 12,
+									"fontStyle": "normal",
+									"lineHeight": 18,
+									"fontColor": "#1c1b20",
+									"width": 12,
+									"height": 12,
+									"borderColor": "#1c1b20",
+									"borderWidth": 0,
+									"backgroundColor": "#ffffff"
+								},
+								"options": {
+									"fieldName": "testidquestion_madintotals_row1_cell_0",
+									"value": "Select...",
+									"isReadOnly": false,
+									"optionsCaption": "Select...",
+									"showOptionsCaption": true,
+									"items": []
+								},
+								"padding": {
+									"top": 6.375,
+									"bottom": 6.375
+								}
 							}
 						]
 					}
@@ -41,41 +64,63 @@
 			},
 			{
 				"brickType": "RowlineBrick",
-				"width": 504.0826771653543,
+				"width": 538.5826771653543,
 				"height": 0,
-				"xLeft": 62.84645669291339,
+				"xLeft": 28.34645669291339,
 				"xRight": 566.9291338582677,
-				"yTop": 62.84645669291339,
-				"yBot": 62.84645669291339
+				"yTop": 59.09645669291339,
+				"yBot": 59.09645669291339
 			}
 		]
 	},
 	{
 		"brickType": "CompositeBrick",
-		"width": 504.0826771653543,
-		"height": 55.19999999999999,
-		"xLeft": 62.84645669291342,
+		"width": 538.5826771653543,
+		"height": 30.75,
+		"xLeft": 28.34645669291342,
 		"xRight": 566.9291338582677,
-		"yTop": 80.09645669291339,
-		"yBot": 135.29645669291338,
+		"yTop": 59.09645669291339,
+		"yBot": 89.84645669291339,
 		"bricks": [
 			{
-				"brickType": "CompositeBrick",
-				"width": 504.0826771653543,
-				"height": 55.19999999999999,
-				"xLeft": 62.84645669291342,
+				"brickType": "ContainerBrick",
+				"width": 538.5826771653543,
+				"height": 30.75,
+				"xLeft": 28.34645669291342,
 				"xRight": 566.9291338582677,
-				"yTop": 80.09645669291339,
-				"yBot": 135.29645669291338,
+				"yTop": 59.09645669291339,
+				"yBot": 89.84645669291339,
 				"bricks": [
 					{
 						"brickType": "TextFieldBrick",
-						"width": 504.0826771653543,
-						"height": 55.19999999999999,
-						"xLeft": 62.84645669291342,
-						"xRight": 566.9291338582677,
-						"yTop": 80.09645669291339,
-						"yBot": 135.29645669291338
+						"width": 19.32,
+						"height": 30.75,
+						"xLeft": 34.72145669291342,
+						"xRight": 54.04145669291342,
+						"yTop": 59.09645669291339,
+						"yBot": 89.84645669291339,
+						"style": {
+							"fontSize": 12,
+							"fontName": "helvetica",
+							"fontStyle": "normal",
+							"lineHeight": 18,
+							"fontColor": "#1c1b20"
+						},
+						"options": {
+							"value": "test",
+							"isReadOnly": true,
+							"shouldRenderReadOnly": true,
+							"fieldName": "testidquestion_madintotals_row2_cell_0",
+							"shouldRenderBorders": true,
+							"rows": 1,
+							"isMultiline": false,
+							"placeholder": "",
+							"inputType": ""
+						},
+						"padding": {
+							"top": 0,
+							"bottom": 0
+						}
 					}
 				]
 			}

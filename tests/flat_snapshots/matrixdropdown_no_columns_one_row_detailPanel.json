@@ -1,0 +1,178 @@
+[
+	{
+		"brickType": "CompositeBrick",
+		"width": 538.5826771653543,
+		"height": 12.75,
+		"xLeft": 28.34645669291339,
+		"xRight": 566.9291338582677,
+		"yTop": 28.346456692913392,
+		"yBot": 41.09645669291339,
+		"bricks": [
+			{
+				"brickType": "ContainerBrick",
+				"width": 538.5826771653543,
+				"height": 12.75,
+				"xLeft": 28.34645669291342,
+				"xRight": 566.9291338582677,
+				"yTop": 28.346456692913392,
+				"yBot": 41.09645669291339,
+				"bricks": [
+					{
+						"brickType": "EmptyBrick",
+						"width": 525.8326771653543,
+						"height": 12.75,
+						"xLeft": 34.72145669291342,
+						"xRight": 560.5541338582677,
+						"yTop": 28.346456692913392,
+						"yBot": 41.09645669291339,
+						"style": {},
+						"options": {},
+						"padding": {
+							"top": 6.375,
+							"bottom": 6.375
+						}
+					}
+				]
+			},
+			{
+				"brickType": "RowlineBrick",
+				"width": 538.5826771653543,
+				"height": 0,
+				"xLeft": 28.34645669291339,
+				"xRight": 566.9291338582677,
+				"yTop": 41.09645669291339,
+				"yBot": 41.09645669291339
+			}
+		]
+	},
+	{
+		"brickType": "CompositeBrick",
+		"width": 538.5826771653543,
+		"height": 30.75,
+		"xLeft": 28.34645669291342,
+		"xRight": 566.9291338582677,
+		"yTop": 41.09645669291339,
+		"yBot": 71.84645669291339,
+		"bricks": [
+			{
+				"brickType": "ContainerBrick",
+				"width": 538.5826771653543,
+				"height": 30.75,
+				"xLeft": 28.34645669291342,
+				"xRight": 566.9291338582677,
+				"yTop": 41.09645669291339,
+				"yBot": 71.84645669291339,
+				"bricks": [
+					{
+						"brickType": "CompositeBrick",
+						"width": 30.480000000000018,
+						"height": 30.75,
+						"xLeft": 530.0741338582677,
+						"xRight": 560.5541338582677,
+						"yTop": 41.09645669291339,
+						"yBot": 71.84645669291339,
+						"bricks": [
+							{
+								"brickType": "TextBrick",
+								"width": 30.480000000000018,
+								"height": 30.75,
+								"xLeft": 530.0741338582677,
+								"xRight": 560.5541338582677,
+								"yTop": 41.09645669291339,
+								"yBot": 71.84645669291339,
+								"style": {
+									"fontSize": 12,
+									"fontName": "helvetica",
+									"fontStyle": "normal",
+									"lineHeight": 18,
+									"fontColor": "#1c1b2099",
+									"textAlign": "right"
+								},
+								"options": {
+									"text": "Row1"
+								},
+								"padding": {
+									"top": 6.375,
+									"bottom": 6.375
+								}
+							}
+						]
+					}
+				]
+			}
+		]
+	},
+	{
+		"brickType": "CompositeBrick",
+		"width": 550.9576771653543,
+		"height": 84.75,
+		"xLeft": 28.34645669291339,
+		"xRight": 579.3041338582677,
+		"yTop": 71.84645669291339,
+		"yBot": 156.5964566929134,
+		"bricks": [
+			{
+				"brickType": "EmptyBrick",
+				"width": 538.5826771653543,
+				"height": 84.75,
+				"xLeft": 28.34645669291339,
+				"xRight": 566.9291338582677,
+				"yTop": 71.84645669291339,
+				"yBot": 156.5964566929134,
+				"style": {
+					"borderMode": 1,
+					"color": "#ffffff",
+					"borderColor": "#d4d4d4",
+					"borderRadius": 0,
+					"borderWidth": 0.75
+				},
+				"options": {},
+				"padding": {
+					"top": 0,
+					"bottom": 0
+				}
+			},
+			{
+				"brickType": "TextFieldBrick",
+				"width": 6,
+				"height": 84.75,
+				"xLeft": 573.3041338582677,
+				"xRight": 579.3041338582677,
+				"yTop": 71.84645669291339,
+				"yBot": 156.5964566929134,
+				"style": {
+					"fontSize": 12,
+					"fontName": "helvetica",
+					"fontStyle": "normal",
+					"lineHeight": 18,
+					"fontColor": "#1c1b20",
+					"backgroundColor": "#ffffff"
+				},
+				"options": {
+					"shouldRenderReadOnly": false,
+					"rows": 4,
+					"isReadOnly": false,
+					"isMultiline": true,
+					"fieldName": "testidquestion_detailPanelChecker_row1_detailPanelQuestion_commentInPanel_1",
+					"placeholder": "",
+					"shouldRenderBorders": true,
+					"value": "",
+					"inputType": ""
+				},
+				"padding": {
+					"top": 6.375,
+					"bottom": 6.375
+				}
+			},
+			{
+				"brickType": "RowlineBrick",
+				"width": 0,
+				"height": 0,
+				"xLeft": 566.9291338582677,
+				"xRight": 566.9291338582677,
+				"yTop": 156.5964566929134,
+				"yBot": 156.5964566929134
+			}
+		]
+	}
+]
