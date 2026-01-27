@@ -20,8 +20,6 @@
         "./src/doc_controller.ts"
       ]
     },
-    "declaration": true,
-    "declarationDir": "build/typings/",
   },
   "include": [
     "src/entries/pdf.ts",
