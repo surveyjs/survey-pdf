@@ -143,7 +143,7 @@ export default [
         globalName: globalName,
         globals: umdGlobals,
         input: {
-            'survey.pdf': fileURLToPath(new URL('./src/entries/pdf-node.ts', import.meta.url)),
+            'survey.pdf.node': fileURLToPath(new URL('./src/entries/pdf-node.ts', import.meta.url)),
         },
     })
 ];
