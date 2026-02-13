@@ -99,13 +99,21 @@ const external = [
     'survey-core',
     'image-size',
     'node-fetch',
+    '@csstools/css-calc',
+    '@csstools/css-color-parser',
+    '@csstools/css-parser-algorithms',
+    '@csstools/css-tokenizer',
 ];
 const umdGlobals =
 {
     'survey-core': 'Survey',
     'jspdf': 'jspdf',
     'image-size': 'image-size',
-    'node-fetch': 'node-fetch'
+    'node-fetch': 'node-fetch',
+    '@csstools/css-calc': '@csstools/css-calc',
+    '@csstools/css-color-parser': '@csstools/css-color-parser',
+    '@csstools/css-parser-algorithms': '@csstools/css-parser-algorithms',
+    '@csstools/css-tokenizer': '@csstools/css-tokenizer',
 };
 const globalName = 'SurveyPDF';
 
