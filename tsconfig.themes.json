@@ -1,9 +1,7 @@
 {
     "extends": "./tsconfig.json",
     "compilerOptions": {
-        "baseUrl": ".",
-        "declaration": true,
-        "declarationDir": "./build/themes/",
+        "baseUrl": "."
     },
     "include": [
         "./src/themes/index.ts"
