@@ -2,6 +2,8 @@ import { createEsmConfig, createUmdConfig } from './rollup.helpers.mjs';
 import { resolve } from 'node:path';
 import { env } from 'node:process';
 import { fileURLToPath, URL } from 'node:url';
+import packageJSON from './package.json' assert { type: "json" };
+const version = packageJSON.version;
 const buildPath = fileURLToPath(new URL('./build', import.meta.url));
 const external = {
     'fs': 'fs'
@@ -16,6 +18,7 @@ export default [
             'pdf-form-filler': fileURLToPath(new URL('./src/entries/forms.ts', import.meta.url)),
             'pdf-form-filler.node': fileURLToPath(new URL('./src/entries/forms-node.ts', import.meta.url))
         },
+        version
     }),
     createUmdConfig({
         tsconfig: fileURLToPath(new URL('./tsconfig.forms.json', import.meta.url)),
@@ -30,6 +33,7 @@ export default [
         input: {
             'pdf-form-filler': fileURLToPath(new URL('./src/entries/forms.ts', import.meta.url)),
         },
+        version
     }),
     createUmdConfig({
         tsconfig: fileURLToPath(new URL('./tsconfig.forms.json', import.meta.url)),
@@ -43,5 +47,6 @@ export default [
         input: {
             'pdf-form-filler.node': fileURLToPath(new URL('./src/entries/forms-node.ts', import.meta.url)),
         },
+        version
     })
 ];

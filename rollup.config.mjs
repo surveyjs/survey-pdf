@@ -3,8 +3,8 @@ import { resolve } from 'node:path';
 import { fileURLToPath, URL } from 'node:url';
 import { existsSync, mkdirSync, writeFileSync, createReadStream, createWriteStream } from 'fs';
 import packageJSON from './package.json' assert { type: "json" };
-const buildPath = fileURLToPath(new URL('./build', import.meta.url));
 const version = packageJSON.version;
+const buildPath = fileURLToPath(new URL('./build', import.meta.url));
 
 function emitNonSourceFiles() {
     const buildPlatformJson = {
@@ -121,7 +121,8 @@ export default [
         input: {
             'survey.pdf': fileURLToPath(new URL('./src/entries/pdf.ts', import.meta.url)),
             'survey.pdf.node': fileURLToPath(new URL('./src/entries/pdf-node.ts', import.meta.url))
-        }
+        },
+        version
     }),
     createUmdConfig({
         tsconfig: fileURLToPath(new URL('./tsconfig.json', import.meta.url)),
@@ -134,6 +135,7 @@ export default [
         input: {
             'survey.pdf': fileURLToPath(new URL('./src/entries/pdf.ts', import.meta.url)),
         },
+        version
     }),
     createUmdConfig({
         tsconfig: fileURLToPath(new URL('./tsconfig.json', import.meta.url)),
@@ -145,5 +147,6 @@ export default [
         input: {
             'survey.pdf.node': fileURLToPath(new URL('./src/entries/pdf-node.ts', import.meta.url)),
         },
+        version
     })
 ];

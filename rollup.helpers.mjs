@@ -20,7 +20,7 @@ function wrapBanner(e) {
 
 export function createUmdConfig(options) {
 
-    const { input, globalName, external, globals, dir, tsconfig, declarationDir, emitMinified, exports, useEsbuild, version } = options;
+    const { input, globalName, external, globals, dir, tsconfig, declarationDir, emitMinified, exports, version } = options;
 
     const commonOutput = {
         dir: dir,
