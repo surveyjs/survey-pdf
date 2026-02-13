@@ -1,0 +1,126 @@
+[
+	[
+		{
+			"brickType": "CompositeBrick",
+			"width": 264.7199999999999,
+			"height": 57,
+			"xLeft": 28.34645669291339,
+			"xRight": 293.0664566929133,
+			"yTop": 28.34645669291339,
+			"yBot": 85.34645669291339,
+			"bricks": [
+				{
+					"brickType": "CompositeBrick",
+					"width": 264.7199999999999,
+					"height": 30.000000000000004,
+					"xLeft": 28.34645669291339,
+					"xRight": 293.0664566929133,
+					"yTop": 28.34645669291339,
+					"yBot": 58.34645669291339,
+					"bricks": [
+						{
+							"brickType": "TextBrick",
+							"width": 264.7199999999999,
+							"height": 30.000000000000004,
+							"xLeft": 28.34645669291339,
+							"xRight": 293.0664566929133,
+							"yTop": 28.34645669291339,
+							"yBot": 58.34645669291339,
+							"style": {
+								"fontSize": 24,
+								"fontName": "helvetica",
+								"fontStyle": "bold",
+								"lineHeight": 30,
+								"fontColor": "#1c1b20",
+								"textAlign": "left"
+							},
+							"options": {
+								"text": "One small step for man"
+							},
+							"padding": {
+								"top": 0,
+								"bottom": 0
+							}
+						}
+					]
+				},
+				{
+					"brickType": "CompositeBrick",
+					"width": 143.15999999999994,
+					"height": 18,
+					"xLeft": 28.34645669291339,
+					"xRight": 171.50645669291333,
+					"yTop": 67.34645669291339,
+					"yBot": 85.34645669291339,
+					"bricks": [
+						{
+							"brickType": "TextBrick",
+							"width": 143.15999999999994,
+							"height": 18,
+							"xLeft": 28.34645669291339,
+							"xRight": 171.50645669291333,
+							"yTop": 67.34645669291339,
+							"yBot": 85.34645669291339,
+							"style": {
+								"fontSize": 12,
+								"fontName": "helvetica",
+								"fontStyle": "normal",
+								"lineHeight": 18,
+								"fontColor": "#1c1b2099",
+								"textAlign": "left"
+							},
+							"options": {
+								"text": "One giant leap for mankind"
+							},
+							"padding": {
+								"top": 0,
+								"bottom": 0
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"brickType": "RowlineBrick",
+			"width": 538.5826771653543,
+			"height": 0,
+			"xLeft": 28.34645669291339,
+			"xRight": 566.9291338582677,
+			"yTop": 85.34645669291339,
+			"yBot": 85.34645669291339
+		},
+		{
+			"brickType": "TextFieldBrick",
+			"width": 525.8326771653543,
+			"height": 30.75,
+			"xLeft": 34.72145669291339,
+			"xRight": 560.5541338582677,
+			"yTop": 109.34645669291339,
+			"yBot": 140.0964566929134,
+			"style": {
+				"fontSize": 12,
+				"fontName": "helvetica",
+				"fontStyle": "normal",
+				"lineHeight": 18,
+				"fontColor": "#1c1b20",
+				"backgroundColor": "#ffffff"
+			},
+			"options": {
+				"shouldRenderReadOnly": false,
+				"rows": 1,
+				"fieldName": "testidquestion_MissText",
+				"inputType": "text",
+				"value": "",
+				"isReadOnly": false,
+				"shouldRenderBorders": true,
+				"placeholder": "",
+				"isMultiline": false
+			},
+			"padding": {
+				"top": 6.375,
+				"bottom": 6.375
+			}
+		}
+	]
+]

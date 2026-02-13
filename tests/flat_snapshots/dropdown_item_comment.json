@@ -1,40 +1,65 @@
 [
 	{
 		"brickType": "CompositeBrick",
-		"width": 538.5826771653543,
-		"height": 167.325,
-		"xLeft": 28.34645669291339,
-		"xRight": 566.9291338582677,
-		"yTop": 28.34645669291339,
-		"yBot": 195.67145669291338,
+		"width": 525.8326771653543,
+		"height": 78,
+		"xLeft": 34.72145669291339,
+		"xRight": 560.5541338582677,
+		"yTop": 34.72145669291339,
+		"yBot": 112.72145669291339,
 		"bricks": [
 			{
-				"brickType": "CompositeBrick",
-				"width": 155.1,
-				"height": 37.94999999999999,
-				"xLeft": 28.34645669291339,
-				"xRight": 183.4464566929134,
-				"yTop": 28.34645669291339,
-				"yBot": 66.29645669291338,
+				"brickType": "ContainerBrick",
+				"width": 525.8326771653543,
+				"height": 12,
+				"xLeft": 34.72145669291339,
+				"xRight": 560.5541338582677,
+				"yTop": 34.72145669291339,
+				"yBot": 46.72145669291339,
 				"bricks": [
 					{
 						"brickType": "CompositeBrick",
-						"width": 155.1,
-						"height": 37.94999999999999,
-						"xLeft": 28.34645669291339,
-						"xRight": 183.4464566929134,
-						"yTop": 28.34645669291339,
-						"yBot": 66.29645669291338,
+						"width": 38.7,
+						"height": 12,
+						"xLeft": 34.72145669291339,
+						"xRight": 73.4214566929134,
+						"yTop": 34.72145669291339,
+						"yBot": 46.72145669291339,
 						"bricks": [
 							{
-								"brickType": "TextBoldBrick",
-								"width": 155.1,
-								"height": 37.94999999999999,
-								"xLeft": 28.34645669291339,
-								"xRight": 183.4464566929134,
-								"yTop": 28.34645669291339,
-								"yBot": 66.29645669291338,
-								"text": "question1"
+								"brickType": "CompositeBrick",
+								"width": 38.7,
+								"height": 12,
+								"xLeft": 34.72145669291339,
+								"xRight": 73.4214566929134,
+								"yTop": 34.72145669291339,
+								"yBot": 46.72145669291339,
+								"bricks": [
+									{
+										"brickType": "TextBrick",
+										"width": 38.7,
+										"height": 12,
+										"xLeft": 34.72145669291339,
+										"xRight": 73.4214566929134,
+										"yTop": 34.72145669291339,
+										"yBot": 46.72145669291339,
+										"style": {
+											"fontSize": 9,
+											"fontName": "helvetica",
+											"fontStyle": "normal",
+											"lineHeight": 12,
+											"fontColor": "#1c1b20",
+											"textAlign": "left"
+										},
+										"options": {
+											"text": "question1"
+										},
+										"padding": {
+											"top": 0,
+											"bottom": 0
+										}
+									}
+								]
 							}
 						]
 					}
@@ -42,40 +67,72 @@
 			},
 			{
 				"brickType": "RowlineBrick",
-				"width": 538.5826771653543,
+				"width": 525.8326771653543,
 				"height": 0,
-				"xLeft": 28.34645669291339,
-				"xRight": 566.9291338582677,
-				"yTop": 66.29645669291338,
-				"yBot": 66.29645669291338
+				"xLeft": 34.72145669291339,
+				"xRight": 560.5541338582677,
+				"yTop": 46.72145669291339,
+				"yBot": 46.72145669291339
 			},
 			{
 				"brickType": "CompositeBrick",
-				"width": 504.0826771653543,
-				"height": 112.125,
-				"xLeft": 62.84645669291339,
-				"xRight": 566.9291338582677,
-				"yTop": 83.54645669291338,
-				"yBot": 195.67145669291338,
+				"width": 525.8326771653543,
+				"height": 60,
+				"xLeft": 34.72145669291339,
+				"xRight": 560.5541338582677,
+				"yTop": 52.72145669291339,
+				"yBot": 112.72145669291339,
 				"bricks": [
 					{
 						"brickType": "DropdownBrick",
-						"width": 504.0826771653543,
-						"height": 34.5,
-						"xLeft": 62.84645669291339,
-						"xRight": 566.9291338582677,
-						"yTop": 83.54645669291338,
-						"yBot": 118.04645669291338
+						"width": 525.8326771653543,
+						"height": 18,
+						"xLeft": 34.72145669291339,
+						"xRight": 560.5541338582677,
+						"yTop": 52.72145669291339,
+						"yBot": 70.72145669291339,
+						"style": {
+							"fontSize": 12,
+							"fontStyle": "normal",
+							"lineHeight": 18,
+							"fontColor": "#1c1b20",
+							"width": 12,
+							"height": 12,
+							"borderColor": "#1c1b20",
+							"borderWidth": 0,
+							"backgroundColor": "#ffffff"
+						},
+						"options": {
+							"fieldName": "testidquestion_question1",
+							"value": "Item 2",
+							"isReadOnly": false,
+							"optionsCaption": "Select...",
+							"showOptionsCaption": true,
+							"items": [
+								"Item 1",
+								"Item 2",
+								"Item 3",
+								"Item 4",
+								"Item 5",
+								"Item 6",
+								"Item 7"
+							]
+						},
+						"padding": {
+							"top": 0,
+							"bottom": 0
+						}
 					},
 					{
 						"brickType": "TextFieldBrick",
-						"width": 504.0826771653543,
-						"height": 69,
-						"xLeft": 62.84645669291339,
-						"xRight": 566.9291338582677,
-						"yTop": 126.67145669291338,
-						"yBot": 195.67145669291338,
+						"width": 525.8326771653543,
+						"height": 36,
+						"xLeft": 34.72145669291339,
+						"xRight": 560.5541338582677,
+						"yTop": 76.72145669291339,
+						"yBot": 112.72145669291339,
 						"options": {
+							"shouldRenderReadOnly": false,
 							"fieldName": "testidquestion_question1_Item 2_comment",
 							"rows": 2,
 							"value": "aaaaa",
@@ -84,6 +141,18 @@
 							"isMultiline": true,
 							"placeholder": "",
 							"inputType": ""
+						},
+						"style": {
+							"fontSize": 12,
+							"fontName": "helvetica",
+							"fontStyle": "normal",
+							"lineHeight": 18,
+							"fontColor": "#1c1b20",
+							"backgroundColor": "#ffffff"
+						},
+						"padding": {
+							"top": 0,
+							"bottom": 0
 						}
 					}
 				]

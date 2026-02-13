@@ -1,0 +1,34 @@
+[
+	{
+		"brickType": "TextFieldBrick",
+		"width": 0,
+		"height": 18,
+		"xLeft": 34.72145669291339,
+		"xRight": 34.72145669291339,
+		"yTop": 34.72145669291339,
+		"yBot": 52.72145669291339,
+		"style": {
+			"fontSize": 12,
+			"fontName": "helvetica",
+			"fontStyle": "normal",
+			"lineHeight": 18,
+			"fontColor": "#1c1b20",
+			"backgroundColor": null
+		},
+		"options": {
+			"shouldRenderReadOnly": true,
+			"rows": 1,
+			"fieldName": "testidquestion_text_readonly",
+			"inputType": "text",
+			"value": "",
+			"isReadOnly": true,
+			"shouldRenderBorders": true,
+			"placeholder": "",
+			"isMultiline": false
+		},
+		"padding": {
+			"top": 0,
+			"bottom": 0
+		}
+	}
+]

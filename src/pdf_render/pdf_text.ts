@@ -1,34 +1,32 @@
-import { IQuestion, } from 'survey-core';
+import { ITextStyle } from '../style/types';
 import { IPoint, IRect, DocController } from '../doc_controller';
-import { PdfBrick } from './pdf_brick';
+import { IPdfBrickOptions, PdfBrick } from './pdf_brick';
+
+export interface ITextBrickOptions extends IPdfBrickOptions {
+    text: string;
+}
 
 export class TextBrick extends PdfBrick {
     protected align: any;
-    public constructor(question: IQuestion, controller: DocController,
-        rect: IRect, protected text: string) {
-        super(question, controller, rect);
+    public constructor(controller: DocController,
+        rect: IRect, public options: ITextBrickOptions, public style: ITextStyle) {
+        super(controller, rect, options);
         this.align = {
             isInputRtl: false,
             isOutputRtl: controller.isRTL,
             align: controller.isRTL ? 'right': 'left',
-            baseline: 'middle'
+            baseline: 'middle',
+            lineHeightFactor: 1.15
         };
     }
     private escapeText() {
-        while (this.text.indexOf('\t') > -1) {
-            this.text = this.text.replace('\t', Array(5).join(String.fromCharCode(160)));
-        }
-        return this.text;
+        return this.options.text.replace(/\t/g, Array(5).join(String.fromCharCode(160)));
     }
     public async renderInteractive(): Promise<void> {
-        let alignPoint: IPoint = this.alignPoint(this);
-        let oldFontSize: number = this.controller.fontSize;
-        this.controller.fontSize = this.fontSize;
-        let oldTextColor: string = this.controller.doc.getTextColor();
-        this.controller.doc.setTextColor(this.textColor);
+        const alignPoint: IPoint = this.alignPoint(this.contentRect);
+        this.controller.setTextStyle(this.style);
         this.controller.doc.text(this.escapeText(), alignPoint.xLeft, alignPoint.yTop, this.align);
-        this.controller.doc.setTextColor(oldTextColor);
-        this.controller.fontSize = oldFontSize;
+        this.controller.restoreTextStyle();
     }
     protected alignPoint(rect: IRect): IPoint {
         return {

@@ -6,9 +6,9 @@ import { SurveyPDF } from '../src/survey';
 import { IRect, DocController } from '../src/doc_controller';
 import { FlatCheckbox } from '../src/flat_layout/flat_checkbox';
 import { PdfBrick } from '../src/pdf_render/pdf_brick';
-import { CheckItemBrick } from '../src/pdf_render/pdf_checkitem';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
+import { IQuestionCheckboxStyle } from '../src/style/types';
 let __dummy_cb = new FlatCheckbox(null, null, null);
 
 test('Check that checkbox has square boundaries', async () => {
@@ -25,14 +25,28 @@ test('Check that checkbox has square boundaries', async () => {
         ]
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    survey.applyStyle({
+        question: {
+            container: {
+                padding: 0,
+                borderWidth: 0
+            }
+        }
+    });
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     await survey['renderSurvey'](controller);
-    controller.margins.left += controller.unitWidth;
+    const question = survey.getAllQuestions()[0];
+    const labelStyle = (survey.getElementStyle(question) as IQuestionCheckboxStyle).choiceText;
+    const inputStyle = (survey.getElementStyle(question) as IQuestionCheckboxStyle).input;
     let assumeCheckbox: IRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(SurveyHelper.createRect(
-        controller.leftTopPoint, controller.unitHeight, controller.unitHeight),
-    SurveyHelper.SELECT_ITEM_FLAT_SCALE), controller.leftTopPoint.xLeft);
-    let checkboxFlat: PdfBrick = new PdfBrick(null, null, assumeCheckbox);
-    assumeCheckbox = SurveyHelper.scaleRect(assumeCheckbox, SurveyHelper.formScale(controller, checkboxFlat));
+        controller.leftTopPoint, inputStyle.width, inputStyle.height),
+    1), controller.leftTopPoint.xLeft);
+    const textHeight = controller.measureText(1, labelStyle).height;
+    const shift = (textHeight - (assumeCheckbox.yBot - assumeCheckbox.yTop)) / 2;
+    assumeCheckbox.yTop += shift;
+    assumeCheckbox.yBot += shift;
+    let checkboxFlat: PdfBrick = new PdfBrick(null, assumeCheckbox);
+    assumeCheckbox = SurveyHelper.scaleRect(assumeCheckbox, SurveyHelper.getRectBorderScale(checkboxFlat, inputStyle.borderWidth));
     let acroFormFields: any = controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields;
     let internalRect: any = acroFormFields[0].Rect;
     TestHelper.equalRect(expect, SurveyHelper.createRect(
@@ -58,7 +72,7 @@ test('Check has other checkbox', async () => {
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     await survey['renderSurvey'](controller);
     let internal: any = controller.doc.internal;
-    let internalOtherText: string = internal.pages[1][21];
+    let internalOtherText: string = internal.pages[1][40];
     expect(internalOtherText).toBeDefined();
     let regex: RegExp = /\((.*)\)/;
     let otherText: string = internalOtherText.match(regex)[1];
@@ -146,8 +160,8 @@ test('Check readonly checkbox symbol', async () => {
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     await survey['renderSurvey'](controller);
-    expect(controller.doc.internal.pages[1][22]).toContain(
-        '(' + CheckItemBrick['CHECKMARK_READONLY_SYMBOL'] + ')');
+    expect(controller.doc.internal.pages[1][45]).toContain(
+        '(' + '3' + ')');
 });
 
 test('Check onRenderCheck event', async () => {
@@ -163,8 +177,8 @@ test('Check onRenderCheck event', async () => {
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     survey.onRenderCheckItemAcroform.add((_, opt) => {
-        opt.fieldName = opt.context.question.name + '_value_' + opt.context.item.value;
-        opt.value = opt.context.item.value;
+        opt.options.fieldName = opt.question.name + '_value_' + opt.item.value;
+        opt.options.value = opt.item.value;
     });
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     await survey['renderSurvey'](controller);

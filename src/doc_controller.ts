@@ -3,9 +3,10 @@ import { IHTMLRenderType } from './flat_layout/flat_html';
 import { SurveyHelper } from './helper_survey';
 import { LocalizableString } from 'survey-core';
 // import Fonts from './fonts';
-import setRadioAppearance from './jspdf_plugins/acroform_radio';
+import { getPatchedAcroFormCheckBox, getPatchedAcroFormComboBox, getPatchedAcroFormRadioButton, getPatchedAcroFormTextField } from './jspdf_plugins/acroform_patched';
 import './jspdf_plugins/acroform.js';
 import './jspdf_plugins/from_html.js';
+import { ITextStyle } from './style/types';
 
 export interface IPoint {
     /**
@@ -226,21 +227,26 @@ export interface IDocOptions {
      * Default value: `false` (include all choices)
      */
     tagboxSelectedChoicesOnly?: boolean;
+
+    htmlToImageQuality?: number;
+    otherRowsCount?: number;
+    showNavigation?: boolean;
 }
 
 export class DocOptions implements IDocOptions {
     public static readonly MM_TO_PT = 72 / 25.4;
-    public static readonly FONT_SIZE = 14;
+    public static readonly FONT_SIZE = 8 * 72.0 / 96.0; //px to pt
     protected _orientation: 'l' | 'p';
     protected _format: string | number[];
     protected _fontSize: number;
+    protected _htmlToImageQuality: number;
     protected _fontName: string;
     public static SEGOE_NORMAL: string;
     public static SEGOE_BOLD: string;
     protected _base64Normal: string = undefined;
     protected _base64Bold: string = undefined;
     protected _useCustomFontInHtml: boolean;
-    protected _margins: IMargin;
+    protected _margins!: IMargin;
     protected _htmlRenderAs: IHTMLRenderType;
     protected _matrixRenderAs: 'auto' | 'list';
     protected _readonlyRenderAs: 'auto' | 'text' | 'acroform';
@@ -249,6 +255,7 @@ export class DocOptions implements IDocOptions {
     protected _useLegacyBooleanRendering: boolean;
     protected _isRTL: boolean;
     protected _tagboxSelectedChoicesOnly: boolean;
+    protected _otherRowsCount: number;
     public constructor(options: IDocOptions) {
         if (typeof options.orientation === 'undefined') {
             if (typeof options.format === 'undefined' ||
@@ -265,7 +272,7 @@ export class DocOptions implements IDocOptions {
         this._fontSize = options.fontSize || DocOptions.FONT_SIZE;
         if(!options.fontName) {
             if(!DocOptions.SEGOE_BOLD && !DocOptions.SEGOE_NORMAL) {
-                this._fontName = SurveyHelper.STANDARD_FONT;
+                this._fontName = 'helvetica';
             } else {
                 this._fontName = 'segoe';
             }
@@ -311,7 +318,11 @@ export class DocOptions implements IDocOptions {
         this._useLegacyBooleanRendering = options.useLegacyBooleanRendering || false;
         this._isRTL = options.isRTL || false;
         this._tagboxSelectedChoicesOnly = options.tagboxSelectedChoicesOnly || false;
+        this._htmlToImageQuality = options.htmlToImageQuality ?? 1;
+        this._otherRowsCount = options.otherRowsCount ?? 2;
     }
+    textFieldRenderAs?: 'singleLine' | 'multiLine';
+    showNavigation?: boolean;
     public get leftTopPoint(): IPoint {
         return {
             xLeft: this.margins.left,
@@ -366,6 +377,12 @@ export class DocOptions implements IDocOptions {
     public get tagboxSelectedChoicesOnly(): boolean {
         return this._tagboxSelectedChoicesOnly;
     }
+    public get htmlToImageQuality(): number {
+        return this._htmlToImageQuality;
+    }
+    public get otherRowsCount(): number {
+        return this._otherRowsCount;
+    }
 }
 
 /**
@@ -384,7 +401,7 @@ export class DocController extends DocOptions {
             orientation: this.orientation,
             unit: 'pt',
             format: this.format,
-            compress: this.compress
+            compress: this.compress,
         };
         this._doc = new jsPDF(jspdfOptions);
         if (typeof this.base64Normal !== 'undefined' && !SurveyHelper.isFontExist(this, this.fontName)) {
@@ -392,7 +409,6 @@ export class DocController extends DocOptions {
             DocController.addFont(this.fontName, this.base64Bold, 'bold');
             this._doc = new jsPDF(jspdfOptions);
         }
-        setRadioAppearance(this._doc);
         this._useCustomFontInHtml = options.useCustomFontInHtml && SurveyHelper.isFontExist(this, this.fontName);
         this._helperDoc = new jsPDF(jspdfOptions);
         this._doc.setFont(this.fontName);
@@ -450,6 +466,16 @@ export class DocController extends DocOptions {
         this._doc.setFontSize(fontSize);
         this._helperDoc.setFontSize(fontSize);
     }
+    private _lineHeightFactor: number;
+    public get lineHeightFactor(): number {
+        return this._lineHeightFactor;
+    }
+    public set lineHeightFactor(lineHeightFactor: number) {
+        this._lineHeightFactor = lineHeightFactor;
+        this._doc.setLineHeightFactor(lineHeightFactor);
+        this._helperDoc.setLineHeightFactor(lineHeightFactor);
+    }
+
     public get fontStyle(): string {
         return this._fontStyle;
     }
@@ -458,11 +484,8 @@ export class DocController extends DocOptions {
         this._doc.setFont(this._fontName, fontStyle);
         this._helperDoc.setFont(this._fontName, fontStyle);
     }
-    public measureText(text: string | LocalizableString | number = 1, fontStyle: string = this._fontStyle,
-        fontSize: number = this._fontSize): ISize {
-        const oldFontSize: number = this._helperDoc.getFontSize();
-        this._helperDoc.setFontSize(fontSize);
-        this._helperDoc.setFont(this._fontName, fontStyle);
+    public measureText(text: string | LocalizableString | number = 1, style?: Readonly<Partial<ITextStyle>>): ISize {
+        this.setTextStyle(style, true);
         const height: number = this._helperDoc.getLineHeight() / this._helperDoc.internal.scaleFactor;
         let width: number = 0.0;
         if (typeof text === 'number') {
@@ -473,8 +496,7 @@ export class DocController extends DocOptions {
             width = text.split('').reduce((sm: number, cr: string) =>
                 sm + this._helperDoc.getTextWidth(cr), 0.0);
         }
-        this._helperDoc.setFontSize(oldFontSize);
-        this._helperDoc.setFont(this._fontName, 'normal');
+        this.restoreTextStyle(true);
         return {
             width: width,
             height: height
@@ -525,5 +547,110 @@ export class DocController extends DocOptions {
     }
     public setPage(index: number): void {
         this.doc.setPage(index + 1);
+    }
+    private setColor(value: string, getOldColor: ()=> string, setColorFunc: (val: string) => void) {
+        const { doc } = this;
+        const oldColor = getOldColor();
+        const { color, opacity } = SurveyHelper.parseColor(value);
+        setColorFunc(color);
+        let needRestoreGraphicsState = false;
+        if(opacity !== undefined) {
+            doc.saveGraphicsState();
+            doc.setGState(new doc.GState({ opacity }));
+            needRestoreGraphicsState = true;
+        }
+        return () => {
+            setColorFunc(oldColor);
+            if(needRestoreGraphicsState) {
+                this.doc.restoreGraphicsState();
+            }
+        };
+    }
+    private drawColorRestoreCallbacks: Array<() => void> = [];
+    public setDrawColor(color: string) {
+        this.drawColorRestoreCallbacks.push(this.setColor(color, () => this.doc.getDrawColor(), (val) => this.doc.setDrawColor(val)));
+    }
+    public restoreDrawColor() {
+        if(this.drawColorRestoreCallbacks.length > 0) {
+            this.drawColorRestoreCallbacks.pop()();
+        }
+    }
+    private fillColorRestoreCallbacks: Array<() => void> = [];
+    public setFillColor(color: string) {
+        this.fillColorRestoreCallbacks.push(this.setColor(color, () => this.doc.getFillColor(), (val) => this.doc.setFillColor(val)));
+    }
+    public restoreFillColor() {
+        if(this.fillColorRestoreCallbacks.length > 0) {
+            this.fillColorRestoreCallbacks.pop()();
+        }
+    }
+    private textColorRestoreCallbacks: Array<() => void> = [];
+    public setTextColor(color: string) {
+        this.textColorRestoreCallbacks.push(this.setColor(color, () => this.doc.getTextColor(), (val) => this.doc.setTextColor(val)));
+    }
+    public restoreTextColor() {
+        if(this.textColorRestoreCallbacks.length > 0) {
+            this.textColorRestoreCallbacks.pop()();
+        }
+    }
+    private textStyleRestoreCallbacks: Array<{ isHelper: boolean, callback: () => void }> = [];
+    public setTextStyle(style?: ITextStyle, isHelper: boolean = false) {
+        const doc = isHelper ? this.helperDoc : this.doc;
+        const oldFontSize = doc.getFontSize();
+        const oldFont = doc.getFont();
+        const oldLineHeightFactor = doc.getLineHeightFactor();
+        const fontSize = style?.fontSize ?? oldFontSize;
+        const needApplyColor = style?.fontColor && !isHelper;
+        doc.setFont(style?.fontName ?? oldFont.fontName, style?.fontStyle ?? oldFont.fontStyle);
+        doc.setFontSize(fontSize);
+        doc.setLineHeightFactor((style?.lineHeight ?? fontSize) / fontSize);
+        if(needApplyColor) {
+            this.setTextColor(style.fontColor);
+        }
+        this.textStyleRestoreCallbacks.push({ isHelper: isHelper, callback: () => {
+            doc.setFont(oldFont.fontName, oldFont.fontStyle);
+            doc.setFontSize(oldFontSize);
+            doc.setLineHeightFactor(oldLineHeightFactor);
+            if(needApplyColor) {
+                this.restoreTextColor();
+            }
+        } });
+    }
+    public restoreTextStyle(isHelper: boolean = false) {
+        const index = this.textStyleRestoreCallbacks.length - 1 - this.textStyleRestoreCallbacks.reverse().findIndex((value) => {
+            return value.isHelper === isHelper;
+        });
+        if(index < this.textStyleRestoreCallbacks.length) {
+            this.textStyleRestoreCallbacks.splice(index, 1)[0].callback();
+        }
+    }
+
+    private _AcroFormCheckBox: ({ new(): any });
+    public get AcroFormCheckBox() {
+        if(!this._AcroFormCheckBox) {
+            this._AcroFormCheckBox = getPatchedAcroFormCheckBox(this.doc);
+        }
+        return this._AcroFormCheckBox;
+    }
+    private _AcroFormComboBox: ({ new(): any });
+    public get AcroFormComboBox() {
+        if(!this._AcroFormComboBox) {
+            this._AcroFormComboBox = getPatchedAcroFormComboBox(this.doc);
+        }
+        return this._AcroFormComboBox;
+    }
+    private _AcroFormTextField: ({ new(): any });
+    public get AcroFormTextField() {
+        if(!this._AcroFormTextField) {
+            this._AcroFormTextField = getPatchedAcroFormTextField(this.doc);
+        }
+        return this._AcroFormTextField;
+    }
+    private _AcroFormRadioButton: ({ new(): any });
+    public get AcroFormRadioButton() {
+        if(!this._AcroFormRadioButton) {
+            this._AcroFormRadioButton = getPatchedAcroFormRadioButton(this.doc);
+        }
+        return this._AcroFormRadioButton;
     }
 }

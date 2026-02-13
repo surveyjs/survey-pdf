@@ -10,7 +10,8 @@
     "release": "standard-version --message \"Release: %s [azurepipelines skip]\" ",
     "doc_gen": "node doc_generator/lib_docgenerator.js src/entries/pdf.ts src/entries/forms.ts",
     "doc_update": "chmod +x ./docupdate_npm.sh && ./docupdate_npm.sh",
-    "build:all": "npm run build && npm run build:fonts && npm run build:forms",
+    "build:themes": "rollup -c rollup.themes.config.mjs --environment emitMinified",
+    "build:all": "npm run build && npm run build:fonts && npm run build:forms && npm run build:themes",
     "build": "rollup -c --environment emitMinified,emitNonSourceFiles",
     "build:fonts": "rollup -c rollup.fonts.config.mjs --environment emitMinified",
     "build:forms": "rollup -c rollup.forms.config.mjs --environment emitMinified",
@@ -23,6 +24,7 @@
     "url": "https://github.com/surveyjs/survey-pdf.git"
   },
   "dependencies": {
+    "@csstools/css-color-parser": "^3.1.0",
     "@types/node-fetch": "^2.6.13",
     "image-size": "^2.0.2",
     "jspdf": "^4.0.0",
