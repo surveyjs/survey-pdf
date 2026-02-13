@@ -1,4 +1,4 @@
-import { createEsmConfigs, createUmdConfigs } from './rollup.helpers.mjs';
+import { createEsmConfig, createUmdConfig } from './rollup.helpers.mjs';
 import { resolve } from 'node:path';
 import { env } from 'node:process';
 import { fileURLToPath, URL } from 'node:url';
@@ -7,7 +7,7 @@ const external = {
     'fs': 'fs'
 };
 export default [
-    ...createEsmConfigs({
+    createEsmConfig({
         sharedFileName: 'pdf-form-filler-shared.mjs',
         tsconfig: fileURLToPath(new URL('./tsconfig.forms.json', import.meta.url)),
         external,
@@ -17,7 +17,7 @@ export default [
             'pdf-form-filler.node': fileURLToPath(new URL('./src/entries/forms-node.ts', import.meta.url))
         },
     }),
-    ...createUmdConfigs({
+    createUmdConfig({
         tsconfig: fileURLToPath(new URL('./tsconfig.forms.json', import.meta.url)),
         external,
         declarationDir: resolve(buildPath, './forms-typings'),
@@ -31,7 +31,7 @@ export default [
             'pdf-form-filler': fileURLToPath(new URL('./src/entries/forms.ts', import.meta.url)),
         },
     }),
-    ...createUmdConfigs({
+    createUmdConfig({
         tsconfig: fileURLToPath(new URL('./tsconfig.forms.json', import.meta.url)),
         external,
         dir: buildPath,

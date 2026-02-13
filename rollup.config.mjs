@@ -1,4 +1,4 @@
-import { createEsmConfigs, createUmdConfigs } from './rollup.helpers.mjs';
+import { createEsmConfig, createUmdConfig } from './rollup.helpers.mjs';
 import { resolve } from 'node:path';
 import { fileURLToPath, URL } from 'node:url';
 import { existsSync, mkdirSync, writeFileSync, createReadStream, createWriteStream } from 'fs';
@@ -113,7 +113,7 @@ if (process.env.emitNonSourceFiles === 'true') {
     emitNonSourceFiles();
 }
 export default [
-    ...createEsmConfigs({
+    createEsmConfig({
         sharedFileName: 'pdf-shared.mjs',
         tsconfig: fileURLToPath(new URL('./tsconfig.json', import.meta.url)),
         external,
@@ -123,7 +123,7 @@ export default [
             'survey.pdf.node': fileURLToPath(new URL('./src/entries/pdf-node.ts', import.meta.url))
         }
     }),
-    ...createUmdConfigs({
+    createUmdConfig({
         tsconfig: fileURLToPath(new URL('./tsconfig.json', import.meta.url)),
         external,
         declarationDir: resolve(buildPath, './typings'),
@@ -135,7 +135,7 @@ export default [
             'survey.pdf': fileURLToPath(new URL('./src/entries/pdf.ts', import.meta.url)),
         },
     }),
-    ...createUmdConfigs({
+    createUmdConfig({
         tsconfig: fileURLToPath(new URL('./tsconfig.json', import.meta.url)),
         external,
         dir: resolve(buildPath),

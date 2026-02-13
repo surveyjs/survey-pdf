@@ -1,103 +1,111 @@
 import typescript from '@rollup/plugin-typescript';
 import nodeResolve from '@rollup/plugin-node-resolve';
-import commonjs from '@rollup/plugin-commonjs';
 import replace from '@rollup/plugin-replace';
 import bannerPlugin from 'rollup-plugin-license';
-import terser from '@rollup/plugin-terser';
 import { resolve } from 'node:path';
-import packageJSON from './package.json' assert { type: 'json' };
-const VERSION = packageJSON.version;
-const banner = [
-    'surveyjs - SurveyJS PDF library v' + VERSION,
-    'Copyright (c) 2015-' + new Date().getFullYear() + ' Devsoft Baltic OÜ  - http://surveyjs.io/',
-    'License: MIT (http://www.opensource.org/licenses/mit-license.php)'
-].join('\n');
+import { minify } from 'rollup-plugin-esbuild';
+import commonjs from '@rollup/plugin-commonjs';
 
-export function createUmdConfigs (options) {
-    const { input, globalName, external, globals, dir, tsconfig, declarationDir, emitMinified } = options;
+function getOwnBanner(version) {
+    return [
+        'surveyjs - Survey JavaScript library v' + version,
+        'Copyright (c) 2015-' + new Date().getFullYear() + ' Devsoft Baltic OÜ  - http://surveyjs.io/', // eslint-disable-line surveyjs/eslint-plugin-i18n/only-english-or-code
+        'License: MIT (http://www.opensource.org/licenses/mit-license.php)',
+    ].join('\n');
+}
+
+function wrapBanner(e) {
+    return `/*!\n${e.split('\n').map(str => ' * ' + str).join('\n')}\n */`;
+}
+
+export function createUmdConfig(options) {
+
+    const { input, globalName, external, globals, dir, tsconfig, declarationDir, emitMinified, exports, useEsbuild, version } = options;
+
     const commonOutput = {
-        dir,
+        dir: dir,
         format: 'umd',
-        exports: 'named',
+        exports: exports || 'named',
         name: globalName,
         globals: globals
     };
-    const commonOptions = {
-        input,
-        context: 'this',
-        external,
-    };
-    const commonPlugins = [
-        nodeResolve(),
-        commonjs(),
-        replace({
-            preventAssignment: false,
-            values: {
-                'process.env.RELEASE_DATE': JSON.stringify(new Date().toISOString().slice(0, 10)),
-                'process.env.VERSION': JSON.stringify(VERSION),
-            }
-        }),
-    ];
+
     if (Object.keys(input).length > 1) throw Error('umd config accepts only one input');
-    const configs = [{
-        ...commonOptions,
+
+    return {
+        context: 'this',
+        input,
+        external,
         plugins: [
+            nodeResolve(),
+            commonjs(),
+            replace({
+                preventAssignment: false,
+                values: {
+                    'process.env.RELEASE_DATE': JSON.stringify(new Date().toISOString().slice(0, 10)),
+                    'process.env.VERSION': JSON.stringify(version),
+                }
+            }),
             typescript({
-                tsconfig: tsconfig, compilerOptions: declarationDir ? {
+                tsconfig: tsconfig,
+                compilerOptions: declarationDir ? {
                     inlineSources: true,
                     sourceMap: true,
                     declaration: true,
                     declarationDir: declarationDir
                 } : {}
             }),
-            ...commonPlugins,
-            bannerPlugin({
-                banner: {
-                    content: banner,
-                    commentStyle: 'ignored',
-                }
-            }),
         ],
         output: [
-            { ...commonOutput, entryFileNames: '[name].js', sourcemap: true },
-        ],
-    }];
-    if (emitMinified) {
-        configs.push({
-            ...commonOptions,
-            plugins: [
-                typescript({
-                    tsconfig: tsconfig,
-                    sourceMap: false,
-                    inlineSources: false,
-                }),
-                ...commonPlugins,
-                terser({ format: { comments: false } }),
-                bannerPlugin({
-                    banner: {
-                        content: `For license information please see ${Object.keys(input)[0]}.min.js.LICENSE.txt`,
-                        commentStyle: 'ignored',
-                    },
-                    thirdParty: {
-                        output: {
-                            file: resolve(dir, `${Object.keys(input)[0]}.min.js.LICENSE.txt`),
-                            template: () => {
-                                return `/*!\n${banner.split('\n').map(str => ' * ' + str).join('\n')}\n */`;
+            {
+                ...commonOutput,
+                entryFileNames: '[name].js',
+                sourcemap: true,
+                plugins: [
+                    bannerPlugin({
+                        banner: {
+                            content: getOwnBanner(version),
+                            commentStyle: 'ignored',
+                        }
+                    }),
+                ]
+            },
+            emitMinified && {
+                ...commonOutput,
+                entryFileNames: '[name].min.js',
+                sourcemap: false,
+                plugins: [
+                    minify(),
+                    bannerPlugin({
+                        banner: {
+                            content: `For license information please see ${Object.keys(input)[0]}.min.js.LICENSE.txt`,
+                            commentStyle: 'ignored',
+                        },
+                        thirdParty: {
+                            output: {
+                                file: resolve(dir, `${Object.keys(input)[0]}.min.js.LICENSE.txt`),
+                                template: (dependencies) => {
+                                    return wrapBanner(getOwnBanner(version)) + '\n\n' + dependencies.map(e => {
+                                        return wrapBanner([
+                                            `${ e.name } v${e.version } | ${ e.homepage }`,
+                                            `(c) ${ e.author.name } | Released under the ${ e.license } license`
+                                        ].join('\n'));
+                                    }).join('\n\n');
+                                }
                             }
                         }
-                    }
-                })
-            ],
-            output: [
-                { ...commonOutput, entryFileNames: '[name].min.js', sourcemap: false },
-            ],
-        });
-    }
-    return configs;
+                    }),
+                ],
+            }
+        ],
+    };
 }
-export function createEsmConfigs (options) {
-    const { input, external, dir, tsconfig, sharedFileName } = options;
-    return [{
+
+export function createEsmConfig(options) {
+
+    const { input, external, dir, tsconfig, sharedFileName, version } = options;
+
+    return {
         context: 'this',
         input,
         plugins: [
@@ -107,18 +115,20 @@ export function createEsmConfigs (options) {
                 preventAssignment: false,
                 values: {
                     'process.env.RELEASE_DATE': JSON.stringify(new Date().toISOString().slice(0, 10)),
-                    'process.env.VERSION': JSON.stringify(VERSION),
+                    'process.env.VERSION': JSON.stringify(version),
                 }
             }),
-
             typescript({
-                tsconfig: tsconfig, compilerOptions: {
+                tsconfig: tsconfig,
+                compilerOptions: {
+                    declaration: false,
+                    declarationDir: null,
                     'target': 'ES6'
                 }
             }),
             bannerPlugin({
                 banner: {
-                    content: banner,
+                    content: getOwnBanner(version),
                     commentStyle: 'ignored',
                 }
             })
@@ -138,5 +148,5 @@ export function createEsmConfigs (options) {
                 },
             }
         ],
-    }];
+    };
 }
