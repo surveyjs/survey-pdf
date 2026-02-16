@@ -9,6 +9,10 @@ resources:
       type: github
       endpoint: github.com_surveyjsdeveloper
       name: surveyjs/service
+    - repository: SiteData
+      type: github
+      endpoint: github.com_surveyjsdeveloper
+      name: surveyjs/surveyjs-site-data
   pipelines:
     - pipeline: LibraryMain
       source: Library Main
@@ -34,6 +38,10 @@ pool:
 steps:
   - checkout: self
   - checkout: Service
+    persistCredentials: true
+    clean: true
+    fetchDepth: 1
+  - checkout: SiteData
     persistCredentials: true
     clean: true
     fetchDepth: 1
@@ -178,6 +186,39 @@ steps:
       git pull origin master
       git push origin master
     displayName: "git surveyjs/service push updated docs"
+
+  - task: CopyFiles@2
+    inputs:
+      SourceFolder: "$(Build.SourcesDirectory)/survey-pdf/docs"
+      Contents: |
+        classes.json
+        pmes.json
+        surveyjs_definition.json
+      TargetFolder: "$(Build.SourcesDirectory)/surveyjs-site-data/DocsPdf"
+      OverWrite: true
+      CleanTargetFolder: false
+    displayName: "copy generated docs to the local surveyjs-site-data repo"
+
+  - task: CopyFiles@2
+    inputs:
+      SourceFolder: "$(Build.SourcesDirectory)/survey-pdf"
+      Contents: "README.md"
+      TargetFolder: "$(Build.SourcesDirectory)/surveyjs-site-data/DocsPdf"
+    displayName: "copy generated docs to the local surveyjs-site-data repo"
+
+  - powershell: |
+      cd $(Build.SourcesDirectory)/surveyjs-site-data
+      $env:GIT_REDIRECT_STDERR = '2>&1'
+      git config --global user.email "surveyjs.org@gmail.com"
+      git config --global user.name "surveyjsdeveloper"
+      git pull origin master
+      git fetch origin master --tags --force
+      git checkout master
+      git add DocsPdf
+      git commit -m "updated survey-pdf docs [azurepipelines skip]"
+      git pull origin master
+      git push origin master
+    displayName: "Git surveyjs-site-data push updated docs for $(CurrentBranch)"
   # - powershell: |
   #     cd $(Build.SourcesDirectory)/service
   #     git pull origin V2
