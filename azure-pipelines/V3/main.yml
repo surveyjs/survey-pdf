@@ -31,7 +31,6 @@ trigger:
   tags:
     exclude:
       - v*.*.*
-pr: none
 
 pool:
   vmImage: "Ubuntu-22.04"
