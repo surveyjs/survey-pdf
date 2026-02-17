@@ -160,12 +160,12 @@ steps:
       CleanTargetFolder: false
     displayName: "copy generated docs to the local surveyjs/service repo"
 
-  - task: CopyFiles@2
-    inputs:
-      SourceFolder: "$(Build.SourcesDirectory)/survey-pdf"
-      Contents: "README.md"
-      TargetFolder: "$(Build.SourcesDirectory)/service/surveyjs.io/App_Data/DocsPdf"
-    displayName: "copy generated docs to the local surveyjs/service repo"
+  # - task: CopyFiles@2
+  #   inputs:
+  #     SourceFolder: "$(Build.SourcesDirectory)/survey-pdf"
+  #     Contents: "README.md"
+  #     TargetFolder: "$(Build.SourcesDirectory)/service/surveyjs.io/App_Data/DocsPdf"
+  #   displayName: "copy generated docs to the local surveyjs/service repo"
 
   # - task: DeleteFiles@1
   #   inputs:
@@ -207,18 +207,19 @@ steps:
     displayName: "copy generated docs to the local surveyjs-site-data repo"
 
   - powershell: |
+      $branch = "main"
       cd $(Build.SourcesDirectory)/surveyjs-site-data
       $env:GIT_REDIRECT_STDERR = '2>&1'
       git config --global user.email "surveyjs.org@gmail.com"
       git config --global user.name "surveyjsdeveloper"
-      git pull origin main
-      git fetch origin main --tags --force
-      git checkout main
+      git pull origin $branch
+      git fetch origin $branch --tags --force
+      git checkout $branch
       git add DocsPdf
       git commit -m "updated survey-pdf docs [azurepipelines skip]"
-      git pull origin main
-      git push origin main
-    displayName: "Git surveyjs-site-data push updated docs for $(CurrentBranch)"
+      git pull origin $branch
+      git push origin $branch
+    displayName: "Git surveyjs-site-data push updated docs for main"
   # - powershell: |
   #     cd $(Build.SourcesDirectory)/service
   #     git pull origin V2
