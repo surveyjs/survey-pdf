@@ -8,9 +8,9 @@ import commonjs from '@rollup/plugin-commonjs';
 
 function getOwnBanner(version) {
     return [
-        'surveyjs - Survey JavaScript library v' + version,
-        'Copyright (c) 2015-' + new Date().getFullYear() + ' Devsoft Baltic OÜ  - http://surveyjs.io/', // eslint-disable-line surveyjs/eslint-plugin-i18n/only-english-or-code
-        'License: MIT (http://www.opensource.org/licenses/mit-license.php)',
+        'surveyjs - SurveyJS PDF library v' + version,
+        'Copyright (c) 2015-' + new Date().getFullYear() + ' Devsoft Baltic OÜ  - http://surveyjs.io/',
+        'License: MIT (http://www.opensource.org/licenses/mit-license.php)'
     ].join('\n');
 }
 
