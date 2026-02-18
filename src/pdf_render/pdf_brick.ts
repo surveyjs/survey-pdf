@@ -1,5 +1,5 @@
 import { EventAsync } from '../event_handler/event_async';
-import { IRect, ISize, DocController } from '../doc_controller';
+import { IRect, DocController, ISize } from '../doc_controller';
 
 export type TranslateXFunction = (xLeft: number, xRight : number) => { xLeft: number, xRight: number};
 export type TranslateYFunction = (yTop: number, yBot : number) => { yTop: number, yBot: number};
@@ -15,6 +15,7 @@ export interface IPdfBrick extends IRect, ISize {
     updateRect(): void;
     increasePadding(val: { top: number, bottom: number }): void;
     isEmpty: boolean;
+    contentRect: IRect & ISize;
 }
 
 export interface IPdfBrickOptions {
@@ -165,21 +166,26 @@ export class PdfBrick implements IPdfBrick {
     private _contentRect: IRect & ISize;
     public get contentRect(): IRect & ISize {
         if(!this._contentRect) {
-            const yBot = this.yBot - this.padding.bottom;
-            const yTop = this.yTop + this.padding.top;
-            this._contentRect = {
-                yBot, yTop,
-                xLeft: this.xLeft,
-                xRight: this.xRight,
-                width: this.width,
-                height: Math.max(yBot - yTop, 0)
-            };
+            this._contentRect = this.getContentRect();
         }
         return this._contentRect;
     }
     private resetContentRect() {
         this._contentRect = undefined;
     }
+
+    protected getContentRect(): IRect & ISize {
+        const yBot = this.yBot - this.padding.bottom;
+        const yTop = this.yTop + this.padding.top;
+        return {
+            yBot, yTop,
+            xLeft: this.xLeft,
+            xRight: this.xRight,
+            width: this.width,
+            height: Math.max(yBot - yTop, 0)
+        };
+    }
+
     public updateRect(): void {}
     public get isEmpty(): boolean {
         return false;

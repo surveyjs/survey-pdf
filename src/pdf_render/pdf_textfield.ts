@@ -110,9 +110,10 @@ export class TextFieldBrick extends PdfBrick {
     }
     public updateRect(): void {
         if(this.textBrick) {
+            const width = this.width;
             this.textBrick.updateRect();
             this._xLeft = this.textBrick.xLeft;
-            this._xRight = this.textBrick.xRight;
+            this._xRight = this.textBrick.xLeft + width;
             this._yTop = this.textBrick.yTop;
             this._yBot = this.textBrick.yBot;
         }
@@ -200,5 +201,14 @@ export class TextFieldBrick extends PdfBrick {
         } else {
             super.addBeforeRenderCallback(func);
         }
+    }
+    public getContentRect() {
+        if(this.textBrick) return {
+            ...this.textBrick.contentRect,
+            xLeft: this.xLeft,
+            xRight: this.xRight,
+            width: this.xRight - this.xLeft
+        };
+        else return super.getContentRect();
     }
 }
