@@ -1,6 +1,6 @@
 import { IPoint, IRect, ISize, DocController } from '../doc_controller';
 import { IPdfBrick, IPdfBrickOptions, PdfBrick } from './pdf_brick';
-import { BorderRect, SurveyHelper } from '../helper_survey';
+import { SurveyHelper } from '../helper_survey';
 import { ISelectionInputStyle } from '../style/types';
 export interface IRadioItemBrickOptions extends IPdfBrickOptions {
     checked: boolean;
@@ -48,8 +48,7 @@ export class RadioItemBrick extends PdfBrick {
         super(controller, rect);
     }
     public async renderInteractive(): Promise<void> {
-        const formScale = SurveyHelper.getRectBorderScale(this.contentRect, this.style.borderWidth ?? 0);
-        const scaledAcroformRect = SurveyHelper.createAcroformRect(SurveyHelper.scaleRect(this.contentRect, formScale));
+        const scaledAcroformRect = SurveyHelper.createAcroformRect(SurveyHelper.createRectInsideBorders(this.contentRect, this.style.borderWidth ?? 0));
         const { color: fontColor } = SurveyHelper.parseColor(this.style.fontColor);
         if (this.options.index == 0) {
             this.radioGroupWrap.addToPdf(fontColor);
@@ -94,9 +93,9 @@ export class RadioItemBrick extends PdfBrick {
     }
     public async renderReadOnly(): Promise<void> {
         if(!!this.style.backgroundColor) {
-            const { lines, point } = SurveyHelper.getRoundedShape(this.contentRect, { ...this.style, borderRect: BorderRect.All });
             this.controller.setFillColor(this.style.backgroundColor);
-            this.controller.doc.lines(lines, point.xLeft, point.yTop, [1, 1], 'F');
+            const { lines: docLines, point } = SurveyHelper.getDocLinesFromShape(SurveyHelper.getRoundedShape(this.contentRect, this.style));
+            this.controller.doc.lines(docLines, ...point, [1, 1], 'F', true);
             this.controller.restoreFillColor();
         }
         SurveyHelper.renderFlatBorders(this.controller, this.contentRect, this.style);

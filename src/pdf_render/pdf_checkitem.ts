@@ -1,6 +1,6 @@
 import { IRect, ISize, DocController, IPoint } from '../doc_controller';
 import { IPdfBrick, IPdfBrickOptions, PdfBrick } from './pdf_brick';
-import { BorderRect, SurveyHelper } from '../helper_survey';
+import { SurveyHelper } from '../helper_survey';
 import { ISelectionInputStyle } from '../style/types';
 export interface ICheckItemBrickOptions extends IPdfBrickOptions {
     checked: boolean;
@@ -10,15 +10,13 @@ export interface ICheckItemBrickOptions extends IPdfBrickOptions {
 }
 
 export class CheckItemBrick extends PdfBrick {
-    private static readonly FONT_SIZE_SCALE: number = 0.7;
     public constructor(controller: DocController,
         rect: IRect, protected options: ICheckItemBrickOptions, protected style: ISelectionInputStyle) {
         super(controller, rect);
     }
     public async renderInteractive(): Promise<void> {
         const checkBox: any = new this.controller.AcroFormCheckBox();
-        const formScale = SurveyHelper.getRectBorderScale(this.contentRect, this.style.borderWidth ?? 0);
-        const scaledAcroformRect = SurveyHelper.createAcroformRect(SurveyHelper.scaleRect(this.contentRect, formScale));
+        const scaledAcroformRect = SurveyHelper.createAcroformRect(SurveyHelper.createRectInsideBorders(this.contentRect, this.style.borderWidth ?? 0));
         const { color: fontColor } = SurveyHelper.parseColor(this.style.fontColor);
         if(this.style.backgroundColor) {
             this.controller.setFillColor(this.style.backgroundColor);
@@ -26,7 +24,7 @@ export class CheckItemBrick extends PdfBrick {
             this.controller.restoreFillColor();
         }
         const options: any = {};
-        options.maxFontSize = this.contentRect.height * formScale.scaleY * CheckItemBrick.FONT_SIZE_SCALE;
+        options.maxFontSize = this.style.fontSize;
         options.caption = this.style.checkMark;
         options.textAlign = 'center';
         options.fieldName = this.options.fieldName;
@@ -52,9 +50,9 @@ export class CheckItemBrick extends PdfBrick {
     }
     public async renderReadOnly(): Promise<void> {
         if(!!this.style.backgroundColor) {
-            const { lines, point } = SurveyHelper.getRoundedShape(this.contentRect, { ...this.style, borderRect: BorderRect.All });
             this.controller.setFillColor(this.style.backgroundColor);
-            this.controller.doc.lines(lines, point.xLeft, point.yTop, [1, 1], 'F');
+            const { lines: docLines, point } = SurveyHelper.getDocLinesFromShape(SurveyHelper.getRoundedShape(this.contentRect, this.style));
+            this.controller.doc.lines(docLines, ...point, [1, 1], 'F', true);
             this.controller.restoreFillColor();
         }
         SurveyHelper.renderFlatBorders(this.controller, this.contentRect, this.style);

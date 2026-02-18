@@ -76,15 +76,15 @@ export interface IBorderStyle {
      * - RGB and RGBA functional notation (for example, `"rgb(255, 0, 0)"`, `"rgba(0, 0, 255, 0.5)"`)
      * - CSS-named colors (for example, `"green"`, `"red"`, `"aliceblue"`)
      */
-    borderColor?: string;
+    borderColor?: string | [string, string, string, string];
     /**
      * Specifies the border width, in points.
      */
-    borderWidth?: number;
+    borderWidth?: number | [number, number, number, number];
     /**
      * Specifies the border radius, in points.
      */
-    borderRadius?: number;
+    borderRadius?: number | [number, number, number, number];
 }
 
 /**

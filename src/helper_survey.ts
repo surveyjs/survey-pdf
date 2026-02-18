@@ -14,7 +14,7 @@ import { CompositeBrick } from './pdf_render/pdf_composite';
 import { ITextFieldBrickOptions, TextFieldBrick } from './pdf_render/pdf_textfield';
 import { FlatPanel } from './flat_layout/flat_panel';
 import { FlatPage } from './flat_layout/flat_page';
-import { mergeRects } from './utils';
+import { ISideValues, mergeRects, parseSideValues } from './utils';
 import { getImageUtils } from './utils/image';
 import { IAlignedTextStyle, IBorderStyle, IInputStyle, IPageStyle, IPanelStyle, ITextStyle } from './style/types';
 
@@ -36,7 +36,6 @@ export enum BorderRect {
 export interface IBorderExtendedStyle extends IBorderStyle {
     dashStyle?: { dashArray: [number, number] | [number], dashPhase: number };
     borderMode?: BorderMode;
-    borderRect?: BorderRect;
 }
 
 export class SurveyHelper {
@@ -463,82 +462,92 @@ export class SurveyHelper {
         controller.popMargins();
         return textFlat;
     }
-    public static getRoundedShape(rect: IRect, style: IBorderExtendedStyle): { lines: Array<Array<number>>, point: IPoint } {
-        const width = rect.xRight - rect.xLeft;
-        const height = rect.yBot - rect.yTop;
-        const k = 0.55228;
-        const borderRadius = Math.min(style.borderRadius ?? 0, width / 2, height / 2);
-        const hasTopRight = !!(style.borderRect & BorderRect.Top) && !!(style.borderRect & BorderRect.Right);
-        const hasRightBottom = !!(style.borderRect & BorderRect.Right) && !!(style.borderRect & BorderRect.Bottom);
-        const hasBottomLeft = !!(style.borderRect & BorderRect.Bottom) && !!(style.borderRect & BorderRect.Left);
-        const hasLeftTop = !!(style.borderRect & BorderRect.Left) && !!(style.borderRect & BorderRect.Top);
-        const radiusTopRight = hasTopRight ? borderRadius : 0;
-        const radiusRightBottom = hasRightBottom ? borderRadius : 0;
-        const radiusBottomLeft = hasBottomLeft ? borderRadius : 0;
-        const radiusLeftTop = hasLeftTop ? borderRadius : 0;
-        const cornerPoints = [
-            {
-                xLeft: rect.xLeft + radiusLeftTop,
-                yTop: rect.yTop,
-            },
-            {
-                xLeft: rect.xRight,
-                yTop: rect.yTop + radiusTopRight
-            },
-            {
-                xLeft: rect.xRight - radiusRightBottom,
-                yTop: rect.yBot
-            },
-            {
-                xLeft: rect.xLeft,
-                yTop: rect.yBot - radiusBottomLeft
-            }
-        ];
-        const cornerConditions = [hasTopRight, hasRightBottom, hasBottomLeft, hasLeftTop];
-        const cornerLines = [
-            [[width - (radiusLeftTop + radiusTopRight), 0]].concat(!!radiusTopRight ? [[k * radiusTopRight, 0, radiusTopRight, (1 - k) * radiusTopRight, radiusTopRight, radiusTopRight]] : []),
-            [[0, height - (radiusTopRight + radiusRightBottom)]].concat(!!radiusRightBottom ? [[0, k * radiusRightBottom, (k - 1) * radiusRightBottom, radiusRightBottom, -radiusRightBottom, radiusRightBottom]] : []),
-            [[-(width - (radiusBottomLeft + radiusRightBottom)), 0]].concat(!!radiusBottomLeft ? [[-k * radiusBottomLeft, 0, -radiusBottomLeft, (k - 1) * radiusBottomLeft, -radiusBottomLeft, -radiusBottomLeft]] : []),
-            [[0, -(height - (radiusLeftTop + radiusBottomLeft))]].concat(!!radiusLeftTop ? [[0, -k * radiusLeftTop, (1 - k) * radiusLeftTop, -radiusLeftTop, radiusLeftTop, -radiusLeftTop]] : [])
-        ];
-        let firstCornerIndex = 0;
-        let maxCornerSequence = 0;
-        let currentCornerSequence = 0;
-        for(let i = 0; i < cornerConditions.length * 2; i++) {
-            const index = i % cornerConditions.length;
-            if(cornerConditions[index]) {
-                currentCornerSequence++;
-                if(maxCornerSequence < currentCornerSequence) {
-                    maxCornerSequence = currentCornerSequence;
-                    firstCornerIndex = (i - currentCornerSequence + 1) % cornerConditions.length;
-                    if(maxCornerSequence == cornerConditions.length - 1) {
-                        break;
-                    }
-                }
-            } else {
-                currentCornerSequence = 0;
+    public static getRoundedShape(rect: IRect, style: { borderRadius?: number | [number, number, number, number], mergeAngles?: boolean | [boolean, boolean, boolean, boolean] }): ISideValues<Array<Array<number>>> {
+        const parsedMergeAngles = parseSideValues(style.mergeAngles ?? true);
+        const parsedRadius = parseSideValues(style.borderRadius ?? 0);
+        function calcAngleLine(x: number, y: number, r: number, angle: number, rotAngle: number) {
+            const l = 4/3 * Math.tan(angle / 4) * r;
+            const base = [
+                [r, 0],
+                [r, l],
+                [r * Math.cos(angle) + l * Math.sin(angle), r * Math.sin(angle) - l * Math.cos(angle)],
+                [r * Math.cos(angle), r * Math.sin(angle)],
+            ];
+            return base.reduce((acc, point) => {
+                acc.push(Math.cos(rotAngle) * point[0] - Math.sin(rotAngle) * point[1] + x);
+                acc.push(Math.sin(rotAngle) * point[0] + Math.cos(rotAngle) * point[1] + y);
+                return acc;
+            }, []);
+        }
+        const lines = {
+            top: [[rect.xLeft + parsedRadius.top, rect.yTop, rect.xRight - parsedRadius.right, rect.yTop]],
+            right: [[rect.xRight, rect.yTop + parsedRadius.right, rect.xRight, rect.yBot -parsedRadius.bot]],
+            bot: [[rect.xRight - parsedRadius.bot, rect.yBot, rect.xLeft + parsedRadius.left, rect.yBot]],
+            left: [[rect.xLeft, rect.yBot - parsedRadius.left, rect.xLeft, rect.yTop + parsedRadius.left]],
+        };
+        if(parsedRadius.top) {
+            const angle = parsedMergeAngles.top ? Math.PI / 2 : Math.PI / 4;
+            const r = parsedRadius.top;
+            lines.left.push(calcAngleLine(rect.xLeft + r, rect.yTop + r, r, angle, Math.PI));
+            if(!parsedMergeAngles.top) {
+                lines.top.unshift(calcAngleLine(rect.xLeft + r, rect.yTop + r, r, angle, Math.PI + angle));
             }
         }
-        const lines: Array<Array<number>> = [];
-        for(let i = 0; i < maxCornerSequence + 1; i ++) {
-            lines.push(...cornerLines[(firstCornerIndex + i) % cornerConditions.length]);
+        if(parsedRadius.right) {
+            const angle = parsedMergeAngles.right ? Math.PI / 2 : Math.PI / 4;
+            const r = parsedRadius.right;
+            lines.top.push(calcAngleLine(rect.xRight - r, rect.yTop + r, r, angle, 3 / 2 * Math.PI));
+            if(!parsedMergeAngles.right) {
+                lines.right.unshift(calcAngleLine(rect.xRight - r, rect.yTop + r, r, angle, 3 / 2 * Math.PI + angle));
+            }
         }
-        const point = cornerPoints[firstCornerIndex];
-
-        return { point, lines };
+        if(parsedRadius.bot) {
+            const angle = parsedMergeAngles.bot ? Math.PI / 2: Math.PI / 4;
+            const r = parsedRadius.bot;
+            lines.right.push(calcAngleLine(rect.xRight - r, rect.yBot - r, r, angle, 0));
+            if(!parsedMergeAngles.bot) {
+                lines.bot.unshift(calcAngleLine(rect.xRight - r, rect.yBot - r, r, angle, angle));
+            }
+        }
+        if(parsedRadius.left) {
+            const angle = parsedMergeAngles.left ? Math.PI / 2 : Math.PI / 4;
+            const r = parsedRadius.left;
+            lines.bot.push(calcAngleLine(rect.xLeft + r, rect.yBot - r, r, angle, Math.PI / 2));
+            if(!parsedMergeAngles.left) {
+                lines.left.unshift(calcAngleLine(rect.xLeft + r, rect.yBot - r, r, angle, Math.PI / 2 + angle));
+            }
+        }
+        return lines;
     }
-    public static renderFlatBorders(controller: DocController, options: IBorderDescription, style: IBorderExtendedStyle): void {
-        const newStyle = SurveyHelper.mergeObjects({}, { borderMode: BorderMode.Inside, borderRect: BorderRect.All }, style);
-        const borderWidth: number = newStyle.borderWidth;
-        if(!borderWidth || !newStyle.borderColor) return;
-        controller.setDrawColor(newStyle.borderColor);
-        controller.doc.setLineWidth(borderWidth);
 
-        const scaleFactor = newStyle.borderMode == BorderMode.Middle ? 0 : (newStyle.borderMode == BorderMode.Inside ? - 1 : 1) * borderWidth;
-        const scaledRect = this.scaleRect(options, {
-            scaleX: (options.width + scaleFactor) / options.width,
-            scaleY: (options.height + scaleFactor) / options.height
+    public static getDocLinesFromShape(lines: ISideValues<Array<Array<number>>>): { lines: Array<Array<number>>, point: Array<number> } {
+        const startPoint = lines.top[0].slice(0, 2);
+        let currPoint = startPoint;
+        const docLines: Array<Array<number>> = [];
+        Object.keys(lines).forEach((key: 'top' | 'bot' | 'right' | 'left') => {
+            const borderLines = lines[key];
+            return borderLines.forEach(line => {
+                line = line.slice(2);
+                docLines.push(line.map((v, i) => v - currPoint[i % 2]));
+                currPoint = line.slice(line.length - 2);
+            });
         });
+        return { lines: docLines, point: startPoint };
+    }
+
+    public static renderFlatBorders(controller: DocController, options: IBorderDescription, style: IBorderExtendedStyle): void {
+        const newStyle: Required<IBorderExtendedStyle> = SurveyHelper.mergeObjects({}, { borderMode: BorderMode.Inside }, style);
+        const borderWidth = parseSideValues(style.borderWidth);
+        if(!borderWidth || !newStyle.borderColor) return;
+
+        const scaleFactor = newStyle.borderMode == BorderMode.Middle ? 0 : (newStyle.borderMode == BorderMode.Inside ? 0.5 : -0.5);
+        const scaledRect: IRect = {
+            xLeft: options.xLeft + scaleFactor * borderWidth.left,
+            yTop: options.yTop + scaleFactor * borderWidth.top,
+            xRight: options.xRight - scaleFactor * borderWidth.right,
+            yBot: options.yBot - scaleFactor * borderWidth.bot,
+        };
+
         if(newStyle.dashStyle) {
             const dashStyle = newStyle.dashStyle;
             const borderLength = (Math.abs(scaledRect.yTop - scaledRect.yBot) + Math.abs(scaledRect.xLeft - scaledRect.xRight)) * 2;
@@ -550,21 +559,47 @@ export class SurveyHelper {
                 dashStyle.dashPhase
             );
         }
-        if(newStyle.borderRect == (BorderRect.Top | BorderRect.Bottom)) {
-            controller.doc.line(scaledRect.xLeft, scaledRect.yTop, scaledRect.xRight, scaledRect.yTop);
-            controller.doc.line(scaledRect.xLeft, scaledRect.yBot, scaledRect.xRight, scaledRect.yBot);
-        }
-        else if(newStyle.borderRect == (BorderRect.Right | BorderRect.Left)) {
-            controller.doc.line(scaledRect.xLeft, scaledRect.yTop - borderWidth / 2, scaledRect.xLeft, scaledRect.yBot + borderWidth / 2);
-            controller.doc.line(scaledRect.xRight, scaledRect.yTop - borderWidth / 2, scaledRect.xRight, scaledRect.yBot + borderWidth / 2);
+        const mergeAngles = new Array<boolean>(4).fill(false, 0, 4).map((_, i) => {
+            return [newStyle.borderColor, newStyle.borderWidth].every((arr) => {
+                if(Array.isArray(arr)) {
+                    if(arr[i - 1 < 0 ? arr.length - 1 : i - 1] !== arr[i]) {
+                        return false;
+                    }
+                }
+                return true;
+            });
+        }) as [boolean, boolean, boolean, boolean];
+        const lines = SurveyHelper.getRoundedShape(scaledRect, { ...newStyle, mergeAngles: mergeAngles });
+        if([newStyle.borderColor, newStyle.borderWidth].every((arr) => Array.isArray(arr) ? arr.every(el => el == arr[0]) : true)) {
+            controller.setDrawColor(Array.isArray(newStyle.borderColor) ? newStyle.borderColor[0] : newStyle.borderColor);
+            controller.doc.setLineWidth(Array.isArray(newStyle.borderWidth) ? newStyle.borderWidth[0] : newStyle.borderWidth);
+            const { lines: docLines, point } = this.getDocLinesFromShape(lines);
+            controller.doc.lines(docLines, ...point, [1, 1], 'S', true);
+            controller.restoreDrawColor();
         } else {
-            const { lines, point } = SurveyHelper.getRoundedShape(scaledRect, newStyle);
-            controller.doc.lines(lines, point.xLeft, point.yTop, [1, 1], 'S', newStyle.borderRect == BorderRect.All);
+            const parsedBorderColor = parseSideValues(newStyle.borderColor);
+            const parsedBorderWidth = parseSideValues(newStyle.borderWidth);
+            Object.keys(lines).forEach((key: keyof ISideValues) => {
+                if(parsedBorderWidth[key]) {
+                    const borderLines = lines[key];
+                    const point = borderLines[0].slice(0, 2);
+                    let currPoint = point;
+                    const docLines = borderLines.map(line => {
+                        line = line.slice(2);
+                        const transformedLine = line.map((v, i) => v - currPoint[i % 2]);
+                        currPoint = line.slice(line.length - 2);
+                        return transformedLine;
+                    });
+                    controller.setDrawColor(parsedBorderColor[key]);
+                    controller.doc.setLineWidth(parsedBorderWidth[key]);
+                    controller.doc.lines(docLines, ...point, [1, 1], 'S', false);
+                    controller.restoreDrawColor();
+                }
+            });
         }
         if(newStyle.dashStyle) {
             controller.doc.setLineDashPattern([]);
         }
-        controller.restoreDrawColor();
     }
     public static getLocString(text: LocalizableString): string {
         if (this.hasHtml(text)) return text.renderedHtml;
@@ -610,20 +645,14 @@ export class SurveyHelper {
             yBot: top + rect.yBot - rect.yTop
         };
     }
-    public static scaleRect(rect: IRect, scale: number | { scaleX: number, scaleY: number }): IRect {
-        const scaleX = typeof scale == 'number' ? scale : scale.scaleX;
-        const scaleY = typeof scale == 'number' ? scale : scale.scaleY;
-        const scaleWidth: number = (rect.xRight - rect.xLeft) * (1.0 - scaleX) / 2.0;
-        const scaleHeight: number = (rect.yBot - rect.yTop) * (1.0 - scaleY) / 2.0;
+    public static createRectInsideBorders(rect: IRect, borderWidth: number | Array<number>): IRect {
+        const parsedBorderWidth = parseSideValues(borderWidth);
         return {
-            xLeft: rect.xLeft + scaleWidth,
-            yTop: rect.yTop + scaleHeight,
-            xRight: rect.xRight - scaleWidth,
-            yBot: rect.yBot - scaleHeight
+            xLeft: rect.xLeft + parsedBorderWidth.left,
+            yTop: rect.yTop + parsedBorderWidth.top,
+            xRight: rect.xRight - parsedBorderWidth.right,
+            yBot: rect.yBot - parsedBorderWidth.bot
         };
-    }
-    public static getRectBorderScale(flat: ISize, borderWidth: number): { scaleX: number, scaleY: number } {
-        return { scaleX: (flat.width - borderWidth * 2) / flat.width, scaleY: (flat.height - borderWidth * 2) / flat.height };
     }
     public static getFlatQuestion(survey: SurveyPDF, controller: DocController, question: Question) {
         const questionType: string = this.getContentQuestionType(question, survey);

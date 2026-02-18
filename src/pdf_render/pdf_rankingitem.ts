@@ -13,8 +13,7 @@ export class RankingItemBrick extends PdfBrick {
         super(controller, rect);
     }
     public async renderInteractive(): Promise<void> {
-        const formScale = SurveyHelper.getRectBorderScale(this.contentRect, this.style.borderWidth ?? 0);
-        const scaledRect = SurveyHelper.scaleRect(this.contentRect, formScale);
+        const scaledRect = SurveyHelper.createRectInsideBorders(this.contentRect, this.style.borderWidth ?? 0);
         const scaledRectWidth = scaledRect.xRight - scaledRect.xLeft;
         const scaledRectHeight = scaledRect.yBot - scaledRect.yTop;
         const scaledAcroformRect = SurveyHelper.createAcroformRect(scaledRect);

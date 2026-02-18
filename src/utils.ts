@@ -16,14 +16,14 @@ export function mergeRects(...rects: IRect[]): IRect {
     return resultRect;
 }
 
-export interface IPadding {
-    top: number;
-    bot: number;
-    left: number;
-    right: number;
+export interface ISideValues<T = number> {
+    top: T;
+    bot: T;
+    left: T;
+    right: T;
 }
 
-export function parsePadding(padding: Array<number> | number): IPadding {
+export function parseSideValues<T = number>(padding: Array<T> | T): ISideValues<T> {
     if (Array.isArray(padding) && padding.length > 1) {
         if (padding.length == 2) {
             return {

@@ -12,7 +12,7 @@ import { SurveyHelper } from './helper_survey';
 import { IDocStyle } from './style/types';
 import { createStyleFromTheme, getDefaultStyleFromTheme } from './style';
 import { DefaultLight } from './themes/default-light';
-import { parsePadding } from './utils';
+import { parseSideValues } from './utils';
 import { ITextStyle, ISelectionInputStyle, IQuestionStyle, IPageStyle, IPanelStyle } from './style/types';
 
 /**
@@ -415,7 +415,7 @@ export class SurveyPDF extends SurveyModel {
         this.stylesHash = {};
     }
     private createController(): DocController {
-        const marginsFromStyle = parsePadding(this.style.survey.padding);
+        const marginsFromStyle = parseSideValues(this.style.survey.padding);
         Object.keys(marginsFromStyle).forEach((key: 'top' | 'left' | 'bot' | 'right') => {
             marginsFromStyle[key] /= DocOptions.MM_TO_PT;
         });

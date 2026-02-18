@@ -22,9 +22,8 @@ export class DropdownBrick extends PdfBrick {
         const comboBox = new this.controller.AcroFormComboBox();
         comboBox.backgroundColor = backgroundColor;
         comboBox.fieldName = this.options.fieldName;
-        comboBox.Rect = SurveyHelper.createAcroformRect(
-            SurveyHelper.scaleRect(this.contentRect,
-                SurveyHelper.getRectBorderScale(this.contentRect, this.style.borderWidth ?? 0)));
+        comboBox.Rect = SurveyHelper.createAcroformRect(SurveyHelper.createRectInsideBorders(this.contentRect, this.style.borderWidth ?? 0));
+
         comboBox.edit = false;
         comboBox.color = fontColor;
         const options: string[] = [];

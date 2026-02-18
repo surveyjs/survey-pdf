@@ -34,8 +34,7 @@ export class TextFieldBrick extends PdfBrick {
             this.renderColorQuestion();
             return;
         }
-        const formScale = SurveyHelper.getRectBorderScale(this.contentRect, this.style.borderWidth ?? 0);
-        const scaledAcroformRect = SurveyHelper.createAcroformRect(SurveyHelper.scaleRect(this.contentRect, formScale));
+        const scaledAcroformRect = SurveyHelper.createAcroformRect(SurveyHelper.createRectInsideBorders(this.contentRect, this.style.borderWidth ?? 0));
         if(this.style.backgroundColor) {
             this.controller.setFillColor(this.style.backgroundColor);
             this.controller.doc.rect(...scaledAcroformRect, 'F');
