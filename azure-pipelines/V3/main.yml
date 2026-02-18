@@ -200,12 +200,12 @@ steps:
       CleanTargetFolder: false
     displayName: "copy generated docs to the local surveyjs-site-data repo"
 
-  - task: CopyFiles@2
-    inputs:
-      SourceFolder: "$(Build.SourcesDirectory)/survey-pdf"
-      Contents: "README.md"
-      TargetFolder: "$(Build.SourcesDirectory)/surveyjs-site-data/DocsPdf"
-    displayName: "copy generated docs to the local surveyjs-site-data repo"
+  # - task: CopyFiles@2
+  #   inputs:
+  #     SourceFolder: "$(Build.SourcesDirectory)/survey-pdf"
+  #     Contents: "README.md"
+  #     TargetFolder: "$(Build.SourcesDirectory)/surveyjs-site-data/DocsPdf"
+  #   displayName: "copy generated docs to the local surveyjs-site-data repo"
 
   - powershell: |
       $branch = "V3"
