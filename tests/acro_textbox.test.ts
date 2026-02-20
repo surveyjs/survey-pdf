@@ -46,7 +46,7 @@ test('Set textbox no value', async () => {
             }
         ]
     };
-    await checkTextboxValue(json, ' ');
+    await checkTextboxValue(json, '');
 });
 test('Set textbox default value', async () => {
     let json: any = {
@@ -59,7 +59,7 @@ test('Set textbox default value', async () => {
             }
         ]
     };
-    await checkTextboxValue(json, ' ' + json.questions[0].defaultValue);
+    await checkTextboxValue(json, json.questions[0].defaultValue);
 });
 test('Set textbox data value', async () => {
     let json: any = {
@@ -74,7 +74,7 @@ test('Set textbox data value', async () => {
     let data: any = {
         textbox: 'Spider pig'
     };
-    await checkTextboxValue(json, ' ' + data.textbox, data);
+    await checkTextboxValue(json, data.textbox, data);
 });
 test('Set textbox data value with default value', async () => {
     let json: any = {
@@ -90,7 +90,7 @@ test('Set textbox data value with default value', async () => {
     let data: any = {
         textbox: 'Invisible black'
     };
-    await checkTextboxValue(json, ' ' + data.textbox, data);
+    await checkTextboxValue(json, data.textbox, data);
 });
 test('Check textbox password value is empty string', async () => {
     let json: any = {
@@ -163,7 +163,7 @@ test('Check textbox placeHolder', async () => {
             }
         ]
     };
-    await checkTextboxValue(json, ' ', null, ' ' + json.questions[0].placeHolder);
+    await checkTextboxValue(json, '', null, json.questions[0].placeHolder);
 });
 test('Check textbox defaultValue with placeHolder', async () => {
     let json: any = {
@@ -177,8 +177,8 @@ test('Check textbox defaultValue with placeHolder', async () => {
             }
         ]
     };
-    await checkTextboxValue(json, ' ' + json.questions[0].defaultValue,
-        null, ' ' + json.questions[0].placeHolder);
+    await checkTextboxValue(json, '' + json.questions[0].defaultValue,
+        null, '' + json.questions[0].placeHolder);
 });
 test('Check textbox data with defaultValue and placeHolder', async () => {
     let json: any = {
@@ -195,8 +195,8 @@ test('Check textbox data with defaultValue and placeHolder', async () => {
     let data: any = {
         textbox_data_default_placeholder: 'phoenix'
     };
-    await checkTextboxValue(json, ' ' + data.textbox_data_default_placeholder,
-        data, ' ' + json.questions[0].placeHolder);
+    await checkTextboxValue(json, '' + data.textbox_data_default_placeholder,
+        data, '' + json.questions[0].placeHolder);
 });
 test('Check not readOnly textbox', async () => {
     let json: any = {
@@ -208,7 +208,7 @@ test('Check not readOnly textbox', async () => {
             }
         ]
     };
-    await checkTextboxValue(json, ' ', null, ' ', false);
+    await checkTextboxValue(json, '', null, '', false);
 });
 test('Check readOnly textbox', async () => {
     let json: any = {
@@ -221,7 +221,7 @@ test('Check readOnly textbox', async () => {
             }
         ]
     };
-    await checkTextboxValue(json, ' ', null, ' ', true);
+    await checkTextboxValue(json, '', null, '', true);
 });
 test('Set comment no value', async () => {
     let json: any = {
@@ -233,7 +233,7 @@ test('Set comment no value', async () => {
             }
         ]
     };
-    await checkTextboxValue(json, ' ');
+    await checkTextboxValue(json, '');
 });
 test('Check comment shouldRenderBoders method', async () => {
     const commentQuestion = new QuestionCommentModel('');
@@ -243,40 +243,40 @@ test('Check comment shouldRenderBoders method', async () => {
     dropdownQuestion.value = 'other';
     const controller = new DocController();
     expect(
-        (await (new FlatComment(undefined as any, commentQuestion, controller)).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0]['shouldRenderFlatBorders']()).toBeTruthy();
+        (await (new FlatComment(undefined as any, commentQuestion, controller, { spacing: {} })).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0]['shouldRenderFlatBorders']()).toBeTruthy();
     expect(
-        (await (new FlatTextbox(undefined as any, textQuestion, controller)).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0]['shouldRenderFlatBorders']()).toBeTruthy();
+        (await (new FlatTextbox(undefined as any, textQuestion, controller, { spacing: {} })).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0]['shouldRenderFlatBorders']()).toBeTruthy();
     expect(
-        (await (new FlatDropdown(undefined as any, dropdownQuestion, controller)).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0]['bricks'][1]['shouldRenderFlatBorders']()).toBeTruthy();
+        (await (new FlatDropdown(undefined as any, dropdownQuestion, controller, { spacing: {} })).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0]['bricks'][1]['shouldRenderFlatBorders']()).toBeTruthy();
 
     const oldReadOnlyCommentRenderMode = settings.readOnlyCommentRenderMode;
     const oldReadOnlyTextRenderMode = settings.readOnlyTextRenderMode;
 
     settings.readOnlyCommentRenderMode = 'div';
     expect(
-        (await (new FlatComment(undefined as any, commentQuestion, controller)).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0]['shouldRenderFlatBorders']()).toBeFalsy();
+        (await (new FlatComment(undefined as any, commentQuestion, controller, { spacing: {} })).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0]['shouldRenderFlatBorders']()).toBeFalsy();
     expect(
-        (await (new FlatTextbox(undefined as any, textQuestion, controller)).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0]['shouldRenderFlatBorders']()).toBeTruthy();
+        (await (new FlatTextbox(undefined as any, textQuestion, controller, { spacing: {} })).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0]['shouldRenderFlatBorders']()).toBeTruthy();
     expect(
-        (await (new FlatDropdown(undefined as any, dropdownQuestion, controller)).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0]['bricks'][1]['shouldRenderFlatBorders']()).toBeFalsy();
+        (await (new FlatDropdown(undefined as any, dropdownQuestion, controller, { spacing: {} })).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0]['bricks'][1]['shouldRenderFlatBorders']()).toBeFalsy();
 
     settings.readOnlyCommentRenderMode = 'textarea';
     settings.readOnlyTextRenderMode = 'div';
     expect(
-        (await (new FlatComment(undefined as any, commentQuestion, controller)).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0]['shouldRenderFlatBorders']()).toBeTruthy();
+        (await (new FlatComment(undefined as any, commentQuestion, controller, { spacing: {} })).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0]['shouldRenderFlatBorders']()).toBeTruthy();
     expect(
-        (await (new FlatTextbox(undefined as any, textQuestion, controller)).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0]['shouldRenderFlatBorders']()).toBeFalsy();
+        (await (new FlatTextbox(undefined as any, textQuestion, controller, { spacing: {} })).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0]['shouldRenderFlatBorders']()).toBeFalsy();
     expect(
-        (await (new FlatDropdown(undefined as any, dropdownQuestion, controller)).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0]['bricks'][1]['shouldRenderFlatBorders']()).toBeTruthy();
+        (await (new FlatDropdown(undefined as any, dropdownQuestion, controller, { spacing: {} })).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0]['bricks'][1]['shouldRenderFlatBorders']()).toBeTruthy();
 
     settings.readOnlyCommentRenderMode = 'div';
 
     expect(
-        (await (new FlatComment(undefined as any, commentQuestion, controller)).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0]['shouldRenderFlatBorders']()).toBeFalsy();
+        (await (new FlatComment(undefined as any, commentQuestion, controller, { spacing: {} })).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0]['shouldRenderFlatBorders']()).toBeFalsy();
     expect(
-        (await (new FlatTextbox(undefined as any, textQuestion, controller)).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0]['shouldRenderFlatBorders']()).toBeFalsy();
+        (await (new FlatTextbox(undefined as any, textQuestion, controller, { spacing: {} })).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0]['shouldRenderFlatBorders']()).toBeFalsy();
     expect(
-        (await (new FlatDropdown(undefined as any, dropdownQuestion, controller)).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0]['bricks'][1]['shouldRenderFlatBorders']()).toBeFalsy();
+        (await (new FlatDropdown(undefined as any, dropdownQuestion, controller, { spacing: {} })).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0]['bricks'][1]['shouldRenderFlatBorders']()).toBeFalsy();
 
     settings.readOnlyTextRenderMode = oldReadOnlyTextRenderMode;
     settings.readOnlyCommentRenderMode = oldReadOnlyCommentRenderMode;
@@ -295,5 +295,5 @@ test('Text question display value with rtl', async () => {
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     controller['_isRTL'] = true;
     await survey['renderSurvey'](controller);
-    expect(controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields[0].value).toBe(' ' + 'eulaV');
+    expect(controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields[0].value).toBe('eulaV');
 });

@@ -1,0 +1,33 @@
+[
+	{
+		"brickType": "TextFieldBrick",
+		"width": 17.28,
+		"height": 18,
+		"xLeft": 34.72145669291339,
+		"xRight": 52.00145669291339,
+		"yTop": 34.72145669291339,
+		"yBot": 52.72145669291339,
+		"style": {
+			"fontSize": 12,
+			"fontName": "helvetica",
+			"fontStyle": "normal",
+			"lineHeight": 18,
+			"fontColor": "#1c1b20"
+		},
+		"options": {
+			"value": "5%",
+			"isReadOnly": true,
+			"shouldRenderReadOnly": true,
+			"fieldName": "testidquestion_exp",
+			"shouldRenderBorders": true,
+			"rows": 1,
+			"isMultiline": false,
+			"placeholder": "",
+			"inputType": ""
+		},
+		"padding": {
+			"top": 0,
+			"bottom": 0
+		}
+	}
+]

@@ -1,33 +1,27 @@
-import { IQuestion, ItemValue, QuestionRankingModel } from 'survey-core';
-import { SurveyPDF } from '../survey';
-import { IPoint, IRect, DocController } from '../doc_controller';
+import { ItemValue, QuestionRankingModel } from 'survey-core';
+import { IPoint } from '../doc_controller';
 import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
-import { TextBrick } from '../pdf_render/pdf_text';
 import { RankingItemBrick } from '../pdf_render/pdf_rankingitem';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { SurveyHelper } from '../helper_survey';
 import { ColoredBrick } from '../pdf_render/pdf_coloredbrick';
+import { IQuestionRankingStyle } from '../style/types';
 
-export class FlatRanking extends FlatQuestion {
-    protected question: QuestionRankingModel;
-    public constructor(protected survey: SurveyPDF,
-        question: IQuestion, protected controller: DocController) {
-        super(survey, question, controller);
-        this.question = <QuestionRankingModel>question;
-    }
+export class FlatRanking extends FlatQuestion<QuestionRankingModel, IQuestionRankingStyle> {
     protected async generateFlatComposite(point: IPoint, item: ItemValue, index: number, unrankedItem: boolean = false): Promise<IPdfBrick> {
-        const itemRect: IRect = SurveyHelper.createRect(point,
-            this.controller.unitWidth, this.controller.unitHeight);
-        const itemScaledRect: IRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(
-            itemRect, SurveyHelper.SELECT_ITEM_FLAT_SCALE), point.xLeft);
-        const itemFlat: IPdfBrick = new RankingItemBrick(this.question, this.controller,
-            itemScaledRect, unrankedItem ? '-' : this.question.getNumberByIndex(index));
+        const itemFlat: IPdfBrick = new RankingItemBrick(this.controller,
+            SurveyHelper.createRect(point, this.style.input.width, this.style.input.height),
+            {
+                mark: this.question.getNumberByIndex(index) || ''
+            },
+            SurveyHelper.getPatchedTextStyle(this.controller, this.style.input));
         const textPoint: IPoint = SurveyHelper.clone(point);
-        textPoint.xLeft = itemFlat.xRight + this.controller.unitWidth * SurveyHelper.GAP_BETWEEN_ITEM_TEXT;
+        textPoint.xLeft = itemFlat.xRight + this.style.spacing.choiceTextGap;
         const textFlat: IPdfBrick = await SurveyHelper.createTextFlat(
-            textPoint, this.question, this.controller, item.locText, TextBrick);
+            textPoint, this.controller, item.locText, this.style.choiceText);
+        SurveyHelper.alignVerticallyBricks('center', itemFlat, textFlat.unfold()[0]);
         return new CompositeBrick(itemFlat, textFlat);
     }
     public async generateChoicesColumn(point: IPoint, choices: ItemValue[], unrankedChoices: boolean = false): Promise<IPdfBrick[]> {
@@ -35,7 +29,7 @@ export class FlatRanking extends FlatQuestion {
         const flats: IPdfBrick[] = [];
         for (let i: number = 0; i < choices.length; i++) {
             const itemFlat: IPdfBrick = await this.generateFlatComposite(currPoint, choices[i], i, unrankedChoices);
-            currPoint.yTop = itemFlat.yBot + SurveyHelper.GAP_BETWEEN_ROWS * this.controller.unitHeight;
+            currPoint.yTop = itemFlat.yBot + this.style.spacing.choiceGap;
             flats.push(itemFlat);
         }
         return flats;
@@ -45,13 +39,13 @@ export class FlatRanking extends FlatQuestion {
         const flats: IPdfBrick[] = [];
         if(this.question.rankingChoices.length !== 0) {
             flats.push(...await this.generateChoicesColumn(currPoint, this.question.rankingChoices));
-            currPoint.yTop = flats[flats.length - 1].yBot + 2 * (SurveyHelper.GAP_BETWEEN_ROWS * this.controller.unitHeight);
+            currPoint.yTop = flats[flats.length - 1].yBot + 2 * this.style.spacing.choiceGap;
         }
         const separatorRect = SurveyHelper.createRect({
             xLeft: currPoint.xLeft,
-            yTop: currPoint.yTop - (SurveyHelper.GAP_BETWEEN_ROWS * this.controller.unitHeight) - 0.5,
-        }, this.controller.paperWidth - this.controller.margins.right - currPoint.xLeft, 1);
-        flats.push(new ColoredBrick(this.controller, separatorRect, SurveyHelper.FORM_BORDER_COLOR));
+            yTop: currPoint.yTop - this.style.spacing.choiceGap - 0.5,
+        }, this.controller.paperWidth - this.controller.margins.right - currPoint.xLeft, this.style.selectToRankAreaSeparator.width);
+        flats.push(new ColoredBrick(this.controller, separatorRect, { color: this.style.selectToRankAreaSeparator.color }));
 
         flats.push(...await this.generateChoicesColumn(currPoint, this.question.unRankingChoices, true));
         return flats;
@@ -67,7 +61,7 @@ export class FlatRanking extends FlatQuestion {
             for (let item of [this.question.unRankingChoices[i], this.question.rankingChoices[i]]) {
                 if(!!item) {
                     this.controller.pushMargins(this.controller.margins.left, this.controller.margins.right);
-                    SurveyHelper.setColumnMargins(this.controller, colCount, colIndex);
+                    SurveyHelper.setColumnMargins(this.controller, colCount, colIndex, this.style.spacing.choiceColumnGap);
                     currPoint.xLeft = this.controller.margins.left;
                     const itemFlat: IPdfBrick = await this.generateFlatComposite(
                         currPoint, item, i, colIndex == 0);
@@ -83,11 +77,16 @@ export class FlatRanking extends FlatQuestion {
                 xLeft: this.controller.margins.left + SurveyHelper.getPageAvailableWidth(this.controller) / 2 - 0.5,
                 yTop: currPoint.yTop,
             }, 0, 0);
-            row.addBrick(new ColoredBrick(this.controller, separatorRect, SurveyHelper.FORM_BORDER_COLOR, 1, rowLineFlat.yBot - currPoint.yTop + (i !== rowsCount - 1 ?
-                SurveyHelper.GAP_BETWEEN_ROWS * this.controller.unitHeight : 0)));
+            const gapBetweenRows = this.style.spacing.choiceGap;
+            row.addBrick(new ColoredBrick(this.controller, separatorRect,
+                {
+                    color: this.style.selectToRankAreaSeparator.color,
+                    renderWidth: this.style.selectToRankAreaSeparator.width,
+                    renderHeight: rowLineFlat.yBot - currPoint.yTop + (i !== rowsCount - 1 ? gapBetweenRows : 0)
+                }
+            ));
 
-            currPoint.yTop = rowLineFlat.yBot +
-                SurveyHelper.GAP_BETWEEN_ROWS * this.controller.unitHeight;
+            currPoint.yTop = rowLineFlat.yBot + gapBetweenRows;
             row = new CompositeBrick();
         }
         return flats;

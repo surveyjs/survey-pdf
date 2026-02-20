@@ -7,8 +7,11 @@ import { FlatTextbox } from '../src/flat_layout/flat_textbox';
 import { TestHelper } from '../src/helper_test';
 import { DocController, DocOptions } from '../src/doc_controller';
 import { FlatRepository } from '../src/flat_layout/flat_repository';
-import { TextBoldBrick } from '../src/pdf_render/pdf_textbold';
-import { SurveyHelper } from '../src/helper_survey';
+import { checkPDFSnapshot } from './snapshot_helper';
+import { TextBrick } from '../src/pdf_render/pdf_text';
+import '../src/flat_layout/flat_checkbox';
+import '../src/flat_layout/flat_radiogroup';
+import { IDocStyle } from '../src/style/types';
 let __dummy_tx = new FlatTextbox(null, null, null);
 
 test('Check raw method', async () => {
@@ -54,7 +57,7 @@ test('check that default font name is set correct in DocOptions', async () => {
 });
 
 class Log {
-    public log: string = ''
+    public log: string = '';
 }
 class SurveyPDFSaveTester extends SurveyPDF {
     private logger: Log;
@@ -128,10 +131,10 @@ test('Check surveyPDF isRTL options', (done) => {
         originalXRight = titleBrick.xRight;
     });
     surveyPDF.onRenderHeader.add((sender, options) => {
-        const titleBrick = <TextBoldBrick>options['packs'][0].unfold()[0];
+        const titleBrick = <TextBrick>(options.packs[0].unfold()[0]);
         expect(titleBrick.xLeft).toBeCloseTo(options.controller.paperWidth - originalXRight);
         expect(titleBrick.xRight).toBeCloseTo(options.controller.paperWidth - originalXLeft);
-        expect(titleBrick['align']).toEqual({ 'align': 'right', 'baseline': 'middle', 'isInputRtl': false, 'isOutputRtl': true });
+        expect(titleBrick['align']).toEqual({ 'align': 'right', 'baseline': 'middle', 'isInputRtl': false, 'isOutputRtl': true, 'lineHeightFactor': 1.15 });
         done();
     });
     surveyPDF.raw();
@@ -192,4 +195,75 @@ test('Check questionsOnPageMode: "inputPerPage"', async () => {
     expect(survey.visiblePages[1].rows[0].elements[0].name).toBe('q3');
     expect(survey.visiblePages[1].rows[1].elements.length).toBe(1);
     expect(survey.visiblePages[1].rows[1].elements[0].name).toBe('q4');
+});
+
+test('check rendered navigation for survey', async () => {
+    checkPDFSnapshot({
+        pages: [{
+            title: 'Page1',
+            elements: [
+                {
+                    type: 'checkbox',
+                    name: 'Checkbox',
+                    title: 'Checkbox',
+                    choices: ['Item1', 'Item2', 'Item3', 'Item4', 'Item5', 'Item6', 'Item7', 'Item8', 'Item9', 'Item10', 'Item11', 'Item12', 'Item13', 'Item14', 'Item15'],
+                },
+                {
+                    type: 'radiogroup',
+                    name: 'radiogroup',
+                    title: 'Radiogroup',
+                    choices: ['Item1', 'Item2', 'Item3', 'Item4', 'Item5', 'Item6', 'Item7', 'Item8', 'Item9', 'Item10', 'Item11', 'Item12', 'Item13', 'Item14', 'Item15'],
+                },
+                {
+                    type: 'panel',
+                    title: 'Panel',
+                    elements: [
+                        {
+                            type: 'text',
+                            name: 'question1',
+                            title: 'Question 1'
+                        },
+                        {
+                            type: 'text',
+                            name: 'question2',
+                            title: 'Question 2'
+                        },
+                    ]
+                },
+            ]
+        },
+        {
+            title: 'Page2',
+            elements: [
+                {
+                    type: 'text',
+                    name: 'question1',
+                    title: 'Question 3'
+                },
+                {
+                    type: 'text',
+                    name: 'question2',
+                    title: 'Question 4'
+                },
+            ]
+        }
+        ]
+    }, {
+        snapshotName: 'toc.pdf',
+        controllerOptions: {
+            showNavigation: true
+        }
+    });
+});
+
+test('check applyStyle method', async () => {
+    const survey = new SurveyPDF({});
+    expect((survey.style as any).test).toBe(undefined);
+    expect((survey.style as any).test2).toBe(undefined);
+    survey.applyStyle({ test: 'testValue' } as IDocStyle);
+    expect((survey.style as any).test).toBe('testValue');
+    expect((survey.style as any).test2).toBe(undefined);
+    survey.applyStyle(() => { return { test2: 'testValue2' } as IDocStyle; });
+    expect((survey.style as any).test).toBe('testValue');
+    expect((survey.style as any).test2).toBe('testValue2');
 });

@@ -1,0 +1,144 @@
+[
+	{
+		"brickType": "CompositeBrick",
+		"width": 538.5826771653543,
+		"height": 93.75,
+		"xLeft": 28.34645669291339,
+		"xRight": 566.9291338582677,
+		"yTop": 28.34645669291339,
+		"yBot": 122.09645669291339,
+		"bricks": [
+			{
+				"brickType": "ContainerBrick",
+				"width": 538.5826771653543,
+				"height": 45,
+				"xLeft": 28.34645669291339,
+				"xRight": 566.9291338582677,
+				"yTop": 28.34645669291339,
+				"yBot": 73.34645669291339,
+				"bricks": [
+					{
+						"brickType": "CompositeBrick",
+						"width": 115.56000000000003,
+						"height": 24.000000000000004,
+						"xLeft": 28.34645669291339,
+						"xRight": 143.90645669291342,
+						"yTop": 28.34645669291339,
+						"yBot": 52.34645669291339,
+						"bricks": [
+							{
+								"brickType": "TextBrick",
+								"width": 115.56000000000003,
+								"height": 24.000000000000004,
+								"xLeft": 28.34645669291339,
+								"xRight": 143.90645669291342,
+								"yTop": 28.34645669291339,
+								"yBot": 52.34645669291339,
+								"style": {
+									"fontSize": 18,
+									"fontName": "helvetica",
+									"fontStyle": "bold",
+									"lineHeight": 24,
+									"fontColor": "#1c1b20",
+									"textAlign": "left"
+								},
+								"options": {
+									"text": "The sun rises"
+								},
+								"padding": {
+									"top": 0,
+									"bottom": 0
+								}
+							}
+						]
+					},
+					{
+						"brickType": "CompositeBrick",
+						"width": 123.95999999999995,
+						"height": 18,
+						"xLeft": 28.34645669291339,
+						"xRight": 152.30645669291334,
+						"yTop": 55.34645669291339,
+						"yBot": 73.34645669291339,
+						"bricks": [
+							{
+								"brickType": "TextBrick",
+								"width": 123.95999999999995,
+								"height": 18,
+								"xLeft": 28.34645669291339,
+								"xRight": 152.30645669291334,
+								"yTop": 55.34645669291339,
+								"yBot": 73.34645669291339,
+								"style": {
+									"fontSize": 12,
+									"fontName": "helvetica",
+									"fontStyle": "normal",
+									"lineHeight": 18,
+									"fontColor": "#1c1b2099",
+									"textAlign": "left"
+								},
+								"options": {
+									"text": "Over the Huanghe river"
+								},
+								"padding": {
+									"top": 0,
+									"bottom": 0
+								}
+							}
+						]
+					},
+					{
+						"brickType": "RowlineBrick",
+						"width": 538.5826771653543,
+						"height": 0,
+						"xLeft": 28.34645669291339,
+						"xRight": 566.9291338582677,
+						"yTop": 73.34645669291339,
+						"yBot": 73.34645669291339
+					}
+				]
+			},
+			{
+				"brickType": "TextFieldBrick",
+				"width": 525.8326771653543,
+				"height": 30.75,
+				"xLeft": 34.72145669291339,
+				"xRight": 560.5541338582677,
+				"yTop": 91.34645669291339,
+				"yBot": 122.09645669291339,
+				"style": {
+					"fontSize": 12,
+					"fontName": "helvetica",
+					"fontStyle": "normal",
+					"lineHeight": 18,
+					"fontColor": "#1c1b20",
+					"backgroundColor": "#ffffff"
+				},
+				"options": {
+					"shouldRenderReadOnly": false,
+					"rows": 1,
+					"fieldName": "testidquestion_HiddenText",
+					"inputType": "text",
+					"value": "",
+					"isReadOnly": false,
+					"shouldRenderBorders": true,
+					"placeholder": "",
+					"isMultiline": false
+				},
+				"padding": {
+					"top": 6.375,
+					"bottom": 6.375
+				}
+			}
+		]
+	},
+	{
+		"brickType": "RowlineBrick",
+		"width": 538.5826771653543,
+		"height": 0,
+		"xLeft": 28.34645669291339,
+		"xRight": 566.9291338582677,
+		"yTop": 122.09645669291339,
+		"yBot": 122.09645669291339
+	}
+]

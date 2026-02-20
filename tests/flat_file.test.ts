@@ -2,25 +2,22 @@
     return {};
 };
 
-import { Question, QuestionFileModel } from 'survey-core';
+import { QuestionFileModel } from 'survey-core';
 import { SurveyPDF } from '../src/survey';
-import { IPoint, IRect, ISize, DocController } from '../src/doc_controller';
-import { FlatSurvey } from '../src/flat_layout/flat_survey';
+import { ISize, DocController } from '../src/doc_controller';
 import { FlatFile } from '../src/flat_layout/flat_file';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
-import { TextBrick } from '../src/pdf_render/pdf_text';
-import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
-import { ImageBrick } from '../src/pdf_render/pdf_image';
 import { CompositeBrick } from '../src/pdf_render/pdf_composite';
 import { LinkBrick } from '../src/pdf_render/pdf_link';
 import { AdornersOptions } from '../src/event_handler/adorners';
 import { checkFlatSnapshot } from './snapshot_helper';
+import '../src/entries/pdf-base';
 import { getImageUtils, registerImageUtils } from '../src/utils/image';
-let __dummy_fl = new FlatFile(null, null, null);
+import { IQuestionFileStyle } from '../src/style/types';
 
 test('Check no files', async () => {
-    let json: any = {
+    const json: any = {
         elements: [
             {
                 type: 'file',
@@ -29,15 +26,9 @@ test('Check no files', async () => {
             }
         ]
     };
-    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let controller: DocController = new DocController(TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(1);
-    controller.margins.left += controller.unitWidth;
-    let assumeFile: IRect = await SurveyHelper.createTextFlat(controller.leftTopPoint,
-        <Question>survey.getAllQuestions()[0], controller, 'No file selected', TextBrick);
-    TestHelper.equalRect(expect, flats[0][0], assumeFile);
+    await checkFlatSnapshot(json, {
+        snapshotName: 'file_no_files'
+    });
 });
 test('Check noFileChosen locale', async () => {
     let json: any = {
@@ -49,17 +40,12 @@ test('Check noFileChosen locale', async () => {
             }
         ]
     };
-    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    survey.getAllQuestions()[0].noFileChosenCaption = 'test';
-    let controller: DocController = new DocController(TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(1);
-    controller.margins.left += controller.unitWidth;
-    let assumeFile: IRect = await SurveyHelper.createTextFlat(controller.leftTopPoint,
-        <Question>survey.getAllQuestions()[0], controller, 'test', TextBrick);
-    TestHelper.equalRect(expect, flats[0][0], assumeFile);
-    expect((<TextBrick>(<CompositeBrick>flats[0][0])['bricks'][0])['text']).toEqual('test');
+    await checkFlatSnapshot(json, {
+        snapshotName: 'file_no_file_chosen_locale',
+        onSurveyCreated: (survey) => {
+            survey.getAllQuestions()[0].noFileChosenCaption = 'test';
+        }
+    });
 });
 test('Check one text file', async () => {
     let json: any = {
@@ -78,16 +64,9 @@ test('Check one text file', async () => {
             }
         ]
     };
-    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let controller: DocController = new DocController(TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(1);
-    controller.margins.left += controller.unitWidth;
-    let assumeFile: IRect = await SurveyHelper.createLinkFlat(controller.leftTopPoint,
-        <Question>survey.getAllQuestions()[0], controller,
-        json.elements[0].defaultValue[0].name, json.elements[0].defaultValue[0].content);
-    TestHelper.equalRect(expect, flats[0][0], assumeFile);
+    await checkFlatSnapshot(json, {
+        snapshotName: 'file_one_text_file',
+    });
 });
 test('Check two text files', async () => {
     let json: any = {
@@ -112,27 +91,9 @@ test('Check two text files', async () => {
             }
         ]
     };
-    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let controller: DocController = new DocController(TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(1);
-    controller.margins.left += controller.unitWidth;
-    let firstFileFlat: IRect = await SurveyHelper.createLinkFlat(controller.leftTopPoint,
-        <Question>survey.getAllQuestions()[0], controller,
-        json.elements[0].defaultValue[0].name, json.elements[0].defaultValue[0].content);
-    let secondFilePoint: IPoint = SurveyHelper.createPoint(firstFileFlat, false, true);
-    secondFilePoint.xLeft += controller.unitWidth;
-    let secondFileFlat: IRect = await SurveyHelper.createLinkFlat(secondFilePoint,
-        <Question>survey.getAllQuestions()[0], controller,
-        json.elements[0].defaultValue[1].name, json.elements[0].defaultValue[1].content);
-    let assumeFile: IRect = {
-        xLeft: controller.leftTopPoint.xLeft,
-        xRight: secondFileFlat.xRight,
-        yTop: controller.leftTopPoint.yTop,
-        yBot: Math.max(firstFileFlat.yBot, secondFileFlat.yBot)
-    };
-    TestHelper.equalRect(expect, flats[0][0], assumeFile);
+    await checkFlatSnapshot(json, {
+        snapshotName: 'file_two_text_files',
+    });
 });
 test('Check one image 16x16px file', async () => {
     const imageSize: ISize = { width: 170, height: 50 };
@@ -156,20 +117,9 @@ test('Check one image 16x16px file', async () => {
             }
         ]
     };
-    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    const controller: DocController = new DocController(TestHelper.defaultOptions);
-    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(1);
-    controller.margins.left += controller.unitWidth;
-    const assumeFile: IRect = {
-        xLeft: controller.leftTopPoint.xLeft,
-        xRight: controller.leftTopPoint.xLeft + imageSize.width,
-        yTop: controller.leftTopPoint.yTop,
-        yBot: controller.leftTopPoint.yTop + imageSize.height +
-            controller.unitHeight * (1.0 + FlatFile.IMAGE_GAP_SCALE)
-    };
-    TestHelper.equalRect(expect, flats[0][0], assumeFile);
+    await checkFlatSnapshot(json, {
+        snapshotName: 'file_one_image_16x16',
+    });
     registerImageUtils(oldImageUtils);
 });
 test('Check one image 16x16px file shorter than text', async () => {
@@ -194,20 +144,9 @@ test('Check one image 16x16px file shorter than text', async () => {
             }
         ]
     };
-    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    const controller: DocController = new DocController(TestHelper.defaultOptions);
-    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(1);
-    controller.margins.left += controller.unitWidth;
-    const assumeFile: IRect = {
-        xLeft: controller.leftTopPoint.xLeft,
-        xRight: controller.leftTopPoint.xLeft + controller.measureText(json.elements[0].defaultValue[0].name).width,
-        yTop: controller.leftTopPoint.yTop,
-        yBot: controller.leftTopPoint.yTop + imageSize.height +
-            controller.unitHeight * (1.0 + FlatFile.IMAGE_GAP_SCALE)
-    };
-    TestHelper.equalRect(expect, flats[0][0], assumeFile);
+    await checkFlatSnapshot(json, {
+        snapshotName: 'file_one_image_16x16_big_text',
+    });
     registerImageUtils(oldImageUtils);
 });
 test('Check one image 16x16px with set size', async () => {
@@ -234,23 +173,9 @@ test('Check one image 16x16px with set size', async () => {
             }
         ]
     };
-    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    const controller: DocController = new DocController(TestHelper.defaultOptions);
-    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(1);
-    controller.margins.left += controller.unitWidth;
-    const assumeFile: IRect = {
-        xLeft: controller.leftTopPoint.xLeft,
-        xRight: controller.leftTopPoint.xLeft +
-            SurveyHelper.parseWidth(json.elements[0].imageWidth,
-                SurveyHelper.getPageAvailableWidth(controller)),
-        yTop: controller.leftTopPoint.yTop,
-        yBot: controller.leftTopPoint.yTop + SurveyHelper.parseWidth(json.elements[0].imageHeight,
-            SurveyHelper.getPageAvailableWidth(controller)) +
-            controller.unitHeight * (1.0 + FlatFile.IMAGE_GAP_SCALE)
-    };
-    TestHelper.equalRect(expect, flats[0][0], assumeFile);
+    await checkFlatSnapshot(json, {
+        snapshotName: 'file_one_image_16x16_set_size',
+    });
     registerImageUtils(oldImageUtils);
 });
 
@@ -272,24 +197,9 @@ test('Check one image 16x16px file server-side', async () => {
             }
         ]
     };
-    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    const controller: DocController = new DocController(TestHelper.defaultOptions);
-    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(1);
-
-    const imageBrick: IPdfBrick = (<any>flats[0][0]).bricks[0].bricks[1];
-    expect(imageBrick instanceof ImageBrick).toBeTruthy();
-
-    controller.margins.left += controller.unitWidth;
-
-    const assumeFile: IRect = {
-        xLeft: controller.leftTopPoint.xLeft,
-        xRight: controller.leftTopPoint.xLeft + 150,
-        yTop: controller.leftTopPoint.yTop,
-        yBot: controller.leftTopPoint.yTop + 112.5 + controller.unitHeight * (1.0 + FlatFile.IMAGE_GAP_SCALE)
-    };
-    TestHelper.equalRect(expect, flats[0][0], assumeFile);
+    await checkFlatSnapshot(json, {
+        snapshotName: 'file_one_image_16x16_server_side',
+    });
 });
 
 test('Check one image 16x16px with set size server-side', async () => {
@@ -312,23 +222,9 @@ test('Check one image 16x16px with set size server-side', async () => {
             }
         ]
     };
-    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    const controller: DocController = new DocController(TestHelper.defaultOptions);
-    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(1);
-    expect((<any>flats[0][0]).bricks[0].bricks[1] instanceof ImageBrick).toBeTruthy();
-    expect((<any>flats[0][0]).bricks[0].bricks[1].isPageBreak).toBeFalsy();
-    controller.margins.left += controller.unitWidth;
-    const questionWidthPt = SurveyHelper.parseWidth(json.elements[0].imageWidth, SurveyHelper.getPageAvailableWidth(controller));
-    const questionHeightPt = SurveyHelper.parseWidth(json.elements[0].imageHeight, SurveyHelper.getPageAvailableWidth(controller));
-    const assumeFile: IRect = {
-        xLeft: controller.leftTopPoint.xLeft,
-        xRight: controller.leftTopPoint.xLeft + questionWidthPt,
-        yTop: controller.leftTopPoint.yTop,
-        yBot: controller.leftTopPoint.yTop + questionHeightPt + controller.unitHeight * (1.0 + FlatFile.IMAGE_GAP_SCALE)
-    };
-    TestHelper.equalRect(expect, flats[0][0], assumeFile);
+    await checkFlatSnapshot(json, {
+        snapshotName: 'file_one_image_16x16_set_size_server_side',
+    });
 });
 
 test('Test file question getImagePreviewContentWidth ', async () => {
@@ -345,16 +241,19 @@ test('Test file question getImagePreviewContentWidth ', async () => {
     const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     const question = <QuestionFileModel>survey.getAllQuestions()[0];
     const controller: DocController = new DocController(TestHelper.defaultOptions);
-    const flatFile = new FlatFile(survey, question, controller);
+    const flatFile = new FlatFile(survey, question, controller, { fileItemMinWidth: 200 });
 
     let width = await flatFile['getImagePreviewContentWidth']({ content: '', type: 'image', name: 'file', imageSize: { width: 150, height: 50 } });
-    expect(width).toBe(FlatFile.TEXT_MIN_SCALE * controller.unitWidth);
+    expect(width).toBe(flatFile['style'].fileItemMinWidth);
 
     width = await flatFile['getImagePreviewContentWidth']({ content: '', type: 'image', name: 'file', imageSize: { width: 300, height: 50 } });
     expect(width).toBe(300);
 });
 
 test('Test file question doesnt throw exception if could not load image preview', async () => {
+    const oldImageUtils = getImageUtils();
+    registerImageUtils({ getImageInfo: async (url) => { return { data: url, width: 0, height: 0 }; },
+        applyImageFit: async (imageInfo) => { return imageInfo; }, clear: () => {} });
     const json: any = {
         elements: [
             {
@@ -372,24 +271,10 @@ test('Test file question doesnt throw exception if could not load image preview'
             }
         ]
     };
-    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    const controller: DocController = new DocController(TestHelper.defaultOptions);
-    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(1);
-
-    const imageBrick: IPdfBrick = (<any>flats[0][0]).bricks[0].bricks[1];
-    expect(imageBrick instanceof ImageBrick).toBeTruthy();
-
-    controller.margins.left += controller.unitWidth;
-
-    const assumeFile: IRect = {
-        xLeft: controller.leftTopPoint.xLeft,
-        xRight: controller.leftTopPoint.xLeft + 150,
-        yTop: controller.leftTopPoint.yTop,
-        yBot: controller.leftTopPoint.yTop + 112.5 + controller.unitHeight * (1.0 + FlatFile.IMAGE_GAP_SCALE)
-    };
-    TestHelper.equalRect(expect, flats[0][0], assumeFile);
+    await checkFlatSnapshot(json, {
+        snapshotName: 'file_one_image_not_loaded',
+    });
+    registerImageUtils(oldImageUtils);
 });
 
 test('Test file question getImagePreviewContentWidth always return correct image width', async () => {
@@ -442,8 +327,8 @@ test('Test file question getImagePreviewContentWidth always return correct image
     };
     const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     const question = <QuestionFileModel>survey.getAllQuestions()[0];
-    const controller: DocController = new DocController(TestHelper.defaultOptions);
-    const flatFile = new FlatFile(survey, question, controller);
+    const controller: DocController = new DocController(Object.assign(TestHelper.defaultOptions, { fontSize: 30 }));
+    const flatFile = new FlatFile(survey, question, controller, { fileItemMinWidth: 20, spacing: { fileItemGap: 6, fileItemColumnGap: 6 } } as IQuestionFileStyle);
     const questionBricks = await flatFile.generateFlatsContent({ xLeft: controller.margins.left || 10, yTop: controller.margins.top || 10 });
     expect(questionBricks.length).toBe(3);
     //check all item bricks have the same width
@@ -507,7 +392,7 @@ test('Test file question inside paneldynamic waits preview loading', async () =>
     const unFoldedBricks = fileBricks[0].unfold();
     expect(unFoldedBricks.length).toBe(8);
     expect(unFoldedBricks[5]).toBeInstanceOf(LinkBrick);
-    expect((<LinkBrick>unFoldedBricks[5])['link']).toBe('data:image/jpeg;base64,FILECONTENT1');
+    expect((<LinkBrick>unFoldedBricks[5])['options']['link']).toBe('data:image/jpeg;base64,FILECONTENT1');
 });
 test('Test file question with show preview false', async () => {
     await checkFlatSnapshot(
@@ -527,7 +412,7 @@ test('Test file question with show preview false', async () => {
                 return options.question.getType() == 'file';
             },
             allowedPropertiesHash: {
-                'LinkBrick': ['link']
+                'LinkBrick': ['options']
             },
             onSurveyCreated: (survey: SurveyPDF) => {
                 survey.data = {

@@ -1,109 +1,12 @@
-import { IElement, Question, PanelModelBase, PanelModel } from 'survey-core';
 import { SurveyPDF } from '../survey';
 import { IPoint, DocController } from '../doc_controller';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { RowlineBrick } from '../pdf_render/pdf_rowline';
 import { SurveyHelper } from '../helper_survey';
-import { AdornersPanelOptions, AdornersPageOptions } from '../event_handler/adorners';
-import { FlatRepository } from '../entries/pdf-base';
-import * as SurveyPDFModule from '../entries/pdf-base';
+import { ITextStyle } from '../style/types';
 
 export class FlatSurvey {
-    public static QUES_GAP_VERT_SCALE: number = 1.5;
-    public static PANEL_CONT_GAP_SCALE: number = 1.0;
-    public static PANEL_DESC_GAP_SCALE: number = 0.25;
-    public static async generateFlatsPanel(survey: SurveyPDF, controller: DocController,
-        panel: PanelModel, point: IPoint): Promise<IPdfBrick[]> {
-        const panelFlats: IPdfBrick[] = [];
-        const panelContentPoint: IPoint = SurveyHelper.clone(point);
-        controller.pushMargins();
-        controller.margins.left += controller.measureText(panel.innerIndent).width;
-        panelContentPoint.xLeft += controller.measureText(panel.innerIndent).width;
-        panelFlats.push(...await this.generateFlatsPagePanel(survey,
-            controller, panel, panelContentPoint));
-        controller.popMargins();
-        const adornersOptions: AdornersPanelOptions = new AdornersPanelOptions(point,
-            panelFlats, panel, controller, FlatRepository.getInstance(), SurveyPDFModule);
-        await survey.onRenderPanel.fire(survey, adornersOptions);
-        return [...adornersOptions.bricks];
-    }
-    private static async generateFlatsPagePanel(survey: SurveyPDF, controller: DocController,
-        pagePanel: PanelModelBase, point: IPoint): Promise<IPdfBrick[]> {
-        if (!pagePanel.isVisible) return;
-        pagePanel.onFirstRendering();
-        const pagePanelFlats: IPdfBrick[] = [];
-        let currPoint: IPoint = SurveyHelper.clone(point);
-        if (pagePanel.getType() !== 'page' || survey.showPageTitles) {
-            const compositeFlat: CompositeBrick = new CompositeBrick();
-            if (pagePanel.title) {
-                if (pagePanel instanceof PanelModel && pagePanel.no) {
-                    const noFlat: IPdfBrick = await SurveyHelper.createTitlePanelFlat(
-                        currPoint, controller, pagePanel.no, pagePanel.getType() === 'page');
-                    compositeFlat.addBrick(noFlat);
-                    currPoint.xLeft = noFlat.xRight + controller.measureText(' ').width;
-                }
-                const pagelPanelTitleFlat: IPdfBrick = await SurveyHelper.createTitlePanelFlat(
-                    currPoint, controller, pagePanel.locTitle, pagePanel.getType() === 'page');
-                compositeFlat.addBrick(pagelPanelTitleFlat);
-                currPoint = SurveyHelper.createPoint(pagelPanelTitleFlat);
-            }
-            if (pagePanel.description) {
-                if (pagePanel.title) {
-                    currPoint.yTop += controller.unitWidth * FlatSurvey.PANEL_DESC_GAP_SCALE;
-                }
-                const pagePanelDescFlat: IPdfBrick = await SurveyHelper.createDescFlat(
-                    currPoint, null, controller, pagePanel.locDescription);
-                compositeFlat.addBrick(pagePanelDescFlat);
-                currPoint = SurveyHelper.createPoint(pagePanelDescFlat);
-            }
-            if (!compositeFlat.isEmpty) {
-                const rowLinePoint: IPoint = SurveyHelper.createPoint(compositeFlat);
-                compositeFlat.addBrick(SurveyHelper.createRowlineFlat(rowLinePoint, controller));
-                pagePanelFlats.push(compositeFlat);
-                currPoint.yTop += controller.unitHeight * FlatSurvey.PANEL_CONT_GAP_SCALE + SurveyHelper.EPSILON;
-            }
-        }
-        for (const row of pagePanel.rows) {
-            if (!row.visible) continue;
-            controller.pushMargins();
-            const width: number = SurveyHelper.getPageAvailableWidth(controller);
-            let nextMarginLeft: number = controller.margins.left;
-            const rowFlats: IPdfBrick[] = [];
-            const visibleElements = row.elements.filter(el => el.isVisible);
-            for (let i: number = 0; i < visibleElements.length; i++) {
-                let element: IElement = visibleElements[i];
-                if (!element.isVisible) continue;
-                const persWidth: number = SurveyHelper.parseWidth(element.renderWidth,
-                    width - (visibleElements.length - 1) * controller.unitWidth,
-                    visibleElements.length);
-                controller.margins.left = nextMarginLeft + ((i !== 0) ? controller.unitWidth : 0);
-                controller.margins.right = controller.paperWidth - controller.margins.left - persWidth;
-                currPoint.xLeft = controller.margins.left;
-                nextMarginLeft = controller.margins.left + persWidth;
-                if (element instanceof PanelModel) {
-                    rowFlats.push(...await this.generateFlatsPanel(
-                        survey, controller, element, currPoint));
-                }
-                else {
-                    await (<Question>element).waitForQuestionIsReady();
-                    rowFlats.push(...await SurveyHelper.generateQuestionFlats(survey,
-                        controller, <Question>element, currPoint));
-                }
-            }
-            controller.popMargins();
-            currPoint.xLeft = controller.margins.left;
-            if (rowFlats.length !== 0) {
-                currPoint.yTop = SurveyHelper.mergeRects(...rowFlats).yBot;
-                currPoint.xLeft = point.xLeft;
-                currPoint.yTop += controller.unitHeight * FlatSurvey.QUES_GAP_VERT_SCALE;
-                pagePanelFlats.push(...rowFlats);
-                pagePanelFlats.push(SurveyHelper.createRowlineFlat(currPoint, controller));
-                currPoint.yTop += SurveyHelper.EPSILON;
-            }
-        }
-        return pagePanelFlats;
-    }
     private static popRowlines(flats: IPdfBrick[]) {
         while (flats.length > 0 && flats[flats.length - 1] instanceof RowlineBrick) {
             flats.pop();
@@ -113,18 +16,19 @@ export class FlatSurvey {
         point: IPoint): Promise<CompositeBrick> {
         const compositeFlat: CompositeBrick = new CompositeBrick();
         if (survey.showTitle) {
+            const style = survey.style;
             if (survey.title) {
-                const surveyTitleFlat: IPdfBrick = await SurveyHelper.createTitleSurveyFlat(
-                    point, controller, survey.locTitle);
+                const textOptions:Partial<ITextStyle> = { ...style.survey.title };
+                const surveyTitleFlat: IPdfBrick = await SurveyHelper.createTextFlat(point, controller, survey.locTitle, textOptions);
                 compositeFlat.addBrick(surveyTitleFlat);
                 point = SurveyHelper.createPoint(surveyTitleFlat);
             }
             if (survey.description) {
                 if (survey.title) {
-                    point.yTop += controller.unitWidth * FlatSurvey.PANEL_DESC_GAP_SCALE;
+                    point.yTop += style.survey.spacing.titleDescriptionGap;
                 }
-                compositeFlat.addBrick(await SurveyHelper.createDescFlat(
-                    point, null, controller, survey.locDescription));
+                compositeFlat.addBrick(await SurveyHelper.createTextFlat(
+                    point, controller, survey.locDescription, { ...style.survey.description }));
             }
         }
         return compositeFlat;
@@ -205,17 +109,12 @@ export class FlatSurvey {
         if (flats.length !== 0) {
             point.yTop = SurveyHelper.createPoint(SurveyHelper.mergeRects(...flats[0])).yTop;
             flats[0].push(SurveyHelper.createRowlineFlat(point, controller));
-            point.yTop += controller.unitHeight * FlatSurvey.PANEL_CONT_GAP_SCALE + SurveyHelper.EPSILON;
+            const style = survey.style;
+            point.yTop += style.survey.spacing.headerContentGap + SurveyHelper.EPSILON;
         }
         for (let i: number = 0; i < survey.visiblePages.length; i++) {
             survey.currentPage = survey.visiblePages[i];
-            let pageFlats: IPdfBrick[] = [];
-            pageFlats.push(...await this.generateFlatsPagePanel(
-                survey, controller, survey.visiblePages[i], point));
-            const adornersOptions: AdornersPageOptions = new AdornersPageOptions(point,
-                pageFlats, survey.visiblePages[i], controller, FlatRepository.getInstance(), SurveyPDFModule);
-            await survey.onRenderPage.fire(survey, adornersOptions);
-            pageFlats = [...adornersOptions.bricks];
+            let pageFlats: IPdfBrick[] = await SurveyHelper.generatePageFlats(survey, controller, survey.currentPage, point, survey.getElementStyle(survey.currentPage));
             if (i === 0 && flats.length !== 0) {
                 flats[0].push(...pageFlats);
             }

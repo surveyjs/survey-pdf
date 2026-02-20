@@ -2,20 +2,15 @@
     return {};
 };
 
-import { SurveyPDF } from '../src/survey';
-import { IPoint, IRect, ISize, IDocOptions, DocOptions, DocController } from '../src/doc_controller';
-import { FlatSurvey } from '../src/flat_layout/flat_survey';
-import { FlatTextbox } from '../src/flat_layout/flat_textbox';
-import { FlatCheckbox } from '../src/flat_layout/flat_checkbox';
-import { IPdfBrick } from '../src/pdf_render/pdf_brick';
-import { TextBrick } from '../src/pdf_render/pdf_text';
-import { SurveyHelper } from '../src/helper_survey';
+import { DocOptions, DocController } from '../src/doc_controller';
 import { TestHelper } from '../src/helper_test';
 import { checkFlatSnapshot } from './snapshot_helper';
-import { settings } from 'survey-core';
+import { QuestionCheckboxModel, settings } from 'survey-core';
 
-const __dummy_tx: FlatTextbox = new FlatTextbox(null, null, null);
-const __dummy_cb: FlatCheckbox = new FlatCheckbox(null, null, null);
+import '../src/flat_layout/flat_textbox';
+import '../src/flat_layout/flat_checkbox';
+import { FlatCheckbox } from '../src/flat_layout/flat_checkbox';
+import { SurveyPDF } from '../src/survey';
 
 test('Check other checkbox place ', async () => {
     const json: any = {
@@ -25,32 +20,17 @@ test('Check other checkbox place ', async () => {
                 name: 'checkbox',
                 type: 'checkbox',
                 hasOther: true,
+                defaultValue: 'other',
                 otherText: 'Other(describe)'
             }
         ]
     };
-    const options: IDocOptions = TestHelper.defaultOptions;
-    options.format = [40.0, 297.0];
-    const survey: SurveyPDF = new SurveyPDF(json, options);
-    const controller: DocController = new DocController(options);
-    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    const receivedRects: IRect[] = flats[0][0].unfold();
-    controller.margins.left += controller.unitWidth;
-    let currPoint: IPoint = controller.leftTopPoint;
-    const assumeRects: IRect[] = [];
-    const itemRect: IRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(
-        SurveyHelper.createRect(currPoint, controller.unitWidth, controller.unitHeight),
-        SurveyHelper.SELECT_ITEM_FLAT_SCALE), currPoint.xLeft);
-    assumeRects.push(itemRect);
-    currPoint.xLeft = itemRect.xRight + controller.unitWidth * SurveyHelper.GAP_BETWEEN_ITEM_TEXT;
-    const textFlats: IPdfBrick[] = (await SurveyHelper.createTextFlat(currPoint, survey.getAllQuestions()[0],
-        controller, json.questions[0].otherText, TextBrick)).unfold();
-    currPoint = SurveyHelper.createPoint(SurveyHelper.mergeRects(itemRect, ...textFlats));
-    assumeRects.push(...textFlats);
-    currPoint.yTop += controller.unitHeight * SurveyHelper.GAP_BETWEEN_ROWS;
-    const textFieldRect: IRect = SurveyHelper.createTextFieldRect(currPoint, controller, 2);
-    assumeRects.push(textFieldRect);
-    TestHelper.equalRects(expect, receivedRects, assumeRects);
+    await checkFlatSnapshot(json, {
+        snapshotName: 'checkbox_other',
+        controllerOptions: {
+            format: [40.0, 297.0]
+        }
+    });
 });
 test('Check checkbox with colCount 4 with small font size 12', async () => {
     const json: any = {
@@ -64,41 +44,12 @@ test('Check checkbox with colCount 4 with small font size 12', async () => {
             }
         ]
     };
-    const options: IDocOptions = TestHelper.defaultOptions;
-    options.fontSize = 12;
-    const survey: SurveyPDF = new SurveyPDF(json, options);
-    const controller: DocController = new DocController(options);
-    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    controller.margins.left += controller.unitWidth;
-    const receivedFlats: IRect[] = [];
-    receivedFlats.push(...flats[0][0].unfold(), ...flats[0][1].unfold());
-    const assumetFlats: IRect[] = [];
-    let currPoint: IPoint = controller.leftTopPoint;
-    for (let i: number = 0; i < 4; i++) {
-        const itemRect: IRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(
-            SurveyHelper.createRect(currPoint, controller.unitWidth, controller.unitHeight),
-            SurveyHelper.SELECT_ITEM_FLAT_SCALE), currPoint.xLeft);
-        const textPoint: IPoint = SurveyHelper.clone(currPoint);
-        textPoint.xLeft = itemRect.xRight + controller.unitWidth * SurveyHelper.GAP_BETWEEN_ITEM_TEXT;
-        const textSize: ISize = controller.measureText(json.questions[0].choices[i]);
-        const textRect: IRect = SurveyHelper.createRect(textPoint, textSize.width, textSize.height);
-        assumetFlats.push(itemRect, textRect);
-        currPoint.xLeft += SurveyHelper.getColumnWidth(controller, 4) +
-            controller.unitWidth * SurveyHelper.GAP_BETWEEN_COLUMNS;
-    }
-    currPoint = controller.leftTopPoint;
-    currPoint.yTop += controller.unitHeight;
-    const rowLineFlat: IPdfBrick = SurveyHelper.createRowlineFlat(currPoint, controller);
-    currPoint.yTop += rowLineFlat.yBot + controller.unitHeight;
-    const itemRect: IRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(
-        SurveyHelper.createRect(currPoint, controller.unitWidth, controller.unitHeight),
-        SurveyHelper.SELECT_ITEM_FLAT_SCALE), currPoint.xLeft);
-    const textPoint: IPoint = SurveyHelper.clone(currPoint);
-    textPoint.xLeft = 2 * itemRect.xRight - itemRect.xLeft;
-    const textSize: ISize = controller.measureText(json.questions[0].choices[5]);
-    const textRect: IRect = SurveyHelper.createRect(textPoint, textSize.width, textSize.height);
-    assumetFlats.push(rowLineFlat, itemRect, textRect);
-    TestHelper.equalRects(expect, receivedFlats, assumetFlats);
+    await checkFlatSnapshot(json, {
+        snapshotName: 'checkbox_colCount_4_font_size_12',
+        controllerOptions: {
+            fontSize: 12
+        }
+    });
 });
 test('Check checkbox with colCount 4 with big font size 30', async () => {
     const json: any = {
@@ -112,28 +63,9 @@ test('Check checkbox with colCount 4 with big font size 30', async () => {
             }
         ]
     };
-    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    const controller: DocController = new DocController(TestHelper.defaultOptions);
-    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    const unfoldFlats: IRect[] = [];
-    for (let i: number = 0; i < 5; i++) {
-        unfoldFlats.push(...flats[0][i].unfold());
-    }
-    controller.margins.left += controller.unitWidth;
-    const assumetFlats: IRect[] = [];
-    const currPoint: IPoint = controller.leftTopPoint;
-    for (let i: number = 0; i < 5; i++) {
-        const itemRect: IRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(
-            SurveyHelper.createRect(currPoint, controller.unitWidth, controller.unitHeight),
-            SurveyHelper.SELECT_ITEM_FLAT_SCALE), currPoint.xLeft);
-        const textPoint: IPoint = SurveyHelper.clone(currPoint);
-        textPoint.xLeft = itemRect.xRight + controller.unitWidth * SurveyHelper.GAP_BETWEEN_ITEM_TEXT;
-        const textSize: ISize = controller.measureText(json.questions[0].choices[i]);
-        const textRect: IRect = SurveyHelper.createRect(textPoint, textSize.width, textSize.height);
-        assumetFlats.push(itemRect, textRect);
-        currPoint.yTop += controller.unitHeight + SurveyHelper.GAP_BETWEEN_ROWS * controller.unitHeight;
-    }
-    TestHelper.equalRects(expect, unfoldFlats, assumetFlats);
+    await checkFlatSnapshot(json, {
+        snapshotName: 'checkbox_colCount_4_font_size_30'
+    });
 });
 test('Check checkbox with colCount 0 with big font size 30', async () => {
     const json: any = {
@@ -147,42 +79,12 @@ test('Check checkbox with colCount 0 with big font size 30', async () => {
             }
         ]
     };
-    const options = TestHelper.defaultOptions;
-    options.format = [210.0 + new DocController(options).unitWidth / DocOptions.MM_TO_PT, 297.0];
-    const survey: SurveyPDF = new SurveyPDF(json, options);
-    const controller: DocController = new DocController(options);
-    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    const unfoldFlats: IRect[] = [];
-    unfoldFlats.push(...flats[0][0].unfold(), ...flats[0][1].unfold(), ...flats[0][2].unfold());
-    controller.margins.left += controller.unitWidth;
-    const assumetFlats: IRect[] = [];
-    let currPoint: IPoint = controller.leftTopPoint;
-    for (let i: number = 0; i < 3; i++) {
-        const itemRect: IRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(
-            SurveyHelper.createRect(currPoint, controller.unitWidth, controller.unitHeight),
-            SurveyHelper.SELECT_ITEM_FLAT_SCALE), currPoint.xLeft);
-        const textPoint: IPoint = SurveyHelper.clone(currPoint);
-        textPoint.xLeft = itemRect.xRight + controller.unitWidth * SurveyHelper.GAP_BETWEEN_ITEM_TEXT;
-        const textSize: ISize = controller.measureText(json.questions[0].choices[i]);
-        const textRect: IRect = SurveyHelper.createRect(textPoint, textSize.width, textSize.height);
-        assumetFlats.push(itemRect, textRect);
-        currPoint.xLeft += SurveyHelper.getColumnWidth(controller, 3) +
-            controller.unitWidth * SurveyHelper.GAP_BETWEEN_COLUMNS;
-    }
-    currPoint = controller.leftTopPoint;
-    currPoint.yTop += controller.unitHeight;
-    const rowLineRect: IPdfBrick = SurveyHelper.createRowlineFlat(currPoint, controller);
-    currPoint.yTop = rowLineRect.yBot;
-    currPoint.yTop += SurveyHelper.GAP_BETWEEN_ROWS * controller.unitHeight;
-    const itemRect: IRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(
-        SurveyHelper.createRect(currPoint, controller.unitWidth, controller.unitHeight),
-        SurveyHelper.SELECT_ITEM_FLAT_SCALE), currPoint.xLeft);
-    const textPoint: IPoint = SurveyHelper.clone(currPoint);
-    textPoint.xLeft = itemRect.xRight + controller.unitWidth * SurveyHelper.GAP_BETWEEN_ITEM_TEXT;
-    const textSize: ISize = controller.measureText(json.questions[0].choices[3]);
-    const textRect: IRect = SurveyHelper.createRect(textPoint, textSize.width, textSize.height);
-    assumetFlats.push(rowLineRect, itemRect, textRect);
-    TestHelper.equalRects(expect, unfoldFlats, assumetFlats);
+    await checkFlatSnapshot(json, {
+        snapshotName: 'checkbox_colCount_0_font_size_30',
+        controllerOptions: {
+            format: [210.0 + new DocController(TestHelper.defaultOptions).unitWidth / DocOptions.MM_TO_PT, 297.0]
+        }
+    });
 });
 test('Check checkbox with colCount 0 with small font size 12', async () => {
     const json: any = {
@@ -196,28 +98,12 @@ test('Check checkbox with colCount 0 with small font size 12', async () => {
             }
         ]
     };
-    const options: IDocOptions = TestHelper.defaultOptions;
-    options.fontSize = 12;
-    const survey: SurveyPDF = new SurveyPDF(json, options);
-    const controller: DocController = new DocController(options);
-    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    const unfoldFlats: IRect[] = flats[0][0].unfold();
-    controller.margins.left += controller.unitWidth;
-    const assumetFlats: IRect[] = [];
-    const currPoint = controller.leftTopPoint;
-    for (let i: number = 0; i < 4; i++) {
-        const itemRect: IRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(
-            SurveyHelper.createRect(currPoint, controller.unitWidth, controller.unitHeight),
-            SurveyHelper.SELECT_ITEM_FLAT_SCALE), currPoint.xLeft);
-        const text: ISize = controller.measureText(json.questions[0].choices[i]);
-        const textPoint: IPoint = SurveyHelper.clone(currPoint);
-        textPoint.xLeft = itemRect.xRight + controller.unitWidth * SurveyHelper.GAP_BETWEEN_ITEM_TEXT;
-        const textRect: IRect = SurveyHelper.createRect(textPoint, text.width, text.height);
-        assumetFlats.push(itemRect, textRect);
-        currPoint.xLeft += SurveyHelper.getColumnWidth(controller, 4) +
-            controller.unitWidth * SurveyHelper.GAP_BETWEEN_COLUMNS;
-    }
-    TestHelper.equalRects(expect, unfoldFlats, assumetFlats);
+    await checkFlatSnapshot(json, {
+        snapshotName: 'checkbox_colCount_0_font_size_12',
+        controllerOptions: {
+            fontSize: 12
+        }
+    });
 });
 test('Check tagbox', async () => {
     const json: any = {
@@ -230,26 +116,9 @@ test('Check tagbox', async () => {
             }
         ]
     };
-    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    const controller: DocController = new DocController(TestHelper.defaultOptions);
-    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    const unfoldFlats: IRect[] = [];
-    flats[0].forEach(brick => unfoldFlats.push(...brick.unfold()));
-    controller.margins.left += controller.unitWidth;
-    const assumetFlats: IRect[] = [];
-    const currPoint: IPoint = controller.leftTopPoint;
-    for (let i: number = 0; i < 4; i++) {
-        const itemRect: IRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(
-            SurveyHelper.createRect(currPoint, controller.unitWidth, controller.unitHeight),
-            SurveyHelper.SELECT_ITEM_FLAT_SCALE), currPoint.xLeft);
-        const textPoint: IPoint = SurveyHelper.clone(currPoint);
-        textPoint.xLeft = itemRect.xRight + controller.unitWidth * SurveyHelper.GAP_BETWEEN_ITEM_TEXT;
-        const textSize: ISize = controller.measureText(json.questions[0].choices[i]);
-        const textRect: IRect = SurveyHelper.createRect(textPoint, textSize.width, textSize.height);
-        assumetFlats.push(itemRect, textRect);
-        currPoint.yTop += controller.unitHeight + SurveyHelper.GAP_BETWEEN_ROWS * controller.unitHeight;
-    }
-    TestHelper.equalRects(expect, unfoldFlats, assumetFlats, true);
+    await checkFlatSnapshot(json, {
+        snapshotName: 'tagbox'
+    });
 });
 
 test('Tagbox: print selected choices', async () => {
@@ -264,30 +133,12 @@ test('Tagbox: print selected choices', async () => {
             }
         ]
     };
-    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    const controller: DocController = new DocController(TestHelper.defaultOptions);
-    controller['_tagboxSelectedChoicesOnly'] = true;
-    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    const unfoldFlats: IRect[] = [];
-    flats[0].forEach(brick => unfoldFlats.push(...brick.unfold()));
-    controller.margins.left += controller.unitWidth;
-    const assumetFlats: IRect[] = [];
-    const currPoint: IPoint = controller.leftTopPoint;
-    for (let i: number = 1; i < 3; i++) {
-        const itemRect: IRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(
-            SurveyHelper.createRect(currPoint, controller.unitWidth, controller.unitHeight),
-            SurveyHelper.SELECT_ITEM_FLAT_SCALE), currPoint.xLeft);
-        const textPoint: IPoint = SurveyHelper.clone(currPoint);
-        textPoint.xLeft = itemRect.xRight + controller.unitWidth * SurveyHelper.GAP_BETWEEN_ITEM_TEXT;
-        const textSize: ISize = controller.measureText(json.questions[0].choices[i]);
-        const textRect: IRect = SurveyHelper.createRect(textPoint, textSize.width, textSize.height);
-        assumetFlats.push(itemRect, textRect);
-        currPoint.yTop += controller.unitHeight + SurveyHelper.GAP_BETWEEN_ROWS * controller.unitHeight;
-    }
-    TestHelper.equalRects(expect, unfoldFlats, assumetFlats, true);
-    expect(unfoldFlats.length).toBe(4);
-    expect((unfoldFlats[1] as TextBrick)['text']).toBe('item2');
-    expect((unfoldFlats[3]as TextBrick)['text']).toBe('item3');
+    await checkFlatSnapshot(json, {
+        snapshotName: 'tagbox_selected_choices',
+        controllerOptions: {
+            tagboxSelectedChoicesOnly: true
+        }
+    });
 });
 
 test('Check columns 5 with itemFlowDirection', async() => {
@@ -417,7 +268,8 @@ test('Check margins are correct after generating content', async() => {
     const controller: DocController = new DocController(options);
     const oldMarginLeft: number = controller.margins.left as number;
     const oldMarginRight: number = controller.margins.right as number;
-    await new FlatCheckbox(survey, survey.getAllQuestions()[0], controller).generateFlats({ xLeft: oldMarginLeft, yTop: controller.margins.top as number });
+    const question = survey.getAllQuestions()[0] as QuestionCheckboxModel;
+    await new FlatCheckbox(survey, question, controller, survey.getElementStyle(question)).generateFlats({ xLeft: oldMarginLeft, yTop: controller.margins.top as number });
     expect(controller.margins.left).toBe(oldMarginLeft);
     expect(controller.margins.right).toBe(oldMarginRight);
 });

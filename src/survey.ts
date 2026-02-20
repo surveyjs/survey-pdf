@@ -1,13 +1,19 @@
-import { SurveyModel, EventBase } from 'survey-core';
-import * as SurveyCore from 'survey-core';
-import { IDocOptions, DocController } from './doc_controller';
+import { SurveyModel, EventBase, SurveyElement, Serializer, Question, PanelModel, PageModel, ITheme, ItemValue } from 'survey-core';
+import { hasLicense } from 'survey-core';
+import { IDocOptions, DocController, DocOptions } from './doc_controller';
 import { FlatSurvey } from './flat_layout/flat_survey';
 import { PagePacker } from './page_layout/page_packer';
 import { IPdfBrick } from './pdf_render/pdf_brick';
-import { EventAsync, EventHandler } from './event_handler/event_handler';
+import { EventAsync, } from './event_handler/event_async';
+import { EventHandler } from './event_handler/event_handler';
 import { DrawCanvas } from './event_handler/draw_canvas';
 import { AdornersOptions, AdornersPanelOptions, AdornersPageOptions } from './event_handler/adorners';
 import { SurveyHelper } from './helper_survey';
+import { IDocStyle } from './style/types';
+import { createStyleFromTheme, getDefaultStyleFromTheme } from './style';
+import { DefaultLight } from './themes/default-light';
+import { parsePadding } from './utils';
+import { ITextStyle, ISelectionInputStyle, IQuestionStyle, IPageStyle, IPanelStyle } from './style/types';
 
 /**
  * The `SurveyPDF` object enables you to export your surveys and forms to PDF documents.
@@ -29,7 +35,7 @@ export class SurveyPDF extends SurveyModel {
         this.options = SurveyHelper.clone(options);
     }
     public get haveCommercialLicense(): boolean {
-        const f = SurveyCore.hasLicense;
+        const f = hasLicense;
         return !!f && f(2);
     }
     public set haveCommercialLicense(val: boolean) {
@@ -42,11 +48,9 @@ export class SurveyPDF extends SurveyModel {
      * Parameters:
      *
      * - `sender`: `SurveyPDF`\
-     * A SurveyPDF instance that raised the event.
-     *
+     * A `SurveyPDF` instance that raised the event.
      * - `canvas`: [`DrawCanvas`](https://surveyjs.io/pdf-generator/documentation/api-reference/drawcanvas)\
      * An object that you can use to draw text and images in the page header.
-     *
      * [View Demo](https://surveyjs.io/pdf-generator/examples/customize-header-and-footer-of-pdf-form/ (linkStyle))
      */
     public onRenderHeader: EventAsync<SurveyPDF, DrawCanvas> =
@@ -57,11 +61,9 @@ export class SurveyPDF extends SurveyModel {
      * Parameters:
      *
      * - `sender`: `SurveyPDF`\
-     * A SurveyPDF instance that raised the event.
-     *
+     * A `SurveyPDF` instance that raised the event.
      * - `canvas`: [`DrawCanvas`](https://surveyjs.io/pdf-generator/documentation/api-reference/drawcanvas)\
      * An object that you can use to draw text and images in the page footer.
-     *
      * [View Demo](https://surveyjs.io/pdf-generator/examples/customize-header-and-footer-of-pdf-form/ (linkStyle))
      */
     public onRenderFooter: EventAsync<SurveyPDF, DrawCanvas> =
@@ -72,20 +74,15 @@ export class SurveyPDF extends SurveyModel {
      * Parameters:
      *
      * - `sender`: `SurveyPDF`\
-     * A SurveyPDF instance that raised the event.
-     *
+     * A `SurveyPDF` instance that raised the event.
      * - `options.question`: [`Question`](https://surveyjs.io/form-library/documentation/api-reference/question)\
      * A survey question that is being rendered.
-     *
      * - `options.point`: `IPoint`\
      * An object with coordinates of the top-left corner of the element being rendered. This object contains the following properties: `{ xLeft: number, yTop: number }`.
-     *
      * - `options.bricks`: [`PdfBrick[]`](https://surveyjs.io/pdf-generator/documentation/api-reference/pdfbrick)\
      * An array of [bricks](https://surveyjs.io/pdf-generator/documentation/customize-survey-question-rendering-in-pdf-form#custom-rendering) used to render the element.
-     *
      * - `options.controller`: [`DocController`](https://surveyjs.io/pdf-generator/documentation/api-reference/doccontroller)\
      * An object that provides access to main PDF document properties (font, margins, page width and height) and allows you to modify them.
-     *
      * - `options.repository`: `FlatRepository`\
      * A repository with classes that render elements to PDF. Use its `create` method if you need to create a new instance of a rendering class.
      *
@@ -99,20 +96,15 @@ export class SurveyPDF extends SurveyModel {
      * Parameters:
      *
      * - `sender`: `SurveyPDF`\
-     * A SurveyPDF instance that raised the event.
-     *
+     * A `SurveyPDF` instance that raised the event.
      * - `options.panel`: [`PanelModel`](https://surveyjs.io/form-library/documentation/api-reference/panel-model)\
      * A panel that is being rendered.
-     *
      * - `options.point`: `IPoint`\
      * An object with coordinates of the top-left corner of the element being rendered. This object contains the following properties: `{ xLeft: number, yTop: number }`.
-     *
      * - `options.bricks`: [`PdfBrick[]`](https://surveyjs.io/pdf-generator/documentation/api-reference/pdfbrick)\
      * An array of [bricks](https://surveyjs.io/pdf-generator/documentation/customize-survey-question-rendering-in-pdf-form#custom-rendering) used to render the element.
-     *
      * - `options.controller`: [`DocController`](https://surveyjs.io/pdf-generator/documentation/api-reference/doccontroller)\
      * An object that provides access to main PDF document properties (font, margins, page width and height) and allows you to modify them.
-     *
      * - `options.repository`: `FlatRepository`\
      * A repository with classes that render elements to PDF. Use its `create` method if you need to create a new instance of a rendering class.
      *
@@ -126,20 +118,15 @@ export class SurveyPDF extends SurveyModel {
      * Parameters:
      *
      * - `sender`: `SurveyPDF`\
-     * A SurveyPDF instance that raised the event.
-     *
+     * A `SurveyPDF` instance that raised the event.
      * - `options.page`: [`PageModel`](https://surveyjs.io/form-library/documentation/api-reference/page-model)\
      * A page that is being rendered.
-     *
      * - `options.point`: `IPoint`\
      * An object with coordinates of the top-left corner of the element being rendered. This object contains the following properties: `{ xLeft: number, yTop: number }`.
-     *
      * - `options.bricks`: [`PdfBrick[]`](https://surveyjs.io/pdf-generator/documentation/api-reference/pdfbrick)\
      * An array of [bricks](https://surveyjs.io/pdf-generator/documentation/customize-survey-question-rendering-in-pdf-form#custom-rendering) used to render the element.
-     *
      * - `options.controller`: [`DocController`](https://surveyjs.io/pdf-generator/documentation/api-reference/doccontroller)\
      * An object that provides access to main PDF document properties (font, margins, page width and height) and allows you to modify them.
-     *
      * - `options.repository`: `FlatRepository`\
      * A repository with classes that render elements to PDF. Use its `create` method if you need to create a new instance of a rendering class.
      *
@@ -159,14 +146,194 @@ export class SurveyPDF extends SurveyModel {
     public onRenderRadioItemAcroform: EventAsync<SurveyPDF, any> =
         new EventAsync<SurveyPDF, any>();
 
-    public getUpdatedCheckItemAcroformOptions(options: any): void {
-        this.onRenderCheckItemAcroform.fire(this, options);
+    public updateCheckItemAcroformOptions(options: any, question: Question, context?: any): void {
+        this.onRenderCheckItemAcroform.fire(this, {
+            options: options,
+            question: question,
+            ...(context ?? {})
+        });
     }
-    public getUpdatedRadioGroupWrapOptions(options: any): void {
-        this.onRenderRadioGroupWrapAcroform.fire(this, options);
+    public getUpdatedRadioGroupWrapOptions(options: any, question: Question, context?: any): void {
+        this.onRenderRadioGroupWrapAcroform.fire(this, {
+            options: options,
+            question: question,
+            ...(context ?? {})
+        });
     }
-    public getUpdatedRadioItemAcroformOptions(options: any): void {
-        this.onRenderRadioItemAcroform.fire(this, options);
+    public updateRadioItemAcroformOptions(options: any, question: Question, context?: any): void {
+        this.onRenderRadioItemAcroform.fire(this, {
+            options: options,
+            question: question,
+            ...(context ?? {})
+        });
+    }
+
+    /**
+     * An event that allows you to customize the visual style applied to a question in an exported PDF document.
+     *
+     * Parameters:
+     *
+     * - `sender`: `SurveyPDF`\
+     * A `SurveyPDF` instance that raised the event.
+     * - `options.question`: [`Question`](https://surveyjs.io/form-library/documentation/api-reference/question)\
+     * A survey question whose style is being customized.
+     * - `options.getColorVariable`: `(name: string) => string`\
+     * A helper function that returns the value of a color variable by name.
+     * - `options.getSizeVariable`: `(name: string) => number`\
+     * A helper function that returns the value of a size variable by name.
+     * - `options.style`: [`IQuestionStyle`](https://surveyjs.io/pdf-generator/documentation/api-reference/IQuestionStyle)\
+     * An object that defines the question's visual style. Modify its properties to control how the question is rendered in the exported PDF document.
+     *
+     * [Customize Individual Element Styles in PDF](https://surveyjs.io/pdf-generator/documentation/customize-survey-question-rendering-in-pdf-form#customize-individual-element-styles (linkStyle))
+     */
+    public onGetQuestionStyle = new EventBase<SurveyPDF, { question: Question, style: IQuestionStyle, getColorVariable: (name: string) => string, getSizeVariable: (name: string) => number }>;
+    /**
+     * An event that allows you to customize the visual style applied to a panel in an exported PDF document.
+     *
+     * Parameters:
+     *
+     * - `sender`: `SurveyPDF`\
+     * A `SurveyPDF` instance that raised the event.
+     * - `options.panel`: [`PanelModel`](https://surveyjs.io/form-library/documentation/api-reference/panel-model)\
+     * A panel whose style is being customized.
+     * - `options.getColorVariable`: `(name: string) => string`\
+     * A helper function that returns the value of a color variable by name.
+     * - `options.getSizeVariable`: `(name: string) => number`\
+     * A helper function that returns the value of a size variable by name.
+     * - `options.style`: [`IPanelStyle`](https://surveyjs.io/pdf-generator/documentation/api-reference/IPanelStyle)\
+     * An object that defines the panel's visual style. Modify its properties to control how the panel is rendered in the exported PDF document.
+     *
+     * [Customize Individual Element Styles in PDF](https://surveyjs.io/pdf-generator/documentation/customize-survey-question-rendering-in-pdf-form#customize-individual-element-styles (linkStyle))
+     */
+    public onGetPanelStyle = new EventBase<SurveyPDF, { panel: PanelModel, style: IPanelStyle, getColorVariable: (name: string) => string, getSizeVariable: (name: string) => number }>;
+    /**
+     * An event that allows you to customize the visual style applied to a page in an exported PDF document.
+     *
+     * Parameters:
+     *
+     * - `sender`: `SurveyPDF`\
+     * A `SurveyPDF` instance that raised the event.
+     * - `options.page`: [`PageModel`](https://surveyjs.io/form-library/documentation/api-reference/page-model)\
+     * A page whose style is being customized.
+     * - `options.getColorVariable`: `(name: string) => string`\
+     * A helper function that returns the value of a color variable by name.
+     * - `options.getSizeVariable`: `(name: string) => number`\
+     * A helper function that returns the value of a size variable by name.
+     * - `options.style`: [`IPageStyle`](https://surveyjs.io/pdf-generator/documentation/api-reference/IPageStyle)\
+     * An object that defines the page's visual style. Modify its properties to control how the page is rendered in the exported PDF document.
+     *
+     * [Customize Individual Element Styles in PDF](https://surveyjs.io/pdf-generator/documentation/customize-survey-question-rendering-in-pdf-form#customize-individual-element-styles (linkStyle))
+     */
+    public onGetPageStyle = new EventBase<SurveyPDF, { page: PanelModel, style: IPageStyle, getColorVariable: (name: string) => string, getSizeVariable: (name: string) => number }>;
+    /**
+     * An event that allows you to customize the visual style applied to a choice item in an exported PDF document.
+     *
+     * Parameters:
+     *
+     * - `sender`: `SurveyPDF`\
+     * A `SurveyPDF` instance that raised the event.
+     * - `options.question`: [`Question`](https://surveyjs.io/form-library/documentation/api-reference/question)\
+     * A question to which the item belongs.
+     * - `options.item`: `ItemValue`\
+     * A choice item whose style is being customized.
+     * - `options.getColorVariable`: `(name: string) => string`\
+     * A helper function that returns the value of a color variable by name.
+     * - `options.getSizeVariable`: `(name: string) => number`\
+     * A helper function that returns the value of a size variable by name.
+     * - `options.style.choiceText`: [`ITextStyle`](https://surveyjs.io/pdf-generator/documentation/api-reference/ITextStyle)\
+     * An object that defines the visual style applied to the item's text.
+     * - `options.style.input`: [`ISelectionInputStyle`](https://surveyjs.io/pdf-generator/documentation/api-reference/ISelectionInputStyle)\
+     * An object that defines the visual style applied to the item's input control.
+     *
+     * Modify the properties of `options.style.choiceText` and `options.style.input` to control how the item is rendered in the exported PDF document.
+     *
+     * [Customize Individual Element Styles in PDF](https://surveyjs.io/pdf-generator/documentation/customize-survey-question-rendering-in-pdf-form#customize-individual-element-styles (linkStyle))
+     */
+    public onGetItemStyle = new EventBase<SurveyPDF, { question: Question, item: ItemValue, style: { choiceText: ITextStyle, input: ISelectionInputStyle }, getColorVariable: (name: string) => string, getSizeVariable: (name: string) => number}>;
+
+    private styleValue: IDocStyle;
+    /**
+     * An object that defines the visual style applied to UI elements in an exported PDF document.
+     *
+     * To apply a new visual style to the PDF document, call the [`applyStyle`](https://surveyjs.io/pdf-generator/documentation/api-reference/surveypdf#applyStyle) method.
+     *
+     * [Customize Styling and Layout in PDF](https://surveyjs.io/pdf-generator/documentation/customize-survey-question-rendering-in-pdf-form#styling-and-layout (linkStyle))
+     */
+    public get style(): IDocStyle {
+        if(!this.styleValue) {
+            this.styleValue = getDefaultStyleFromTheme(this.theme);
+        }
+        return this.styleValue;
+    }
+    /**
+     * Applies a visual style to UI elements in an exported PDF document.
+     *
+     * This method accepts either an [`IDocStyle`](https://surveyjs.io/pdf-generator/documentation/api-reference/IDocStyle) object that overrides properties in the default visual style, or a callback function that returns such an object. When a callback is used, it receives helper functions&mdash;`getSizeVariable(name)` and `getColorVariable(name)`&mdash;which allow you to derive dimensions and colors from the currently applied UI theme.
+     *
+     * [Customize Styling and Layout in PDF](https://surveyjs.io/pdf-generator/documentation/customize-survey-question-rendering-in-pdf-form#styling-and-layout (linkStyle))
+     * @param value An [`IDocStyle`](https://surveyjs.io/pdf-generator/documentation/api-reference/IDocStyle) object, or a callback function that returns an `IDocStyle` object.
+     */
+    public applyStyle(value: IDocStyle | ((options: { getColorVariable: (name: string) => string, getSizeVariable: (name: string) => number }) => IDocStyle)): void {
+        if(typeof value == 'function') {
+            this.styleValue = SurveyHelper.mergeObjects({}, this.style, createStyleFromTheme(this.theme, value));
+        } else {
+            this.styleValue = SurveyHelper.mergeObjects({}, this.style, value);
+        }
+    }
+    private _theme: ITheme;
+    public get theme(): ITheme {
+        return this._theme || DefaultLight;
+    }
+    public applyTheme(theme: ITheme): void {
+        this._theme = SurveyHelper.mergeObjects({}, this.theme, theme);
+        this.styleValue = undefined;
+        this.stylesHash = {};
+    }
+    public getItemStyle(question: Question, item: ItemValue, style: { choiceText: ITextStyle, input: ISelectionInputStyle }): { choiceText: ITextStyle, input: ISelectionInputStyle } {
+        return createStyleFromTheme(this.theme, (options) => {
+            const eventOptions = {
+                getColorVariable: options.getColorVariable,
+                getSizeVariable: options.getSizeVariable,
+                style: style
+            };
+            this.onGetItemStyle.fire(this, { question, item, ...eventOptions });
+            return style;
+        });
+    }
+    private stylesHash: { [id: number]: IQuestionStyle | IPanelStyle | IPageStyle } = {};
+    public getElementStyle<T extends IQuestionStyle | IPanelStyle | IPageStyle = IQuestionStyle>(element: SurveyElement): T {
+        const uniqueId = element.uniqueId;
+        if(!this.stylesHash[uniqueId]) {
+            const style = this.style;
+            const types = [element.getType()];
+            let currentClass = Serializer.findClass(element.getType());
+            while(!!currentClass.parentName) {
+                types.unshift(currentClass.parentName);
+                currentClass = Serializer.findClass(currentClass.parentName);
+            }
+            const res = {};
+            types.forEach(type => {
+                SurveyHelper.mergeObjects(res, (style as any)[type] ?? {});
+            });
+            this.stylesHash[uniqueId] = createStyleFromTheme(this.theme, (options) => {
+                const eventOptions = {
+                    getColorVariable: options.getColorVariable,
+                    getSizeVariable: options.getSizeVariable,
+                    style: res
+                };
+                if(element.isPanel) {
+                    this.onGetPanelStyle.fire(this, { panel: element as PanelModel, ...eventOptions });
+                }
+                if(element.isPage) {
+                    this.onGetPageStyle.fire(this, { page: element as PageModel, ...eventOptions });
+                }
+                if(element.isQuestion) {
+                    this.onGetQuestionStyle.fire(this, { question: element as Question, ...eventOptions });
+                }
+                return res;
+            });
+        }
+        return this.stylesHash[uniqueId] as T;
     }
     private correctBricksPosition(controller: DocController, flats: IPdfBrick[][]) {
         if(controller.isRTL) {
@@ -180,18 +347,59 @@ export class SurveyPDF extends SurveyModel {
             });
         }
     }
+
+    private navigationMap: { [index: string]: number } = {};
+
+    public afterRenderSurveyElement(element: SurveyElement, bricks: Array<IPdfBrick>) {
+        bricks.forEach(brick => brick.addBeforeRenderCallback(() => {
+            if(brick.getPageNumber() !== undefined) {
+                this.navigationMap[element.uniqueId] = Math.min(this.navigationMap[element.uniqueId] ?? Number.MAX_VALUE, brick.getPageNumber() + 1);
+            }
+        }));
+    }
+    private renderPanelNavigation(controller: DocController, panel: PanelModel, rootChapter: any) {
+        const { doc } = controller;
+        if(!this.navigationMap[panel.uniqueId]) return;
+        const panelChapter = doc.outline.add(rootChapter, panel.title || panel.name, { pageNumber: this.navigationMap[panel.uniqueId] });
+        (panel.elements as any as Array<SurveyElement>).forEach((el: SurveyElement) => {
+            if(el.isVisible && this.navigationMap[el.uniqueId]) {
+                if(el.isPanel) {
+                    this.renderPanelNavigation(controller, el as PanelModel, panelChapter);
+                } else {
+                    doc.outline.add(panelChapter, el.title || el.name, { pageNumber: this.navigationMap[el.uniqueId] });
+                }
+            }
+        });
+    }
+    private renderNavigation(controller: DocController) {
+        if(this.options.showNavigation ?? true) {
+            this.visiblePages.forEach(page => {
+                this.renderPanelNavigation(controller, page, null);
+            });
+            this.navigationMap = {};
+        }
+    }
     protected async renderSurvey(controller: DocController): Promise<void> {
         this.visiblePages.forEach(page => page.onFirstRendering());
         const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(this, controller);
         this.correctBricksPosition(controller, flats);
         const packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
+        packs.forEach((pagePack, i) => {
+            pagePack.forEach(pack => {
+                pack.setPageNumber(i);
+            });
+        });
         await EventHandler.process_header_events(this, controller, packs);
         for (let i: number = 0; i < packs.length; i++) {
+            if (controller.getNumberOfPages() === i) {
+                controller.addPage();
+            }
+            controller.setPage(i);
+            controller.setFillColor(this.style.survey.backgroundColor);
+            controller.doc.rect(0, 0, controller.doc.internal.pageSize.getWidth(), controller.doc.internal.pageSize.getHeight(), 'F');
+            controller.restoreFillColor();
             for (let j: number = 0; j < packs[i].length; j++) {
-                if (controller.getNumberOfPages() === i) {
-                    controller.addPage();
-                }
-                controller.setPage(i);
+
                 //gizmos bricks borders for debug
                 // packs[i][j].unfold().forEach((rect: IPdfBrick) => {
                 //     controller.doc.setDrawColor('green');
@@ -202,7 +410,19 @@ export class SurveyPDF extends SurveyModel {
                 await packs[i][j].render();
             }
         }
+        this.renderNavigation(controller);
         SurveyHelper.clear();
+        this.stylesHash = {};
+    }
+    private createController(): DocController {
+        const marginsFromStyle = parsePadding(this.style.survey.padding);
+        Object.keys(marginsFromStyle).forEach((key: 'top' | 'left' | 'bot' | 'right') => {
+            marginsFromStyle[key] /= DocOptions.MM_TO_PT;
+        });
+        const options = SurveyHelper.mergeObjects({}, {
+            margins: marginsFromStyle
+        }, this.options);
+        return new DocController(options);
     }
     /**
      * An asynchronous method that starts to download the generated PDF file in the web browser.
@@ -210,9 +430,10 @@ export class SurveyPDF extends SurveyModel {
      * [View Demo](https://surveyjs.io/pdf-generator/examples/save-completed-forms-as-pdf-files/ (linkStyle))
      * @param fileName *(Optional)* A file name with the ".pdf" extension. Default value: `"survey_result.pdf"`.
      */
+
     public async save(fileName: string = 'survey_result.pdf'): Promise<any> {
         if(!SurveyPDF.currentlySaving) {
-            const controller: DocController = new DocController(this.options);
+            const controller: DocController = this.createController();
             this.onDocControllerCreated.fire(this, { controller: controller });
             SurveyPDF.currentlySaving = true;
             SurveyHelper.fixFont(controller);
@@ -246,7 +467,7 @@ export class SurveyPDF extends SurveyModel {
     raw(type: 'bloburl'): Promise<URL>;
     raw(type: 'dataurlstring'): Promise<string>;
     public async raw(type?: string): Promise<ArrayBuffer | string | Blob | URL > {
-        const controller: DocController = new DocController(this.options);
+        const controller: DocController = this.createController();
         this.onDocControllerCreated.fire(this, { controller: controller });
         SurveyHelper.fixFont(controller);
         await this.renderSurvey(controller);

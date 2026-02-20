@@ -7,6 +7,7 @@ import { TextBrick } from '../src/pdf_render/pdf_text';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 import { SurveyPDF } from '../src/survey';
+import '../src/entries/pdf-base';
 
 test('Merge rects 2 count', () => {
     let rectKeys: string[] = Object.keys(TestHelper.defaultRect);
@@ -60,8 +61,7 @@ test('Create point', () => {
 test('Not Carry text', async () => {
     let text: string = '111 11111 1111';
     let controller: DocController = new DocController(TestHelper.defaultOptions);
-    let composite: IPdfBrick = await SurveyHelper.createTextFlat(controller.leftTopPoint,
-        null, controller, text, TextBrick);
+    let composite: IPdfBrick = await SurveyHelper.createTextFlat(controller.leftTopPoint, controller, text, TextBrick);
     let assumeRect: IRect = {
         xLeft: controller.leftTopPoint.xLeft,
         xRight: controller.leftTopPoint.xLeft + controller.measureText(text).width,
@@ -77,8 +77,7 @@ test('Carry text', async () => {
         new DocController(options).measureText('1').width * 5 / DocOptions.MM_TO_PT +
         options.margins.right, 297];
     let controller: DocController = new DocController(options);
-    let composite: IPdfBrick = await SurveyHelper.createTextFlat(controller.leftTopPoint,
-        null, controller, text, TextBrick);
+    let composite: IPdfBrick = await SurveyHelper.createTextFlat(controller.leftTopPoint, controller, text);
     let assumeRect: IRect = {
         xLeft: controller.leftTopPoint.xLeft,
         xRight: controller.leftTopPoint.xLeft + controller.measureText('11111').width,
@@ -94,8 +93,7 @@ test('Carry split long text', async () => {
         new DocController(options).measureText('1').width * 3.5 / DocOptions.MM_TO_PT +
         options.margins.right, 297];
     let controller: DocController = new DocController(options);
-    let composite: IPdfBrick = await SurveyHelper.createTextFlat(controller.leftTopPoint,
-        null, controller, text, TextBrick);
+    let composite: IPdfBrick = await SurveyHelper.createTextFlat(controller.leftTopPoint, controller, text);
     let assumeRect: IRect = {
         xLeft: controller.leftTopPoint.xLeft,
         xRight: controller.leftTopPoint.xLeft + controller.measureText('111').width,
@@ -158,7 +156,7 @@ test('Scale rect 0.8', () => {
         yTop: 11,
         yBot: 19
     };
-    TestHelper.equalRect(expect, SurveyHelper.scaleRect(rect, 0.8), assumeRect);
+    TestHelper.equalRect(expect, SurveyHelper.scaleRect(rect, { scaleX: 0.875, scaleY: 0.8 }), assumeRect);
 });
 test('Scale rect 0.2', () => {
     let rect: IRect = {
@@ -240,19 +238,19 @@ test('Check set column width', () => {
         }
     };
     let controller: DocController = new DocController(options);
-    let columnWidth: number = SurveyHelper.getColumnWidth(controller, 3);
-    let gap: number = controller.unitWidth * SurveyHelper.GAP_BETWEEN_COLUMNS;
+    let gap: number = controller.unitWidth;
+    let columnWidth: number = SurveyHelper.getColumnWidth(controller, 3, gap);
     controller.pushMargins();
-    SurveyHelper.setColumnMargins(controller, 3, 0);
+    SurveyHelper.setColumnMargins(controller, 3, 0, gap);
     expect(controller.margins.left).toBe(0);
     expect(controller.margins.right).toBe(2 * (columnWidth + gap));
     controller.popMargins();
     controller.pushMargins();
-    SurveyHelper.setColumnMargins(controller, 3, 1);
+    SurveyHelper.setColumnMargins(controller, 3, 1, gap);
     expect(controller.margins.left).toBe(columnWidth + gap);
     expect(controller.margins.right).toBe(columnWidth + gap);
     controller.popMargins();
-    SurveyHelper.setColumnMargins(controller, 3, 2);
+    SurveyHelper.setColumnMargins(controller, 3, 2, gap);
     expect(controller.margins.left).toBe(2 * (columnWidth + gap));
     expect(controller.margins.right).toBe(0);
 });
@@ -272,6 +270,7 @@ test('Check textfield with negative width', () => {
     TestHelper.equalRect(expect, resultRect, assumeRect);
 });
 test('Check createSvgContent method', () => {
+    const spy = jest.spyOn(console, 'warn').mockImplementation((warning) => {});
     const options: IDocOptions = {
         useCustomFontInHtml: true
     };
@@ -291,45 +290,42 @@ test('Check createSvgContent method', () => {
     } finally {
         SurveyHelper.htmlToXml = old;
         DocController.customFonts = {};
+        spy.mockRestore();
     }
 });
 test('Check setCanvas method', () => {
     class ContextMock {
-        xScale: number;
-        yScale: number;
+        xScale!: number;
+        yScale!: number;
 
         scale = (xScale: number, yScale: number) => {
             this.xScale = xScale;
             this.yScale = yScale;
         };
         fillRect = () => { };
-        drawImage = () => { }
+        drawImage = () => { };
     }
     const canvas: HTMLCanvasElement = document.createElement('canvas');
-    let context: ContextMock;
+    let context!: ContextMock;
     (<any>canvas).getContext = () => {
         context = new ContextMock();
         return context;
     };
 
     const img = new Image();
-    const oldValue = SurveyHelper.HTML_TO_IMAGE_QUALITY;
-
-    SurveyHelper.HTML_TO_IMAGE_QUALITY = 4;
-    SurveyHelper['setCanvas'](canvas, 50, 20, img);
+    let controller = new DocController({ htmlToImageQuality: 4 });
+    SurveyHelper['setCanvas'](controller, canvas, 50, 20, img);
     expect(canvas.width).toBe(200);
     expect(canvas.height).toBe(80);
     expect(context.xScale).toBe(4);
     expect(context.yScale).toBe(4);
 
-    SurveyHelper.HTML_TO_IMAGE_QUALITY = 1;
-    SurveyHelper['setCanvas'](canvas, 60, 40, img);
+    controller = new DocController({ htmlToImageQuality: 1 });
+    SurveyHelper['setCanvas'](controller, canvas, 60, 40, img);
     expect(canvas.width).toBe(60);
     expect(canvas.height).toBe(40);
     expect(context.xScale).toBe(1);
     expect(context.yScale).toBe(1);
-
-    SurveyHelper.HTML_TO_IMAGE_QUALITY = oldValue;
 });
 test('Check getContentQuestionType method with renderAs', () => {
     let json: any = {
@@ -363,14 +359,16 @@ test('Check getContentQuestionType method with renderAs', () => {
     expect(type).toEqual('boolean-checkbox');
 });
 test('Check chooseHtmlFont method', async () => {
+    const errorSpy = jest.spyOn(console, 'error').mockImplementation((error) => {});
+    const warningSpy = jest.spyOn(console, 'warn').mockImplementation((warning) => {});
     let controller = new DocController(
         { fontName: 'custom_font' }
     );
-    expect(SurveyHelper.chooseHtmlFont(controller)).toBe(SurveyHelper.STANDARD_FONT);
+    expect(SurveyHelper.chooseHtmlFont(controller)).toBe('helvetica');
     controller = new DocController(
         { fontName: 'custom_font', useCustomFontInHtml: true }
     );
-    expect(SurveyHelper.chooseHtmlFont(controller)).toBe(SurveyHelper.STANDARD_FONT);
+    expect(SurveyHelper.chooseHtmlFont(controller)).toBe('helvetica');
     controller = new DocController(
         { fontName: 'custom_font', useCustomFontInHtml: true, base64Bold: 'base64font' }
     );
@@ -382,15 +380,19 @@ test('Check chooseHtmlFont method', async () => {
     controller = new DocController(
         { fontName: 'custom_font2', useCustomFontInHtml: true }
     );
-    expect(SurveyHelper.chooseHtmlFont(controller)).toBe(SurveyHelper.STANDARD_FONT);
+    expect(SurveyHelper.chooseHtmlFont(controller)).toBe('helvetica');
     DocController.addFont('custom_font2', 'base64', 'normal');
     controller = new DocController(
         { fontName: 'custom_font2', useCustomFontInHtml: true }
     );
     expect(SurveyHelper.chooseHtmlFont(controller)).toBe('custom_font2');
+    errorSpy.mockRestore();
+    warningSpy.mockRestore();
 });
 
 test('check getCorrectedImageSize works incorrectly if image could not be loaded', async () => {
+    const errorSpy = jest.spyOn(console, 'error').mockImplementation((error) => {});
+    const warningSpy = jest.spyOn(console, 'warn').mockImplementation((warning) => {});
     const controller = new DocController(
         { fontName: 'custom_font' }
     );
@@ -406,11 +408,13 @@ test('check getCorrectedImageSize works incorrectly if image could not be loaded
     imageSize = await SurveyHelper.getCorrectedImageSize(controller, { imageLink: '', defaultImageWidth: 300, defaultImageHeight: 400 });
     expect(imageSize.width).toBe(225);
     expect(imageSize.height).toBe(300);
+    errorSpy.mockRestore();
+    warningSpy.mockRestore();
 });
 
 test('check SurveyHelper.generateCssTextRule method', () => {
-    let css = SurveyHelper.generateCssTextRule(12, 'bold', 'MyFont');
-    expect(css).toBe('"font-size: 12pt; font-weight: bold; font-family: MyFont; color: #404040; margin: 0"');
-    css = SurveyHelper.generateCssTextRule(8, 'normal', 'Arial');
-    expect(css).toBe('"font-size: 8pt; font-weight: normal; font-family: Arial; color: #404040; margin: 0"');
+    let css = SurveyHelper.generateCssTextRule({ fontSize: 12, fontStyle: 'bold', fontName: 'MyFont', fontColor: '#404040', lineHeight: 12 });
+    expect(css).toBe('"font-size: 12pt; font-weight: bold; font-family: MyFont; color: #404040; lineHeight: 12; margin: 0"');
+    css = SurveyHelper.generateCssTextRule({ fontSize: 8, fontStyle: 'normal', fontName: 'Arial', fontColor: '#404040', lineHeight: 12 });
+    expect(css).toBe('"font-size: 8pt; font-weight: normal; font-family: Arial; color: #404040; lineHeight: 12; margin: 0"');
 });

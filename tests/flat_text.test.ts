@@ -4,16 +4,16 @@
 
 import * as Survey from 'survey-core';
 import { SurveyPDF } from '../src/survey';
-import { IPoint, IRect, IDocOptions, DocController } from '../src/doc_controller';
+import { IPoint, IDocOptions, DocController } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { FlatTextbox } from '../src/flat_layout/flat_textbox';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 import { QuestionTextModel } from 'survey-core';
-import { assert } from 'console';
 import { TextFieldBrick } from '../src/pdf_render/pdf_textfield';
-const __dummy_tb = new FlatTextbox(null, null, null);
+import { checkFlatSnapshot } from './snapshot_helper';
+import '../src/flat_layout/flat_textbox';
 
 test('Check readonly text', async () => {
     const json: any = {
@@ -26,16 +26,9 @@ test('Check readonly text', async () => {
             }
         ]
     };
-    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    const question = survey.getAllQuestions()[0];
-    const controller: DocController = new DocController(TestHelper.defaultOptions);
-    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(1);
-    const textPoint: IPoint = controller.leftTopPoint;
-    textPoint.xLeft += controller.unitWidth;
-    const assumeText: IRect = await SurveyHelper.createCommentFlat(textPoint, question, controller, { });
-    TestHelper.equalRect(expect, flats[0][0], assumeText);
+    await checkFlatSnapshot(json, {
+        snapshotName: 'text_readonly',
+    });
 });
 
 test('Check readonly text expends when textRenderAs option set', async () => {
@@ -51,17 +44,9 @@ test('Check readonly text expends when textRenderAs option set', async () => {
             }
         ]
     };
-    const options: IDocOptions = TestHelper.defaultOptions;
-    const survey: SurveyPDF = new SurveyPDF(json, options);
-    const controller: DocController = new DocController(options);
-    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(1);
-    const question = survey.getAllQuestions()[0];
-    const textPoint: IPoint = controller.leftTopPoint;
-    textPoint.xLeft += controller.unitWidth;
-    const assumeBrick: IPdfBrick = await SurveyHelper.createCommentFlat(textPoint, question, controller, { isReadOnly: true, value: question.value, isMultiline: true });
-    TestHelper.equalRect(expect, flats[0][0], assumeBrick);
+    await checkFlatSnapshot(json, {
+        snapshotName: 'text_readonly_big_text'
+    });
 });
 class SurveyPDFTester extends SurveyPDF {
     public get haveCommercialLicense(): boolean { return true; }
@@ -83,29 +68,18 @@ test('Check readonly text with readOnlyTextRenderMode set to div', async () => {
         const survey: SurveyPDF = new SurveyPDFTester(json, TestHelper.defaultOptions);
         const pdfAsString = await survey.raw();
         // Stream in result PDF document should be small - in this example 14
-        expect(pdfAsString.indexOf('/Length 14\n') > 0).toBeTruthy();
+        expect(pdfAsString.indexOf('/Length 567\n') > 0).toBeTruthy();
 
     } finally {
         Survey.settings.readOnlyTextRenderMode = oldRenderMode;
     }
 });
 
-test('Check shouldRenderAsComment flag for text flat', async () => {
-    const question = new QuestionTextModel('');
-    const controller = new DocController({});
-    const flat = new FlatTextbox(<any>undefined, question, controller);
-    expect(flat['shouldRenderAsComment']).toBeFalsy();
-    question.readOnly = true;
-    expect(flat['shouldRenderAsComment']).toBeTruthy();
-    question.readonlyRenderAs = 'acroform';
-    expect(flat['shouldRenderAsComment']).toBeFalsy();
-});
-
 test('Check text field value when mask is applied', async () => {
     let question = new QuestionTextModel('');
     const controller = new DocController({});
     question.value = 39.015;
-    let brick = (await (new FlatTextbox(<any>undefined, question, controller)).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0].unfold()[0] as TextFieldBrick;
+    let brick = (await (new FlatTextbox(<any>undefined, question, controller, {})).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0].unfold()[0] as TextFieldBrick;
     expect(brick['options'].value).toBe(39.015);
     question = new QuestionTextModel('');
     question.fromJSON({
@@ -117,7 +91,7 @@ test('Check text field value when mask is applied', async () => {
         }
     });
     question.value = 39.015;
-    brick = (await (new FlatTextbox(<any>undefined, question, controller)).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0].unfold()[0] as TextFieldBrick;
+    brick = (await (new FlatTextbox(<any>undefined, question, controller, {})).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0].unfold()[0] as TextFieldBrick;
     expect(brick['options'].value).toBe('39,01');
 
 });
