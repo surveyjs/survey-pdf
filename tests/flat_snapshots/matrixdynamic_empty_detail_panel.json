@@ -19,19 +19,19 @@
 				"bricks": [
 					{
 						"brickType": "CompositeBrick",
-						"width": 0,
+						"width": 51.599999999999994,
 						"height": 30.75,
 						"xLeft": 34.72145669291342,
-						"xRight": 34.72145669291342,
+						"xRight": 86.32145669291342,
 						"yTop": 28.346456692913392,
 						"yBot": 59.09645669291339,
 						"bricks": [
 							{
 								"brickType": "TextBrick",
-								"width": 0,
+								"width": 51.599999999999994,
 								"height": 30.75,
 								"xLeft": 34.72145669291342,
-								"xRight": 34.72145669291342,
+								"xRight": 86.32145669291342,
 								"yTop": 28.346456692913392,
 								"yBot": 59.09645669291339,
 								"style": {
@@ -43,7 +43,7 @@
 									"textAlign": "left"
 								},
 								"options": {
-									"text": ""
+									"text": "question1"
 								},
 								"padding": {
 									"top": 6.375,
