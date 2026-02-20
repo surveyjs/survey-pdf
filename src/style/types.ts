@@ -226,6 +226,11 @@ export interface ISurveyStyle extends IContainerStyle {
      * Specifies spacing values applied to survey UI elements.
      */
     spacing?: ISurveySpacing;
+    //todo
+    /**
+     * Specifies the visual style applied to the survey header (title and description).
+     */
+    header?: IContainerStyle;
 }
 /**
  * Defines spacing values applied to [panel](https://surveyjs.io/form-library/documentation/api-reference/panel-model) or [page](https://surveyjs.io/form-library/documentation/api-reference/page-model) UI elements in an exported PDF document.

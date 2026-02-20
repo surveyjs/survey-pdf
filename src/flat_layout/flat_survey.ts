@@ -5,6 +5,7 @@ import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { RowlineBrick } from '../pdf_render/pdf_rowline';
 import { SurveyHelper } from '../helper_survey';
 import { ITextStyle } from '../style/types';
+import { ContainerBrick } from 'src/pdf_render/pdf_container';
 
 export class FlatSurvey {
     private static popRowlines(flats: IPdfBrick[]) {
@@ -53,57 +54,63 @@ export class FlatSurvey {
     }
     public static async generateFlats(survey: SurveyPDF, controller: DocController): Promise<IPdfBrick[][]> {
         const flats: IPdfBrick[][] = [];
-        if (!survey.hasLogo) {
-            const titleFlat: CompositeBrick = await this.generateFlatTitle(
-                survey, controller, controller.leftTopPoint);
-            if (!titleFlat.isEmpty) flats.push([titleFlat]);
-        }
-        else if (survey.isLogoBefore) {
-            const logoFlat: IPdfBrick = await this.generateFlatLogoImage(
-                survey, controller, controller.leftTopPoint);
-            flats.push([logoFlat]);
-            const titlePoint: IPoint = SurveyHelper.createPoint(logoFlat,
-                survey.logoPosition === 'top', survey.logoPosition !== 'top');
-            if (survey.logoPosition !== 'top') {
-                controller.pushMargins();
-                titlePoint.xLeft += controller.unitWidth;
-                controller.margins.left += logoFlat.width + controller.unitWidth;
+        const header = new ContainerBrick(controller, { ...controller.leftTopPoint, width: SurveyHelper.getPageAvailableWidth(controller) }, survey.style.survey.header);
+        await header.setup(async (point, bricks) => {
+            if (!survey.hasLogo) {
+                const titleFlat: CompositeBrick = await this.generateFlatTitle(
+                    survey, controller, point);
+                if (!titleFlat.isEmpty) bricks.push(titleFlat);
             }
-            else {
-                titlePoint.xLeft = controller.leftTopPoint.xLeft;
-                titlePoint.yTop += controller.unitHeight / 2.0;
-            }
-            const titleFlat: CompositeBrick = await this.generateFlatTitle(
-                survey, controller, titlePoint);
-            if (survey.logoPosition !== 'top') controller.popMargins();
-            if (!titleFlat.isEmpty) flats[0].push(titleFlat);
-        }
-        else {
-            if (survey.logoPosition === 'right') {
+            else if (survey.isLogoBefore) {
                 const logoFlat: IPdfBrick = await this.generateFlatLogoImage(
-                    survey, controller, controller.leftTopPoint);
-                flats.push([logoFlat]);
-                controller.pushMargins();
-                controller.margins.right += logoFlat.width + controller.unitWidth;
-                const titleFlat: CompositeBrick = await this.generateFlatTitle(
-                    survey, controller, controller.leftTopPoint);
-                if (!titleFlat.isEmpty) flats[0].unshift(titleFlat);
-                controller.popMargins();
-            }
-            else {
-                const titleFlat: CompositeBrick = await this.generateFlatTitle(
-                    survey, controller, controller.leftTopPoint);
-                let logoPoint: IPoint = controller.leftTopPoint;
-                if (!titleFlat.isEmpty) {
-                    flats.push([titleFlat]);
-                    logoPoint = SurveyHelper.createPoint(titleFlat);
-                    logoPoint.yTop += controller.unitHeight / 2.0;
+                    survey, controller, point);
+                bricks.push(logoFlat);
+                const titlePoint: IPoint = SurveyHelper.createPoint(logoFlat,
+                    survey.logoPosition === 'top', survey.logoPosition !== 'top');
+                if (survey.logoPosition !== 'top') {
+                    controller.pushMargins();
+                    titlePoint.xLeft += controller.unitWidth;
+                    controller.margins.left += logoFlat.width + controller.unitWidth;
                 }
-                const logoFlat: IPdfBrick = await this.generateFlatLogoImage(
-                    survey, controller, logoPoint);
-                if (flats.length !== 0) flats[0].push(logoFlat);
-                else flats.push([logoFlat]);
+                else {
+                    titlePoint.xLeft = point.xLeft;
+                    titlePoint.yTop += controller.unitHeight / 2.0;
+                }
+                const titleFlat: CompositeBrick = await this.generateFlatTitle(
+                    survey, controller, titlePoint);
+                if (survey.logoPosition !== 'top') controller.popMargins();
+                if (!titleFlat.isEmpty) bricks.push(titleFlat);
             }
+            else {
+                if (survey.logoPosition === 'right') {
+                    const logoFlat: IPdfBrick = await this.generateFlatLogoImage(
+                        survey, controller, point);
+                    bricks.push(logoFlat);
+                    controller.pushMargins();
+                    controller.margins.right += logoFlat.width + controller.unitWidth;
+                    const titleFlat: CompositeBrick = await this.generateFlatTitle(
+                        survey, controller, point);
+                    if (!titleFlat.isEmpty) bricks.unshift(titleFlat);
+                    controller.popMargins();
+                }
+                else {
+                    const titleFlat: CompositeBrick = await this.generateFlatTitle(
+                        survey, controller, point);
+                    let logoPoint: IPoint = point;
+                    if (!titleFlat.isEmpty) {
+                        bricks.push(titleFlat);
+                        logoPoint = SurveyHelper.createPoint(titleFlat);
+                        logoPoint.yTop += controller.unitHeight / 2.0;
+                    }
+                    const logoFlat: IPdfBrick = await this.generateFlatLogoImage(
+                        survey, controller, logoPoint);
+                    if (bricks.length !== 0) bricks.push(logoFlat);
+                    else bricks.push(logoFlat);
+                }
+            }
+        });
+        if(!header.isEmpty) {
+            flats.push(header.getBricks());
         }
         let point: IPoint = controller.leftTopPoint;
         if (flats.length !== 0) {

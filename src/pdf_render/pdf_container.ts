@@ -112,7 +112,7 @@ export class ContainerBrick extends CompositeBrick {
         });
     }
     public getBricks(): Array<IPdfBrick> {
-        return this.bricks;
+        return this.bricks.slice();
     }
     public async setup(callback: (point: IPoint, bricks: Array<IPdfBrick>) => Promise<void>) {
         this.startSetup();
