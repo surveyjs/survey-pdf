@@ -71,20 +71,23 @@ export class ContainerBrick extends CompositeBrick {
                 const unfoldedBricks = this.unfold().filter(brick => !brick.isEmpty);
                 const unfoldedBricksOnPage = unfoldedBricks.filter(brick => brick.getPageNumber() == currentPageIndex);
                 const mergedRect = SurveyHelper.mergeRects(...unfoldedBricksOnPage);
-                const keys = ['top', 'right', 'left', 'bot'];
-                const parsedBorderWidth = parseSideValues(this.style.borderWidth);
+                const keys = ['top', 'right', 'bot', 'left'];
+                const borderWidth = new Array(4).fill(0, 0, 4).map((_, i) => (Array.isArray(this.style.borderWidth) ? this.style.borderWidth[i] : this.style.borderWidth) ?? 0);
                 const borderRadius = new Array(4).fill(0, 0, 4).map((_, i) => {
                     const borderRadius = (Array.isArray(this.style.borderRadius) ? this.style.borderRadius[i] : this.style.borderRadius) ?? 0;
                     return Math.min(
-                        Math.max(borderRadius - (parsedBorderWidth[keys[i] as keyof ISideValues] - this.includedBorderWidth[keys[i] as keyof ISideValues]), 0),
-                        Math.max(borderRadius - (parsedBorderWidth[keys[i - 1 < 0 ? keys.length - 1 : i - 1] as keyof ISideValues] - this.includedBorderWidth[keys[i - 1 < 0 ? keys.length - 1 : i - 1] as keyof ISideValues]), 0)
-                    );
-                }) as [number, number, number, number];
+                        Math.max(borderRadius - borderWidth[i] - this.includedBorderWidth[keys[i] as keyof ISideValues]), 0),
+                    Math.max(borderRadius - (borderWidth[i - 1 < 0 ? borderWidth.length - 1 : i - 1] - this.includedBorderWidth[keys[i - 1 < 0 ? keys.length - 1 : i - 1] as keyof ISideValues]), 0);
+                });
                 if(unfoldedBricks[0] != unfoldedBricksOnPage[0]) {
                     borderRadius[0] = 0;
+                    borderRadius[1] = 0;
+                    borderWidth[0] = 0;
                 }
                 if(unfoldedBricks[unfoldedBricks.length - 1] !== unfoldedBricksOnPage[unfoldedBricksOnPage.length - 1]) {
+                    borderRadius[2] = 0;
                     borderRadius[3] = 0;
+                    borderWidth[2] = 0;
                 }
                 if(this.style.backgroundColor !== null) {
                     this.controller.setFillColor(this.style.backgroundColor);
@@ -92,7 +95,7 @@ export class ContainerBrick extends CompositeBrick {
                         { xLeft: this.layout.xLeft + this.includedBorderWidth.left, yTop: mergedRect.yTop + this.includedBorderWidth.top },
                         this.layout.width - this.includedBorderWidth.left - this.includedBorderWidth.right,
                         (mergedRect.yBot - mergedRect.yTop) - this.includedBorderWidth.top - this.includedBorderWidth.bot);
-                    const { lines, point } = SurveyHelper.getDocLinesFromShape(SurveyHelper.getRoundedShape(rect, { ...this.style, borderRadius }));
+                    const { lines, point } = SurveyHelper.getDocLinesFromShape(SurveyHelper.createRoundedShape(rect, { ...this.style, borderRadius }));
                     this.controller.doc.lines(lines, ...point, [1, 1], 'F', true);
                     this.controller.restoreFillColor();
                 }
@@ -103,7 +106,7 @@ export class ContainerBrick extends CompositeBrick {
                         yTop: mergedRect.yTop,
                         yBot: mergedRect.yBot,
                         width: this.layout.width,
-                        height: mergedRect.yBot - mergedRect.yTop }, { ...this.style, borderRadius });
+                        height: mergedRect.yBot - mergedRect.yTop }, { ...this.style, borderRadius, borderWidth });
                 }
             }
         };

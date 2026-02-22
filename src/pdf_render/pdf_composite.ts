@@ -1,7 +1,6 @@
 import { IPdfBrick, TranslateXFunction, TranslateYFunction } from './pdf_brick';
 import { mergeRects } from '../utils';
 import { IntervalTree } from 'node-interval-tree';
-import { SurveyHelper } from '../helper_survey';
 export class CompositeBrick implements IPdfBrick {
     protected bricks: IPdfBrick[] = [];
     private _xLeft: number;
@@ -137,7 +136,7 @@ export class CompositeBrick implements IPdfBrick {
         this.updateRect();
     }
     get contentRect() {
-        const rect = SurveyHelper.mergeRects(...this.bricks.map(brick => brick.contentRect));
+        const rect = mergeRects(...this.bricks.map(brick => brick.contentRect));
         return { ...rect, width: rect.xRight - rect.xLeft, height: rect.yBot - rect.yTop };
     }
 }

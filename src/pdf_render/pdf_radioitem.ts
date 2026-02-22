@@ -94,7 +94,7 @@ export class RadioItemBrick extends PdfBrick {
     public async renderReadOnly(): Promise<void> {
         if(!!this.style.backgroundColor) {
             this.controller.setFillColor(this.style.backgroundColor);
-            const { lines: docLines, point } = SurveyHelper.getDocLinesFromShape(SurveyHelper.getRoundedShape(this.contentRect, this.style));
+            const { lines: docLines, point } = SurveyHelper.getDocLinesFromShape(SurveyHelper.createRoundedShape(this.contentRect, this.style));
             this.controller.doc.lines(docLines, ...point, [1, 1], 'F', true);
             this.controller.restoreFillColor();
         }

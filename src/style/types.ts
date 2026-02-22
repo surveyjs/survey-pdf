@@ -67,6 +67,7 @@ export interface IAlignedTextStyle extends ITextStyle {
  * Defines the visual style applied to an element border in an exported PDF document.
  */
 export interface IBorderStyle {
+    //todo
     /**
      * Specifies the border color.
      *
@@ -76,15 +77,17 @@ export interface IBorderStyle {
      * - RGB and RGBA functional notation (for example, `"rgb(255, 0, 0)"`, `"rgba(0, 0, 255, 0.5)"`)
      * - CSS-named colors (for example, `"green"`, `"red"`, `"aliceblue"`)
      */
-    borderColor?: string | [string, string, string, string];
+    borderColor?: string | Array<string>;
+    //todo
     /**
      * Specifies the border width, in points.
      */
-    borderWidth?: number | [number, number, number, number];
+    borderWidth?: number | Array<number>;
+    //todo
     /**
      * Specifies the border radius, in points.
      */
-    borderRadius?: number | [number, number, number, number];
+    borderRadius?: number | Array<number>;
 }
 
 /**

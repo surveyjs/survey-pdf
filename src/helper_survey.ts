@@ -462,8 +462,8 @@ export class SurveyHelper {
         controller.popMargins();
         return textFlat;
     }
-    public static getRoundedShape(rect: IRect, style: { borderRadius?: number | [number, number, number, number], mergeAngles?: boolean | [boolean, boolean, boolean, boolean] }): ISideValues<Array<Array<number>>> {
-        const parsedMergeAngles = parseSideValues(style.mergeAngles ?? true);
+    public static createRoundedShape(rect: IRect, style: { borderRadius?: number | Array<number> }, mergeAngles: boolean | ISideValues<boolean> = true): Map<keyof ISideValues, Array<Array<number>>> {
+        const parsedMergeAngles: ISideValues<boolean> = typeof mergeAngles == 'object' ? mergeAngles : { top: mergeAngles, bot: mergeAngles, left: mergeAngles, right: mergeAngles };
         const parsedRadius = parseSideValues(style.borderRadius ?? 0);
         function calcAngleLine(x: number, y: number, r: number, angle: number, rotAngle: number) {
             const l = 4/3 * Math.tan(angle / 4) * r;
@@ -479,53 +479,52 @@ export class SurveyHelper {
                 return acc;
             }, []);
         }
-        const lines = {
-            top: [[rect.xLeft + parsedRadius.top, rect.yTop, rect.xRight - parsedRadius.right, rect.yTop]],
-            right: [[rect.xRight, rect.yTop + parsedRadius.right, rect.xRight, rect.yBot -parsedRadius.bot]],
-            bot: [[rect.xRight - parsedRadius.bot, rect.yBot, rect.xLeft + parsedRadius.left, rect.yBot]],
-            left: [[rect.xLeft, rect.yBot - parsedRadius.left, rect.xLeft, rect.yTop + parsedRadius.left]],
-        };
+        const lines: Map<keyof ISideValues, Array<Array<number>>> = new Map();
+        lines.set('top', [[rect.xLeft + parsedRadius.top, rect.yTop, rect.xRight - parsedRadius.right, rect.yTop]]);
+        lines.set('right', [[rect.xRight, rect.yTop + parsedRadius.right, rect.xRight, rect.yBot -parsedRadius.bot]]);
+        lines.set('bot', [[rect.xRight - parsedRadius.bot, rect.yBot, rect.xLeft + parsedRadius.left, rect.yBot]]);
+        lines.set('left', [[rect.xLeft, rect.yBot - parsedRadius.left, rect.xLeft, rect.yTop + parsedRadius.top]]);
         if(parsedRadius.top) {
             const angle = parsedMergeAngles.top ? Math.PI / 2 : Math.PI / 4;
             const r = parsedRadius.top;
-            lines.left.push(calcAngleLine(rect.xLeft + r, rect.yTop + r, r, angle, Math.PI));
+            lines.get('left').push(calcAngleLine(rect.xLeft + r, rect.yTop + r, r, angle, Math.PI));
             if(!parsedMergeAngles.top) {
-                lines.top.unshift(calcAngleLine(rect.xLeft + r, rect.yTop + r, r, angle, Math.PI + angle));
+                lines.get('top').unshift(calcAngleLine(rect.xLeft + r, rect.yTop + r, r, angle, Math.PI + angle));
             }
         }
         if(parsedRadius.right) {
             const angle = parsedMergeAngles.right ? Math.PI / 2 : Math.PI / 4;
             const r = parsedRadius.right;
-            lines.top.push(calcAngleLine(rect.xRight - r, rect.yTop + r, r, angle, 3 / 2 * Math.PI));
+            lines.get('top').push(calcAngleLine(rect.xRight - r, rect.yTop + r, r, angle, 3 / 2 * Math.PI));
             if(!parsedMergeAngles.right) {
-                lines.right.unshift(calcAngleLine(rect.xRight - r, rect.yTop + r, r, angle, 3 / 2 * Math.PI + angle));
+                lines.get('right').unshift(calcAngleLine(rect.xRight - r, rect.yTop + r, r, angle, 3 / 2 * Math.PI + angle));
             }
         }
         if(parsedRadius.bot) {
             const angle = parsedMergeAngles.bot ? Math.PI / 2: Math.PI / 4;
             const r = parsedRadius.bot;
-            lines.right.push(calcAngleLine(rect.xRight - r, rect.yBot - r, r, angle, 0));
+            lines.get('right').push(calcAngleLine(rect.xRight - r, rect.yBot - r, r, angle, 0));
             if(!parsedMergeAngles.bot) {
-                lines.bot.unshift(calcAngleLine(rect.xRight - r, rect.yBot - r, r, angle, angle));
+                lines.get('bot').unshift(calcAngleLine(rect.xRight - r, rect.yBot - r, r, angle, angle));
             }
         }
         if(parsedRadius.left) {
             const angle = parsedMergeAngles.left ? Math.PI / 2 : Math.PI / 4;
             const r = parsedRadius.left;
-            lines.bot.push(calcAngleLine(rect.xLeft + r, rect.yBot - r, r, angle, Math.PI / 2));
+            lines.get('bot').push(calcAngleLine(rect.xLeft + r, rect.yBot - r, r, angle, Math.PI / 2));
             if(!parsedMergeAngles.left) {
-                lines.left.unshift(calcAngleLine(rect.xLeft + r, rect.yBot - r, r, angle, Math.PI / 2 + angle));
+                lines.get('left').unshift(calcAngleLine(rect.xLeft + r, rect.yBot - r, r, angle, Math.PI / 2 + angle));
             }
         }
         return lines;
     }
 
-    public static getDocLinesFromShape(lines: ISideValues<Array<Array<number>>>): { lines: Array<Array<number>>, point: Array<number> } {
-        const startPoint = lines.top[0].slice(0, 2);
+    public static getDocLinesFromShape(lines: Map<keyof ISideValues, Array<Array<number>>>): { lines: Array<Array<number>>, point: Array<number> } {
+        const startPoint = lines.get(lines.keys().next().value)[0].slice(0, 2);
         let currPoint = startPoint;
         const docLines: Array<Array<number>> = [];
-        Object.keys(lines).forEach((key: 'top' | 'bot' | 'right' | 'left') => {
-            const borderLines = lines[key];
+        lines.forEach((value) => {
+            const borderLines = value;
             return borderLines.forEach(line => {
                 line = line.slice(2);
                 docLines.push(line.map((v, i) => v - currPoint[i % 2]));
@@ -537,8 +536,9 @@ export class SurveyHelper {
 
     public static renderFlatBorders(controller: DocController, options: IBorderDescription, style: IBorderExtendedStyle): void {
         const newStyle: Required<IBorderExtendedStyle> = SurveyHelper.mergeObjects({}, { borderMode: BorderMode.Inside }, style);
-        const borderWidth = parseSideValues(style.borderWidth);
-        if(!borderWidth || !newStyle.borderColor) return;
+        const borderWidth = parseSideValues(style.borderWidth ?? 0);
+        const borderColor = parseSideValues(style.borderColor);
+        if([borderColor, borderWidth].some(map => Object.keys(map).every((k: keyof ISideValues) => !map[k]))) return;
 
         const scaleFactor = newStyle.borderMode == BorderMode.Middle ? 0 : (newStyle.borderMode == BorderMode.Inside ? 0.5 : -0.5);
         const scaledRect: IRect = {
@@ -547,7 +547,72 @@ export class SurveyHelper {
             xRight: options.xRight - scaleFactor * borderWidth.right,
             yBot: options.yBot - scaleFactor * borderWidth.bot,
         };
+        const mergeAngles: ISideValues<boolean> = {
+            top: borderWidth.left == borderWidth.top && borderColor.left == borderColor.top,
+            right: borderWidth.top == borderWidth.right && borderColor.top == borderColor.right,
+            bot: borderWidth.right == borderWidth.bot && borderColor.right == borderColor.bot,
+            left: borderWidth.bot == borderWidth.left && borderColor.bot == borderColor.left,
+        };
+        const lines = SurveyHelper.createRoundedShape(scaledRect, { ...newStyle }, mergeAngles);
 
+        const continuousLines: Array<Map<keyof ISideValues, number[][]>> = [];
+        let maxSequenceIndex = 0;
+        let maxSequenceLength = 0;
+        let currentSequenceIndex = 0;
+        let currentSequenceLength = 0;
+        let prevBorderWidth: number;
+        let prevBorderColor: string;
+        const keys = Array.from(lines.keys()) as Array<keyof ISideValues>;
+        keys.concat(keys).forEach((key, index) => {
+            const currentBorderWidth = borderWidth[key];
+            const currentBorderColor = borderColor[key];
+            if(index !== 0 && currentBorderWidth == prevBorderWidth && currentBorderColor == prevBorderColor) {
+                currentSequenceLength++;
+            } else {
+                prevBorderWidth = currentBorderWidth;
+                prevBorderColor = currentBorderColor;
+                if(currentSequenceLength > maxSequenceLength) {
+                    maxSequenceIndex = currentSequenceIndex;
+                    maxSequenceLength = currentSequenceLength;
+                }
+                currentSequenceIndex = index;
+                currentSequenceLength = 1;
+            }
+        });
+        if(maxSequenceLength == 0) {
+            maxSequenceLength = currentSequenceLength;
+            maxSequenceIndex = currentSequenceIndex;
+        }
+
+        if(maxSequenceLength >= 2) {
+            const maxContinuousLine: Map<keyof ISideValues, number[][]> = new Map();
+            for(let i = maxSequenceIndex; i < maxSequenceIndex + maxSequenceLength; i ++) {
+                const key = keys[i % keys.length];
+                maxContinuousLine.set(key, lines.get(key));
+            }
+            continuousLines.push(maxContinuousLine);
+            const leftKeys = keys.filter(key => !maxContinuousLine.has(key));
+            if(leftKeys.length !== 0) {
+                if(leftKeys.length == 2 && leftKeys[0] == 'top' && leftKeys[1] == 'left') leftKeys.reverse();
+                if(leftKeys.every(key => borderWidth[leftKeys[0]] == borderWidth[key] && borderColor[leftKeys[0]] == borderColor[key])) {
+                    const continuousLine: Map<keyof ISideValues, number[][]> = new Map();
+                    leftKeys.forEach(key => { continuousLine.set(key, lines.get(key)); });
+                    continuousLines.push(continuousLine);
+                } else {
+                    leftKeys.forEach(key => {
+                        const map = new Map();
+                        map.set(key, lines.get(key)),
+                        continuousLines.push(map);
+                    });
+                }
+            }
+        } else {
+            keys.forEach(key => {
+                const map = new Map();
+                map.set(key, lines.get(key)),
+                continuousLines.push(map);
+            });
+        }
         if(newStyle.dashStyle) {
             const dashStyle = newStyle.dashStyle;
             const borderLength = (Math.abs(scaledRect.yTop - scaledRect.yBot) + Math.abs(scaledRect.xLeft - scaledRect.xRight)) * 2;
@@ -559,44 +624,15 @@ export class SurveyHelper {
                 dashStyle.dashPhase
             );
         }
-        const mergeAngles = new Array<boolean>(4).fill(false, 0, 4).map((_, i) => {
-            return [newStyle.borderColor, newStyle.borderWidth].every((arr) => {
-                if(Array.isArray(arr)) {
-                    if(arr[i - 1 < 0 ? arr.length - 1 : i - 1] !== arr[i]) {
-                        return false;
-                    }
-                }
-                return true;
-            });
-        }) as [boolean, boolean, boolean, boolean];
-        const lines = SurveyHelper.getRoundedShape(scaledRect, { ...newStyle, mergeAngles: mergeAngles });
-        if([newStyle.borderColor, newStyle.borderWidth].every((arr) => Array.isArray(arr) ? arr.every(el => el == arr[0]) : true)) {
-            controller.setDrawColor(Array.isArray(newStyle.borderColor) ? newStyle.borderColor[0] : newStyle.borderColor);
-            controller.doc.setLineWidth(Array.isArray(newStyle.borderWidth) ? newStyle.borderWidth[0] : newStyle.borderWidth);
-            const { lines: docLines, point } = this.getDocLinesFromShape(lines);
-            controller.doc.lines(docLines, ...point, [1, 1], 'S', true);
+        continuousLines.forEach(line => {
+            const key = line.keys().next().value as keyof ISideValues;
+            if(!borderColor[key] || !borderWidth[key]) return;
+            controller.setDrawColor(borderColor[key]);
+            controller.doc.setLineWidth(borderWidth[key]);
+            const { lines: docLines, point } = this.getDocLinesFromShape(line);
+            controller.doc.lines(docLines, ...point, [1, 1], 'S', line.size == 4);
             controller.restoreDrawColor();
-        } else {
-            const parsedBorderColor = parseSideValues(newStyle.borderColor);
-            const parsedBorderWidth = parseSideValues(newStyle.borderWidth);
-            Object.keys(lines).forEach((key: keyof ISideValues) => {
-                if(parsedBorderWidth[key]) {
-                    const borderLines = lines[key];
-                    const point = borderLines[0].slice(0, 2);
-                    let currPoint = point;
-                    const docLines = borderLines.map(line => {
-                        line = line.slice(2);
-                        const transformedLine = line.map((v, i) => v - currPoint[i % 2]);
-                        currPoint = line.slice(line.length - 2);
-                        return transformedLine;
-                    });
-                    controller.setDrawColor(parsedBorderColor[key]);
-                    controller.doc.setLineWidth(parsedBorderWidth[key]);
-                    controller.doc.lines(docLines, ...point, [1, 1], 'S', false);
-                    controller.restoreDrawColor();
-                }
-            });
-        }
+        });
         if(newStyle.dashStyle) {
             controller.doc.setLineDashPattern([]);
         }

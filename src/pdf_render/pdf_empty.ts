@@ -15,7 +15,7 @@ export class EmptyBrick extends PdfBrick {
     public async renderInteractive(): Promise<void> {
         if(this.style.color) {
             this.controller.setFillColor(this.style.color);
-            const { lines: docLines, point } = SurveyHelper.getDocLinesFromShape(SurveyHelper.getRoundedShape(this.contentRect, this.style));
+            const { lines: docLines, point } = SurveyHelper.getDocLinesFromShape(SurveyHelper.createRoundedShape(this.contentRect, this.style));
             this.controller.doc.lines(docLines, ...point, [1, 1], 'F', true);
             this.controller.restoreFillColor();
         }
