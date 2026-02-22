@@ -1,7 +1,7 @@
 import { IPdfBrick, TranslateXFunction, TranslateYFunction } from './pdf_brick';
 import { mergeRects } from '../utils';
 import { IntervalTree } from 'node-interval-tree';
-import { SurveyHelper } from 'src/helper_survey';
+import { SurveyHelper } from '../helper_survey';
 export class CompositeBrick implements IPdfBrick {
     protected bricks: IPdfBrick[] = [];
     private _xLeft: number;

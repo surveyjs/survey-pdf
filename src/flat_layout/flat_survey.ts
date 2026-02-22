@@ -5,7 +5,7 @@ import { CompositeBrick } from '../pdf_render/pdf_composite';
 import { RowlineBrick } from '../pdf_render/pdf_rowline';
 import { SurveyHelper } from '../helper_survey';
 import { ITextStyle } from '../style/types';
-import { ContainerBrick } from 'src/pdf_render/pdf_container';
+import { ContainerBrick } from '../pdf_render/pdf_container';
 
 export class FlatSurvey {
     private static popRowlines(flats: IPdfBrick[]) {
