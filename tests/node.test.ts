@@ -26,7 +26,7 @@ test('Check html brick is empty when document is not defined', async () => {
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     let controller: DocController = new DocController(TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    let flats: IPdfBrick[][] = await new FlatSurvey(survey, controller, survey.style.survey).generateFlats();
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
     const emptyBrick = flats[0][0].unfold()[0] as PdfBrick;
@@ -47,7 +47,7 @@ test('Check signaturepad with empty value', async () => {
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     let controller: DocController = new DocController(TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    let flats: IPdfBrick[][] = await new FlatSurvey(survey, controller, survey.style.survey).generateFlats();
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
     expect(flats[0][0] instanceof CompositeBrick).toBeTruthy();

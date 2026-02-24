@@ -31,7 +31,7 @@ test('Event render questions simple textbox same bricks', async () => {
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     survey.onRenderQuestion.add((_, __) => { });
     let controller: DocController = new DocController(TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    let flats: IPdfBrick[][] = await new FlatSurvey(survey, controller, survey.style.survey).generateFlats();
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(1);
@@ -55,7 +55,7 @@ test('Event render questions simple textbox add bottom description', async () =>
         options.bricks.push(descBrick);
     });
     let controller: DocController = new DocController(TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    let flats: IPdfBrick[][] = await new FlatSurvey(survey, controller, survey.style.survey).generateFlats();
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(2);
@@ -80,7 +80,7 @@ test('Event render questions checkbox as radiogroup', async () => {
         options.bricks = await flatQuestion.generateFlats(options.point);
     });
     let controller: DocController = new DocController(TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    let flats: IPdfBrick[][] = await new FlatSurvey(survey, controller, survey.style.survey).generateFlats();
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(2);
@@ -107,7 +107,7 @@ test('Event render panel simple panel same bricks', async () => {
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     survey.onRenderPanel.add((_, __) => { });
     let controller: DocController = new DocController(TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    let flats: IPdfBrick[][] = await new FlatSurvey(survey, controller, survey.style.survey).generateFlats();
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(1);
@@ -137,7 +137,7 @@ test('Event render panel simple panel add bottom description', async () => {
         options.bricks.push(descBrick);
     });
     let controller: DocController = new DocController(TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    let flats: IPdfBrick[][] = await new FlatSurvey(survey, controller, survey.style.survey).generateFlats();
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(3);
@@ -165,7 +165,7 @@ test('Event render panel simple panel same bricks', async () => {
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     survey.onRenderPanel.add((_, __) => { });
     let controller: DocController = new DocController(TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    let flats: IPdfBrick[][] = await new FlatSurvey(survey, controller, survey.style.survey).generateFlats();
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(1);
@@ -195,7 +195,7 @@ test('Event render panel simple panel add bottom description', async () => {
         options.bricks.push(descBrick);
     });
     let controller: DocController = new DocController(TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    let flats: IPdfBrick[][] = await new FlatSurvey(survey, controller, survey.style.survey).generateFlats();
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(3);
@@ -220,7 +220,7 @@ test('Event render page simple page same bricks', async () => {
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     survey.onRenderPage.add((_, __) => { });
     let controller: DocController = new DocController(TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    let flats: IPdfBrick[][] = await new FlatSurvey(survey, controller, survey.style.survey).generateFlats();
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(1);
@@ -247,7 +247,7 @@ test('Event render page simple page add bottom description', async () => {
         options.bricks.push(descBrick);
     });
     let controller: DocController = new DocController(TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    let flats: IPdfBrick[][] = await new FlatSurvey(survey, controller, survey.style.survey).generateFlats();
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(3);

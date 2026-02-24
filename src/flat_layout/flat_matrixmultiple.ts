@@ -214,7 +214,7 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
                     panelPoint.xLeft+= columnWidths[0] + this.style.spacing.tableColumnGap;
                     this.controller.margins.left = panelPoint.xLeft;
                 }
-                const panelBricks: IPdfBrick[] = await SurveyHelper.generatePanelFlats(this.survey, this.controller, currentDetailPanel, panelPoint, this.survey.getElementStyle(currentDetailPanel));
+                const panelBricks: IPdfBrick[] = await SurveyHelper.generatePanelFlats(this.survey, this.controller, currentDetailPanel, panelPoint);
 
                 if(this.isMultiple && isWide) {
                     this.controller.popMargins();

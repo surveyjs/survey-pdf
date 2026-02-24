@@ -193,7 +193,7 @@ test('Check', async () => {
     options.format = [210.0, 117.0];
     const survey: SurveyPDF = new SurveyPDF(json, options);
     const controller: DocController = new DocController(options);
-    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    const flats: IPdfBrick[][] = await new FlatSurvey(survey, controller, survey.style.survey).generateFlats();
 });
 
 test('Check FlatPanel.getRows: two small elements stay in one row', async () => {

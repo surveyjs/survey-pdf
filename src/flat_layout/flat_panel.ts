@@ -8,8 +8,11 @@ import { ContainerBrick } from '../pdf_render/pdf_container';
 import { AdornersPanelOptions } from '../event_handler/adorners';
 import { FlatRepository } from './flat_repository';
 import { IPanelStyle, IQuestionStyle, ITextStyle } from '../style/types';
+export interface IFlatPanel {
+    generateFlats(point: IPoint): Promise<IPdfBrick[]>;
+}
 
-export class FlatPanel<T extends PanelModel = PanelModel, S extends IPanelStyle = IPanelStyle> {
+export class FlatPanel<T extends PanelModel = PanelModel, S extends IPanelStyle = IPanelStyle> implements IFlatPanel {
     constructor(protected survey: SurveyPDF, protected panel: T, protected controller: DocController, protected style: S) {}
     public async generateFlats(point: IPoint): Promise<IPdfBrick[]> {
         const panelFlats: IPdfBrick[] = [];
@@ -156,7 +159,7 @@ export class FlatPanel<T extends PanelModel = PanelModel, S extends IPanelStyle 
                 const containerBrick = new ContainerBrick(this.controller, { ...currPoint, width: SurveyHelper.getPageAvailableWidth(this.controller) }, elementStyle.container);
                 await containerBrick.setup(async (point, bricks) => {
                     if (element instanceof PanelModel) {
-                        bricks.push(...await SurveyHelper.generatePanelFlats(this.survey, this.controller, element, point, elementStyle as IPanelStyle));
+                        bricks.push(...await SurveyHelper.generatePanelFlats(this.survey, this.controller, element, point));
                     }
                     else {
                         await (<Question>element).waitForQuestionIsReady();
@@ -186,3 +189,5 @@ export class FlatPanel<T extends PanelModel = PanelModel, S extends IPanelStyle 
         return rowsFlats;
     }
 }
+
+FlatRepository.registerPanel(FlatPanel);

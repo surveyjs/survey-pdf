@@ -1,7 +1,6 @@
 import { SurveyModel, EventBase, SurveyElement, Serializer, Question, PanelModel, PageModel, ITheme, ItemValue } from 'survey-core';
 import { hasLicense } from 'survey-core';
 import { IDocOptions, DocController, DocOptions } from './doc_controller';
-import { FlatSurvey } from './flat_layout/flat_survey';
 import { PagePacker } from './page_layout/page_packer';
 import { IPdfBrick } from './pdf_render/pdf_brick';
 import { EventAsync, } from './event_handler/event_async';
@@ -14,6 +13,7 @@ import { createStyleFromTheme, getDefaultStyleFromTheme } from './style';
 import { DefaultLight } from './themes/default-light';
 import { parseSideValues } from './utils';
 import { ITextStyle, ISelectionInputStyle, IQuestionStyle, IPageStyle, IPanelStyle } from './style/types';
+import { FlatRepository } from './flat_layout/flat_repository';
 
 /**
  * The `SurveyPDF` object enables you to export your surveys and forms to PDF documents.
@@ -381,7 +381,7 @@ export class SurveyPDF extends SurveyModel {
     }
     protected async renderSurvey(controller: DocController): Promise<void> {
         this.visiblePages.forEach(page => page.onFirstRendering());
-        const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(this, controller);
+        const flats: IPdfBrick[][] = await FlatRepository.getInstance().createSurvey(this, controller, this.style.survey).generateFlats();
         this.correctBricksPosition(controller, flats);
         const packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
         packs.forEach((pagePack, i) => {

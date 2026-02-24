@@ -106,7 +106,7 @@ test('Check hyperlink underline position', async () => {
     const controller: DocController = new DocController(TestHelper.defaultOptions);
     await survey['renderSurvey'](controller);
     const internal: any = controller.doc.internal;
-    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    const flats: IPdfBrick[][] = await new FlatSurvey(survey, controller, survey.style.survey).generateFlats();
     const moveInfo: string[] = internal.pages[1][31].split(' ');
     const assumeLeft: number = flats[0][0].unfold()[0].xLeft;
     const actualLeft: number = +moveInfo[0];

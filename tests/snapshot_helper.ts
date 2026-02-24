@@ -204,7 +204,7 @@ export async function checkFlatSnapshot(surveyJSON: any, snapshotOptions: IFlatS
             }
         });
     }
-    const res = await FlatSurvey.generateFlats(survey, controller);
+    const res = await new FlatSurvey(survey, controller, survey.style.survey).generateFlats();
     if(snapshotOptions.eventName == 'onRenderSurvey') {
         compareCallback(res);
 

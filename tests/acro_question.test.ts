@@ -134,7 +134,7 @@ test('Check empty question', async () => {
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     let controller: DocController = new DocController(TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    let flats: IPdfBrick[][] = await new FlatSurvey(survey, controller, survey.style.survey).generateFlats();
     expect(flats.length).toBe(1);
     expect(typeof flats[0]).not.toBe('undefined');
     expect(flats[0].length).toBe(0);
@@ -151,7 +151,7 @@ test('Not visible question', async () => {
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     let controller: DocController = new DocController(TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    let flats: IPdfBrick[][] = await new FlatSurvey(survey, controller, survey.style.survey).generateFlats();
     expect(flats.length).toBe(0);
 });
 test('Check descrition with hidden title', async () => {
@@ -201,7 +201,7 @@ test('Two pages', async () => {
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     let controller: DocController = new DocController(TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    let flats: IPdfBrick[][] = await new FlatSurvey(survey, controller, survey.style.survey).generateFlats();
     expect(flats.length).toBe(2);
     expect(flats[0].length).toBe(1);
     expect(flats[1].length).toBe(1);

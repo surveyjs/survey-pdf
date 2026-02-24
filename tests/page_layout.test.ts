@@ -58,7 +58,7 @@ test('Long checkbox with indent', async () => {
     let survey: SurveyPDF = new SurveyPDF(json, options);
     survey.applyStyle({ question: { container: { padding: 0, borderWidth: 0 } } });
     let controller: DocController = new DocController(options);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    let flats: IPdfBrick[][] = await new FlatSurvey(survey, controller, survey.style.survey).generateFlats();
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(5);
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
@@ -99,7 +99,7 @@ test('Check two textbox flats sort order', async () => {
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     let controller: DocController = new DocController(TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    let flats: IPdfBrick[][] = await new FlatSurvey(survey, controller, survey.style.survey).generateFlats();
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(3);
     let composite1: IPdfBrick = flats[0][0];
@@ -169,7 +169,7 @@ test('Unfold compose brick', async () => {
     let survey: SurveyPDF = new SurveyPDF(json, options);
     survey.applyStyle({ question: { container: { padding: 0, borderWidth: 0 } } });
     let controller: DocController = new DocController(options);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    let flats: IPdfBrick[][] = await new FlatSurvey(survey, controller, survey.style.survey).generateFlats();
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
@@ -201,7 +201,7 @@ test('Pack to little page', async () => {
     let survey: SurveyPDF = new SurveyPDF(json, options);
     survey.applyStyle({ question: { container: { padding: 0, borderWidth: 0 } } });
     let controller: DocController = new DocController(options);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    let flats: IPdfBrick[][] = await new FlatSurvey(survey, controller, survey.style.survey).generateFlats();
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(1);
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
@@ -289,7 +289,7 @@ test('Check yTop on new page with panel', async () => {
     survey.applyStyle({ question: { container: { padding: 0, borderWidth: 0 } } });
     const style = survey.getElementStyle(survey.getAllQuestions()[0]) as IQuestionRadiogroupStyle;
     let controller: DocController = new DocController({ ...TestHelper.defaultOptions, format: [210, 180] });
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    let flats: IPdfBrick[][] = await new FlatSurvey(survey, controller, survey.style.survey).generateFlats();
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
     expect(packs.length).toBe(3);
     expect(packs[2][0].yTop).toBeCloseTo(packs[2][1].yTop - style.choiceText.lineHeight - style.spacing?.choiceGap);
@@ -334,7 +334,7 @@ test('Check adding new page for lack of place before new page', async () => {
     let survey: SurveyPDF = new SurveyPDF(json, options);
     survey.applyStyle({ question: { container: { padding: 0, borderWidth: 0 } } });
     let controller: DocController = new DocController(options);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    let flats: IPdfBrick[][] = await new FlatSurvey(survey, controller, survey.style.survey).generateFlats();
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
     expect(packs.length).toBe(3);
     TestHelper.equalRect(expect, flats[0][0], packs[0][0]);
@@ -358,7 +358,7 @@ test('Check isPageBreak property of IPdfBrick', async () => {
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     let controller: DocController = new DocController(TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    let flats: IPdfBrick[][] = await new FlatSurvey(survey, controller, survey.style.survey).generateFlats();
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(3);
     flats[0][1].isPageBreak = true;

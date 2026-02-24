@@ -32,7 +32,7 @@ test('Event render header simple text', async () => {
         });
     });
     let controller: DocController = new DocController(TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    let flats: IPdfBrick[][] = await new FlatSurvey(survey, controller, survey.style.survey).generateFlats();
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(1);
@@ -60,7 +60,7 @@ test('Event render header bold text', async () => {
         });
     });
     let controller: DocController = new DocController(TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    let flats: IPdfBrick[][] = await new FlatSurvey(survey, controller, survey.style.survey).generateFlats();
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(1);
@@ -91,7 +91,7 @@ test('Event render header left top text', async () => {
         });
     });
     let controller: DocController = new DocController(TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    let flats: IPdfBrick[][] = await new FlatSurvey(survey, controller, survey.style.survey).generateFlats();
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(1);
@@ -122,7 +122,7 @@ test('Event render header center middle text', async () => {
         });
     });
     let controller: DocController = new DocController(TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    let flats: IPdfBrick[][] = await new FlatSurvey(survey, controller, survey.style.survey).generateFlats();
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(1);
@@ -159,7 +159,7 @@ test('Event render footer center middle text', async () => {
         });
     });
     let controller: DocController = new DocController(TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    let flats: IPdfBrick[][] = await new FlatSurvey(survey, controller, survey.style.survey).generateFlats();
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(1);
@@ -188,7 +188,7 @@ test('Have commercial license: true', async () => {
     };
     let survey: SurveyPDF = new SurveyPDFTester(json, TestHelper.defaultOptions);
     let controller: DocController = new DocController(TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    let flats: IPdfBrick[][] = await new FlatSurvey(survey, controller, survey.style.survey).generateFlats();
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(1);
@@ -208,7 +208,7 @@ test('Have commercial license: false', async () => {
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     let controller: DocController = new DocController(TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    let flats: IPdfBrick[][] = await new FlatSurvey(survey, controller, survey.style.survey).generateFlats();
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(1);

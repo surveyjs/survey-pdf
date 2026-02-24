@@ -45,7 +45,7 @@ test('Render checkbox base widget as radiogroup', async () => {
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     let controller: DocController = new DocController(TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    let flats: IPdfBrick[][] = await new FlatSurvey(survey, controller, survey.style.survey).generateFlats();
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(2);
@@ -87,7 +87,7 @@ test('Render custom widget via callback', async () => {
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     let controller: DocController = new DocController(TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    let flats: IPdfBrick[][] = await new FlatSurvey(survey, controller, survey.style.survey).generateFlats();
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(1);
