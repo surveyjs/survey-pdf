@@ -38,15 +38,14 @@ test('Check that checkbox has square boundaries', async () => {
     const question = survey.getAllQuestions()[0];
     const labelStyle = (survey.getElementStyle(question) as IQuestionCheckboxStyle).choiceText;
     const inputStyle = (survey.getElementStyle(question) as IQuestionCheckboxStyle).input;
-    let assumeCheckbox: IRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(SurveyHelper.createRect(
-        controller.leftTopPoint, inputStyle.width, inputStyle.height),
-    1), controller.leftTopPoint.xLeft);
+    let assumeCheckbox: IRect = SurveyHelper.moveRect(SurveyHelper.createRect(
+        controller.leftTopPoint, inputStyle.width, inputStyle.height), controller.leftTopPoint.xLeft);
     const textHeight = controller.measureText(1, labelStyle).height;
     const shift = (textHeight - (assumeCheckbox.yBot - assumeCheckbox.yTop)) / 2;
     assumeCheckbox.yTop += shift;
     assumeCheckbox.yBot += shift;
     let checkboxFlat: PdfBrick = new PdfBrick(null, assumeCheckbox);
-    assumeCheckbox = SurveyHelper.scaleRect(assumeCheckbox, SurveyHelper.getRectBorderScale(checkboxFlat, inputStyle.borderWidth));
+    assumeCheckbox = SurveyHelper.createRectInsideBorders(assumeCheckbox, inputStyle.borderWidth);
     let acroFormFields: any = controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields;
     let internalRect: any = acroFormFields[0].Rect;
     TestHelper.equalRect(expect, SurveyHelper.createRect(
@@ -160,7 +159,7 @@ test('Check readonly checkbox symbol', async () => {
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     await survey['renderSurvey'](controller);
-    expect(controller.doc.internal.pages[1][45]).toContain(
+    expect(controller.doc.internal.pages[1][46]).toContain(
         '(' + '3' + ')');
 });
 
