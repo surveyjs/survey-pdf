@@ -17,6 +17,9 @@ resources:
     - pipeline: LibraryMain
       source: Library Main
       trigger: true
+    - pipeline: CustomWidgetsMain
+      source: Custom Widgets Main
+      trigger: true
 
 variables:
   npm_config_cache: $(Pipeline.Workspace)/.npm
@@ -110,20 +113,12 @@ steps:
     displayName: "npm run release specific version"
   #####################################################
 
-  - task: DownloadBuildArtifacts@0
-    inputs:
-      buildType: "specific"
-      project: "af2804d2-859a-4705-9ef5-cdf46d1d5d4f"
-      pipeline: "42"
-      specificBuildWithTriggering: true
-      buildVersionToDownload: "latest"
-      downloadType: "single"
-      artifactName: "SurveyJSWidgetsBuild"
-      downloadPath: "$(System.ArtifactsDirectory)"
+  - download: CustomWidgetsMain
+    artifact: SurveyJSWidgetsBuild
 
   - task: CopyFiles@2
     inputs:
-      SourceFolder: "$(System.ArtifactsDirectory)/SurveyJSWidgetsBuild/packages/survey-widgets"
+      SourceFolder: "$(Pipeline.Workspace)/CustomWidgetsMain/SurveyJSWidgetsBuild/packages/survey-widgets"
       Contents: "**"
       TargetFolder: "$(Build.SourcesDirectory)/survey-pdf/node_modules/surveyjs-widgets"
       OverWrite: true
