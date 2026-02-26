@@ -12,7 +12,7 @@
     "noImplicitAny": true,
     "importHelpers": true,
     "experimentalDecorators": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "paths": {
@@ -20,8 +20,6 @@
         "./src/doc_controller.ts"
       ]
     },
-    "declaration": true,
-    "declarationDir": "build/typings/",
   },
   "include": [
     "src/entries/pdf.ts",

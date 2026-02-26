@@ -26,7 +26,7 @@ test('Check ranking in custom component', async () => {
     };
     const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     const controller: DocController = new DocController(TestHelper.defaultOptions);
-    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    const flats: IPdfBrick[][] = await new FlatSurvey(survey, controller, survey.style.survey).generateFlats();
     expect(flats.length).toBe(1);
     ComponentCollection.Instance.clear();
 });

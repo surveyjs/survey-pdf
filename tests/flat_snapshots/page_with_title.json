@@ -1,0 +1,109 @@
+[
+	{
+		"brickType": "CompositeBrick",
+		"width": 538.5826771653543,
+		"height": 72.75,
+		"xLeft": 28.34645669291339,
+		"xRight": 566.9291338582677,
+		"yTop": 28.34645669291339,
+		"yBot": 101.09645669291339,
+		"bricks": [
+			{
+				"brickType": "ContainerBrick",
+				"width": 538.5826771653543,
+				"height": 24.000000000000004,
+				"xLeft": 28.34645669291339,
+				"xRight": 566.9291338582677,
+				"yTop": 28.34645669291339,
+				"yBot": 52.34645669291339,
+				"bricks": [
+					{
+						"brickType": "CompositeBrick",
+						"width": 70.56,
+						"height": 24.000000000000004,
+						"xLeft": 28.34645669291339,
+						"xRight": 98.9064566929134,
+						"yTop": 28.34645669291339,
+						"yBot": 52.34645669291339,
+						"bricks": [
+							{
+								"brickType": "TextBrick",
+								"width": 70.56,
+								"height": 24.000000000000004,
+								"xLeft": 28.34645669291339,
+								"xRight": 98.9064566929134,
+								"yTop": 28.34645669291339,
+								"yBot": 52.34645669291339,
+								"style": {
+									"fontSize": 18,
+									"fontName": "helvetica",
+									"fontStyle": "bold",
+									"lineHeight": 24,
+									"fontColor": "#1c1b20",
+									"textAlign": "left"
+								},
+								"options": {
+									"text": "So Page"
+								},
+								"padding": {
+									"top": 0,
+									"bottom": 0
+								}
+							}
+						]
+					},
+					{
+						"brickType": "RowlineBrick",
+						"width": 538.5826771653543,
+						"height": 0,
+						"xLeft": 28.34645669291339,
+						"xRight": 566.9291338582677,
+						"yTop": 52.34645669291339,
+						"yBot": 52.34645669291339
+					}
+				]
+			},
+			{
+				"brickType": "TextFieldBrick",
+				"width": 525.8326771653543,
+				"height": 30.75,
+				"xLeft": 34.72145669291339,
+				"xRight": 560.5541338582677,
+				"yTop": 70.34645669291339,
+				"yBot": 101.09645669291339,
+				"style": {
+					"fontSize": 12,
+					"fontName": "helvetica",
+					"fontStyle": "normal",
+					"lineHeight": 18,
+					"fontColor": "#1c1b20",
+					"backgroundColor": "#ffffff"
+				},
+				"options": {
+					"shouldRenderReadOnly": false,
+					"rows": 1,
+					"fieldName": "testidquestion_HiddenText",
+					"inputType": "text",
+					"value": "",
+					"isReadOnly": false,
+					"shouldRenderBorders": true,
+					"placeholder": "",
+					"isMultiline": false
+				},
+				"padding": {
+					"top": 6.375,
+					"bottom": 6.375
+				}
+			}
+		]
+	},
+	{
+		"brickType": "RowlineBrick",
+		"width": 538.5826771653543,
+		"height": 0,
+		"xLeft": 28.34645669291339,
+		"xRight": 566.9291338582677,
+		"yTop": 101.09645669291339,
+		"yBot": 101.09645669291339
+	}
+]

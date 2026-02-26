@@ -1,0 +1,184 @@
+[
+	{
+		"brickType": "CompositeBrick",
+		"width": 43.94291338582677,
+		"height": 111,
+		"xLeft": 34.72145669291339,
+		"xRight": 78.66437007874016,
+		"yTop": 34.72145669291339,
+		"yBot": 145.7214566929134,
+		"bricks": [
+			{
+				"brickType": "CheckItemBrick",
+				"width": 12,
+				"height": 12,
+				"xLeft": 34.72145669291339,
+				"xRight": 46.72145669291339,
+				"yTop": 37.72145669291339,
+				"yBot": 49.72145669291339,
+				"style": {
+					"fontSize": 7.5,
+					"fontName": "zapfdingbats",
+					"fontStyle": "normal",
+					"lineHeight": 18,
+					"fontColor": "#000000",
+					"width": 12,
+					"height": 12,
+					"borderColor": "#1c1b20",
+					"borderWidth": 0.75,
+					"backgroundColor": "#ffffff",
+					"checkMark": "3"
+				},
+				"options": {
+					"shouldRenderReadOnly": false,
+					"readOnly": false,
+					"checked": true,
+					"fieldName": "testidquestion_checkboxindex0"
+				},
+				"padding": {
+					"top": 0,
+					"bottom": 0
+				}
+			},
+			{
+				"brickType": "CompositeBrick",
+				"width": 25.92,
+				"height": 72,
+				"xLeft": 52.72145669291339,
+				"xRight": 78.6414566929134,
+				"yTop": 34.72145669291339,
+				"yBot": 106.72145669291339,
+				"bricks": [
+					{
+						"brickType": "TextBrick",
+						"width": 25.92,
+						"height": 18,
+						"xLeft": 52.72145669291339,
+						"xRight": 78.6414566929134,
+						"yTop": 34.72145669291339,
+						"yBot": 52.72145669291339,
+						"style": {
+							"fontSize": 12,
+							"fontName": "helvetica",
+							"fontStyle": "normal",
+							"lineHeight": 18,
+							"fontColor": "#1c1b20",
+							"textAlign": "left"
+						},
+						"options": {
+							"text": "Othe"
+						},
+						"padding": {
+							"top": 0,
+							"bottom": 0
+						}
+					},
+					{
+						"brickType": "TextBrick",
+						"width": 21.120000000000005,
+						"height": 18,
+						"xLeft": 52.72145669291339,
+						"xRight": 73.8414566929134,
+						"yTop": 52.72145669291339,
+						"yBot": 70.72145669291339,
+						"style": {
+							"fontSize": 12,
+							"fontName": "helvetica",
+							"fontStyle": "normal",
+							"lineHeight": 18,
+							"fontColor": "#1c1b20",
+							"textAlign": "left"
+						},
+						"options": {
+							"text": "r(de"
+						},
+						"padding": {
+							"top": 0,
+							"bottom": 0
+						}
+					},
+					{
+						"brickType": "TextBrick",
+						"width": 25.200000000000003,
+						"height": 18,
+						"xLeft": 52.72145669291339,
+						"xRight": 77.9214566929134,
+						"yTop": 70.72145669291339,
+						"yBot": 88.72145669291339,
+						"style": {
+							"fontSize": 12,
+							"fontName": "helvetica",
+							"fontStyle": "normal",
+							"lineHeight": 18,
+							"fontColor": "#1c1b20",
+							"textAlign": "left"
+						},
+						"options": {
+							"text": "scrib"
+						},
+						"padding": {
+							"top": 0,
+							"bottom": 0
+						}
+					},
+					{
+						"brickType": "TextBrick",
+						"width": 10.560000000000002,
+						"height": 18,
+						"xLeft": 52.72145669291339,
+						"xRight": 63.281456692913395,
+						"yTop": 88.72145669291339,
+						"yBot": 106.72145669291339,
+						"style": {
+							"fontSize": 12,
+							"fontName": "helvetica",
+							"fontStyle": "normal",
+							"lineHeight": 18,
+							"fontColor": "#1c1b20",
+							"textAlign": "left"
+						},
+						"options": {
+							"text": "e)"
+						},
+						"padding": {
+							"top": 0,
+							"bottom": 0
+						}
+					}
+				]
+			},
+			{
+				"brickType": "TextFieldBrick",
+				"width": 43.94291338582677,
+				"height": 36,
+				"xLeft": 34.72145669291339,
+				"xRight": 78.66437007874016,
+				"yTop": 109.72145669291339,
+				"yBot": 145.7214566929134,
+				"style": {
+					"fontSize": 12,
+					"fontName": "helvetica",
+					"fontStyle": "normal",
+					"lineHeight": 18,
+					"fontColor": "#1c1b20",
+					"backgroundColor": "#ffffff"
+				},
+				"options": {
+					"shouldRenderReadOnly": false,
+					"fieldName": "testidquestion_checkbox_other_comment",
+					"rows": 2,
+					"value": "",
+					"shouldRenderBorders": true,
+					"isReadOnly": false,
+					"isMultiline": true,
+					"placeholder": "",
+					"inputType": ""
+				},
+				"padding": {
+					"top": 0,
+					"bottom": 0
+				}
+			}
+		]
+	}
+]

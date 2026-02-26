@@ -1,0 +1,237 @@
+[
+	{
+		"brickType": "CompositeBrick",
+		"width": 85.03937007874015,
+		"height": 128.25,
+		"xLeft": 28.34645669291339,
+		"xRight": 113.38582677165354,
+		"yTop": 28.346456692913392,
+		"yBot": 156.5964566929134,
+		"bricks": [
+			{
+				"brickType": "ContainerBrick",
+				"width": 85.03937007874015,
+				"height": 30.75,
+				"xLeft": 28.34645669291339,
+				"xRight": 113.38582677165354,
+				"yTop": 28.346456692913392,
+				"yBot": 59.09645669291339,
+				"bricks": [
+					{
+						"brickType": "CompositeBrick",
+						"width": 22.560000000000002,
+						"height": 30.75,
+						"xLeft": 34.72145669291339,
+						"xRight": 57.281456692913395,
+						"yTop": 28.346456692913392,
+						"yBot": 59.09645669291339,
+						"bricks": [
+							{
+								"brickType": "TextBrick",
+								"width": 22.560000000000002,
+								"height": 30.75,
+								"xLeft": 34.72145669291339,
+								"xRight": 57.281456692913395,
+								"yTop": 28.346456692913392,
+								"yBot": 59.09645669291339,
+								"style": {
+									"fontSize": 12,
+									"fontName": "helvetica",
+									"fontStyle": "bold",
+									"lineHeight": 18,
+									"fontColor": "#1c1b20",
+									"textAlign": "left"
+								},
+								"options": {
+									"text": "Cap"
+								},
+								"padding": {
+									"top": 6.375,
+									"bottom": 6.375
+								}
+							}
+						]
+					}
+				]
+			},
+			{
+				"brickType": "ContainerBrick",
+				"width": 85.03937007874015,
+				"height": 48.75,
+				"xLeft": 28.34645669291339,
+				"xRight": 113.38582677165354,
+				"yTop": 59.09645669291339,
+				"yBot": 107.84645669291339,
+				"bricks": [
+					{
+						"brickType": "CompositeBrick",
+						"width": 44.28,
+						"height": 18.375,
+						"xLeft": 34.72145669291339,
+						"xRight": 79.0014566929134,
+						"yTop": 59.09645669291339,
+						"yBot": 77.47145669291339,
+						"bricks": [
+							{
+								"brickType": "TextBrick",
+								"width": 44.28,
+								"height": 18.375,
+								"xLeft": 34.72145669291339,
+								"xRight": 79.0014566929134,
+								"yTop": 59.09645669291339,
+								"yBot": 77.47145669291339,
+								"style": {
+									"fontSize": 9,
+									"fontName": "helvetica",
+									"fontStyle": "normal",
+									"lineHeight": 12,
+									"fontColor": "#1c1b20",
+									"textAlign": "left"
+								},
+								"options": {
+									"text": "First power"
+								},
+								"padding": {
+									"top": 6.375,
+									"bottom": 0
+								}
+							}
+						]
+					},
+					{
+						"brickType": "CompositeBrick",
+						"width": 72.28937007874015,
+						"height": 24.375,
+						"xLeft": 34.72145669291339,
+						"xRight": 107.01082677165354,
+						"yTop": 83.47145669291339,
+						"yBot": 107.84645669291339,
+						"bricks": [
+							{
+								"brickType": "DropdownBrick",
+								"width": 72.28937007874015,
+								"height": 24.375,
+								"xLeft": 34.72145669291339,
+								"xRight": 107.01082677165354,
+								"yTop": 83.47145669291339,
+								"yBot": 107.84645669291339,
+								"style": {
+									"fontSize": 12,
+									"fontStyle": "normal",
+									"lineHeight": 18,
+									"fontColor": "#1c1b20",
+									"width": 12,
+									"height": 12,
+									"borderColor": "#1c1b20",
+									"borderWidth": 0,
+									"backgroundColor": "#ffffff"
+								},
+								"options": {
+									"fieldName": "testidquestion_matrixmultiple_twocolumnsonerow_horizontal_narrow_row1_cell_1",
+									"value": "Select...",
+									"isReadOnly": false,
+									"optionsCaption": "Select...",
+									"showOptionsCaption": true,
+									"items": []
+								},
+								"padding": {
+									"top": 0,
+									"bottom": 6.375
+								}
+							}
+						]
+					}
+				]
+			},
+			{
+				"brickType": "ContainerBrick",
+				"width": 85.03937007874015,
+				"height": 48.75,
+				"xLeft": 28.34645669291339,
+				"xRight": 113.38582677165354,
+				"yTop": 107.84645669291339,
+				"yBot": 156.5964566929134,
+				"bricks": [
+					{
+						"brickType": "CompositeBrick",
+						"width": 58.59,
+						"height": 18.375,
+						"xLeft": 34.72145669291339,
+						"xRight": 93.3114566929134,
+						"yTop": 107.84645669291339,
+						"yBot": 126.22145669291339,
+						"bricks": [
+							{
+								"brickType": "TextBrick",
+								"width": 58.59,
+								"height": 18.375,
+								"xLeft": 34.72145669291339,
+								"xRight": 93.3114566929134,
+								"yTop": 107.84645669291339,
+								"yBot": 126.22145669291339,
+								"style": {
+									"fontSize": 9,
+									"fontName": "helvetica",
+									"fontStyle": "normal",
+									"lineHeight": 12,
+									"fontColor": "#1c1b20",
+									"textAlign": "left"
+								},
+								"options": {
+									"text": "Second choice"
+								},
+								"padding": {
+									"top": 6.375,
+									"bottom": 0
+								}
+							}
+						]
+					},
+					{
+						"brickType": "CompositeBrick",
+						"width": 72.28937007874015,
+						"height": 24.375,
+						"xLeft": 34.72145669291339,
+						"xRight": 107.01082677165354,
+						"yTop": 132.2214566929134,
+						"yBot": 156.5964566929134,
+						"bricks": [
+							{
+								"brickType": "DropdownBrick",
+								"width": 72.28937007874015,
+								"height": 24.375,
+								"xLeft": 34.72145669291339,
+								"xRight": 107.01082677165354,
+								"yTop": 132.2214566929134,
+								"yBot": 156.5964566929134,
+								"style": {
+									"fontSize": 12,
+									"fontStyle": "normal",
+									"lineHeight": 18,
+									"fontColor": "#1c1b20",
+									"width": 12,
+									"height": 12,
+									"borderColor": "#1c1b20",
+									"borderWidth": 0,
+									"backgroundColor": "#ffffff"
+								},
+								"options": {
+									"fieldName": "testidquestion_matrixmultiple_twocolumnsonerow_horizontal_narrow_row1_cell_2",
+									"value": "Select...",
+									"isReadOnly": false,
+									"optionsCaption": "Select...",
+									"showOptionsCaption": true,
+									"items": []
+								},
+								"padding": {
+									"top": 0,
+									"bottom": 6.375
+								}
+							}
+						]
+					}
+				]
+			}
+		]
+	}
+]

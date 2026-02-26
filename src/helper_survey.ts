@@ -1,60 +1,44 @@
-import { IQuestion, Question, QuestionRatingModel, QuestionFileModel, LocalizableString } from 'survey-core';
-import * as SurveyPDFModule from './entries/pdf-base';
+import { IQuestion, Question, LocalizableString, PanelModel, PageModel } from 'survey-core';
 import { SurveyPDF } from './survey';
 import { IPoint, IRect, ISize, DocController } from './doc_controller';
 import { FlatRepository } from './flat_layout/flat_repository';
 import { IFlatQuestion } from './flat_layout/flat_question';
-import { IHTMLRenderType } from './flat_layout/flat_html';
-import { IPdfBrick, PdfBrick } from './pdf_render/pdf_brick';
+import { IPdfBrick } from './pdf_render/pdf_brick';
 import { TextBrick } from './pdf_render/pdf_text';
-import { TextBoldBrick } from './pdf_render/pdf_textbold';
-import { TitlePanelBrick } from './pdf_render/pdf_titlepanel';
-import { DescriptionBrick } from './pdf_render/pdf_description';
-import { LinkBrick } from './pdf_render/pdf_link';
+import { ILinkOptions, LinkBrick } from './pdf_render/pdf_link';
 import { HTMLBrick } from './pdf_render/pdf_html';
 import { ImageBrick } from './pdf_render/pdf_image';
 import { EmptyBrick } from './pdf_render/pdf_empty';
 import { RowlineBrick } from './pdf_render/pdf_rowline';
 import { CompositeBrick } from './pdf_render/pdf_composite';
-import { AdornersOptions } from './event_handler/adorners';
 import { ITextFieldBrickOptions, TextFieldBrick } from './pdf_render/pdf_textfield';
+import { ISideValues, mergeRects, parseSideValues } from './utils';
 import { getImageUtils } from './utils/image';
+import { IAlignedTextStyle, IBorderStyle, IInputStyle, ITextStyle } from './style/types';
 
-export type IBorderDescription = IRect & ISize & Pick<PdfBrick, 'formBorderColor'> & { rounded?: boolean, dashStyle?: { dashArray: [number, number] | [number], dashPhase: number }, outside?: boolean };
+export interface IBorderDescription extends IRect, ISize {}
+
+export enum BorderMode {
+    Inside = 0,
+    Middle = 1,
+    Outside = 2,
+}
+export enum BorderRect {
+    None = 0,
+    Top = 1,
+    Bottom = 2,
+    Right = 4,
+    Left = 8,
+    All = 15
+}
+export interface IBorderExtendedStyle extends IBorderStyle {
+    dashStyle?: { dashArray: [number, number] | [number], dashPhase: number };
+    borderMode?: BorderMode;
+}
 
 export class SurveyHelper {
-    public static EPSILON: number = 2.2204460492503130808472633361816e-15;
-    public static TITLE_SURVEY_FONT_SIZE_SCALE: number = 1.7;
-    public static TITLE_PAGE_FONT_SIZE_SCALE: number = 1.3;
-    public static TITLE_PANEL_FONT_SIZE_SCALE: number = 1.3;
-    public static DESCRIPTION_FONT_SIZE_SCALE: number = 2.0 / 3.0;
-    public static OTHER_ROWS_COUNT: number = 2;
-    public static RATING_MIN_WIDTH: number = 3;
-    public static RATING_MIN_HEIGHT: number = 2;
-    public static RATING_COLUMN_WIDTH: number = 5;
-    public static MATRIX_COLUMN_WIDTH: number = 5;
-    public static IMAGEPICKER_COUNT: number = 4;
-    public static IMAGEPICKER_RATIO: number = 4.0 / 3.0;
-    public static MULTIPLETEXT_TEXT_PERS: number = Math.E / 10.0;
-    public static HTML_TAIL_TEXT_SCALE: number = 0.24;
-    public static SELECT_ITEM_FLAT_SCALE: number = 0.95;
-    public static GAP_BETWEEN_ROWS: number = 0.25;
-    public static GAP_BETWEEN_COLUMNS: number = 1.5;
-    public static GAP_BETWEEN_ITEM_TEXT: number = 0.25;
-    public static FORM_BORDER_VISIBLE: boolean = true;
-    public static BORDER_SCALE: number = 0.1;
-    public static VISIBLE_BORDER_SCALE: number = 0.8;
-    public static UNVISIBLE_BORDER_SCALE: number = 0.2;
-    public static RADIUS_SCALE: number = 3.0;
-    public static TITLE_FONT_SCALE: number = 1.1;
-    public static VALUE_READONLY_PADDING_SCALE: number = 0.3;
-    public static HTML_TO_IMAGE_QUALITY: number = 1.0;
-    public static FORM_BORDER_COLOR: string = '#9f9f9f';
-    public static TEXT_COLOR: string = '#404040';
-    public static BACKGROUND_COLOR: string = '#FFFFFF';
-    public static TITLE_LOCATION_MATRIX: string = 'matrix';
-    public static STANDARD_FONT: string = 'helvetica';
-    public static CUSTOM_FONT_ENCODING: string = 'Identity-H';
+    public static readonly EPSILON: number = 2.2204460492503130808472633361816e-15;
+    public static readonly HTML_TAIL_TEXT_SCALE: number = 0.24;
 
     public static parseWidth(width: string, maxWidth: number,
         columnsCount: number = 1, defaultUnit?: string): number {
@@ -105,20 +89,24 @@ export class SurveyHelper {
         }
         return value * 72.0 / 96.0;
     }
+    public static parseColor(color: string) {
+        let opacity: number;
+        let match: RegExpMatchArray;
+        if((color ?? '').match(/^rgba/)) {
+            const matches = color.match(/[\d.]+/g);
+            if(matches.length == 4) {
+                color = `rgb(${matches[0]}, ${matches[1]}, ${matches[2]})`;
+                opacity = parseFloat(matches[3]);
+            }
+        }
+        else if((match = (color ?? '').match(/(#[A-Fa-f0-9]{6})([A-Fa-f0-9]{2})/))) {
+            color = match[1];
+            opacity = (Math.round(parseInt(match[2], 16) / 255 * 100)) / 100;
+        }
+        return { color, opacity };
+    }
     public static mergeRects(...rects: IRect[]): IRect {
-        const resultRect: IRect = {
-            xLeft: rects[0].xLeft,
-            xRight: rects[0].xRight,
-            yTop: rects[0].yTop,
-            yBot: rects[0].yBot
-        };
-        rects.forEach((rect: IRect) => {
-            resultRect.xLeft = Math.min(resultRect.xLeft, rect.xLeft),
-            resultRect.xRight = Math.max(resultRect.xRight, rect.xRight),
-            resultRect.yTop = Math.min(resultRect.yTop, rect.yTop),
-            resultRect.yBot = Math.max(resultRect.yBot, rect.yBot);
-        });
-        return resultRect;
+        return mergeRects(...rects);
     }
     public static createPoint(rect: IRect, isLeft: boolean = true, isTop: boolean = false): IPoint {
         return {
@@ -150,17 +138,17 @@ export class SurveyHelper {
             yBot: controller.paperHeight
         };
     }
-    public static chooseHtmlFont(controller: DocController): string {
-        return controller.useCustomFontInHtml ? controller.fontName : this.STANDARD_FONT;
+    public static chooseHtmlFont(controller: DocController, fontName?: string): string {
+        return controller.useCustomFontInHtml ? fontName ?? controller.fontName : 'helvetica';
     }
-    public static generateCssTextRule(fontSize: number, fontStyle: string, fontName: string): string {
-        return `"font-size: ${fontSize}pt; font-weight: ${fontStyle}; font-family: ${fontName}; color: ${this.TEXT_COLOR}; margin: 0"`;
+    public static generateCssTextRule(style: ITextStyle): string {
+        return `"font-size: ${style.fontSize}pt; font-weight: ${style.fontStyle}; font-family: ${style.fontName}; color: ${SurveyHelper.parseColor(style.fontColor).color}; lineHeight: ${style.lineHeight}; margin: 0"`;
     }
-    public static createHtmlContainerBlock(html: string, controller: DocController, renderAs: IHTMLRenderType): string {
-        const font = this.chooseHtmlFont(controller);
-        return `<div class="__surveypdf_html" style=${this.generateCssTextRule(
-            controller.fontSize, controller.fontStyle, font)}>` +
-            `<style>.__surveypdf_html p { margin: 0; line-height: ${controller.fontSize}pt } body { margin: 0; }</style>${html}</div>`;
+    public static createHtmlContainerBlock(html: string, controller: DocController, style?: Readonly<ITextStyle>): string {
+        const newStyle: Required<ITextStyle> = SurveyHelper.getPatchedTextStyle(controller, style);
+        const font = this.chooseHtmlFont(controller, newStyle.fontName);
+        return `<div class="__surveypdf_html" style=${this.generateCssTextRule(newStyle)}>` +
+            `<style>.__surveypdf_html p { margin: 0; line-height: ${newStyle.lineHeight}pt } body { margin: 0; }</style>${html}</div>`;
     }
     public static splitHtmlRect(controller: DocController, htmlBrick: IPdfBrick): IPdfBrick {
         const bricks: IPdfBrick[] = [];
@@ -171,43 +159,88 @@ export class SurveyHelper {
         bricks.push(htmlBrick);
         const currPoint: IPoint = this.createPoint(htmlBrick);
         for (let i: number = 0; i < emptyBrickCount; i++) {
-            bricks.push(new EmptyBrick(this.createRect(currPoint, htmlBrick.width, minHeight)));
+            bricks.push(new EmptyBrick(controller, this.createRect(currPoint, htmlBrick.width, minHeight)));
             currPoint.yTop += minHeight;
         }
         const remainingHeight: number = htmlHeight - (emptyBrickCount + 1) * minHeight;
         if (remainingHeight > 0) {
-            bricks.push(new EmptyBrick(this.createRect(currPoint, htmlBrick.width, remainingHeight)));
+            bricks.push(new EmptyBrick(controller, this.createRect(currPoint, htmlBrick.width, remainingHeight)));
         }
         return new CompositeBrick(...bricks);
     }
-    public static createPlainTextFlat<T extends IPdfBrick>(point: IPoint, question: IQuestion,
-        controller: DocController, text: string, fabric: new (question: IQuestion,
-            controller: DocController, rect: IRect, text: string) => T): CompositeBrick {
-        const lines: string[] = controller.doc.splitTextToSize(text,
+    public static createPlainTextFlat(point: IPoint,
+        controller: DocController, text: string, style: Required<IAlignedTextStyle>): CompositeBrick {
+        controller.setTextStyle(style, true);
+        const lines: string[] = controller.helperDoc.splitTextToSize(text,
             controller.paperWidth - controller.margins.right - point.xLeft);
+        controller.restoreTextStyle(true);
         const currPoint: IPoint = this.clone(point);
         const composite: CompositeBrick = new CompositeBrick();
-        lines.forEach((line: string) => {
-            const size: ISize = controller.measureText(line);
-            composite.addBrick(new fabric(question, controller,
-                this.createRect(currPoint, size.width, size.height), line));
+        lines.forEach((text: string) => {
+            const size: ISize = controller.measureText(text, style);
+            composite.addBrick(new TextBrick(controller,
+                this.createRect(currPoint, size.width, size.height), { text }, style));
             currPoint.yTop += size.height;
         });
+        if(style.textAlign == 'right') {
+            const spaceXRight = point.xLeft + SurveyHelper.getPageAvailableWidth(controller);
+            composite.translateX((xLeft, xRight) => {
+                return { xLeft: xLeft + (spaceXRight - xRight), xRight: spaceXRight };
+            });
+        }
+        if(style.textAlign == 'center') {
+            const spaceXCenter = point.xLeft + SurveyHelper.getPageAvailableWidth(controller) / 2;
+            composite.translateX((xLeft, xRight) => {
+                const shift = spaceXCenter - (xLeft + xRight) / 2;
+                return { xLeft: xLeft + shift, xRight: xRight + shift };
+            });
+        }
         return composite;
     }
-    public static async createTextFlat<T extends IPdfBrick>(point: IPoint, question: IQuestion,
-        controller: DocController, text: string | LocalizableString, fabric: new (question: IQuestion,
-            controller: DocController, rect: IRect, text: string) => T): Promise<IPdfBrick> {
+    public static async createTextFlat(point: IPoint,
+        controller: DocController, text: string | LocalizableString, style?: Readonly<IAlignedTextStyle>): Promise<IPdfBrick> {
+        const newStyle: Required<IAlignedTextStyle> = { ... SurveyHelper.getPatchedTextStyle(controller, style), textAlign: style?.textAlign ?? 'left' };
+        let result: IPdfBrick;
         if (typeof text === 'string' || !this.hasHtml(text)) {
-            return this.createPlainTextFlat(point, question, controller, typeof text === 'string' ?
-                text : this.getLocString(<LocalizableString>text), fabric);
+            result = this.createPlainTextFlat(point, controller, typeof text === 'string' ?
+                text : this.getLocString(<LocalizableString>text), newStyle);
         }
         else {
-            return this.splitHtmlRect(controller, await this.createHTMLFlat(point, <Question>question, controller,
-                this.createHtmlContainerBlock(this.getLocString(text), controller, 'standard')));
+            result = this.splitHtmlRect(controller, await this.createHTMLFlat(point, controller,
+                this.createHtmlContainerBlock(this.getLocString(text), controller, newStyle), newStyle));
         }
+        return result;
     }
-    private static hasHtml(text: LocalizableString): boolean {
+    public static mergeObjects(dest:any, ...sources:Array<any>):any {
+        sources.forEach(source => {
+            if(!source) return;
+            Object.keys(source).forEach(key=>{
+                if(typeof source[key] == 'object' && source[key] !== null && !Array.isArray(source[key])) {
+                    dest[key] = SurveyHelper.mergeObjects(dest[key] ?? {}, source[key]);
+                } else {
+                    dest[key] = source[key];
+                }
+            });
+        });
+        return dest;
+    }
+    public static getPatchedTextStyle<T extends ITextStyle = ITextStyle>(controller: DocController, style?: Readonly<T>): T & Required<ITextStyle> {
+        const newStyle = SurveyHelper.mergeObjects(SurveyHelper.getDefaultTextStyle(controller), style ?? {});
+        if(style && style.lineHeight == undefined) {
+            newStyle.lineHeight = newStyle.fontSize;
+        }
+        return newStyle;
+    }
+    public static getDefaultTextStyle(controller: DocController):Required<ITextStyle> {
+        return {
+            fontSize: controller.fontSize,
+            fontName: controller.fontName,
+            fontStyle: controller.fontStyle,
+            lineHeight: controller.fontSize,
+            fontColor: '#404040'
+        };
+    }
+    public static hasHtml(text: LocalizableString): boolean {
         const pattern: RegExp = /<\/?[a-z][\s\S]*>/i;
         return text.hasHtml && (pattern.test((<any>text).renderedText) || pattern.test(text.renderedHtml));
     }
@@ -221,11 +254,12 @@ export class SurveyHelper {
     }
 
     public static createHTMLRect(point: IPoint, controller: DocController,
-        margins: { top: number, bottom: number, width: number }, resultY: number): IRect {
+        margins: { top: number, bottom: number, width: number }, resultY: number, style?: Readonly<ITextStyle>): IRect {
+        const newStyle = this.getPatchedTextStyle(controller, style);
         const availablePageHeight: number = controller.paperHeight - controller.margins.bot - controller.margins.top;
         const height: number = (controller.helperDoc.getNumberOfPages() - 1) *
-            (controller.fontSize * Math.floor(availablePageHeight / controller.fontSize))
-            + resultY - margins.top + SurveyHelper.HTML_TAIL_TEXT_SCALE * controller.fontSize;
+            (newStyle.fontSize * Math.floor(availablePageHeight / newStyle.fontSize))
+            + resultY - margins.top + SurveyHelper.HTML_TAIL_TEXT_SCALE * newStyle.fontSize;
         const numberOfPages: number = controller.helperDoc.getNumberOfPages();
         controller.helperDoc.addPage();
         for (let i: number = 0; i < numberOfPages; i++) {
@@ -234,14 +268,15 @@ export class SurveyHelper {
         return SurveyHelper.createRect(point, margins.width, height);
     }
 
-    public static async createHTMLFlat(point: IPoint, question: Question, controller: DocController, html: string): Promise<IPdfBrick> {
+    public static async createHTMLFlat(point: IPoint, controller: DocController, html: string, style?: Readonly<ITextStyle>): Promise<IPdfBrick> {
         const margins: { top: number, bottom: number, width: number } = this.getHtmlMargins(controller, point);
+        const newStyle = this.getPatchedTextStyle(controller, style);
         return await new Promise<IPdfBrick>((resolve) => {
             controller.helperDoc.fromHTML(html, point.xLeft, margins.top, {
                 pagesplit: true, width: margins.width
             }, function (result: any) {
-                const rect: IRect = SurveyHelper.createHTMLRect(point, controller, margins, result.y);
-                resolve(new HTMLBrick(question, controller, rect, html));
+                const rect: IRect = SurveyHelper.createHTMLRect(point, controller, margins, result.y, newStyle);
+                resolve(new HTMLBrick(controller, rect, { html }, newStyle));
             }, margins);
         });
     }
@@ -307,12 +342,12 @@ export class SurveyHelper {
             this.htmlToXml(html) + '</foreignObject></svg>';
         return { svg, divWidth, divHeight };
     }
-    private static setCanvas(canvas: HTMLCanvasElement, divWidth: number, divHeight: number, img: HTMLImageElement): void {
-        canvas.width = divWidth * SurveyHelper.HTML_TO_IMAGE_QUALITY;
-        canvas.height = divHeight * SurveyHelper.HTML_TO_IMAGE_QUALITY;
+    private static setCanvas(controller: DocController, canvas: HTMLCanvasElement, divWidth: number, divHeight: number, img: HTMLImageElement): void {
+        canvas.width = divWidth * controller.htmlToImageQuality;
+        canvas.height = divHeight * controller.htmlToImageQuality;
         const context: CanvasRenderingContext2D = canvas.getContext('2d');
-        context.scale(SurveyHelper.HTML_TO_IMAGE_QUALITY, SurveyHelper.HTML_TO_IMAGE_QUALITY);
-        context.fillStyle = SurveyHelper.BACKGROUND_COLOR;
+        context.scale(controller.htmlToImageQuality, controller.htmlToImageQuality);
+        context.fillStyle = '#FFFFFF';
         context.fillRect(0, 0, divWidth, divHeight);
         context.drawImage(img, 0, 0);
     }
@@ -325,8 +360,8 @@ export class SurveyHelper {
         return new Promise((resolve) => {
             img.onload = function () {
                 const canvas: HTMLCanvasElement = document.createElement('canvas');
-                SurveyHelper.setCanvas(canvas, divWidth, divHeight, img);
-                const url: string = canvas.toDataURL('image/jpeg', SurveyHelper.HTML_TO_IMAGE_QUALITY);
+                SurveyHelper.setCanvas(controller, canvas, divWidth, divHeight, img);
+                const url: string = canvas.toDataURL('image/jpeg', controller.htmlToImageQuality);
                 canvas.remove();
                 resolve({ url: url, aspect: divWidth / divHeight });
             };
@@ -335,111 +370,20 @@ export class SurveyHelper {
             };
         });
     }
-    public static async createBoldTextFlat(point: IPoint, question: Question,
-        controller: DocController, text: string | LocalizableString): Promise<IPdfBrick> {
-        controller.fontStyle = 'bold';
-        const composite: IPdfBrick = await this.createTextFlat(
-            point, question, controller, text, TextBoldBrick);
-        controller.fontStyle = 'normal';
-        return composite;
-    }
-    public static async createTitleFlat(point: IPoint, question: Question, controller: DocController): Promise<IPdfBrick> {
-        const composite: CompositeBrick = new CompositeBrick();
-        let currPoint: IPoint = this.clone(point);
-        const oldFontSize: number = controller.fontSize;
-        controller.fontSize *= this.TITLE_FONT_SCALE;
-        if (question.no) {
-            const noText: string = question.no + ' ';
-            let noFlat: IPdfBrick;
-            if (this.hasHtml(question.locTitle)) {
-                controller.fontStyle = 'bold';
-                controller.pushMargins();
-                controller.margins.right = controller.paperWidth -
-                    controller.margins.left - controller.measureText(noText, 'bold').width;
-                noFlat = await this.createHTMLFlat(currPoint, question, controller,
-                    this.createHtmlContainerBlock(noText, controller, 'standard'));
-                controller.popMargins();
-                controller.fontStyle = 'normal';
-            }
-            else {
-                noFlat = await this.createBoldTextFlat(currPoint,
-                    question, controller, noText);
-            }
-            composite.addBrick(noFlat);
-            currPoint.xLeft = noFlat.xRight;
-        }
-        controller.pushMargins();
-        controller.margins.left = currPoint.xLeft;
-        const textFlat: CompositeBrick = <CompositeBrick>await this.createBoldTextFlat(
-            currPoint, question, controller, question.locTitle);
-        composite.addBrick(textFlat);
-        controller.popMargins();
-        if (question.isRequired) {
-            const requiredText: string = question.requiredText;
-            if (this.hasHtml(question.locTitle)) {
-                currPoint = this.createPoint(textFlat.unfold()[0], false, false);
-                controller.fontStyle = 'bold';
-                controller.pushMargins();
-                controller.margins.right = controller.paperWidth -
-                    controller.margins.left - controller.measureText(requiredText, 'bold').width;
-                composite.addBrick(await this.createHTMLFlat(currPoint, question, controller,
-                    this.createHtmlContainerBlock(requiredText, controller, 'standard')));
-                controller.popMargins();
-                controller.fontStyle = 'normal';
-            }
-            else {
-                currPoint = this.createPoint(textFlat.unfold().pop(), false, true);
-                composite.addBrick(await this.createBoldTextFlat(currPoint,
-                    question, controller, requiredText));
-            }
-        }
-        controller.fontSize = oldFontSize;
-        return composite;
-    }
-    private static async createTitleSurveyPanelFlat(point: IPoint, controller: DocController,
-        text: string | LocalizableString, fontSizeScale: number): Promise<IPdfBrick> {
-        const oldFontSize: number = controller.fontSize;
-        controller.fontSize = oldFontSize * fontSizeScale;
-        controller.fontStyle = 'bold';
-        const titleFlat: IPdfBrick = await this.createTextFlat(point, null, controller, text, TitlePanelBrick);
-        controller.fontStyle = 'normal';
-        controller.fontSize = oldFontSize;
-        return titleFlat;
-    }
-    public static async createTitleSurveyFlat(point: IPoint, controller: DocController,
-        text: string | LocalizableString): Promise<IPdfBrick> {
-        return await this.createTitleSurveyPanelFlat(point, controller, text, this.TITLE_SURVEY_FONT_SIZE_SCALE);
-    }
-    public static async createTitlePanelFlat(point: IPoint, controller: DocController,
-        text: string | LocalizableString, isPage: boolean = false): Promise<IPdfBrick> {
-        return await this.createTitleSurveyPanelFlat(point, controller, text,
-            isPage ? this.TITLE_PAGE_FONT_SIZE_SCALE : this.TITLE_PANEL_FONT_SIZE_SCALE);
-    }
-    public static async createDescFlat(point: IPoint, question: IQuestion,
-        controller: DocController, text: string | LocalizableString): Promise<IPdfBrick> {
-        const oldFontSize: number = controller.fontSize;
-        controller.fontSize = oldFontSize * this.DESCRIPTION_FONT_SIZE_SCALE;
-        const composite: IPdfBrick = await this.createTextFlat(
-            point, question, controller, text, DescriptionBrick);
-        controller.fontSize = oldFontSize;
-        return composite;
-    }
     public static getReadonlyRenderAs(question: Question, controller: DocController): 'auto' | 'text' | 'acroform' {
         return (<any>question).readonlyRenderAs === 'auto' ? controller.readonlyRenderAs : (<any>question).readonlyRenderAs;
     }
-    public static async createCommentFlat(point: IPoint, question: Question,
-        controller: DocController, options: { rows?: number } & ITextFieldBrickOptions): Promise<IPdfBrick> {
+    public static async createCommentFlat(point: IPoint, controller: DocController, options: { rows?: number } & ITextFieldBrickOptions, style?: Readonly<IInputStyle>): Promise<IPdfBrick> {
+        const newStyle: IInputStyle & Required<ITextStyle> = SurveyHelper.getPatchedTextStyle(controller, style);
         options.rows = options.rows ?? 1;
         options.value = options.value ?? '';
-        const rect: IRect = this.createTextFieldRect(point, controller, options.rows);
+        const rect: IRect = this.createTextFieldRect(point, controller, options.rows, newStyle.lineHeight);
         let textFlat;
-        if (SurveyHelper.shouldRenderReadOnly(question, controller, options.isReadOnly)) {
+        if (options.shouldRenderReadOnly) {
             textFlat = await this.createReadOnlyTextFieldTextFlat(
-                point, controller, question, options.value);
-            const padding: number = controller.unitHeight * this.VALUE_READONLY_PADDING_SCALE;
-            if (textFlat.yBot + padding > rect.yBot) rect.yBot = textFlat.yBot + padding;
+                point, controller, options.value, newStyle);
         }
-        const comment = new TextFieldBrick(question, controller, rect, options);
+        const comment = new TextFieldBrick(controller, rect, options, newStyle);
         if(textFlat) {
             comment.textBrick = textFlat;
         }
@@ -457,10 +401,8 @@ export class SurveyHelper {
         if(applyImageFit ?? controller.applyImageFit) {
             imageInfo = await imageUtils.applyImageFit(imageInfo, options.objectFit || 'fill', options.width, options.height);
         }
-        return new ImageBrick(question, controller, imageInfo.data, point, options.width, options.height, imageInfo.width, imageInfo.height, imageInfo.id);
-    }
-    public static canPreviewImage(question: QuestionFileModel, item: { name: string, type: string, content: string }, url: string): boolean {
-        return question.canPreviewImage(item);
+        const rect = SurveyHelper.createRect(point, options.width, options.height);
+        return new ImageBrick(controller, rect, { width: imageInfo.width, height: imageInfo.height, imageId: imageInfo.id, link: imageInfo.data });
     }
     public static createRowlineFlat(point: IPoint, controller: DocController,
         width?: number, color?: string): IPdfBrick {
@@ -475,16 +417,24 @@ export class SurveyHelper {
             yBot: point.yTop + this.EPSILON
         }, typeof color === 'undefined' ? null : color);
     }
-    public static async createLinkFlat(point: IPoint, question: Question,
-        controller: DocController, text: string, link: string): Promise<IPdfBrick> {
+    public static async createLinkFlat(point: IPoint, controller: DocController, options: ILinkOptions, style?: Readonly<ITextStyle>): Promise<IPdfBrick> {
+        const newStyle: Required<ITextStyle> = SurveyHelper.getPatchedTextStyle(controller, style);
         const compositeText: CompositeBrick = <CompositeBrick>await this.
-            createTextFlat(point, question, controller, text, TextBrick);
+            createTextFlat(point, controller, options.text, newStyle);
         const compositeLink: CompositeBrick = new CompositeBrick();
         compositeText.unfold().forEach((text: TextBrick) => {
-            compositeLink.addBrick(new LinkBrick(text, link));
+            compositeLink.addBrick(new LinkBrick(controller, text,
+                {
+                    link: options.link,
+                    text: text.options.text,
+                    readOnlyShowLink: options.readOnlyShowLink,
+                    shouldRenderReadOnly: options.shouldRenderReadOnly
+                },
+                newStyle
+            ));
             const linePoint: IPoint = this.createPoint(compositeLink);
             compositeLink.addBrick(this.createRowlineFlat(linePoint,
-                controller, compositeLink.width, LinkBrick.COLOR));
+                controller, compositeLink.width, newStyle.fontColor));
         });
         return compositeLink;
     }
@@ -496,37 +446,173 @@ export class SurveyHelper {
             rect.yBot - rect.yTop
         ];
     }
-    public static createTextFieldRect(point: IPoint, controller: DocController, lines: number = 1): IRect {
+    public static createTextFieldRect(point: IPoint, controller: DocController, lines: number = 1, lineHeight: number = controller.unitHeight): IRect {
         let width: number = controller.paperWidth - point.xLeft - controller.margins.right;
         width = Math.max(width, controller.unitWidth);
-        const height: number = controller.unitHeight * lines;
+        const height: number = lineHeight * lines;
         return this.createRect(point, width, height);
     }
     public static async createReadOnlyTextFieldTextFlat(point: IPoint,
-        controller: DocController, question: Question, value: string): Promise<IPdfBrick> {
-        const padding: number = controller.unitWidth * this.VALUE_READONLY_PADDING_SCALE;
-        point.yTop += padding;
-        point.xLeft += padding;
-        controller.pushMargins(point.xLeft, controller.margins.right + padding);
+        controller: DocController, value: string, style: IInputStyle): Promise<IPdfBrick> {
+        controller.pushMargins(point.xLeft, controller.margins.right);
         const textFlat: IPdfBrick = await this.createTextFlat(
-            point, question, controller, value.toString(), TextBrick);
+            point, controller, value.toString(), style);
         controller.popMargins();
         return textFlat;
     }
-    public static renderFlatBorders(controller: DocController, borderOptions: IBorderDescription): void {
-        if (!this.FORM_BORDER_VISIBLE) return;
-        borderOptions.rounded = borderOptions.rounded ?? true;
-        borderOptions.outside = borderOptions.outside ?? false;
-        const minSide: number = Math.min(borderOptions.width, borderOptions.height);
-        const borderWidth = this.getBorderWidth(controller);
-        const visibleWidth: number = controller.unitHeight * this.VISIBLE_BORDER_SCALE * this.BORDER_SCALE;
-        const visibleScale: number = borderOptions.outside ? (minSide + borderWidth) / minSide - visibleWidth / minSide : (minSide - borderWidth) / minSide + visibleWidth / minSide;
-        const oldDrawColor: string = controller.doc.getDrawColor();
-        controller.doc.setDrawColor(borderOptions.formBorderColor);
-        controller.doc.setLineWidth(visibleWidth);
-        const scaledRect = this.scaleRect(borderOptions, visibleScale);
-        if(borderOptions.dashStyle) {
-            const dashStyle = borderOptions.dashStyle;
+    public static createRoundedShape(rect: IRect, style: { borderRadius?: number | Array<number> }, mergeAngles: boolean | ISideValues<boolean> = true): Map<keyof ISideValues, Array<Array<number>>> {
+        const parsedMergeAngles: ISideValues<boolean> = typeof mergeAngles == 'object' ? mergeAngles : { top: mergeAngles, bot: mergeAngles, left: mergeAngles, right: mergeAngles };
+        const parsedRadius = parseSideValues(style.borderRadius ?? 0);
+        function calcAngleLine(x: number, y: number, r: number, angle: number, rotAngle: number) {
+            const l = 4/3 * Math.tan(angle / 4) * r;
+            const base = [
+                [r, 0],
+                [r, l],
+                [r * Math.cos(angle) + l * Math.sin(angle), r * Math.sin(angle) - l * Math.cos(angle)],
+                [r * Math.cos(angle), r * Math.sin(angle)],
+            ];
+            return base.reduce((acc, point) => {
+                acc.push(Math.cos(rotAngle) * point[0] - Math.sin(rotAngle) * point[1] + x);
+                acc.push(Math.sin(rotAngle) * point[0] + Math.cos(rotAngle) * point[1] + y);
+                return acc;
+            }, []);
+        }
+        const lines: Map<keyof ISideValues, Array<Array<number>>> = new Map();
+        lines.set('top', [[rect.xLeft + parsedRadius.top, rect.yTop, rect.xRight - parsedRadius.right, rect.yTop]]);
+        lines.set('right', [[rect.xRight, rect.yTop + parsedRadius.right, rect.xRight, rect.yBot -parsedRadius.bot]]);
+        lines.set('bot', [[rect.xRight - parsedRadius.bot, rect.yBot, rect.xLeft + parsedRadius.left, rect.yBot]]);
+        lines.set('left', [[rect.xLeft, rect.yBot - parsedRadius.left, rect.xLeft, rect.yTop + parsedRadius.top]]);
+        if(parsedRadius.top) {
+            const angle = parsedMergeAngles.top ? Math.PI / 2 : Math.PI / 4;
+            const r = parsedRadius.top;
+            lines.get('left').push(calcAngleLine(rect.xLeft + r, rect.yTop + r, r, angle, Math.PI));
+            if(!parsedMergeAngles.top) {
+                lines.get('top').unshift(calcAngleLine(rect.xLeft + r, rect.yTop + r, r, angle, Math.PI + angle));
+            }
+        }
+        if(parsedRadius.right) {
+            const angle = parsedMergeAngles.right ? Math.PI / 2 : Math.PI / 4;
+            const r = parsedRadius.right;
+            lines.get('top').push(calcAngleLine(rect.xRight - r, rect.yTop + r, r, angle, 3 / 2 * Math.PI));
+            if(!parsedMergeAngles.right) {
+                lines.get('right').unshift(calcAngleLine(rect.xRight - r, rect.yTop + r, r, angle, 3 / 2 * Math.PI + angle));
+            }
+        }
+        if(parsedRadius.bot) {
+            const angle = parsedMergeAngles.bot ? Math.PI / 2: Math.PI / 4;
+            const r = parsedRadius.bot;
+            lines.get('right').push(calcAngleLine(rect.xRight - r, rect.yBot - r, r, angle, 0));
+            if(!parsedMergeAngles.bot) {
+                lines.get('bot').unshift(calcAngleLine(rect.xRight - r, rect.yBot - r, r, angle, angle));
+            }
+        }
+        if(parsedRadius.left) {
+            const angle = parsedMergeAngles.left ? Math.PI / 2 : Math.PI / 4;
+            const r = parsedRadius.left;
+            lines.get('bot').push(calcAngleLine(rect.xLeft + r, rect.yBot - r, r, angle, Math.PI / 2));
+            if(!parsedMergeAngles.left) {
+                lines.get('left').unshift(calcAngleLine(rect.xLeft + r, rect.yBot - r, r, angle, Math.PI / 2 + angle));
+            }
+        }
+        return lines;
+    }
+
+    public static getDocLinesFromShape(lines: Map<keyof ISideValues, Array<Array<number>>>): { lines: Array<Array<number>>, point: Array<number> } {
+        const startPoint = lines.get(lines.keys().next().value)[0].slice(0, 2);
+        let currPoint = startPoint;
+        const docLines: Array<Array<number>> = [];
+        lines.forEach((value) => {
+            const borderLines = value;
+            return borderLines.forEach(line => {
+                line = line.slice(2);
+                docLines.push(line.map((v, i) => v - currPoint[i % 2]));
+                currPoint = line.slice(line.length - 2);
+            });
+        });
+        return { lines: docLines, point: startPoint };
+    }
+
+    public static renderFlatBorders(controller: DocController, options: IBorderDescription, style: IBorderExtendedStyle): void {
+        const newStyle: Required<IBorderExtendedStyle> = SurveyHelper.mergeObjects({}, { borderMode: BorderMode.Inside }, style);
+        const borderWidth = parseSideValues(style.borderWidth ?? 0);
+        const borderColor = parseSideValues(style.borderColor);
+        if([borderColor, borderWidth].some(map => Object.keys(map).every((k: keyof ISideValues) => !map[k]))) return;
+
+        const scaleFactor = newStyle.borderMode == BorderMode.Middle ? 0 : (newStyle.borderMode == BorderMode.Inside ? 0.5 : -0.5);
+        const scaledRect: IRect = {
+            xLeft: options.xLeft + scaleFactor * borderWidth.left,
+            yTop: options.yTop + scaleFactor * borderWidth.top,
+            xRight: options.xRight - scaleFactor * borderWidth.right,
+            yBot: options.yBot - scaleFactor * borderWidth.bot,
+        };
+        const mergeAngles: ISideValues<boolean> = {
+            top: borderWidth.left == borderWidth.top && borderColor.left == borderColor.top,
+            right: borderWidth.top == borderWidth.right && borderColor.top == borderColor.right,
+            bot: borderWidth.right == borderWidth.bot && borderColor.right == borderColor.bot,
+            left: borderWidth.bot == borderWidth.left && borderColor.bot == borderColor.left,
+        };
+        const lines = SurveyHelper.createRoundedShape(scaledRect, { ...newStyle }, mergeAngles);
+
+        const continuousLines: Array<Map<keyof ISideValues, number[][]>> = [];
+        let maxSequenceIndex = 0;
+        let maxSequenceLength = 0;
+        let currentSequenceIndex = 0;
+        let currentSequenceLength = 0;
+        let prevBorderWidth: number;
+        let prevBorderColor: string;
+        const keys = Array.from(lines.keys()) as Array<keyof ISideValues>;
+        keys.concat(keys).forEach((key, index) => {
+            const currentBorderWidth = borderWidth[key];
+            const currentBorderColor = borderColor[key];
+            if(index !== 0 && currentBorderWidth == prevBorderWidth && currentBorderColor == prevBorderColor) {
+                currentSequenceLength++;
+            } else {
+                prevBorderWidth = currentBorderWidth;
+                prevBorderColor = currentBorderColor;
+                if(currentSequenceLength > maxSequenceLength) {
+                    maxSequenceIndex = currentSequenceIndex;
+                    maxSequenceLength = currentSequenceLength;
+                }
+                currentSequenceIndex = index;
+                currentSequenceLength = 1;
+            }
+        });
+        if(maxSequenceLength == 0) {
+            maxSequenceLength = currentSequenceLength;
+            maxSequenceIndex = currentSequenceIndex;
+        }
+
+        if(maxSequenceLength >= 2) {
+            const maxContinuousLine: Map<keyof ISideValues, number[][]> = new Map();
+            for(let i = maxSequenceIndex; i < maxSequenceIndex + maxSequenceLength; i ++) {
+                const key = keys[i % keys.length];
+                maxContinuousLine.set(key, lines.get(key));
+            }
+            continuousLines.push(maxContinuousLine);
+            const leftKeys = keys.filter(key => !maxContinuousLine.has(key));
+            if(leftKeys.length !== 0) {
+                if(leftKeys.length == 2 && leftKeys[0] == 'top' && leftKeys[1] == 'left') leftKeys.reverse();
+                if(leftKeys.every(key => borderWidth[leftKeys[0]] == borderWidth[key] && borderColor[leftKeys[0]] == borderColor[key])) {
+                    const continuousLine: Map<keyof ISideValues, number[][]> = new Map();
+                    leftKeys.forEach(key => { continuousLine.set(key, lines.get(key)); });
+                    continuousLines.push(continuousLine);
+                } else {
+                    leftKeys.forEach(key => {
+                        const map = new Map();
+                        map.set(key, lines.get(key)),
+                        continuousLines.push(map);
+                    });
+                }
+            }
+        } else {
+            keys.forEach(key => {
+                const map = new Map();
+                map.set(key, lines.get(key)),
+                continuousLines.push(map);
+            });
+        }
+        if(newStyle.dashStyle) {
+            const dashStyle = newStyle.dashStyle;
             const borderLength = (Math.abs(scaledRect.yTop - scaledRect.yBot) + Math.abs(scaledRect.xLeft - scaledRect.xRight)) * 2;
             const dashWithSpaceSize = dashStyle.dashArray[0] + (dashStyle.dashArray[1] ?? dashStyle.dashArray[0]);
             const dashSize = dashStyle.dashArray[0] + (borderLength % dashWithSpaceSize) / Math.floor(borderLength / dashWithSpaceSize);
@@ -536,21 +622,18 @@ export class SurveyHelper {
                 dashStyle.dashPhase
             );
         }
-
-        controller.doc.rect(...this.createAcroformRect(scaledRect));
-        if(borderOptions.rounded) {
-            const unvisibleWidth: number = controller.unitHeight * this.UNVISIBLE_BORDER_SCALE * this.BORDER_SCALE;
-            const unvisibleScale: number = 1.0 - unvisibleWidth / minSide;
-            const unvisibleRadius: number = this.RADIUS_SCALE * unvisibleWidth;
-            controller.doc.setDrawColor(this.BACKGROUND_COLOR);
-            controller.doc.setLineWidth(unvisibleWidth);
-            controller.doc.roundedRect(...this.createAcroformRect(
-                this.scaleRect(borderOptions, unvisibleScale)), unvisibleRadius, unvisibleRadius);
-        }
-        if(borderOptions.dashStyle) {
+        continuousLines.forEach(line => {
+            const key = line.keys().next().value as keyof ISideValues;
+            if(!borderColor[key] || !borderWidth[key]) return;
+            controller.setDrawColor(borderColor[key]);
+            controller.doc.setLineWidth(borderWidth[key]);
+            const { lines: docLines, point } = this.getDocLinesFromShape(line);
+            controller.doc.lines(docLines, ...point, [1, 1], 'S', line.size == 4);
+            controller.restoreDrawColor();
+        });
+        if(newStyle.dashStyle) {
             controller.doc.setLineDashPattern([]);
         }
-        controller.doc.setDrawColor(oldDrawColor);
     }
     public static getLocString(text: LocalizableString): string {
         if (this.hasHtml(text)) return text.renderedHtml;
@@ -574,39 +657,19 @@ export class SurveyHelper {
         if(!!question.customWidget) return question.customWidget.pdfQuestionType;
         return !!(<any>question).contentQuestion ? 'custom_model' : this.getContentQuestionTypeRenderAs(question, survey);
     }
-    public static getRatingMinWidth(controller: DocController): number {
-        return controller.measureText(this.RATING_MIN_WIDTH).width;
-    }
-    public static getRatingItemText(question: QuestionRatingModel,
-        index: number, locText: LocalizableString): LocalizableString {
-        const ratingItemLocText: LocalizableString = new LocalizableString(locText.owner, locText.useMarkdown);
-        ratingItemLocText.text = this.getLocString(locText);
-        if (index === 0 && question.minRateDescription) {
-            ratingItemLocText.text = question.locMinRateDescription.text + ' ' + this.getLocString(locText);
-        }
-        else if (index === question.visibleRateValues.length - 1 && question.maxRateDescription) {
-            ratingItemLocText.text = this.getLocString(locText) + ' ' + question.locMaxRateDescription.text;
-        }
-        return ratingItemLocText;
-    }
     public static getPageAvailableWidth(controller: DocController): number {
         return controller.paperWidth - controller.margins.left - controller.margins.right;
     }
-    public static getImagePickerAvailableWidth(controller: DocController): number {
-        const width: number = (this.getPageAvailableWidth(controller) -
-            (this.IMAGEPICKER_COUNT - 1) * controller.unitHeight);
-        return width > 0 ? width : controller.unitHeight;
-    }
-    public static getColumnWidth(controller: DocController, colCount: number) {
+    public static getColumnWidth(controller: DocController, colCount: number, gapBetweenColumns: number) {
         return (this.getPageAvailableWidth(controller) - (colCount - 1) *
-            controller.unitWidth * this.GAP_BETWEEN_COLUMNS) / colCount;
+            gapBetweenColumns) / colCount;
     }
-    public static setColumnMargins(controller: DocController, colCount: number, column: number) {
-        const cellWidth: number = this.getColumnWidth(controller, colCount);
+    public static setColumnMargins(controller: DocController, colCount: number, column: number, gapBetweenColumns: number) {
+        const cellWidth: number = this.getColumnWidth(controller, colCount, gapBetweenColumns);
         controller.margins.left = controller.margins.left + column *
-            (cellWidth + controller.unitWidth * this.GAP_BETWEEN_COLUMNS);
+            (cellWidth + gapBetweenColumns);
         controller.margins.right = controller.margins.right + (colCount - column - 1) *
-            (cellWidth + controller.unitWidth * this.GAP_BETWEEN_COLUMNS);
+            (cellWidth + gapBetweenColumns);
     }
     public static moveRect(rect: IRect, left: number = rect.xLeft, top: number = rect.yTop): IRect {
         return {
@@ -616,42 +679,41 @@ export class SurveyHelper {
             yBot: top + rect.yBot - rect.yTop
         };
     }
-    public static scaleRect(rect: IRect, scale: number): IRect {
-        const scaleWidth: number = Math.min(rect.xRight - rect.xLeft, rect.yBot - rect.yTop) * (1.0 - scale) / 2.0;
+    public static createRectInsideBorders(rect: IRect, borderWidth: number | Array<number>): IRect {
+        const parsedBorderWidth = parseSideValues(borderWidth);
         return {
-            xLeft: rect.xLeft + scaleWidth,
-            yTop: rect.yTop + scaleWidth,
-            xRight: rect.xRight - scaleWidth,
-            yBot: rect.yBot - scaleWidth
+            xLeft: rect.xLeft + parsedBorderWidth.left,
+            yTop: rect.yTop + parsedBorderWidth.top,
+            xRight: rect.xRight - parsedBorderWidth.right,
+            yBot: rect.yBot - parsedBorderWidth.bot
         };
     }
-    public static getBorderWidth(controller: DocController) {
-        return 2.0 * controller.unitWidth * this.BORDER_SCALE;
-    }
-    public static formScale(controller: DocController, flat: ISize): number {
-        const minSide: number = Math.min(flat.width, flat.height);
-        return (minSide - this.getBorderWidth(controller)) / minSide;
+    public static getFlatQuestion(survey: SurveyPDF, controller: DocController, question: Question) {
+        const questionType: string = this.getContentQuestionType(question, survey);
+        const style = survey.getElementStyle(question);
+        const flatQuestion: IFlatQuestion = FlatRepository.getInstance().
+            create(survey, question, controller, style, questionType);
+        return flatQuestion;
     }
     public static async generateQuestionFlats(survey: SurveyPDF,
         controller: DocController, question: Question, point: IPoint): Promise<IPdfBrick[]> {
-        const questionType: string = this.getContentQuestionType(question, survey);
-        const flatQuestion: IFlatQuestion = FlatRepository.getInstance().
-            create(survey, question, controller, questionType);
+        const flatQuestion = SurveyHelper.getFlatQuestion(survey, controller, question);
         const questionFlats: IPdfBrick[] = await flatQuestion.generateFlats(point);
-        const adornersOptions: AdornersOptions = new AdornersOptions(point,
-            questionFlats, question, controller, FlatRepository.getInstance(), SurveyPDFModule);
-        if (question.customWidget && question.customWidget.isFit(question) &&
-            question.customWidget.pdfRender) {
-            survey.onRenderQuestion.unshift(question.customWidget.pdfRender);
-        }
-        await survey.onRenderQuestion.fire(survey, adornersOptions);
-        return [...adornersOptions.bricks];
+        return [...questionFlats];
+    }
+    public static async generatePanelFlats(survey: SurveyPDF,
+        controller: DocController, panel: PanelModel, point: IPoint): Promise<IPdfBrick[]> {
+        return [...await FlatRepository.getInstance().createPanel(survey, panel, controller, survey.getElementStyle(panel)).generateFlats(point)];
+    }
+    public static async generatePageFlats(survey: SurveyPDF,
+        controller: DocController, page: PageModel, point: IPoint): Promise<IPdfBrick[]> {
+        return [...await FlatRepository.getInstance().createPage(survey, page, controller, survey.getElementStyle(page)).generateFlats(point)];
     }
     public static isFontExist(controller: DocController, fontName: string): boolean {
         return controller.doc.internal.getFont(fontName).fontName === fontName;
     }
     public static isCustomFont(controller: DocController, fontName: string): boolean {
-        return controller.doc.internal.getFont(fontName).encoding === this.CUSTOM_FONT_ENCODING;
+        return controller.doc.internal.getFont(fontName).encoding === 'Identity-H';
     }
     public static fixFont(controller: DocController): void {
         if (this.isCustomFont(controller, controller.fontName)) {
@@ -708,6 +770,31 @@ export class SurveyHelper {
             }
         }
         return { width: widthPt || defaultWidthPt || 0, height: heightPt || defaultHeightPt || 0 };
+    }
+    public static alignVerticallyBricks(align: 'top' | 'center' | 'bottom', ...bricks: IPdfBrick[]) {
+        const mergedRect = SurveyHelper.mergeRects(...bricks);
+        bricks.forEach((brick) => {
+            switch (align) {
+                case 'center': {
+                    brick.translateY((yTop, yBot) => {
+                        const shift = ((mergedRect.yTop + mergedRect.yBot) - (yTop + yBot)) / 2;
+                        return { yTop: yTop + shift, yBot: yBot + shift };
+                    });
+                    break;
+                }
+                case 'bottom': {
+                    brick.translateY((yTop, yBot) => {
+                        return { yTop: yTop + mergedRect.yBot - yBot, yBot: mergedRect.yBot };
+                    });
+                    break;
+                }
+                default: {
+                    brick.translateY((yTop, yBot) => {
+                        return { yTop: mergedRect.yTop, yBot: yBot - yTop + mergedRect.yTop };
+                    });
+                }
+            }
+        });
     }
     public static clear() {
         getImageUtils().clear();

@@ -1,0 +1,146 @@
+[
+	{
+		"brickType": "CompositeBrick",
+		"width": 525.8326771653543,
+		"height": 51,
+		"xLeft": 34.72145669291339,
+		"xRight": 560.5541338582677,
+		"yTop": 34.72145669291339,
+		"yBot": 85.72145669291339,
+		"bricks": [
+			{
+				"brickType": "ContainerBrick",
+				"width": 525.8326771653543,
+				"height": 27,
+				"xLeft": 34.72145669291339,
+				"xRight": 560.5541338582677,
+				"yTop": 34.72145669291339,
+				"yBot": 61.72145669291339,
+				"bricks": [
+					{
+						"brickType": "CompositeBrick",
+						"width": 93.15000000000002,
+						"height": 12,
+						"xLeft": 34.72145669291339,
+						"xRight": 127.87145669291341,
+						"yTop": 34.72145669291339,
+						"yBot": 46.72145669291339,
+						"bricks": [
+							{
+								"brickType": "CompositeBrick",
+								"width": 93.15000000000002,
+								"height": 12,
+								"xLeft": 34.72145669291339,
+								"xRight": 127.87145669291341,
+								"yTop": 34.72145669291339,
+								"yBot": 46.72145669291339,
+								"bricks": [
+									{
+										"brickType": "TextBrick",
+										"width": 93.15000000000002,
+										"height": 12,
+										"xLeft": 34.72145669291339,
+										"xRight": 127.87145669291341,
+										"yTop": 34.72145669291339,
+										"yBot": 46.72145669291339,
+										"style": {
+											"fontSize": 9,
+											"fontName": "helvetica",
+											"fontStyle": "normal",
+											"lineHeight": 12,
+											"fontColor": "#1c1b20",
+											"textAlign": "left"
+										},
+										"options": {
+											"text": "My title is so interesting"
+										},
+										"padding": {
+											"top": 0,
+											"bottom": 0
+										}
+									}
+								]
+							}
+						]
+					},
+					{
+						"brickType": "CompositeBrick",
+						"width": 130.23000000000002,
+						"height": 12,
+						"xLeft": 34.72145669291339,
+						"xRight": 164.9514566929134,
+						"yTop": 49.72145669291339,
+						"yBot": 61.72145669291339,
+						"bricks": [
+							{
+								"brickType": "TextBrick",
+								"width": 130.23000000000002,
+								"height": 12,
+								"xLeft": 34.72145669291339,
+								"xRight": 164.9514566929134,
+								"yTop": 49.72145669291339,
+								"yBot": 61.72145669291339,
+								"style": {
+									"fontSize": 9,
+									"fontName": "helvetica",
+									"fontStyle": "normal",
+									"lineHeight": 12,
+									"fontColor": "#1c1b2099",
+									"textAlign": "left"
+								},
+								"options": {
+									"text": "But the description is not enough"
+								},
+								"padding": {
+									"top": 0,
+									"bottom": 0
+								}
+							}
+						]
+					}
+				]
+			},
+			{
+				"brickType": "RowlineBrick",
+				"width": 525.8326771653543,
+				"height": 0,
+				"xLeft": 34.72145669291339,
+				"xRight": 560.5541338582677,
+				"yTop": 61.72145669291339,
+				"yBot": 61.72145669291339
+			},
+			{
+				"brickType": "TextFieldBrick",
+				"width": 525.8326771653543,
+				"height": 18,
+				"xLeft": 34.72145669291339,
+				"xRight": 560.5541338582677,
+				"yTop": 67.72145669291339,
+				"yBot": 85.72145669291339,
+				"style": {
+					"fontSize": 12,
+					"fontName": "helvetica",
+					"fontStyle": "normal",
+					"lineHeight": 18,
+					"fontColor": "#1c1b20",
+					"backgroundColor": "#ffffff"
+				},
+				"options": {
+					"shouldRenderReadOnly": false,
+					"rows": 1,
+					"fieldName": "testidquestion_box",
+					"inputType": "text",
+					"value": "",
+					"isReadOnly": false,
+					"shouldRenderBorders": true,
+					"placeholder": "",
+					"isMultiline": false
+				},
+				"padding": {
+					"top": 0,
+					"bottom": 0
+				}
+			}
+		]
+	}
+]

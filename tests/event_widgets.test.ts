@@ -21,18 +21,18 @@ test('Render checkbox base widget as radiogroup', async () => {
     CustomWidgetCollection.Instance.addCustomWidget({
         name: 'checkradio',
         isFit: (question: Question) => {
-          return question.getType() === 'checkradio';
+            return question.getType() === 'checkradio';
         },
         activatedByChanged: () => {
             Serializer.addClass(
-              'checkradio',
-              [],
-              null,
-              'checkbox'
+                'checkradio',
+                [],
+                null,
+                'checkbox'
             );
         },
         pdfQuestionType: 'radiogroup'
-      });
+    });
     let json: any = {
         questions: [
             {
@@ -45,7 +45,7 @@ test('Render checkbox base widget as radiogroup', async () => {
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     let controller: DocController = new DocController(TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    let flats: IPdfBrick[][] = await new FlatSurvey(survey, controller, survey.style.survey).generateFlats();
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(2);
@@ -58,25 +58,25 @@ test('Render custom widget via callback', async () => {
     CustomWidgetCollection.Instance.addCustomWidget({
         name: 'customquestion',
         isFit: (question: Question) => {
-          return question.getType() === 'customquestion';
+            return question.getType() === 'customquestion';
         },
         activatedByChanged: () => {
             Serializer.addClass(
-              'customquestion',
-              [],
-              null,
-              'empty'
+                'customquestion',
+                [],
+                null,
+                'empty'
             );
         },
         pdfRender: (_: SurveyPDF, options: AdornersOptions) => {
             if (options.question.getType() === 'customquestion') {
-              options.bricks = [SurveyHelper.createPlainTextFlat(
-                  options.point, options.question, options.controller,
-                  'Hello there', TextBrick
-              )];
+                options.bricks = [SurveyHelper.createPlainTextFlat(
+                    options.point, options.controller,
+                    'Hello there', SurveyHelper.getDefaultTextStyle(options.controller)
+                )];
             }
-          }
-      });
+        }
+    });
     let json: any = {
         questions: [
             {
@@ -87,7 +87,7 @@ test('Render custom widget via callback', async () => {
     };
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     let controller: DocController = new DocController(TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
+    let flats: IPdfBrick[][] = await new FlatSurvey(survey, controller, survey.style.survey).generateFlats();
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
     expect(packs.length).toBe(1);
     expect(packs[0].length).toBe(1);

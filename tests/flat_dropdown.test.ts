@@ -2,19 +2,11 @@
     return {};
 };
 
-import { Question, QuestionDropdownModel } from 'survey-core';
-import { SurveyPDF } from '../src/survey';
-import { IPoint, IRect, DocController } from '../src/doc_controller';
-import { FlatSurvey } from '../src/flat_layout/flat_survey';
-import { FlatQuestion } from '../src/flat_layout/flat_question';
-import { FlatDropdown } from '../src/flat_layout/flat_dropdown';
-import { IPdfBrick } from '../src/pdf_render/pdf_brick';
-import { CompositeBrick } from '../src/pdf_render/pdf_composite';
-import { SurveyHelper } from '../src/helper_survey';
-import { TestHelper } from '../src/helper_test';
-import { calcTitleTop } from './flat_question.test';
 import { checkFlatSnapshot } from './snapshot_helper';
-let __dummy_dd = new FlatDropdown(null, null, null);
+import { QuestionDropdownModel } from 'survey-core';
+import { DocController } from '../src/doc_controller';
+import { FlatDropdown } from '../src/flat_layout/flat_dropdown';
+import '../src/flat_layout/flat_dropdown';
 
 test('Check dropdown', async () => {
     const json: any = {
@@ -28,13 +20,9 @@ test('Check dropdown', async () => {
             }
         ]
     };
-    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    const controller: DocController = new DocController(TestHelper.defaultOptions);
-    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(1);
-    const question: Question = survey.getAllQuestions()[0];
-    await calcTitleTop(controller.leftTopPoint, controller, question, flats[0][0]);
+    await checkFlatSnapshot(json, {
+        snapshotName: 'dropdown'
+    });
 });
 test('Check dropdown with other not answered', async () => {
     const json: any = {
@@ -50,13 +38,9 @@ test('Check dropdown with other not answered', async () => {
             }
         ]
     };
-    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    const controller: DocController = new DocController(TestHelper.defaultOptions);
-    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(1);
-    const question: Question = survey.getAllQuestions()[0];
-    await calcTitleTop(controller.leftTopPoint, controller, question, flats[0][0]);
+    await checkFlatSnapshot(json, {
+        snapshotName: 'dropdown_other_not_answered'
+    });
 });
 test('Check dropdown with other answered', async () => {
     const json: any = {
@@ -73,19 +57,9 @@ test('Check dropdown with other answered', async () => {
             }
         ]
     };
-    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    const question = survey.getAllQuestions()[0];
-    const controller: DocController = new DocController(TestHelper.defaultOptions);
-    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(1);
-    const compositeFlat: CompositeBrick = new CompositeBrick(...flats[0][0].unfold().slice(0, -1));
-    const otherPoint: IPoint = await calcTitleTop(controller.leftTopPoint, controller,
-        <Question>survey.getAllQuestions()[0], compositeFlat);
-    otherPoint.xLeft += controller.unitWidth;
-    otherPoint.yTop += controller.unitHeight * SurveyHelper.GAP_BETWEEN_ROWS;
-    TestHelper.equalRect(expect, flats[0][0].unfold()[3], await SurveyHelper.createCommentFlat(
-        otherPoint, survey.getAllQuestions()[0], controller, { rows: SurveyHelper.OTHER_ROWS_COUNT, value: question.comment, isMultiline: true }));
+    await checkFlatSnapshot(json, {
+        snapshotName: 'dropdown_other_answered'
+    });
 });
 test('Check readonly text expends when textFieldRenderAs option set', async () => {
     const json = {
@@ -104,20 +78,12 @@ test('Check readonly text expends when textFieldRenderAs option set', async () =
             }
         ]
     };
-    const options = TestHelper.defaultOptions;
-    options.textFieldRenderAs = 'multiLine';
-    const survey: SurveyPDF = new SurveyPDF(json, options);
-    const controller: DocController = new DocController(options);
-    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(1);
-    const question: Question = survey.getAllQuestions()[0];
-    const textPoint: IPoint = controller.leftTopPoint;
-    textPoint.xLeft += controller.unitWidth;
-    const firstRect: IRect = SurveyHelper.createTextFieldRect(textPoint, controller);
-    const secondRect: IRect = await SurveyHelper.createReadOnlyTextFieldTextFlat(textPoint, controller, question, question.displayValue);
-    firstRect.yBot = secondRect.yBot + controller.unitHeight * SurveyHelper.VALUE_READONLY_PADDING_SCALE;
-    TestHelper.equalRect(expect, flats[0][0], firstRect);
+    await checkFlatSnapshot(json, {
+        snapshotName: 'dropdown_readonly_big_text',
+        controllerOptions: {
+            textFieldRenderAs: 'multiLine'
+        }
+    });
 });
 test('Check dropdown when survey mode is display and textFieldRenderAs is multiline', async () => {
     const json = {
@@ -135,32 +101,15 @@ test('Check dropdown when survey mode is display and textFieldRenderAs is multil
             }
         ]
     };
-    const options = TestHelper.defaultOptions;
-    options.textFieldRenderAs = 'multiLine';
-    const survey: SurveyPDF = new SurveyPDF(json, options);
-    const controller: DocController = new DocController(options);
-    survey.mode = 'display';
-    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(1);
-    const question: Question = survey.getAllQuestions()[0];
-    const textPoint: IPoint = controller.leftTopPoint;
-    textPoint.xLeft += controller.unitWidth;
-    const firstRect: IRect = SurveyHelper.createTextFieldRect(textPoint, controller);
-    const secondRect: IRect = await SurveyHelper.createReadOnlyTextFieldTextFlat(textPoint, controller, question, question.displayValue);
-    firstRect.yBot = secondRect.yBot + controller.unitHeight * SurveyHelper.VALUE_READONLY_PADDING_SCALE;
-    TestHelper.equalRect(expect, flats[0][0], firstRect);
-});
-
-test('Check shouldRenderAsComment flag for text flat', async () => {
-    const question = new QuestionDropdownModel('');
-    const controller = new DocController({});
-    const flat = new FlatDropdown(<any>undefined, question, controller);
-    expect(flat['shouldRenderAsComment']).toBeFalsy();
-    question.readOnly = true;
-    expect(flat['shouldRenderAsComment']).toBeTruthy();
-    question.readonlyRenderAs = 'acroform';
-    expect(flat['shouldRenderAsComment']).toBeFalsy();
+    await checkFlatSnapshot(json, {
+        snapshotName: 'dropdown_display_mode_big_text',
+        onSurveyCreated: (survey) => {
+            survey.mode = 'display';
+        },
+        controllerOptions: {
+            textFieldRenderAs: 'multiLine'
+        }
+    });
 });
 
 test('Check item comment', async () => {
