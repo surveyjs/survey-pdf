@@ -85,8 +85,6 @@ export class SurveyPDF extends SurveyModel {
      * An object that provides access to main PDF document properties (font, margins, page width and height) and allows you to modify them.
      * - `options.repository`: `FlatRepository`\
      * A repository with classes that render elements to PDF. Use its `create` method if you need to create a new instance of a rendering class.
-     *
-     * [View Demo](https://surveyjs.io/pdf-generator/examples/how-to-use-adorners-in-pdf-forms/ (linkStyle))
      */
     public onRenderQuestion: EventAsync<SurveyPDF, AdornersOptions> =
         new EventAsync<SurveyPDF, AdornersOptions>();
@@ -107,8 +105,6 @@ export class SurveyPDF extends SurveyModel {
      * An object that provides access to main PDF document properties (font, margins, page width and height) and allows you to modify them.
      * - `options.repository`: `FlatRepository`\
      * A repository with classes that render elements to PDF. Use its `create` method if you need to create a new instance of a rendering class.
-     *
-     * [View Demo](https://surveyjs.io/pdf-generator/examples/how-to-use-adorners-in-pdf-forms/ (linkStyle))
      */
     public onRenderPanel: EventAsync<SurveyPDF, AdornersPanelOptions> =
         new EventAsync<SurveyPDF, AdornersPanelOptions>();
@@ -129,8 +125,6 @@ export class SurveyPDF extends SurveyModel {
      * An object that provides access to main PDF document properties (font, margins, page width and height) and allows you to modify them.
      * - `options.repository`: `FlatRepository`\
      * A repository with classes that render elements to PDF. Use its `create` method if you need to create a new instance of a rendering class.
-     *
-     * [View Demo](https://surveyjs.io/pdf-generator/examples/how-to-use-adorners-in-pdf-forms/ (linkStyle))
      */
     public onRenderPage: EventAsync<SurveyPDF, AdornersPageOptions> =
         new EventAsync<SurveyPDF, AdornersPageOptions>();
