@@ -79,20 +79,21 @@ export class FlatRating extends FlatQuestion<QuestionRatingModel, IQuestionRatin
         const availableWidth = SurveyHelper.getPageAvailableWidth(this.controller);
         let leftWidth = availableWidth;
         this.question.visibleRateValues.forEach((item, index) => {
-            if(!res[currentRowsIndex]) {
-                res.push([]);
-            }
             const locText = this.getItemText(index, item.locText);
             const width = this.getItemWidth(locText);
-            if(currentColumnIndex !== 0 && width + this.style.spacing.choiceColumnGap > leftWidth) {
+            const itemInfo = { index, item, locText, width };
+            const widthGap = width + (currentColumnIndex == 0 ? 0 : this.style.spacing.choiceColumnGap);
+            if(currentColumnIndex !== 0 && widthGap > leftWidth) {
                 currentRowsIndex++;
-                currentColumnIndex = 0;
-                leftWidth = availableWidth;
+                leftWidth = availableWidth - width;
             } else {
-                leftWidth -= width + (currentColumnIndex == 0 ? 0 : this.style.spacing.choiceColumnGap);
-                currentColumnIndex++;
-                res[currentRowsIndex].push({ index, item, locText, width });
+                leftWidth -= widthGap;
             }
+            currentColumnIndex++;
+            if(res.length <= currentRowsIndex) {
+                res.push([]);
+            }
+            res[currentRowsIndex].push(itemInfo);
         });
         return res;
     }
