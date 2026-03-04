@@ -1,6 +1,7 @@
 import { type IRect } from './doc_controller';
 
 export function mergeRects(...rects: IRect[]): IRect {
+    if (rects.length == 0) return { xLeft: 0, xRight: 0, yTop: 0, yBot: 0 };
     const resultRect: IRect = {
         xLeft: rects[0].xLeft,
         xRight: rects[0].xRight,
