@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.0.0-beta.0](https://github.com/surveyjs/survey-pdf/compare/v2.5.12...v3.0.0-beta.0) (2026-03-05)
+
+### 2.5.9 (2026-02-04)
+
 ### 2.5.12 (2026-02-24)
 
 ### 2.5.11 (2026-02-18)
