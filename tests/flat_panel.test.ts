@@ -335,3 +335,31 @@ test('Check FlatPanel.getRows: check with three elements', async () => {
     expect(rows[1][0].width).toBe(50 * 3 /4 + (SurveyHelper.getPageAvailableWidth(controller) - 50 * 3 /4 - 10 * 3 /4) / 2);
     expect(rows[1][1].width).toBe(10 * 3 /4 + (SurveyHelper.getPageAvailableWidth(controller) - 50 * 3 /4 - 10 * 3 /4) / 2);
 });
+
+test('Check FlatPanel.getRows: maxWidth and minWidth are empty strings', async () => {
+    const json: any = {
+        elements: [
+            {
+                type: 'panel',
+                name: 'panel_constraints',
+                elements: [
+                    { type: 'text', name: 'q1', minWidth: '', maxWidth: '' },
+                ]
+            }
+        ]
+    };
+    const survey = new SurveyPDF(json, TestHelper.defaultOptions);
+    const panel = survey.getAllPanels()[0] as PanelModel;
+    panel.onFirstRendering();
+
+    const controller = new DocController({ ...TestHelper.defaultOptions, margins: { top: 0, left: 0, bot: 0, right: 0 } });
+    controller.margins.left = 0;
+    controller.margins.right = 0;
+    const style = survey.getElementStyle(panel);
+    const flatPanel = new FlatPanel(survey, panel, controller, style);
+    let rows = flatPanel['getRows'](controller);
+
+    expect(rows.length).toBe(1);
+    expect(rows[0].length).toBe(1);
+    expect(rows[0][0].width).toBe(SurveyHelper.getPageAvailableWidth(controller));
+});

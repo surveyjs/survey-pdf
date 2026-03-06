@@ -102,9 +102,9 @@ export class FlatPanel<T extends PanelModel = PanelModel, S extends IPanelStyle 
             const visibleElements = row.elements.filter(el => el.isVisible);
             (visibleElements as any as Array<SurveyElement>).forEach((el, i) => {
                 const style = this.survey.getElementStyle(el);
-                const minWidth = el.minWidth !== 'auto' ? SurveyHelper.parseWidth(el.minWidth, availableWidth, undefined, 'px') : style.minWidth;
+                const minWidth = el.minWidth && el.minWidth !== 'auto' ? SurveyHelper.parseWidth(el.minWidth, availableWidth, undefined, 'px') : style.minWidth;
                 const renderWidth = !!el.width ? SurveyHelper.parseWidth(el.width, availableWidth, undefined, 'px') : 0;
-                const maxWidth = SurveyHelper.parseWidth(el.maxWidth, availableWidth, undefined, 'px');
+                const maxWidth = SurveyHelper.parseWidth(el.maxWidth ? el.maxWidth : '100%', availableWidth, undefined, 'px');
                 const width = Math.min(Math.max(minWidth, renderWidth), maxWidth);
                 if(currentAvailableWidth < width + gapBetweenElements) {
                     rows.push(currentRow);
@@ -125,7 +125,7 @@ export class FlatPanel<T extends PanelModel = PanelModel, S extends IPanelStyle 
             let restWidth = alignValue * row.length;
             while(expandableElements.length > 0 && restWidth > 0) {
                 expandableElements = expandableElements.filter(rowEl => {
-                    const maxWidth = SurveyHelper.parseWidth(rowEl.element.maxWidth, availableWidth, undefined, 'px');
+                    const maxWidth = SurveyHelper.parseWidth(rowEl.element.maxWidth ? rowEl.element.maxWidth : '100%', availableWidth, undefined, 'px');
                     if(maxWidth > rowEl.width + alignValue) {
                         restWidth -= alignValue;
                         rowEl.width = rowEl.width + alignValue;
