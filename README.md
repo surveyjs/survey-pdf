@@ -4,7 +4,7 @@
 <video src="https://github.com/surveyjs/survey-pdf/assets/22315929/c6df9c60-a3ed-40e4-82e7-d7be3fa83fae"></video>
 
 
-[![Build Status](https://dev.azure.com/SurveyJS/SurveyJS%20Integration%20Tests/_apis/build/status/SurveyJS%20Library?branchName=master)](https://dev.azure.com/SurveyJS/SurveyJS%20Integration%20Tests/_build/latest?definitionId=7&branchName=master)
+[![Build Status](https://dev.azure.com/SurveyJS/V2%20Libraries/_apis/build/status%2Fpdf%2FPDF%20Main?repoName=surveyjs%2Fsurvey-pdf&branchName=master)](https://dev.azure.com/SurveyJS/V2%20Libraries/_build/latest?definitionId=165&repoName=surveyjs%2Fsurvey-pdf&branchName=master)
 <a href="https://github.com/surveyjs/survey-pdf/issues">
 <img alt="Issues" title="Open Issues" src="https://img.shields.io/github/issues/surveyjs/survey-pdf.svg">
 </a>
