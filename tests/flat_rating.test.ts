@@ -3,15 +3,11 @@
 };
 
 import { checkFlatSnapshot } from './snapshot_helper';
+import { DocOptions, DocController } from '../src/doc_controller';
+import { TestHelper } from '../src/helper_test';
+import { FlatRating } from '../src/flat_layout/flat_rating';
 import { QuestionRatingModel } from 'survey-core';
 import { SurveyPDF } from '../src/survey';
-import { IRect, DocOptions, IDocOptions, DocController, ISize, IPoint } from '../src/doc_controller';
-import { FlatSurvey } from '../src/flat_layout/flat_survey';
-import { FlatQuestion } from '../src/flat_layout/flat_question';
-import { FlatRating } from '../src/flat_layout/flat_rating';
-import { IPdfBrick } from '../src/pdf_render/pdf_brick';
-import { SurveyHelper } from '../src/helper_survey';
-import { TestHelper } from '../src/helper_test';
 import '../src/flat_layout/flat_rating';
 
 test('Check rating two elements', async () => {
@@ -119,4 +115,61 @@ test('Check rating vertical layout composite', async () => {
     await checkFlatSnapshot(json, {
         snapshotName: 'rating_vertical_layout_composite',
     });
+});
+
+test('Check rating getRows method', async () => {
+    let json: any = {
+        elements: [
+            {
+                type: 'rating',
+                name: 'rating_get_rows',
+                titleLocation: 'hidden',
+                rateMax: 10
+            }
+        ]
+    };
+    const survey = new SurveyPDF(json);
+    const controller = new DocController(TestHelper.defaultOptions);
+    const question = survey.getAllQuestions()[0] as QuestionRatingModel;
+    const flat = new FlatRating(survey, question, controller, { spacing: { choiceColumnGap: 15 }, choiceMinWidth: 18 });
+    let getRows = flat['getRows'].bind(flat);
+    let rows = getRows();
+    expect(rows.length).toBe(1);
+    expect(rows[0].length).toBe(10);
+
+    question.rateMax = 5;
+    rows = getRows();
+    expect(rows.length).toBe(1);
+    expect(rows[0].length).toBe(5);
+
+    question.rateMax = 17;
+    rows = getRows();
+    expect(rows.length).toBe(2);
+    expect(rows[0].length).toBe(16);
+    expect(rows[1].length).toBe(1);
+
+    question.rateMax = 20;
+    rows = getRows();
+    expect(rows.length).toBe(2);
+    expect(rows[0].length).toBe(16);
+    expect(rows[1].length).toBe(4);
+
+    flat.style.spacing.choiceColumnGap = 30;
+
+    question.rateMax = 5;
+    rows = getRows();
+    expect(rows.length).toBe(1);
+    expect(rows[0].length).toBe(5);
+
+    question.rateMax = 12;
+    rows = getRows();
+    expect(rows.length).toBe(2);
+    expect(rows[0].length).toBe(11);
+    expect(rows[1].length).toBe(1);
+
+    question.rateMax = 20;
+    rows = getRows();
+    expect(rows.length).toBe(2);
+    expect(rows[0].length).toBe(11);
+    expect(rows[1].length).toBe(9);
 });
