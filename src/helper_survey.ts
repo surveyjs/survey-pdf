@@ -463,6 +463,9 @@ export class SurveyHelper {
     public static createRoundedShape(rect: IRect, style: { borderRadius?: number | Array<number> }, mergeAngles: boolean | ISideValues<boolean> = true): Map<keyof ISideValues, Array<Array<number>>> {
         const parsedMergeAngles: ISideValues<boolean> = typeof mergeAngles == 'object' ? mergeAngles : { top: mergeAngles, bot: mergeAngles, left: mergeAngles, right: mergeAngles };
         const parsedRadius = parseSideValues(style.borderRadius ?? 0);
+        Object.keys(parsedRadius).forEach((side: keyof ISideValues) => {
+            parsedRadius[side] = Math.max(0, Math.min(parsedRadius[side], (rect.xRight - rect.xLeft) / 2, (rect.yBot - rect.yTop) / 2));
+        });
         function calcAngleLine(x: number, y: number, r: number, angle: number, rotAngle: number) {
             const l = 4/3 * Math.tan(angle / 4) * r;
             const base = [
