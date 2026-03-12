@@ -2,7 +2,7 @@ import { createEsmConfig, createUmdConfig } from './rollup.helpers.mjs';
 import { resolve } from 'node:path';
 import { env } from 'node:process';
 import { fileURLToPath, URL } from 'node:url';
-import packageJSON from './package.json' assert { type: "json" };
+import packageJSON from './package.json' with { type: "json" };
 const version = packageJSON.version;
 const buildPath = fileURLToPath(new URL('./build', import.meta.url));
 const external = {
