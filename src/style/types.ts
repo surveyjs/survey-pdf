@@ -350,6 +350,8 @@ export interface IQuestionSpacing extends ISpacingBase {
      * Specifies the gap between the question content and the question description, in points. Applies only when the description is displayed [under the question input](https://surveyjs.io/form-library/documentation/api-reference/question#descriptionLocation).
      */
     contentDescriptionGap?: number;
+    //todo
+    labelCommentGap?: number;
 }
 /**
  * Defines the visual style applied to [question](https://surveyjs.io/form-library/documentation/api-reference/question) UI elements in an exported PDF document.
@@ -407,6 +409,8 @@ export interface IQuestionStyle {
      * Specifies spacing values applied to question UI elements.
      */
     spacing?: IQuestionSpacing;
+    //todo
+    commentLabel?: ITextStyle;
 }
 
 /**

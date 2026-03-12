@@ -75,6 +75,12 @@ export function getDefaultStyleFromTheme (theme: ITheme): IDocStyle {
                     fontSize: getSizeVariable('--sjs2-typography-font-size-default'),
                     lineHeight: getSizeVariable('--sjs2-typography-line-height-default')
                 },
+                commentLabel: {
+                    fontColor: getColorVariable('--sjs2-color-fg-basic-primary'),
+                    fontSize: getSizeVariable('--sjs2-typography-font-size-default'),
+                    fontStyle: 'normal',
+                    lineHeight: getSizeVariable('--sjs2-typography-line-height-default')
+                },
                 spacing: {
                     headerContentGap: getSizeVariable('--sjs2-pdf-layout-question-gap'),
                     inlineHeaderContentGap: baseSize * 1.0,
@@ -84,6 +90,7 @@ export function getDefaultStyleFromTheme (theme: ITheme): IDocStyle {
                     titleDescriptionGap: getSizeVariable('--sjs2-pdf-layout-question-labels-gap-vertical'),
                     titleRequiredMarkGap: baseSize / 2,
                     titleNumberGap: baseSize / 2,
+                    labelCommentGap: getSizeVariable('--sjs2-spacing-x050')
                 }
             },
             panel: {
