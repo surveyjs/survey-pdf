@@ -343,14 +343,16 @@ export interface IQuestionSpacing extends ISpacingBase {
      */
     contentIndentStart?: number;
     /**
-     * Specifies the gap between the question content and the comment area, in points. Applies only to questions with [include a comment area](https://surveyjs.io/form-library/documentation/api-reference/question#showCommentArea).
+     * Specifies the gap between the question content and the comment area, in points. Applies only to questions that [include a comment area](https://surveyjs.io/form-library/documentation/api-reference/question#showCommentArea).
      */
     contentCommentGap?: number;
     /**
      * Specifies the gap between the question content and the question description, in points. Applies only when the description is displayed [under the question input](https://surveyjs.io/form-library/documentation/api-reference/question#descriptionLocation).
      */
     contentDescriptionGap?: number;
-    //todo
+    /**
+     * Specifies the gap between the question's comment area and the text above it, in points. Applies only to questions that [include a comment area](https://surveyjs.io/form-library/documentation/api-reference/question#showCommentArea).
+     */
     commentLabelGap?: number;
 }
 /**
@@ -394,11 +396,11 @@ export interface IQuestionStyle {
      */
     container?: IContainerStyle;
     /**
-     * Specifies the visual style applied to the question comment. Applies only to questions with [include a comment area](https://surveyjs.io/form-library/documentation/api-reference/question#showCommentArea).
+     * Specifies the visual style applied to the question comment. Applies only to questions that [include a comment area](https://surveyjs.io/form-library/documentation/api-reference/question#showCommentArea).
      */
     comment?: IInputStyle;
     /**
-     * Specifies the visual style applied to the question comment in read-only mode. Applies only to questions with [include a comment area](https://surveyjs.io/form-library/documentation/api-reference/question#showCommentArea).
+     * Specifies the visual style applied to the question comment in read-only mode. Applies only to questions that [include a comment area](https://surveyjs.io/form-library/documentation/api-reference/question#showCommentArea).
      */
     commentReadOnly?: IInputStyle;
     /**
@@ -409,7 +411,9 @@ export interface IQuestionStyle {
      * Specifies spacing values applied to question UI elements.
      */
     spacing?: IQuestionSpacing;
-    //todo
+    /**
+     * Specifies the visual style applied to the text above the question's comment area. Applies only to questions that [include a comment area](https://surveyjs.io/form-library/documentation/api-reference/question#showCommentArea).
+     */
     commentLabel?: ITextStyle;
 }
 
