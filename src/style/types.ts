@@ -351,7 +351,7 @@ export interface IQuestionSpacing extends ISpacingBase {
      */
     contentDescriptionGap?: number;
     //todo
-    labelCommentGap?: number;
+    commentLabelGap?: number;
 }
 /**
  * Defines the visual style applied to [question](https://surveyjs.io/form-library/documentation/api-reference/question) UI elements in an exported PDF document.

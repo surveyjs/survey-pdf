@@ -90,7 +90,7 @@ export function getDefaultStyleFromTheme (theme: ITheme): IDocStyle {
                     titleDescriptionGap: getSizeVariable('--sjs2-pdf-layout-question-labels-gap-vertical'),
                     titleRequiredMarkGap: baseSize / 2,
                     titleNumberGap: baseSize / 2,
-                    labelCommentGap: getSizeVariable('--sjs2-spacing-x050')
+                    commentLabelGap: getSizeVariable('--sjs2-spacing-x050')
                 }
             },
             panel: {

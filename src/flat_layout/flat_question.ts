@@ -92,7 +92,7 @@ export class FlatQuestion<T extends Question = Question, S extends IQuestionStyl
         const text: LocalizableString = this.question.locCommentText;
         const otherTextFlat: IPdfBrick = await SurveyHelper.createTextFlat(point, this.controller, text, this.style.commentLabel);
         const otherPoint: IPoint = SurveyHelper.createPoint(otherTextFlat);
-        otherPoint.yTop += this.style.spacing.labelCommentGap;
+        otherPoint.yTop += this.style.spacing.commentLabelGap;
         const shouldRenderReadOnly = SurveyHelper.shouldRenderReadOnly(this.question, this.controller, this.question.isReadOnly);
         const style = SurveyHelper.getPatchedTextStyle(this.controller, SurveyHelper.mergeObjects({}, this.style.comment, shouldRenderReadOnly ? this.style.commentReadOnly : undefined));
         return new CompositeBrick(otherTextFlat, await SurveyHelper.createCommentFlat(
