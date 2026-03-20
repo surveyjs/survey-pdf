@@ -10,7 +10,7 @@ import { AdornersOptions, AdornersPanelOptions, AdornersPageOptions } from './ev
 import { SurveyHelper } from './helper_survey';
 import { IDocStyle } from './style/types';
 import { createStyleFromTheme, getDefaultStyleFromTheme } from './style';
-import { DefaultLight } from './themes/default-light';
+import DefaultLight from './themes/default-light';
 import { parseSideValues } from './utils';
 import { ITextStyle, ISelectionInputStyle, IQuestionStyle, IPageStyle, IPanelStyle } from './style/types';
 import { FlatRepository } from './flat_layout/flat_repository';

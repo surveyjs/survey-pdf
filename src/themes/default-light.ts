@@ -1,5 +1,5 @@
 // Auto-generated theme: default-light
-export const DefaultLight = {
+const DefaultLight = {
     'themeName': 'default-light',
     'iconSet': 'v2',
     'isLight': true,

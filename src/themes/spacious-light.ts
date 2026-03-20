@@ -1,5 +1,5 @@
 // Auto-generated theme: spacious-light
-export const SpaciousLight = {
+const SpaciousLight = {
     'themeName': 'spacious-light',
     'iconSet': 'v2',
     'isLight': true,
