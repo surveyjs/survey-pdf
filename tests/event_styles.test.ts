@@ -1,6 +1,6 @@
 import { SurveyPDF } from '../src/survey';
 import { ITheme, PanelModel } from 'survey-core';
-import { DefaultLight } from '../src/themes/default-light';
+import DefaultLight from '../src/themes/default-light';
 import { FlatCheckbox } from '../src/flat_layout/flat_checkbox';
 import { DocController } from '../src/doc_controller';
 test('onGetQuestionStyle is fired and can modify question style', () => {
