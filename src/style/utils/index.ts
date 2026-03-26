@@ -5,10 +5,10 @@ export interface IVariablesManager {
     startCollectingVariables(): void;
     stopCollectingVariables(): void;
 }
-let variablesManager: IVariablesManager;
-export function registerVariablesManager(val: IVariablesManager) {
-    variablesManager = val;
+let variablesManagerCreator: () => IVariablesManager;
+export function registerVariablesManagerCreator(creator: () => IVariablesManager) {
+    variablesManagerCreator = creator;
 }
-export function getVariablesManager(): IVariablesManager {
-    return variablesManager;
+export function createVariablesManager(): IVariablesManager {
+    return variablesManagerCreator();
 }

@@ -4,11 +4,8 @@
 
 import * as Survey from 'survey-core';
 import { SurveyPDF } from '../src/survey';
-import { IPoint, IDocOptions, DocController } from '../src/doc_controller';
-import { FlatSurvey } from '../src/flat_layout/flat_survey';
+import { DocController } from '../src/doc_controller';
 import { FlatTextbox } from '../src/flat_layout/flat_textbox';
-import { IPdfBrick } from '../src/pdf_render/pdf_brick';
-import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 import { QuestionTextModel } from 'survey-core';
 import { TextFieldBrick } from '../src/pdf_render/pdf_textfield';
@@ -68,7 +65,7 @@ test('Check readonly text with readOnlyTextRenderMode set to div', async () => {
         const survey: SurveyPDF = new SurveyPDFTester(json, TestHelper.defaultOptions);
         const pdfAsString = await survey.raw();
         // Stream in result PDF document should be small - in this example 14
-        expect(pdfAsString.indexOf('/Length 567\n') > 0).toBeTruthy();
+        expect(pdfAsString.indexOf('/Length 578\n') > 0).toBeTruthy();
 
     } finally {
         Survey.settings.readOnlyTextRenderMode = oldRenderMode;

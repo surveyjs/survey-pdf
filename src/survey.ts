@@ -9,8 +9,10 @@ import { DrawCanvas } from './event_handler/draw_canvas';
 import { AdornersOptions, AdornersPanelOptions, AdornersPageOptions } from './event_handler/adorners';
 import { SurveyHelper } from './helper_survey';
 import { IDocStyle } from './style/types';
-import { createStyleFromTheme, getDefaultStyleFromTheme } from './style';
-import DefaultLight from './themes/default-light';
+import { createStyleFromTheme, getDefaultStyle } from './style';
+import MonochromeLight from './themes/monochrome-light';
+import CompactLayout from './layout_configs/compact';
+import { ILayout } from './layout_configs/types';
 import { parseSideValues } from './utils';
 import { ITextStyle, ISelectionInputStyle, IQuestionStyle, IPageStyle, IPanelStyle } from './style/types';
 import { FlatRepository } from './flat_layout/flat_repository';
@@ -256,9 +258,13 @@ export class SurveyPDF extends SurveyModel {
      */
     public get style(): IDocStyle {
         if(!this.styleValue) {
-            this.styleValue = getDefaultStyleFromTheme(this.theme);
+            this.styleValue = getDefaultStyle(this.theme, this.layout);
         }
         return this.styleValue;
+    }
+    private clearStyles() {
+        this.styleValue = undefined;
+        this.stylesHash = {};
     }
     /**
      * Applies a visual style to UI elements in an exported PDF document.
@@ -270,22 +276,32 @@ export class SurveyPDF extends SurveyModel {
      */
     public applyStyle(value: IDocStyle | ((options: { getColorVariable: (name: string) => string, getSizeVariable: (name: string) => number }) => IDocStyle)): void {
         if(typeof value == 'function') {
-            this.styleValue = SurveyHelper.mergeObjects({}, this.style, createStyleFromTheme(this.theme, value));
+            this.styleValue = SurveyHelper.mergeObjects({}, this.style, createStyleFromTheme(this.theme, this.layout, value));
         } else {
             this.styleValue = SurveyHelper.mergeObjects({}, this.style, value);
         }
     }
     private _theme: ITheme;
     public get theme(): ITheme {
-        return this._theme || DefaultLight;
+        return this._theme || MonochromeLight;
     }
     public applyTheme(theme: ITheme): void {
         this._theme = SurveyHelper.mergeObjects({}, this.theme, theme);
-        this.styleValue = undefined;
-        this.stylesHash = {};
+        this.clearStyles();
     }
+
+    private _layout: ILayout;
+    public get layout(): ILayout {
+        return this._layout || CompactLayout;
+    }
+
+    public applyLayout(layout: ILayout): void {
+        this._layout = SurveyHelper.mergeObjects({}, this.layout, layout);
+        this.clearStyles();
+    }
+
     public getItemStyle(question: Question, item: ItemValue, style: { choiceText: ITextStyle, input: ISelectionInputStyle }): { choiceText: ITextStyle, input: ISelectionInputStyle } {
-        return createStyleFromTheme(this.theme, (options) => {
+        return createStyleFromTheme(this.theme, this.layout, (options) => {
             const eventOptions = {
                 getColorVariable: options.getColorVariable,
                 getSizeVariable: options.getSizeVariable,
@@ -310,7 +326,7 @@ export class SurveyPDF extends SurveyModel {
             types.forEach(type => {
                 SurveyHelper.mergeObjects(res, (style as any)[type] ?? {});
             });
-            this.stylesHash[uniqueId] = createStyleFromTheme(this.theme, (options) => {
+            this.stylesHash[uniqueId] = createStyleFromTheme(this.theme, this.layout, (options) => {
                 const eventOptions = {
                     getColorVariable: options.getColorVariable,
                     getSizeVariable: options.getSizeVariable,

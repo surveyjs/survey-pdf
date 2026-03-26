@@ -1,19 +1,23 @@
-import { getVariablesManager } from './utils';
+import { createVariablesManager } from './utils';
 import { ITheme } from 'survey-core';
 import { IDocStyle } from './types';
+import { ILayout } from 'src/layout_configs/types';
 
-export function createStyleFromTheme<T>(theme: ITheme, callback: (options: { getColorVariable: (varName: string) => string, getSizeVariable:(varName: string) => number }) => T) {
-    const { cssVariables } = theme;
-    const variablesManager = getVariablesManager();
-    variablesManager.setup(cssVariables);
-    variablesManager.startCollectingVariables();
-    const res = callback({ getColorVariable: (name: string) => variablesManager.getColorVariable(name), getSizeVariable: (name: string) => variablesManager.getSizeVariable(name) });
-    variablesManager.stopCollectingVariables();
+export function createStyleFromTheme<T>(theme: ITheme, layout: ILayout, callback: (options: { getColorVariable: (varName: string) => string, getSizeVariable:(varName: string) => number }) => T) {
+    const themeVariablesManager = createVariablesManager();
+    const layoutVariablesManager = createVariablesManager();
+    themeVariablesManager.setup(theme.cssVariables);
+    layoutVariablesManager.setup(layout);
+    themeVariablesManager.startCollectingVariables();
+    layoutVariablesManager.startCollectingVariables();
+    const res = callback({ getColorVariable: (name: string) => themeVariablesManager.getColorVariable(name), getSizeVariable: (name: string) => layoutVariablesManager.getSizeVariable(name) });
+    themeVariablesManager.stopCollectingVariables();
+    layoutVariablesManager.stopCollectingVariables();
     return res;
 }
 
-export function getDefaultStyleFromTheme (theme: ITheme): IDocStyle {
-    return createStyleFromTheme<IDocStyle>(theme, ({ getSizeVariable, getColorVariable }) => {
+export function getDefaultStyle (theme: ITheme, layout: ILayout): IDocStyle {
+    return createStyleFromTheme<IDocStyle>(theme, layout, ({ getSizeVariable, getColorVariable }) => {
         const baseSize = getSizeVariable('--sjs2-base-unit-size');
         return {
             survey: {
@@ -63,8 +67,8 @@ export function getDefaultStyleFromTheme (theme: ITheme): IDocStyle {
                 comment: {
                     fontSize: getSizeVariable('--sjs2-typography-font-size-default'),
                     lineHeight: getSizeVariable('--sjs2-typography-line-height-default'),
-                    fontColor: getColorVariable('--sjs2-color-control-input-default-value'),
-                    backgroundColor: getColorVariable('--sjs2-color-control-formbox-default-bg'),
+                    fontColor: getColorVariable('--sjs2-color-component-input-default-value'),
+                    backgroundColor: getColorVariable('--sjs2-color-component-formbox-default-bg'),
                 },
                 commentReadOnly: {
                     backgroundColor: null as any,
@@ -155,19 +159,19 @@ export function getDefaultStyleFromTheme (theme: ITheme): IDocStyle {
                     width: baseSize * 2,
                     height: baseSize * 2,
                     fontSize: baseSize * 1.25,
-                    borderColor: getColorVariable('--sjs2-color-control-check-false-default-border'),
+                    borderColor: getColorVariable('--sjs2-color-component-check-false-default-border'),
                     borderWidth: getSizeVariable('--sjs2-pdf-border-width-check'),
                     fontName: 'zapfdingbats',
                     backgroundColor: getColorVariable('--sjs2-color-bg-basic-primary'),
                     fontColor: getColorVariable('--sjs2-color-fg-brand-primary'),
                 },
                 inputReadOnly: {
-                    fontColor: getColorVariable('--sjs2-color-control-check-true-default-icon'),
-                    backgroundColor: getColorVariable('--sjs2-color-control-check-false-default-bg'),
+                    fontColor: getColorVariable('--sjs2-color-component-check-true-default-icon'),
+                    backgroundColor: getColorVariable('--sjs2-color-component-check-false-default-bg'),
                 },
                 inputReadOnlyChecked: {
-                    borderColor: getColorVariable('--sjs2-color-control-check-true-default-border'),
-                    backgroundColor: getColorVariable('--sjs2-color-control-check-true-default-bg')
+                    borderColor: getColorVariable('--sjs2-color-component-check-true-default-border'),
+                    backgroundColor: getColorVariable('--sjs2-color-component-check-true-default-bg')
                 },
                 spacing: {
                     choiceColumnGap: getSizeVariable('--sjs2-pdf-layout-question-items-gap-horizontal'),
@@ -267,19 +271,19 @@ export function getDefaultStyleFromTheme (theme: ITheme): IDocStyle {
                     width: baseSize * 2,
                     height: baseSize * 2,
                     fontSize: baseSize * 1.25,
-                    borderColor: getColorVariable('--sjs2-color-control-check-false-default-border'),
+                    borderColor: getColorVariable('--sjs2-color-component-check-false-default-border'),
                     borderWidth: getSizeVariable('--sjs2-pdf-border-width-check'),
                     backgroundColor: getColorVariable('--sjs2-color-bg-basic-primary'),
                     fontColor: getColorVariable('--sjs2-color-fg-brand-primary'),
                     fontName: 'zapfdingbats',
                 },
                 inputReadOnly: {
-                    fontColor: getColorVariable('--sjs2-color-control-check-true-default-icon'),
-                    backgroundColor: getColorVariable('--sjs2-color-control-check-false-default-bg'),
+                    fontColor: getColorVariable('--sjs2-color-component-check-true-default-icon'),
+                    backgroundColor: getColorVariable('--sjs2-color-component-check-false-default-bg'),
                 },
                 inputReadOnlyChecked: {
-                    borderColor: getColorVariable('--sjs2-color-control-check-true-default-border'),
-                    backgroundColor: getColorVariable('--sjs2-color-control-check-true-default-bg')
+                    borderColor: getColorVariable('--sjs2-color-component-check-true-default-border'),
+                    backgroundColor: getColorVariable('--sjs2-color-component-check-true-default-bg')
                 },
                 radioInput: {
                     checkMark: 'l'
@@ -381,7 +385,7 @@ export function getDefaultStyleFromTheme (theme: ITheme): IDocStyle {
                     width: baseSize * 2,
                     height: baseSize * 2,
                     fontSize: baseSize * 1.25,
-                    borderColor: getColorVariable('--sjs2-color-control-check-false-default-border'),
+                    borderColor: getColorVariable('--sjs2-color-component-check-false-default-border'),
                     borderWidth: getSizeVariable('--sjs2-pdf-border-width-check'),
                     backgroundColor: getColorVariable('--sjs2-color-bg-basic-primary'),
                     fontColor: getColorVariable('--sjs2-color-fg-brand-primary'),
@@ -389,13 +393,13 @@ export function getDefaultStyleFromTheme (theme: ITheme): IDocStyle {
                     checkMark: 'l',
                 },
                 inputReadOnly: {
-                    fontColor: getColorVariable('--sjs2-color-control-check-true-default-icon'),
-                    backgroundColor: getColorVariable('--sjs2-color-control-check-false-default-bg'),
+                    fontColor: getColorVariable('--sjs2-color-component-check-true-default-icon'),
+                    backgroundColor: getColorVariable('--sjs2-color-component-check-false-default-bg'),
                     borderRadius: getSizeVariable('--sjs2-pdf-radius-checkbox'),
                 },
                 inputReadOnlyChecked: {
-                    borderColor: getColorVariable('--sjs2-color-control-check-true-default-border'),
-                    backgroundColor: getColorVariable('--sjs2-color-control-check-true-default-bg')
+                    borderColor: getColorVariable('--sjs2-color-component-check-true-default-border'),
+                    backgroundColor: getColorVariable('--sjs2-color-component-check-true-default-bg')
                 },
                 spacing: {
                     choiceColumnGap: getSizeVariable('--sjs2-pdf-layout-question-items-gap-horizontal'),
@@ -410,12 +414,12 @@ export function getDefaultStyleFromTheme (theme: ITheme): IDocStyle {
                     height: baseSize * 2,
                     fontSize: baseSize * 1.25,
                     lineHeight: baseSize * 1.25,
-                    borderColor: getColorVariable('--sjs2-color-control-check-false-default-border'),
+                    borderColor: getColorVariable('--sjs2-color-component-check-false-default-border'),
                     borderWidth: getSizeVariable('--sjs2-pdf-border-width-check'),
                     fontName: 'helvetica',
                     fontStyle: 'normal',
                     fontColor: getColorVariable('--sjs2-color-fg-basic-primary'),
-                    backgroundColor: getColorVariable('--sjs2-color-control-check-false-default-bg'),
+                    backgroundColor: getColorVariable('--sjs2-color-component-check-false-default-bg'),
                 },
                 selectToRankAreaSeparator: {
                     width: baseSize / 7,
@@ -437,8 +441,8 @@ export function getDefaultStyleFromTheme (theme: ITheme): IDocStyle {
                 input: {
                     fontSize: getSizeVariable('--sjs2-typography-font-size-default'),
                     lineHeight: getSizeVariable('--sjs2-typography-line-height-default'),
-                    backgroundColor: getColorVariable('--sjs2-color-control-formbox-default-bg'),
-                    fontColor: getColorVariable('--sjs2-color-control-input-default-value'),
+                    backgroundColor: getColorVariable('--sjs2-color-component-formbox-default-bg'),
+                    fontColor: getColorVariable('--sjs2-color-component-input-default-value'),
                 },
                 inputReadOnly: {
                     backgroundColor: null as any,
@@ -459,8 +463,8 @@ export function getDefaultStyleFromTheme (theme: ITheme): IDocStyle {
                     fontName: undefined as any,
                     fontSize: getSizeVariable('--sjs2-typography-font-size-default'),
                     lineHeight: getSizeVariable('--sjs2-typography-line-height-default'),
-                    fontColor: getColorVariable('--sjs2-color-control-input-default-value'),
-                    backgroundColor: getColorVariable('--sjs2-color-control-formbox-default-bg'),
+                    fontColor: getColorVariable('--sjs2-color-component-input-default-value'),
+                    backgroundColor: getColorVariable('--sjs2-color-component-formbox-default-bg'),
 
                 },
                 inputReadOnly: {
@@ -524,19 +528,19 @@ export function getDefaultStyleFromTheme (theme: ITheme): IDocStyle {
                     width: baseSize * 2,
                     height: baseSize * 2,
                     fontSize: baseSize * 1.25,
-                    borderColor: getColorVariable('--sjs2-color-control-check-false-default-border'),
+                    borderColor: getColorVariable('--sjs2-color-component-check-false-default-border'),
                     borderWidth: getSizeVariable('--sjs2-pdf-border-width-check'),
                     backgroundColor: getColorVariable('--sjs2-color-bg-basic-primary'),
                     fontColor: getColorVariable('--sjs2-color-fg-brand-primary'),
                     fontName: 'zapfdingbats',
                 },
                 inputReadOnly: {
-                    fontColor: getColorVariable('--sjs2-color-control-check-true-default-icon'),
-                    backgroundColor: getColorVariable('--sjs2-color-control-check-false-default-bg'),
+                    fontColor: getColorVariable('--sjs2-color-component-check-true-default-icon'),
+                    backgroundColor: getColorVariable('--sjs2-color-component-check-false-default-bg'),
                 },
                 inputReadOnlyChecked: {
-                    borderColor: getColorVariable('--sjs2-color-control-check-true-default-border'),
-                    backgroundColor: getColorVariable('--sjs2-color-control-check-true-default-bg')
+                    borderColor: getColorVariable('--sjs2-color-component-check-true-default-border'),
+                    backgroundColor: getColorVariable('--sjs2-color-component-check-true-default-bg')
                 },
                 radioInput: {
                     checkMark: 'l'
@@ -576,8 +580,8 @@ export function getDefaultStyleFromTheme (theme: ITheme): IDocStyle {
                 input: {
                     fontSize: getSizeVariable('--sjs2-typography-font-size-default'),
                     lineHeight: getSizeVariable('--sjs2-typography-line-height-default'),
-                    backgroundColor: getColorVariable('--sjs2-color-control-formbox-default-bg'),
-                    fontColor: getColorVariable('--sjs2-color-control-input-default-value'),
+                    backgroundColor: getColorVariable('--sjs2-color-component-formbox-default-bg'),
+                    fontColor: getColorVariable('--sjs2-color-component-input-default-value'),
                 },
                 inputReadOnly: {
                     backgroundColor: null as any,
