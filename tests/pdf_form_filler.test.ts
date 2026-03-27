@@ -68,7 +68,7 @@ test('Check raw method returns blob when type is "blob"', async () => {
 
     const result = await formFiller.raw('blob');
     expect(result).toBeInstanceOf(Blob);
-    expect(result.type).toBe('application/pdf');
+    expect((result as Blob).type).toBe('application/pdf');
     expect(mockGetPDFBytes).toHaveBeenCalledTimes(1);
 });
 
@@ -103,6 +103,34 @@ test('Check raw method returns data URL string when type is "dataurlstring"', as
     expect(typeof result).toBe('string');
     expect(result).toBe('data:application/pdf;base64,AQIDBA==');
     expect(mockGetPDFBytes).toHaveBeenCalledTimes(1);
+});
+
+test('Check raw method chunks data when building dataurlstring', async () => {
+    const length = 0xffff + 10;
+    const mockPDFBytes = new Uint8Array(length);
+    for (let i = 0; i < length; i++) mockPDFBytes[i] = i % 256;
+
+    const formFiller = new PDFFormFiller({
+        fieldMap: {},
+        data: {},
+        pdfTemplate: 'test-template',
+        pdfLibraryAdapter: null as any
+    });
+    jest.spyOn(formFiller as any, 'getPDFBytes').mockResolvedValue(mockPDFBytes);
+
+    const result = await formFiller.raw('dataurlstring');
+
+    expect(result).toBeDefined();
+    expect(typeof result).toBe('string');
+    const resultStr = result as string;
+    expect(resultStr.startsWith('data:application/pdf;base64,')).toBe(true);
+
+    const base64 = resultStr.substring('data:application/pdf;base64,'.length);
+    const decoded = atob(base64);
+    expect(decoded.length).toBe(mockPDFBytes.length);
+    for (let i = 0; i < mockPDFBytes.length; i++) {
+        expect(decoded.charCodeAt(i)).toBe(mockPDFBytes[i]);
+    }
 });
 
 test('Check raw method handles errors from getPDFBytes', async () => {
