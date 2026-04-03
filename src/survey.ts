@@ -33,6 +33,7 @@ export class SurveyPDF extends SurveyModel {
             this.questionsOnPageMode = 'standard';
         }
         this.options = SurveyHelper.clone(options);
+        this.applyTheme(DefaultLight);
     }
     public get haveCommercialLicense(): boolean {
         const f = hasLicense;
