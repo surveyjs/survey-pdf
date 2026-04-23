@@ -58,6 +58,14 @@ export interface IMargin extends IMarginLR {
     bot?: number;
 }
 /**
+ * An interface that describes the encryption configuration.
+ */
+export interface IEncryptionSettings {
+    userPassword: string;
+    ownerPassword: string;
+    userPermissions: Array<'print' | 'modify' | 'copy' | 'annot-forms'>;
+}
+/**
  * PDF document configuration. Pass it as the second argument to the `SurveyPDF` constructor:
  *
  * ```js
@@ -226,6 +234,10 @@ export interface IDocOptions {
      * Default value: `false` (include all choices)
      */
     tagboxSelectedChoicesOnly?: boolean;
+     /**
+     * Specifies settings to password protect document.
+     */
+    encryption?: IEncryptionSettings;
 }
 
 export class DocOptions implements IDocOptions {
@@ -249,6 +261,8 @@ export class DocOptions implements IDocOptions {
     protected _useLegacyBooleanRendering: boolean;
     protected _isRTL: boolean;
     protected _tagboxSelectedChoicesOnly: boolean;
+    protected _encryption: IEncryptionSettings;
+
     public constructor(options: IDocOptions) {
         if (typeof options.orientation === 'undefined') {
             if (typeof options.format === 'undefined' ||
@@ -311,6 +325,7 @@ export class DocOptions implements IDocOptions {
         this._useLegacyBooleanRendering = options.useLegacyBooleanRendering || false;
         this._isRTL = options.isRTL || false;
         this._tagboxSelectedChoicesOnly = options.tagboxSelectedChoicesOnly || false;
+        this._encryption = options.encryption;
     }
     public get leftTopPoint(): IPoint {
         return {
@@ -366,6 +381,9 @@ export class DocOptions implements IDocOptions {
     public get tagboxSelectedChoicesOnly(): boolean {
         return this._tagboxSelectedChoicesOnly;
     }
+    public get encryption(): IEncryptionSettings {
+        return this._encryption;
+    }
 }
 
 /**
@@ -384,7 +402,8 @@ export class DocController extends DocOptions {
             orientation: this.orientation,
             unit: 'pt',
             format: this.format,
-            compress: this.compress
+            compress: this.compress,
+            encryption: this.encryption
         };
         this._doc = new jsPDF(jspdfOptions);
         if (typeof this.base64Normal !== 'undefined' && !SurveyHelper.isFontExist(this, this.fontName)) {
