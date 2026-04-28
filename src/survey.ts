@@ -267,7 +267,7 @@ export class SurveyPDF extends SurveyModel {
         this.stylesHash = {};
     }
     /**
-     * Applies a visual style to UI elements in an exported PDF document.
+     * Applies a visual style to UI elements in the exported PDF document.
      *
      * This method accepts either an [`IDocStyle`](https://surveyjs.io/pdf-generator/documentation/api-reference/IDocStyle) object that overrides properties in the default visual style, or a callback function that returns such an object. When a callback is used, it receives helper functions&mdash;`getSizeVariable(name)` and `getColorVariable(name)`&mdash;which allow you to derive dimensions and colors from the currently applied UI theme.
      *
@@ -285,6 +285,12 @@ export class SurveyPDF extends SurveyModel {
     public get theme(): ITheme {
         return this._theme || MonochromeLight;
     }
+    /**
+     * Applies a UI theme to the exported PDF document.
+     *
+     * A theme defines color- and shadow-related CSS variables. To configure spacing, sizing, typography, and other non-color variables, use the [`applyLayout`](#applyLayout) method.
+     * @param theme An [`ITheme`](https://surveyjs.io/form-library/documentation/api-reference/itheme) object.
+     */
     public applyTheme(theme: ITheme): void {
         this._theme = SurveyHelper.mergeObjects({}, this.theme, theme);
         this.clearStyles();
@@ -295,6 +301,12 @@ export class SurveyPDF extends SurveyModel {
         return this._layout || CompactLayout;
     }
 
+    /**
+     * Applies a layout configuration to the exported PDF document.
+     *
+     * A layout defines non-color CSS variables, including spacing, sizing, typography, border radius, and other dimensional variables. To configure colors and shadows, use the [`applyTheme`](#applyTheme) method.
+     * @param layout An `IDocLayout` object that specifies layout variables.
+     */
     public applyLayout(layout: ILayout): void {
         this._layout = SurveyHelper.mergeObjects({}, this.layout, layout);
         this.clearStyles();
