@@ -4,7 +4,7 @@ import MonochromeLight from '../src/themes/monochrome-light';
 import CompactLayout from '../src/layout_configs/compact';
 import { FlatCheckbox } from '../src/flat_layout/flat_checkbox';
 import { DocController } from '../src/doc_controller';
-import { ILayout } from '../src/layout_configs/types';
+import { IDocLayout } from '../src/layout_configs/types';
 test('onGetQuestionStyle is fired and can modify question style', () => {
     const survey = new SurveyPDF({
         pages: [
@@ -21,7 +21,7 @@ test('onGetQuestionStyle is fired and can modify question style', () => {
     theme.cssVariables = { ...MonochromeLight.cssVariables };
     theme.cssVariables['--test-color-variable'] = 'rgba(237, 231, 225, 0.1)';
     survey.applyTheme(theme);
-    const layout: ILayout = { ...CompactLayout };
+    const layout: IDocLayout = { ...CompactLayout };
     layout['--test-size-variable'] = '80px';
     survey.applyLayout(layout);
     survey.onGetQuestionStyle.add((_, options) => {
@@ -60,7 +60,7 @@ test('onGetPanelStyle is fired and can modify panel style', () => {
     theme.cssVariables = { ...MonochromeLight.cssVariables };
     theme.cssVariables['--test-color-variable'] = 'rgba(237, 231, 225, 0.1)';
     survey.applyTheme(theme);
-    const layout: ILayout = { ...CompactLayout };
+    const layout: IDocLayout = { ...CompactLayout };
     layout['--test-size-variable'] = '80px';
     survey.applyLayout(layout);
     survey.onGetPanelStyle.add((_, options) => {
@@ -92,7 +92,7 @@ test('onGetPageStyle is fired and can modify page style', () => {
     theme.cssVariables = { ...MonochromeLight.cssVariables };
     theme.cssVariables['--test-color-variable'] = 'rgba(237, 231, 225, 0.1)';
     survey.applyTheme(theme);
-    const layout: ILayout = { ...CompactLayout };
+    const layout: IDocLayout = { ...CompactLayout };
     layout['--test-size-variable'] = '80px';
     survey.applyLayout(layout);
     survey.onGetPageStyle.add((_, options) => {
@@ -133,7 +133,7 @@ test('onGetItemStyle is fired and can modify item style', () => {
     theme.cssVariables = { ...MonochromeLight.cssVariables };
     theme.cssVariables['--test-color-variable'] = 'rgba(237, 231, 225, 0.1)';
     survey.applyTheme(theme);
-    const layout: ILayout = { ...CompactLayout };
+    const layout: IDocLayout = { ...CompactLayout };
     layout['--test-size-variable'] = '80px';
     survey.applyLayout(layout);
     survey.onGetItemStyle.add((_, options) => {

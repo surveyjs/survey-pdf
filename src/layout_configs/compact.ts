@@ -1,4 +1,4 @@
-import { ILayout } from './types';
+import { IDocLayout } from './types';
 
 // Auto-generated theme: compact
 export default {
@@ -211,4 +211,4 @@ export default {
     '--sjs2-pdf-layout-question-items-gap-vertical': 'var(--sjs2-spacing-x050)',
     '--sjs2-pdf-layout-question-items-gap-horizontal': 'var(--sjs2-spacing-x150)',
     '--sjs2-pdf-layout-image-picker-items-gap-image-check': 'var(--sjs2-spacing-x000)'
-} as ILayout;
+} as IDocLayout;

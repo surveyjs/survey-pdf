@@ -1,4 +1,4 @@
-export interface ILayout {
+export interface IDocLayout {
     [index: string]: string;
     //todo
 }

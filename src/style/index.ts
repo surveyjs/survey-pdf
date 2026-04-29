@@ -1,9 +1,9 @@
 import { createVariablesManager } from './utils';
 import { ITheme } from 'survey-core';
 import { IDocStyle } from './types';
-import { ILayout } from 'src/layout_configs/types';
+import { IDocLayout } from 'src/layout_configs/types';
 
-export function createStyleFromTheme<T>(theme: ITheme, layout: ILayout, callback: (options: { getColorVariable: (varName: string) => string, getSizeVariable:(varName: string) => number }) => T) {
+export function createStyleFromTheme<T>(theme: ITheme, layout: IDocLayout, callback: (options: { getColorVariable: (varName: string) => string, getSizeVariable:(varName: string) => number }) => T) {
     const themeVariablesManager = createVariablesManager();
     const layoutVariablesManager = createVariablesManager();
     themeVariablesManager.setup(theme.cssVariables);
@@ -16,7 +16,7 @@ export function createStyleFromTheme<T>(theme: ITheme, layout: ILayout, callback
     return res;
 }
 
-export function getDefaultStyle (theme: ITheme, layout: ILayout): IDocStyle {
+export function getDefaultStyle (theme: ITheme, layout: IDocLayout): IDocStyle {
     return createStyleFromTheme<IDocStyle>(theme, layout, ({ getSizeVariable, getColorVariable }) => {
         const baseSize = getSizeVariable('--sjs2-base-unit-size');
         return {

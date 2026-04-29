@@ -12,7 +12,7 @@ import { IDocStyle } from './style/types';
 import { createStyleFromTheme, getDefaultStyle } from './style';
 import MonochromeLight from './themes/monochrome-light';
 import CompactLayout from './layout_configs/compact';
-import { ILayout } from './layout_configs/types';
+import { IDocLayout } from './layout_configs/types';
 import { parseSideValues } from './utils';
 import { ITextStyle, ISelectionInputStyle, IQuestionStyle, IPageStyle, IPanelStyle } from './style/types';
 import { FlatRepository } from './flat_layout/flat_repository';
@@ -296,8 +296,8 @@ export class SurveyPDF extends SurveyModel {
         this.clearStyles();
     }
 
-    private _layout: ILayout;
-    public get layout(): ILayout {
+    private _layout: IDocLayout;
+    public get layout(): IDocLayout {
         return this._layout || CompactLayout;
     }
 
@@ -307,7 +307,7 @@ export class SurveyPDF extends SurveyModel {
      * A layout defines non-color CSS variables, including spacing, sizing, typography, border radius, and other dimensional variables. To configure colors and shadows, use the [`applyTheme`](#applyTheme) method.
      * @param layout An `IDocLayout` object that specifies layout variables.
      */
-    public applyLayout(layout: ILayout): void {
+    public applyLayout(layout: IDocLayout): void {
         this._layout = SurveyHelper.mergeObjects({}, this.layout, layout);
         this.clearStyles();
     }
