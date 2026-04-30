@@ -1,5 +1,4 @@
 
-import DefaultLight from './default-light';
-import SpaciousLight from './spacious-light';
-export { DefaultLight, SpaciousLight };
-export default { DefaultLight, SpaciousLight };
+import MonochromeLight from './monochrome-light';
+export { MonochromeLight };
+export default { MonochromeLight };

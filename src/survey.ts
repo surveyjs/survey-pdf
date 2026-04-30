@@ -9,8 +9,10 @@ import { DrawCanvas } from './event_handler/draw_canvas';
 import { AdornersOptions, AdornersPanelOptions, AdornersPageOptions } from './event_handler/adorners';
 import { SurveyHelper } from './helper_survey';
 import { IDocStyle } from './style/types';
-import { createStyleFromTheme, getDefaultStyleFromTheme } from './style';
-import DefaultLight from './themes/default-light';
+import { createStyleFromTheme, getDefaultStyle } from './style';
+import MonochromeLight from './themes/monochrome-light';
+import CompactLayout from './layout_configs/compact';
+import { IDocLayout } from './layout_configs/types';
 import { parseSideValues } from './utils';
 import { ITextStyle, ISelectionInputStyle, IQuestionStyle, IPageStyle, IPanelStyle } from './style/types';
 import { FlatRepository } from './flat_layout/flat_repository';
@@ -33,7 +35,7 @@ export class SurveyPDF extends SurveyModel {
             this.questionsOnPageMode = 'standard';
         }
         this.options = SurveyHelper.clone(options);
-        this.applyTheme(DefaultLight);
+        this.applyTheme(MonochromeLight);
     }
     public get haveCommercialLicense(): boolean {
         const f = hasLicense;
@@ -256,12 +258,16 @@ export class SurveyPDF extends SurveyModel {
      */
     public get style(): IDocStyle {
         if(!this.styleValue) {
-            this.styleValue = getDefaultStyleFromTheme(this.theme);
+            this.styleValue = getDefaultStyle(this.theme, this.layout);
         }
         return this.styleValue;
     }
+    private clearStyles() {
+        this.styleValue = undefined;
+        this.stylesHash = {};
+    }
     /**
-     * Applies a visual style to UI elements in an exported PDF document.
+     * Applies a visual style to UI elements in the exported PDF document.
      *
      * This method accepts either an [`IDocStyle`](https://surveyjs.io/pdf-generator/documentation/api-reference/IDocStyle) object that overrides properties in the default visual style, or a callback function that returns such an object. When a callback is used, it receives helper functions&mdash;`getSizeVariable(name)` and `getColorVariable(name)`&mdash;which allow you to derive dimensions and colors from the currently applied UI theme.
      *
@@ -270,22 +276,44 @@ export class SurveyPDF extends SurveyModel {
      */
     public applyStyle(value: IDocStyle | ((options: { getColorVariable: (name: string) => string, getSizeVariable: (name: string) => number }) => IDocStyle)): void {
         if(typeof value == 'function') {
-            this.styleValue = SurveyHelper.mergeObjects({}, this.style, createStyleFromTheme(this.theme, value));
+            this.styleValue = SurveyHelper.mergeObjects({}, this.style, createStyleFromTheme(this.theme, this.layout, value));
         } else {
             this.styleValue = SurveyHelper.mergeObjects({}, this.style, value);
         }
     }
     private _theme: ITheme;
     public get theme(): ITheme {
-        return this._theme || DefaultLight;
+        return this._theme || MonochromeLight;
     }
+    /**
+     * Applies a UI theme to the exported PDF document.
+     *
+     * A theme defines color- and shadow-related CSS variables. To configure spacing, sizing, typography, and other non-color variables, use the [`applyLayout`](#applyLayout) method.
+     * @param theme An [`ITheme`](https://surveyjs.io/form-library/documentation/api-reference/itheme) object.
+     */
     public applyTheme(theme: ITheme): void {
         this._theme = SurveyHelper.mergeObjects({}, this.theme, theme);
-        this.styleValue = undefined;
-        this.stylesHash = {};
+        this.clearStyles();
     }
+
+    private _layout: IDocLayout;
+    public get layout(): IDocLayout {
+        return this._layout || CompactLayout;
+    }
+
+    /**
+     * Applies a layout configuration to the exported PDF document.
+     *
+     * A layout defines non-color CSS variables, including spacing, sizing, typography, border radius, and other dimensional variables. To configure colors and shadows, use the [`applyTheme`](#applyTheme) method.
+     * @param layout An `IDocLayout` object that specifies layout variables.
+     */
+    public applyLayout(layout: IDocLayout): void {
+        this._layout = SurveyHelper.mergeObjects({}, this.layout, layout);
+        this.clearStyles();
+    }
+
     public getItemStyle(question: Question, item: ItemValue, style: { choiceText: ITextStyle, input: ISelectionInputStyle }): { choiceText: ITextStyle, input: ISelectionInputStyle } {
-        return createStyleFromTheme(this.theme, (options) => {
+        return createStyleFromTheme(this.theme, this.layout, (options) => {
             const eventOptions = {
                 getColorVariable: options.getColorVariable,
                 getSizeVariable: options.getSizeVariable,
@@ -310,7 +338,7 @@ export class SurveyPDF extends SurveyModel {
             types.forEach(type => {
                 SurveyHelper.mergeObjects(res, (style as any)[type] ?? {});
             });
-            this.stylesHash[uniqueId] = createStyleFromTheme(this.theme, (options) => {
+            this.stylesHash[uniqueId] = createStyleFromTheme(this.theme, this.layout, (options) => {
                 const eventOptions = {
                     getColorVariable: options.getColorVariable,
                     getSizeVariable: options.getSizeVariable,

@@ -1,8 +1,10 @@
 import { SurveyPDF } from '../src/survey';
 import { ITheme, PanelModel } from 'survey-core';
-import DefaultLight from '../src/themes/default-light';
+import MonochromeLight from '../src/themes/monochrome-light';
+import CompactLayout from '../src/layout_configs/compact';
 import { FlatCheckbox } from '../src/flat_layout/flat_checkbox';
 import { DocController } from '../src/doc_controller';
+import { IDocLayout } from '../src/layout_configs/types';
 test('onGetQuestionStyle is fired and can modify question style', () => {
     const survey = new SurveyPDF({
         pages: [
@@ -15,11 +17,13 @@ test('onGetQuestionStyle is fired and can modify question style', () => {
         ]
     });
 
-    const theme: ITheme = { ...DefaultLight };
-    theme.cssVariables = { ...DefaultLight.cssVariables };
-    theme.cssVariables['--test-size-variable'] = '80px';
+    const theme: ITheme = { ...MonochromeLight };
+    theme.cssVariables = { ...MonochromeLight.cssVariables };
     theme.cssVariables['--test-color-variable'] = 'rgba(237, 231, 225, 0.1)';
     survey.applyTheme(theme);
+    const layout: IDocLayout = { ...CompactLayout };
+    layout['--test-size-variable'] = '80px';
+    survey.applyLayout(layout);
     survey.onGetQuestionStyle.add((_, options) => {
         options.style.title.fontColor = options.getColorVariable('--test-color-variable');
         options.style.title.fontSize = options.getSizeVariable('--test-size-variable');
@@ -52,11 +56,13 @@ test('onGetPanelStyle is fired and can modify panel style', () => {
         ]
     });
 
-    const theme: ITheme = { ...DefaultLight };
-    theme.cssVariables = { ...DefaultLight.cssVariables };
-    theme.cssVariables['--test-size-variable'] = '80px';
+    const theme: ITheme = { ...MonochromeLight };
+    theme.cssVariables = { ...MonochromeLight.cssVariables };
     theme.cssVariables['--test-color-variable'] = 'rgba(237, 231, 225, 0.1)';
     survey.applyTheme(theme);
+    const layout: IDocLayout = { ...CompactLayout };
+    layout['--test-size-variable'] = '80px';
+    survey.applyLayout(layout);
     survey.onGetPanelStyle.add((_, options) => {
         options.style.title.fontColor = options.getColorVariable('--test-color-variable');
         options.style.title.fontSize = options.getSizeVariable('--test-size-variable');
@@ -82,11 +88,13 @@ test('onGetPageStyle is fired and can modify page style', () => {
             }
         ]
     });
-    const theme: ITheme = { ...DefaultLight };
-    theme.cssVariables = { ...DefaultLight.cssVariables };
-    theme.cssVariables['--test-size-variable'] = '80px';
+    const theme: ITheme = { ...MonochromeLight };
+    theme.cssVariables = { ...MonochromeLight.cssVariables };
     theme.cssVariables['--test-color-variable'] = 'rgba(237, 231, 225, 0.1)';
     survey.applyTheme(theme);
+    const layout: IDocLayout = { ...CompactLayout };
+    layout['--test-size-variable'] = '80px';
+    survey.applyLayout(layout);
     survey.onGetPageStyle.add((_, options) => {
         options.style.title.fontColor = options.getColorVariable('--test-color-variable');
         options.style.title.fontSize = options.getSizeVariable('--test-size-variable');
@@ -121,11 +129,13 @@ test('onGetItemStyle is fired and can modify item style', () => {
             }
         ]
     });
-    const theme: ITheme = { ...DefaultLight };
-    theme.cssVariables = { ...DefaultLight.cssVariables };
-    theme.cssVariables['--test-size-variable'] = '80px';
+    const theme: ITheme = { ...MonochromeLight };
+    theme.cssVariables = { ...MonochromeLight.cssVariables };
     theme.cssVariables['--test-color-variable'] = 'rgba(237, 231, 225, 0.1)';
     survey.applyTheme(theme);
+    const layout: IDocLayout = { ...CompactLayout };
+    layout['--test-size-variable'] = '80px';
+    survey.applyLayout(layout);
     survey.onGetItemStyle.add((_, options) => {
         if(options.item.value == 'a') {
             options.style.choiceText.fontColor = options.getColorVariable('--test-color-variable');
