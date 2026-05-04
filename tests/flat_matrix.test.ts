@@ -101,7 +101,13 @@ test('Matrix simple hidden header', async () => {
     }, {
         snapshotName: 'matrix_hidden_header',
         controllerOptions: {
-            format: [400, 297.0]
+            format: [400, 297.0],
+            margins: {
+                left: 10.0,
+                right: 10.0,
+                top: 10.0,
+                bot: 10.0
+            }
         }
     });
 });
@@ -184,7 +190,13 @@ test('Matrix simple check matrixRenderAs list', async () => {
     }, {
         snapshotName: 'matrix_render_as_list',
         controllerOptions: {
-            matrixRenderAs: 'list'
+            matrixRenderAs: 'list',
+            margins: {
+                left: 10.0,
+                right: 10.0,
+                top: 10.0,
+                bot: 10.0
+            }
         }
     });
 });
@@ -209,7 +221,13 @@ test('Matrix check rowTitleWidth', async () => {
     await checkFlatSnapshot(json, {
         snapshotName: 'matrix_row_title_width_40',
         controllerOptions: {
-            fontSize: 14
+            fontSize: 14,
+            margins: {
+                left: 10.0,
+                right: 10.0,
+                top: 10.0,
+                bot: 10.0
+            }
         }
     });
     await checkFlatSnapshot(json, {
@@ -218,7 +236,13 @@ test('Matrix check rowTitleWidth', async () => {
             survey.getAllQuestions()[0].rowTitleWidth = '50px';
         },
         controllerOptions: {
-            fontSize: 14
+            fontSize: 14,
+            margins: {
+                left: 10.0,
+                right: 10.0,
+                top: 10.0,
+                bot: 10.0
+            }
         } });
 });
 
@@ -263,10 +287,20 @@ test('Check matrix with cellType: checkbox', async() => {
     };
 
     await checkFlatSnapshot(json, { snapshotName: 'matrix_checkbox', controllerOptions: {
-        fontSize: 11
+        margins: {
+            left: 10.0,
+            right: 10.0,
+            top: 10.0,
+            bot: 10.0
+        }
     }, ...options });
     await checkFlatSnapshot(json, { snapshotName: 'matrix_checkbox_list', controllerOptions: {
-        fontSize: 11,
-        matrixRenderAs: 'list'
+        matrixRenderAs: 'list',
+        margins: {
+            left: 10.0,
+            right: 10.0,
+            top: 10.0,
+            bot: 10.0
+        }
     }, ...options });
 });

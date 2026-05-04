@@ -1,6 +1,6 @@
 import { EventBase, MutlipleTextErrorRow, MutlipleTextRow, PanelModel, QuestionMultipleTextModel } from 'survey-core';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
-import { DocController, IDocOptions } from '../src/doc_controller';
+import { IDocOptions } from '../src/doc_controller';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { SurveyPDFTester, TestHelper } from '../src/helper_test';
 import { SurveyPDF } from '../src/survey';
@@ -177,7 +177,6 @@ export async function checkFlatSnapshot(surveyJSON: any, snapshotOptions: IFlatS
     const survey = new SurveyPDF(surveyJSON, snapshotOptions.controllerOptions ?? TestHelper.defaultOptions);
     snapshotOptions.onSurveyCreated && snapshotOptions.onSurveyCreated(survey);
     correctSurveyElementIds(survey);
-    const controller = new DocController(snapshotOptions.controllerOptions ?? TestHelper.defaultOptions);
     const compareCallback = (bricks: Array<Array<IPdfBrick>> | Array<IPdfBrick>) => {
         const allowedPropertiesHash = Object.assign({}, globalAllowedPropertiesHash, snapshotOptions.allowedPropertiesHash ?? {}) as PropertiesHash;
         const actual = JSON.parse(JSON.stringify(processBricks(bricks, allowedPropertiesHash), null, '\t'));
@@ -204,7 +203,7 @@ export async function checkFlatSnapshot(surveyJSON: any, snapshotOptions: IFlatS
             }
         });
     }
-    const res = await new FlatSurvey(survey, controller, survey.style.survey).generateFlats();
+    const res = await new FlatSurvey(survey, survey.docController, survey.style.survey).generateFlats();
     if(snapshotOptions.eventName == 'onRenderSurvey') {
         compareCallback(res);
 

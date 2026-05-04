@@ -235,10 +235,9 @@ export interface IDocOptions {
 
 export class DocOptions implements IDocOptions {
     public static readonly MM_TO_PT = 72 / 25.4;
-    public static readonly FONT_SIZE = 8 * 72.0 / 96.0; //px to pt
     protected _orientation: 'l' | 'p';
     protected _format: string | number[];
-    protected _fontSize: number;
+    protected _fontSize: number = 6;
     protected _htmlToImageQuality: number;
     protected _fontName: string;
     public static SEGOE_NORMAL: string;
@@ -269,7 +268,6 @@ export class DocOptions implements IDocOptions {
         if (Array.isArray(this._format)) {
             this._format = this._format.map(f => f * DocOptions.MM_TO_PT);
         }
-        this._fontSize = options.fontSize || DocOptions.FONT_SIZE;
         if(!options.fontName) {
             if(!DocOptions.SEGOE_BOLD && !DocOptions.SEGOE_NORMAL) {
                 this._fontName = 'helvetica';
@@ -292,24 +290,6 @@ export class DocOptions implements IDocOptions {
             this._base64Bold = DocOptions.SEGOE_BOLD;
         }
         this._margins = SurveyHelper.clone(options.margins);
-        if (typeof this._margins === 'undefined') {
-            this._margins = {};
-        }
-        if (typeof this._margins.top === 'undefined') {
-            this._margins.top = 10.0;
-        }
-        if (typeof this._margins.bot === 'undefined') {
-            this._margins.bot = 10.0;
-        }
-        if (typeof this._margins.left === 'undefined') {
-            this._margins.left = 10.0;
-        }
-        if (typeof this._margins.right === 'undefined') {
-            this._margins.right = 10.0;
-        }
-        Object.keys(this._margins).forEach((name: string) => {
-            (<any>this._margins)[name] = (<any>this._margins)[name] * DocOptions.MM_TO_PT;
-        });
         this._htmlRenderAs = options.htmlRenderAs || 'auto';
         this._matrixRenderAs = options.matrixRenderAs || 'auto';
         this._readonlyRenderAs = options.readonlyRenderAs || 'auto';

@@ -28,7 +28,13 @@ test('Check other checkbox place ', async () => {
     await checkFlatSnapshot(json, {
         snapshotName: 'checkbox_other',
         controllerOptions: {
-            format: [40.0, 297.0]
+            format: [40.0, 297.0],
+            margins: {
+                left: 10.0,
+                right: 10.0,
+                top: 10.0,
+                bot: 10.0
+            }
         }
     });
 });
@@ -47,7 +53,12 @@ test('Check checkbox with colCount 4 with small font size 12', async () => {
     await checkFlatSnapshot(json, {
         snapshotName: 'checkbox_colCount_4_font_size_12',
         controllerOptions: {
-            fontSize: 12
+            margins: {
+                left: 10.0,
+                right: 10.0,
+                top: 10.0,
+                bot: 10.0
+            }
         }
     });
 });
@@ -82,7 +93,13 @@ test('Check checkbox with colCount 0 with big font size 30', async () => {
     await checkFlatSnapshot(json, {
         snapshotName: 'checkbox_colCount_0_font_size_30',
         controllerOptions: {
-            format: [210.0 + new DocController(TestHelper.defaultOptions).unitWidth / DocOptions.MM_TO_PT, 297.0]
+            format: [210.0 + new DocController(TestHelper.defaultOptions).unitWidth / DocOptions.MM_TO_PT, 297.0],
+            margins: {
+                left: 10.0,
+                right: 10.0,
+                top: 10.0,
+                bot: 10.0
+            }
         }
     });
 });
@@ -101,7 +118,12 @@ test('Check checkbox with colCount 0 with small font size 12', async () => {
     await checkFlatSnapshot(json, {
         snapshotName: 'checkbox_colCount_0_font_size_12',
         controllerOptions: {
-            fontSize: 12
+            margins: {
+                left: 10.0,
+                right: 10.0,
+                top: 10.0,
+                bot: 10.0
+            }
         }
     });
 });
@@ -136,7 +158,13 @@ test('Tagbox: print selected choices', async () => {
     await checkFlatSnapshot(json, {
         snapshotName: 'tagbox_selected_choices',
         controllerOptions: {
-            tagboxSelectedChoicesOnly: true
+            tagboxSelectedChoicesOnly: true,
+            margins: {
+                left: 10.0,
+                right: 10.0,
+                top: 10.0,
+                bot: 10.0
+            }
         }
     });
 });
@@ -162,7 +190,7 @@ test('Check columns 5 with itemFlowDirection', async() => {
                 ]
             }
         ]
-    }, { snapshotName: 'checkbox-col-count-5-row-flow', controllerOptions: { fontSize: 10 } });
+    }, { snapshotName: 'checkbox-col-count-5-row-flow' });
     settings.itemFlowDirection = oldItemFlowDirection;
 });
 
@@ -187,7 +215,7 @@ test('Check columns 5 with itemFlowDirection:row', async() => {
                 ]
             }
         ]
-    }, { snapshotName: 'checkbox-col-count-5-column-flow', controllerOptions: { fontSize: 10 } });
+    }, { snapshotName: 'checkbox-col-count-5-column-flow' });
     settings.itemFlowDirection = oldItemFlowDirection;
 });
 
@@ -212,7 +240,7 @@ test('Check columns 4 with itemFlowDirection', async() => {
                 ]
             }
         ]
-    }, { snapshotName: 'checkbox-col-count-4-row-flow', controllerOptions: { fontSize: 10 } });
+    }, { snapshotName: 'checkbox-col-count-4-row-flow' });
     settings.itemFlowDirection = oldItemFlowDirection;
 });
 
@@ -237,7 +265,7 @@ test('Check columns 4 with itemFlowDirection:row', async() => {
                 ]
             }
         ]
-    }, { snapshotName: 'checkbox-col-count-4-column-flow', controllerOptions: { fontSize: 10 } });
+    }, { snapshotName: 'checkbox-col-count-4-column-flow' });
     settings.itemFlowDirection = oldItemFlowDirection;
 });
 

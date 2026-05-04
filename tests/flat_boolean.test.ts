@@ -23,7 +23,13 @@ test('Check boolean undefined', async () => {
     await checkFlatSnapshot(json, {
         snapshotName: 'boolean_legacy_undefined',
         controllerOptions: {
-            useLegacyBooleanRendering: true
+            useLegacyBooleanRendering: true,
+            margins: {
+                left: 10.0,
+                right: 10.0,
+                top: 10.0,
+                bot: 10.0
+            }
         }
     });
 });
@@ -43,7 +49,13 @@ test('Check boolean true', async () => {
     await checkFlatSnapshot(json, {
         snapshotName: 'boolean_legacy_true',
         controllerOptions: {
-            useLegacyBooleanRendering: true
+            useLegacyBooleanRendering: true,
+            margins: {
+                left: 10.0,
+                right: 10.0,
+                top: 10.0,
+                bot: 10.0
+            }
         }
     });
 });
@@ -63,7 +75,13 @@ test('Check boolean false', async () => {
     await checkFlatSnapshot(json, {
         snapshotName: 'boolean_legacy_false',
         controllerOptions: {
-            useLegacyBooleanRendering: true
+            useLegacyBooleanRendering: true,
+            margins: {
+                left: 10.0,
+                right: 10.0,
+                top: 10.0,
+                bot: 10.0
+            }
         }
     });
 });
