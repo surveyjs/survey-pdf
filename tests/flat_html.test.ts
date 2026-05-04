@@ -3,7 +3,7 @@
 };
 
 import { checkFlatSnapshot } from './snapshot_helper';
-import { Question, QuestionHtmlModel } from 'survey-core';
+import { QuestionHtmlModel } from 'survey-core';
 import { SurveyPDF } from '../src/survey';
 import { IPoint, IRect, DocController, IDocOptions } from '../src/doc_controller';
 import { FlatHTML } from '../src/flat_layout/flat_html';
@@ -21,7 +21,7 @@ SurveyHelper.createHTMLFlat = async function(
     });
 };
 SurveyHelper.htmlToImage = async function(_: string, width: number):
-        Promise<{ url: string, aspect: number }> {
+Promise<{ url: string, aspect: number }> {
     return await new Promise((resolve) => {
         resolve({ url: 'data:,', aspect: width / SurveyHelper.EPSILON });
     });
@@ -64,6 +64,12 @@ test('Check createHTMLRect method with long html', async () => {
     const options: IDocOptions = TestHelper.defaultOptions;
     options.htmlRenderAs = 'standard';
     options.format = [150, 100];
+    options.margins = {
+        top: 10 * 72 / 25.4,
+        bot: 10 * 72 / 25.4,
+        left: 10 * 72 / 25.4,
+        right: 10 * 72 / 25.4
+    };
     const controller: DocController = new DocController(options);
     const descPoint: IPoint = controller.leftTopPoint;
     const margins: any = { top: controller.margins.top, bottom: controller.margins.bot, width: controller.unitWidth };

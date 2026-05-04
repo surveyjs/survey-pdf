@@ -267,3 +267,57 @@ test('check applyStyle method', async () => {
     expect((survey.style as any).test).toBe('testValue');
     expect((survey.style as any).test2).toBe('testValue2');
 });
+
+test('check fontSize is changing css variables', async() => {
+    let survey = new SurveyPDF({}, { fontSize: 28 });
+    let layout = survey.layout;
+    //2x scale
+    expect(layout['--sjs2-base-unit-size']).toBe('16px');
+    expect(layout['--sjs2-base-unit-radius']).toBe('16px');
+    expect(layout['--sjs2-base-unit-border-width']).toBe('2px');
+    expect(layout['--sjs2-base-unit-font-size']).toBe('16px');
+    expect(layout['--sjs2-base-unit-line-height']).toBe('16px');
+
+    survey = new SurveyPDF({}, { fontSize: 7 });
+    layout = survey.layout;
+    //0.5x scale
+    expect(layout['--sjs2-base-unit-size']).toBe('4px');
+    expect(layout['--sjs2-base-unit-radius']).toBe('4px');
+    expect(layout['--sjs2-base-unit-border-width']).toBe('0.5px');
+    expect(layout['--sjs2-base-unit-font-size']).toBe('4px');
+    expect(layout['--sjs2-base-unit-line-height']).toBe('4px');
+
+    survey = new SurveyPDF({});
+    layout = survey.layout;
+    //default
+    expect(layout['--sjs2-base-unit-size']).toBe('8px');
+    expect(layout['--sjs2-base-unit-radius']).toBe('8px');
+    expect(layout['--sjs2-base-unit-border-width']).toBe('1px');
+    expect(layout['--sjs2-base-unit-font-size']).toBe('8px');
+    expect(layout['--sjs2-base-unit-line-height']).toBe('8px');
+
+    survey = new SurveyPDF({}, { fontSize: 14 });
+    layout = survey.layout;
+    //1x scale
+    expect(layout['--sjs2-base-unit-size']).toBe('8px');
+    expect(layout['--sjs2-base-unit-radius']).toBe('8px');
+    expect(layout['--sjs2-base-unit-border-width']).toBe('1px');
+    expect(layout['--sjs2-base-unit-font-size']).toBe('8px');
+    expect(layout['--sjs2-base-unit-line-height']).toBe('8px');
+});
+
+test('check margins are changing css variables', async() => {
+    let survey = new SurveyPDF({}, { margins: { top: 10, left: 28, bot: 40, right: 50 } });
+    let layout = survey.layout;
+    expect(layout['--sjs2-pdf-layout-page-padding-top']).toBe(`${96.0 / 25.4 * 10}px`);
+    expect(layout['--sjs2-pdf-layout-page-padding-left']).toBe(`${96.0 / 25.4 * 28}px`);
+    expect(layout['--sjs2-pdf-layout-page-padding-bottom']).toBe(`${96.0 / 25.4 * 40}px`);
+    expect(layout['--sjs2-pdf-layout-page-padding-right']).toBe(`${96.0 / 25.4 * 50}px`);
+
+    survey = new SurveyPDF({}, { margins: { top: 15, left: 16, bot: 12, right: 63 } });
+    layout = survey.layout;
+    expect(layout['--sjs2-pdf-layout-page-padding-top']).toBe(`${96.0 / 25.4 * 15}px`);
+    expect(layout['--sjs2-pdf-layout-page-padding-left']).toBe(`${96.0 / 25.4 * 16}px`);
+    expect(layout['--sjs2-pdf-layout-page-padding-bottom']).toBe(`${96.0 / 25.4 * 12}px`);
+    expect(layout['--sjs2-pdf-layout-page-padding-right']).toBe(`${96.0 / 25.4 * 63}px`);
+});

@@ -71,8 +71,13 @@ test('Check rating many elements', async () => {
     await checkFlatSnapshot(json, {
         snapshotName: 'rating_many_elements',
         controllerOptions: {
-            format: [50, 297.0
-            ]
+            format: [50, 297.0],
+            margins: {
+                left: 10.0,
+                right: 10.0,
+                top: 10.0,
+                bot: 10.0
+            }
         }
     });
 });
@@ -96,7 +101,13 @@ test('Check rating two elements with long min rate description', async () => {
         snapshotName: 'rating_with_long_min_rate_description',
         controllerOptions: {
             format: [TestHelper.defaultOptions.margins.left + dummyController.unitWidth / DocOptions.MM_TO_PT +
-        TestHelper.defaultOptions.margins.right + longRateDesc, 297.0]
+        TestHelper.defaultOptions.margins.right + longRateDesc, 297.0],
+            margins: {
+                left: 10.0,
+                right: 10.0,
+                top: 10.0,
+                bot: 10.0
+            }
         }
     });
 });
@@ -129,9 +140,8 @@ test('Check rating getRows method', async () => {
         ]
     };
     const survey = new SurveyPDF(json);
-    const controller = new DocController(TestHelper.defaultOptions);
     const question = survey.getAllQuestions()[0] as QuestionRatingModel;
-    const flat = new FlatRating(survey, question, controller, { spacing: { choiceColumnGap: 15 }, choiceMinWidth: 18 });
+    const flat = new FlatRating(survey, question, survey.docController, { spacing: { choiceColumnGap: 15 }, choiceMinWidth: 18 });
     let getRows = flat['getRows'].bind(flat);
     let rows = getRows();
     expect(rows.length).toBe(1);
