@@ -1,7 +1,7 @@
 (<any>window)['HTMLCanvasElement'].prototype.getContext = async () => {
     return {};
 };
-
+import { test, expect } from 'vitest';
 import { QuestionRatingModel } from 'survey-core';
 import { SurveyPDF } from '../src/survey';
 import { IRect, DocOptions, IDocOptions, DocController, ISize, IPoint } from '../src/doc_controller';
@@ -63,8 +63,8 @@ test('Check rating two elements with min rate description', async () => {
         xLeft: controller.leftTopPoint.xLeft,
         xRight: controller.leftTopPoint.xLeft +
             SurveyHelper.getRatingMinWidth(controller) + controller.measureText(
-                SurveyHelper.getRatingItemText(question, 0, question.visibleRateValues[0].locText),
-                'bold').width + controller.unitHeight,
+            SurveyHelper.getRatingItemText(question, 0, question.visibleRateValues[0].locText),
+            'bold').width + controller.unitHeight,
         yTop: controller.leftTopPoint.yTop,
         yBot: controller.leftTopPoint.yTop +
             controller.unitHeight * SurveyHelper.RATING_MIN_HEIGHT
@@ -93,8 +93,8 @@ test('Check rating two elements with max rate description', async () => {
         xLeft: controller.leftTopPoint.xLeft + controller.unitWidth,
         xRight: controller.leftTopPoint.xLeft + controller.unitWidth +
             SurveyHelper.getRatingMinWidth(controller) + controller.measureText(
-                SurveyHelper.getRatingItemText(question, 1,
-                    question.visibleRateValues[0].locText), 'bold').width +
+            SurveyHelper.getRatingItemText(question, 1,
+                question.visibleRateValues[0].locText), 'bold').width +
             controller.unitHeight,
         yTop: controller.leftTopPoint.yTop,
         yBot: controller.leftTopPoint.yTop +

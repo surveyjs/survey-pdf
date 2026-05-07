@@ -1,6 +1,7 @@
 (<any>window)['HTMLCanvasElement'].prototype.getContext = () => {
     return {};
 };
+import { test, vitest } from 'vitest';
 import { SurveyPDF } from '../src/survey';
 import { DocController } from '../src/doc_controller';
 import { FlatTextbox } from '../src/flat_layout/flat_textbox';
@@ -9,11 +10,11 @@ const __dummy_tb = new FlatTextbox(null, null, null);
 
 test('Check html render in question description', async () => {
     const descriptor: any = Object.getOwnPropertyDescriptor(window, 'frames');
-    jest.spyOn(window, 'frames', 'get').mockImplementation(() => {
+    const mockRandom = vitest.spyOn(Math, 'random').mockReturnValue(1);
+    const mockDate = vitest.spyOn(Date, 'now').mockReturnValue(1);
+    vitest.spyOn(window, 'frames', 'get').mockImplementation(() => {
         const frames = descriptor?.get();
-        Object.keys(frames).filter(key => key.includes('jsPDFhtmlText')).forEach(key => {
-            Object.defineProperty(frames[key].Element.prototype, 'clientWidth', { value: 100 });
-        });
+        Object.defineProperty(frames['jsPDFhtmlText11000'].Element.prototype, 'clientWidth', { value: 100 });
         return frames;
     });
     const json: any = {
@@ -30,4 +31,6 @@ test('Check html render in question description', async () => {
     });
     const controller: DocController = new DocController(TestHelper.defaultOptions);
     await survey['renderSurvey'](controller);
+    mockRandom.mockRestore();
+    mockDate.mockRestore();
 });

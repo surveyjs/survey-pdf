@@ -1,7 +1,7 @@
 (<any>window)['HTMLCanvasElement'].prototype.getContext = async () => {
     return {};
 };
-
+import { test, expect } from 'vitest';
 import { Question } from 'survey-core';
 import { SurveyPDF } from '../src/survey';
 import { IPoint, IRect, IDocOptions, DocController } from '../src/doc_controller';

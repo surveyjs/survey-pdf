@@ -1,29 +1,35 @@
 import { PDFFormFiller } from '../src/pdf_forms/forms';
 import FormMap from '../src/pdf_forms/map';
+import { test, expect, vitest, describe, beforeEach } from 'vitest';
 
 // Mock URL.createObjectURL
 const mockBlobUrl = 'blob:mock-url-123';
 (global as any).URL = {
-    createObjectURL: jest.fn().mockReturnValue(mockBlobUrl),
-    revokeObjectURL: jest.fn()
+    createObjectURL: vitest.fn().mockReturnValue(mockBlobUrl),
+    revokeObjectURL: vitest.fn()
 };
 
 // Mock document methods
-const mockClick = jest.fn();
+const mockClick = vitest.fn();
 const mockLink = {
     href: '',
     download: '',
     click: mockClick
 };
-document.createElement = jest.fn().mockReturnValue(mockLink);
-document.body.appendChild = jest.fn();
-document.body.removeChild = jest.fn();
+document.createElement = vitest.fn().mockReturnValue(mockLink);
+document.body.appendChild = vitest.fn();
+document.body.removeChild = vitest.fn();
 
 // Mock fs.writeFile for Node.js tests
-const mockWriteFile = jest.fn();
-jest.mock('fs', () => ({
-    writeFile: (path: string, data: any, callback: (err: Error | null) => void) => mockWriteFile(path, data, callback)
-}));
+const mockWriteFile = vitest.fn();
+vitest.mock(import('fs'), async (importOriginal) => {
+    const actual = await importOriginal();
+    const writeFileMock = (path: string, data: any, callback: (err: Error | null) => void) => mockWriteFile(path, data, callback);
+    return {
+        ...actual,
+        default: { ...actual.default, writeFile: writeFileMock as any },
+        writeFile: writeFileMock
+    } as any; });
 
 // Import Node.js version of PDFFormFiller
 import { PDFFormFiller as NodePDFFormFiller } from '../src/pdf_forms/forms-node';
@@ -34,7 +40,7 @@ test('Check constructor with no options', async () => {
     formFiller.fieldMap = {};
     formFiller.data = {};
     formFiller.pdfTemplate = 'test-template';
-    const mockGetPDFBytes = jest.spyOn(formFiller as any, 'getPDFBytes').mockResolvedValue(mockPDFBytes);
+    const mockGetPDFBytes = vitest.spyOn(formFiller as any, 'getPDFBytes').mockResolvedValue(mockPDFBytes);
 
     const result = await formFiller.raw();
     expect(result).toBe(mockPDFBytes);
@@ -49,7 +55,7 @@ test('Check raw method returns PDF bytes when no type specified', async () => {
         pdfTemplate: 'test-template',
         pdfLibraryAdapter: null as any
     });
-    const mockGetPDFBytes = jest.spyOn(formFiller as any, 'getPDFBytes').mockResolvedValue(mockPDFBytes);
+    const mockGetPDFBytes = vitest.spyOn(formFiller as any, 'getPDFBytes').mockResolvedValue(mockPDFBytes);
 
     const result = await formFiller.raw();
     expect(result).toBe(mockPDFBytes);
@@ -64,7 +70,7 @@ test('Check raw method returns blob when type is "blob"', async () => {
         pdfTemplate: 'test-template',
         pdfLibraryAdapter: null as any
     });
-    const mockGetPDFBytes = jest.spyOn(formFiller as any, 'getPDFBytes').mockResolvedValue(mockPDFBytes);
+    const mockGetPDFBytes = vitest.spyOn(formFiller as any, 'getPDFBytes').mockResolvedValue(mockPDFBytes);
 
     const result = await formFiller.raw('blob');
     expect(result).toBeInstanceOf(Blob);
@@ -80,7 +86,7 @@ test('Check raw method returns blob URL when type is "bloburl"', async () => {
         pdfTemplate: 'test-template',
         pdfLibraryAdapter: null as any
     });
-    const mockGetPDFBytes = jest.spyOn(formFiller as any, 'getPDFBytes').mockResolvedValue(mockPDFBytes);
+    const mockGetPDFBytes = vitest.spyOn(formFiller as any, 'getPDFBytes').mockResolvedValue(mockPDFBytes);
 
     const result = await formFiller.raw('bloburl');
     expect(typeof result).toBe('string');
@@ -97,7 +103,7 @@ test('Check raw method returns data URL string when type is "dataurlstring"', as
         pdfTemplate: 'test-template',
         pdfLibraryAdapter: null as any
     });
-    const mockGetPDFBytes = jest.spyOn(formFiller as any, 'getPDFBytes').mockResolvedValue(mockPDFBytes);
+    const mockGetPDFBytes = vitest.spyOn(formFiller as any, 'getPDFBytes').mockResolvedValue(mockPDFBytes);
 
     const result = await formFiller.raw('dataurlstring');
     expect(typeof result).toBe('string');
@@ -116,7 +122,7 @@ test('Check raw method chunks data when building dataurlstring', async () => {
         pdfTemplate: 'test-template',
         pdfLibraryAdapter: null as any
     });
-    jest.spyOn(formFiller as any, 'getPDFBytes').mockResolvedValue(mockPDFBytes);
+    vitest.spyOn(formFiller as any, 'getPDFBytes').mockResolvedValue(mockPDFBytes);
 
     const result = await formFiller.raw('dataurlstring');
 
@@ -140,7 +146,7 @@ test('Check raw method handles errors from getPDFBytes', async () => {
         pdfTemplate: 'test-template',
         pdfLibraryAdapter: null as any
     });
-    const mockGetPDFBytes = jest.spyOn(formFiller as any, 'getPDFBytes').mockRejectedValue(new Error('PDF generation failed'));
+    const mockGetPDFBytes = vitest.spyOn(formFiller as any, 'getPDFBytes').mockRejectedValue(new Error('PDF generation failed'));
 
     await expect(formFiller.raw()).rejects.toThrow('PDF generation failed');
 });
@@ -162,14 +168,14 @@ test('Check getPDFBytes maps data correctly', async () => {
     };
 
     // Mock FormMap
-    const mockMapData = jest.spyOn(FormMap.prototype, 'mapData').mockReturnValue({
+    const mockMapData = vitest.spyOn(FormMap.prototype, 'mapData').mockReturnValue({
         field1: 'answer1',
         field2: 'value1'
     });
 
     // Mock adapter
     const mockAdapter = {
-        fillForm: jest.fn().mockResolvedValue(mockPDFBytes)
+        fillForm: vitest.fn().mockResolvedValue(mockPDFBytes)
     };
 
     const formFiller = new PDFFormFiller({
@@ -197,7 +203,7 @@ test('Check save method downloads PDF with default filename', async () => {
         pdfTemplate: 'test-template',
         pdfLibraryAdapter: null as any
     });
-    const mockGetPDFBytes = jest.spyOn(formFiller as any, 'getPDFBytes').mockResolvedValue(mockPDFBytes);
+    const mockGetPDFBytes = vitest.spyOn(formFiller as any, 'getPDFBytes').mockResolvedValue(mockPDFBytes);
 
     await formFiller.save();
 
@@ -220,7 +226,7 @@ test('Check save method downloads PDF with custom filename', async () => {
         pdfTemplate: 'test-template',
         pdfLibraryAdapter: null as any
     });
-    const mockGetPDFBytes = jest.spyOn(formFiller as any, 'getPDFBytes').mockResolvedValue(mockPDFBytes);
+    const mockGetPDFBytes = vitest.spyOn(formFiller as any, 'getPDFBytes').mockResolvedValue(mockPDFBytes);
     const customFilename = 'custom-survey.pdf';
 
     await formFiller.save(customFilename);
@@ -249,7 +255,7 @@ describe('Node.js PDFFormFiller save method', () => {
             pdfTemplate: 'test-template',
             pdfLibraryAdapter: null as any
         });
-        const mockGetPDFBytes = jest.spyOn(formFiller as any, 'getPDFBytes').mockResolvedValue(mockPDFBytes);
+        const mockGetPDFBytes = vitest.spyOn(formFiller as any, 'getPDFBytes').mockResolvedValue(mockPDFBytes);
 
         // Mock successful file write
         mockWriteFile.mockImplementation((path, data, callback) => callback(null));
@@ -272,7 +278,7 @@ describe('Node.js PDFFormFiller save method', () => {
             pdfTemplate: 'test-template',
             pdfLibraryAdapter: null as any
         });
-        const mockGetPDFBytes = jest.spyOn(formFiller as any, 'getPDFBytes').mockResolvedValue(mockPDFBytes);
+        const mockGetPDFBytes = vitest.spyOn(formFiller as any, 'getPDFBytes').mockResolvedValue(mockPDFBytes);
         const customFilename = 'custom-survey.pdf';
 
         // Mock successful file write
@@ -296,7 +302,7 @@ describe('Node.js PDFFormFiller save method', () => {
             pdfTemplate: 'test-template',
             pdfLibraryAdapter: null as any
         });
-        const mockGetPDFBytes = jest.spyOn(formFiller as any, 'getPDFBytes').mockResolvedValue(mockPDFBytes);
+        const mockGetPDFBytes = vitest.spyOn(formFiller as any, 'getPDFBytes').mockResolvedValue(mockPDFBytes);
 
         // Mock file write error
         const writeError = new Error('Failed to write file');

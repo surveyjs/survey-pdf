@@ -11,7 +11,7 @@ import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 import { QuestionTextModel } from 'survey-core';
-import { assert } from 'console';
+import { test, expect } from 'vitest';
 import { TextFieldBrick } from '../src/pdf_render/pdf_textfield';
 const __dummy_tb = new FlatTextbox(null, null, null);
 

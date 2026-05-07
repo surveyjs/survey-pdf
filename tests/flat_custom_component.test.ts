@@ -1,15 +1,13 @@
 (<any>window)['HTMLCanvasElement'].prototype.getContext = async () => {
     return {};
 };
-
+import { test, expect } from 'vitest';
 import { ComponentCollection } from 'survey-core';
 import { SurveyPDF } from '../src/survey';
-import { IRect, IPoint, DocController } from '../src/doc_controller';
+import { DocController } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { FlatRanking } from '../src/flat_layout/flat_ranking';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
-import { TextBrick } from '../src/pdf_render/pdf_text';
-import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 const __dummy_rn: FlatRanking = new FlatRanking(null, null, null);
 

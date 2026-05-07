@@ -1,6 +1,7 @@
 (<any>window)['HTMLCanvasElement'].prototype.getContext = () => {
     return {};
 };
+import { test, expect } from 'vitest';
 import { IPoint, IRect, ISize, IDocOptions, DocOptions, DocController } from '../src/doc_controller';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { TextBrick } from '../src/pdf_render/pdf_text';
@@ -303,7 +304,7 @@ test('Check setCanvas method', () => {
             this.yScale = yScale;
         };
         fillRect = () => { };
-        drawImage = () => { }
+        drawImage = () => { };
     }
     const canvas: HTMLCanvasElement = document.createElement('canvas');
     let context: ContextMock;

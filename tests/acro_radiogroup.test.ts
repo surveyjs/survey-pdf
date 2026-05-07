@@ -1,6 +1,7 @@
 (<any>window)['HTMLCanvasElement'].prototype.getContext = () => {
     return {};
 };
+import { test, expect } from 'vitest';
 import { SurveyPDF } from '../src/survey';
 import { DocController } from '../src/doc_controller';
 import { FlatRadiogroup } from '../src/flat_layout/flat_radiogroup';
