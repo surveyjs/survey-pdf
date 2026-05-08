@@ -1,16 +1,13 @@
-
-/**
- * @jest-environment node
- */
+// @vitest-environment node
+import { test, expect } from 'vitest';
 import { SurveyPDF } from '../src/survey';
-import { DocController, IRect } from '../src/doc_controller';
+import { DocController } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { IPdfBrick, PdfBrick } from '../src/pdf_render/pdf_brick';
 import { TestHelper } from '../src/helper_test';
 import { EmptyBrick } from '../src/pdf_render/pdf_empty';
 import { SurveyHelper } from '../src/helper_survey';
 import { CompositeBrick } from '../src/pdf_render/pdf_composite';
-import { ImageBrick } from '../src/pdf_render/pdf_image';
 import '../src/entries/pdf-base';
 import { HTMLBrick } from '../src/entries/pdf-base';
 

@@ -1,9 +1,9 @@
 (<any>window)['HTMLCanvasElement'].prototype.getContext = async () => {
     return {};
 };
-
+import { test, expect } from 'vitest';
 import { checkFlatSnapshot } from './snapshot_helper';
-import { Question, QuestionHtmlModel } from 'survey-core';
+import { QuestionHtmlModel } from 'survey-core';
 import { SurveyPDF } from '../src/survey';
 import { IPoint, IRect, DocController, IDocOptions } from '../src/doc_controller';
 import { FlatHTML } from '../src/flat_layout/flat_html';
@@ -21,7 +21,7 @@ SurveyHelper.createHTMLFlat = async function(
     });
 };
 SurveyHelper.htmlToImage = async function(_: string, width: number):
-        Promise<{ url: string, aspect: number }> {
+Promise<{ url: string, aspect: number }> {
     return await new Promise((resolve) => {
         resolve({ url: 'data:,', aspect: width / SurveyHelper.EPSILON });
     });

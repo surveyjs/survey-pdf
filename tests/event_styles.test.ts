@@ -1,3 +1,4 @@
+import { test, expect } from 'vitest';
 import { SurveyPDF } from '../src/survey';
 import { ITheme, PanelModel } from 'survey-core';
 import MonochromeLight from '../src/themes/monochrome-light';

@@ -1,11 +1,8 @@
 (<any>window)['HTMLCanvasElement'].prototype.getContext = async () => {
     return {};
 };
-
+import { test } from 'vitest';
 import { checkFlatSnapshot } from './snapshot_helper';
-import { QuestionDropdownModel } from 'survey-core';
-import { DocController } from '../src/doc_controller';
-import { FlatDropdown } from '../src/flat_layout/flat_dropdown';
 import '../src/flat_layout/flat_dropdown';
 
 test('Check dropdown', async () => {
