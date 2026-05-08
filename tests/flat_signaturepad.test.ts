@@ -1,17 +1,15 @@
 (<any>window)['HTMLCanvasElement'].prototype.getContext = async () => {
     return {};
 };
-
+import { test, expect } from 'vitest';
 import { SurveyPDF } from '../src/survey';
 import { IRect, DocController } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
-import { FlatHTML } from '../src/flat_layout/flat_html';
 import { FlatSignaturePad } from '../src/flat_layout/flat_signaturepad';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 import { CompositeBrick } from '../src/pdf_render/pdf_composite';
-import { HTMLBrick } from '../src/pdf_render/pdf_html';
 import { QuestionSignaturePadModel } from 'survey-core';
 import { checkFlatSnapshot } from './snapshot_helper';
 import { ImageBrick } from '../src/pdf_render/pdf_image';

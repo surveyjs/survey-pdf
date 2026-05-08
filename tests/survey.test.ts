@@ -1,14 +1,13 @@
 (<any>window)['HTMLCanvasElement'].prototype.getContext = () => {
     return {};
 };
-
+import { test, expect } from 'vitest';
 import { SurveyPDF } from '../src/survey';
 import { FlatTextbox } from '../src/flat_layout/flat_textbox';
 import { TestHelper } from '../src/helper_test';
 import { DocController, DocOptions } from '../src/doc_controller';
 import { FlatRepository } from '../src/flat_layout/flat_repository';
 import { TextBoldBrick } from '../src/pdf_render/pdf_textbold';
-import { SurveyHelper } from '../src/helper_survey';
 let __dummy_tx = new FlatTextbox(null, null, null);
 
 test('Check raw method', async () => {
@@ -54,7 +53,7 @@ test('check that default font name is set correct in DocOptions', async () => {
 });
 
 class Log {
-    public log: string = ''
+    public log: string = '';
 }
 class SurveyPDFSaveTester extends SurveyPDF {
     private logger: Log;
@@ -85,7 +84,7 @@ test('check that save functions called sync if use correctly', async () => {
     expect(logger.log).toEqual('->rendered->saving->saved->rendered->saving->saved->rendered->saving->saved');
 });
 
-test('check that save functions called sync', (done) => {
+test('check that save functions called sync', () => new Promise<void>(done => {
     const surveyPDF = new SurveyPDFSaveTester({});
     const logger = new Log();
     surveyPDF.setLog(logger);
@@ -96,9 +95,9 @@ test('check that save functions called sync', (done) => {
         expect(logger.log).toEqual('->rendered->saving->saved->rendered->saving->saved->rendered->saving->saved');
         done();
     }, 1000);
-});
+}));
 
-test('Check surveyPDF onDocControllerCreated event', (done) => {
+test('Check surveyPDF onDocControllerCreated event', () => new Promise<void>(done => {
     const surveyPDF = new SurveyPDF({});
     surveyPDF.onDocControllerCreated.add((sender, options) => {
         expect(sender).toBe(surveyPDF);
@@ -106,10 +105,9 @@ test('Check surveyPDF onDocControllerCreated event', (done) => {
         done();
     });
     surveyPDF.save();
+}));
 
-});
-
-test('Check surveyPDF isRTL options', (done) => {
+test('Check surveyPDF isRTL options', () => new Promise<void>(done => {
     let surveyPDF = new SurveyPDF({
         showQuestionNumbers: 'off',
         elements: [{
@@ -135,7 +133,7 @@ test('Check surveyPDF isRTL options', (done) => {
         done();
     });
     surveyPDF.raw();
-});
+}));
 
 test('Check FlatRepository static methods', () => {
     expect(FlatRepository.getRenderer('text')).toBe(FlatTextbox);

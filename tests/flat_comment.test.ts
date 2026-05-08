@@ -1,7 +1,7 @@
 (<any>window)['HTMLCanvasElement'].prototype.getContext = async () => {
     return {};
 };
-
+import { test, expect } from 'vitest';
 import { Question, QuestionCommentModel } from 'survey-core';
 import { SurveyPDF } from '../src/survey';
 import { IPoint, IRect, DocController } from '../src/doc_controller';
@@ -16,7 +16,6 @@ import { TestHelper } from '../src/helper_test';
 
 import * as Survey from 'survey-core';
 import { TextFieldBrick } from '../src/pdf_render/pdf_textfield';
-import { CompositeBrick } from '../src/pdf_render/pdf_composite';
 
 const __dummy_cm = new FlatComment(null, null, null);
 const __dummy_cb = new FlatCheckbox(null, null, null);

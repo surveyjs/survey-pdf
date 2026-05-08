@@ -1,3 +1,4 @@
+import { expect, inject } from 'vitest';
 import { EventBase, MutlipleTextErrorRow, MutlipleTextRow, PanelModel, QuestionMultipleTextModel } from 'survey-core';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { DocController, IDocOptions } from '../src/doc_controller';
@@ -91,7 +92,7 @@ export async function checkPDFSnapshot(surveyJSON: any, snapshotOptions: IPDFSna
         const expected = readFileSync(fileName, 'utf8').replaceAll(/\r\n/g, '\n');
         expect(actual, `snapshot: "${snapshotName}" did not match`, { showMatcherMessage: false }).toEqual(expected);
     };
-    if((global as any).updateSnapshots) {
+    if(inject('updateSnapshots' as never)) {
         try {
             compare();
         } catch {
@@ -173,8 +174,7 @@ export async function checkFlatSnapshot(surveyJSON: any, snapshotOptions: IFlatS
                 const expected = JSON.parse(readFileSync(fileName, 'utf8'));
                 expect(actual, `snapshot: "${snapshotOptions.snapshotName}" did not match`).toEqual(expected);
             };
-            //eslint-disable-next-line
-            if((global as any).updateSnapshots) {
+            if(inject('updateSnapshots' as never)) {
                 try {
                     compare();
                 } catch {

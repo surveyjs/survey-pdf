@@ -1,7 +1,7 @@
 (<any>window)['HTMLCanvasElement'].prototype.getContext = async () => {
     return {};
 };
-
+import { test, expect } from 'vitest';
 import { SurveyPDF } from '../src/survey';
 import { IPoint, IRect, ISize, IDocOptions, DocOptions, DocController } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
@@ -12,7 +12,6 @@ import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 import { QuestionMatrixDropdownModel } from 'survey-core';
-import { FlatRepository } from '../src/flat_layout/flat_repository';
 import { CompositeBrick } from '../src/pdf_render/pdf_composite';
 import { checkFlatSnapshot } from './snapshot_helper';
 import { AdornersOptions } from '../src/event_handler/adorners';

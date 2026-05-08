@@ -1,3 +1,4 @@
+import { test } from 'vitest';
 import { checkFlatSnapshot } from './snapshot_helper';
 
 var jsonSingle = {

@@ -1,7 +1,7 @@
 (<any>window)['HTMLCanvasElement'].prototype.getContext = async () => {
     return {};
 };
-
+import { test, expect } from 'vitest';
 import { Question, Serializer, CustomWidgetCollection } from 'survey-core';
 import { SurveyPDF } from '../src/survey';
 import { DocController } from '../src/doc_controller';
@@ -21,18 +21,18 @@ test('Render checkbox base widget as radiogroup', async () => {
     CustomWidgetCollection.Instance.addCustomWidget({
         name: 'checkradio',
         isFit: (question: Question) => {
-          return question.getType() === 'checkradio';
+            return question.getType() === 'checkradio';
         },
         activatedByChanged: () => {
             Serializer.addClass(
-              'checkradio',
-              [],
-              null,
-              'checkbox'
+                'checkradio',
+                [],
+                null,
+                'checkbox'
             );
         },
         pdfQuestionType: 'radiogroup'
-      });
+    });
     let json: any = {
         questions: [
             {
@@ -58,25 +58,25 @@ test('Render custom widget via callback', async () => {
     CustomWidgetCollection.Instance.addCustomWidget({
         name: 'customquestion',
         isFit: (question: Question) => {
-          return question.getType() === 'customquestion';
+            return question.getType() === 'customquestion';
         },
         activatedByChanged: () => {
             Serializer.addClass(
-              'customquestion',
-              [],
-              null,
-              'empty'
+                'customquestion',
+                [],
+                null,
+                'empty'
             );
         },
         pdfRender: (_: SurveyPDF, options: AdornersOptions) => {
             if (options.question.getType() === 'customquestion') {
-              options.bricks = [SurveyHelper.createPlainTextFlat(
-                  options.point, options.question, options.controller,
-                  'Hello there', TextBrick
-              )];
+                options.bricks = [SurveyHelper.createPlainTextFlat(
+                    options.point, options.question, options.controller,
+                    'Hello there', TextBrick
+                )];
             }
-          }
-      });
+        }
+    });
     let json: any = {
         questions: [
             {

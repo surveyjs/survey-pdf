@@ -1,7 +1,4 @@
-
-/**
- * @jest-environment node
- */
+// @vitest-environment node
 import { SurveyPDF } from '../src/survey';
 import { DocController, IRect } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
@@ -10,7 +7,7 @@ import { TestHelper } from '../src/helper_test';
 import { EmptyBrick } from '../src/pdf_render/pdf_empty';
 import { SurveyHelper } from '../src/helper_survey';
 import { CompositeBrick } from '../src/pdf_render/pdf_composite';
-import { ImageBrick } from '../src/pdf_render/pdf_image';
+import { test, expect } from 'vitest';
 
 test('Check html brick is empty when document is not defined', async () => {
     let json: any = {

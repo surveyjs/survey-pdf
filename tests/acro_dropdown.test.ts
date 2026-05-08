@@ -1,13 +1,11 @@
 (<any>window)['HTMLCanvasElement'].prototype.getContext = () => {
     return {};
 };
-
+import { test, expect } from 'vitest';
 import { SurveyPDF } from '../src/survey';
 import { DocController } from '../src/doc_controller';
 import { FlatDropdown } from '../src/flat_layout/flat_dropdown';
 import { TestHelper } from '../src/helper_test';
-import { QuestionDropdownModel } from 'survey-core';
-import { DropdownBrick } from '../src/pdf_render/pdf_dropdown';
 let __dummy_dd = new FlatDropdown(null, null, null);
 
 test('Check dropdown readonly', async () => {
@@ -47,7 +45,7 @@ test('Dropdown MK appearence fix', async () => {
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     await survey['renderSurvey'](controller);
     expect(controller.doc.internal.acroformPlugin.
-	    acroFormDictionaryRoot.Fields[0].MK).toBe('<< /BG [ 0.975 0.975 0.975 ]  >>');
+        acroFormDictionaryRoot.Fields[0].MK).toBe('<< /BG [ 0.975 0.975 0.975 ]  >>');
 });
 test('Dropdown display value', async () => {
     let json: any = {
@@ -69,7 +67,7 @@ test('Dropdown display value', async () => {
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     await survey['renderSurvey'](controller);
     expect(controller.doc.internal.acroformPlugin.
-	    acroFormDictionaryRoot.Fields[0].value).toBe(json.questions[0].choices[0].text);
+        acroFormDictionaryRoot.Fields[0].value).toBe(json.questions[0].choices[0].text);
 });
 test('Dropdown display value with rtl', async () => {
     let json: any = {

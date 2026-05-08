@@ -1,12 +1,11 @@
 (<any>window)['HTMLCanvasElement'].prototype.getContext = async () => {
     return {};
 };
-
+import { test, expect } from 'vitest';
 import { Question, QuestionDropdownModel } from 'survey-core';
 import { SurveyPDF } from '../src/survey';
 import { IPoint, IRect, DocController } from '../src/doc_controller';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
-import { FlatQuestion } from '../src/flat_layout/flat_question';
 import { FlatDropdown } from '../src/flat_layout/flat_dropdown';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { CompositeBrick } from '../src/pdf_render/pdf_composite';

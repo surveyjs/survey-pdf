@@ -1,7 +1,7 @@
 (<any>window)['HTMLCanvasElement'].prototype.getContext = () => {
     return {};
 };
-
+import { test, expect } from 'vitest';
 import { Question } from 'survey-core';
 import { SurveyPDF } from '../src/survey';
 import { IPoint, IRect, IDocOptions, DocOptions, DocController } from '../src/doc_controller';
@@ -360,7 +360,7 @@ test('Check isPageBreak property of IPdfBrick', async () => {
     let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
     expect(flats.length).toBe(1);
     expect(flats[0].length).toBe(3);
-    flats[0][1].isPageBreak = true; 
+    flats[0][1].isPageBreak = true;
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
     expect(packs.length).toBe(2);
     expect(packs[0].length).toBe(1);
