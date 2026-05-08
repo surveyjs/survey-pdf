@@ -1,11 +1,10 @@
 (<any>window)['HTMLCanvasElement'].prototype.getContext = async () => {
     return {};
 };
-
+import { test, expect } from 'vitest';
 import { SurveyPDF } from '../src/survey';
-import { IDocOptions, DocOptions, DocController } from '../src/doc_controller';
+import { IDocOptions, DocController } from '../src/doc_controller';
 import { FlatMatrixMultiple } from '../src/flat_layout/flat_matrixmultiple';
-import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 import { QuestionMatrixDropdownModel } from 'survey-core';
 import { checkFlatSnapshot } from './snapshot_helper';

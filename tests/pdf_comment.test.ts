@@ -1,3 +1,4 @@
+import { test } from 'vitest';
 import { checkPDFSnapshot } from './snapshot_helper';
 import '../src/entries/pdf-base';
 

@@ -1,9 +1,8 @@
 (<any>window)['HTMLCanvasElement'].prototype.getContext = async () => {
     return {};
 };
+import { test } from 'vitest';
 import { checkFlatSnapshot } from './snapshot_helper';
-import { FlatImage } from '../src/flat_layout/flat_image';
-import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 import '../src/flat_layout/flat_image';
 import { getImageUtils, registerImageUtils } from '../src/utils/image';

@@ -1,10 +1,7 @@
 (<any>window)['HTMLCanvasElement'].prototype.getContext = async () => {
     return {};
 };
-
-import { DocOptions, DocController } from '../src/doc_controller';
-import { SurveyHelper } from '../src/helper_survey';
-import { TestHelper } from '../src/helper_test';
+import { test } from 'vitest';
 import { checkFlatSnapshot } from './snapshot_helper';
 import { AdornersOptions } from '../src/event_handler/adorners';
 import '../src/entries/pdf-base';

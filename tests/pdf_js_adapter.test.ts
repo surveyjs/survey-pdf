@@ -1,4 +1,5 @@
 import { PDFJSAdapter as PDFJSAdapter } from '../src/pdf_forms/adapters/pdfjs';
+import { test, expect, describe, beforeEach, afterEach, vitest } from 'vitest';
 
 // Mock PDF bytes
 const mockPDFBytes = new Uint8Array([1, 2, 3, 4]);
@@ -34,7 +35,7 @@ describe('PdfJsAdapter', () => {
     };
 
     beforeEach(() => {
-        jest.clearAllMocks();
+        vitest.clearAllMocks();
     });
 
     afterEach(() => {
@@ -43,13 +44,13 @@ describe('PdfJsAdapter', () => {
     });
 
     test('Check fillForm loads PDF document', async () => {
-        const mockSetValue = jest.fn();
-        const mockGetAnnotations = jest.fn().mockResolvedValue([]);
-        const mockGetPage = jest.fn().mockResolvedValue({ getAnnotations: mockGetAnnotations });
-        const mockSaveDocument = jest.fn().mockResolvedValue(mockPDFBytes);
+        const mockSetValue = vitest.fn();
+        const mockGetAnnotations = vitest.fn().mockResolvedValue([]);
+        const mockGetPage = vitest.fn().mockResolvedValue({ getAnnotations: mockGetAnnotations });
+        const mockSaveDocument = vitest.fn().mockResolvedValue(mockPDFBytes);
 
         const pdfjsLib = {
-            getDocument: jest.fn().mockImplementation(() => ({
+            getDocument: vitest.fn().mockImplementation(() => ({
                 promise: Promise.resolve({
                     getPage: mockGetPage,
                     annotationStorage: { setValue: mockSetValue },
@@ -64,18 +65,18 @@ describe('PdfJsAdapter', () => {
     });
 
     test('Check fillForm handles text field', async () => {
-        const mockSetValue = jest.fn();
+        const mockSetValue = vitest.fn();
         const mockAnnotation: MockPDFAnnotation = {
             id: '1',
             fieldName: 'textField',
             fieldType: 'text'
         };
-        const mockGetAnnotations = jest.fn().mockResolvedValue([mockAnnotation]);
-        const mockGetPage = jest.fn().mockResolvedValue({ getAnnotations: mockGetAnnotations });
-        const mockSaveDocument = jest.fn().mockResolvedValue(mockPDFBytes);
+        const mockGetAnnotations = vitest.fn().mockResolvedValue([mockAnnotation]);
+        const mockGetPage = vitest.fn().mockResolvedValue({ getAnnotations: mockGetAnnotations });
+        const mockSaveDocument = vitest.fn().mockResolvedValue(mockPDFBytes);
 
         const pdfjsLib = {
-            getDocument: jest.fn().mockImplementation(() => ({
+            getDocument: vitest.fn().mockImplementation(() => ({
                 promise: Promise.resolve({
                     numPages: 1,
                     getPage: mockGetPage,
@@ -90,7 +91,7 @@ describe('PdfJsAdapter', () => {
     });
 
     test('Check fillForm handles radio button', async () => {
-        const mockSetValue = jest.fn();
+        const mockSetValue = vitest.fn();
         const mockAnnotation: MockPDFAnnotation = {
             id: '1',
             fieldName: 'radio',
@@ -98,12 +99,12 @@ describe('PdfJsAdapter', () => {
             radioButton: true,
             buttonValue: 'option1'
         };
-        const mockGetAnnotations = jest.fn().mockResolvedValue([mockAnnotation]);
-        const mockGetPage = jest.fn().mockResolvedValue({ getAnnotations: mockGetAnnotations });
-        const mockSaveDocument = jest.fn().mockResolvedValue(mockPDFBytes);
+        const mockGetAnnotations = vitest.fn().mockResolvedValue([mockAnnotation]);
+        const mockGetPage = vitest.fn().mockResolvedValue({ getAnnotations: mockGetAnnotations });
+        const mockSaveDocument = vitest.fn().mockResolvedValue(mockPDFBytes);
 
         const pdfjsLib = {
-            getDocument: jest.fn().mockImplementation(() => ({
+            getDocument: vitest.fn().mockImplementation(() => ({
                 promise: Promise.resolve({
                     numPages: 1,
                     getPage: mockGetPage,
@@ -119,7 +120,7 @@ describe('PdfJsAdapter', () => {
     });
 
     test('Check fillForm skips radio button with different value', async () => {
-        const mockSetValue = jest.fn();
+        const mockSetValue = vitest.fn();
         const mockAnnotation: MockPDFAnnotation = {
             id: '1',
             fieldName: 'radio',
@@ -127,12 +128,12 @@ describe('PdfJsAdapter', () => {
             radioButton: true,
             buttonValue: 'different-option'
         };
-        const mockGetAnnotations = jest.fn().mockResolvedValue([mockAnnotation]);
-        const mockGetPage = jest.fn().mockResolvedValue({ getAnnotations: mockGetAnnotations });
-        const mockSaveDocument = jest.fn().mockResolvedValue(mockPDFBytes);
+        const mockGetAnnotations = vitest.fn().mockResolvedValue([mockAnnotation]);
+        const mockGetPage = vitest.fn().mockResolvedValue({ getAnnotations: mockGetAnnotations });
+        const mockSaveDocument = vitest.fn().mockResolvedValue(mockPDFBytes);
 
         const pdfjsLib = {
-            getDocument: jest.fn().mockImplementation(() => ({
+            getDocument: vitest.fn().mockImplementation(() => ({
                 promise: Promise.resolve({
                     numPages: 1,
                     getPage: mockGetPage,
@@ -147,18 +148,18 @@ describe('PdfJsAdapter', () => {
     });
 
     test('Check fillForm skips fields with null or undefined values', async () => {
-        const mockSetValue = jest.fn();
+        const mockSetValue = vitest.fn();
         const mockAnnotation: MockPDFAnnotation = {
             id: '1',
             fieldName: 'emptyField',
             fieldType: 'text'
         };
-        const mockGetAnnotations = jest.fn().mockResolvedValue([mockAnnotation]);
-        const mockGetPage = jest.fn().mockResolvedValue({ getAnnotations: mockGetAnnotations });
-        const mockSaveDocument = jest.fn().mockResolvedValue(mockPDFBytes);
+        const mockGetAnnotations = vitest.fn().mockResolvedValue([mockAnnotation]);
+        const mockGetPage = vitest.fn().mockResolvedValue({ getAnnotations: mockGetAnnotations });
+        const mockSaveDocument = vitest.fn().mockResolvedValue(mockPDFBytes);
 
         const pdfjsLib = {
-            getDocument: jest.fn().mockImplementation(() => ({
+            getDocument: vitest.fn().mockImplementation(() => ({
                 promise: Promise.resolve({
                     numPages: 1,
                     getPage: mockGetPage,
@@ -174,13 +175,13 @@ describe('PdfJsAdapter', () => {
     });
 
     test('Check fillForm returns PDF bytes', async () => {
-        const mockSetValue = jest.fn();
-        const mockGetAnnotations = jest.fn().mockResolvedValue([]);
-        const mockGetPage = jest.fn().mockResolvedValue({ getAnnotations: mockGetAnnotations });
-        const mockSaveDocument = jest.fn().mockResolvedValue(mockPDFBytes);
+        const mockSetValue = vitest.fn();
+        const mockGetAnnotations = vitest.fn().mockResolvedValue([]);
+        const mockGetPage = vitest.fn().mockResolvedValue({ getAnnotations: mockGetAnnotations });
+        const mockSaveDocument = vitest.fn().mockResolvedValue(mockPDFBytes);
 
         const pdfjsLib = {
-            getDocument: jest.fn().mockImplementation(() => ({
+            getDocument: vitest.fn().mockImplementation(() => ({
                 promise: Promise.resolve({
                     numPages: 1,
                     getPage: mockGetPage,
@@ -197,43 +198,43 @@ describe('PdfJsAdapter', () => {
 
     describe('Multi-page document handling', () => {
         test('Check fillForm processes all pages in multi-page document', async () => {
-            const mockSetValue = jest.fn();
+            const mockSetValue = vitest.fn();
             const mockPages = [
                 {
-                    getAnnotations: jest.fn().mockResolvedValue([
+                    getAnnotations: vitest.fn().mockResolvedValue([
                         { id: '1', fieldName: 'textField1', fieldType: 'text' },
                         { id: '2', fieldName: 'checkbox1', fieldType: 'checkbox' }
                     ])
                 },
                 {
-                    getAnnotations: jest.fn().mockResolvedValue([
-                        { 
-                            id: '3', 
-                            fieldName: 'radio1', 
-                            fieldType: 'radio', 
-                            radioButton: true, 
-                            buttonValue: 'option1' 
+                    getAnnotations: vitest.fn().mockResolvedValue([
+                        {
+                            id: '3',
+                            fieldName: 'radio1',
+                            fieldType: 'radio',
+                            radioButton: true,
+                            buttonValue: 'option1'
                         }
                     ])
                 },
                 {
-                    getAnnotations: jest.fn().mockResolvedValue([
+                    getAnnotations: vitest.fn().mockResolvedValue([
                         { id: '4', fieldName: 'textField2', fieldType: 'text' }
                     ])
                 }
             ];
 
-            const mockGetPage = jest.fn().mockImplementation((pageNum) => 
+            const mockGetPage = vitest.fn().mockImplementation((pageNum) =>
                 Promise.resolve(mockPages[pageNum - 1])
             );
 
             const pdfjsLib = {
-                getDocument: jest.fn().mockImplementation(() => ({
+                getDocument: vitest.fn().mockImplementation(() => ({
                     promise: Promise.resolve({
                         numPages: 3,
                         getPage: mockGetPage,
                         annotationStorage: { setValue: mockSetValue },
-                        saveDocument: jest.fn().mockResolvedValue(mockPDFBytes)
+                        saveDocument: vitest.fn().mockResolvedValue(mockPDFBytes)
                     })
                 }))
             };
@@ -267,29 +268,29 @@ describe('PdfJsAdapter', () => {
         });
 
         test('Check fillForm handles empty pages correctly', async () => {
-            const mockSetValue = jest.fn();
+            const mockSetValue = vitest.fn();
             const mockPages = [
                 {
-                    getAnnotations: jest.fn().mockResolvedValue([
+                    getAnnotations: vitest.fn().mockResolvedValue([
                         { id: '1', fieldName: 'textField1', fieldType: 'text' }
                     ])
                 },
                 {
-                    getAnnotations: jest.fn().mockResolvedValue([])
+                    getAnnotations: vitest.fn().mockResolvedValue([])
                 }
             ];
 
-            const mockGetPage = jest.fn().mockImplementation((pageNum) => 
+            const mockGetPage = vitest.fn().mockImplementation((pageNum) =>
                 Promise.resolve(mockPages[pageNum - 1])
             );
 
             const pdfjsLib = {
-                getDocument: jest.fn().mockImplementation(() => ({
+                getDocument: vitest.fn().mockImplementation(() => ({
                     promise: Promise.resolve({
                         numPages: 2,
                         getPage: mockGetPage,
                         annotationStorage: { setValue: mockSetValue },
-                        saveDocument: jest.fn().mockResolvedValue(mockPDFBytes)
+                        saveDocument: vitest.fn().mockResolvedValue(mockPDFBytes)
                     })
                 }))
             };
@@ -310,31 +311,31 @@ describe('PdfJsAdapter', () => {
         });
 
         test('Check fillForm handles pages with no form fields', async () => {
-            const mockSetValue = jest.fn();
+            const mockSetValue = vitest.fn();
             const mockPages = [
                 {
-                    getAnnotations: jest.fn().mockResolvedValue([
+                    getAnnotations: vitest.fn().mockResolvedValue([
                         { id: '1', fieldName: 'textField1', fieldType: 'text' }
                     ])
                 },
                 {
-                    getAnnotations: jest.fn().mockResolvedValue([
+                    getAnnotations: vitest.fn().mockResolvedValue([
                         { id: '2', fieldType: undefined } // Field without fieldType
                     ])
                 }
             ];
 
-            const mockGetPage = jest.fn().mockImplementation((pageNum) => 
+            const mockGetPage = vitest.fn().mockImplementation((pageNum) =>
                 Promise.resolve(mockPages[pageNum - 1])
             );
 
             const pdfjsLib = {
-                getDocument: jest.fn().mockImplementation(() => ({
+                getDocument: vitest.fn().mockImplementation(() => ({
                     promise: Promise.resolve({
                         numPages: 2,
                         getPage: mockGetPage,
                         annotationStorage: { setValue: mockSetValue },
-                        saveDocument: jest.fn().mockResolvedValue(mockPDFBytes)
+                        saveDocument: vitest.fn().mockResolvedValue(mockPDFBytes)
                     })
                 }))
             };
