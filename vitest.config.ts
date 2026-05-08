@@ -5,6 +5,7 @@ export default defineConfig(({ mode }) => {
         test: {
             environment: 'jsdom',
             globals: false,
+            setupFiles: ['./vitest-setup.ts'],
             globalSetup: './vitest-global-setup.ts',
             include: ['tests/**/*.test.ts'],
             provide: {

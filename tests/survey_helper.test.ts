@@ -1,7 +1,7 @@
 (<any>window)['HTMLCanvasElement'].prototype.getContext = () => {
     return {};
 };
-import { test, expect } from 'vitest';
+import { test, expect, vitest } from 'vitest';
 import { IPoint, IRect, ISize, IDocOptions, DocOptions, DocController } from '../src/doc_controller';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { TextBrick } from '../src/pdf_render/pdf_text';
@@ -226,7 +226,7 @@ test('Check textfield with negative width', () => {
     TestHelper.equalRect(expect, resultRect, assumeRect);
 });
 test('Check createSvgContent method', () => {
-    const spy = jest.spyOn(console, 'warn').mockImplementation((warning) => {});
+    const spy = vitest.spyOn(console, 'warn').mockImplementation((warning) => {});
     const options: IDocOptions = {
         useCustomFontInHtml: true
     };
@@ -315,8 +315,8 @@ test('Check getContentQuestionType method with renderAs', () => {
     expect(type).toEqual('boolean-checkbox');
 });
 test('Check chooseHtmlFont method', async () => {
-    const errorSpy = jest.spyOn(console, 'error').mockImplementation((error) => {});
-    const warningSpy = jest.spyOn(console, 'warn').mockImplementation((warning) => {});
+    const errorSpy = vitest.spyOn(console, 'error').mockImplementation((error) => {});
+    const warningSpy = vitest.spyOn(console, 'warn').mockImplementation((warning) => {});
     let controller = new DocController(
         { fontName: 'custom_font' }
     );
@@ -347,8 +347,8 @@ test('Check chooseHtmlFont method', async () => {
 });
 
 test('check getCorrectedImageSize works incorrectly if image could not be loaded', async () => {
-    const errorSpy = jest.spyOn(console, 'error').mockImplementation((error) => {});
-    const warningSpy = jest.spyOn(console, 'warn').mockImplementation((warning) => {});
+    const errorSpy = vitest.spyOn(console, 'error').mockImplementation((error) => {});
+    const warningSpy = vitest.spyOn(console, 'warn').mockImplementation((warning) => {});
     const controller = new DocController(
         { fontName: 'custom_font' }
     );

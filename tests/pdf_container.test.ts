@@ -1,3 +1,4 @@
+import { test, expect } from 'vitest';
 import { DocController, IPoint } from '../src/doc_controller';
 import { BorderMode, SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
