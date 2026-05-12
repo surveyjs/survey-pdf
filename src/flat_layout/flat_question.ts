@@ -60,8 +60,15 @@ export class FlatQuestion<T extends Question = Question, S extends IQuestionStyl
                 this.controller.popMargins();
             }
             else {
-                currPoint = SurveyHelper.createPoint(textFlat.unfold().pop(), false, true);
-                currPoint.xLeft += this.style.spacing.titleRequiredMarkGap;
+                const lastTitleBrick = textFlat.unfold().pop();
+                if(this.style.spacing.titleRequiredMarkGap + this.controller.measureText(requiredText, requiredStyle).width < SurveyHelper.getPageAvailableWidth(this.controller) + this.controller.leftTopPoint.xLeft - lastTitleBrick.xRight) {
+                    currPoint = SurveyHelper.createPoint(lastTitleBrick, false, true);
+                    currPoint.xLeft += this.style.spacing.titleRequiredMarkGap;
+                } else {
+                    const titleXLeft = currPoint.xLeft;
+                    currPoint = SurveyHelper.createPoint(lastTitleBrick, false, false);
+                    currPoint.xLeft = titleXLeft;
+                }
                 composite.addBrick(await SurveyHelper.createTextFlat(currPoint, this.controller, requiredText, requiredStyle));
             }
         }

@@ -410,3 +410,17 @@ test('Check description under input', async () => {
         snapshotName: 'question_title_bottom_description_under_input'
     });
 });
+
+test('Check asterix is rendered correctly when space for title is too low', async () => {
+    const json = {
+        elements: [{
+            'type': 'text',
+            'name': 'test',
+            'titleLocation': 'left',
+            'title': 'Health problems or cause of death:',
+            'isRequired': true, }]
+    };
+    await checkFlatSnapshot(json, {
+        snapshotName: 'question_title_left_required'
+    });
+});
