@@ -74,9 +74,15 @@ test('Not Carry text', async () => {
 test('Carry text', async () => {
     let text: string = '111 11111 1111';
     let options: IDocOptions = TestHelper.defaultOptions;
-    options.format = [options.margins.left +
+    options.margins = {
+        top: 10 * 72 / 25.4,
+        bot: 10 * 72 / 25.4,
+        left: 10 * 72 / 25.4,
+        right: 10 * 72 / 25.4
+    };
+    options.format = [10 +
         new DocController(options).measureText('1').width * 5 / DocOptions.MM_TO_PT +
-        options.margins.right, 297];
+        10, 297];
     let controller: DocController = new DocController(options);
     let composite: IPdfBrick = await SurveyHelper.createTextFlat(controller.leftTopPoint, controller, text);
     let assumeRect: IRect = {
@@ -90,9 +96,15 @@ test('Carry text', async () => {
 test('Carry split long text', async () => {
     let text: string = '111111';
     let options: IDocOptions = TestHelper.defaultOptions;
-    options.format = [options.margins.left +
+    options.margins = {
+        top: 10 * 72 / 25.4,
+        bot: 10 * 72 / 25.4,
+        left: 10 * 72 / 25.4,
+        right: 10 * 72 / 25.4
+    };
+    options.format = [10 +
         new DocController(options).measureText('1').width * 3.5 / DocOptions.MM_TO_PT +
-        options.margins.right, 297];
+        10, 297];
     let controller: DocController = new DocController(options);
     let composite: IPdfBrick = await SurveyHelper.createTextFlat(controller.leftTopPoint, controller, text);
     let assumeRect: IRect = {
@@ -212,7 +224,13 @@ test('Check set column width', () => {
 });
 test('Check textfield with negative width', () => {
     let options: IDocOptions = {
-        format: [10, 200]
+        format: [10, 200],
+        margins: {
+            top: 10 * 72 / 25.4,
+            bot: 10 * 72 / 25.4,
+            left: 10 * 72 / 25.4,
+            right: 10 * 72 / 25.4
+        }
     };
     let controller: DocController = new DocController(options);
     let resultRect: IRect = SurveyHelper.createTextFieldRect(
@@ -350,7 +368,12 @@ test('check getCorrectedImageSize works incorrectly if image could not be loaded
     const errorSpy = vitest.spyOn(console, 'error').mockImplementation((error) => {});
     const warningSpy = vitest.spyOn(console, 'warn').mockImplementation((warning) => {});
     const controller = new DocController(
-        { fontName: 'custom_font' }
+        { fontName: 'custom_font', margins: {
+            top: 10 * 72 / 25.4,
+            bot: 10 * 72 / 25.4,
+            left: 10 * 72 / 25.4,
+            right: 10 * 72 / 25.4
+        } },
     );
     let imageSize = await SurveyHelper.getCorrectedImageSize(controller, { imageLink: '' });
     expect(imageSize.width).toBe(0);

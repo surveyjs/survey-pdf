@@ -7,22 +7,6 @@ import { DocController } from '../src/doc_controller';
 test('Check doc controller without options', () => {
     new DocController();
 });
-test('Check font size ', () => {
-    const options: any = {
-        orientation: 'l',
-        fontSize: 12,
-        margins:
-        {
-            left: 10,
-            right: 10,
-            top: 10,
-            bot: 10
-
-        }
-    };
-    const controller = new DocController(options);
-    expect(controller.fontSize).toBe(12);
-});
 test('Check doc width and heght with orinetaition \'l\' and \'a4\' format', () => {
     const options: any = {
         orientation: 'l',

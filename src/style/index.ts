@@ -19,6 +19,8 @@ export function createStyleFromTheme<T>(theme: ITheme, layout: IDocLayout, callb
 export function getDefaultStyle (theme: ITheme, layout: IDocLayout): IDocStyle {
     return createStyleFromTheme<IDocStyle>(theme, layout, ({ getSizeVariable, getColorVariable }) => {
         const baseSize = getSizeVariable('--sjs2-base-unit-size');
+        const baseFontSize = getSizeVariable('--sjs2-base-unit-font-size');
+        const baseSpace = getSizeVariable('--sjs2-base-unit-spacing');
         return {
             survey: {
                 title: {
@@ -28,9 +30,8 @@ export function getDefaultStyle (theme: ITheme, layout: IDocLayout): IDocStyle {
                     fontColor: getColorVariable('--sjs2-color-fg-basic-primary'),
                 },
                 description: {
-                    //TODO:need variables
-                    fontSize: baseSize * 2,
-                    lineHeight: baseSize * 3,
+                    fontSize: getSizeVariable('--sjs2-typography-font-size-default'),
+                    lineHeight: getSizeVariable('--sjs2-typography-line-height-default'),
                     fontStyle: 'normal',
                     fontColor: getColorVariable('--sjs2-color-fg-basic-secondary'),
                 },
@@ -87,13 +88,13 @@ export function getDefaultStyle (theme: ITheme, layout: IDocLayout): IDocStyle {
                 },
                 spacing: {
                     headerContentGap: getSizeVariable('--sjs2-pdf-layout-question-gap'),
-                    inlineHeaderContentGap: baseSize * 1.0,
+                    inlineHeaderContentGap: baseSpace,
                     contentIndentStart: 0,
                     contentCommentGap: getSizeVariable('--sjs2-pdf-layout-question-gap'),
                     contentDescriptionGap: getSizeVariable('--sjs2-pdf-layout-question-gap'),
                     titleDescriptionGap: getSizeVariable('--sjs2-pdf-layout-question-labels-gap-vertical'),
-                    titleRequiredMarkGap: baseSize / 2,
-                    titleNumberGap: baseSize / 2,
+                    titleRequiredMarkGap: baseFontSize / 2,
+                    titleNumberGap: baseFontSize / 2,
                     commentLabelGap: getSizeVariable('--sjs2-spacing-x050')
                 }
             },
@@ -155,10 +156,9 @@ export function getDefaultStyle (theme: ITheme, layout: IDocLayout): IDocStyle {
                     lineHeight: getSizeVariable('--sjs2-typography-line-height-default')
                 },
                 input: {
-                //todo may be we need variable
-                    width: baseSize * 2,
-                    height: baseSize * 2,
-                    fontSize: baseSize * 1.25,
+                    width: getSizeVariable('--sjs2-size-x200'),
+                    height: getSizeVariable('--sjs2-size-x200'),
+                    fontSize: getSizeVariable('--sjs2-size-x200') * 0.625,
                     borderColor: getColorVariable('--sjs2-color-component-check-false-default-border'),
                     borderWidth: getSizeVariable('--sjs2-pdf-border-width-check'),
                     fontName: 'zapfdingbats',
@@ -267,10 +267,9 @@ export function getDefaultStyle (theme: ITheme, layout: IDocLayout): IDocStyle {
                     fontStyle: 'normal',
                 },
                 input: {
-                //todo may be we need variable
-                    width: baseSize * 2,
-                    height: baseSize * 2,
-                    fontSize: baseSize * 1.25,
+                    width: getSizeVariable('--sjs2-size-x200'),
+                    height: getSizeVariable('--sjs2-size-x200'),
+                    fontSize: getSizeVariable('--sjs2-size-x200') * 0.625,
                     borderColor: getColorVariable('--sjs2-color-component-check-false-default-border'),
                     borderWidth: getSizeVariable('--sjs2-pdf-border-width-check'),
                     backgroundColor: getColorVariable('--sjs2-color-bg-basic-primary'),
@@ -373,7 +372,7 @@ export function getDefaultStyle (theme: ITheme, layout: IDocLayout): IDocStyle {
                 }
             },
             rating: {
-                choiceMinWidth: baseSize * 3,
+                choiceMinWidth: getSizeVariable('--sjs2-size-x300'),
                 choiceText: {
                     fontColor: getColorVariable('--sjs2-color-fg-basic-primary'),
                     fontSize: getSizeVariable('--sjs2-typography-font-size-default'),
@@ -381,10 +380,9 @@ export function getDefaultStyle (theme: ITheme, layout: IDocLayout): IDocStyle {
                     lineHeight: getSizeVariable('--sjs2-typography-line-height-default')
                 },
                 input: {
-                //todo may be we need variable
-                    width: baseSize * 2,
-                    height: baseSize * 2,
-                    fontSize: baseSize * 1.25,
+                    width: getSizeVariable('--sjs2-size-x200'),
+                    height: getSizeVariable('--sjs2-size-x200'),
+                    fontSize: getSizeVariable('--sjs2-size-x200') * 0.625,
                     borderColor: getColorVariable('--sjs2-color-component-check-false-default-border'),
                     borderWidth: getSizeVariable('--sjs2-pdf-border-width-check'),
                     backgroundColor: getColorVariable('--sjs2-color-bg-basic-primary'),
@@ -409,11 +407,10 @@ export function getDefaultStyle (theme: ITheme, layout: IDocLayout): IDocStyle {
             },
             ranking: {
                 input: {
-                //todo may be we need variable
-                    width: baseSize * 2,
-                    height: baseSize * 2,
-                    fontSize: baseSize * 1.25,
-                    lineHeight: baseSize * 1.25,
+                    width: getSizeVariable('--sjs2-size-x200'),
+                    height: getSizeVariable('--sjs2-size-x200'),
+                    fontSize: getSizeVariable('--sjs2-size-x200') * 0.625,
+                    lineHeight: getSizeVariable('--sjs2-size-x200') * 0.625,
                     borderColor: getColorVariable('--sjs2-color-component-check-false-default-border'),
                     borderWidth: getSizeVariable('--sjs2-pdf-border-width-check'),
                     fontName: 'helvetica',
@@ -454,7 +451,7 @@ export function getDefaultStyle (theme: ITheme, layout: IDocLayout): IDocStyle {
                     color: getColorVariable('--sjs2-color-fg-basic-primary')
                 },
                 spacing: {
-                    inputRangeGap: baseSize * 8,
+                    inputRangeGap: baseSpace * 8,
                 }
             },
             dropdown: {
@@ -473,7 +470,7 @@ export function getDefaultStyle (theme: ITheme, layout: IDocLayout): IDocStyle {
                 },
             },
             file: {
-                fileItemMinWidth: baseSize * 5,
+                fileItemMinWidth: getSizeVariable('--sjs2-size-x500'),
                 defaultImageFit: 'contain',
                 fileName: {
                     fontColor: getColorVariable('--sjs2-color-fg-note-primary'),
@@ -525,9 +522,9 @@ export function getDefaultStyle (theme: ITheme, layout: IDocLayout): IDocStyle {
                 },
                 input: {
                 //todo may be we need variable
-                    width: baseSize * 2,
-                    height: baseSize * 2,
-                    fontSize: baseSize * 1.25,
+                    width: getSizeVariable('--sjs2-size-x200'),
+                    height: getSizeVariable('--sjs2-size-x200'),
+                    fontSize: getSizeVariable('--sjs2-size-x200') * 0.625,
                     borderColor: getColorVariable('--sjs2-color-component-check-false-default-border'),
                     borderWidth: getSizeVariable('--sjs2-pdf-border-width-check'),
                     backgroundColor: getColorVariable('--sjs2-color-bg-basic-primary'),

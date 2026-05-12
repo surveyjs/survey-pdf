@@ -77,6 +77,12 @@ test('Check multiple text with colCount and long text', async () => {
     await checkFlatSnapshot(json, {
         snapshotName: 'multipletext_colCount_2_long_text',
         controllerOptions: {
+            margins: {
+                left: 10.0,
+                right: 10.0,
+                top: 10.0,
+                bot: 10.0
+            },
             format: [options.margins.left + options.margins.right +
         2.5 * signWidth / 0.4 +
         new DocController(options).unitWidth /

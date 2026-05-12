@@ -238,7 +238,13 @@ test('Check matrix dynamic one column one row verical layout narrow width', asyn
             return options.question.getType() == 'matrixdynamic';
         },
         controllerOptions: {
-            format: [50, 297]
+            format: [50, 297],
+            margins: {
+                left: 10.0,
+                right: 10.0,
+                top: 10.0,
+                bot: 10.0
+            }
         }
     });
 });
@@ -267,7 +273,13 @@ test('Check matrix dynamic two columns one row narrow width', async () => {
             return options.question.getType() == 'matrixdynamic';
         },
         controllerOptions: {
-            format: [50, 297]
+            format: [50, 297],
+            margins: {
+                left: 10.0,
+                right: 10.0,
+                top: 10.0,
+                bot: 10.0
+            }
         }
     });
 });

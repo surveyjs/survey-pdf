@@ -1,6 +1,6 @@
 import { SurveyModel, EventBase, SurveyElement, Serializer, Question, PanelModel, PageModel, ITheme, ItemValue } from 'survey-core';
 import { hasLicense } from 'survey-core';
-import { IDocOptions, DocController, DocOptions } from './doc_controller';
+import { IDocOptions, DocController, IMargin } from './doc_controller';
 import { PagePacker } from './page_layout/page_packer';
 import { IPdfBrick } from './pdf_render/pdf_brick';
 import { EventAsync, } from './event_handler/event_async';
@@ -26,6 +26,7 @@ export class SurveyPDF extends SurveyModel {
     private static currentlySaving: boolean = false;
     private static saveQueue: any[] = [];
     public options: IDocOptions;
+    private legacyLayout: IDocLayout = {};
     public constructor(jsonObject: any, options?: IDocOptions) {
         super(jsonObject);
         if (typeof options === 'undefined') {
@@ -35,6 +36,24 @@ export class SurveyPDF extends SurveyModel {
             this.questionsOnPageMode = 'standard';
         }
         this.options = SurveyHelper.clone(options);
+        if(this.options.fontSize !== undefined) {
+            const base = `${this.options.fontSize / 14 * 8}px`;
+            SurveyHelper.mergeObjects(this.legacyLayout, {
+                '--sjs2-base-unit-size': base,
+                '--sjs2-base-unit-spacing': base,
+                '--sjs2-base-unit-radius': base,
+                '--sjs2-base-unit-border-width': `${this.options.fontSize / 14}px`,
+                '--sjs2-base-unit-font-size': base,
+                '--sjs2-base-unit-line-height': base,
+            });
+        }
+        if(this.options.margins) {
+            for(const key in this.options.margins) {
+                if(this.options.margins[key as keyof IMargin] !== undefined) {
+                    this.legacyLayout[`--sjs2-pdf-layout-page-padding-${key == 'bot' ? 'bottom' : key}`] = `${96.0 / 25.4 * this.options.margins[key as keyof IMargin]}px`;
+                }
+            }
+        }
         this.applyTheme(MonochromeLight);
     }
     public get haveCommercialLicense(): boolean {
@@ -298,7 +317,7 @@ export class SurveyPDF extends SurveyModel {
 
     private _layout: IDocLayout;
     public get layout(): IDocLayout {
-        return this._layout || CompactLayout;
+        return this._layout || SurveyHelper.mergeObjects({}, CompactLayout, this.legacyLayout);
     }
 
     /**
@@ -437,15 +456,22 @@ export class SurveyPDF extends SurveyModel {
         SurveyHelper.clear();
         this.stylesHash = {};
     }
-    private createController(): DocController {
+    private createDocController(): DocController {
         const marginsFromStyle = parseSideValues(this.style.survey.padding);
-        Object.keys(marginsFromStyle).forEach((key: 'top' | 'left' | 'bot' | 'right') => {
-            marginsFromStyle[key] /= DocOptions.MM_TO_PT;
-        });
-        const options = SurveyHelper.mergeObjects({}, {
+        const options = SurveyHelper.mergeObjects({}, this.options, {
             margins: marginsFromStyle
-        }, this.options);
-        return new DocController(options);
+        });
+        const controller = new DocController(options);
+        this.onDocControllerCreated.fire(this, { controller: controller });
+        return controller;
+    }
+
+    private docControllerValue: DocController;
+    public get docController(): DocController {
+        if(!this.docControllerValue) {
+            this.docControllerValue = this.createDocController();
+        }
+        return this.docControllerValue;
     }
     /**
      * An asynchronous method that starts to download the generated PDF file in the web browser.
@@ -456,8 +482,7 @@ export class SurveyPDF extends SurveyModel {
 
     public async save(fileName: string = 'survey_result.pdf'): Promise<any> {
         if(!SurveyPDF.currentlySaving) {
-            const controller: DocController = this.createController();
-            this.onDocControllerCreated.fire(this, { controller: controller });
+            const controller = this.docController;
             SurveyPDF.currentlySaving = true;
             SurveyHelper.fixFont(controller);
             await this.renderSurvey(controller);
@@ -490,7 +515,7 @@ export class SurveyPDF extends SurveyModel {
     raw(type: 'bloburl'): Promise<URL>;
     raw(type: 'dataurlstring'): Promise<string>;
     public async raw(type?: string): Promise<ArrayBuffer | string | Blob | URL > {
-        const controller: DocController = this.createController();
+        const controller: DocController = this.createDocController();
         this.onDocControllerCreated.fire(this, { controller: controller });
         SurveyHelper.fixFont(controller);
         await this.renderSurvey(controller);

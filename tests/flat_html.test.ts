@@ -64,6 +64,12 @@ test('Check createHTMLRect method with long html', async () => {
     const options: IDocOptions = TestHelper.defaultOptions;
     options.htmlRenderAs = 'standard';
     options.format = [150, 100];
+    options.margins = {
+        top: 10 * 72 / 25.4,
+        bot: 10 * 72 / 25.4,
+        left: 10 * 72 / 25.4,
+        right: 10 * 72 / 25.4
+    };
     const controller: DocController = new DocController(options);
     const descPoint: IPoint = controller.leftTopPoint;
     const margins: any = { top: controller.margins.top, bottom: controller.margins.bot, width: controller.unitWidth };

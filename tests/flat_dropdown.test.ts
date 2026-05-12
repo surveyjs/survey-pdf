@@ -78,7 +78,13 @@ test('Check readonly text expends when textFieldRenderAs option set', async () =
     await checkFlatSnapshot(json, {
         snapshotName: 'dropdown_readonly_big_text',
         controllerOptions: {
-            textFieldRenderAs: 'multiLine'
+            textFieldRenderAs: 'multiLine',
+            margins: {
+                left: 10.0,
+                right: 10.0,
+                top: 10.0,
+                bot: 10.0
+            }
         }
     });
 });
@@ -104,7 +110,13 @@ test('Check dropdown when survey mode is display and textFieldRenderAs is multil
             survey.mode = 'display';
         },
         controllerOptions: {
-            textFieldRenderAs: 'multiLine'
+            textFieldRenderAs: 'multiLine',
+            margins: {
+                left: 10.0,
+                right: 10.0,
+                top: 10.0,
+                bot: 10.0
+            }
         }
     });
 });

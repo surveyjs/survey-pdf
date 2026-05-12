@@ -27,7 +27,13 @@ test('Pack two flats on two pages', () => {
     let flats: IRect[] = [TestHelper.defaultRect, TestHelper.defaultRect];
     flats[1].yTop += 10 * DocOptions.MM_TO_PT; flats[1].yBot += 10 * DocOptions.MM_TO_PT;
     let options: IDocOptions = TestHelper.defaultOptions;
-    options.format = [210, flats[0].yBot / DocOptions.MM_TO_PT + options.margins.bot];
+    options.margins = {
+        top: 10 * DocOptions.MM_TO_PT,
+        bot: 10 * DocOptions.MM_TO_PT,
+        left: 10 * DocOptions.MM_TO_PT,
+        right: 10 * DocOptions.MM_TO_PT
+    };
+    options.format = [210, flats[0].yBot / DocOptions.MM_TO_PT + 10];
     options.orientation = 'l';
     let packs: IPdfBrick[][] = PagePacker.pack(TestHelper.wrapRectsPage(flats),
         new DocController(options));
@@ -53,6 +59,12 @@ test('Long checkbox with indent', async () => {
         ]
     };
     let options: IDocOptions = TestHelper.defaultOptions;
+    options.margins = {
+        top: 10 * DocOptions.MM_TO_PT,
+        bot: 10 * DocOptions.MM_TO_PT,
+        left: 10 * DocOptions.MM_TO_PT,
+        right: 10 * DocOptions.MM_TO_PT
+    };
     options.format = [210.0, 45];
     options.orientation = 'l';
     let survey: SurveyPDF = new SurveyPDF(json, options);
@@ -138,7 +150,13 @@ test('Pack near flats new page', () => {
         { xLeft: 20 * DocOptions.MM_TO_PT, xRight: 30 * DocOptions.MM_TO_PT, yTop: 20 * DocOptions.MM_TO_PT, yBot: 30 * DocOptions.MM_TO_PT },
     ];
     let options: IDocOptions = TestHelper.defaultOptions;
-    options.format = [210.0, flats[0].yBot / DocOptions.MM_TO_PT + options.margins.bot];
+    options.margins = {
+        top: 10 * DocOptions.MM_TO_PT,
+        bot: 10 * DocOptions.MM_TO_PT,
+        left: 10 * DocOptions.MM_TO_PT,
+        right: 10 * DocOptions.MM_TO_PT
+    };
+    options.format = [210.0, flats[0].yBot / DocOptions.MM_TO_PT + 10];
     options.orientation = 'l';
     let packs: IPdfBrick[][] = PagePacker.pack(TestHelper.wrapRectsPage(flats),
         new DocController(options));
@@ -163,8 +181,14 @@ test('Unfold compose brick', async () => {
         ]
     };
     let options: IDocOptions = TestHelper.defaultOptions;
-    options.format = [210.0, options.margins.top + new DocController(options).
-        unitHeight / DocOptions.MM_TO_PT + options.margins.bot];
+    options.margins = {
+        top: 10 * DocOptions.MM_TO_PT,
+        bot: 10 * DocOptions.MM_TO_PT,
+        left: 10 * DocOptions.MM_TO_PT,
+        right: 10 * DocOptions.MM_TO_PT
+    };
+    options.format = [210.0, 10 + new DocController(options).
+        unitHeight / DocOptions.MM_TO_PT + 10];
     options.orientation = 'l';
     let survey: SurveyPDF = new SurveyPDF(json, options);
     survey.applyStyle({ question: { container: { padding: 0, borderWidth: 0 } } });
@@ -196,6 +220,12 @@ test('Pack to little page', async () => {
         ]
     };
     let options: IDocOptions = TestHelper.defaultOptions;
+    options.margins = {
+        top: 10 * DocOptions.MM_TO_PT,
+        bot: 10 * DocOptions.MM_TO_PT,
+        left: 10 * DocOptions.MM_TO_PT,
+        right: 10 * DocOptions.MM_TO_PT
+    };
     options.format = [210.0, 30];
     options.orientation = 'l';
     let survey: SurveyPDF = new SurveyPDF(json, options);
@@ -288,7 +318,12 @@ test('Check yTop on new page with panel', async () => {
     let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     survey.applyStyle({ question: { container: { padding: 0, borderWidth: 0 } } });
     const style = survey.getElementStyle(survey.getAllQuestions()[0]) as IQuestionRadiogroupStyle;
-    let controller: DocController = new DocController({ ...TestHelper.defaultOptions, format: [210, 180] });
+    let controller: DocController = new DocController({ ...TestHelper.defaultOptions, format: [210, 180], margins: {
+        top: 10 * DocOptions.MM_TO_PT,
+        bot: 10 * DocOptions.MM_TO_PT,
+        left: 10 * DocOptions.MM_TO_PT,
+        right: 10 * DocOptions.MM_TO_PT
+    } });
     let flats: IPdfBrick[][] = await new FlatSurvey(survey, controller, survey.style.survey).generateFlats();
     let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
     expect(packs.length).toBe(3);
@@ -320,7 +355,6 @@ test('Check adding new page for lack of place before new page', async () => {
         ]
     };
     let options: IDocOptions = {
-        fontSize: 16,
         format: [10, 10],
         margins:
         {
@@ -328,14 +362,12 @@ test('Check adding new page for lack of place before new page', async () => {
             right: 0,
             top: 0,
             bot: 0
-
         }
     };
     let survey: SurveyPDF = new SurveyPDF(json, options);
     survey.applyStyle({ question: { container: { padding: 0, borderWidth: 0 } } });
-    let controller: DocController = new DocController(options);
-    let flats: IPdfBrick[][] = await new FlatSurvey(survey, controller, survey.style.survey).generateFlats();
-    let packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
+    let flats: IPdfBrick[][] = await new FlatSurvey(survey, survey.docController, survey.style.survey).generateFlats();
+    let packs: IPdfBrick[][] = PagePacker.pack(flats, survey.docController);
     expect(packs.length).toBe(3);
     TestHelper.equalRect(expect, flats[0][0], packs[0][0]);
     TestHelper.equalRect(expect, flats[0][1], packs[0][1]);
