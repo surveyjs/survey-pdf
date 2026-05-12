@@ -1,4 +1,5 @@
 import { PDFLibAdapter as PDFLibAdapter } from '../src/pdf_forms/adapters/pdf-lib';
+import { test, expect, vitest, describe, beforeEach, afterEach } from 'vitest';
 
 // Mock PDFLib
 const mockPDFBytes = new Uint8Array([1, 2, 3, 4]);
@@ -11,11 +12,11 @@ interface MockPDFDocument {
 }
 
 const mockPDFDocument = {
-    load: jest.fn().mockImplementation(() => Promise.resolve({
-        getForm: jest.fn().mockReturnValue({
-            getFields: jest.fn().mockReturnValue([])
+    load: vitest.fn().mockImplementation(() => Promise.resolve({
+        getForm: vitest.fn().mockReturnValue({
+            getFields: vitest.fn().mockReturnValue([])
         }),
-        save: jest.fn().mockResolvedValue(mockPDFBytes)
+        save: vitest.fn().mockResolvedValue(mockPDFBytes)
     } as MockPDFDocument))
 };
 
@@ -52,7 +53,7 @@ describe('PdfLibAdapter', () => {
     };
 
     beforeEach(() => {
-        jest.clearAllMocks();
+        vitest.clearAllMocks();
         // Reset PDFLib mock before each test
         const PDFLib = {
             PDFDocument: mockPDFDocument,
@@ -76,14 +77,14 @@ describe('PdfLibAdapter', () => {
 
     test('Check fillForm handles text field', async () => {
         const mockField = new MockPDFTextField();
-        mockField.getName = jest.fn().mockReturnValue('textField');
-        mockField.setText = jest.fn();
+        mockField.getName = vitest.fn().mockReturnValue('textField');
+        mockField.setText = vitest.fn();
 
         mockPDFDocument.load.mockImplementation(() => Promise.resolve({
-            getForm: jest.fn().mockReturnValue({
-                getFields: jest.fn().mockReturnValue([mockField])
+            getForm: vitest.fn().mockReturnValue({
+                getFields: vitest.fn().mockReturnValue([mockField])
             }),
-            save: jest.fn().mockResolvedValue(mockPDFBytes)
+            save: vitest.fn().mockResolvedValue(mockPDFBytes)
         } as MockPDFDocument));
 
         await adapter.fillForm(template, data);
@@ -92,15 +93,15 @@ describe('PdfLibAdapter', () => {
 
     test('Check fillForm handles checkbox', async () => {
         const mockField = new MockPDFCheckBox();
-        mockField.getName = jest.fn().mockReturnValue('checkbox');
-        mockField.check = jest.fn();
-        mockField.uncheck = jest.fn();
+        mockField.getName = vitest.fn().mockReturnValue('checkbox');
+        mockField.check = vitest.fn();
+        mockField.uncheck = vitest.fn();
 
         mockPDFDocument.load.mockImplementation(() => Promise.resolve({
-            getForm: jest.fn().mockReturnValue({
-                getFields: jest.fn().mockReturnValue([mockField])
+            getForm: vitest.fn().mockReturnValue({
+                getFields: vitest.fn().mockReturnValue([mockField])
             }),
-            save: jest.fn().mockResolvedValue(mockPDFBytes)
+            save: vitest.fn().mockResolvedValue(mockPDFBytes)
         } as MockPDFDocument));
 
         await adapter.fillForm(template, data);
@@ -109,14 +110,14 @@ describe('PdfLibAdapter', () => {
 
     test('Check fillForm handles radio group', async () => {
         const mockField = new MockPDFRadioGroup();
-        mockField.getName = jest.fn().mockReturnValue('radio');
-        mockField.select = jest.fn();
+        mockField.getName = vitest.fn().mockReturnValue('radio');
+        mockField.select = vitest.fn();
 
         mockPDFDocument.load.mockImplementation(() => Promise.resolve({
-            getForm: jest.fn().mockReturnValue({
-                getFields: jest.fn().mockReturnValue([mockField])
+            getForm: vitest.fn().mockReturnValue({
+                getFields: vitest.fn().mockReturnValue([mockField])
             }),
-            save: jest.fn().mockResolvedValue(mockPDFBytes)
+            save: vitest.fn().mockResolvedValue(mockPDFBytes)
         } as MockPDFDocument));
 
         await adapter.fillForm(template, data);
@@ -125,14 +126,14 @@ describe('PdfLibAdapter', () => {
 
     test('Check fillForm handles dropdown', async () => {
         const mockField = new MockPDFDropdown();
-        mockField.getName = jest.fn().mockReturnValue('dropdown');
-        mockField.select = jest.fn();
+        mockField.getName = vitest.fn().mockReturnValue('dropdown');
+        mockField.select = vitest.fn();
 
         mockPDFDocument.load.mockImplementation(() => Promise.resolve({
-            getForm: jest.fn().mockReturnValue({
-                getFields: jest.fn().mockReturnValue([mockField])
+            getForm: vitest.fn().mockReturnValue({
+                getFields: vitest.fn().mockReturnValue([mockField])
             }),
-            save: jest.fn().mockResolvedValue(mockPDFBytes)
+            save: vitest.fn().mockResolvedValue(mockPDFBytes)
         } as MockPDFDocument));
 
         await adapter.fillForm(template, data);
@@ -141,14 +142,14 @@ describe('PdfLibAdapter', () => {
 
     test('Check fillForm skips fields with null or undefined values', async () => {
         const mockField = new MockPDFTextField();
-        mockField.getName = jest.fn().mockReturnValue('emptyField');
-        mockField.setText = jest.fn();
+        mockField.getName = vitest.fn().mockReturnValue('emptyField');
+        mockField.setText = vitest.fn();
 
         mockPDFDocument.load.mockImplementation(() => Promise.resolve({
-            getForm: jest.fn().mockReturnValue({
-                getFields: jest.fn().mockReturnValue([mockField])
+            getForm: vitest.fn().mockReturnValue({
+                getFields: vitest.fn().mockReturnValue([mockField])
             }),
-            save: jest.fn().mockResolvedValue(mockPDFBytes)
+            save: vitest.fn().mockResolvedValue(mockPDFBytes)
         } as MockPDFDocument));
 
         await adapter.fillForm(template, { emptyField: null });
@@ -164,32 +165,32 @@ describe('PdfLibAdapter', () => {
         test('Check fillForm processes fields from all pages', async () => {
             // Create mock fields for different pages
             const textField1 = new MockPDFTextField();
-            textField1.getName = jest.fn().mockReturnValue('textField1');
-            textField1.setText = jest.fn();
+            textField1.getName = vitest.fn().mockReturnValue('textField1');
+            textField1.setText = vitest.fn();
 
             const checkbox1 = new MockPDFCheckBox();
-            checkbox1.getName = jest.fn().mockReturnValue('checkbox1');
-            checkbox1.check = jest.fn();
+            checkbox1.getName = vitest.fn().mockReturnValue('checkbox1');
+            checkbox1.check = vitest.fn();
 
             const radio1 = new MockPDFRadioGroup();
-            radio1.getName = jest.fn().mockReturnValue('radio1');
-            radio1.select = jest.fn();
+            radio1.getName = vitest.fn().mockReturnValue('radio1');
+            radio1.select = vitest.fn();
 
             const textField2 = new MockPDFTextField();
-            textField2.getName = jest.fn().mockReturnValue('textField2');
-            textField2.setText = jest.fn();
+            textField2.getName = vitest.fn().mockReturnValue('textField2');
+            textField2.setText = vitest.fn();
 
             // Mock document with fields from multiple pages
             mockPDFDocument.load.mockImplementation(() => Promise.resolve({
-                getForm: jest.fn().mockReturnValue({
-                    getFields: jest.fn().mockReturnValue([
+                getForm: vitest.fn().mockReturnValue({
+                    getFields: vitest.fn().mockReturnValue([
                         textField1,
                         checkbox1,
                         radio1,
                         textField2
                     ])
                 }),
-                save: jest.fn().mockResolvedValue(mockPDFBytes)
+                save: vitest.fn().mockResolvedValue(mockPDFBytes)
             } as MockPDFDocument));
 
             const multiPageData = {
@@ -210,15 +211,15 @@ describe('PdfLibAdapter', () => {
 
         test('Check fillForm handles documents with empty pages', async () => {
             const textField = new MockPDFTextField();
-            textField.getName = jest.fn().mockReturnValue('textField1');
-            textField.setText = jest.fn();
+            textField.getName = vitest.fn().mockReturnValue('textField1');
+            textField.setText = vitest.fn();
 
             // Mock document with only one field
             mockPDFDocument.load.mockImplementation(() => Promise.resolve({
-                getForm: jest.fn().mockReturnValue({
-                    getFields: jest.fn().mockReturnValue([textField])
+                getForm: vitest.fn().mockReturnValue({
+                    getFields: vitest.fn().mockReturnValue([textField])
                 }),
-                save: jest.fn().mockResolvedValue(mockPDFBytes)
+                save: vitest.fn().mockResolvedValue(mockPDFBytes)
             } as MockPDFDocument));
 
             const data = {
@@ -233,32 +234,32 @@ describe('PdfLibAdapter', () => {
 
         test('Check fillForm handles documents with mixed field types across pages', async () => {
             const textField = new MockPDFTextField();
-            textField.getName = jest.fn().mockReturnValue('textField1');
-            textField.setText = jest.fn();
+            textField.getName = vitest.fn().mockReturnValue('textField1');
+            textField.setText = vitest.fn();
 
             const checkbox = new MockPDFCheckBox();
-            checkbox.getName = jest.fn().mockReturnValue('checkbox1');
-            checkbox.check = jest.fn();
+            checkbox.getName = vitest.fn().mockReturnValue('checkbox1');
+            checkbox.check = vitest.fn();
 
             const radio = new MockPDFRadioGroup();
-            radio.getName = jest.fn().mockReturnValue('radio1');
-            radio.select = jest.fn();
+            radio.getName = vitest.fn().mockReturnValue('radio1');
+            radio.select = vitest.fn();
 
             const dropdown = new MockPDFDropdown();
-            dropdown.getName = jest.fn().mockReturnValue('dropdown1');
-            dropdown.select = jest.fn();
+            dropdown.getName = vitest.fn().mockReturnValue('dropdown1');
+            dropdown.select = vitest.fn();
 
             // Mock document with different field types
             mockPDFDocument.load.mockImplementation(() => Promise.resolve({
-                getForm: jest.fn().mockReturnValue({
-                    getFields: jest.fn().mockReturnValue([
+                getForm: vitest.fn().mockReturnValue({
+                    getFields: vitest.fn().mockReturnValue([
                         textField,
                         checkbox,
                         radio,
                         dropdown
                     ])
                 }),
-                save: jest.fn().mockResolvedValue(mockPDFBytes)
+                save: vitest.fn().mockResolvedValue(mockPDFBytes)
             } as MockPDFDocument));
 
             const mixedData = {

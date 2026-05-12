@@ -1,4 +1,5 @@
 import FormsMap from '../src/pdf_forms/map';
+import { test, expect } from 'vitest';
 
 const testMap = {
     'question1': ['f1', 'f1_plus'],

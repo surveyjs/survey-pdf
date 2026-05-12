@@ -60,8 +60,15 @@ export class FlatQuestion<T extends Question = Question, S extends IQuestionStyl
                 this.controller.popMargins();
             }
             else {
-                currPoint = SurveyHelper.createPoint(textFlat.unfold().pop(), false, true);
-                currPoint.xLeft += this.style.spacing.titleRequiredMarkGap;
+                const lastTitleBrick = textFlat.unfold().pop();
+                if(this.style.spacing.titleRequiredMarkGap + this.controller.measureText(requiredText, requiredStyle).width < SurveyHelper.getPageAvailableWidth(this.controller) + this.controller.leftTopPoint.xLeft - lastTitleBrick.xRight) {
+                    currPoint = SurveyHelper.createPoint(lastTitleBrick, false, true);
+                    currPoint.xLeft += this.style.spacing.titleRequiredMarkGap;
+                } else {
+                    const titleXLeft = currPoint.xLeft;
+                    currPoint = SurveyHelper.createPoint(lastTitleBrick, false, false);
+                    currPoint.xLeft = titleXLeft;
+                }
                 composite.addBrick(await SurveyHelper.createTextFlat(currPoint, this.controller, requiredText, requiredStyle));
             }
         }
@@ -133,8 +140,13 @@ export class FlatQuestion<T extends Question = Question, S extends IQuestionStyl
             flats.push(await this.generateFlatsComment(currPoint));
         }
         if (this.question.hasDescriptionUnderInput) {
+            const descriptionContentBrick = new CompositeBrick();
+            if(flats !== null && flats.length !== 0) {
+                descriptionContentBrick.addBrick(flats.pop());
+            }
             currPoint.yTop += this.style.spacing.contentDescriptionGap;
-            flats.push(await this.generateFlatDescription(currPoint));
+            descriptionContentBrick.addBrick(await this.generateFlatDescription(currPoint));
+            flats.push(descriptionContentBrick);
         }
 
         return flats;
@@ -175,19 +187,24 @@ export class FlatQuestion<T extends Question = Question, S extends IQuestionStyl
             }
             case 'bottom': {
                 const contentPoint: IPoint = SurveyHelper.clone(indentPoint);
+                const contentHeaderBrick = new CompositeBrick();
                 this.controller.pushMargins();
                 const indent = this.style.spacing.contentIndentStart;
                 contentPoint.xLeft += indent;
                 this.controller.margins.left += indent;
                 const contentFlats: IPdfBrick[] = await this.generateFlatsContentWithOptionalElements(contentPoint);
                 this.controller.popMargins();
-                flats.push(...contentFlats);
+                if(contentFlats !== null && contentFlats.length !== 0) {
+                    contentHeaderBrick.addBrick(contentFlats.pop());
+                }
                 const titlePoint: IPoint = indentPoint;
                 if (flats.length !== 0) {
                     titlePoint.yTop = flats[flats.length - 1].yBot;
                 }
                 titlePoint.yTop += this.style.spacing.headerContentGap;
-                flats.push(await this.generateFlatHeader(titlePoint));
+                contentHeaderBrick.addBrick(await this.generateFlatHeader(titlePoint));
+                flats.push(...contentFlats);
+                flats.push(contentHeaderBrick);
                 break;
             }
             case 'left': {

@@ -1,7 +1,7 @@
 (<any>window)['HTMLCanvasElement'].prototype.getContext = async () => {
     return {};
 };
-
+import { test, expect } from 'vitest';
 import { checkFlatSnapshot } from './snapshot_helper';
 import { DocOptions, DocController } from '../src/doc_controller';
 import { TestHelper } from '../src/helper_test';

@@ -118,6 +118,16 @@ export abstract class PDFFormFillerBase {
         const plainData = map.mapData(this.data);
         return await this.pdfLibraryAdapter?.fillForm(this.pdfTemplate, plainData);
     }
+
+    private fromCharCode(array: ArrayLike<number>) {
+        const strings: string[] = [];
+        const chunkSize = 0xffff;
+        for (let i = 0; i < array.length; i += chunkSize) {
+            const chunk = Array.prototype.slice.call(array, i, i + chunkSize) as number[];
+            strings.push(String.fromCharCode.apply(null, chunk));
+        }
+        return strings.join('');
+    }
     /**
      * An asynchronous method that allows you to get PDF content in different formats.
      * @param type *(Optional)* One of `"blob"`, `"bloburl"`, `"dataurlstring"`. Do not specify this parameter if you want to get raw PDF content as a string value.
@@ -125,7 +135,7 @@ export abstract class PDFFormFillerBase {
     public async raw(type?: 'blob' | 'bloburl' | 'dataurlstring') {
         const pdfBytes = await this.getPDFBytes();
         if (!type || !pdfBytes) return pdfBytes;
-        if (type == 'dataurlstring') return 'data:application/pdf;base64,' + btoa(String.fromCharCode.apply(null, pdfBytes));
+        if (type == 'dataurlstring') return 'data:application/pdf;base64,' + btoa(this.fromCharCode(pdfBytes as any));
         const blob = new Blob([pdfBytes], { type: 'application/pdf' });
         if (type == 'blob') return blob;
         if (type == 'bloburl') return URL.createObjectURL(blob);

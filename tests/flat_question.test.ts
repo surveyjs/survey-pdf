@@ -1,7 +1,7 @@
 (<any>window)['HTMLCanvasElement'].prototype.getContext = async () => {
     return {};
 };
-
+import { test } from 'vitest';
 import { checkFlatSnapshot } from './snapshot_helper';
 import '../src/flat_layout/flat_textbox';
 import '../src/flat_layout/flat_checkbox';
@@ -408,5 +408,19 @@ test('Check description under input', async () => {
             survey.getAllQuestions()[0].titleLocation = 'bottom';
         },
         snapshotName: 'question_title_bottom_description_under_input'
+    });
+});
+
+test('Check asterix is rendered correctly when space for title is too low', async () => {
+    const json = {
+        elements: [{
+            'type': 'text',
+            'name': 'test',
+            'titleLocation': 'left',
+            'title': 'Health problems or cause of death:',
+            'isRequired': true, }]
+    };
+    await checkFlatSnapshot(json, {
+        snapshotName: 'question_title_left_required'
     });
 });

@@ -1,3 +1,4 @@
+import { test } from 'vitest';
 import { checkFlatSnapshot } from './snapshot_helper';
 import '../src/flat_layout/flat_radiogroup';
 test('Check radiogroup with item comment', async () => {

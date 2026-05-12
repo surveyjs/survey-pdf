@@ -4,6 +4,8 @@
 import { BaseImageUtils } from '../src/utils/image/index';
 import { ImageUtils } from '../src/utils/image/browser';
 import { ImageUtils as NodeImageUtils } from '../src/utils/image/node';
+import { test, expect } from 'vitest';
+
 test('check hash is working correctly', async () => {
     const imageUtils = new BaseImageUtils();
     const testImageInfo = { width: 30, height: 30, data: 'base64' };

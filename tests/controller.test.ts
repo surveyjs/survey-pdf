@@ -1,7 +1,7 @@
 (<any>window)['HTMLCanvasElement'].prototype.getContext = () => {
     return {};
 };
-
+import { test, expect } from 'vitest';
 import { DocController } from '../src/doc_controller';
 
 test('Check doc controller without options', () => {

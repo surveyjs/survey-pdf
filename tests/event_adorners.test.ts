@@ -1,7 +1,7 @@
 (<any>window)['HTMLCanvasElement'].prototype.getContext = async () => {
     return {};
 };
-
+import { test, expect } from 'vitest';
 import { SurveyPDF } from '../src/survey';
 import { DocController, IPoint } from '../src/doc_controller';
 import { AdornersOptions, AdornersPanelOptions, AdornersPageOptions } from '../src/event_handler/adorners';

@@ -1,7 +1,7 @@
 (<any>window)['HTMLCanvasElement'].prototype.getContext = () => {
     return {};
 };
-
+import { test, expect } from 'vitest';
 import { IDocOptions, IRect } from '../src/doc_controller';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
 import { CompositeBrick } from '../src/pdf_render/pdf_composite';
@@ -9,7 +9,7 @@ import { TestHelper } from '../src/helper_test';
 import { SurveyPDF } from '../src/survey';
 
 test('Check composite shift', () => {
-	const flats: IRect[] = [
+    const flats: IRect[] = [
         { xLeft: 10, xRight: 50, yTop: 10, yBot: 20 },
         { xLeft: 10, xRight: 20, yTop: 20, yBot: 30 },
         { xLeft: 20, xRight: 50, yTop: 20, yBot: 30 }
@@ -61,19 +61,19 @@ function checkBalancedQ(pdf: string) {
 test('Check html two pages render', async () => {
     const json = {
         pages: [
-         {
-           name: "page1",
-           elements: [
-             {
-               type: "html",
-               name: "ckeditor",
-               title: "CK Editor",
-               html: `Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia."`,
-               }
-         ]
-        }
-       ],
-       showProgressBar: "top"
+            {
+                name: 'page1',
+                elements: [
+                    {
+                        type: 'html',
+                        name: 'ckeditor',
+                        title: 'CK Editor',
+                        html: 'Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia."',
+                    }
+                ]
+            }
+        ],
+        showProgressBar: 'top'
     };
     const options: IDocOptions = {
         htmlRenderAs: 'standard',
@@ -81,10 +81,10 @@ test('Check html two pages render', async () => {
         fontName: 'Times',
         format: [50, 50],
         margins: {
-          left: 10,
-          right: 10,
-          top: 10,
-          bot: 10,
+            left: 10,
+            right: 10,
+            top: 10,
+            bot: 10,
         }
     };
     const survey: SurveyPDF = new SurveyPDF(json, options);
