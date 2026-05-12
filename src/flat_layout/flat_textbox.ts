@@ -15,11 +15,11 @@ export class FlatTextbox extends FlatQuestion<QuestionTextModel, IQuestionTextSt
         const options: Omit<ITextFieldBrickOptions, 'isMultiline'> = {
             fieldName: this.question.id,
             inputType: this.question.inputType,
-            value: this.question.inputValue,
+            value: !!this.question.value ? this.question.inputValue : '',
             isReadOnly: this.question.isReadOnly,
             shouldRenderReadOnly: shouldRenderReadOnly,
             shouldRenderBorders: settings.readOnlyTextRenderMode === 'input',
-            placeholder: SurveyHelper.getLocString(this.question.locPlaceHolder)
+            placeholder: SurveyHelper.getLocString(this.question.locPlaceHolder) || this.question.inputValue
         };
         return [await SurveyHelper.createCommentFlat(point,
             this.controller, { shouldRenderReadOnly, rows: FlatTextbox.MULTILINE_TEXT_ROWS_COUNT, ...options }, style)];

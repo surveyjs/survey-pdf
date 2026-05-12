@@ -90,5 +90,34 @@ test('Check text field value when mask is applied', async () => {
     question.value = 39.015;
     brick = (await (new FlatTextbox(<any>undefined, question, controller, {})).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0].unfold()[0] as TextFieldBrick;
     expect(brick['options'].value).toBe('39,01');
+});
 
+test('Check text field value, placeholder, mask behavior', async () => {
+    let question = new QuestionTextModel('');
+    const controller = new DocController({});
+    question.fromJSON({
+        'maskType': 'pattern',
+        'maskSettings': {
+            'pattern': '+1-999-999'
+        }
+    });
+    let brick = (await (new FlatTextbox(<any>undefined, question, controller, {})).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0].unfold()[0] as TextFieldBrick;
+    expect(brick['options'].value).toBe('');
+    expect(brick['options'].placeholder).toBe('+1-___-___');
+
+    question.placeholder = 'placeholder';
+    brick = (await (new FlatTextbox(<any>undefined, question, controller, {})).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0].unfold()[0] as TextFieldBrick;
+    expect(brick['options'].value).toBe('');
+    expect(brick['options'].placeholder).toBe('placeholder');
+
+    question.value = '1234567';
+    question.placeholder = '';
+    brick = (await (new FlatTextbox(<any>undefined, question, controller, {})).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0].unfold()[0] as TextFieldBrick;
+    expect(brick['options'].value).toBe('+1-234-567');
+    expect(brick['options'].placeholder).toBe('+1-234-567');
+
+    question.placeholder = 'placeholder';
+    brick = (await (new FlatTextbox(<any>undefined, question, controller, {})).generateFlatsContent({ xLeft: 0, yTop: 0 }))[0].unfold()[0] as TextFieldBrick;
+    expect(brick['options'].value).toBe('+1-234-567');
+    expect(brick['options'].placeholder).toBe('placeholder');
 });
