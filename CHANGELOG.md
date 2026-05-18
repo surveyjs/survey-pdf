@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.5.25](https://github.com/surveyjs/survey-pdf/compare/v2.5.24...v2.5.25) (2026-05-18)
+
 ### 2.5.24 (2026-05-12)
 
 ### [2.5.23](https://github.com/surveyjs/survey-pdf/compare/v2.5.22...v2.5.23) (2026-05-05)
