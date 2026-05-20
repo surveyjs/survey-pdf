@@ -26,8 +26,8 @@ SurveyJS PDF Generator allows you to save an unlimited number of custom-built su
 - Support for headers and footers both on a page and an entire survey level
 - An API to download a fillable survey form as a document file in a traditional PDF format
 - PDF Form conversion to Blob, Base64 URL, or Raw PDF
-
-![Survey PDF Generator](docs/images/survey-pdf-export-overview.png)
+<br>
+<img width="750" height="474" alt="5-health-insurance-1(use as main)" src="https://github.com/user-attachments/assets/71451f5c-ea50-4da6-87a5-b4d478bb50b8" />
 
 ## Get Started
 
