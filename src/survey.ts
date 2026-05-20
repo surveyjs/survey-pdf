@@ -10,9 +10,12 @@ import { AdornersOptions, AdornersPanelOptions, AdornersPageOptions } from './ev
 import { SurveyHelper } from './helper_survey';
 import { IDocStyle } from './style/types';
 import { createStyleFromTheme, getDefaultStyle } from './style';
-import MonochromeLight from './themes/monochrome-light';
-import CompactLayout from './layout_configs/compact';
-import { IDocLayout } from './layout_configs/types';
+import BaseTokens from './appearance/base';
+import BaseTheme from './appearance/themes/base';
+import BaseLayout from './appearance/layouts/base';
+import MonochromeLight from './appearance/themes/monochrome-light';
+import CompactLayout from './appearance/layouts/compact';
+import { IDocLayout } from './appearance/layouts/types';
 import { parseSideValues } from './utils';
 import { ITextStyle, ISelectionInputStyle, IQuestionStyle, IPageStyle, IPanelStyle } from './style/types';
 import { FlatRepository } from './flat_layout/flat_repository';
@@ -302,8 +305,9 @@ export class SurveyPDF extends SurveyModel {
     }
     private _theme: ITheme;
     public get theme(): ITheme {
-        return this._theme || MonochromeLight;
+        return this._theme || this.defaultTheme;
     }
+    public readonly defaultTheme: ITheme = SurveyHelper.mergeObjects({}, { cssVariables: BaseTokens }, { cssVariables: BaseTheme }, MonochromeLight);
     /**
      * Applies a UI theme to the exported PDF document.
      *
@@ -311,13 +315,13 @@ export class SurveyPDF extends SurveyModel {
      * @param theme An [`ITheme`](https://surveyjs.io/form-library/documentation/api-reference/itheme) object.
      */
     public applyTheme(theme: ITheme): void {
-        this._theme = SurveyHelper.mergeObjects({}, this.theme, theme);
+        this._theme = SurveyHelper.mergeObjects({}, this.defaultTheme, theme);
         this.clearStyles();
     }
-
+    public readonly defaultLayout: IDocLayout = SurveyHelper.mergeObjects({}, BaseTokens, BaseLayout, CompactLayout);
     private _layout: IDocLayout;
     public get layout(): IDocLayout {
-        return this._layout || SurveyHelper.mergeObjects({}, CompactLayout, this.legacyLayout);
+        return this._layout || this.defaultLayout;
     }
 
     /**
@@ -327,7 +331,7 @@ export class SurveyPDF extends SurveyModel {
      * @param layout An `IDocLayout` object that specifies layout variables.
      */
     public applyLayout(layout: IDocLayout): void {
-        this._layout = SurveyHelper.mergeObjects({}, this.layout, layout);
+        this._layout = SurveyHelper.mergeObjects({}, this.defaultLayout, layout);
         this.clearStyles();
     }
 

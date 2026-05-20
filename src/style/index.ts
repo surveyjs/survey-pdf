@@ -1,7 +1,7 @@
 import { createVariablesManager } from './utils';
 import { ITheme } from 'survey-core';
 import { IDocStyle } from './types';
-import { IDocLayout } from 'src/layout_configs/types';
+import { IDocLayout } from '../appearance/layouts/types';
 
 export function createStyleFromTheme<T>(theme: ITheme, layout: IDocLayout, callback: (options: { getColorVariable: (varName: string) => string, getSizeVariable:(varName: string) => number }) => T) {
     const themeVariablesManager = createVariablesManager();
