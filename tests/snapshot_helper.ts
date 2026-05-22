@@ -1,5 +1,6 @@
 import { expect, inject } from 'vitest';
 import { EventBase, MutlipleTextErrorRow, MutlipleTextRow, PanelModel, QuestionMultipleTextModel } from 'survey-core';
+import { MonochromeLight } from 'survey-core/themes';
 import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { IDocOptions } from '../src/doc_controller';
 import { IPdfBrick } from '../src/pdf_render/pdf_brick';
@@ -82,6 +83,7 @@ export async function checkPDFSnapshot(surveyJSON: any, snapshotOptions: IPDFSna
     const jsPdfVersion = jsPDF.version;
     jsPDF.version = 'test';
     const survey = new SurveyPDFTester(surveyJSON, snapshotOptions.controllerOptions ?? TestHelper.defaultOptions);
+    survey.applyTheme(MonochromeLight);
     snapshotOptions.onSurveyCreated && snapshotOptions.onSurveyCreated(survey);
     correctSurveyElementIds(survey);
     survey.onDocControllerCreated.add((_, options) => {
@@ -176,6 +178,7 @@ function processBricks(bricks: Array<Array<IPdfBrick>> | Array<IPdfBrick>, prope
 
 export async function checkFlatSnapshot(surveyJSON: any, snapshotOptions: IFlatSnaphotOptions): Promise<void> {
     const survey = new SurveyPDF(surveyJSON, snapshotOptions.controllerOptions ?? TestHelper.defaultOptions);
+    survey.applyTheme(MonochromeLight);
     snapshotOptions.onSurveyCreated && snapshotOptions.onSurveyCreated(survey);
     correctSurveyElementIds(survey);
     const compareCallback = (bricks: Array<Array<IPdfBrick>> | Array<IPdfBrick>) => {
