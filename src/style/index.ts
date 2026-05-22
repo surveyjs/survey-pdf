@@ -37,6 +37,7 @@ export function getDefaultStyle (theme: ITheme, layout: IDocLayout): IDocStyle {
                 },
                 spacing: {
                     titleDescriptionGap: getSizeVariable('--sjs2-pdf-layout-title-large-gap'),
+                    pageGap: baseSpace * 3, //todo: need variable
                     headerContentGap: getSizeVariable('--sjs2-pdf-layout-page-gap-vertical') + getSizeVariable('--sjs2-pdf-layout-title-large-padding-bottom'),
                 },
                 backgroundColor: getColorVariable('--sjs2-color-utility-body'),

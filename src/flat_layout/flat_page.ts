@@ -22,5 +22,11 @@ export class FlatPage extends FlatPanel<PageModel, IPageStyle> implements IFlatP
         this.survey.afterRenderSurveyElement(this.panel, bricks);
         return bricks;
     }
+    protected getGapBetweenRows(): number {
+        if(this.survey.isSinglePage && this.panel === this.survey.visiblePages[0]) {
+            return this.survey.style.survey.spacing.pageGap;
+        }
+        return super.getGapBetweenRows();
+    }
 }
 FlatRepository.registerPage(FlatPage);
