@@ -1,4 +1,4 @@
-import { IRect, IMargin, ISize, DocOptions, DocController } from '../doc_controller';
+import { IRect, IMargin, ISize, DocController } from '../doc_controller';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { TextBrick } from '../pdf_render/pdf_text';
 import { SurveyHelper } from '../helper_survey';
@@ -219,7 +219,7 @@ export class DrawCanvas {
     public drawText(textOptions: IDrawTextOptions): void {
         textOptions = SurveyHelper.clone(textOptions);
         if (typeof textOptions.fontSize === 'undefined') {
-            textOptions.fontSize = DocOptions.FONT_SIZE;
+            textOptions.fontSize = 6;
         }
         if (typeof textOptions.isBold === 'undefined') {
             textOptions.isBold = false;
