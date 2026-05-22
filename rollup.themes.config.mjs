@@ -5,7 +5,7 @@ import packageJSON from './package.json' with { type: 'json' };
 const version = packageJSON.version;
 const buildPath = fileURLToPath(new URL('./build', import.meta.url));
 const inputs = {
-  'monochrome-light': fileURLToPath(new URL('./src/appearance/themes/monochrome-light.ts', import.meta.url)),
+  'default-light': fileURLToPath(new URL('./src/appearance/themes/default-light.ts', import.meta.url)),
   'index': fileURLToPath(new URL('./src/appearance/themes/index.ts', import.meta.url)),
 }
 const tsconfig = fileURLToPath(new URL('./tsconfig.themes.json', import.meta.url));

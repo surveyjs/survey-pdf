@@ -1,4 +1,4 @@
 
-import MonochromeLight from './monochrome-light';
-export { MonochromeLight };
-export default { MonochromeLight };
+import DefaultLight from './default-light';
+export { DefaultLight };
+export default { DefaultLight };
