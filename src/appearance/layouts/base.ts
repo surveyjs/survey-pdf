@@ -1,6 +1,5 @@
 // Auto-generated theme: base-layout
 export default {
-    '--sjs2-is-panelless': 'false',
     '--sjs2-typography-font-family-text': 'Open Sans',
     '--sjs2-typography-font-family-code': 'DM Mono',
     '--sjs2-typography-font-family-component-input-content': 'var(--sjs2-typography-font-family-text)',
@@ -40,5 +39,6 @@ export default {
     '--sjs2-typography-font-weight-component-page-title': 'var(--sjs2-typography-font-weight-strong)',
     '--sjs2-typography-font-weight-component-page-description': 'var(--sjs2-typography-font-weight-basic)',
     '--sjs2-typography-font-weight-component-header-title': 'var(--sjs2-typography-font-weight-strong)',
-    '--sjs2-typography-font-weight-component-header-description': 'var(--sjs2-typography-font-weight-basic)'
+    '--sjs2-typography-font-weight-component-header-description': 'var(--sjs2-typography-font-weight-basic)',
+    '--sjs2-is-panelless': 'false'
 };

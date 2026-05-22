@@ -13,7 +13,7 @@ import { createStyleFromTheme, getDefaultStyle } from './style';
 import BaseTokens from './appearance/base';
 import BaseTheme from './appearance/themes/base';
 import BaseLayout from './appearance/layouts/base';
-import MonochromeLight from './appearance/themes/monochrome-light';
+import DefaultLight from './appearance/themes/default-light';
 import CompactLayout from './appearance/layouts/compact';
 import { IDocLayout } from './appearance/layouts/types';
 import { parseSideValues } from './utils';
@@ -57,7 +57,7 @@ export class SurveyPDF extends SurveyModel {
                 }
             }
         }
-        this.applyTheme(MonochromeLight);
+        this.applyTheme(this.defaultTheme);
     }
     public get haveCommercialLicense(): boolean {
         const f = hasLicense;
@@ -307,7 +307,7 @@ export class SurveyPDF extends SurveyModel {
     public get theme(): ITheme {
         return this._theme || this.defaultTheme;
     }
-    public readonly defaultTheme: ITheme = SurveyHelper.mergeObjects({}, { cssVariables: BaseTokens }, { cssVariables: BaseTheme }, MonochromeLight);
+    public readonly defaultTheme: ITheme = SurveyHelper.mergeObjects({}, { cssVariables: BaseTokens }, { cssVariables: BaseTheme }, DefaultLight);
     /**
      * Applies a UI theme to the exported PDF document.
      *
@@ -318,7 +318,13 @@ export class SurveyPDF extends SurveyModel {
         this._theme = SurveyHelper.mergeObjects({}, this.defaultTheme, theme);
         this.clearStyles();
     }
-    public readonly defaultLayout: IDocLayout = SurveyHelper.mergeObjects({}, BaseTokens, BaseLayout, CompactLayout);
+    private defaultLayoutValue: IDocLayout;
+    public get defaultLayout(): IDocLayout {
+        if(!this.defaultLayoutValue) {
+            this.defaultLayoutValue = SurveyHelper.mergeObjects({}, BaseTokens, BaseLayout, CompactLayout, this.legacyLayout);
+        }
+        return this.defaultLayoutValue;
+    }
     private _layout: IDocLayout;
     public get layout(): IDocLayout {
         return this._layout || this.defaultLayout;
