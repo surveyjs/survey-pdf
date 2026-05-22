@@ -391,10 +391,10 @@ export class DocController extends DocOptions {
         }
         this._useCustomFontInHtml = options.useCustomFontInHtml && SurveyHelper.isFontExist(this, this.fontName);
         this._helperDoc = new jsPDF(jspdfOptions);
-        this._doc.setFont(this.fontName);
-        this._helperDoc.setFont(this.fontName);
-        this._doc.setFontSize(this.fontSize);
-        this._helperDoc.setFontSize(this.fontSize);
+        this._doc.setFont('helvetica');
+        this._helperDoc.setFont('helvetica');
+        this._doc.setFontSize(6);
+        this._helperDoc.setFontSize(6);
         this._fontStyle = 'normal';
         this.marginsStack = [];
     }
