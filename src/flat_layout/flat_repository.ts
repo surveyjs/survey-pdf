@@ -5,7 +5,8 @@ import { IFlatQuestion, FlatQuestion } from './flat_question';
 import { FlatQuestionDefault } from './flat_default';
 import { IPanelStyle, IQuestionStyle } from '../style/types';
 import { IFlatPanel } from './flat_panel';
-import { IFlatPage, IFlatSurvey } from 'src/entries/pdf-base';
+import { IFlatPage } from './flat_page';
+import { IFlatSurvey } from './flat_survey';
 
 export type FlatConstructor = new (
     survey: SurveyPDF,
