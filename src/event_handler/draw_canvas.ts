@@ -1,4 +1,4 @@
-import { IRect, IMargin, ISize, DocOptions, DocController } from '../doc_controller';
+import { IRect, IMargin, ISize, DocController } from '../doc_controller';
 import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { TextBrick } from '../pdf_render/pdf_text';
 import { SurveyHelper } from '../helper_survey';
@@ -218,23 +218,19 @@ export class DrawCanvas {
      */
     public drawText(textOptions: IDrawTextOptions): void {
         textOptions = SurveyHelper.clone(textOptions);
-        if (typeof textOptions.fontSize === 'undefined') {
-            textOptions.fontSize = DocOptions.FONT_SIZE;
-        }
         if (typeof textOptions.isBold === 'undefined') {
             textOptions.isBold = false;
         }
-        const options = {
+        const style = SurveyHelper.getPatchedTextStyle(this.controller, {
             fontStyle: textOptions.isBold ? 'bold' : 'normal',
             fontSize: textOptions.fontSize,
             fontName: this.controller.fontName,
             fontColor: '#404040',
-            lineHeight: textOptions.fontSize * 1.15
-        };
-        const textSize: ISize = this.controller.measureText(textOptions.text, options);
+        });
+        const textSize: ISize = this.controller.measureText(textOptions.text, style);
         const textRect: IRect = this.alignRect(textOptions, textSize);
         this.packs.push(new TextBrick(this.controller,
-            textRect, textOptions, options));
+            textRect, textOptions, style));
     }
     /**
      * Draws an image within the drawing area.

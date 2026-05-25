@@ -12,6 +12,6 @@ export class ImageUtils extends BaseImageUtils implements IImageUtils {
             data = new Uint8Array(await res.arrayBuffer());
         }
         const size = imageSize(data);
-        return { data, width: size.width * pxToPt, height: size.height * pxToPt, id: this.getImageId() };
+        return { data: data as Uint8Array<ArrayBuffer>, width: size.width * pxToPt, height: size.height * pxToPt, id: this.getImageId() };
     }
 }
