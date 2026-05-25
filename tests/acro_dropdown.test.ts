@@ -45,7 +45,7 @@ test('Dropdown MK appearence fix', async () => {
     let controller: DocController = new DocController(TestHelper.defaultOptions);
     await survey['renderSurvey'](controller);
     expect(controller.doc.internal.acroformPlugin.
-        acroFormDictionaryRoot.Fields[0].MK).toBe('<< /BG [ 1. 1. 1.  ]  >>');
+        acroFormDictionaryRoot.Fields[0].MK).toBe('<< /BG [ 0.961 0.961 0.961  ]  >>');
 });
 test('Dropdown display value', async () => {
     let json: any = {

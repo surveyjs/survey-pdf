@@ -76,6 +76,20 @@ function emitNonSourceFiles() {
                 'import': './fesm/pdf-form-filler.mjs',
                 'require': './pdf-form-filler.js'
             },
+            "./layouts": {
+                "types": "./layouts/index.d.ts",
+                "import": "./fesm/layouts/index.mjs",
+                "require": "./layouts/index.js"
+            },
+            "./layouts/index": {
+                "types": "./layouts/index.d.ts",
+                "import": "./fesm/layouts/index.mjs",
+                "require": "./layouts/index.js"
+            },
+            "./layouts/*": {
+                "types": "./layouts/*.d.ts",
+                "default": "./layouts/*.js",
+            },
         }
     };
     if (!existsSync(buildPath)) {
