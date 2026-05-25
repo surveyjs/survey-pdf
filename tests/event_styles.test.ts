@@ -2,10 +2,10 @@ import { test, expect } from 'vitest';
 import { SurveyPDF } from '../src/survey';
 import { ITheme, PanelModel } from 'survey-core';
 import { MonochromeLight } from 'survey-core/themes';
-import CompactLayout from '../src/appearance/layouts/compact';
+import CompactLayout from '../src/layouts/compact';
 import { FlatCheckbox } from '../src/flat_layout/flat_checkbox';
 import { DocController } from '../src/doc_controller';
-import { IDocLayout } from '../src/appearance/layouts/types';
+import { IDocLayout } from '../src/layouts/types';
 test('onGetQuestionStyle is fired and can modify question style', () => {
     const survey = new SurveyPDF({
         pages: [

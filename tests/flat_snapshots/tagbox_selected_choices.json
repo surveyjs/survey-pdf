@@ -24,7 +24,7 @@
 					"fontColor": "#1c1b20",
 					"width": 12,
 					"height": 12,
-					"borderColor": "#1c1b20",
+					"borderColor": "#8e8e8e",
 					"borderWidth": 0.75,
 					"backgroundColor": "#ffffff",
 					"checkMark": "3"
@@ -102,7 +102,7 @@
 					"fontColor": "#1c1b20",
 					"width": 12,
 					"height": 12,
-					"borderColor": "#1c1b20",
+					"borderColor": "#8e8e8e",
 					"borderWidth": 0.75,
 					"backgroundColor": "#ffffff",
 					"checkMark": "3"
