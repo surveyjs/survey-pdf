@@ -10,12 +10,9 @@ import { AdornersOptions, AdornersPanelOptions, AdornersPageOptions } from './ev
 import { SurveyHelper } from './helper_survey';
 import { IDocStyle } from './style/types';
 import { createStyleFromTheme, getDefaultStyle } from './style';
-import BaseTokens from './appearance/base';
-import BaseTheme from './appearance/themes/base';
-import BaseLayout from './appearance/layouts/base';
-import DefaultLight from './appearance/themes/default-light';
-import CompactLayout from './appearance/layouts/compact';
-import { IDocLayout } from './appearance/layouts/types';
+import { BaseTheme } from 'survey-core';
+import CompactLayout from './layouts/compact';
+import { IDocLayout } from './layouts/types';
 import { parseSideValues } from './utils';
 import { ITextStyle, ISelectionInputStyle, IQuestionStyle, IPageStyle, IPanelStyle } from './style/types';
 import { FlatRepository } from './flat_layout/flat_repository';
@@ -57,7 +54,7 @@ export class SurveyPDF extends SurveyModel {
                 }
             }
         }
-        this.applyTheme(this.defaultTheme);
+        this.applyTheme(BaseTheme);
     }
     public get haveCommercialLicense(): boolean {
         const f = hasLicense;
@@ -305,9 +302,8 @@ export class SurveyPDF extends SurveyModel {
     }
     private _theme: ITheme;
     public get theme(): ITheme {
-        return this._theme || this.defaultTheme;
+        return this._theme || BaseTheme;
     }
-    public readonly defaultTheme: ITheme = SurveyHelper.mergeObjects({}, { cssVariables: BaseTokens }, { cssVariables: BaseTheme }, DefaultLight);
     /**
      * Applies a UI theme to the exported PDF document.
      *
@@ -315,13 +311,13 @@ export class SurveyPDF extends SurveyModel {
      * @param theme An [`ITheme`](https://surveyjs.io/form-library/documentation/api-reference/itheme) object.
      */
     public applyTheme(theme: ITheme): void {
-        this._theme = SurveyHelper.mergeObjects({}, this.defaultTheme, theme);
+        this._theme = SurveyHelper.mergeObjects({}, BaseTheme, theme);
         this.clearStyles();
     }
     private defaultLayoutValue: IDocLayout;
     public get defaultLayout(): IDocLayout {
         if(!this.defaultLayoutValue) {
-            this.defaultLayoutValue = SurveyHelper.mergeObjects({}, BaseTokens, BaseLayout, CompactLayout, this.legacyLayout);
+            this.defaultLayoutValue = SurveyHelper.mergeObjects({}, CompactLayout, this.legacyLayout);
         }
         return this.defaultLayoutValue;
     }

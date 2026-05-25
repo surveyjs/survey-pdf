@@ -76,20 +76,6 @@ function emitNonSourceFiles() {
                 'import': './fesm/pdf-form-filler.mjs',
                 'require': './pdf-form-filler.js'
             },
-            "./themes": {
-                "types": "./themes/index.d.ts",
-                "import": "./fesm/themes/index.mjs",
-                "require": "./themes/index.js"
-            },
-            "./themes/index": {
-                "types": "./themes/index.d.ts",
-                "import": "./fesm/themes/index.mjs",
-                "require": "./themes/index.js"
-            },
-            "./themes/*": {
-                "types": "./themes/*.d.ts",
-                "default": "./themes/*.js",
-            },
             "./layouts": {
                 "types": "./layouts/index.d.ts",
                 "import": "./fesm/layouts/index.mjs",

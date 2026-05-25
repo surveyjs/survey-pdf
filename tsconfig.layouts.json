@@ -4,7 +4,7 @@
         "baseUrl": "."
     },
     "include": [
-        "./src/appearance/layouts/index.ts"
+        "./src/layouts/index.ts"
     ],
     "exclude": [],
 }
