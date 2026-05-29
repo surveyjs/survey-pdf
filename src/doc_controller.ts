@@ -229,6 +229,11 @@ export interface IDocOptions {
     tagboxSelectedChoicesOnly?: boolean;
 
     htmlToImageQuality?: number;
+    /**
+     * Specifies the height of the Other input field in rows.
+     *
+     * Default value: 2
+     */
     otherRowsCount?: number;
     showNavigation?: boolean;
 }
