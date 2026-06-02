@@ -308,7 +308,8 @@ export class SurveyPDF extends SurveyModel {
      * Applies a UI theme to the exported PDF document.
      *
      * A theme defines color- and shadow-related CSS variables. To configure spacing, sizing, typography, and other non-color variables, use the [`applyLayout`](#applyLayout) method.
-     * @param theme An [`ITheme`](https://surveyjs.io/form-library/documentation/api-reference/itheme) object.
+     * @param theme An [`ITheme`](https://surveyjs.io/form-library/documentation/api-reference/itheme) object with theme settings.
+     * @param baseTheme An optional `ITheme` object used as the base theme. When specified, it is deep-merged with `theme`, and the merged result is applied.
      */
     public applyTheme(theme: ITheme, baseTheme?: ITheme): void {
         this._theme = SurveyHelper.mergeObjects({}, BaseTheme, baseTheme ?? {}, theme);
@@ -331,6 +332,7 @@ export class SurveyPDF extends SurveyModel {
      *
      * A layout defines non-color CSS variables, including spacing, sizing, typography, border radius, and other dimensional variables. To configure colors and shadows, use the [`applyTheme`](#applyTheme) method.
      * @param layout An `IDocLayout` object that specifies layout variables.
+     * @param baseLayout An optional `IDocLayout` object used as the base layout. When specified, it is deep-merged with `layout`, and the merged result is applied.
      */
     public applyLayout(layout: IDocLayout, baseLayout?: IDocLayout): void {
         this._layout = SurveyHelper.mergeObjects({}, this.defaultLayout, baseLayout ?? {}, layout);
