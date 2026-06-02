@@ -254,6 +254,7 @@ export function getDefaultStyle (theme: ITheme, layout: IDocLayout): IDocStyle {
                 }
             },
             matrix: {
+                columnMinWidth: baseSize * 12,
                 listChoiceText: {
                     fontColor: getColorVariable('--sjs2-color-fg-basic-primary'),
                     fontSize: getSizeVariable('--sjs2-typography-font-size-default'),
