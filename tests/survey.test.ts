@@ -320,3 +320,32 @@ test('check margins are changing css variables', async() => {
     expect(layout['--sjs2-pdf-layout-page-padding-bottom']).toBe(`${96.0 / 25.4 * 12}px`);
     expect(layout['--sjs2-pdf-layout-page-padding-right']).toBe(`${96.0 / 25.4 * 63}px`);
 });
+
+test('check merge for theme', async() => {
+    let survey = new SurveyPDF({});
+    survey.applyTheme({ cssVariables: {
+        '--test-var': 'test-var-value'
+    } }, { cssVariables: { '--test-base-var': 'test-base-var-value' } });
+    expect(survey.theme.cssVariables?.['--test-var']).toBe('test-var-value');
+    expect(survey.theme.cssVariables?.['--sjs2-color-bg-basic-primary']).toBeDefined();
+    survey.applyTheme({ cssVariables: {
+        '--test-var': 'test-var-value'
+    } }, { cssVariables: { '--test-base-var': 'test-base-var-value' } });
+    expect(survey.theme.cssVariables?.['--test-var']).toBe('test-var-value');
+    expect(survey.theme.cssVariables?.['--test-base-var']).toBe('test-base-var-value');
+});
+
+test('check merge for layout', async() => {
+    let survey = new SurveyPDF({});
+    survey.applyLayout({
+        '--test-var': 'test-var-value'
+    }, { '--test-base-var': 'test-base-var-value' });
+    expect(survey.layout['--test-var']).toBe('test-var-value');
+    expect(survey.layout['--sjs2-base-unit-size']).toBeDefined();
+    survey.applyLayout({
+        '--test-var': 'test-var-value'
+    }, { '--test-base-var': 'test-base-var-value' });
+    expect(survey.layout['--test-var']).toBe('test-var-value');
+    expect(survey.layout['--test-base-var']).toBe('test-base-var-value');
+    expect(survey.layout['--sjs2-base-unit-size']).toBeDefined();
+});
