@@ -3,89 +3,10 @@
 };
 import { test, expect } from 'vitest';
 import { SurveyPDF } from '../src/survey';
-import { DocController } from '../src/doc_controller';
-import { FlatSurvey } from '../src/flat_layout/flat_survey';
 import { FlatBooleanCheckbox, FlatBoolean } from '../src/flat_layout/flat_boolean';
-import { IPdfBrick } from '../src/pdf_render/pdf_brick';
-import { TextBrick } from '../src/pdf_render/pdf_text';
-import { BooleanItemBrick } from '../src/pdf_render/pdf_booleanitem';
-import { SurveyHelper } from '../src/helper_survey';
 import { Model, QuestionBooleanModel } from 'survey-core';
+import { checkFlatSnapshot } from './snapshot_helper';
 let __dummy_bl = new FlatBooleanCheckbox(null, null, null);
-
-test('Check boolean undefined', async () => {
-    let json: any = {
-        questions: [
-            {
-                type: 'boolean',
-                name: 'bool_undefined',
-                titleLocation: 'hidden',
-                labelTrue: 'Y',
-                labelFalse: 'N'
-            }
-        ]
-    };
-    let survey: SurveyPDF = new SurveyPDF(json, { useLegacyBooleanRendering: true });
-    let controller: DocController = new DocController({ useLegacyBooleanRendering: true });
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(1);
-    let unfoldFlats: IPdfBrick[] = flats[0][0].unfold();
-    expect(unfoldFlats.length).toBe(1);
-    expect(unfoldFlats[0] instanceof BooleanItemBrick);
-});
-test('Check boolean true', async () => {
-    let json: any = {
-        questions: [
-            {
-                type: 'boolean',
-                name: 'bool_undefined',
-                titleLocation: 'hidden',
-                labelTrue: 'Y',
-                labelFalse: 'N',
-                defaultValue: true
-            }
-        ]
-    };
-    let survey: SurveyPDF = new SurveyPDF(json, { useLegacyBooleanRendering: true });
-    let controller: DocController = new DocController({ useLegacyBooleanRendering: true });
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(1);
-    let unfoldFlats: IPdfBrick[] = flats[0][0].unfold();
-    expect(unfoldFlats.length).toBe(2);
-    expect(unfoldFlats[0] instanceof BooleanItemBrick);
-    expect(unfoldFlats[1] instanceof TextBrick);
-    expect(unfoldFlats[1].xLeft).toBe(unfoldFlats[0].xRight +
-        controller.unitWidth * SurveyHelper.GAP_BETWEEN_ITEM_TEXT);
-    expect((<TextBrick>unfoldFlats[1])['text']).toBe(json.questions[0].labelTrue);
-});
-test('Check boolean false', async () => {
-    let json: any = {
-        questions: [
-            {
-                type: 'boolean',
-                name: 'bool_undefined',
-                titleLocation: 'hidden',
-                labelTrue: 'Y',
-                labelFalse: 'N',
-                defaultValue: false
-            }
-        ]
-    };
-    let survey: SurveyPDF = new SurveyPDF(json, { useLegacyBooleanRendering: true });
-    let controller: DocController = new DocController({ useLegacyBooleanRendering: true });
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(1);
-    let unfoldFlats: IPdfBrick[] = flats[0][0].unfold();
-    expect(unfoldFlats.length).toBe(2);
-    expect(unfoldFlats[0] instanceof BooleanItemBrick);
-    expect(unfoldFlats[1] instanceof TextBrick);
-    expect(unfoldFlats[1].xLeft).toBe(unfoldFlats[0].xRight +
-        controller.unitWidth * SurveyHelper.GAP_BETWEEN_ITEM_TEXT);
-    expect((<TextBrick>unfoldFlats[1])['text']).toBe(json.questions[0].labelFalse);
-});
 
 test('Check boolean renderAs: radiogroup question', async () => {
     const question = new QuestionBooleanModel('q1');
@@ -181,4 +102,34 @@ test('Check boolean with display mode', async () => {
     question.setSurveyImpl(survey);
     let flat = new FlatBoolean(null, question, null);
     expect(flat['question'].isInputReadOnly).toBe(true);
+});
+
+test('Check boolean renderAs: checkbox with label', async () => {
+    await checkFlatSnapshot({ elements: [{
+        'type': 'boolean',
+        'name': 'test',
+        'title': 'Test title',
+        'renderAs': 'checkbox',
+        'titleLocation': 'hidden',
+    }] }, { snapshotName: 'boolean_checkbox_label', controllerOptions: { fontSize: 14 } });
+});
+
+test('Check boolean renderAs: checkbox with label and required', async () => {
+    await checkFlatSnapshot({ elements: [{
+        'type': 'boolean',
+        'name': 'test',
+        'title': 'Test title',
+        'renderAs': 'checkbox',
+        'titleLocation': 'hidden',
+        'isRequired': true,
+    }] }, { snapshotName: 'boolean_checkbox_label_required', controllerOptions: { fontSize: 14 } });
+});
+
+test('Check boolean renderAs: checkbox with title', async () => {
+    await checkFlatSnapshot({ elements: [{
+        'type': 'boolean',
+        'name': 'test',
+        'title': 'Test title',
+        'renderAs': 'checkbox',
+    }] }, { snapshotName: 'boolean_checkbox_title', controllerOptions: { fontSize: 14 } });
 });
