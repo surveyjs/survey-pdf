@@ -141,6 +141,9 @@ export class FlatPanel<T extends PanelModel = PanelModel, S extends IPanelStyle 
         });
         return rows;
     }
+    protected getGapBetweenRows(): number {
+        return this.style.spacing.elementGap;
+    }
     protected async generateRowsFlats(point: IPoint): Promise<IPdfBrick[]> {
         const currPoint = SurveyHelper.clone(point);
         const rowsFlats: IPdfBrick[] = [];
@@ -182,7 +185,7 @@ export class FlatPanel<T extends PanelModel = PanelModel, S extends IPanelStyle 
                 rowContainers.forEach((elementFlat: ContainerBrick) => rowsFlats.push(...elementFlat.getBricks()));
                 rowsFlats.push(SurveyHelper.createRowlineFlat(currPoint, this.controller));
                 currPoint.xLeft = point.xLeft;
-                currPoint.yTop += this.style.spacing.elementGap;
+                currPoint.yTop += this.getGapBetweenRows();
                 nextMarginLeft = currPoint.xLeft;
             }
         }

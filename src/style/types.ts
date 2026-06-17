@@ -246,7 +246,12 @@ export interface ISpacingBase {
 /**
  * Defines spacing values applied to survey UI elements in an exported PDF document.
  */
-export interface ISurveySpacing extends ISpacingBase {}
+export interface ISurveySpacing extends ISpacingBase {
+    /**
+     * Specifies the vertical gap between rendered survey pages, in points. Applies only when all survey pages are rendered on a single PDF page ([`questionsOnPageMode`](https://surveyjs.io/form-library/documentation/api-reference/survey-data-model#questionsOnPageMode) is set to `"singlePage"`).
+     */
+    pageGap?: number;
+}
 /**
  * Defines the visual style applied to [survey](https://surveyjs.io/form-library/documentation/api-reference/survey-data-model) UI elements in an exported PDF document.
  *
