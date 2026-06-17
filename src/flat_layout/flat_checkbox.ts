@@ -23,7 +23,15 @@ export class FlatCheckbox<T extends QuestionCheckboxModel = QuestionCheckboxMode
                 }
             }, SurveyHelper.getPatchedTextStyle(this.controller, { ...style } as ISelectionInputStyle));
     }
+    public async generateFlats(point: IPoint): Promise<IPdfBrick[]> {
+        const oldMaxSelectedChoices = this.question.maxSelectedChoices;
+        this.question.maxSelectedChoices = 0;
+        const flats = await super.generateFlats(point);
+        this.question.maxSelectedChoices = oldMaxSelectedChoices;
+        return flats;
+    }
 }
+
 export class FlatTagbox extends FlatCheckbox<QuestionTagboxModel> {
     protected getVisibleChoices(): Array<ItemValue> {
         if(this.controller.tagboxSelectedChoicesOnly) {
