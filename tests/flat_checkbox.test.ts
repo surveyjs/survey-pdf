@@ -356,3 +356,21 @@ test('Check checkbox with item comment', async () => {
         },
     });
 });
+
+test('Check checkbox with maxSelectedChoices', async () => {
+    await checkFlatSnapshot({ 'elements':
+         [{
+             'type': 'checkbox',
+             'name': 'question1',
+             'choices': [
+                 'Item 1',
+                 'Item 2',
+             ],
+             defaultValue: ['Item 1'],
+             'maxSelectedChoices': 1,
+             'colCount': 1
+         }]
+    }, {
+        snapshotName: 'checkbox_max_selected_choices',
+    });
+});
