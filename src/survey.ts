@@ -299,6 +299,7 @@ export class SurveyPDF extends SurveyModel {
         } else {
             this.styleValue = SurveyHelper.mergeObjects({}, this.style, value);
         }
+        this.stylesHash = {};
     }
     private _theme: ITheme;
     public get theme(): ITheme {

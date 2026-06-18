@@ -111,7 +111,7 @@ export class FlatPanel<T extends PanelModel = PanelModel, S extends IPanelStyle 
                     currentAvailableWidth = availableWidth - gapBetweenElements;
                     currentRow = [];
                 }
-                currentAvailableWidth -= width - gapBetweenElements;
+                currentAvailableWidth -= width + gapBetweenElements;
                 currentRow.push({ element: el, width: width });
             });
             if(currentRow.length != 0) {
