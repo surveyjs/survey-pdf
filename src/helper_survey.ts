@@ -207,7 +207,7 @@ export class SurveyHelper {
                 this.createHtmlContainerBlock(this.getLocString(text), controller, 'standard')));
         }
     }
-    private static hasHtml(text: LocalizableString): boolean {
+    public static hasHtml(text: LocalizableString): boolean {
         const pattern: RegExp = /<\/?[a-z][\s\S]*>/i;
         return text.hasHtml && (pattern.test((<any>text).renderedText) || pattern.test(text.renderedHtml));
     }

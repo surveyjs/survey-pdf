@@ -25,13 +25,33 @@ export class FlatBooleanCheckbox extends FlatQuestion {
                 SurveyHelper.scaleRect(SurveyHelper.createRect(point, height, height),
                     SurveyHelper.SELECT_ITEM_FLAT_SCALE), point.xLeft));
         compositeFlat.addBrick(itemFlat);
-        const textPoint: IPoint = SurveyHelper.clone(point);
-        textPoint.xLeft = itemFlat.xRight + this.controller.unitWidth * SurveyHelper.GAP_BETWEEN_ITEM_TEXT;
-        const locLabelText: LocalizableString = this.question.isIndeterminate ? null :
-            this.question.booleanValue ? this.question.locLabelTrue : this.question.locLabelFalse;
-        if (locLabelText !== null && locLabelText.renderedHtml !== null) {
-            compositeFlat.addBrick(await SurveyHelper.createTextFlat(
-                textPoint, this.question, this.controller, locLabelText, TextBrick));
+        if(this.question.isLabelRendered) {
+            const textPoint: IPoint = SurveyHelper.clone(point);
+            textPoint.xLeft = itemFlat.xRight + this.controller.unitWidth * SurveyHelper.GAP_BETWEEN_ITEM_TEXT;
+            const locLabelText: LocalizableString = this.question.locTitle;
+            if (locLabelText !== null && locLabelText.renderedHtml !== null) {
+                compositeFlat.addBrick(await SurveyHelper.createTextFlat(
+                    textPoint, this.question, this.controller, locLabelText, TextBrick));
+            }
+            if (this.question.isRequired) {
+                const requiredText: string = this.question.requiredText;
+                if (SurveyHelper.hasHtml(this.question.locTitle)) {
+                    const requiredPoint = SurveyHelper.createPoint(compositeFlat.unfold()[0], false, false);
+                    this.controller.fontStyle = 'bold';
+                    this.controller.pushMargins();
+                    this.controller.margins.right = this.controller.paperWidth -
+                    this.controller.margins.left - this.controller.measureText(requiredText, 'bold').width;
+                    compositeFlat.addBrick(await SurveyHelper.createHTMLFlat(requiredPoint, this.question, this.controller,
+                        SurveyHelper.createHtmlContainerBlock(requiredText, this.controller, 'standard')));
+                    this.controller.popMargins();
+                    this.controller.fontStyle = 'normal';
+                }
+                else {
+                    const requiredPoint = SurveyHelper.createPoint(compositeFlat.unfold().pop(), false, true);
+                    compositeFlat.addBrick(await SurveyHelper.createBoldTextFlat(requiredPoint,
+                        this.question, this.controller, requiredText));
+                }
+            }
         }
         return [compositeFlat];
     }
