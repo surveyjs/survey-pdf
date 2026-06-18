@@ -533,7 +533,7 @@ export class DocController extends DocOptions {
     public setPage(index: number): void {
         this.doc.setPage(index + 1);
     }
-    private setColor(value: string, getOldColor: ()=> string, setColorFunc: (val: string) => void) {
+    private setColor(value: string, getOldColor: ()=> string, setColorFunc: (val: string) => void, gOpacityOption: string = 'opacity'): () => void {
         const { doc } = this;
         const oldColor = getOldColor();
         const { color, opacity } = SurveyHelper.parseColor(value);
@@ -541,7 +541,7 @@ export class DocController extends DocOptions {
         let needRestoreGraphicsState = false;
         if(opacity !== undefined) {
             doc.saveGraphicsState();
-            doc.setGState(new doc.GState({ opacity }));
+            doc.setGState(new doc.GState({ [gOpacityOption]: opacity }));
             needRestoreGraphicsState = true;
         }
         return () => {
@@ -553,7 +553,7 @@ export class DocController extends DocOptions {
     }
     private drawColorRestoreCallbacks: Array<() => void> = [];
     public setDrawColor(color: string) {
-        this.drawColorRestoreCallbacks.push(this.setColor(color, () => this.doc.getDrawColor(), (val) => this.doc.setDrawColor(val)));
+        this.drawColorRestoreCallbacks.push(this.setColor(color, () => this.doc.getDrawColor(), (val) => this.doc.setDrawColor(val), 'stroke-opacity'));
     }
     public restoreDrawColor() {
         if(this.drawColorRestoreCallbacks.length > 0) {
