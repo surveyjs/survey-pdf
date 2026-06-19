@@ -263,9 +263,12 @@ export class SurveyHelper {
         return (new XMLSerializer()).serializeToString(htmlDoc.body).replace(/%23/g, '#');
     }
     public static createSvgContent(html: string, width: number, controller: DocController) {
+        const container = document.createElement('div');
+        document.body.appendChild(container);
+        const shadow = container.attachShadow ? container.attachShadow({ mode: 'closed' }) : container;
         const style: HTMLStyleElement = document.createElement('style');
         style.innerHTML = '.__surveypdf_html p { margin: unset; line-height: 22px; } body { margin: unset; }';
-        document.body.appendChild(style);
+        shadow.appendChild(style);
         const div: HTMLDivElement = document.createElement('div');
         div.className = '__surveypdf_html';
         div.style.display = 'block';
@@ -279,11 +282,10 @@ export class SurveyHelper {
         div.style.font = 'initial';
         div.style.lineHeight = 'initial';
         div.insertAdjacentHTML('beforeend', html);
-        document.body.appendChild(div);
+        shadow.appendChild(div);
         const divWidth: number = div.offsetWidth;
         const divHeight: number = div.offsetHeight;
-        div.remove();
-        style.remove();
+        container.remove();
         let defs: string = '';
         if (controller.useCustomFontInHtml) {
             defs = `<defs><style>${this.generateFontFace(controller.fontName, controller.base64Normal, 'normal')}` +
