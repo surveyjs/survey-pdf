@@ -93,26 +93,6 @@ steps:
       TargetFolder: "$(Build.SourcesDirectory)/survey-pdf/node_modules/survey-core"
       OverWrite: true
 
-  # npm run release with version
-  - task: CopyFiles@2
-    inputs:
-      SourceFolder: "$(Pipeline.Workspace)/LibraryMain/SurveyJSLibraryBuildCore/"
-      Contents: "version.txt"
-      TargetFolder: "$(Build.SourcesDirectory)/"
-      OverWrite: true
-    displayName: "Copy Build Artifact - SurveyJSVersion File"
-
-  - powershell: |
-      $version = Get-Content $(Build.SourcesDirectory)/version.txt
-      Write-Host "##vso[task.setvariable variable=SurveyJSVersion;]$version"
-    displayName: "setup SurveyJSVersion variable from SurveyJSVersionFile"
-
-  - powershell: |
-      cd $(Build.SourcesDirectory)/survey-pdf
-      npm run release -- --release-as $(SurveyJSVersion)
-    displayName: "npm run release specific version"
-  #####################################################
-
   - download: CustomWidgetsMain
     artifact: SurveyJSWidgetsBuild
 
