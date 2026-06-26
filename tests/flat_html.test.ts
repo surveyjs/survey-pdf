@@ -90,4 +90,11 @@ test('Check correctHtml method with multiple br tags', async () => {
     expect(htmlFlat['correctHtml']('<br><br/>')).toEqual('<br>');
     expect(htmlFlat['correctHtml']('<br / ><br>')).toEqual('<br>');
     expect(htmlFlat['correctHtml']('<br></br>')).toEqual('<br>');
+
+    // eslint-disable-next-line surveyjs/eslint-plugin-i18n/only-english-or-code
+    expect(htmlFlat['correctHtml']('—Some text — Some text')).toEqual('-Some text - Some text');
+
+    // eslint-disable-next-line surveyjs/eslint-plugin-i18n/only-english-or-code
+    expect(htmlFlat['correctHtml']('’Some text ’ Some text’')).toEqual('\'Some text \' Some text\'');
+
 });

@@ -23,11 +23,18 @@ export class FlatHTML extends FlatQuestion {
         return 'standard';
     }
 
-    private static correctHtmlRules: [{ searchRegExp: RegExp, replaceString: string }] = [
-        { searchRegExp: /(<\/?br\s*?\/?\s*?>\s*){2,}/g, replaceString: '<br>' }
-    ];
+    protected get correctHtmlRules(): Array<{ searchRegExp: RegExp, replaceString: string }> {
+        const result = [
+            { searchRegExp: /(<\/?br\s*?\/?\s*?>\s*){2,}/g, replaceString: '<br>' }
+        ];
+        if (this.controller.fontName == 'helvetica') {
+            result.push({ searchRegExp: /’/g, replaceString: '\'' });
+            result.push({ searchRegExp: /—/g, replaceString: '-' });
+        }
+        return result;
+    }
     protected correctHtml(html: string): string {
-        FlatHTML.correctHtmlRules.forEach((rule) => {
+        this.correctHtmlRules.forEach((rule) => {
             html = html.replace(rule.searchRegExp, rule.replaceString);
         });
         return html;
