@@ -255,7 +255,7 @@ export interface ISurveySpacing extends ISpacingBase {
 /**
  * Defines the visual style applied to [survey](https://surveyjs.io/form-library/documentation/api-reference/survey-data-model) UI elements in an exported PDF document.
  *
- * [Customize Styling and Layout in PDF](https://surveyjs.io/pdf-generator/documentation/customize-survey-question-rendering-in-pdf-form#styling-and-layout (linkStyle))
+ * [PDF Appearance Customization - Styles Config](/pdf-generator/documentation/pdf-appearance-customization#styles-config (linkStyle))
  */
 export interface ISurveyStyle extends IContainerStyle {
     /**
@@ -291,7 +291,7 @@ export interface IPanelSpacing extends ISpacingBase {
 /**
  * Defines the visual style applied to [panel](https://surveyjs.io/form-library/documentation/api-reference/panel-model) UI elements in an exported PDF document.
  *
- * [Customize Styling and Layout in PDF](https://surveyjs.io/pdf-generator/documentation/customize-survey-question-rendering-in-pdf-form#styling-and-layout (linkStyle))
+ * [PDF Appearance Customization - Styles Config](/pdf-generator/documentation/pdf-appearance-customization#styles-config (linkStyle))
  */
 export interface IPanelStyle {
     /**
@@ -323,7 +323,7 @@ export interface IPanelStyle {
 /**
  * Defines the visual style applied to [page](https://surveyjs.io/form-library/documentation/api-reference/page-model) UI elements in an exported PDF document.
  *
- * [Customize Styling and Layout in PDF](https://surveyjs.io/pdf-generator/documentation/customize-survey-question-rendering-in-pdf-form#styling-and-layout (linkStyle))
+ * [PDF Appearance Customization - Styles Config](/pdf-generator/documentation/pdf-appearance-customization#styles-config (linkStyle))
  */
 export interface IPageStyle extends IPanelStyle {}
 
@@ -363,7 +363,7 @@ export interface IQuestionSpacing extends ISpacingBase {
 /**
  * Defines the visual style applied to [question](https://surveyjs.io/form-library/documentation/api-reference/question) UI elements in an exported PDF document.
  *
- * [Customize Styling and Layout in PDF](https://surveyjs.io/pdf-generator/documentation/customize-survey-question-rendering-in-pdf-form#styling-and-layout (linkStyle))
+ * [PDF Appearance Customization - Styles Config](/pdf-generator/documentation/pdf-appearance-customization#styles-config (linkStyle))
  */
 export interface IQuestionStyle {
     /**
@@ -472,13 +472,13 @@ export interface ISelectBaseStyle extends IQuestionStyle {
 /**
  * Defines the visual style applied to UI elements within [Checkboxes](https://surveyjs.io/form-library/documentation/api-reference/checkbox-question-model) questions in an exported PDF document.
  *
- * [Customize Styling and Layout in PDF](https://surveyjs.io/pdf-generator/documentation/customize-survey-question-rendering-in-pdf-form#styling-and-layout (linkStyle))
+ * [PDF Appearance Customization - Styles Config](/pdf-generator/documentation/pdf-appearance-customization#styles-config (linkStyle))
  */
 export interface IQuestionCheckboxStyle extends ISelectBaseStyle {}
 /**
  * Defines the visual style applied to UI elements within [Radio Button Group](https://surveyjs.io/form-library/documentation/api-reference/radio-button-question-model) questions in an exported PDF document.
  *
- * [Customize Styling and Layout in PDF](https://surveyjs.io/pdf-generator/documentation/customize-survey-question-rendering-in-pdf-form#styling-and-layout (linkStyle))
+ * [PDF Appearance Customization - Styles Config](/pdf-generator/documentation/pdf-appearance-customization#styles-config (linkStyle))
  */
 export interface IQuestionRadiogroupStyle extends ISelectBaseStyle {}
 
@@ -559,7 +559,7 @@ export interface IQuestionMatrixSpacing extends IMatrixBaseSpacing {
 /**
  * Defines the visual style applied to UI elements within [Single-Select Matrix](https://surveyjs.io/form-library/documentation/api-reference/matrix-table-question-model) questions in an exported PDF document.
  *
- * [Customize Styling and Layout in PDF](https://surveyjs.io/pdf-generator/documentation/customize-survey-question-rendering-in-pdf-form#styling-and-layout (linkStyle))
+ * [PDF Appearance Customization - Styles Config](/pdf-generator/documentation/pdf-appearance-customization#styles-config (linkStyle))
  */
 export interface IQuestionMatrixStyle extends IMatrixBaseStyle {
     /**
@@ -646,7 +646,7 @@ export interface IMatrixDropdownBaseStyle extends IMatrixBaseStyle {
 /**
  * Defines the visual style applied to UI elements within [Multi-Select Matrix](https://surveyjs.io/form-library/documentation/api-reference/matrix-table-with-dropdown-list) questions in an exported PDF document.
  *
- * [Customize Styling and Layout in PDF](https://surveyjs.io/pdf-generator/documentation/customize-survey-question-rendering-in-pdf-form#styling-and-layout (linkStyle))
+ * [PDF Appearance Customization - Styles Config](/pdf-generator/documentation/pdf-appearance-customization#styles-config (linkStyle))
  */
 export interface IQuestionMatrixDropdownStyle extends IMatrixDropdownBaseStyle {
     /**
@@ -657,7 +657,7 @@ export interface IQuestionMatrixDropdownStyle extends IMatrixDropdownBaseStyle {
 /**
  * Defines the visual style applied to UI elements within [Dynamic Matrix](https://surveyjs.io/form-library/documentation/api-reference/dynamic-matrix-table-question-model) questions in an exported PDF document.
  *
- * [Customize Styling and Layout in PDF](https://surveyjs.io/pdf-generator/documentation/customize-survey-question-rendering-in-pdf-form#styling-and-layout (linkStyle))
+ * [PDF Appearance Customization - Styles Config](/pdf-generator/documentation/pdf-appearance-customization#styles-config (linkStyle))
  */
 export interface IQuestionMatrixDynamicStyle extends IMatrixDropdownBaseStyle {}
 
@@ -681,7 +681,7 @@ export interface IQuestionMultipleTextSpacing extends IQuestionSpacing {
 /**
  * Defines the visual style applied to UI elements within [Multiple Textboxes](https://surveyjs.io/form-library/documentation/api-reference/multiple-text-entry-question-model) questions in an exported PDF document.
  *
- * [Customize Styling and Layout in PDF](https://surveyjs.io/pdf-generator/documentation/customize-survey-question-rendering-in-pdf-form#styling-and-layout (linkStyle))
+ * [PDF Appearance Customization - Styles Config](/pdf-generator/documentation/pdf-appearance-customization#styles-config (linkStyle))
  */
 export interface IQuestionMultipleTextStyle extends IQuestionStyle {
     /**
@@ -707,7 +707,7 @@ export interface IQuestionMultipleTextStyle extends IQuestionStyle {
 /**
  * Defines the visual style applied to UI elements within [Rating Scale](https://surveyjs.io/form-library/documentation/api-reference/rating-scale-question-model) questions in an exported PDF document.
  *
- * [Customize Styling and Layout in PDF](https://surveyjs.io/pdf-generator/documentation/customize-survey-question-rendering-in-pdf-form#styling-and-layout (linkStyle))
+ * [PDF Appearance Customization - Styles Config](/pdf-generator/documentation/pdf-appearance-customization#styles-config (linkStyle))
  */
 export interface IQuestionRatingStyle extends IQuestionStyle {
     /**
@@ -744,7 +744,7 @@ export interface IQuestionRatingStyle extends IQuestionStyle {
 /**
  * Defines the visual style applied to UI elements within [Ranking](https://surveyjs.io/form-library/documentation/api-reference/ranking-question-model) questions in an exported PDF document.
  *
- * [Customize Styling and Layout in PDF](https://surveyjs.io/pdf-generator/documentation/customize-survey-question-rendering-in-pdf-form#styling-and-layout (linkStyle))
+ * [PDF Appearance Customization - Styles Config](/pdf-generator/documentation/pdf-appearance-customization#styles-config (linkStyle))
  */
 export interface IQuestionRankingStyle extends IQuestionStyle {
     /**
@@ -776,7 +776,7 @@ export interface IQuestionSliderSpacing extends IQuestionSpacing {
 /**
  * Defines the visual style applied to UI elements within [Slider](https://surveyjs.io/form-library/documentation/api-reference/questionslidermodel) questions in an exported PDF document.
  *
- * [Customize Styling and Layout in PDF](https://surveyjs.io/pdf-generator/documentation/customize-survey-question-rendering-in-pdf-form#styling-and-layout (linkStyle))
+ * [PDF Appearance Customization - Styles Config](/pdf-generator/documentation/pdf-appearance-customization#styles-config (linkStyle))
  */
 export interface IQuestionSliderStyle extends IQuestionStyle {
     /**
@@ -801,7 +801,7 @@ export interface IQuestionSliderStyle extends IQuestionStyle {
 /**
  * Defines the visual style applied to UI elements within [Dropdown](https://surveyjs.io/form-library/documentation/api-reference/dropdown-menu-model) questions in an exported PDF document.
  *
- * [Customize Styling and Layout in PDF](https://surveyjs.io/pdf-generator/documentation/customize-survey-question-rendering-in-pdf-form#styling-and-layout (linkStyle))
+ * [PDF Appearance Customization - Styles Config](/pdf-generator/documentation/pdf-appearance-customization#styles-config (linkStyle))
  */
 export interface IQuestionDropdownStyle extends IQuestionStyle {
     /**
@@ -814,7 +814,7 @@ export interface IQuestionDropdownStyle extends IQuestionStyle {
 /**
  * Defines the visual style applied to UI elements within [Multi-Select Dropdown (Tag Box)](https://surveyjs.io/form-library/documentation/api-reference/dropdown-tag-box-model) questions in an exported PDF document.
  *
- * [Customize Styling and Layout in PDF](https://surveyjs.io/pdf-generator/documentation/customize-survey-question-rendering-in-pdf-form#styling-and-layout (linkStyle))
+ * [PDF Appearance Customization - Styles Config](/pdf-generator/documentation/pdf-appearance-customization#styles-config (linkStyle))
  */
 export interface IQuestionTagboxStyle extends IQuestionCheckboxStyle {}
 
@@ -838,7 +838,7 @@ export interface IQuestionFileSpacing extends IQuestionSpacing {
 /**
  * Defines the visual style applied to UI elements within [File Upload](https://surveyjs.io/form-library/documentation/api-reference/file-model) questions in an exported PDF document.
  *
- * [Customize Styling and Layout in PDF](https://surveyjs.io/pdf-generator/documentation/customize-survey-question-rendering-in-pdf-form#styling-and-layout (linkStyle))
+ * [PDF Appearance Customization - Styles Config](/pdf-generator/documentation/pdf-appearance-customization#styles-config (linkStyle))
  */
 export interface IQuestionFileStyle extends IQuestionStyle {
     /**
@@ -876,7 +876,7 @@ export interface IQuestionPanelDynamicSpacing extends IQuestionSpacing {
 /**
  * Defines the visual style applied to UI elements within [Dynamic Panels](https://surveyjs.io/form-library/documentation/api-reference/dynamic-panel-model) in an exported PDF document.
  *
- * [Customize Styling and Layout in PDF](https://surveyjs.io/pdf-generator/documentation/customize-survey-question-rendering-in-pdf-form#styling-and-layout (linkStyle))
+ * [PDF Appearance Customization - Styles Config](/pdf-generator/documentation/pdf-appearance-customization#styles-config (linkStyle))
  */
 export interface IQuestionPanelDynamicStyle extends IQuestionStyle {
     /**
@@ -900,7 +900,7 @@ export interface IQuestionBooleanSpacing extends IQuestionSpacing {
 /**
  * Defines the visual style applied to UI elements within [Yes/No (Boolean)](https://surveyjs.io/form-library/documentation/api-reference/boolean-question-model) questions in an exported PDF document.
  *
- * [Customize Styling and Layout in PDF](https://surveyjs.io/pdf-generator/documentation/customize-survey-question-rendering-in-pdf-form#styling-and-layout (linkStyle))
+ * [PDF Appearance Customization - Styles Config](/pdf-generator/documentation/pdf-appearance-customization#styles-config (linkStyle))
  */
 export interface IQuestionBooleanStyle extends IQuestionStyle {
     /**
@@ -986,7 +986,7 @@ export interface IQuestionImagePickerSpacing extends ISelectBaseSpacing {
 /**
  * Defines the visual style applied to UI elements within [Image Picker](https://surveyjs.io/form-library/documentation/api-reference/image-picker-question-model) questions in an exported PDF document.
  *
- * [Customize Styling and Layout in PDF](https://surveyjs.io/pdf-generator/documentation/customize-survey-question-rendering-in-pdf-form#styling-and-layout (linkStyle))
+ * [PDF Appearance Customization - Styles Config](/pdf-generator/documentation/pdf-appearance-customization#styles-config (linkStyle))
  */
 export interface IQuestionImagePickerStyle extends ISelectBaseStyle {
     /**
@@ -1064,25 +1064,25 @@ export interface ITextBaseStyle extends IQuestionStyle {
 /**
  * Defines the visual style applied to UI elements within [Single-Line Input](https://surveyjs.io/form-library/documentation/api-reference/text-entry-question-model) questions in an exported PDF document.
  *
- * [Customize Styling and Layout in PDF](https://surveyjs.io/pdf-generator/documentation/customize-survey-question-rendering-in-pdf-form#styling-and-layout (linkStyle))
+ * [PDF Appearance Customization - Styles Config](/pdf-generator/documentation/pdf-appearance-customization#styles-config (linkStyle))
  */
 export interface IQuestionTextStyle extends ITextBaseStyle {}
 /**
  * Defines the visual style applied to UI elements within [Long Text](https://surveyjs.io/form-library/documentation/api-reference/comment-field-model) questions in an exported PDF document.
  *
- * [Customize Styling and Layout in PDF](https://surveyjs.io/pdf-generator/documentation/customize-survey-question-rendering-in-pdf-form#styling-and-layout (linkStyle))
+ * [PDF Appearance Customization - Styles Config](/pdf-generator/documentation/pdf-appearance-customization#styles-config (linkStyle))
  */
 export interface IQuestionCommentStyle extends ITextBaseStyle {}
 /**
  * Defines the visual style applied to [Expression](https://surveyjs.io/form-library/documentation/api-reference/expression-model) survey elements in an exported PDF document.
  *
- * [Customize Styling and Layout in PDF](https://surveyjs.io/pdf-generator/documentation/customize-survey-question-rendering-in-pdf-form#styling-and-layout (linkStyle))
+ * [PDF Appearance Customization - Styles Config](/pdf-generator/documentation/pdf-appearance-customization#styles-config (linkStyle))
  */
 export interface IQuestionExpressionStyle extends IQuestionStyle {}
 /**
  * Defines the visual style applied to [HTML](https://surveyjs.io/form-library/documentation/api-reference/add-custom-html-to-survey) survey elements in an exported PDF document.
  *
- * [Customize Styling and Layout in PDF](https://surveyjs.io/pdf-generator/documentation/customize-survey-question-rendering-in-pdf-form#styling-and-layout (linkStyle))
+ * [PDF Appearance Customization - Styles Config](/pdf-generator/documentation/pdf-appearance-customization#styles-config (linkStyle))
  */
 export interface IQuestionHtmlStyle extends IQuestionStyle {
     /**
@@ -1093,7 +1093,7 @@ export interface IQuestionHtmlStyle extends IQuestionStyle {
 /**
  * Defines the visual style applied to UI elements in an exported PDF document.
  *
- * [Customize Styling and Layout in PDF](https://surveyjs.io/pdf-generator/documentation/customize-survey-question-rendering-in-pdf-form#styling-and-layout (linkStyle))
+ * [PDF Appearance Customization - Styles Config](/pdf-generator/documentation/pdf-appearance-customization#styles-config (linkStyle))
  */
 export interface IDocStyle {
     /**

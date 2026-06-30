@@ -41,7 +41,7 @@ SurveyJS PDF Generator allows you to save an unlimited number of custom-built su
 - [Website](https://surveyjs.io/)
 - [Documentation](https://surveyjs.io/pdf-generator/documentation/overview)
 - [Live Examples](https://surveyjs.io/pdf-generator/examples/)
-- [What's New](https://surveyjs.io/stay-updated/major-updates/2024)
+- [What's New](https://surveyjs.io/WhatsNew)
 
 ## Build SurveyJS PDF Generator from Sources
 
