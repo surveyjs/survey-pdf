@@ -645,10 +645,27 @@ export class SurveyHelper {
     public static getContentQuestion(question: Question): Question {
         return !!(<any>question).contentQuestion ? (<any>question).contentQuestion : question;
     }
+    private static isBooleanDisplayMode(val: string): boolean {
+        return val === 'radio' || val === 'checkbox' || val === 'switch';
+    }
+    private static isEmptyRenderAs(val: string): boolean {
+        return !val || val === 'default';
+    }
+    private static getBooleanRenderAsValue(question: Question): string {
+        if (!this.isEmptyRenderAs(question.renderAs)) return question.renderAs;
+        const booleanQuestion = <any>question;
+        const displayMode = booleanQuestion.displayMode;
+        if (displayMode === 'custom' && booleanQuestion.customRenderAs) return booleanQuestion.customRenderAs;
+        return this.isBooleanDisplayMode(displayMode) ? displayMode : 'default';
+    }
     public static getContentQuestionTypeRenderAs(question: Question, survey: SurveyPDF): string {
         let renderAs = question.renderAs;
-        if(question.getType() === 'boolean' && survey.options.useLegacyBooleanRendering) {
-            renderAs = 'checkbox';
+        if(question.getType() === 'boolean') {
+            if(survey.options.useLegacyBooleanRendering) {
+                renderAs = 'checkbox';
+            } else {
+                renderAs = this.getBooleanRenderAsValue(question);
+            }
         }
         if(renderAs !== 'default') {
             const type = `${question.getType()}-${renderAs}`;
