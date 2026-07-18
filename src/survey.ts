@@ -201,6 +201,7 @@ export class SurveyPDF extends SurveyModel {
      * An object that defines the question's visual style. Modify its properties to control how the question is rendered in the exported PDF document.
      *
      * [Customize Individual Element Styles in PDF](https://surveyjs.io/pdf-generator/documentation/customize-survey-question-rendering-in-pdf-form#customize-individual-element-styles (linkStyle))
+     * @since 3.0.0
      */
     public onGetQuestionStyle = new EventBase<SurveyPDF, { question: Question, style: IQuestionStyle, getColorVariable: (name: string) => string, getSizeVariable: (name: string) => number }>;
     /**
@@ -220,6 +221,7 @@ export class SurveyPDF extends SurveyModel {
      * An object that defines the panel's visual style. Modify its properties to control how the panel is rendered in the exported PDF document.
      *
      * [Customize Individual Element Styles in PDF](https://surveyjs.io/pdf-generator/documentation/customize-survey-question-rendering-in-pdf-form#customize-individual-element-styles (linkStyle))
+     * @since 3.0.0
      */
     public onGetPanelStyle = new EventBase<SurveyPDF, { panel: PanelModel, style: IPanelStyle, getColorVariable: (name: string) => string, getSizeVariable: (name: string) => number }>;
     /**
@@ -239,6 +241,7 @@ export class SurveyPDF extends SurveyModel {
      * An object that defines the page's visual style. Modify its properties to control how the page is rendered in the exported PDF document.
      *
      * [Customize Individual Element Styles in PDF](https://surveyjs.io/pdf-generator/documentation/customize-survey-question-rendering-in-pdf-form#customize-individual-element-styles (linkStyle))
+     * @since 3.0.0
      */
     public onGetPageStyle = new EventBase<SurveyPDF, { page: PanelModel, style: IPageStyle, getColorVariable: (name: string) => string, getSizeVariable: (name: string) => number }>;
     /**
@@ -264,6 +267,7 @@ export class SurveyPDF extends SurveyModel {
      * Modify the properties of `options.style.choiceText` and `options.style.input` to control how the item is rendered in the exported PDF document.
      *
      * [Customize Individual Element Styles in PDF](https://surveyjs.io/pdf-generator/documentation/customize-survey-question-rendering-in-pdf-form#customize-individual-element-styles (linkStyle))
+     * @since 3.0.0
      */
     public onGetItemStyle = new EventBase<SurveyPDF, { question: Question, item: ItemValue, style: { choiceText: ITextStyle, input: ISelectionInputStyle }, getColorVariable: (name: string) => string, getSizeVariable: (name: string) => number}>;
 
@@ -274,6 +278,7 @@ export class SurveyPDF extends SurveyModel {
      * To apply a new visual style to the PDF document, call the [`applyStyle`](https://surveyjs.io/pdf-generator/documentation/api-reference/surveypdf#applyStyle) method.
      *
      * [PDF Appearance Customization - Styles Config](/pdf-generator/documentation/pdf-appearance-customization#styles-config (linkStyle))
+     * @since 3.0.0
      */
     public get style(): IDocStyle {
         if(!this.styleValue) {
@@ -292,6 +297,7 @@ export class SurveyPDF extends SurveyModel {
      *
      * [PDF Appearance Customization - Styles Config](/pdf-generator/documentation/pdf-appearance-customization#styles-config (linkStyle))
      * @param value An [`IDocStyle`](https://surveyjs.io/pdf-generator/documentation/api-reference/IDocStyle) object, or a callback function that returns an `IDocStyle` object.
+     * @since 3.0.0
      */
     public applyStyle(value: IDocStyle | ((options: { getColorVariable: (name: string) => string, getSizeVariable: (name: string) => number }) => IDocStyle)): void {
         if(typeof value == 'function') {
@@ -311,6 +317,7 @@ export class SurveyPDF extends SurveyModel {
      * A theme defines color- and shadow-related CSS variables. To configure spacing, sizing, typography, and other non-color variables, use the [`applyLayout`](#applyLayout) method.
      * @param theme An [`ITheme`](https://surveyjs.io/form-library/documentation/api-reference/itheme) object with theme settings.
      * @param baseTheme An optional `ITheme` object used as the base theme. When specified, it is deep-merged with `theme`, and the merged result is applied.
+     * @since 3.0.0
      */
     public applyTheme(theme: ITheme, baseTheme?: ITheme): void {
         this._theme = SurveyHelper.mergeObjects({}, BaseTheme, baseTheme ?? {}, theme);
@@ -334,6 +341,7 @@ export class SurveyPDF extends SurveyModel {
      * A layout defines non-color CSS variables, including spacing, sizing, typography, border radius, and other dimensional variables. To configure colors and shadows, use the [`applyTheme`](#applyTheme) method.
      * @param layout An `IDocLayout` object that specifies layout variables.
      * @param baseLayout An optional `IDocLayout` object used as the base layout. When specified, it is deep-merged with `layout`, and the merged result is applied.
+     * @since 3.0.0
      */
     public applyLayout(layout: IDocLayout, baseLayout?: IDocLayout): void {
         this._layout = SurveyHelper.mergeObjects({}, this.defaultLayout, baseLayout ?? {}, layout);
