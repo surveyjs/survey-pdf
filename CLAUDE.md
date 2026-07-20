@@ -75,3 +75,8 @@ A "brick" is a rectangle that knows how to draw itself into the jsPDF doc. `src/
 
 ### Interactive forms (`src/pdf_forms/`)
 The `forms` entry adds fillable **AcroForm** PDFs: `PDFFormFiller` (`forms.ts`) plus pluggable engine adapters (`adapters/pdf-lib`, `adapters/pdfjs`). This is what the `acro_*.test.ts` suite exercises — questions rendered as real interactive PDF form fields rather than static text.
+
+## Coding conventions
+
+- **Do not generate API doccomments** (`/** ... */`) for either new or existing API members.
+- If an API requires clarification for maintainers, add a regular JavaScript comment (`//` or `/* ... */`) in the implementation instead of a doccomment.
