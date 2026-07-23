@@ -30,7 +30,7 @@
     "jspdf": "^4.0.0",
     "node-fetch": "^2",
     "node-interval-tree": "^1.3.3",
-    "survey-core": "latest"
+    "survey-core": "../survey-library/packages/survey-core/build"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^28.0.2",
