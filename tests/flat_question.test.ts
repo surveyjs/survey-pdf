@@ -330,19 +330,25 @@ test('Check questions width with startWithNewLine: false property', async () => 
                 type: 'text',
                 name: 'startWithNewLineFlase1',
                 titleLocation: 'hidden',
-                startWithNewLine: 'false'
+                startWithNewLine: 'false',
+                minWidth: '1px',
+                maxWidth: '100%'
             },
             {
                 type: 'text',
                 name: 'startWithNewLineFlase2',
                 titleLocation: 'hidden',
                 startWithNewLine: 'false',
-                width: '15%'
+                minWidth: '1px',
+                width: '15%',
+                maxWidth: '15%'
             },
             {
                 type: 'text',
                 name: 'startWithNewLineFlase3',
                 titleLocation: 'hidden',
+                minWidth: '1px',
+                maxWidth: '100%',
                 startWithNewLine: 'false'
             }
         ]
