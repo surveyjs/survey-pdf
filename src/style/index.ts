@@ -600,6 +600,35 @@ export function getDefaultStyle (theme: ITheme, layout: IDocLayout): IDocStyle {
                     fontSize: getSizeVariable('--sjs2-typography-font-size-default'),
                     lineHeight: getSizeVariable('--sjs2-typography-line-height-default')
                 }
+            },
+            composite: {
+                container: {
+                    padding: 0,
+                    borderWidth: 0,
+                    backgroundColor: null as any
+                },
+                header: {
+                    padding: [getSizeVariable('--sjs2-pdf-layout-section-padding-vertical'), getSizeVariable('--sjs2-pdf-layout-section-padding-horizontal')],
+                    borderRadius: getSizeVariable('--sjs2-pdf-radius-section'),
+                    backgroundColor: getColorVariable('--sjs2-color-bg-basic-secondary'),
+                    borderWidth: getSizeVariable('--sjs2-pdf-border-width-section'),
+                    borderColor: getColorVariable('--sjs2-color-border-basic-secondary'),
+                },
+                title: {
+                    fontSize: getSizeVariable('--sjs2-typography-font-size-default'),
+                    fontColor: getColorVariable('--sjs2-color-fg-basic-primary'),
+                    fontStyle: 'bold',
+                    lineHeight: getSizeVariable('--sjs2-typography-line-height-default'),
+                },
+                description: {
+                    fontColor: getColorVariable('--sjs2-color-fg-basic-secondary'),
+                    fontSize: getSizeVariable('--sjs2-typography-font-size-small'),
+                    lineHeight: getSizeVariable('--sjs2-typography-line-height-small'),
+                },
+                spacing: {
+                    headerContentGap: getSizeVariable('--sjs2-pdf-layout-page-questions-gap-vertical'),
+                    titleDescriptionGap: getSizeVariable('--sjs2-pdf-layout-title-default-gap'),
+                }
             }
         };
         // return res;

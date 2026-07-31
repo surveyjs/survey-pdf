@@ -369,6 +369,9 @@ export class SurveyPDF extends SurveyModel {
                 types.unshift(currentClass.parentName);
                 currentClass = Serializer.findClass(currentClass.parentName);
             }
+            if(element.getTemplate() == 'composite') {
+                types.push('composite');
+            }
             const res = {};
             types.forEach(type => {
                 SurveyHelper.mergeObjects(res, (style as any)[type] ?? {});
