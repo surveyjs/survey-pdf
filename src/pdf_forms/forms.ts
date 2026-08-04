@@ -8,6 +8,7 @@ import { PDFFormFillerBase } from './forms-base';
  * [View pdf-lib Demo](https://surveyjs.io/pdf-generator/examples/map-survey-responses-to-pdf-fields-using-pdflib/ (linkStyle))
  *
  * [View PDF.js Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-with-dynamic-survey-data-using-pdfjs/ (linkStyle))
+ * @since 2.0.9
  */
 export class PDFFormFiller extends PDFFormFillerBase {
     protected async saveToFile(pdfBytes: string, fileName: string) {

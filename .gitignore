@@ -35,3 +35,4 @@ Gemfile.lock
 package-lock.json
 coverage/**/*
 junit.xml
+promts/
