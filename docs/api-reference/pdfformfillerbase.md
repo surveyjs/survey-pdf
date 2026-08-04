@@ -10,6 +10,8 @@ source: https://surveyjs.io/pdf-generator/documentation/api-reference/pdfformfil
 
 A base class for the `PDFFormFiller` plugin.
 
+Available since: v2.0.9
+
 ## Properties
 
 ### `data`
@@ -24,6 +26,8 @@ Use the [`SurveyModel`](https://surveyjs.io/form-library/documentation/api-refer
 
 [View PDF.js Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-with-dynamic-survey-data-using-pdfjs/ (linkStyle))
 
+Available since: v2.0.9
+
 ### `fieldMap`
 
 **Type**: `any`
@@ -35,6 +39,8 @@ The easiest way to build a field map is to access the data object with responden
 [View pdf-lib Demo](https://surveyjs.io/pdf-generator/examples/map-survey-responses-to-pdf-fields-using-pdflib/ (linkStyle))
 
 [View PDF.js Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-with-dynamic-survey-data-using-pdfjs/ (linkStyle))
+
+Available since: v2.0.9
 
 ### `pdfLibraryAdapter`
 
@@ -48,6 +54,8 @@ SurveyJS PDF Generator provides adapters for [`pdf-lib`](https://pdf-lib.js.org/
 
 [View PDF.js Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-with-dynamic-survey-data-using-pdfjs/ (linkStyle))
 
+Available since: v2.0.9
+
 ### `pdfTemplate`
 
 **Type**: `any`
@@ -60,6 +68,8 @@ Because this document is passed on to a third-party library, the type of accepte
 
 [View PDF.js Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-with-dynamic-survey-data-using-pdfjs/ (linkStyle))
 
+Available since: v2.0.9
+
 ## Methods
 
 ### `raw()`
@@ -67,6 +77,8 @@ Because this document is passed on to a third-party library, the type of accepte
 **Return value:** `unknown`
 
 An asynchronous method that allows you to get PDF content in different formats.
+
+Available since: v2.0.9
 
 **Parameters:**
 
@@ -83,6 +95,8 @@ An asynchronous method that starts to download the filled PDF form in the web br
 [View pdf-lib Demo](https://surveyjs.io/pdf-generator/examples/map-survey-responses-to-pdf-fields-using-pdflib/ (linkStyle))
 
 [View PDF.js Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-with-dynamic-survey-data-using-pdfjs/ (linkStyle))
+
+Available since: v2.0.9
 
 **Parameters:**
 

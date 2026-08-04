@@ -16,6 +16,8 @@ This plugin requires a third-party library, such as [`pdf-lib`](https://pdf-lib.
 
 [View PDF.js Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-with-dynamic-survey-data-using-pdfjs/ (linkStyle))
 
+Available since: v2.0.9
+
 ## Inheritance
 
 [`PDFFormFillerBase`](https://surveyjs.io/pdf-generator/documentation/api-reference/pdfformfillerbase.md) &rarr; `PDFFormFiller`

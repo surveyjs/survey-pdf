@@ -24,6 +24,8 @@ const form = new PDFFormFiller(pdfFormFillerOptions);
 
 [View PDF.js Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-with-dynamic-survey-data-using-pdfjs/ (linkStyle))
 
+Available since: v2.0.9
+
 ## Properties
 
 ### `data`
@@ -38,6 +40,8 @@ Use the [`SurveyModel`](https://surveyjs.io/form-library/documentation/api-refer
 
 [View PDF.js Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-with-dynamic-survey-data-using-pdfjs/ (linkStyle))
 
+Available since: v2.0.9
+
 ### `fieldMap`
 
 **Type**: `any`
@@ -49,6 +53,8 @@ The easiest way to build a field map is to access the data object with responden
 [View pdf-lib Demo](https://surveyjs.io/pdf-generator/examples/map-survey-responses-to-pdf-fields-using-pdflib/ (linkStyle))
 
 [View PDF.js Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-with-dynamic-survey-data-using-pdfjs/ (linkStyle))
+
+Available since: v2.0.9
 
 ### `pdfLibraryAdapter`
 
@@ -62,6 +68,8 @@ SurveyJS PDF Generator provides adapters for [`pdf-lib`](https://pdf-lib.js.org/
 
 [View PDF.js Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-with-dynamic-survey-data-using-pdfjs/ (linkStyle))
 
+Available since: v2.0.9
+
 ### `pdfTemplate`
 
 **Type**: `any`
@@ -73,3 +81,5 @@ Because this document is passed on to a third-party library, the type of accepte
 [View pdf-lib Demo](https://surveyjs.io/pdf-generator/examples/map-survey-responses-to-pdf-fields-using-pdflib/ (linkStyle))
 
 [View PDF.js Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-with-dynamic-survey-data-using-pdfjs/ (linkStyle))
+
+Available since: v2.0.9
