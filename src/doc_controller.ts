@@ -233,6 +233,7 @@ export interface IDocOptions {
      * Specifies the height of the Other input field in rows.
      *
      * Default value: 2
+     * @since 3.0.0
      */
     otherRowsCount?: number;
     showNavigation?: boolean;
