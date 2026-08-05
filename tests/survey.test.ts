@@ -191,3 +191,54 @@ test('Check questionsOnPageMode: "inputPerPage"', async () => {
     expect(survey.visiblePages[1].rows[1].elements.length).toBe(1);
     expect(survey.visiblePages[1].rows[1].elements[0].name).toBe('q4');
 });
+
+test('Check questionsOnPageMode: "questionPerPage"', async () => {
+    const survey = new SurveyPDF(
+        {
+            'questionsOnPageMode': 'questionPerPage',
+            'pages': [
+                {
+                    'name': 'page1',
+                    'elements': [
+                        {
+                            type: 'text',
+                            name: 'q1'
+                        },
+                        {
+                            type: 'text',
+                            name: 'q2'
+                        }
+                    ]
+                },
+                {
+                    'name': 'page3',
+                    'elements': [
+                        {
+                            type: 'text',
+                            name: 'q3'
+                        },
+                        {
+                            type: 'text',
+                            name: 'q4'
+                        }
+                    ]
+                }
+            ],
+        }
+    );
+    expect(survey.visiblePages.length).toBe(2);
+    survey.visiblePages.forEach(page => page.onFirstRendering());
+    expect(survey.visiblePages[0].visibleQuestions.length).toBe(2);
+    expect(survey.visiblePages[0].rows.length).toBe(2);
+    expect(survey.visiblePages[0].rows[0].elements.length).toBe(1);
+    expect(survey.visiblePages[0].rows[0].elements[0].name).toBe('q1');
+    expect(survey.visiblePages[0].rows[1].elements.length).toBe(1);
+    expect(survey.visiblePages[0].rows[1].elements[0].name).toBe('q2');
+
+    expect(survey.visiblePages[1].visibleQuestions.length).toBe(2);
+    expect(survey.visiblePages[1].rows.length).toBe(2);
+    expect(survey.visiblePages[1].rows[0].elements.length).toBe(1);
+    expect(survey.visiblePages[1].rows[0].elements[0].name).toBe('q3');
+    expect(survey.visiblePages[1].rows[1].elements.length).toBe(1);
+    expect(survey.visiblePages[1].rows[1].elements[0].name).toBe('q4');
+});

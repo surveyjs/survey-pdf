@@ -23,7 +23,7 @@ export class SurveyPDF extends SurveyModel {
         if (typeof options === 'undefined') {
             options = {};
         }
-        if(this.questionsOnPageMode == 'inputPerPage') {
+        if(this.questionsOnPageMode == 'inputPerPage' || this.questionsOnPageMode == 'questionPerPage') {
             this.questionsOnPageMode = 'standard';
         }
         this.options = SurveyHelper.clone(options);
