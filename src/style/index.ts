@@ -160,19 +160,19 @@ export function getDefaultStyle (theme: ITheme, layout: IDocLayout): IDocStyle {
                     width: getSizeVariable('--sjs2-size-x200'),
                     height: getSizeVariable('--sjs2-size-x200'),
                     fontSize: getSizeVariable('--sjs2-size-x200') * 0.625,
-                    borderColor: getColorVariable('--sjs2-color-component-check-false-default-border'),
+                    borderColor: getColorVariable('--sjs2-color-component-checkbox-false-default-border'),
                     borderWidth: getSizeVariable('--sjs2-pdf-border-width-check'),
                     fontName: 'zapfdingbats',
                     backgroundColor: getColorVariable('--sjs2-color-bg-basic-primary'),
                     fontColor: getColorVariable('--sjs2-color-fg-brand-primary'),
                 },
                 inputReadOnly: {
-                    fontColor: getColorVariable('--sjs2-color-component-check-true-default-icon'),
-                    backgroundColor: getColorVariable('--sjs2-color-component-check-false-default-bg'),
+                    fontColor: getColorVariable('--sjs2-color-component-checkbox-true-default-icon'),
+                    backgroundColor: getColorVariable('--sjs2-color-component-checkbox-false-default-bg'),
                 },
                 inputReadOnlyChecked: {
-                    borderColor: getColorVariable('--sjs2-color-component-check-true-default-border'),
-                    backgroundColor: getColorVariable('--sjs2-color-component-check-true-default-bg')
+                    borderColor: getColorVariable('--sjs2-color-component-checkbox-true-default-border'),
+                    backgroundColor: getColorVariable('--sjs2-color-component-checkbox-true-default-bg')
                 },
                 spacing: {
                     choiceColumnGap: getSizeVariable('--sjs2-pdf-layout-question-items-gap-horizontal'),
@@ -190,10 +190,17 @@ export function getDefaultStyle (theme: ITheme, layout: IDocLayout): IDocStyle {
             },
             radiogroup: {
                 input: {
-                    checkMark: 'l'
+                    checkMark: 'l',
+                    borderColor: getColorVariable('--sjs2-color-component-radio-false-default-border'),
                 },
                 inputReadOnly: {
-                    borderRadius: getSizeVariable('--sjs2-pdf-radius-radio')
+                    borderRadius: getSizeVariable('--sjs2-pdf-radius-radio'),
+                    fontColor: getColorVariable('--sjs2-color-component-radio-true-default-icon'),
+                    backgroundColor: getColorVariable('--sjs2-color-component-radio-false-default-bg'),
+                },
+                inputReadOnlyChecked: {
+                    borderColor: getColorVariable('--sjs2-color-component-radio-true-default-border'),
+                    backgroundColor: getColorVariable('--sjs2-color-component-radio-true-default-bg')
                 }
             },
             matrixbase: {
@@ -272,25 +279,32 @@ export function getDefaultStyle (theme: ITheme, layout: IDocLayout): IDocStyle {
                     width: getSizeVariable('--sjs2-size-x200'),
                     height: getSizeVariable('--sjs2-size-x200'),
                     fontSize: getSizeVariable('--sjs2-size-x200') * 0.625,
-                    borderColor: getColorVariable('--sjs2-color-component-check-false-default-border'),
+                    borderColor: getColorVariable('--sjs2-color-component-checkbox-false-default-border'),
                     borderWidth: getSizeVariable('--sjs2-pdf-border-width-check'),
                     backgroundColor: getColorVariable('--sjs2-color-bg-basic-primary'),
                     fontColor: getColorVariable('--sjs2-color-fg-brand-primary'),
                     fontName: 'zapfdingbats',
                 },
                 inputReadOnly: {
-                    fontColor: getColorVariable('--sjs2-color-component-check-true-default-icon'),
-                    backgroundColor: getColorVariable('--sjs2-color-component-check-false-default-bg'),
+                    fontColor: getColorVariable('--sjs2-color-component-checkbox-true-default-icon'),
+                    backgroundColor: getColorVariable('--sjs2-color-component-checkbox-false-default-bg'),
                 },
                 inputReadOnlyChecked: {
-                    borderColor: getColorVariable('--sjs2-color-component-check-true-default-border'),
-                    backgroundColor: getColorVariable('--sjs2-color-component-check-true-default-bg')
+                    borderColor: getColorVariable('--sjs2-color-component-checkbox-true-default-border'),
+                    backgroundColor: getColorVariable('--sjs2-color-component-checkbox-true-default-bg')
                 },
                 radioInput: {
-                    checkMark: 'l'
+                    checkMark: 'l',
+                    borderColor: getColorVariable('--sjs2-color-component-radio-false-default-border'),
                 },
                 radioInputReadOnly: {
-                    borderRadius: getSizeVariable('--sjs2-pdf-radius-radio')
+                    borderRadius: getSizeVariable('--sjs2-pdf-radius-radio'),
+                    fontColor: getColorVariable('--sjs2-color-component-radio-true-default-icon'),
+                    backgroundColor: getColorVariable('--sjs2-color-component-radio-false-default-bg'),
+                },
+                radioInputReadOnlyChecked: {
+                    borderColor: getColorVariable('--sjs2-color-component-radio-true-default-border'),
+                    backgroundColor: getColorVariable('--sjs2-color-component-radio-true-default-bg')
                 },
                 checkboxInput: {
                     checkMark: '3'
@@ -385,7 +399,7 @@ export function getDefaultStyle (theme: ITheme, layout: IDocLayout): IDocStyle {
                     width: getSizeVariable('--sjs2-size-x200'),
                     height: getSizeVariable('--sjs2-size-x200'),
                     fontSize: getSizeVariable('--sjs2-size-x200') * 0.625,
-                    borderColor: getColorVariable('--sjs2-color-component-check-false-default-border'),
+                    borderColor: getColorVariable('--sjs2-color-component-radio-false-default-border'),
                     borderWidth: getSizeVariable('--sjs2-pdf-border-width-check'),
                     backgroundColor: getColorVariable('--sjs2-color-bg-basic-primary'),
                     fontColor: getColorVariable('--sjs2-color-fg-brand-primary'),
@@ -393,13 +407,13 @@ export function getDefaultStyle (theme: ITheme, layout: IDocLayout): IDocStyle {
                     checkMark: 'l',
                 },
                 inputReadOnly: {
-                    fontColor: getColorVariable('--sjs2-color-component-check-true-default-icon'),
-                    backgroundColor: getColorVariable('--sjs2-color-component-check-false-default-bg'),
+                    fontColor: getColorVariable('--sjs2-color-component-radio-true-default-icon'),
+                    backgroundColor: getColorVariable('--sjs2-color-component-radio-false-default-bg'),
                     borderRadius: getSizeVariable('--sjs2-pdf-radius-checkbox'),
                 },
                 inputReadOnlyChecked: {
-                    borderColor: getColorVariable('--sjs2-color-component-check-true-default-border'),
-                    backgroundColor: getColorVariable('--sjs2-color-component-check-true-default-bg')
+                    borderColor: getColorVariable('--sjs2-color-component-radio-true-default-border'),
+                    backgroundColor: getColorVariable('--sjs2-color-component-radio-true-default-bg')
                 },
                 spacing: {
                     choiceColumnGap: getSizeVariable('--sjs2-pdf-layout-question-items-gap-horizontal'),
@@ -413,12 +427,12 @@ export function getDefaultStyle (theme: ITheme, layout: IDocLayout): IDocStyle {
                     height: getSizeVariable('--sjs2-size-x200'),
                     fontSize: getSizeVariable('--sjs2-size-x200') * 0.625,
                     lineHeight: getSizeVariable('--sjs2-size-x200') * 0.625,
-                    borderColor: getColorVariable('--sjs2-color-component-check-false-default-border'),
+                    borderColor: getColorVariable('--sjs2-color-component-checkbox-false-default-border'),
                     borderWidth: getSizeVariable('--sjs2-pdf-border-width-check'),
                     fontName: 'helvetica',
                     fontStyle: 'normal',
                     fontColor: getColorVariable('--sjs2-color-fg-basic-primary'),
-                    backgroundColor: getColorVariable('--sjs2-color-component-check-false-default-bg'),
+                    backgroundColor: getColorVariable('--sjs2-color-component-checkbox-false-default-bg'),
                 },
                 selectToRankAreaSeparator: {
                     width: baseSize / 7,
@@ -527,25 +541,32 @@ export function getDefaultStyle (theme: ITheme, layout: IDocLayout): IDocStyle {
                     width: getSizeVariable('--sjs2-size-x200'),
                     height: getSizeVariable('--sjs2-size-x200'),
                     fontSize: getSizeVariable('--sjs2-size-x200') * 0.625,
-                    borderColor: getColorVariable('--sjs2-color-component-check-false-default-border'),
+                    borderColor: getColorVariable('--sjs2-color-component-checkbox-false-default-border'),
                     borderWidth: getSizeVariable('--sjs2-pdf-border-width-check'),
                     backgroundColor: getColorVariable('--sjs2-color-bg-basic-primary'),
                     fontColor: getColorVariable('--sjs2-color-fg-brand-primary'),
                     fontName: 'zapfdingbats',
                 },
                 inputReadOnly: {
-                    fontColor: getColorVariable('--sjs2-color-component-check-true-default-icon'),
-                    backgroundColor: getColorVariable('--sjs2-color-component-check-false-default-bg'),
+                    fontColor: getColorVariable('--sjs2-color-component-checkbox-true-default-icon'),
+                    backgroundColor: getColorVariable('--sjs2-color-component-checkbox-false-default-bg'),
                 },
                 inputReadOnlyChecked: {
-                    borderColor: getColorVariable('--sjs2-color-component-check-true-default-border'),
-                    backgroundColor: getColorVariable('--sjs2-color-component-check-true-default-bg')
+                    borderColor: getColorVariable('--sjs2-color-component-checkbox-true-default-border'),
+                    backgroundColor: getColorVariable('--sjs2-color-component-checkbox-true-default-bg')
                 },
                 radioInput: {
-                    checkMark: 'l'
+                    checkMark: 'l',
+                    borderColor: getColorVariable('--sjs2-color-component-radio-false-default-border'),
                 },
                 radioInputReadOnly: {
-                    borderRadius: getSizeVariable('--sjs2-pdf-radius-radio')
+                    borderRadius: getSizeVariable('--sjs2-pdf-radius-radio'),
+                    fontColor: getColorVariable('--sjs2-color-component-radio-true-default-icon'),
+                    backgroundColor: getColorVariable('--sjs2-color-component-radio-false-default-bg'),
+                },
+                radioInputReadOnlyChecked: {
+                    borderColor: getColorVariable('--sjs2-color-component-radio-true-default-border'),
+                    backgroundColor: getColorVariable('--sjs2-color-component-radio-true-default-bg')
                 },
                 checkboxInput: {
                     checkMark: '3'
@@ -566,7 +587,16 @@ export function getDefaultStyle (theme: ITheme, layout: IDocLayout): IDocStyle {
                     borderRadius: getSizeVariable('--sjs2-pdf-radius-checkbox'),
                 },
                 radioInput: {
-                    checkMark: 'l'
+                    checkMark: 'l',
+                    borderColor: getColorVariable('--sjs2-color-component-radio-false-default-border'),
+                },
+                radioInputReadOnly: {
+                    fontColor: getColorVariable('--sjs2-color-component-radio-true-default-icon'),
+                    backgroundColor: getColorVariable('--sjs2-color-component-radio-false-default-bg'),
+                },
+                radioInputReadOnlyChecked: {
+                    borderColor: getColorVariable('--sjs2-color-component-radio-true-default-border'),
+                    backgroundColor: getColorVariable('--sjs2-color-component-radio-true-default-bg')
                 },
                 checkboxInput: {
                     checkMark: '3'
