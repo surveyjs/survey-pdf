@@ -33,13 +33,35 @@ export class FlatBooleanCheckbox extends FlatQuestion<QuestionBooleanModel, IQue
                 checked: this.question.booleanValue
             }, style);
         compositeFlat.addBrick(itemFlat);
-        const textPoint: IPoint = SurveyHelper.clone(point);
-        textPoint.xLeft = itemFlat.xRight + this.style.spacing.choiceTextGap;
-        const locLabelText: LocalizableString = this.question.isIndeterminate ? null :
-            this.question.booleanValue ? this.question.locLabelTrue : this.question.locLabelFalse;
-        if (locLabelText !== null && locLabelText.renderedHtml !== null) {
-            const textFlat = await SurveyHelper.createTextFlat(
-                textPoint, this.controller, locLabelText, this.style.choiceText);
+        if(this.question.isLabelRendered) {
+            const textFlat = new CompositeBrick();
+            const textPoint: IPoint = SurveyHelper.clone(point);
+            textPoint.xLeft = itemFlat.xRight + this.style.spacing.choiceTextGap;
+            const locLabelText: LocalizableString = this.question.locTitle;
+            if (locLabelText !== null && locLabelText.renderedHtml !== null) {
+                textFlat.addBrick(await SurveyHelper.createTextFlat(
+                    textPoint, this.controller, locLabelText, this.style.choiceText));
+            }
+            if (this.question.isRequired) {
+                const requiredText: string = this.question.requiredText;
+                const requiredStyle = SurveyHelper.mergeObjects({}, this.style.choiceText, this.style.requiredMark);
+                if (SurveyHelper.hasHtml(this.question.locTitle)) {
+                    const requiredPoint = SurveyHelper.createPoint(textFlat.unfold()[0], false, false);
+                    requiredPoint.xLeft += this.style.spacing.titleRequiredMarkGap;
+                    this.controller.pushMargins();
+                    this.controller.margins.right = this.controller.paperWidth -
+                    this.controller.margins.left - this.controller.measureText(requiredText, requiredStyle).width;
+                    textFlat.addBrick(await SurveyHelper.createHTMLFlat(requiredPoint, this.controller,
+                        SurveyHelper.createHtmlContainerBlock(requiredText, this.controller, requiredStyle)));
+                    this.controller.popMargins();
+                }
+                else {
+                    const requiredPoint = SurveyHelper.createPoint(textFlat.unfold().pop(), false, true);
+                    requiredPoint.xLeft += this.style.spacing.titleRequiredMarkGap;
+                    textFlat.addBrick(await SurveyHelper.createTextFlat(requiredPoint,
+                        this.controller, requiredText, requiredStyle));
+                }
+            }
             SurveyHelper.alignVerticallyBricks('center', itemFlat, textFlat.unfold()[0]);
             textFlat.updateRect();
             compositeFlat.addBrick(textFlat);
