@@ -120,3 +120,33 @@ test('Check boolean with display mode', async () => {
     let flat = new FlatBoolean(null, question, null, {});
     expect(flat['question'].isInputReadOnly).toBe(true);
 });
+
+test('Check boolean renderAs: checkbox with label', async () => {
+    await checkFlatSnapshot({ elements: [{
+        'type': 'boolean',
+        'name': 'test',
+        'title': 'Test title',
+        'renderAs': 'checkbox',
+        'titleLocation': 'hidden',
+    }] }, { snapshotName: 'boolean_checkbox_label', controllerOptions: { fontSize: 14 } });
+});
+
+test('Check boolean renderAs: checkbox with label and required', async () => {
+    await checkFlatSnapshot({ elements: [{
+        'type': 'boolean',
+        'name': 'test',
+        'title': 'Test title',
+        'renderAs': 'checkbox',
+        'titleLocation': 'hidden',
+        'isRequired': true,
+    }] }, { snapshotName: 'boolean_checkbox_label_required', controllerOptions: { fontSize: 14 } });
+});
+
+test('Check boolean renderAs: checkbox with title', async () => {
+    await checkFlatSnapshot({ elements: [{
+        'type': 'boolean',
+        'name': 'test',
+        'title': 'Test title',
+        'renderAs': 'checkbox',
+    }] }, { snapshotName: 'boolean_checkbox_title', controllerOptions: { fontSize: 14 } });
+});

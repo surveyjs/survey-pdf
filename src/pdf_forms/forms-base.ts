@@ -17,6 +17,7 @@ import { IPDFFormAdapter } from './adapters/adapter';
  * [View pdf-lib Demo](https://surveyjs.io/pdf-generator/examples/map-survey-responses-to-pdf-fields-using-pdflib/ (linkStyle))
  *
  * [View PDF.js Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-with-dynamic-survey-data-using-pdfjs/ (linkStyle))
+ * @since 2.0.9
  */
 interface IPDFFormFillerOptions {
     /**
@@ -27,6 +28,7 @@ interface IPDFFormFillerOptions {
      * [View pdf-lib Demo](https://surveyjs.io/pdf-generator/examples/map-survey-responses-to-pdf-fields-using-pdflib/ (linkStyle))
      *
      * [View PDF.js Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-with-dynamic-survey-data-using-pdfjs/ (linkStyle))
+     * @since 2.0.9
      */
     fieldMap?: any;
     /**
@@ -37,6 +39,7 @@ interface IPDFFormFillerOptions {
      * [View pdf-lib Demo](https://surveyjs.io/pdf-generator/examples/map-survey-responses-to-pdf-fields-using-pdflib/ (linkStyle))
      *
      * [View PDF.js Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-with-dynamic-survey-data-using-pdfjs/ (linkStyle))
+     * @since 2.0.9
      */
     data?: any;
     /**
@@ -47,6 +50,7 @@ interface IPDFFormFillerOptions {
      * [View pdf-lib Demo](https://surveyjs.io/pdf-generator/examples/map-survey-responses-to-pdf-fields-using-pdflib/ (linkStyle))
      *
      * [View PDF.js Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-with-dynamic-survey-data-using-pdfjs/ (linkStyle))
+     * @since 2.0.9
      */
     pdfTemplate?: any;
     /**
@@ -57,11 +61,13 @@ interface IPDFFormFillerOptions {
      * [View pdf-lib Demo](https://surveyjs.io/pdf-generator/examples/map-survey-responses-to-pdf-fields-using-pdflib/ (linkStyle))
      *
      * [View PDF.js Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-with-dynamic-survey-data-using-pdfjs/ (linkStyle))
+     * @since 2.0.9
      */
     pdfLibraryAdapter?: IPDFFormAdapter;
 }
 /**
  * A base class for the `PDFFormFiller` plugin.
+ * @since 2.0.9
  */
 export abstract class PDFFormFillerBase {
     constructor (options?: IPDFFormFillerOptions) {
@@ -80,6 +86,7 @@ export abstract class PDFFormFillerBase {
      * [View pdf-lib Demo](https://surveyjs.io/pdf-generator/examples/map-survey-responses-to-pdf-fields-using-pdflib/ (linkStyle))
      *
      * [View PDF.js Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-with-dynamic-survey-data-using-pdfjs/ (linkStyle))
+     * @since 2.0.9
      */
     public pdfTemplate: any;
     /**
@@ -90,6 +97,7 @@ export abstract class PDFFormFillerBase {
      * [View pdf-lib Demo](https://surveyjs.io/pdf-generator/examples/map-survey-responses-to-pdf-fields-using-pdflib/ (linkStyle))
      *
      * [View PDF.js Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-with-dynamic-survey-data-using-pdfjs/ (linkStyle))
+     * @since 2.0.9
      */
     public fieldMap: any;
     /**
@@ -100,6 +108,7 @@ export abstract class PDFFormFillerBase {
      * [View pdf-lib Demo](https://surveyjs.io/pdf-generator/examples/map-survey-responses-to-pdf-fields-using-pdflib/ (linkStyle))
      *
      * [View PDF.js Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-with-dynamic-survey-data-using-pdfjs/ (linkStyle))
+     * @since 2.0.9
      */
     public data: any;
     /**
@@ -110,6 +119,7 @@ export abstract class PDFFormFillerBase {
      * [View pdf-lib Demo](https://surveyjs.io/pdf-generator/examples/map-survey-responses-to-pdf-fields-using-pdflib/ (linkStyle))
      *
      * [View PDF.js Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-with-dynamic-survey-data-using-pdfjs/ (linkStyle))
+     * @since 2.0.9
      */
     public pdfLibraryAdapter?: IPDFFormAdapter;
 
@@ -131,6 +141,7 @@ export abstract class PDFFormFillerBase {
     /**
      * An asynchronous method that allows you to get PDF content in different formats.
      * @param type *(Optional)* One of `"blob"`, `"bloburl"`, `"dataurlstring"`. Do not specify this parameter if you want to get raw PDF content as a string value.
+     * @since 2.0.9
      */
     public async raw(type?: 'blob' | 'bloburl' | 'dataurlstring') {
         const pdfBytes = await this.getPDFBytes();
@@ -150,6 +161,7 @@ export abstract class PDFFormFillerBase {
      *
      * [View PDF.js Demo](https://surveyjs.io/pdf-generator/examples/fill-in-pdf-form-fields-with-dynamic-survey-data-using-pdfjs/ (linkStyle))
      * @param fileName *(Optional)* A file name with the ".pdf" extension. Default value: `"FilledForm.pdf"`.
+     * @since 2.0.9
      */
     public async save(fileName: string = 'FilledForm.pdf') {
         const pdfBytes = await this.getPDFBytes();

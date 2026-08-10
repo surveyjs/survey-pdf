@@ -23,6 +23,20 @@ All notable changes to this project will be documented in this file. See [standa
 ## 3.0.0-beta.0 (2026-03-05)
 
 ## [3.0.0-beta.0](https://github.com/surveyjs/survey-pdf/compare/v2.5.12...v3.0.0-beta.0) (2026-03-05)
+### 2.5.37 (2026-08-04)
+
+### 2.5.36 (2026-07-28)
+
+### 2.5.35 (2026-07-21)
+
+### [2.5.34](https://github.com/surveyjs/survey-pdf/compare/v2.5.33...v2.5.34) (2026-07-14)
+
+### 2.5.33 (2026-07-08)
+
+### [2.5.32](https://github.com/surveyjs/survey-pdf/compare/v2.5.31...v2.5.32) (2026-07-01)
+
+### 2.5.31 (2026-06-30)
+
 ### 2.5.30 (2026-06-24)
 
 ### [2.5.29](https://github.com/surveyjs/survey-pdf/compare/v2.5.28...v2.5.29) (2026-06-17)
