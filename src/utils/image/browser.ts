@@ -11,7 +11,6 @@ export class ImageUtils extends BaseImageUtils implements IImageUtils {
                 const dpr = window.devicePixelRatio || 1;
                 canvas.height = image.naturalHeight * dpr;
                 canvas.width = image.naturalWidth * dpr;
-                document.body.appendChild(canvas);
                 ctx?.drawImage(image, 0, 0, image.naturalWidth * dpr, image.naturalHeight * dpr);
                 const dataUrl = canvas.toDataURL();
                 resolve({ data: dataUrl, width: image.naturalWidth * pxToPt, height: image.naturalHeight * pxToPt, id: this.getImageId() });
