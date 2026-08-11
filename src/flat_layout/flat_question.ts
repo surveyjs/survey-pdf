@@ -247,8 +247,9 @@ export class FlatQuestion<T extends Question = Question, S extends IQuestionStyl
             this.survey.onRenderQuestion.unshift(this.question.customWidget.pdfRender);
         }
         await this.survey.onRenderQuestion.fire(this.survey, adornersOptions);
-        this.survey.afterRenderSurveyElement(this.question, flats);
-        return flats;
+        const bricks = [...adornersOptions.bricks];
+        this.survey.afterRenderSurveyElement(this.question, bricks);
+        return bricks;
     }
 }
 
