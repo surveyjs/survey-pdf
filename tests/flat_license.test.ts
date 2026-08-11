@@ -51,7 +51,7 @@ test('Check flat license splitPartsToFit method', async () => {
     const flatLicense = new FlatLicense(survey, controller);
     let lines = flatLicense['splitPartsToFit']([
         { text: 'Big first text to split' },
-        { text: 'url', isLink: true, url: 'url' },
+        { text: ' url', isLink: true, url: 'url' },
     ], 60);
     expect(lines).toEqual([[{
         'text': 'Big first text',
@@ -63,7 +63,7 @@ test('Check flat license splitPartsToFit method', async () => {
         },
         {
             'isLink': true,
-            'text': 'url',
+            'text': ' url',
             'url': 'url',
         },
     ]

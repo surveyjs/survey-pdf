@@ -77,7 +77,7 @@ export class FlatLicense {
                     currentPart.text += part.text;
                 }
             }
-            mergedLine[mergedLine.length - 1].text = mergedLine[mergedLine.length - 1].text.trim();
+            mergedLine[mergedLine.length - 1].text = mergedLine[mergedLine.length - 1].text.trimEnd();
             return mergedLine;
         });
     }
