@@ -9,21 +9,17 @@ import { ITextStyle } from '../style/types';
 
 type ITextPart = { text: string } & ({isLink?: false} | { isLink: true, url: string })
 
+export interface IFlatLicenseStyle {
+    text: ITextStyle;
+    link?: Partial<ITextStyle>;
+}
 export class FlatLicense {
-    constructor(private survey: SurveyPDF, private controller: DocController) {
-
-    }
+    constructor(private survey: SurveyPDF, private controller: DocController, private style: IFlatLicenseStyle) { }
     private getTextStyle(): ITextStyle {
-        return {
-            fontSize: 10,
-            fontStyle: 'normal',
-            fontName: 'helvetica',
-            fontColor: '#000000',
-            lineHeight: 12
-        };
+        return this.style.text;
     }
     private getLinkStyle(): ITextStyle {
-        return SurveyHelper.mergeObjects({}, this.getTextStyle(), { fontColor: '#0000FF' });
+        return SurveyHelper.mergeObjects({}, this.getTextStyle(), this.style.link ?? {});
     }
     private getLicenseParts(license: string): Array<ITextPart> {
         const regex = /\[([^\]]+)\]\(([^)]+)\)|([^\[]+)/g;

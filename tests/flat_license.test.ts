@@ -48,7 +48,13 @@ test('Check flat license splitPartsToFit method', async () => {
     const survey: SurveyPDF = new SurveyPDF({ }, TestHelper.defaultOptions);
     const controller: DocController = new DocController(TestHelper.defaultOptions);
     controller.fontSize = 10;
-    const flatLicense = new FlatLicense(survey, controller);
+    const flatLicense = new FlatLicense(survey, controller, {
+        text: { fontSize: 10,
+            lineHeight: 12,
+            fontStyle: 'normal',
+            fontName: 'helvetica',
+            fontColor: '#000000'
+        } });
     let lines = flatLicense['splitPartsToFit']([
         { text: 'Big first text to split' },
         { text: ' url', isLink: true, url: 'url' },
