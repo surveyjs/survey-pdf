@@ -603,7 +603,7 @@ export class DocController extends DocOptions {
         } });
     }
     public restoreTextStyle(isHelper: boolean = false) {
-        const index = this.textStyleRestoreCallbacks.length - 1 - this.textStyleRestoreCallbacks.reverse().findIndex((value) => {
+        const index = this.textStyleRestoreCallbacks.length - 1 - this.textStyleRestoreCallbacks.slice().reverse().findIndex((value) => {
             return value.isHelper === isHelper;
         });
         if(index < this.textStyleRestoreCallbacks.length) {

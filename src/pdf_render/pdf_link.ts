@@ -1,6 +1,7 @@
 import { ITextBrickOptions, TextBrick } from './pdf_text';
 import { IRect, DocController } from '../doc_controller';
 import { ITextStyle } from '../style/types';
+import { SurveyHelper } from '../helper_survey';
 
 export interface ILinkOptions extends ITextBrickOptions {
     link: string;
@@ -13,8 +14,7 @@ export class LinkBrick extends TextBrick {
         super(controller, rect, options, style);
     }
     public async renderInteractive(): Promise<void> {
-        this.controller.setTextStyle(this.style);
-        this.controller.setTextColor('#FFFFFF00');
+        this.controller.setTextStyle(SurveyHelper.mergeObjects({}, this.style, { fontColor: '#FFFFFF00' }));
         let descent: number = this.controller.unitHeight *
             (this.controller.doc.getLineHeightFactor() -
                 LinkBrick.SCALE_FACTOR_MAGIC);
