@@ -1,0 +1,88 @@
+[
+	{
+		"brickType": "CompositeBrick",
+		"width": 150,
+		"height": 133.5,
+		"xLeft": 34.72145669291339,
+		"xRight": 184.7214566929134,
+		"yTop": 34.72145669291339,
+		"yBot": 168.2214566929134,
+		"bricks": [
+			{
+				"brickType": "CompositeBrick",
+				"width": 150,
+				"height": 133.5,
+				"xLeft": 34.72145669291339,
+				"xRight": 184.7214566929134,
+				"yTop": 34.72145669291339,
+				"yBot": 168.2214566929134,
+				"bricks": [
+					{
+						"brickType": "CompositeBrick",
+						"width": 39.120000000000005,
+						"height": 18,
+						"xLeft": 34.72145669291339,
+						"xRight": 73.8414566929134,
+						"yTop": 34.72145669291339,
+						"yBot": 52.72145669291339,
+						"bricks": [
+							{
+								"brickType": "LinkBrick",
+								"width": 39.120000000000005,
+								"height": 18,
+								"xLeft": 34.72145669291339,
+								"xRight": 73.8414566929134,
+								"yTop": 34.72145669291339,
+								"yBot": 52.72145669291339,
+								"style": {
+									"fontSize": 12,
+									"fontName": "helvetica",
+									"fontStyle": "normal",
+									"lineHeight": 18,
+									"fontColor": "#2a6cd0"
+								},
+								"options": {
+									"link": "some url",
+									"text": "cat.png",
+									"readOnlyShowLink": false,
+									"shouldRenderReadOnly": false
+								},
+								"padding": {
+									"top": 0,
+									"bottom": 0
+								}
+							},
+							{
+								"brickType": "RowlineBrick",
+								"width": 39.120000000000005,
+								"height": 0,
+								"xLeft": 34.72145669291339,
+								"xRight": 73.8414566929134,
+								"yTop": 52.72145669291339,
+								"yBot": 52.72145669291339
+							}
+						]
+					},
+					{
+						"brickType": "ImageBrick",
+						"width": 150,
+						"height": 112.5,
+						"xLeft": 34.72145669291339,
+						"xRight": 184.7214566929134,
+						"yTop": 55.72145669291339,
+						"yBot": 168.2214566929134,
+						"options": {
+							"width": 0,
+							"height": 0,
+							"link": "some url"
+						},
+						"padding": {
+							"top": 0,
+							"bottom": 0
+						}
+					}
+				]
+			}
+		]
+	}
+]

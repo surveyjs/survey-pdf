@@ -1,21 +1,13 @@
-import { IQuestion, QuestionSignaturePadModel } from 'survey-core';
-import { SurveyPDF } from '../survey';
 import { FlatQuestion } from './flat_question';
 import { FlatRepository } from './flat_repository';
-import { IPoint, DocController, ISize } from '../doc_controller';
+import { IPoint, ISize } from '../doc_controller';
 import { IPdfBrick, PdfBrick } from '../pdf_render/pdf_brick';
 import { IBorderDescription, SurveyHelper } from '../helper_survey';
 import { EmptyBrick } from '../pdf_render/pdf_empty';
 import { CompositeBrick } from '../pdf_render/pdf_composite';
 
 export class FlatSignaturePad extends FlatQuestion {
-    protected question: QuestionSignaturePadModel;
     public static BORDER_STYLE: 'dashed' | 'solid' | 'none' = 'dashed';
-    public constructor(protected survey: SurveyPDF,
-        question: IQuestion, controller: DocController) {
-        super(survey, question, controller);
-        this.question = <QuestionSignaturePadModel>question;
-    }
     private _signatureSize: ISize;
     private get signatureSize(): ISize {
         if(!this._signatureSize) {
@@ -44,7 +36,7 @@ export class FlatSignaturePad extends FlatQuestion {
                 this.question, this.controller, { link: this.getSignImageUrl(), ...this.signatureSize }, false
             ) as PdfBrick;
         } else {
-            brick = new EmptyBrick(SurveyHelper.createRect(point, this.signatureSize.width, this.signatureSize.height));
+            brick = new EmptyBrick(this.controller, SurveyHelper.createRect(point, this.signatureSize.width, this.signatureSize.height));
         }
         if(FlatSignaturePad.BORDER_STYLE !== 'none') {
             brick.afterRenderCallback = () => {
@@ -55,15 +47,13 @@ export class FlatSignaturePad extends FlatQuestion {
                     yBot: brick.yBot,
                     xLeft: brick.xLeft,
                     xRight: brick.xRight,
-                    formBorderColor: brick.formBorderColor,
-                    rounded: false,
-                    outside: true,
+                };
+                SurveyHelper.renderFlatBorders(this.controller, borderOptions, { ...this.style.input,
                     dashStyle: FlatSignaturePad.BORDER_STYLE == 'dashed' ? {
                         dashArray: [5],
                         dashPhase: 0
                     } : undefined
-                };
-                SurveyHelper.renderFlatBorders(this.controller, borderOptions);
+                });
             };
         }
 

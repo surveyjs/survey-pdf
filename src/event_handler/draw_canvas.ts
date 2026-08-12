@@ -1,7 +1,6 @@
-import { IRect, IMargin, ISize, DocOptions, DocController } from '../doc_controller';
-import { IPdfBrick, PdfBrick } from '../pdf_render/pdf_brick';
+import { IRect, IMargin, ISize, DocController } from '../doc_controller';
+import { IPdfBrick } from '../pdf_render/pdf_brick';
 import { TextBrick } from '../pdf_render/pdf_text';
-import { TextBoldBrick } from '../pdf_render/pdf_textbold';
 import { SurveyHelper } from '../helper_survey';
 
 /**
@@ -54,7 +53,7 @@ export interface IDrawRectOptions {
     rect?: IRect;
 }
 /**
- * An object that configures rendering a piece of text.
+ * An object that configures rendering a text fragment.
  */
 export interface IDrawTextOptions extends IDrawRectOptions {
     /**
@@ -101,7 +100,7 @@ export interface IDrawImageOptions extends IDrawRectOptions {
 }
 
 /**
- * An object that describes a drawing area and enables you to draw an image or a piece of text within the area. You can access this object within functions that handle `SurveyPDF`'s [`onRenderHeader`](https://surveyjs.io/pdf-generator/documentation/api-reference/surveypdf#onRenderHeader) and [`onRenderFooter`](https://surveyjs.io/pdf-generator/documentation/api-reference/surveypdf#onRenderFooter) events.
+ * An object that describes a drawing area and enables you to draw an image or a text fragment within the area. You can access this object within functions that handle `SurveyPDF`'s [`onRenderHeader`](https://surveyjs.io/pdf-generator/documentation/api-reference/surveypdf#onRenderHeader) and [`onRenderFooter`](https://surveyjs.io/pdf-generator/documentation/api-reference/surveypdf#onRenderFooter) events.
  *
  * [View Demo](https://surveyjs.io/pdf-generator/examples/customize-header-and-footer-of-pdf-form/ (linkStyle))
  */
@@ -212,31 +211,26 @@ export class DrawCanvas {
         return rect;
     }
     /**
-     * Draws a piece of text within the drawing area.
+     * Draws a text fragment within the drawing area.
      *
      * [View Demo](https://surveyjs.io/pdf-generator/examples/customize-header-and-footer-of-pdf-form/ (linkStyle))
      * @param textOptions An [`IDrawTextOptions`](https://surveyjs.io/pdf-generator/documentation/api-reference/idrawtextoptions) object that configures the drawing.
      */
     public drawText(textOptions: IDrawTextOptions): void {
         textOptions = SurveyHelper.clone(textOptions);
-        if (typeof textOptions.fontSize === 'undefined') {
-            textOptions.fontSize = DocOptions.FONT_SIZE;
-        }
         if (typeof textOptions.isBold === 'undefined') {
             textOptions.isBold = false;
         }
-        const textSize: ISize = this.controller.measureText(textOptions.text,
-            textOptions.isBold ? 'bold' : 'normal', textOptions.fontSize);
+        const style = SurveyHelper.getPatchedTextStyle(this.controller, {
+            fontStyle: textOptions.isBold ? 'bold' : 'normal',
+            fontSize: textOptions.fontSize,
+            fontName: this.controller.fontName,
+            fontColor: '#404040',
+        });
+        const textSize: ISize = this.controller.measureText(textOptions.text, style);
         const textRect: IRect = this.alignRect(textOptions, textSize);
-        if (!textOptions.isBold) {
-            this.packs.push(new TextBrick(null, this.controller,
-                textRect, textOptions.text));
-        }
-        else {
-            this.packs.push(new TextBoldBrick(null, this.controller,
-                textRect, textOptions.text));
-        }
-        (<PdfBrick>this.packs[this.packs.length - 1]).fontSize = textOptions.fontSize;
+        this.packs.push(new TextBrick(this.controller,
+            textRect, textOptions, style));
     }
     /**
      * Draws an image within the drawing area.

@@ -2,8 +2,31 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## 3.0.0 (2026-08-11)
+
 ### 2.5.38 (2026-08-10)
 
+## 3.0.0-beta.9 (2026-08-07)
+
+## 3.0.0-beta.8 (2026-07-01)
+
+## 3.0.0-beta.7 (2026-06-19)
+
+## [3.0.0-beta.6](https://github.com/surveyjs/survey-pdf/compare/v3.0.0-beta.5...v3.0.0-beta.6) (2026-05-26)
+
+## [3.0.0-beta.5](https://github.com/surveyjs/survey-pdf/compare/v3.0.0-beta.4...v3.0.0-beta.5) (2026-05-21)
+
+## [3.0.0-beta.4](https://github.com/surveyjs/survey-pdf/compare/v3.0.0-beta.3...v3.0.0-beta.4) (2026-05-20)
+
+## [3.0.0-beta.3](https://github.com/surveyjs/survey-pdf/compare/v3.0.0-beta.1...v3.0.0-beta.3) (2026-04-09)
+
+## [3.0.0-beta.1](https://github.com/surveyjs/survey-pdf/compare/v2.5.16...v3.0.0-beta.1) (2026-03-23)
+
+### [2.5.15](https://github.com/surveyjs/survey-pdf/compare/v3.0.0-beta.0...v2.5.15) (2026-03-11)
+
+## 3.0.0-beta.0 (2026-03-05)
+
+## [3.0.0-beta.0](https://github.com/surveyjs/survey-pdf/compare/v2.5.12...v3.0.0-beta.0) (2026-03-05)
 ### 2.5.37 (2026-08-04)
 
 ### 2.5.36 (2026-07-28)

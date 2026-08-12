@@ -361,7 +361,8 @@ import { jsPDF } from "jspdf";
 
                 if (formObject.isUnicode) {
                     var fontList = {};
-                    fontList[scope.internal.getFont().id] = scope.internal.getFont();
+                    const font = scope.internal.getFont(formObject.fontName, formObject.fontStyle);
+                    fontList[font.id] = font;
                     var payload = {
                         text: line,
                         x: null,
@@ -371,7 +372,7 @@ import { jsPDF } from "jspdf";
                         },
                         mutex: {
                             pdfEscape: pdfEscape,
-                            activeFontKey: scope.internal.getFont().id,
+                            activeFontKey: font.id,
                             fonts: fontList,
                             activeFontSize: formObject.fontSize
                         }
@@ -1337,6 +1338,9 @@ import { jsPDF } from "jspdf";
             enumerable: true,
             configurable: true,
             get: function () {
+                if (this.isUnicode) {
+                    return _V;
+                }
                 if ((this instanceof AcroFormButton === true)) {
                     return pdfUnescape(_V.substr(1, _V.length - 1));
                 } else {
@@ -1345,10 +1349,16 @@ import { jsPDF } from "jspdf";
             },
             set: function (value) {
                 value = value.toString();
-                if ((this instanceof AcroFormButton === true)) {
-                    _V = '/' + value;
+                if (this.isUnicode) {
+                    _V = toUnicode(value);
+                    this.trueValue = value;
                 } else {
-                    _V = value;
+                    if ((this instanceof AcroFormButton === true)) {
+                        _V = '/' + value;
+                    } else {
+                        _V = value;
+                    }
+
                 }
             }
         });

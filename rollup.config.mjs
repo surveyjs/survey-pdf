@@ -48,6 +48,7 @@ function emitNonSourceFiles() {
             'survey-core': version
         },
         dependencies: {
+            "@csstools/css-color-parser": "^3.1.0",
             '@types/node-fetch': '^2',
             'jspdf': '^2.3.0 || ^3 || ^4',
             'image-size': '^2',
@@ -76,6 +77,20 @@ function emitNonSourceFiles() {
                 'import': './fesm/pdf-form-filler.mjs',
                 'require': './pdf-form-filler.js'
             },
+            "./layouts": {
+                "types": "./layouts/index.d.ts",
+                "import": "./fesm/layouts/index.mjs",
+                "require": "./layouts/index.js"
+            },
+            "./layouts/index": {
+                "types": "./layouts/index.d.ts",
+                "import": "./fesm/layouts/index.mjs",
+                "require": "./layouts/index.js"
+            },
+            "./layouts/*": {
+                "types": "./layouts/*.d.ts",
+                "default": "./layouts/*.js",
+            },
         }
     };
     if (!existsSync(buildPath)) {
@@ -99,13 +114,21 @@ const external = [
     'survey-core',
     'image-size',
     'node-fetch',
+    '@csstools/css-calc',
+    '@csstools/css-color-parser',
+    '@csstools/css-parser-algorithms',
+    '@csstools/css-tokenizer',
 ];
 const umdGlobals =
 {
     'survey-core': 'Survey',
     'jspdf': 'jspdf',
     'image-size': 'image-size',
-    'node-fetch': 'node-fetch'
+    'node-fetch': 'node-fetch',
+    '@csstools/css-calc': '@csstools/css-calc',
+    '@csstools/css-color-parser': '@csstools/css-color-parser',
+    '@csstools/css-parser-algorithms': '@csstools/css-parser-algorithms',
+    '@csstools/css-tokenizer': '@csstools/css-tokenizer',
 };
 const globalName = 'SurveyPDF';
 
