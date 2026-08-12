@@ -2,16 +2,13 @@
     return {};
 };
 import { test, expect } from 'vitest';
+import { checkFlatSnapshot } from './snapshot_helper';
+import { DocOptions, DocController } from '../src/doc_controller';
+import { TestHelper } from '../src/helper_test';
+import { FlatRating } from '../src/flat_layout/flat_rating';
 import { QuestionRatingModel } from 'survey-core';
 import { SurveyPDF } from '../src/survey';
-import { IRect, DocOptions, IDocOptions, DocController, ISize, IPoint } from '../src/doc_controller';
-import { FlatSurvey } from '../src/flat_layout/flat_survey';
-import { FlatQuestion } from '../src/flat_layout/flat_question';
-import { FlatRating } from '../src/flat_layout/flat_rating';
-import { IPdfBrick } from '../src/pdf_render/pdf_brick';
-import { SurveyHelper } from '../src/helper_survey';
-import { TestHelper } from '../src/helper_test';
-const __dummy_rt = new FlatRating(null, null, null);
+import '../src/flat_layout/flat_rating';
 
 test('Check rating two elements', async () => {
     const json: any = {
@@ -24,21 +21,9 @@ test('Check rating two elements', async () => {
             }
         ]
     };
-    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let controller: DocController = new DocController(TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(1);
-    controller.margins.left += controller.unitWidth;
-    let assumeRating: IRect = {
-        xLeft: controller.leftTopPoint.xLeft,
-        xRight: controller.leftTopPoint.xLeft +
-            SurveyHelper.getRatingMinWidth(controller) * 2,
-        yTop: controller.leftTopPoint.yTop,
-        yBot: controller.leftTopPoint.yTop +
-            controller.unitHeight * SurveyHelper.RATING_MIN_HEIGHT
-    };
-    TestHelper.equalRect(expect, flats[0][0], assumeRating);
+    await checkFlatSnapshot(json, {
+        snapshotName: 'rating_two_items',
+    });
 });
 test('Check rating two elements with min rate description', async () => {
     let json: any = {
@@ -52,24 +37,9 @@ test('Check rating two elements with min rate description', async () => {
             }
         ]
     };
-    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let controller: DocController = new DocController(TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(1);
-    controller.margins.left += controller.unitWidth;
-    let question: QuestionRatingModel = <QuestionRatingModel>survey.getAllQuestions()[0];
-    let assumeRating: IRect = {
-        xLeft: controller.leftTopPoint.xLeft,
-        xRight: controller.leftTopPoint.xLeft +
-            SurveyHelper.getRatingMinWidth(controller) + controller.measureText(
-            SurveyHelper.getRatingItemText(question, 0, question.visibleRateValues[0].locText),
-            'bold').width + controller.unitHeight,
-        yTop: controller.leftTopPoint.yTop,
-        yBot: controller.leftTopPoint.yTop +
-            controller.unitHeight * SurveyHelper.RATING_MIN_HEIGHT
-    };
-    TestHelper.equalRect(expect, flats[0][0], assumeRating);
+    await checkFlatSnapshot(json, {
+        snapshotName: 'rating_min_rate_description',
+    });
 });
 test('Check rating two elements with max rate description', async () => {
     let json: any = {
@@ -83,24 +53,9 @@ test('Check rating two elements with max rate description', async () => {
             }
         ]
     };
-    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let controller: DocController = new DocController(TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(1);
-    let question: QuestionRatingModel = <QuestionRatingModel>survey.getAllQuestions()[0];
-    let assumeRating: IRect = {
-        xLeft: controller.leftTopPoint.xLeft + controller.unitWidth,
-        xRight: controller.leftTopPoint.xLeft + controller.unitWidth +
-            SurveyHelper.getRatingMinWidth(controller) + controller.measureText(
-            SurveyHelper.getRatingItemText(question, 1,
-                question.visibleRateValues[0].locText), 'bold').width +
-            controller.unitHeight,
-        yTop: controller.leftTopPoint.yTop,
-        yBot: controller.leftTopPoint.yTop +
-            controller.unitHeight * SurveyHelper.RATING_MIN_HEIGHT
-    };
-    TestHelper.equalRect(expect, flats[0][0], assumeRating);
+    await checkFlatSnapshot(json, {
+        snapshotName: 'rating_max_rate_description',
+    });
 });
 test('Check rating many elements', async () => {
     let json: any = {
@@ -113,25 +68,18 @@ test('Check rating many elements', async () => {
             }
         ]
     };
-    let options: IDocOptions = TestHelper.defaultOptions;
-    options.format = [options.margins.left + options.margins.right +
-        SurveyHelper.getRatingMinWidth(new DocController(options)) * 3 /
-        DocOptions.MM_TO_PT + new DocController(options).unitWidth /
-        DocOptions.MM_TO_PT, 297.0];
-    let survey: SurveyPDF = new SurveyPDF(json, options);
-    let controller: DocController = new DocController(options);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(2);
-    controller.margins.left += controller.unitWidth;
-    let assumeRating: IRect = {
-        xLeft: controller.leftTopPoint.xLeft,
-        xRight: controller.paperWidth - controller.margins.right,
-        yTop: controller.leftTopPoint.yTop,
-        yBot: controller.leftTopPoint.yTop +
-            controller.unitHeight * SurveyHelper.RATING_MIN_HEIGHT * 2.0
-    };
-    TestHelper.equalRect(expect, SurveyHelper.mergeRects(flats[0][0], flats[0][1]), assumeRating);
+    await checkFlatSnapshot(json, {
+        snapshotName: 'rating_many_elements',
+        controllerOptions: {
+            format: [50, 297.0],
+            margins: {
+                left: 10.0,
+                right: 10.0,
+                top: 10.0,
+                bot: 10.0
+            }
+        }
+    });
 });
 test('Check rating two elements with long min rate description', async () => {
     let json: any = {
@@ -149,23 +97,19 @@ test('Check rating two elements with long min rate description', async () => {
     let longRateDesc: number = (dummyController.measureText(
         json.elements[0].minRateDescription + ' 1', 'bold').width +
         dummyController.unitWidth) / DocOptions.MM_TO_PT;
-    let options: IDocOptions = TestHelper.defaultOptions;
-    options.format = [options.margins.left + dummyController.unitWidth / DocOptions.MM_TO_PT +
-        options.margins.right + longRateDesc, 297.0];
-    let survey: SurveyPDF = new SurveyPDF(json, options);
-    let controller: DocController = new DocController(options);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(2);
-    controller.margins.left += controller.unitWidth;
-    let assumeRating: IRect = {
-        xLeft: controller.leftTopPoint.xLeft,
-        xRight: controller.paperWidth - controller.margins.right,
-        yTop: controller.leftTopPoint.yTop,
-        yBot: controller.leftTopPoint.yTop +
-            controller.unitHeight * SurveyHelper.RATING_MIN_HEIGHT * 2.0
-    };
-    TestHelper.equalRect(expect, SurveyHelper.mergeRects(flats[0][0], flats[0][1]), assumeRating);
+    await checkFlatSnapshot(json, {
+        snapshotName: 'rating_with_long_min_rate_description',
+        controllerOptions: {
+            format: [TestHelper.defaultOptions.margins.left + dummyController.unitWidth / DocOptions.MM_TO_PT +
+        TestHelper.defaultOptions.margins.right + longRateDesc, 297.0],
+            margins: {
+                left: 10.0,
+                right: 10.0,
+                top: 10.0,
+                bot: 10.0
+            }
+        }
+    });
 });
 test('Check rating vertical layout composite', async () => {
     let json: any = {
@@ -179,19 +123,63 @@ test('Check rating vertical layout composite', async () => {
             }
         ]
     };
-    let survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    let controller: DocController = new DocController(TestHelper.defaultOptions);
-    let flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    let currPoint: IPoint = controller.leftTopPoint;
-    currPoint.xLeft += FlatQuestion.CONTENT_GAP_HOR_SCALE * controller.unitWidth;
-    let assumeItemRect: IRect = SurveyHelper.moveRect(SurveyHelper.scaleRect(
-        SurveyHelper.createRect(currPoint, controller.unitHeight, controller.unitHeight),
-        SurveyHelper.SELECT_ITEM_FLAT_SCALE), currPoint.xLeft);
-    TestHelper.equalRect(expect, flats[0][0].unfold()[0], assumeItemRect);
-    let textSize: ISize = controller.measureText(
-        json.questions[0].mininumRateDescription + ' 1');
-    let textPoint: IPoint = currPoint;
-    textPoint.xLeft = assumeItemRect.xRight + controller.unitWidth * SurveyHelper.GAP_BETWEEN_ITEM_TEXT;
-    let assumeTextRect: IRect = SurveyHelper.createRect(textPoint, textSize.width, textSize.height);
-    TestHelper.equalRect(expect, flats[0][0].unfold()[1], assumeTextRect);
+    await checkFlatSnapshot(json, {
+        snapshotName: 'rating_vertical_layout_composite',
+    });
+});
+
+test('Check rating getRows method', async () => {
+    let json: any = {
+        elements: [
+            {
+                type: 'rating',
+                name: 'rating_get_rows',
+                titleLocation: 'hidden',
+                rateMax: 10
+            }
+        ]
+    };
+    const survey = new SurveyPDF(json);
+    const question = survey.getAllQuestions()[0] as QuestionRatingModel;
+    const flat = new FlatRating(survey, question, survey.docController, { spacing: { choiceColumnGap: 15 }, choiceMinWidth: 18 });
+    let getRows = flat['getRows'].bind(flat);
+    let rows = getRows();
+    expect(rows.length).toBe(1);
+    expect(rows[0].length).toBe(10);
+
+    question.rateMax = 5;
+    rows = getRows();
+    expect(rows.length).toBe(1);
+    expect(rows[0].length).toBe(5);
+
+    question.rateMax = 17;
+    rows = getRows();
+    expect(rows.length).toBe(2);
+    expect(rows[0].length).toBe(16);
+    expect(rows[1].length).toBe(1);
+
+    question.rateMax = 20;
+    rows = getRows();
+    expect(rows.length).toBe(2);
+    expect(rows[0].length).toBe(16);
+    expect(rows[1].length).toBe(4);
+
+    flat.style.spacing.choiceColumnGap = 30;
+
+    question.rateMax = 5;
+    rows = getRows();
+    expect(rows.length).toBe(1);
+    expect(rows[0].length).toBe(5);
+
+    question.rateMax = 12;
+    rows = getRows();
+    expect(rows.length).toBe(2);
+    expect(rows[0].length).toBe(11);
+    expect(rows[1].length).toBe(1);
+
+    question.rateMax = 20;
+    rows = getRows();
+    expect(rows.length).toBe(2);
+    expect(rows[0].length).toBe(11);
+    expect(rows[1].length).toBe(9);
 });

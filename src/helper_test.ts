@@ -24,8 +24,7 @@ export class TestHelper {
     public static get defaultOptions(): IDocOptions {
         return {
             format: [210.0, 297.0],
-            fontSize: 30,
-            fontName: SurveyHelper.STANDARD_FONT,
+            showNavigation: false,
             margins: {
                 left: 10.0,
                 right: 10.0,
@@ -35,7 +34,7 @@ export class TestHelper {
         };
     }
     public static wrapRect(rect: IRect): IPdfBrick {
-        return new PdfBrick(null, null, rect);
+        return new PdfBrick(null, rect);
     }
     public static wrapRects(rects: IRect[]): IPdfBrick[] {
         let pdfqs: IPdfBrick[] = [];

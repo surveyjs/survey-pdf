@@ -3,20 +3,13 @@
 };
 import { test, expect } from 'vitest';
 import { SurveyPDF } from '../src/survey';
-import { IPoint, IRect, ISize, IDocOptions, DocOptions, DocController } from '../src/doc_controller';
-import { FlatSurvey } from '../src/flat_layout/flat_survey';
-import { FlatDropdown } from '../src/flat_layout/flat_dropdown';
+import { IDocOptions, DocController } from '../src/doc_controller';
 import { FlatMatrixMultiple } from '../src/flat_layout/flat_matrixmultiple';
-import { FlatMatrixDynamic } from '../src/flat_layout/flat_matrixdynamic';
-import { IPdfBrick } from '../src/pdf_render/pdf_brick';
-import { SurveyHelper } from '../src/helper_survey';
 import { TestHelper } from '../src/helper_test';
 import { QuestionMatrixDropdownModel } from 'survey-core';
-import { CompositeBrick } from '../src/pdf_render/pdf_composite';
 import { checkFlatSnapshot } from './snapshot_helper';
 import { AdornersOptions } from '../src/event_handler/adorners';
-let __dummy_dd = new FlatDropdown(null, null, null);
-let __dummy_mm = new FlatMatrixMultiple(null, null, null);
+import '../src/entries/pdf-base';
 
 test('Check matrix multiple one column no rows', async () => {
     const json: any = {
@@ -33,24 +26,12 @@ test('Check matrix multiple one column no rows', async () => {
             }
         ]
     };
-    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    const controller: DocController = new DocController(TestHelper.defaultOptions);
-    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(1);
-    controller.margins.left += controller.unitWidth;
-    const size: ISize = controller.measureText(json.elements[0].columns[0].name, 'bold');
-    const assumeMatrix: IRect = {
-        xLeft: controller.leftTopPoint.xLeft +
-            SurveyHelper.getPageAvailableWidth(controller) / 2.0 +
-            SurveyHelper.GAP_BETWEEN_COLUMNS * controller.unitWidth / 2.0,
-        xRight: controller.leftTopPoint.xLeft +
-            SurveyHelper.getPageAvailableWidth(controller) / 2.0 +
-            SurveyHelper.GAP_BETWEEN_COLUMNS * controller.unitWidth / 2.0 + size.width,
-        yTop: controller.leftTopPoint.yTop,
-        yBot: controller.leftTopPoint.yTop + size.height
-    };
-    TestHelper.equalRect(expect, flats[0][0].unfold()[0], assumeMatrix);
+    await checkFlatSnapshot(json, {
+        snapshotName: 'matrixdropdown_one_column_no_rows',
+        isCorrectEvent: (options: AdornersOptions) => {
+            return options.question.getType() == 'matrixdropdown';
+        }
+    });
 });
 test('Check matrix multiple one column no rows vertical layout', async () => {
     const json: any = {
@@ -68,20 +49,12 @@ test('Check matrix multiple one column no rows vertical layout', async () => {
             }
         ]
     };
-    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    const controller: DocController = new DocController(TestHelper.defaultOptions);
-    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(1);
-    controller.margins.left += controller.unitWidth;
-    const size: ISize = controller.measureText(json.elements[0].columns[0].name, 'normal');
-    const assumeMatrix: IRect = {
-        xLeft: controller.leftTopPoint.xLeft,
-        xRight: controller.leftTopPoint.xLeft + size.width,
-        yTop: controller.leftTopPoint.yTop,
-        yBot: controller.leftTopPoint.yTop + size.height
-    };
-    TestHelper.equalRect(expect, flats[0][0].unfold()[0], assumeMatrix);
+    await checkFlatSnapshot(json, {
+        snapshotName: 'matrixdropdown_vertical_one_column_no_rows',
+        isCorrectEvent: (options: AdornersOptions) => {
+            return options.question.getType() == 'matrixdropdown';
+        }
+    });
 });
 test('Check matrix multiple one column one row', async () => {
     const json: any = {
@@ -101,54 +74,12 @@ test('Check matrix multiple one column one row', async () => {
             }
         ]
     };
-    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    const controller: DocController = new DocController(TestHelper.defaultOptions);
-    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(2);
-    controller.margins.left += controller.unitWidth;
-    const unfoldHeaderFlats: IPdfBrick[] = flats[0][0].unfold();
-    expect(unfoldHeaderFlats.length).toBe(2);
-    const unfoldRowFlats: IPdfBrick[] = flats[0][1].unfold();
-    expect(unfoldRowFlats.length).toBe(2);
-    const header: ISize = controller.measureText(json.elements[0].columns[0].name, 'bold');
-    const assumeMatrix: IRect = {
-        xLeft: controller.leftTopPoint.xLeft,
-        xRight: controller.paperWidth - controller.margins.right,
-        yTop: controller.leftTopPoint.yTop,
-        yBot: controller.leftTopPoint.yTop + header.height +
-            SurveyHelper.EPSILON + controller.unitHeight * (1 + FlatMatrixMultiple.GAP_BETWEEN_ROWS)
-    };
-    TestHelper.equalRect(expect, SurveyHelper.mergeRects(flats[0][0], flats[0][1]), assumeMatrix);
-    const assumeHeader: IRect = {
-        xLeft: controller.leftTopPoint.xLeft +
-            SurveyHelper.getPageAvailableWidth(controller) / 2.0 +
-            SurveyHelper.GAP_BETWEEN_COLUMNS * controller.unitWidth / 2.0,
-        xRight: controller.leftTopPoint.xLeft +
-            SurveyHelper.getPageAvailableWidth(controller) / 2.0 +
-            SurveyHelper.GAP_BETWEEN_COLUMNS * controller.unitWidth / 2.0 +
-            header.width,
-        yTop: controller.leftTopPoint.yTop,
-        yBot: controller.leftTopPoint.yTop + header.height
-    };
-    TestHelper.equalRect(expect, unfoldHeaderFlats[0], assumeHeader);
-    const rowText: ISize = controller.measureText(json.elements[0].rows[0]);
-    const assumeRowText: IRect = {
-        xLeft: controller.leftTopPoint.xLeft,
-        xRight: controller.leftTopPoint.xLeft + rowText.width,
-        yTop: assumeHeader.yBot + SurveyHelper.EPSILON
-            + controller.unitHeight * FlatMatrixMultiple.GAP_BETWEEN_ROWS,
-        yBot: assumeHeader.yBot + SurveyHelper.EPSILON + rowText.height +
-            controller.unitHeight * FlatMatrixMultiple.GAP_BETWEEN_ROWS
-    };
-    TestHelper.equalRect(expect, unfoldRowFlats[0], assumeRowText);
-    const assumeRowQuestion: IRect = {
-        xLeft: assumeHeader.xLeft,
-        xRight: assumeMatrix.xRight,
-        yTop: assumeRowText.yTop,
-        yBot: assumeRowText.yTop + controller.unitHeight
-    };
-    TestHelper.equalRect(expect, unfoldRowFlats[1], assumeRowQuestion);
+    await checkFlatSnapshot(json, {
+        snapshotName: 'matrixdropdown_one_column_one_row',
+        isCorrectEvent: (options: AdornersOptions) => {
+            return options.question.getType() == 'matrixdropdown';
+        }
+    });
 });
 test('Check matrix multiple two columns one row vertical layout', async () => {
     const json: any = {
@@ -172,72 +103,12 @@ test('Check matrix multiple two columns one row vertical layout', async () => {
             }
         ]
     };
-    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    const controller: DocController = new DocController(TestHelper.defaultOptions);
-    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(3);
-    controller.margins.left += controller.unitWidth;
-    const unfoldHeaderFlats: IPdfBrick[] = flats[0][0].unfold();
-    expect(unfoldHeaderFlats.length).toBe(2);
-    const unfoldRow1Flats: IPdfBrick[] = flats[0][1].unfold();
-    expect(unfoldRow1Flats.length).toBe(3);
-    const unfoldRow2Flats: IPdfBrick[] = flats[0][2].unfold();
-    expect(unfoldRow2Flats.length).toBe(2);
-    const header: ISize = controller.measureText(json.elements[0].rows[0], 'bold');
-    const assumeMatrix: IRect = {
-        xLeft: controller.leftTopPoint.xLeft,
-        xRight: controller.paperWidth - controller.margins.right,
-        yTop: controller.leftTopPoint.yTop,
-        yBot: controller.leftTopPoint.yTop + header.height +
-            + 2.0 * ((1 + FlatMatrixDynamic.CONTENT_GAP_VERT_SCALE) * controller.unitHeight + SurveyHelper.EPSILON)
-    };
-    TestHelper.equalRect(expect, SurveyHelper.mergeRects(...flats[0]), assumeMatrix);
-    const assumeHeader: IRect = {
-        xLeft: controller.leftTopPoint.xLeft +
-            SurveyHelper.getPageAvailableWidth(controller) / 2.0 + SurveyHelper.GAP_BETWEEN_COLUMNS * controller.unitWidth / 2.0,
-        xRight: controller.leftTopPoint.xLeft +
-            SurveyHelper.getPageAvailableWidth(controller) / 2.0 +
-            SurveyHelper.GAP_BETWEEN_COLUMNS * controller.unitWidth / 2.0 +
-            header.width,
-        yTop: controller.leftTopPoint.yTop,
-        yBot: controller.leftTopPoint.yTop + header.height
-    };
-    TestHelper.equalRect(expect, unfoldHeaderFlats[0], assumeHeader);
-    const row1Text: ISize = controller.measureText(json.elements[0].columns[0].name);
-    const assumeRow1Text: IRect = {
-        xLeft: controller.leftTopPoint.xLeft,
-        xRight: controller.leftTopPoint.xLeft + row1Text.width,
-        yTop: assumeHeader.yBot + SurveyHelper.EPSILON
-            + controller.unitHeight * FlatMatrixDynamic.GAP_BETWEEN_ROWS,
-        yBot: assumeHeader.yBot + SurveyHelper.EPSILON + row1Text.height +
-            controller.unitHeight * FlatMatrixDynamic.GAP_BETWEEN_ROWS
-    };
-    TestHelper.equalRect(expect, unfoldRow1Flats[0], assumeRow1Text);
-    const assumeRow1Question: IRect = {
-        xLeft: assumeHeader.xLeft,
-        xRight: assumeMatrix.xRight,
-        yTop: assumeRow1Text.yTop,
-        yBot: assumeRow1Text.yTop + controller.unitHeight
-    };
-    TestHelper.equalRect(expect, unfoldRow1Flats[1], assumeRow1Question);
-    const row2Text: ISize = controller.measureText(json.elements[0].columns[1].name);
-    const assumeRow2Text: IRect = {
-        xLeft: controller.leftTopPoint.xLeft,
-        xRight: controller.leftTopPoint.xLeft + row2Text.width,
-        yTop: assumeRow1Question.yBot + SurveyHelper.EPSILON
-            + controller.unitHeight * FlatMatrixDynamic.GAP_BETWEEN_ROWS,
-        yBot: assumeRow1Question.yBot + SurveyHelper.EPSILON + row2Text.height
-            + controller.unitHeight * FlatMatrixDynamic.GAP_BETWEEN_ROWS
-    };
-    TestHelper.equalRect(expect, unfoldRow2Flats[0], assumeRow2Text);
-    const assumeRow2Question: IRect = {
-        xLeft: assumeHeader.xLeft,
-        xRight: assumeMatrix.xRight,
-        yTop: assumeRow2Text.yTop,
-        yBot: assumeRow2Text.yTop + controller.unitHeight
-    };
-    TestHelper.equalRect(expect, unfoldRow2Flats[1], assumeRow2Question);
+    await checkFlatSnapshot(json, {
+        snapshotName: 'matrixdropdown_vertical_two_columns_one_row',
+        isCorrectEvent: (options: AdornersOptions) => {
+            return options.question.getType() == 'matrixdropdown';
+        }
+    });
 });
 test('Check matrix multiple two columns one row horizontal layout narrow width', async () => {
     const json: any = {
@@ -260,73 +131,21 @@ test('Check matrix multiple two columns one row horizontal layout narrow width',
             }
         ]
     };
-    const options: IDocOptions = TestHelper.defaultOptions;
-    const pageWidth: number = options.margins.left + options.margins.right +
-        new DocController(options).measureText(
-            SurveyHelper.MATRIX_COLUMN_WIDTH).width * 1.5 / DocOptions.MM_TO_PT;
-    new DocController(options).unitWidth / DocOptions.MM_TO_PT;
-    options.format = [pageWidth, <number>(options.format[1])];
-    const survey: SurveyPDF = new SurveyPDF(json, options);
-    const controller: DocController = new DocController(options);
-    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(1);
-    controller.margins.left += controller.unitWidth;
-    const unfoldFlats: IPdfBrick[] = flats[0][0].unfold();
-    expect(unfoldFlats.length).toBe(5);
-    const header: ISize = controller.measureText(json.elements[0].rows[0]);
-    const assumeHeader: IRect = {
-        xLeft: controller.leftTopPoint.xLeft,
-        xRight: controller.leftTopPoint.xLeft + header.width,
-        yTop: controller.leftTopPoint.yTop,
-        yBot: controller.leftTopPoint.yTop + header.height
-    };
-    TestHelper.equalRect(expect, unfoldFlats[0], assumeHeader);
-    const row1Text: ISize = controller.measureText(json.elements[0].columns[0].name);
-    const assumeRow1Text: IRect = {
-        xLeft: controller.leftTopPoint.xLeft,
-        xRight: controller.leftTopPoint.xLeft + row1Text.width,
-        yTop: assumeHeader.yBot + SurveyHelper.EPSILON +
-            controller.unitHeight * FlatMatrixDynamic.GAP_BETWEEN_ROWS,
-        yBot: assumeHeader.yBot + SurveyHelper.EPSILON + row1Text.height +
-            controller.unitHeight * FlatMatrixDynamic.GAP_BETWEEN_ROWS
-    };
-    TestHelper.equalRect(expect, unfoldFlats[1], assumeRow1Text);
-    const assumeRow1Question: IRect = {
-        xLeft: controller.leftTopPoint.xLeft,
-        xRight: controller.paperWidth - controller.margins.right,
-        yTop: assumeRow1Text.yBot + controller.unitHeight * FlatMatrixDynamic.GAP_BETWEEN_ROWS,
-        yBot: assumeRow1Text.yBot + controller.unitHeight * (1 + FlatMatrixDynamic.GAP_BETWEEN_ROWS)
-    };
-    TestHelper.equalRect(expect, unfoldFlats[2], assumeRow1Question);
-    const row2Text: ISize = controller.measureText(json.elements[0].columns[1].name);
-    const assumeRow2Text: IRect = {
-        xLeft: controller.leftTopPoint.xLeft,
-        xRight: controller.leftTopPoint.xLeft + row2Text.width,
-        yTop: assumeRow1Question.yBot + SurveyHelper.EPSILON
-            + controller.unitHeight * FlatMatrixDynamic.GAP_BETWEEN_ROWS,
-        yBot: assumeRow1Question.yBot + SurveyHelper.EPSILON + row2Text.height
-            + controller.unitHeight * FlatMatrixDynamic.GAP_BETWEEN_ROWS
-    };
-    TestHelper.equalRect(expect, unfoldFlats[3], assumeRow2Text);
-    const assumeRow2Question: IRect = {
-        xLeft: controller.leftTopPoint.xLeft,
-        xRight: controller.paperWidth - controller.margins.right,
-        yTop: assumeRow2Text.yBot +
-            controller.unitHeight * FlatMatrixDynamic.GAP_BETWEEN_ROWS,
-        yBot: assumeRow2Text.yBot + controller.unitHeight +
-            controller.unitHeight * FlatMatrixDynamic.GAP_BETWEEN_ROWS
-    };
-    TestHelper.equalRect(expect, unfoldFlats[4], assumeRow2Question);
-    const assumeMatrix: IRect = {
-        xLeft: controller.leftTopPoint.xLeft,
-        xRight: controller.paperWidth - controller.margins.right,
-        yTop: controller.leftTopPoint.yTop,
-        yBot: controller.leftTopPoint.yTop + header.height + row1Text.height +
-            row2Text.height + (2.0 + 4.0 * FlatMatrixDynamic.GAP_BETWEEN_ROWS) *
-            controller.unitHeight + 2 * SurveyHelper.EPSILON
-    };
-    TestHelper.equalRect(expect, SurveyHelper.mergeRects(flats[0][0]), assumeMatrix);
+    await checkFlatSnapshot(json, {
+        snapshotName: 'matrixdropdown_two_columns_one_row_narrow_width',
+        isCorrectEvent: (options: AdornersOptions) => {
+            return options.question.getType() == 'matrixdropdown';
+        },
+        controllerOptions: {
+            format: [50, 297],
+            margins: {
+                top: 10,
+                bot: 10,
+                left: 10,
+                right: 10
+            }
+        }
+    });
 });
 test('Check matrix multiple two columns one row vertical layout narrow width', async () => {
     const json = {
@@ -350,65 +169,21 @@ test('Check matrix multiple two columns one row vertical layout narrow width', a
             }
         ]
     };
-    const options: IDocOptions = TestHelper.defaultOptions;
-    const pageWidth: number = options.margins.left + options.margins.right +
-        new DocController(options).measureText(
-            SurveyHelper.MATRIX_COLUMN_WIDTH).width * 1.5 / DocOptions.MM_TO_PT +
-        new DocController(options).unitWidth / DocOptions.MM_TO_PT;
-    options.format = [pageWidth, <number>(options.format[1])];
-    const survey: SurveyPDF = new SurveyPDF(json, options);
-    const controller: DocController = new DocController(options);
-    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(1);
-    controller.margins.left += controller.unitWidth;
-    const unfoldRow1Flats: IPdfBrick[] = flats[0][0].unfold();
-    expect(unfoldRow1Flats.length).toBe(5);
-
-    const row1Text: ISize = controller.measureText(json.elements[0].rows[0]);
-
-    const assumeRow1Text: IRect = {
-        xLeft: controller.leftTopPoint.xLeft,
-        xRight: controller.leftTopPoint.xLeft + row1Text.width,
-        yTop: controller.leftTopPoint.yTop,
-        yBot: controller.leftTopPoint.yTop + row1Text.height
-    };
-    const header1: ISize = controller.measureText(json.elements[0].columns[0].name);
-    const assumeHeader1: IRect = {
-        xLeft: controller.leftTopPoint.xLeft,
-        xRight: controller.leftTopPoint.xLeft + header1.width,
-        yTop: assumeRow1Text.yBot + SurveyHelper.EPSILON + controller.unitHeight *
-            FlatMatrixDynamic.GAP_BETWEEN_ROWS,
-        yBot: assumeRow1Text.yBot + SurveyHelper.EPSILON + header1.height +
-            controller.unitHeight * FlatMatrixDynamic.GAP_BETWEEN_ROWS
-    };
-    TestHelper.equalRect(expect, unfoldRow1Flats[0], assumeRow1Text);
-
-    TestHelper.equalRect(expect, unfoldRow1Flats[1], assumeHeader1);
-    const assumeRow1Question: IRect = {
-        xLeft: controller.leftTopPoint.xLeft,
-        xRight: controller.paperWidth - controller.margins.right,
-        yTop: assumeHeader1.yBot + controller.unitHeight * FlatMatrixDynamic.GAP_BETWEEN_ROWS,
-        yBot: assumeHeader1.yBot + controller.unitHeight * (1 + FlatMatrixDynamic.GAP_BETWEEN_ROWS)
-    };
-    TestHelper.equalRect(expect, unfoldRow1Flats[2], assumeRow1Question);
-    const header2: ISize = controller.measureText(json.elements[0].columns[1].name);
-    const assumeHeader2: IRect = {
-        xLeft: controller.leftTopPoint.xLeft,
-        xRight: controller.leftTopPoint.xLeft + header2.width,
-        yTop: assumeRow1Question.yBot + SurveyHelper.EPSILON +
-            controller.unitHeight * FlatMatrixDynamic.GAP_BETWEEN_ROWS,
-        yBot: assumeRow1Question.yBot + SurveyHelper.EPSILON + header2.height +
-            controller.unitHeight * FlatMatrixDynamic.GAP_BETWEEN_ROWS
-    };
-    TestHelper.equalRect(expect, unfoldRow1Flats[3], assumeHeader2);
-    const assumeRow2Question: IRect = {
-        xLeft: controller.leftTopPoint.xLeft,
-        xRight: controller.paperWidth - controller.margins.right,
-        yTop: assumeHeader2.yBot + controller.unitHeight * FlatMatrixDynamic.GAP_BETWEEN_ROWS,
-        yBot: assumeHeader2.yBot + controller.unitHeight * (1 + FlatMatrixDynamic.GAP_BETWEEN_ROWS)
-    };
-    TestHelper.equalRect(expect, unfoldRow1Flats[4], assumeRow2Question);
+    await checkFlatSnapshot(json, {
+        snapshotName: 'matrixdropdown_vertical_two_columns_one_row_narrow_width',
+        isCorrectEvent: (options: AdornersOptions) => {
+            return options.question.getType() == 'matrixdropdown';
+        },
+        controllerOptions: {
+            format: [50, 297],
+            margins: {
+                top: 10,
+                bot: 10,
+                left: 10,
+                right: 10
+            }
+        }
+    });
 });
 test('Check matrix multiple with showInMultipleColumns option and none choice', async () => {
     const json: any = {
@@ -437,44 +212,12 @@ test('Check matrix multiple with showInMultipleColumns option and none choice', 
             }
         ]
     };
-    const options: IDocOptions = TestHelper.defaultOptions;
-    options.fontSize = DocController.FONT_SIZE;
-    const survey: SurveyPDF = new SurveyPDF(json, options);
-    const controller: DocController = new DocController(options);
-    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(1);
-    controller.margins.left += controller.unitWidth;
-    const unfoldFlats: IPdfBrick[] = flats[0][0].unfold();
-    expect(unfoldFlats.length).toBe(3);
-    const rowText: ISize = controller.measureText(json.elements[0].rows[0]);
-    const assumeRowName: IRect = {
-        xLeft: controller.leftTopPoint.xLeft,
-        xRight: controller.leftTopPoint.xLeft + rowText.width,
-        yTop: controller.leftTopPoint.yTop,
-        yBot: controller.leftTopPoint.yTop + rowText.height
-    };
-    TestHelper.equalRect(expect, unfoldFlats[0], assumeRowName);
-    const leftTopPointColumn2: IPoint = {
-        xLeft: controller.leftTopPoint.xLeft +
-            SurveyHelper.getPageAvailableWidth(controller) / 3.0 + SurveyHelper.GAP_BETWEEN_COLUMNS * controller.unitWidth / 3.0,
-        yTop: controller.leftTopPoint.yTop
-    };
-    const assumeChoice: IRect = SurveyHelper.moveRect(
-        SurveyHelper.scaleRect(SurveyHelper.createRect(leftTopPointColumn2,
-            controller.unitWidth, controller.unitHeight), SurveyHelper.SELECT_ITEM_FLAT_SCALE),
-        leftTopPointColumn2.xLeft);
-    TestHelper.equalRect(expect, unfoldFlats[1], assumeChoice);
-    const leftTopPointColumn3: IPoint = {
-        xLeft: controller.leftTopPoint.xLeft + 2.0 * SurveyHelper.getPageAvailableWidth(controller) / 3.0 +
-            2.0 * SurveyHelper.GAP_BETWEEN_COLUMNS * controller.unitWidth / 3.0,
-        yTop: controller.leftTopPoint.yTop
-    };
-    const assumeNoneChoice: IRect = SurveyHelper.moveRect(
-        SurveyHelper.scaleRect(SurveyHelper.createRect(leftTopPointColumn3,
-            controller.unitWidth, controller.unitHeight), SurveyHelper.SELECT_ITEM_FLAT_SCALE),
-        leftTopPointColumn3.xLeft);
-    TestHelper.equalRect(expect, unfoldFlats[2], assumeNoneChoice);
+    await checkFlatSnapshot(json, {
+        snapshotName: 'matrixdropdown_showInMultipleColumns_none_choice',
+        isCorrectEvent: (options: AdornersOptions) => {
+            return options.question.getType() == 'matrixdropdown';
+        }
+    });
 });
 test('Check matrix multiple column widths', async () => {
     let json: any = {
@@ -483,7 +226,7 @@ test('Check matrix multiple column widths', async () => {
                 type: 'matrixdropdown',
                 name: 'matrixdropdown',
                 titleLocation: 'hidden',
-                rowTitleWidth: '400px',
+                rowTitleWidth: '500px',
                 showHeader: false,
                 columns: [
                     {
@@ -505,14 +248,13 @@ test('Check matrix multiple column widths', async () => {
         ]
     };
     const options: IDocOptions = TestHelper.defaultOptions;
-    options.fontSize = DocController.FONT_SIZE;
     let survey: SurveyPDF = new SurveyPDF(json, options);
     let question = <QuestionMatrixDropdownModel>survey.getAllQuestions()[0];
     const controller: DocController = new DocController(options);
-    let flat = new FlatMatrixMultiple(survey, question, controller);
+    let flat = new FlatMatrixMultiple(survey, question, controller, survey.getElementStyle(question));
     let widths = flat['calculateColumnWidth'](flat['visibleRows'], 4);
-    let restWidth = controller.measureText(SurveyHelper.MATRIX_COLUMN_WIDTH).width;
-    expect(widths).toEqual([300, restWidth, 37.5, restWidth]);
+    let restWidth = flat['style'].columnMinWidth;
+    expect(widths).toEqual([375, restWidth, 37.5, restWidth]);
     expect(flat['calculateIsWide'](question.renderedTable, 4)).toBeFalsy();
 
     json = {
@@ -544,9 +286,9 @@ test('Check matrix multiple column widths', async () => {
     };
     survey = new SurveyPDF(json, options);
     question = <QuestionMatrixDropdownModel>survey.getAllQuestions()[0];
-    flat = new FlatMatrixMultiple(survey, question, controller);
+    flat = new FlatMatrixMultiple(survey, question, controller, survey.getElementStyle(question));
     widths = flat['calculateColumnWidth'](flat['visibleRows'], 4);
-    restWidth = (flat['getAvalableWidth'](4) - 75 - 37.5) / 2;
+    restWidth = (flat['getColumnsAvalableWidth'](4) - 75 - 37.5) / 2;
     expect(widths).toEqual([75, restWidth, 37.5, restWidth]);
     expect(flat['calculateIsWide'](question.renderedTable, 4)).toBeTruthy();
 });
@@ -573,7 +315,7 @@ test('Check matrix dynamic column min widths', async () => {
                     {
                         cellType: 'text',
                         name: 'Col3',
-                        minWidth: '200px',
+                        minWidth: '300px',
                     },
                     {
                         cellType: 'text',
@@ -586,14 +328,12 @@ test('Check matrix dynamic column min widths', async () => {
         ]
     };
     const options: IDocOptions = TestHelper.defaultOptions;
-    options.fontSize = DocController.FONT_SIZE;
     let survey: SurveyPDF = new SurveyPDF(json, options);
     let question = <QuestionMatrixDropdownModel>survey.getAllQuestions()[0];
-    const controller: DocController = new DocController(options);
-    let flat = new FlatMatrixDynamic(survey, question, controller);
+    let flat = new FlatMatrixMultiple(survey, question, survey.docController, survey.getElementStyle(question));
     let widths = flat['calculateColumnWidth'](flat['visibleRows'], 4);
-    let restWidth = (flat['getAvalableWidth'](4) - 112.5 - 150) / 2;
-    expect(widths).toEqual([112.5, restWidth, 150, restWidth]);
+    let restWidth = (flat['getColumnsAvalableWidth'](4) - 112.5 - 225) / 2;
+    expect(widths).toEqual([112.5, restWidth, 225, restWidth]);
 });
 test('Check matrix dynamic column min widths with detailPanel', async () => {
     let json: any = {
@@ -618,7 +358,7 @@ test('Check matrix dynamic column min widths with detailPanel', async () => {
                     {
                         cellType: 'text',
                         name: 'Col3',
-                        minWidth: '200px',
+                        minWidth: '300px',
                     },
                     {
                         cellType: 'text',
@@ -637,14 +377,12 @@ test('Check matrix dynamic column min widths with detailPanel', async () => {
         ]
     };
     const options: IDocOptions = TestHelper.defaultOptions;
-    options.fontSize = DocController.FONT_SIZE;
     let survey: SurveyPDF = new SurveyPDF(json, options);
     let question = <QuestionMatrixDropdownModel>survey.getAllQuestions()[0];
-    const controller: DocController = new DocController(options);
-    let flat = new FlatMatrixDynamic(survey, question, controller);
+    let flat = new FlatMatrixMultiple(survey, question, survey.docController, survey.getElementStyle(question));
     let widths = flat['calculateColumnWidth'](flat['visibleRows'], 4);
-    let restWidth = (flat['getAvalableWidth'](4) - 112.5 - 150) / 2;
-    expect(widths).toEqual([112.5, restWidth, 150, restWidth]);
+    let restWidth = (flat['getColumnsAvalableWidth'](4) - 112.5 - 225) / 2;
+    expect(widths).toEqual([112.5, restWidth, 225, restWidth]);
 });
 test('Check getRowsToRender method', async () => {
     const json = {
@@ -672,7 +410,7 @@ test('Check getRowsToRender method', async () => {
     const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
     const question = <QuestionMatrixDropdownModel>survey.getAllQuestions()[0];
     const controller: DocController = new DocController(TestHelper.defaultOptions);
-    let flat = new FlatMatrixMultiple(survey, survey.getAllQuestions()[0], controller);
+    let flat = new FlatMatrixMultiple(survey, question, controller, survey.getElementStyle(question));
     let table = question.renderedTable;
     let rows = flat['getRowsToRender'](question.renderedTable, false, true);
     expect(rows.length).toBe(3);
@@ -714,62 +452,12 @@ test('Check matrix multiple one column one row with detailPanel', async () => {
             }
         ]
     };
-    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    const question = <QuestionMatrixDropdownModel>survey.getAllQuestions()[0];
-    const controller: DocController = new DocController(TestHelper.defaultOptions);
-    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(3);
-    controller.margins.left += controller.unitWidth;
-    const unfoldHeaderFlats: IPdfBrick[] = flats[0][0].unfold();
-    expect(unfoldHeaderFlats.length).toBe(2);
-    const unfoldRowFlats: IPdfBrick[] = flats[0][1].unfold();
-    expect(unfoldRowFlats.length).toBe(2);
-    const header: ISize = controller.measureText(json.elements[0].columns[0].name, 'bold');
-    const assumeMatrix: IRect = {
-        xLeft: controller.leftTopPoint.xLeft,
-        xRight: controller.paperWidth - controller.margins.right,
-        yTop: controller.leftTopPoint.yTop,
-        yBot: controller.leftTopPoint.yTop + header.height +
-            SurveyHelper.EPSILON + controller.unitHeight * (1 + FlatMatrixMultiple.GAP_BETWEEN_ROWS)
-    };
-    TestHelper.equalRect(expect, SurveyHelper.mergeRects(flats[0][0], flats[0][1]), assumeMatrix);
-    const assumeHeader: IRect = {
-        xLeft: controller.leftTopPoint.xLeft +
-            SurveyHelper.getPageAvailableWidth(controller) / 2.0 +
-            SurveyHelper.GAP_BETWEEN_COLUMNS * controller.unitWidth / 2.0,
-        xRight: controller.leftTopPoint.xLeft +
-            SurveyHelper.getPageAvailableWidth(controller) / 2.0 +
-            SurveyHelper.GAP_BETWEEN_COLUMNS * controller.unitWidth / 2.0 +
-            header.width,
-        yTop: controller.leftTopPoint.yTop,
-        yBot: controller.leftTopPoint.yTop + header.height
-    };
-    TestHelper.equalRect(expect, unfoldHeaderFlats[0], assumeHeader);
-    const rowText: ISize = controller.measureText(json.elements[0].rows[0]);
-    const assumeRowText: IRect = {
-        xLeft: controller.leftTopPoint.xLeft,
-        xRight: controller.leftTopPoint.xLeft + rowText.width,
-        yTop: assumeHeader.yBot + SurveyHelper.EPSILON
-            + controller.unitHeight * FlatMatrixMultiple.GAP_BETWEEN_ROWS,
-        yBot: assumeHeader.yBot + SurveyHelper.EPSILON + rowText.height +
-            controller.unitHeight * FlatMatrixMultiple.GAP_BETWEEN_ROWS
-    };
-    TestHelper.equalRect(expect, unfoldRowFlats[0], assumeRowText);
-    const assumeRowQuestion: IRect = {
-        xLeft: assumeHeader.xLeft,
-        xRight: assumeMatrix.xRight,
-        yTop: assumeRowText.yTop,
-        yBot: assumeRowText.yTop + controller.unitHeight
-    };
-    TestHelper.equalRect(expect, unfoldRowFlats[1], assumeRowQuestion);
-    question.visibleRows[0].showDetailPanel();
-    const panel = question.visibleRows[0].detailPanel;
-    const assumePanelBricks = await FlatSurvey.generateFlatsPanel(
-        survey, controller, panel, { xLeft: assumeRowText.xLeft, yTop: assumeRowQuestion.yBot + SurveyHelper.EPSILON
-            + controller.unitHeight * FlatMatrixMultiple.GAP_BETWEEN_ROWS });
-    const assumePanelCompositeBrick = new CompositeBrick(...assumePanelBricks);
-    TestHelper.equalRect(expect, flats[0][2], assumePanelCompositeBrick);
+    await checkFlatSnapshot(json, {
+        snapshotName: 'matrixdropdown_one_column_one_row_detailPanel',
+        isCorrectEvent: (options: AdornersOptions) => {
+            return options.question.getType() == 'matrixdropdown';
+        }
+    });
 });
 
 test('Check matrix multiple zero columns one row with detailPanel', async () => {
@@ -794,30 +482,12 @@ test('Check matrix multiple zero columns one row with detailPanel', async () => 
             }
         ]
     };
-    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
-    const question = <QuestionMatrixDropdownModel>survey.getAllQuestions()[0];
-    const controller: DocController = new DocController(TestHelper.defaultOptions);
-    const flats: IPdfBrick[][] = await FlatSurvey.generateFlats(survey, controller);
-    expect(flats.length).toBe(1);
-    expect(flats[0].length).toBe(2);
-    controller.margins.left += controller.unitWidth;
-    const unfoldRowFlats: IPdfBrick[] = flats[0][0].unfold();
-    expect(unfoldRowFlats.length).toBe(1);
-    const rowText: ISize = controller.measureText(json.elements[0].rows[0]);
-    const assumeRowText: IRect = {
-        xLeft: controller.leftTopPoint.xLeft,
-        xRight: controller.leftTopPoint.xLeft + rowText.width,
-        yTop: controller.leftTopPoint.yTop,
-        yBot: controller.leftTopPoint.yTop + controller.unitHeight
-    };
-    TestHelper.equalRect(expect, unfoldRowFlats[0], assumeRowText);
-    question.visibleRows[0].showDetailPanel();
-    const panel = question.visibleRows[0].detailPanel;
-    const assumePanelBricks = await FlatSurvey.generateFlatsPanel(
-        survey, controller, panel, { xLeft: assumeRowText.xLeft, yTop: assumeRowText.yBot + SurveyHelper.EPSILON
-            + controller.unitHeight * FlatMatrixMultiple.GAP_BETWEEN_ROWS });
-    const assumePanelCompositeBrick = new CompositeBrick(...assumePanelBricks);
-    TestHelper.equalRect(expect, flats[0][1], assumePanelCompositeBrick);
+    await checkFlatSnapshot(json, {
+        snapshotName: 'matrixdropdown_no_columns_one_row_detailPanel',
+        isCorrectEvent: (options: AdornersOptions) => {
+            return options.question.getType() == 'matrixdropdown';
+        }
+    });
 });
 test('Check matrix multiple with showInMulipleColumns - list mode', async () => {
     const controllerOptions = TestHelper.defaultOptions;

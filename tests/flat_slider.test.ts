@@ -1,5 +1,6 @@
 import { test } from 'vitest';
 import { checkFlatSnapshot } from './snapshot_helper';
+import '../src/entries/pdf-base';
 
 var jsonSingle = {
     elements: [
