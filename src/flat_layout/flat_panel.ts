@@ -141,6 +141,14 @@ export class FlatPanel<T extends PanelModel = PanelModel, S extends IPanelStyle 
                 });
                 alignValue = restWidth / expandableElements.length;
             }
+            //expand elements with strict width if space is not fullfilled
+            if(restWidth > 0) {
+                const expandableElements = row.filter(rowEl => !rowEl.element.maxWidth);
+                const alignValue = restWidth / expandableElements.length;
+                expandableElements.forEach(rowEl => {
+                    rowEl.width += alignValue;
+                });
+            }
         });
         return rows;
     }
