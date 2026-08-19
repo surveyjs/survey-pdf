@@ -10,13 +10,14 @@ function emitNonSourceFiles() {
     const buildPlatformJson = {
         name: 'survey-pdf',
         version: version,
-        homepage: 'https://surveyjs.io/',
+        homepage: 'https://surveyjs.io/pdf-generator',
         author: 'DevSoft Baltic OÜ <info@devsoftbaltic.com>',
         license: 'SEE LICENSE IN LICENSE',
         licenseUrl: 'https://surveyjs.io/licensing',
-        description: 'Renders JSON-driven SurveyJS forms and their responses as PDF documents: fillable interactive PDF forms or static printouts, with CSS-variable theming and built-in layout presets.',
+        description: 'Renders JSON-driven SurveyJS forms and their responses as PDF documents in the browser or Node.js: fillable interactive PDF forms (AcroForm) or static printouts.',
         keywords: [
             'survey',
+            'form',
             'surveyjs',
             'survey-library',
             'form-library',
@@ -25,8 +26,8 @@ function emitNonSourceFiles() {
             'pdf-export',
             'form-to-pdf',
             'survey-to-pdf',
-            'export-form',
             'print-form',
+            'export-form',
             'fillable-pdf',
             'editable-pdf',
             'interactive-pdf-form',
@@ -34,29 +35,16 @@ function emitNonSourceFiles() {
             'pdf-form-filler',
             'acroform',
             'jspdf',
-            'json-schema',
-            'schema-form',
-            'json-form',
-            'dynamic-form',
-            'form-rendering',
-            'questionnaire',
-            'quiz',
-            'poll',
-            'data-collection',
-            'localization',
-            'theming',
-            'design-tokens',
-            'css-variables',
-            'layout-presets',
-            'nodejs',
-            'javascript',
-            'typescript'
+            'questionnaire'
         ],
         module: 'fesm/survey.pdf.mjs',
         main: 'survey.pdf.js',
         repository: {
             type: 'git',
             url: 'https://github.com/surveyjs/survey-pdf.git'
+        },
+        bugs: {
+            url: 'https://github.com/surveyjs/survey-pdf/issues'
         },
         typings: './typings/entries/pdf.d.ts',
         peerDependencies: {

@@ -1,4 +1,4 @@
-# survey-pdf
+# SurveyJS PDF Generator (survey-pdf)
 
 [![Build Status](https://dev.azure.com/SurveyJS/V2%20Libraries/_apis/build/status%2Fpdf%2FPDF%20Main?repoName=surveyjs%2Fsurvey-pdf&branchName=master)](https://dev.azure.com/SurveyJS/V2%20Libraries/_build/latest?definitionId=165&repoName=surveyjs%2Fsurvey-pdf&branchName=master)
 [![Software License](https://img.shields.io/badge/license-Commercial-blue.svg?style=flat)](https://github.com/surveyjs/survey-pdf/blob/master/LICENSE)
@@ -16,6 +16,8 @@ npm install survey-pdf
 ```
 
 `survey-pdf` also runs in Node.js (for example, to generate PDFs on the server after a form is submitted). See the [Node.js get-started tutorial](https://surveyjs.io/pdf-generator/documentation/get-started-nodejs).
+
+SurveyJS PDF Generator is not free for commercial use — integrating it into an application requires a [commercial license](https://surveyjs.io/licensing). See [Licensing](#licensing).
 
 ## Usage
 
@@ -52,7 +54,7 @@ See [Customize PDF Form Settings](https://surveyjs.io/pdf-generator/documentatio
 
 ## What's new in v3
 
-- **CSS-based styling.** Colors, typography, spacing, and borders are no longer hard-coded. PDF appearance is derived from the active theme through the same `--sjs2-*` CSS variables used by [`survey-core`](https://www.npmjs.com/package/survey-core), so web and PDF outputs stay visually aligned. Pass an `ITheme` object to `applyTheme()` to reuse a web theme's colors, shadows, and elevation in the PDF. See the [PDF Generator v3 announcement](https://surveyjs.io/stay-updated/major-updates/2025-2026#pdf-generator).
+- **CSS-based styling.** Colors, typography, spacing, and borders are no longer hard-coded. PDF appearance is derived from the active theme through the same `--sjs2-*` CSS variables used by [`survey-core`](https://www.npmjs.com/package/survey-core), so web and PDF outputs stay visually aligned. Pass an `ITheme` object to `applyTheme()` to reuse a web theme's colors, shadows, and elevation in the PDF. See [PDF Appearance Customization](https://surveyjs.io/pdf-generator/documentation/pdf-appearance-customization) and the [PDF Generator v3 announcement](https://surveyjs.io/stay-updated/major-updates/2025-2026#pdf-generator).
 - **Built-in layout presets.** A layout defines the PDF-specific variables — spacing, sizing, typography, border radius. Import `Compact` (the default, optimized for dense forms and reduced page count) or `Spacious` (optimized for readability) from `survey-pdf/layouts` and pass it to `applyLayout()`:
 
     ```js
@@ -129,10 +131,12 @@ Requires Node.js 20 or later.
 4. **Run the local examples**
 
     ```sh
-    npm start
+    npm run serve
     ```
 
-    This builds the library, then serves the package directory at http://localhost:7777/ (use `npm run serve` to skip the rebuild). The [`examples`](examples) folder contains runnable pages: [`examples/jspdf`](examples/jspdf) generates a PDF from a survey definition, and [`examples/forms`](examples/forms) fills an existing PDF with survey responses through the `pdf-lib` and PDF.js adapters.
+    This serves the package directory at http://localhost:7777/. The examples load the bundles from `build`, so run `npm run build:all` (step 3) first — `npm start` only rebuilds the main bundle, which leaves the form-filler examples without `build/pdf-form-filler.js`.
+
+    The [`examples`](examples) folder contains runnable pages: [`examples/jspdf`](examples/jspdf) generates a PDF from a survey definition, while [`examples/forms/pdf-lib`](examples/forms/pdf-lib) and [`examples/forms/pdfjs`](examples/forms/pdfjs) fill an existing PDF with survey responses through the `pdf-lib` and PDF.js adapters.
 
 5. **Run unit tests**
 
