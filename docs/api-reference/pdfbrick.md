@@ -16,27 +16,11 @@ You can access `PdfBrick` objects within functions that handle `SurveyPDF`'s [`o
 
 ## Properties
 
-### `fontSize`
-
-**Type**: `number`
-
-Font size in points.
-
-Default value: 14 (inherited from the parent PDF document)
-
 ### `height`
 
 **Type**: `number`
 
 The brick's height in pixels.
-
-### `textColor`
-
-**Type**: `string`
-
-The color of text within the brick.
-
-Default value: `"#404040"`
 
 ### `width`
 

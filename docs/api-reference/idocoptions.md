@@ -160,6 +160,16 @@ Possible values:
 
 **Related APIs:** [`format`](#format)
 
+### `otherRowsCount`
+
+**Type**: `number`
+
+Specifies the height of the Other input field in rows.
+
+Default value: 2
+
+Available since: v3.0.0
+
 ### `readonlyRenderAs`
 
 **Type**: `"auto" | "text" | "acroform"`

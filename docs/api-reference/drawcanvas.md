@@ -2,13 +2,13 @@
 title: DrawCanvas
 product: PDF Generator
 api-type: class
-description: An object that describes a drawing area and enables you to draw an image or a piece of text within the area.
+description: An object that describes a drawing area and enables you to draw an image or a text fragment within the area.
 source: https://surveyjs.io/pdf-generator/documentation/api-reference/drawcanvas
 ---
 
 # `DrawCanvas`
 
-An object that describes a drawing area and enables you to draw an image or a piece of text within the area. You can access this object within functions that handle `SurveyPDF`'s [`onRenderHeader`](https://surveyjs.io/pdf-generator/documentation/api-reference/surveypdf#onRenderHeader) and [`onRenderFooter`](https://surveyjs.io/pdf-generator/documentation/api-reference/surveypdf#onRenderFooter) events.
+An object that describes a drawing area and enables you to draw an image or a text fragment within the area. You can access this object within functions that handle `SurveyPDF`'s [`onRenderHeader`](https://surveyjs.io/pdf-generator/documentation/api-reference/surveypdf#onRenderHeader) and [`onRenderFooter`](https://surveyjs.io/pdf-generator/documentation/api-reference/surveypdf#onRenderFooter) events.
 
 [View Demo](https://surveyjs.io/pdf-generator/examples/customize-header-and-footer-of-pdf-form/ (linkStyle))
 
@@ -50,7 +50,7 @@ Draws an image within the drawing area.
 
 ### `drawText()`
 
-Draws a piece of text within the drawing area.
+Draws a text fragment within the drawing area.
 
 [View Demo](https://surveyjs.io/pdf-generator/examples/customize-header-and-footer-of-pdf-form/ (linkStyle))
 

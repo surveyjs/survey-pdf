@@ -2,13 +2,13 @@
 title: IDrawTextOptions
 product: PDF Generator
 api-type: interface
-description: An object that configures rendering a piece of text.
+description: An object that configures rendering a text fragment.
 source: https://surveyjs.io/pdf-generator/documentation/api-reference/idrawtextoptions
 ---
 
 # `IDrawTextOptions`
 
-An object that configures rendering a piece of text.
+An object that configures rendering a text fragment.
 
 ## Inheritance
 
