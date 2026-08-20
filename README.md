@@ -1,15 +1,23 @@
-# SurveyJS PDF Generator (survey-pdf)
+<div align="center">
+
+<img width="1200" height="600" alt="readme_overview_pdf" src="https://github.com/user-attachments/assets/cf909f79-3496-49f8-a885-b286a42c92a5" />
+<br>
+<br>
 
 [![Build Status](https://dev.azure.com/SurveyJS/V2%20Libraries/_apis/build/status%2Fpdf%2FPDF%20Main?repoName=surveyjs%2Fsurvey-pdf&branchName=master)](https://dev.azure.com/SurveyJS/V2%20Libraries/_build/latest?definitionId=165&repoName=surveyjs%2Fsurvey-pdf&branchName=master)
 [![Software License](https://img.shields.io/badge/license-Commercial-blue.svg?style=flat)](https://github.com/surveyjs/survey-pdf/blob/master/LICENSE)
 [![Open Issues](https://img.shields.io/github/issues/surveyjs/survey-pdf.svg)](https://github.com/surveyjs/survey-pdf/issues)
 [![Closed Issues](https://img.shields.io/github/issues-closed/surveyjs/survey-pdf.svg)](https://github.com/surveyjs/survey-pdf/issues?utf8=%E2%9C%93&q=is%3Aissue+is%3Aclosed+)
 
+# SurveyJS PDF Generator
+
+</div>
+
+<div align="justify">
+
 `survey-pdf` renders a [SurveyJS Form Library](https://surveyjs.io/form-library) survey definition — with or without collected responses — as a PDF document. It produces either a static printout or an interactive fillable PDF form (AcroForm), driven by the same JSON schema used to render the survey on the web. It is a client-side extension of [`survey-core`](https://www.npmjs.com/package/survey-core) and is built on top of [jsPDF](https://github.com/parallax/jsPDF).
 
-<img width="750" alt="SurveyJS PDF Generator" src="https://github.com/user-attachments/assets/71451f5c-ea50-4da6-87a5-b4d478bb50b8" />
-
-## Install
+## Installation
 
 ```sh
 npm install survey-pdf
