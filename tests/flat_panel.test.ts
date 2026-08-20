@@ -426,3 +426,150 @@ test('Check FlatPanel.getRows: gapBetweenElements', async () => {
     expect(rows[0][1].width).toBe((availableWidth - gap * 2) / 3);
     expect(rows[0][2].width).toBe((availableWidth - gap * 2) / 3);
 });
+
+test('Check FlatPanel.getRows: width', async () => {
+    const json: any = {
+        elements: [
+            {
+                type: 'panel',
+                name: 'panel_constraints',
+                elements: [
+                    { type: 'text', name: 'q1', startWithNewLine: false },
+                    { type: 'text', name: 'q1', startWithNewLine: false },
+                    { type: 'text', name: 'q1', width: '30%', startWithNewLine: false },
+                ]
+            }
+        ]
+    };
+    const survey = new SurveyPDF(json, TestHelper.defaultOptions);
+    const panel = survey.getAllPanels()[0] as PanelModel;
+    panel.onFirstRendering();
+
+    const controller = new DocController({ ...TestHelper.defaultOptions, margins: { top: 0, left: 0, bot: 0, right: 0 } });
+    controller.margins.left = 0;
+    controller.margins.right = 0;
+    let gap = 3;
+    const availableWidth = SurveyHelper.getPageAvailableWidth(controller);
+    survey.applyStyle({
+        question: {
+            minWidth: 0
+        },
+        panel: {
+            spacing: {
+                inlineElementGap: gap
+            }
+        }
+    });
+    let style = survey.getElementStyle(panel);
+    let flatPanel = new FlatPanel(survey, panel, controller, style);
+    let rows = flatPanel['getRows'](controller);
+    expect(rows.length).toBe(1);
+    expect(rows[0].length).toBe(3);
+    expect(rows[0][0].width).toBe((availableWidth - 0.3 * availableWidth - 2 * gap) / 2);
+    expect(rows[0][1].width).toBe((availableWidth - 0.3 * availableWidth - 2 * gap) / 2);
+    expect(rows[0][2].width).toBe(0.3 * availableWidth);
+
+    survey.applyStyle({
+        question: {
+            minWidth: (availableWidth - gap) / 2
+        },
+        panel: {
+            spacing: {
+                inlineElementGap: gap
+            }
+        }
+    });
+    style = survey.getElementStyle(panel);
+    flatPanel = new FlatPanel(survey, panel, controller, style);
+    rows = flatPanel['getRows'](controller);
+    expect(rows.length).toBe(2);
+    expect(rows[0].length).toBe(2);
+    expect(rows[1].length).toBe(1);
+    expect(rows[0][0].width).toBe((availableWidth - gap) / 2);
+    expect(rows[0][1].width).toBe((availableWidth - gap) / 2);
+    expect(rows[1][0].width).toBe(availableWidth);
+});
+test('Check FlatPanel.getRows: width when space is not fullfilled', async () => {
+    const json: any = {
+        elements: [
+            {
+                type: 'panel',
+                name: 'panel_constraints',
+                elements: [
+                    { type: 'text', name: 'q1', startWithNewLine: false, width: '60%' },
+                    { type: 'text', name: 'q1', startWithNewLine: false, width: '30%' },
+                ]
+            }
+        ]
+    };
+    const survey = new SurveyPDF(json, TestHelper.defaultOptions);
+    const panel = survey.getAllPanels()[0] as PanelModel;
+    panel.onFirstRendering();
+
+    const controller = new DocController({ ...TestHelper.defaultOptions, margins: { top: 0, left: 0, bot: 0, right: 0 } });
+    controller.margins.left = 0;
+    controller.margins.right = 0;
+    let gap = 3;
+    const availableWidth = SurveyHelper.getPageAvailableWidth(controller);
+    survey.applyStyle({
+        question: {
+            minWidth: 0
+        },
+        panel: {
+            spacing: {
+                inlineElementGap: gap
+            }
+        }
+    });
+    let style = survey.getElementStyle(panel);
+    let flatPanel = new FlatPanel(survey, panel, controller, style);
+    let rows = flatPanel['getRows'](controller);
+    expect(rows.length).toBe(1);
+    expect(rows[0].length).toBe(2);
+    const alignValue = (0.1 * availableWidth - gap) / 2;
+    expect(rows[0][0].width).toBe(0.6 * availableWidth + alignValue);
+    expect(rows[0][1].width).toBe(0.3 * availableWidth + alignValue);
+});
+
+test('Check FlatPanel.getRows: width when space is not fullfilled and element without width', async () => {
+    const json: any = {
+        elements: [
+            {
+                type: 'panel',
+                name: 'panel_constraints',
+                elements: [
+                    { type: 'text', name: 'q1', startWithNewLine: false, width: '20%' },
+                    { type: 'text', name: 'q1', startWithNewLine: false },
+                    { type: 'text', name: 'q1', startWithNewLine: false, width: '30%' },
+                ]
+            }
+        ]
+    };
+    const survey = new SurveyPDF(json, TestHelper.defaultOptions);
+    const panel = survey.getAllPanels()[0] as PanelModel;
+    panel.onFirstRendering();
+
+    const controller = new DocController({ ...TestHelper.defaultOptions, margins: { top: 0, left: 0, bot: 0, right: 0 } });
+    controller.margins.left = 0;
+    controller.margins.right = 0;
+    let gap = 3;
+    const availableWidth = SurveyHelper.getPageAvailableWidth(controller);
+    survey.applyStyle({
+        question: {
+            minWidth: 0
+        },
+        panel: {
+            spacing: {
+                inlineElementGap: gap
+            }
+        }
+    });
+    let style = survey.getElementStyle(panel);
+    let flatPanel = new FlatPanel(survey, panel, controller, style);
+    let rows = flatPanel['getRows'](controller);
+    expect(rows.length).toBe(1);
+    expect(rows[0].length).toBe(3);
+    expect(rows[0][0].width).toBeCloseTo(0.2 * availableWidth, 8);
+    expect(rows[0][1].width).toBeCloseTo(0.5 * availableWidth - gap * 2, 8);
+    expect(rows[0][2].width).toBeCloseTo(0.3 * availableWidth, 8);
+});

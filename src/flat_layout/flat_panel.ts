@@ -126,6 +126,9 @@ export class FlatPanel<T extends PanelModel = PanelModel, S extends IPanelStyle 
             while(expandableElements.length > 0 && restWidth > 0) {
                 expandableElements = expandableElements.filter(rowEl => {
                     const maxWidth = SurveyHelper.parseWidth(rowEl.element.maxWidth ? rowEl.element.maxWidth : '100%', availableWidth, undefined, 'px');
+                    if(!!rowEl.element.width && row.length > 1) {
+                        return false;
+                    }
                     if(maxWidth > rowEl.width + alignValue) {
                         restWidth -= alignValue;
                         rowEl.width = rowEl.width + alignValue;
@@ -137,6 +140,14 @@ export class FlatPanel<T extends PanelModel = PanelModel, S extends IPanelStyle 
                     }
                 });
                 alignValue = restWidth / expandableElements.length;
+            }
+            //expand elements with strict width if space is not fullfilled
+            if(restWidth > 0) {
+                const expandableElements = row.filter(rowEl => !rowEl.element.maxWidth);
+                const alignValue = restWidth / expandableElements.length;
+                expandableElements.forEach(rowEl => {
+                    rowEl.width += alignValue;
+                });
             }
         });
         return rows;
