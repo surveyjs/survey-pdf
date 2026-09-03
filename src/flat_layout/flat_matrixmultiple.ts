@@ -142,17 +142,19 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
         (colCount - 1) * this.style.spacing.tableColumnGap;
     }
     private calculateColumnWidth(rows: QuestionMatrixDropdownRenderedRow[], colCount: number): number[] {
-        const availableWidth: number = this.getColumnsAvalableWidth(colCount);
-        let remainWidth: number = availableWidth;
+        const availableWidth = SurveyHelper.getPageAvailableWidth(this.controller);
+        let remainWidth: number = this.getColumnsAvalableWidth(colCount);
         let remainColCount: number = colCount;
         const columnWidth: number[] = [];
         const unsetCells: QuestionMatrixDropdownRenderedCell[] = [];
         let cells = rows[0].cells.filter((cell: QuestionMatrixDropdownRenderedCell, index: number) => !this.ignoreCell(cell, index));
+        const styleMinWidth: number = this.style.columnMinWidth;
         for (let i: number = 0; i < colCount; i++) {
-            const width: number = SurveyHelper.parseWidth(cells[i].width,
-                availableWidth, colCount) || 0.0;
-            remainWidth -= width;
-            if (width !== 0.0) {
+            let width: number = Math.max(SurveyHelper.parseWidth(cells[i].width,
+                availableWidth, colCount) || 0.0);
+            if(width !== 0.0) {
+                width = Math.max(width, this.style.columnMinWidth, SurveyHelper.parseWidth(cells[i].minWidth, availableWidth, colCount) || 0);
+                remainWidth -= width;
                 remainColCount--;
             } else {
                 unsetCells.push(cells[i]);
@@ -160,7 +162,6 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
             columnWidth.push(width);
         }
         if (remainColCount === 0) return columnWidth;
-        const heuristicWidth: number = this.style.columnMinWidth;
         unsetCells.sort((cell1: QuestionMatrixDropdownRenderedCell, cell2: QuestionMatrixDropdownRenderedCell) => {
             let minWidth1 = SurveyHelper.parseWidth(cell1.minWidth, availableWidth, colCount) || 0.0;
             let minWidth2 = SurveyHelper.parseWidth(cell2.minWidth, availableWidth, colCount) || 0.0;
@@ -168,11 +169,11 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
         }).forEach((cell: QuestionMatrixDropdownRenderedCell) => {
             const equalWidth: number = remainWidth / remainColCount;
             const columnMinWidth: number = SurveyHelper.parseWidth(cell.minWidth, availableWidth, colCount) || 0.0;
-            if(columnMinWidth > equalWidth && columnMinWidth > heuristicWidth) {
+            if(columnMinWidth > equalWidth && columnMinWidth > styleMinWidth) {
                 remainWidth -= columnMinWidth;
                 remainColCount--;
             }
-            columnWidth[cells.indexOf(cell)] = Math.max(heuristicWidth, columnMinWidth, equalWidth);
+            columnWidth[cells.indexOf(cell)] = Math.max(styleMinWidth, columnMinWidth, equalWidth);
         });
         return columnWidth;
     }

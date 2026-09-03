@@ -236,7 +236,7 @@ test('Check matrix multiple column widths', async () => {
                     {
                         cellType: 'text',
                         name: 'Col1',
-                        width: '50px'
+                        width: '150px'
                     },
                     {
                         cellType: 'text',
@@ -254,9 +254,8 @@ test('Check matrix multiple column widths', async () => {
     let flat = new FlatMatrixMultiple(survey, question, controller, survey.getElementStyle(question));
     let widths = flat['calculateColumnWidth'](flat['visibleRows'], 4);
     let restWidth = flat['style'].columnMinWidth;
-    expect(widths).toEqual([375, restWidth, 37.5, restWidth]);
+    expect(widths).toEqual([375, restWidth, 112.5, restWidth]);
     expect(flat['calculateIsWide'](question.renderedTable, 4)).toBeFalsy();
-
     json = {
         elements: [
             {
@@ -285,6 +284,11 @@ test('Check matrix multiple column widths', async () => {
         ]
     };
     survey = new SurveyPDF(json, options);
+    survey.applyStyle({
+        matrixdropdown: {
+            columnMinWidth: 20
+        }
+    });
     question = <QuestionMatrixDropdownModel>survey.getAllQuestions()[0];
     flat = new FlatMatrixMultiple(survey, question, controller, survey.getElementStyle(question));
     widths = flat['calculateColumnWidth'](flat['visibleRows'], 4);
@@ -292,6 +296,47 @@ test('Check matrix multiple column widths', async () => {
     expect(widths).toEqual([75, restWidth, 37.5, restWidth]);
     expect(flat['calculateIsWide'](question.renderedTable, 4)).toBeTruthy();
 });
+
+test('Check column render width is always not less than minWidth', async () => {
+    const json = {
+        elements: [
+            {
+                type: 'matrixdropdown',
+                name: 'matrixdropdown',
+                titleLocation: 'hidden',
+                rowTitleWidth: '150px',
+                showHeader: false,
+                columns: [
+                    {
+                        cellType: 'text',
+                        name: 'Col1',
+                    },
+                    {
+                        cellType: 'text',
+                        name: 'Col1',
+                        width: '50px'
+                    },
+                    {
+                        cellType: 'text',
+                        name: 'Col1',
+                    }
+                ],
+                rows: ['Row1']
+            }
+        ]
+    };
+    const options: IDocOptions = TestHelper.defaultOptions;
+    const controller: DocController = new DocController(options);
+    const survey = new SurveyPDF(json, options);
+    const question = <QuestionMatrixDropdownModel>survey.getAllQuestions()[0];
+    const flat = new FlatMatrixMultiple(survey, question, controller, survey.getElementStyle(question));
+    const widths = flat['calculateColumnWidth'](flat['visibleRows'], 4);
+    const columnMinWidth = flat['style'].columnMinWidth;
+    const restWidth = (flat['getColumnsAvalableWidth'](4) - columnMinWidth - 112.5) / 2;
+    expect(widths).toEqual([112.5, restWidth, columnMinWidth, restWidth]);
+    expect(flat['calculateIsWide'](question.renderedTable, 4)).toBeTruthy();
+});
+
 test('Check matrix dynamic column min widths', async () => {
     let json: any = {
         elements: [
