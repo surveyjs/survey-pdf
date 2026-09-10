@@ -61,6 +61,13 @@ export class ContainerBrick extends CompositeBrick {
     finishSetup() {
         this.controller.popMargins();
         this.increasePadding({ top: this.padding.top + this.includedBorderWidth.top, bottom: this.padding.bot + this.includedBorderWidth.bot });
+        const allBricks = this.unfold();
+        if(allBricks.length !== 0) {
+            const topBrick = this.unfold().reduce((min, item) => item.yTop < min.yTop ? item : min);
+            const bottomBrick = this.unfold().reduce((max, item) => item.yBot > max.yBot ? item : max);
+            this.visualYTopDiff = topBrick.contentRect.yTop - topBrick.yTop;
+            this.visualYBotDiff = bottomBrick.yBot - bottomBrick.contentRect.yBot;
+        }
         let renderedPageIndex = -1;
         const callback = () => {
             const currentPageIndex = this.controller.getCurrentPageIndex();
@@ -83,11 +90,17 @@ export class ContainerBrick extends CompositeBrick {
                     borderRadius[0] = 0;
                     borderRadius[1] = 0;
                     borderWidth[0] = 0;
+                } else {
+                    const topBrick = unfoldedBricksOnPage.reduce((min, item) => item.yTop < min.yTop ? item : min);
+                    mergedRect.yTop = topBrick.contentRect.yTop - this.visualYTopDiff;
                 }
                 if(unfoldedBricks[unfoldedBricks.length - 1] !== unfoldedBricksOnPage[unfoldedBricksOnPage.length - 1]) {
                     borderRadius[2] = 0;
                     borderRadius[3] = 0;
                     borderWidth[2] = 0;
+                } else {
+                    const bottomBrick = unfoldedBricksOnPage.reduce((max, item) => item.yBot > max.yBot ? item : max);
+                    mergedRect.yBot = bottomBrick.contentRect.yBot + this.visualYBotDiff;
                 }
                 if(this.style.backgroundColor !== null) {
                     this.controller.setFillColor(this.style.backgroundColor);
@@ -135,7 +148,9 @@ export class ContainerBrick extends CompositeBrick {
     public get width() {
         return this.layout.width;
     }
-    fitToHeight(height: number, alignCenter: boolean = false) {
+    private visualYTopDiff: number = 0;
+    private visualYBotDiff: number = 0;
+    fitToHeight(height: number, alignCenter: boolean) {
         if(alignCenter) {
             const shift = (height - this.height) / 2;
             this.translateY((yTop, yBot) => {
@@ -145,8 +160,11 @@ export class ContainerBrick extends CompositeBrick {
                 };
             });
             this.increasePadding({ top: shift, bottom: shift });
+            this.visualYBotDiff+= shift;
+            this.visualYTopDiff+= shift;
         } else {
             this.increasePadding({ top: 0, bottom: height - this.height });
+            this.visualYBotDiff+= height - this.height;
         }
     }
 }
