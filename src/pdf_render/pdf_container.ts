@@ -150,7 +150,7 @@ export class ContainerBrick extends CompositeBrick {
     }
     private visualYTopDiff: number = 0;
     private visualYBotDiff: number = 0;
-    fitToHeight(height: number, alignCenter: boolean) {
+    fitToHeight(height: number, alignCenter?: boolean) {
         if(alignCenter) {
             const shift = (height - this.height) / 2;
             this.translateY((yTop, yBot) => {
