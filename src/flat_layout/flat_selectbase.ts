@@ -49,12 +49,12 @@ export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSele
             textFlat.updateRect();
             compositeFlat.addBrick(textFlat);
         }
-        if(item.isPanelShowing) {
+        if(item.hasElements && (this.question.isItemSelected(item) || this.controller.dynamicContent.choiceNestedContent)) {
             const panelPoint: IPoint = SurveyHelper.createPoint(compositeFlat, true, false);
             panelPoint.yTop += this.style.spacing.choiceGap;
             compositeFlat.addBrick(...await SurveyHelper.generatePanelFlats(this.survey, this.controller, item.panel, panelPoint));
         }
-        if(item.isCommentShowing) {
+        if(item.showCommentArea && (this.question.isItemSelected(item) || this.question.isOtherItem(item) || this.controller.dynamicContent.choiceComments)) {
             const otherPoint: IPoint = SurveyHelper.createPoint(compositeFlat, true, false);
             otherPoint.yTop += this.style.spacing.choiceGap;
             compositeFlat.addBrick(await this.generateItemComment(otherPoint, item));

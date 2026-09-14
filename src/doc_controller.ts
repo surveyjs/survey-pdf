@@ -237,8 +237,16 @@ export interface IDocOptions {
      */
     otherRowsCount?: number;
     showNavigation?: boolean;
+    dynamicContent?: {
+        choiceComments?: boolean,
+        choiceNestedContent?: boolean,
+        conditionalChoices?: boolean,
+        conditionalElements?: boolean, // questions, panels, pages
+        conditionalMatrixColumns?: boolean,
+    };
 }
 
+type IDynamicContentOptions = IDocOptions['dynamicContent'];
 export class DocOptions implements IDocOptions {
     public static readonly MM_TO_PT = 72 / 25.4;
     protected _orientation: 'l' | 'p';
@@ -261,6 +269,7 @@ export class DocOptions implements IDocOptions {
     protected _isRTL: boolean;
     protected _tagboxSelectedChoicesOnly: boolean;
     protected _otherRowsCount: number;
+    protected _dynamicContent: IDynamicContentOptions;
     public constructor(options: IDocOptions) {
         if (typeof options.orientation === 'undefined') {
             if (typeof options.format === 'undefined' ||
@@ -306,6 +315,13 @@ export class DocOptions implements IDocOptions {
         this._tagboxSelectedChoicesOnly = options.tagboxSelectedChoicesOnly || false;
         this._htmlToImageQuality = options.htmlToImageQuality ?? 1;
         this._otherRowsCount = options.otherRowsCount ?? 2;
+        this._dynamicContent = SurveyHelper.mergeObjects({
+            choiceComments: false,
+            choiceNestedContent: false,
+            conditionalChoices: false,
+            conditionalElements: false,
+            conditionalMatrixColumns: false,
+        }, options.dynamicContent || {});
     }
     textFieldRenderAs?: 'singleLine' | 'multiLine';
     showNavigation?: boolean;
@@ -368,6 +384,9 @@ export class DocOptions implements IDocOptions {
     }
     public get otherRowsCount(): number {
         return this._otherRowsCount;
+    }
+    public get dynamicContent(): IDynamicContentOptions {
+        return this._dynamicContent;
     }
 }
 
