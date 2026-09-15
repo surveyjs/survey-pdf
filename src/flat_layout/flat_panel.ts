@@ -123,7 +123,7 @@ export class FlatPanel<T extends PanelModel = PanelModel, S extends IPanelStyle 
             let alignValue = (availableWidth - widthSum - (row.length - 1) * gapBetweenElements) / row.length;
             let expandableElements = [].concat(row);
             let restWidth = alignValue * row.length;
-            while(expandableElements.length > 0 && restWidth > 0) {
+            while(expandableElements.length > 0 && restWidth > SurveyHelper.EPSILON) {
                 expandableElements = expandableElements.filter(rowEl => {
                     const maxWidth = SurveyHelper.parseWidth(rowEl.element.maxWidth ? rowEl.element.maxWidth : '100%', availableWidth, undefined, 'px');
                     if(!!rowEl.element.width && row.length > 1) {
