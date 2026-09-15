@@ -573,3 +573,27 @@ test('Check FlatPanel.getRows: width when space is not fullfilled and element wi
     expect(rows[0][1].width).toBeCloseTo(0.5 * availableWidth - gap * 2, 8);
     expect(rows[0][2].width).toBeCloseTo(0.3 * availableWidth, 8);
 });
+
+test('Infinite loop on creating questions in one row', async () => {
+    await checkFlatSnapshot(
+        {
+            'elements': [{
+                'type': 'panel',
+                'name': 'panel',
+                'title': 'Panel',
+                'elements': [
+                    { 'type': 'text', 'name': 'question1' },
+                    { 'type': 'text', 'name': 'question2', 'startWithNewLine': false },
+                    { 'type': 'text', 'name': 'question3', 'startWithNewLine': false }
+                ]
+            }]
+        }, {
+            snapshotName: 'panel-questions-one-row-infinite',
+            eventName: 'onRenderPanel',
+            controllerOptions: {
+                fontSize: 10,
+                margins: { left: 10, right: 10, top: 10, bot: 10 },
+                format: [210, 297]
+            }
+        });
+});
