@@ -721,9 +721,13 @@ export class SurveyHelper {
         const questionFlats: IPdfBrick[] = await flatQuestion.generateFlats(point);
         return [...questionFlats];
     }
+    public static getFlatPanel(survey: SurveyPDF,
+        controller: DocController, panel: PanelModel) {
+        return FlatRepository.getInstance().createPanel(survey, panel, controller, survey.getElementStyle(panel));
+    }
     public static async generatePanelFlats(survey: SurveyPDF,
         controller: DocController, panel: PanelModel, point: IPoint): Promise<IPdfBrick[]> {
-        return [...await FlatRepository.getInstance().createPanel(survey, panel, controller, survey.getElementStyle(panel)).generateFlats(point)];
+        return [...await this.getFlatPanel(survey, controller, panel).generateFlats(point)];
     }
     public static async generatePageFlats(survey: SurveyPDF,
         controller: DocController, page: PageModel, point: IPoint): Promise<IPdfBrick[]> {
