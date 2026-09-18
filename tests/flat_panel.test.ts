@@ -596,3 +596,26 @@ test('Check FlatPanel getVisibleElements', async () => {
     controller.dynamicContent.conditionalElements = true;
     expect(flatPanel['getVisibleElements']().map(row => row.map(q => q.name))).toEqual([['q2'], ['q3']]);
 });
+test('Infinite loop on creating questions in one row', async () => {
+    await checkFlatSnapshot(
+        {
+            'elements': [{
+                'type': 'panel',
+                'name': 'panel',
+                'title': 'Panel',
+                'elements': [
+                    { 'type': 'text', 'name': 'question1' },
+                    { 'type': 'text', 'name': 'question2', 'startWithNewLine': false },
+                    { 'type': 'text', 'name': 'question3', 'startWithNewLine': false }
+                ]
+            }]
+        }, {
+            snapshotName: 'panel-questions-one-row-infinite',
+            eventName: 'onRenderPanel',
+            controllerOptions: {
+                fontSize: 10,
+                margins: { left: 10, right: 10, top: 10, bot: 10 },
+                format: [210, 297]
+            }
+        });
+});
