@@ -243,6 +243,7 @@ export interface IDocOptions {
         conditionalChoices?: boolean,
         conditionalElements?: boolean, // questions, panels, pages
         conditionalMatrixColumns?: boolean,
+        conditionalMatrixRows?: boolean,
     };
 }
 
@@ -321,6 +322,7 @@ export class DocOptions implements IDocOptions {
             conditionalChoices: false,
             conditionalElements: false,
             conditionalMatrixColumns: false,
+            conditionalMatrixRows: false
         }, options.dynamicContent || {});
     }
     textFieldRenderAs?: 'singleLine' | 'multiLine';

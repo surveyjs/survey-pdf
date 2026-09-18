@@ -123,12 +123,15 @@ interface IMatrixColumnDescriptor {
 }
 
 export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = QuestionMatrixDropdownModelBase, S extends IQuestionMatrixDropdownStyle = IQuestionMatrixDropdownStyle> extends FlatQuestion<T, S> {
-    private getVisibleMatrixRows() {
-        return this.question.visibleRows;
+    protected getMatrixRows() {
+        return this.controller.dynamicContent.conditionalMatrixRows ? this.question.allRows : this.question.visibleRows;
     }
-    private getMatrixColumnsDescriptors(): Array<IMatrixColumnDescriptor> {
+    protected isMatrixColumnVisible(column: MatrixDropdownColumn): boolean {
+        return column.visible && (this.controller.dynamicContent.conditionalMatrixColumns || column.isColumnVisible);
+    }
+    private getMatrixColumnDescriptors(): Array<IMatrixColumnDescriptor> {
         const columnDescriptors: Array<IMatrixColumnDescriptor> = [];
-        for(const column of this.question.columns as Array<MatrixDropdownColumn>) {
+        for(const column of this.question.columns.filter(column => this.isMatrixColumnVisible(column)) as Array<MatrixDropdownColumn>) {
             if(column.showInMultipleColumns) {
                 for(const item of this.getMultipleColumnChoices(column)) {
                     columnDescriptors.push({ minWidth: column.minWidth, width: column.width, locTitle: item.locTitle });
@@ -148,7 +151,7 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
         if(this.question.showHeader) {
             predefinedWidths.push({ minWidth: this.question.rowTitleWidth, width: this.question.rowTitleWidth });
         }
-        for(const _ of this.getVisibleMatrixRows()) {
+        for(const _ of this.getMatrixRows()) {
             predefinedWidths.push({ width: '', minWidth: '' });
         }
         return predefinedWidths;
@@ -158,7 +161,7 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
         if(this.question.hasRowText) {
             predefinedWidths.push({ minWidth: this.question.rowTitleWidth, width: this.question.rowTitleWidth });
         }
-        for(const colDescriptor of this.getMatrixColumnsDescriptors()) {
+        for(const colDescriptor of this.getMatrixColumnDescriptors()) {
             predefinedWidths.push({ width: colDescriptor.width, minWidth: colDescriptor.minWidth });
         }
         return predefinedWidths;
@@ -212,13 +215,13 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
         const table: Array<Array<IMatrixCellFlat>> = [];
         const flatQuestionFabric = (question: Question) => SurveyHelper.getFlatQuestion(this.survey, this.controller, question);
         const flatPanelFabric = (panel: PanelModel) => SurveyHelper.getFlatPanel(this.survey, this.controller, panel);
-        const matrixRows = this.getVisibleMatrixRows();
+        const matrixRows = this.getMatrixRows();
         if(this.question.showHeader) {
             const headerRow = [];
             if (this.question.hasRowText) {
                 headerRow.push(new MatrixCellEmptyFlat(this.controller, { style: { container: this.style.cell } }));
             }
-            const contentCells = this.getMatrixColumnsDescriptors().map(column => new MatrixCellTextFlat(this.controller, { style: { container: this.style.cell, text: columnTitleStyle }, locText: column.locTitle }));
+            const contentCells = this.getMatrixColumnDescriptors().map(column => new MatrixCellTextFlat(this.controller, { style: { container: this.style.cell, text: columnTitleStyle }, locText: column.locTitle }));
             headerRow.push(...contentCells);
             table.push(headerRow);
         }
@@ -231,7 +234,7 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
                 }));
             }
             const contentCells = [];
-            for(const cell of row.cells) {
+            for(const cell of row.cells.filter(cell => this.isMatrixColumnVisible(cell.column))) {
                 if(cell.column.showInMultipleColumns) {
                     let flatQuestionValue: FlatSelectBase = undefined;
                     for(const [index, item] of (cell.question.visibleChoices as ItemValue[]).entries()) {
@@ -260,7 +263,7 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
                 if(this.question.hasRowText) {
                     panelRow.push(new MatrixCellEmptyFlat(this.controller, { style: { container: this.style.cell } }));
                 }
-                panelRow.push(new MatrixCellPanelFlat(this.controller, { style: { container: {} }, panel: row.detailPanel, flatPanelFabric: flatPanelFabric, colSpan: this.getMatrixColumnsDescriptors().length }));
+                panelRow.push(new MatrixCellPanelFlat(this.controller, { style: { container: {} }, panel: row.detailPanel, flatPanelFabric: flatPanelFabric, colSpan: this.getMatrixColumnDescriptors().length }));
                 contentRows.push(panelRow);
             }
         }
@@ -271,7 +274,7 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
                 footerRow.push(new MatrixCellTextFlat(this.controller, { style: { container: this.style.cell, text: rowTitleStyle }, locText: this.question.getFooterText() }));
             }
             const contentCells = [];
-            for(const cell of this.question.visibleTotalRow.cells) {
+            for(const cell of this.question.visibleTotalRow.cells.filter(cell => this.isMatrixColumnVisible(cell.column))) {
                 if(cell.question.isAnswered) {
                     if(cell.column.showInMultipleColumns) {
                         for (const _ of this.getMultipleColumnChoices(cell.column)) {
@@ -309,7 +312,7 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
             }
             return new MatrixCellQuestionFlat(this.controller, { style: { container: this.style.cell }, question: cell.question, flatQuestionFabric });
         };
-        for (const row of this.getVisibleMatrixRows()) {
+        for (const row of this.getMatrixRows()) {
             const cells = [];
             if(this.question.hasRowText) {
                 cells.push(new MatrixCellTextFlat(this.controller,
@@ -317,7 +320,7 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
                         locText: row.locText
                     }));
             }
-            for(const cell of row.cells) {
+            for(const cell of row.cells.filter(cell => this.isMatrixColumnVisible(cell.column))) {
                 cells.push(createQuestionCell(cell));
             }
             table.push(cells);
@@ -333,7 +336,7 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
                     locText: this.question.getFooterText()
                     }));
             }
-            for(const cell of this.question.visibleTotalRow.cells) {
+            for(const cell of this.question.visibleTotalRow.cells.filter(cell => this.isMatrixColumnVisible(cell.column))) {
                 if(cell.question.isAnswered) {
                     cells.push(createQuestionCell(cell));
                 }

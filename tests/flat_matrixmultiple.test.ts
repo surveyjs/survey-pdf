@@ -675,3 +675,61 @@ test('Check matrix multiple with empty totals - wide mode', async () => {
             return options.question.getType() == 'matrixdropdown';
         } });
 });
+
+test('columns visibility', async () => {
+    const json = {
+        questions: [
+            {
+                'type': 'matrixdropdown',
+                'name': 'matrix',
+                titleLocation: 'hidden',
+                choices: [1],
+                'columns': [
+                    {
+                        'name': 'col1',
+                        visibleIf: 'false'
+                    },
+                    {
+                        'name': 'col2',
+                    },
+                    {
+                        'name': 'col3',
+                        'visible': false
+                    }
+                ],
+                'rows': [
+                    {
+                        'value': 'Row 1',
+                        'visibleIf': 'false'
+                    },
+                    {
+                        'value': 'Row 2',
+                    },
+                ]
+            }
+        ]
+    };
+    const survey = new SurveyPDF(json, {});
+    const question = survey.getAllQuestions()[0] as QuestionMatrixDropdownModel;
+    const controller = new DocController();
+    const flat = new FlatMatrixMultiple(survey, question, controller, {});
+
+    let rows = flat['getMatrixRows']();
+    expect(rows.map(row => row.locText.renderedHtml)).toEqual(['Row 2']);
+    expect(rows[0].cells.filter(cell => flat['isMatrixColumnVisible'](cell.column)).map(cell => cell.column.locTitle.renderedHtml)).toEqual(['col2']);
+
+    controller.dynamicContent.conditionalMatrixColumns = true;
+    rows = flat['getMatrixRows']();
+    expect(rows.map(row => row.locText.renderedHtml)).toEqual(['Row 2']);
+    expect(rows[0].cells.filter(cell => flat['isMatrixColumnVisible'](cell.column)).map(cell => cell.column.locTitle.renderedHtml)).toEqual(['col1', 'col2']);
+
+    controller.dynamicContent.conditionalMatrixRows = true;
+    rows = flat['getMatrixRows']();
+    expect(rows.map(row => row.locText.renderedHtml)).toEqual(['Row 1', 'Row 2']);
+    expect(rows[0].cells.filter(cell => flat['isMatrixColumnVisible'](cell.column)).map(cell => cell.column.locTitle.renderedHtml)).toEqual(['col1', 'col2']);
+
+    controller.dynamicContent.conditionalMatrixColumns = false;
+    rows = flat['getMatrixRows']();
+    expect(rows.map(row => row.locText.renderedHtml)).toEqual(['Row 1', 'Row 2']);
+    expect(rows[0].cells.filter(cell => flat['isMatrixColumnVisible'](cell.column)).map(cell => cell.column.locTitle.renderedHtml)).toEqual(['col2']);
+});
