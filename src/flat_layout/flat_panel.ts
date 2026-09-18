@@ -30,7 +30,6 @@ export class FlatPanel<T extends PanelModel = PanelModel, S extends IPanelStyle 
         return bricks;
     }
     protected async generateContentFlats(point: IPoint): Promise<IPdfBrick[]> {
-        if (!this.panel.isVisible) return;
         this.panel.onFirstRendering();
         const panelFlats: IPdfBrick[] = [];
         let currPoint: IPoint = SurveyHelper.clone(point);
@@ -91,16 +90,25 @@ export class FlatPanel<T extends PanelModel = PanelModel, S extends IPanelStyle 
         });
         return [containerBrick];
     }
+    protected getVisibleElements(): Array<Array<SurveyElement>> {
+        const visibleRows: Array<Array<SurveyElement>> = [];
+        this.panel.rows.forEach(row => {
+            const visibleElements = row.elements.filter(el => {
+                return ((el.visible || (el as any)['visibleIf']) && this.controller.dynamicContent.conditionalElements) || el.isVisible;
+            }) as unknown as Array<SurveyElement>;
+            if(visibleElements.length == 0) return;
+            visibleRows.push(visibleElements);
+        });
+        return visibleRows;
+    }
     protected getRows(controller: DocController): Array<Array<{ element: SurveyElement, width: number }>> {
         const availableWidth = SurveyHelper.getPageAvailableWidth(controller);
         const rows: Array<Array<{ element: SurveyElement, width: number }>> = [];
         const gapBetweenElements = this.style.spacing.inlineElementGap;
-        this.panel.rows.forEach(row => {
+        this.getVisibleElements().forEach(rowElements => {
             let currentAvailableWidth = availableWidth + gapBetweenElements;
             let currentRow: Array<{ element: SurveyElement, width: number }> = [];
-            if (!row.visible) return;
-            const visibleElements = row.elements.filter(el => el.isVisible);
-            (visibleElements as any as Array<SurveyElement>).forEach((el, i) => {
+            rowElements.forEach((el) => {
                 const style = this.survey.getElementStyle(el);
                 const minWidth = el.minWidth && el.minWidth !== 'auto' ? SurveyHelper.parseWidth(el.minWidth, availableWidth, undefined, 'px') : style.minWidth;
                 const renderWidth = !!el.width ? SurveyHelper.parseWidth(el.width, availableWidth, undefined, 'px') : 0;

@@ -1,4 +1,4 @@
-import { SurveyModel, EventBase, SurveyElement, Serializer, Question, PanelModel, PageModel, ITheme, ItemValue } from 'survey-core';
+import { SurveyModel, EventBase, SurveyElement, Serializer, Question, PanelModel, PageModel, ITheme, ItemValue, PanelModelBase } from 'survey-core';
 import { hasLicense, glc } from 'survey-core';
 import { IDocOptions, DocController, IMargin } from './doc_controller';
 import { PagePacker } from './page_layout/page_packer';
@@ -430,8 +430,9 @@ export class SurveyPDF extends SurveyModel {
         const { doc } = controller;
         if(!this.navigationMap[panel.uniqueId]) return;
         const panelChapter = doc.outline.add(rootChapter, panel.title || panel.name, { pageNumber: this.navigationMap[panel.uniqueId] });
-        (panel.elements as any as Array<SurveyElement>).forEach((el: SurveyElement) => {
-            if(el.isVisible && this.navigationMap[el.uniqueId]) {
+        (panel.elements as Array<Question | PanelModelBase>).forEach(el => {
+            const isVisible = ((el.visible || (el as any)['visibleIf']) && controller.dynamicContent.conditionalElements) || el.isVisible;
+            if(isVisible || controller.doc && this.navigationMap[el.uniqueId]) {
                 if(el.isPanel) {
                     this.renderPanelNavigation(controller, el as PanelModel, panelChapter);
                 } else {
