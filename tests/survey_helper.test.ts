@@ -267,6 +267,48 @@ test('Check createSvgContent method', () => {
         spy.mockRestore();
     }
 });
+test('Check createSvgContent uses shadow DOM for HTML measurement', () => {
+    const attachShadow = vitest.spyOn(HTMLElement.prototype, 'attachShadow');
+    const controller: DocController = new DocController({});
+    try {
+        SurveyHelper.createSvgContent('<h3>Specialists advise</h3><ul><li>Physical activities</li></ul>', 200, controller);
+        expect(attachShadow).toHaveBeenCalledWith({ mode: 'closed' });
+        expect(document.querySelector('.__surveypdf_html')).toBeNull();
+    } finally {
+        attachShadow.mockRestore();
+    }
+});
+test('Check createSvgContent isolates HTML measurement from page styles', () => {
+    const pageStyle: HTMLStyleElement = document.createElement('style');
+    pageStyle.setAttribute('data-surveypdf-test', 'global-reset');
+    pageStyle.innerHTML = '* { padding: 0; margin: 0; } .__surveypdf_html { display: none !important; }';
+    document.head.appendChild(pageStyle);
+    const originalAttachShadow = HTMLElement.prototype.attachShadow;
+    let measuredInsideShadow: boolean = false;
+    HTMLElement.prototype.attachShadow = function(this: HTMLElement, init: ShadowRootInit): ShadowRoot {
+        const shadow: ShadowRoot = originalAttachShadow.call(this, init);
+        const originalAppendChild = shadow.appendChild.bind(shadow);
+        shadow.appendChild = ((node: Node) => {
+            const result: Node = originalAppendChild(node);
+            if (node instanceof HTMLElement && node.className === '__surveypdf_html') {
+                measuredInsideShadow = true;
+                expect(node.getRootNode()).toBe(shadow);
+            }
+            return result;
+        }) as typeof shadow.appendChild;
+        return shadow;
+    };
+    const controller: DocController = new DocController({});
+    try {
+        const res = SurveyHelper.createSvgContent('<h3>Specialists advise</h3>', 200, controller);
+        expect(measuredInsideShadow).toBe(true);
+        expect(res.svg).toContain('Specialists advise');
+        expect(document.querySelector('.__surveypdf_html')).toBeNull();
+    } finally {
+        HTMLElement.prototype.attachShadow = originalAttachShadow;
+        pageStyle.remove();
+    }
+});
 test('Check setCanvas method', () => {
     class ContextMock {
         xScale!: number;
