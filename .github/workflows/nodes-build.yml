@@ -26,6 +26,7 @@ jobs:
         run: |
           npm pkg set dependencies.survey-core=3.1.0
           npm install --legacy-peer-deps
+          npm install esbuild --no-save --legacy-peer-deps
 
       - name: Build
         run: |
