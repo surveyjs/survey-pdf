@@ -3,7 +3,7 @@ import { IHTMLRenderType } from './flat_layout/flat_html';
 import { SurveyHelper } from './helper_survey';
 import { LocalizableString } from 'survey-core';
 // import Fonts from './fonts';
-import setRadioAppearance from './jspdf_plugins/acroform_radio';
+import { getPatchedAcroFormRadioButton } from './jspdf_plugins/acroform_radio';
 import './jspdf_plugins/acroform.js';
 import './jspdf_plugins/from_html.js';
 
@@ -392,7 +392,6 @@ export class DocController extends DocOptions {
             DocController.addFont(this.fontName, this.base64Bold, 'bold');
             this._doc = new jsPDF(jspdfOptions);
         }
-        setRadioAppearance(this._doc);
         this._useCustomFontInHtml = options.useCustomFontInHtml && SurveyHelper.isFontExist(this, this.fontName);
         this._helperDoc = new jsPDF(jspdfOptions);
         this._doc.setFont(this.fontName);
@@ -525,5 +524,12 @@ export class DocController extends DocOptions {
     }
     public setPage(index: number): void {
         this.doc.setPage(index + 1);
+    }
+    private _AcroFormRadioButton: ({ new(): any });
+    public get AcroFormRadioButton() {
+        if(!this._AcroFormRadioButton) {
+            this._AcroFormRadioButton = getPatchedAcroFormRadioButton(this.doc);
+        }
+        return this._AcroFormRadioButton;
     }
 }

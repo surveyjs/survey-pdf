@@ -16,7 +16,7 @@ export class RadioGroupWrap {
         private context: IRadiogroupWrapContext) {
     }
     public addToPdf(color: string) {
-        this._radioGroup = new this.controller.doc.AcroFormRadioButton();
+        this._radioGroup = new this.controller.AcroFormRadioButton();
         const options: any = {};
         options.fieldName = this.name;
         options.readOnly = this.readOnly;
