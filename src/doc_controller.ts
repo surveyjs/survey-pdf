@@ -177,6 +177,8 @@ export interface IDocOptions {
      * - `"auto"` (default) - Render matrix-like questions as tables if they fit into the available space. Otherwise, render the questions as lists.
      *
      * You can override this property for an individual matrix-like question. Set the question's `renderAs` property to `"list"` in the survey JSON schema.
+     * @see [IDynamicContentOptions.conditionalMatrixColumns](/pdf-generator/documentation/api-reference/idynamiccontentoptions#conditionalMatrixColumns)
+     * @see [IDynamicContentOptions.conditionalMatrixRows](/pdf-generator/documentation/api-reference/idynamiccontentoptions#conditionalMatrixRows)
      */
     matrixRenderAs?: 'auto' | 'list';
     useLegacyBooleanRendering?: boolean;
@@ -225,6 +227,7 @@ export interface IDocOptions {
      * Specifies whether to include only selected choices when PDF Generator renders a [Multi-Select Dropdown (Tag Box)](https://surveyjs.io/form-library/examples/how-to-create-multiselect-tag-box/) question.
      *
      * Default value: `false` (include all choices)
+     * @see [IDynamicContentOptions.conditionalChoices](/pdf-generator/documentation/api-reference/idynamiccontentoptions#conditionalChoices)
      */
     tagboxSelectedChoicesOnly?: boolean;
 
@@ -234,9 +237,99 @@ export interface IDocOptions {
      *
      * Default value: 2
      * @since 3.0.0
+     * @see [IDynamicContentOptions.choiceComments](/pdf-generator/documentation/api-reference/idynamiccontentoptions#choiceComments)
      */
     otherRowsCount?: number;
     showNavigation?: boolean;
+    /**
+     * Specifies which dynamic content to include in the PDF document regardless of the current survey answers.
+     *
+     * For more information, refer to the following documentation article or API reference:
+     *
+     * [Documentation: Dynamic Content](/pdf-generator/documentation/customize-pdf-form-settings#dynamic-content (linkStyle))
+     *
+     * [API Reference: IDynamicContentOptions](/pdf-generator/documentation/api-reference/idynamiccontentoptions (linkStyle))
+     */
+    dynamicContent?: IDynamicContentOptions;
+}
+
+/**
+ * Options for including dynamic content in the PDF document regardless of the current survey answers.
+ *
+ * Assign an object with these options to the [`IDocOptions.dynamicContent`](/pdf-generator/documentation/api-reference/idocoptions#dynamicContent) property:
+ *
+ * ```js
+ * const pdfDocOptions = {
+ *   dynamicContent: {
+ *     choiceComments: true,
+ *     // ...
+ *   }
+ * };
+ *
+ * const surveyPdf = new SurveyPDF.SurveyPDF(surveyJson, pdfDocOptions);
+ *
+ * // In modular applications:
+ * import { SurveyPDF } from "survey-pdf";
+ *
+ * const surveyPdf = new SurveyPDF(surveyJson, pdfDocOptions);
+ * ```
+ *
+ * [Documentation: Dynamic Content](/pdf-generator/documentation/customize-pdf-form-settings#dynamic-content (linkStyle))
+ */
+export interface IDynamicContentOptions {
+    /**
+     * Specifies whether to include [configured comment areas](/form-library/examples/individual-checkbox-comments/) for unselected choices.
+     *
+     * Default value: `false`
+     * @see [IDocOptions.otherRowsCount](/pdf-generator/documentation/api-reference/idocoptions#otherRowsCount)
+     * @see choiceNestedContent
+     */
+    choiceComments?: boolean;
+
+    /**
+     * Specifies whether to include [nested content](/form-library/examples/nest-follow-up-questions-within-choice-options/) for unselected choices.
+     *
+     * Default value: `false`
+     * @see choiceComments
+     * @see conditionalElements
+     */
+    choiceNestedContent?: boolean;
+
+    /**
+     * Specifies whether to include choices hidden by visibility conditions.
+     *
+     * Default value: `false`
+     * @see [IDocOptions.tagboxSelectedChoicesOnly](/pdf-generator/documentation/api-reference/idocoptions#tagboxSelectedChoicesOnly)
+     * @see conditionalElements
+     */
+    conditionalChoices?: boolean;
+
+    /**
+     * Specifies whether to include questions, panels, and pages hidden by visibility conditions.
+     *
+     * Default value: `false`
+     * @see choiceNestedContent
+     * @see conditionalChoices
+     */
+    conditionalElements?: boolean;
+
+    /**
+     * Specifies whether to include matrix columns hidden by visibility conditions.
+     *
+     * Default value: `false`
+     * @see [IDocOptions.matrixRenderAs](/pdf-generator/documentation/api-reference/idocoptions#matrixRenderAs)
+     * @see conditionalMatrixRows
+     */
+    conditionalMatrixColumns?: boolean;
+
+    /**
+     * Specifies whether to include matrix rows hidden by visibility conditions.
+     *
+     * Default value: `false`
+     * @see [IDocOptions.matrixRenderAs](/pdf-generator/documentation/api-reference/idocoptions#matrixRenderAs)
+     * @see conditionalMatrixColumns
+     */
+    conditionalMatrixRows?: boolean;
 }
 
 export class DocOptions implements IDocOptions {
@@ -261,6 +354,7 @@ export class DocOptions implements IDocOptions {
     protected _isRTL: boolean;
     protected _tagboxSelectedChoicesOnly: boolean;
     protected _otherRowsCount: number;
+    protected _dynamicContent: IDynamicContentOptions;
     public constructor(options: IDocOptions) {
         if (typeof options.orientation === 'undefined') {
             if (typeof options.format === 'undefined' ||
@@ -306,6 +400,14 @@ export class DocOptions implements IDocOptions {
         this._tagboxSelectedChoicesOnly = options.tagboxSelectedChoicesOnly || false;
         this._htmlToImageQuality = options.htmlToImageQuality ?? 1;
         this._otherRowsCount = options.otherRowsCount ?? 2;
+        this._dynamicContent = SurveyHelper.mergeObjects({
+            choiceComments: false,
+            choiceNestedContent: false,
+            conditionalChoices: false,
+            conditionalElements: false,
+            conditionalMatrixColumns: false,
+            conditionalMatrixRows: false
+        }, options.dynamicContent || {});
     }
     textFieldRenderAs?: 'singleLine' | 'multiLine';
     showNavigation?: boolean;
@@ -368,6 +470,9 @@ export class DocOptions implements IDocOptions {
     }
     public get otherRowsCount(): number {
         return this._otherRowsCount;
+    }
+    public get dynamicContent(): IDynamicContentOptions {
+        return this._dynamicContent;
     }
 }
 

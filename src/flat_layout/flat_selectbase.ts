@@ -49,7 +49,12 @@ export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSele
             textFlat.updateRect();
             compositeFlat.addBrick(textFlat);
         }
-        if(item.isCommentShowing) {
+        if(item.hasElements && (this.question.isItemSelected(item) || this.controller.dynamicContent.choiceNestedContent)) {
+            const panelPoint: IPoint = SurveyHelper.createPoint(compositeFlat, true, false);
+            panelPoint.yTop += this.style.spacing.choiceGap;
+            compositeFlat.addBrick(...await SurveyHelper.generatePanelFlats(this.survey, this.controller, item.panel, panelPoint));
+        }
+        if(item.showCommentArea && (this.question.isItemSelected(item) || this.question.isOtherItem(item) || this.controller.dynamicContent.choiceComments)) {
             const otherPoint: IPoint = SurveyHelper.createPoint(compositeFlat, true, false);
             otherPoint.yTop += this.style.spacing.choiceGap;
             compositeFlat.addBrick(await this.generateItemComment(otherPoint, item));
@@ -57,7 +62,16 @@ export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSele
         return compositeFlat;
     }
     protected getVisibleChoices(): Array<ItemValue> {
-        return this.question.visibleChoices;
+        let choices = [...this.question.visibleChoices];
+        if(this.controller.dynamicContent.conditionalChoices) {
+            const oldValue = this.question['filteredChoicesValue'];
+            this.question['filteredChoicesValue'] = undefined;
+            this.question['updateVisibleChoices']();
+            choices = [...this.question.visibleChoices];
+            this.question['filteredChoicesValue'] = oldValue;
+            this.question['updateVisibleChoices']();
+        }
+        return choices;
     }
     public async generateFlatsContent(point: IPoint): Promise<IPdfBrick[]> {
         const colCount = this.question.colCount;
