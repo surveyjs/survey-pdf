@@ -215,8 +215,7 @@ const surveyJson = {
       ]
     }
   ],
-  "questionsOnPageMode": "singlePage",
-  "headerView": "advanced"
+  "questionsOnPageMode": "singlePage"
 };
 
 const survey = new Survey.Model(surveyJson);
