@@ -207,8 +207,7 @@ const surveyJson = {
       ]
     }
   ],
-  "questionsOnPageMode": "singlePage",
-  "headerView": "advanced"
+  "questionsOnPageMode": "singlePage"
 };
 
 const pdfDocOptions: IDocOptions = { };
