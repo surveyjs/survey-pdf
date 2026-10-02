@@ -367,6 +367,15 @@ export class SurveyPDF extends SurveyModel {
         });
     }
     private stylesHash: { [id: number]: IQuestionStyle | IPanelStyle | IPageStyle } = {};
+    // "matrixbase" is no longer a serializer class in survey-core, so it is not in the parent chain.
+    // Its style is still shared by "matrix" and "matrixdropdownbase" and goes right before the first of them.
+    private addStyleGroups(types: Array<string>): void {
+        if(types.indexOf('matrixbase') > -1) return;
+        const index = types.findIndex(type => type === 'matrix' || type === 'matrixdropdownbase');
+        if(index > -1) {
+            types.splice(index, 0, 'matrixbase');
+        }
+    }
     public getElementStyle<T extends IQuestionStyle | IPanelStyle | IPageStyle = IQuestionStyle>(element: SurveyElement): T {
         const uniqueId = element.uniqueId;
         if(!this.stylesHash[uniqueId]) {
@@ -377,6 +386,7 @@ export class SurveyPDF extends SurveyModel {
                 types.unshift(currentClass.parentName);
                 currentClass = Serializer.findClass(currentClass.parentName);
             }
+            this.addStyleGroups(types);
             if(element.getTemplate() == 'composite') {
                 types.push('composite');
             }
