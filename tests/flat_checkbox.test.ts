@@ -374,3 +374,46 @@ test('Check checkbox with maxSelectedChoices', async () => {
         snapshotName: 'checkbox_max_selected_choices',
     });
 });
+
+test('Check checkbox with nested panels', async () => {
+    await checkFlatSnapshot({
+        'elements': [
+            {
+                'type': 'checkbox',
+                'name': 'q1',
+                titleLoction: 'hidden',
+                'choices': [
+                    {
+                        'value': 'choice1',
+                        'elements': [
+                            {
+                                name: 'choice1_text',
+                                type: 'text'
+                            }
+                        ]
+                    },
+                    {
+                        'value': 'choice2',
+                        'elements': [
+                            {
+                                name: 'choice2_text',
+                                type: 'text'
+                            }
+                        ]
+                    },
+                ]
+            }
+        ]
+    }, {
+        snapshotName: 'checkbox_nested_panel',
+        isCorrectEvent: (options) => options.question.name == 'q1',
+        onSurveyCreated: survey => {
+            survey.data = {
+                'q1': [
+                    'choice1',
+                    'choice2'
+                ]
+            };
+        }
+    });
+});

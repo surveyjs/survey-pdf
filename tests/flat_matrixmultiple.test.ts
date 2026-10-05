@@ -236,7 +236,7 @@ test('Check matrix multiple column widths', async () => {
                     {
                         cellType: 'text',
                         name: 'Col1',
-                        width: '50px'
+                        width: '150px'
                     },
                     {
                         cellType: 'text',
@@ -252,10 +252,10 @@ test('Check matrix multiple column widths', async () => {
     let question = <QuestionMatrixDropdownModel>survey.getAllQuestions()[0];
     const controller: DocController = new DocController(options);
     let flat = new FlatMatrixMultiple(survey, question, controller, survey.getElementStyle(question));
-    let widths = flat['calculateColumnWidth'](flat['visibleRows'], 4);
+    let widths = flat['calculateColumnWidth'](flat['getPredefinedColumnWidts']());
     let restWidth = flat['style'].columnMinWidth;
-    expect(widths).toEqual([375, restWidth, 37.5, restWidth]);
-    expect(flat['calculateIsWide'](question.renderedTable, 4)).toBeFalsy();
+    expect(widths).toEqual([375, restWidth, 112.5, restWidth]);
+    expect(flat['calculateIsList'](widths, 4)).toBeTruthy();
 
     json = {
         elements: [
@@ -285,12 +285,17 @@ test('Check matrix multiple column widths', async () => {
         ]
     };
     survey = new SurveyPDF(json, options);
+    survey.applyStyle({
+        matrixdropdown: {
+            columnMinWidth: 20
+        }
+    });
     question = <QuestionMatrixDropdownModel>survey.getAllQuestions()[0];
     flat = new FlatMatrixMultiple(survey, question, controller, survey.getElementStyle(question));
-    widths = flat['calculateColumnWidth'](flat['visibleRows'], 4);
+    widths = flat['calculateColumnWidth'](flat['getPredefinedColumnWidts']());
     restWidth = (flat['getColumnsAvalableWidth'](4) - 75 - 37.5) / 2;
     expect(widths).toEqual([75, restWidth, 37.5, restWidth]);
-    expect(flat['calculateIsWide'](question.renderedTable, 4)).toBeTruthy();
+    expect(flat['calculateIsList'](widths, 4)).toBeFalsy();
 });
 test('Check matrix dynamic column min widths', async () => {
     let json: any = {
@@ -331,7 +336,7 @@ test('Check matrix dynamic column min widths', async () => {
     let survey: SurveyPDF = new SurveyPDF(json, options);
     let question = <QuestionMatrixDropdownModel>survey.getAllQuestions()[0];
     let flat = new FlatMatrixMultiple(survey, question, survey.docController, survey.getElementStyle(question));
-    let widths = flat['calculateColumnWidth'](flat['visibleRows'], 4);
+    let widths = flat['calculateColumnWidth'](flat['getPredefinedColumnWidts']());
     let restWidth = (flat['getColumnsAvalableWidth'](4) - 112.5 - 225) / 2;
     expect(widths).toEqual([112.5, restWidth, 225, restWidth]);
 });
@@ -380,50 +385,49 @@ test('Check matrix dynamic column min widths with detailPanel', async () => {
     let survey: SurveyPDF = new SurveyPDF(json, options);
     let question = <QuestionMatrixDropdownModel>survey.getAllQuestions()[0];
     let flat = new FlatMatrixMultiple(survey, question, survey.docController, survey.getElementStyle(question));
-    let widths = flat['calculateColumnWidth'](flat['visibleRows'], 4);
+    let widths = flat['calculateColumnWidth'](flat['getPredefinedColumnWidts']());
     let restWidth = (flat['getColumnsAvalableWidth'](4) - 112.5 - 225) / 2;
     expect(widths).toEqual([112.5, restWidth, 225, restWidth]);
 });
-test('Check getRowsToRender method', async () => {
+
+test('Check column render width is always not less than minWidth', async () => {
     const json = {
-        pages: [
+        elements: [
             {
-                name: 'page1',
-                elements: [
+                type: 'matrixdropdown',
+                name: 'matrixdropdown',
+                titleLocation: 'hidden',
+                rowTitleWidth: '150px',
+                showHeader: false,
+                columns: [
                     {
-                        type: 'matrixdropdown',
-                        name: 'question1',
-                        columns: [
-                            {
-                                name: 'Column 1',
-                                title: 'Column 1',
-                                totalType: 'sum'
-                            },
-                        ],
-                        choices: [1, 2, 3, 4, 5],
-                        rows: ['Row 1']
+                        cellType: 'text',
+                        name: 'Col1',
+                    },
+                    {
+                        cellType: 'text',
+                        name: 'Col1',
+                        width: '50px'
+                    },
+                    {
+                        cellType: 'text',
+                        name: 'Col1',
                     }
-                ]
+                ],
+                rows: ['Row1']
             }
         ]
     };
-    const survey: SurveyPDF = new SurveyPDF(json, TestHelper.defaultOptions);
+    const options: IDocOptions = TestHelper.defaultOptions;
+    const controller: DocController = new DocController(options);
+    const survey = new SurveyPDF(json, options);
     const question = <QuestionMatrixDropdownModel>survey.getAllQuestions()[0];
-    const controller: DocController = new DocController(TestHelper.defaultOptions);
-    let flat = new FlatMatrixMultiple(survey, question, controller, survey.getElementStyle(question));
-    let table = question.renderedTable;
-    let rows = flat['getRowsToRender'](question.renderedTable, false, true);
-    expect(rows.length).toBe(3);
-
-    expect(rows[0] === table.headerRow).toBeTruthy();
-    expect(rows[1] === table.rows[1]).toBeTruthy();
-    expect(rows[2] === table.footerRow).toBeTruthy();
-
-    rows = flat['getRowsToRender'](question.renderedTable, false, false);
-    expect(rows.length).toBe(2);
-
-    expect(rows[0] === table.rows[1]).toBeTruthy();
-    expect(rows[1] === table.footerRow).toBeTruthy();
+    const flat = new FlatMatrixMultiple(survey, question, controller, survey.getElementStyle(question));
+    const widths = flat['calculateColumnWidth'](flat['getPredefinedColumnWidts']());
+    const columnMinWidth = flat['style'].columnMinWidth;
+    const restWidth = (flat['getColumnsAvalableWidth'](4) - columnMinWidth - 112.5) / 2;
+    expect(widths).toEqual([112.5, restWidth, columnMinWidth, restWidth]);
+    expect(flat['calculateIsList'](widths, 4)).toBeFalsy();
 });
 
 test('Check matrix multiple one column one row with detailPanel', async () => {
@@ -670,4 +674,62 @@ test('Check matrix multiple with empty totals - wide mode', async () => {
         isCorrectEvent: (options: AdornersOptions) => {
             return options.question.getType() == 'matrixdropdown';
         } });
+});
+
+test('columns visibility', async () => {
+    const json = {
+        questions: [
+            {
+                'type': 'matrixdropdown',
+                'name': 'matrix',
+                titleLocation: 'hidden',
+                choices: [1],
+                'columns': [
+                    {
+                        'name': 'col1',
+                        visibleIf: 'false'
+                    },
+                    {
+                        'name': 'col2',
+                    },
+                    {
+                        'name': 'col3',
+                        'visible': false
+                    }
+                ],
+                'rows': [
+                    {
+                        'value': 'Row 1',
+                        'visibleIf': 'false'
+                    },
+                    {
+                        'value': 'Row 2',
+                    },
+                ]
+            }
+        ]
+    };
+    const survey = new SurveyPDF(json, {});
+    const question = survey.getAllQuestions()[0] as QuestionMatrixDropdownModel;
+    const controller = new DocController();
+    const flat = new FlatMatrixMultiple(survey, question, controller, {});
+
+    let rows = flat['getMatrixRows']();
+    expect(rows.map(row => row.locText.renderedHtml)).toEqual(['Row 2']);
+    expect(rows[0].cells.filter(cell => flat['isMatrixColumnVisible'](cell.column)).map(cell => cell.column.locTitle.renderedHtml)).toEqual(['col2']);
+
+    controller.dynamicContent.conditionalMatrixColumns = true;
+    rows = flat['getMatrixRows']();
+    expect(rows.map(row => row.locText.renderedHtml)).toEqual(['Row 2']);
+    expect(rows[0].cells.filter(cell => flat['isMatrixColumnVisible'](cell.column)).map(cell => cell.column.locTitle.renderedHtml)).toEqual(['col1', 'col2']);
+
+    controller.dynamicContent.conditionalMatrixRows = true;
+    rows = flat['getMatrixRows']();
+    expect(rows.map(row => row.locText.renderedHtml)).toEqual(['Row 1', 'Row 2']);
+    expect(rows[0].cells.filter(cell => flat['isMatrixColumnVisible'](cell.column)).map(cell => cell.column.locTitle.renderedHtml)).toEqual(['col1', 'col2']);
+
+    controller.dynamicContent.conditionalMatrixColumns = false;
+    rows = flat['getMatrixRows']();
+    expect(rows.map(row => row.locText.renderedHtml)).toEqual(['Row 1', 'Row 2']);
+    expect(rows[0].cells.filter(cell => flat['isMatrixColumnVisible'](cell.column)).map(cell => cell.column.locTitle.renderedHtml)).toEqual(['col2']);
 });
