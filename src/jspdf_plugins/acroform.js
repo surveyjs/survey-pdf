@@ -162,7 +162,7 @@ import { jsPDF } from "jspdf";
 
         var stream = [];
         var text = formObject.V || formObject.DV;
-        var calcRes = calculateX(formObject, text);
+        var calcRes = calculateX(formObject, pdfUnescape(text));
         var fontKey = scope.internal.getFont(formObject.fontName, formObject.fontStyle).id;
 
         //PDF 32000-1:2008, page 444

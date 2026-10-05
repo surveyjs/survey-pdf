@@ -10,6 +10,7 @@ import { TestHelper } from '../src/helper_test';
 import { QuestionCommentModel, QuestionDropdownModel, QuestionTextModel } from 'survey-core';
 import { settings } from 'survey-core';
 import { FlatDropdown } from '../src/flat_layout/flat_dropdown';
+import { checkPDFSnapshot } from './snapshot_helper';
 let __dummy_tx = new FlatTextbox(null, null, null);
 let __dummy_cm = new FlatComment(null, null, null);
 
@@ -296,4 +297,21 @@ test('Text question display value with rtl', async () => {
     controller['_isRTL'] = true;
     await survey['renderSurvey'](controller);
     expect(controller.doc.internal.acroformPlugin.acroFormDictionaryRoot.Fields[0].value).toBe('eulaV');
+});
+
+test('Check textbox with parentheses', async () => {
+    const json: any = {
+        elements: [
+            {
+                type: 'text',
+                name: 'q1',
+                titleLocation: 'hidden',
+                inputType: 'tel',
+                defaultValue: '(111) 111-1111',
+            }
+        ]
+    };
+    await checkPDFSnapshot(json, {
+        snapshotName: 'textbox_with_parentheses'
+    });
 });
