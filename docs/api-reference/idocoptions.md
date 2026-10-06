@@ -44,6 +44,18 @@ Specifies whether to compress the PDF document. Compressed documents do not supp
 
 Default value: `false`
 
+### `dynamicContent`
+
+**Type**: `IDynamicContentOptions`
+
+Specifies which dynamic content to include in the PDF document regardless of the current survey answers.
+
+For more information, refer to the following documentation article or API reference:
+
+[Documentation: Dynamic Content](/pdf-generator/documentation/customize-pdf-form-settings#dynamic-content (linkStyle))
+
+[API Reference: IDynamicContentOptions](/pdf-generator/documentation/api-reference/idynamiccontentoptions (linkStyle))
+
 ### `fontName`
 
 **Type**: `string`
@@ -147,6 +159,8 @@ Possible values:
 
 You can override this property for an individual matrix-like question. Set the question's `renderAs` property to `"list"` in the survey JSON schema.
 
+**Related APIs:** [`IDynamicContentOptions.conditionalMatrixColumns`](/pdf-generator/documentation/api-reference/idynamiccontentoptions#conditionalMatrixColumns), [`IDynamicContentOptions.conditionalMatrixRows`](/pdf-generator/documentation/api-reference/idynamiccontentoptions#conditionalMatrixRows)
+
 ### `orientation`
 
 **Type**: `"p" | "l"`
@@ -170,6 +184,8 @@ Default value: 2
 
 Available since: v3.0.0
 
+**Related APIs:** [`IDynamicContentOptions.choiceComments`](/pdf-generator/documentation/api-reference/idynamiccontentoptions#choiceComments)
+
 ### `readonlyRenderAs`
 
 **Type**: `"auto" | "text" | "acroform"`
@@ -189,6 +205,8 @@ Possible values:
 Specifies whether to include only selected choices when PDF Generator renders a [Multi-Select Dropdown (Tag Box)](https://surveyjs.io/form-library/examples/how-to-create-multiselect-tag-box/) question.
 
 Default value: `false` (include all choices)
+
+**Related APIs:** [`IDynamicContentOptions.conditionalChoices`](/pdf-generator/documentation/api-reference/idynamiccontentoptions#conditionalChoices)
 
 ### `useCustomFontInHtml`
 

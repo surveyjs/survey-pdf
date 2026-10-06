@@ -97,6 +97,10 @@
               "Title": "IPDFFormFillerOptions"
             },
             {
+              "Name": "IDynamicContentOptions",
+              "Title": "IDynamicContentOptions"
+            },
+            {
               "Name": "IDocStyle",
               "Title": "IDocStyle"
             },

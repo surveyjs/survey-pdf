@@ -24,6 +24,7 @@ product: PDF Generator
 - [`IQuestionImagePickerStyle`](https://surveyjs.io/pdf-generator/documentation/api-reference/iquestionimagepickerstyle.md) — Defines the visual style applied to UI elements within Image Picker questions in an exported PDF document.
 - [`IMatrixBaseStyle`](https://surveyjs.io/pdf-generator/documentation/api-reference/imatrixbasestyle.md) — A base interface extended by other interfaces that define visual styles for UI elements within matrix questions in an exported PDF document.
 - [`IQuestionSpacing`](https://surveyjs.io/pdf-generator/documentation/api-reference/iquestionspacing.md) — Defines spacing values applied to question UI elements in an exported PDF document.
+- [`IDynamicContentOptions`](https://surveyjs.io/pdf-generator/documentation/api-reference/idynamiccontentoptions.md) — Options for including dynamic content in the PDF document regardless of the current survey answers.
 - [`IPanelStyle`](https://surveyjs.io/pdf-generator/documentation/api-reference/ipanelstyle.md) — Defines the visual style applied to panel UI elements in an exported PDF document.
 - [`IQuestionRatingStyle`](https://surveyjs.io/pdf-generator/documentation/api-reference/iquestionratingstyle.md) — Defines the visual style applied to UI elements within Rating Scale questions in an exported PDF document.
 - [`ISelectBaseStyle`](https://surveyjs.io/pdf-generator/documentation/api-reference/iselectbasestyle.md) — A base interface extended by other interfaces that define visual styles for UI elements within select-like questions in an exported PDF document.

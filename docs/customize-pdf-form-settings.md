@@ -1,11 +1,11 @@
 ---
 title: Customize the Settings of Your SurveyJS PDF Forms | PDF Generator Library
-description: Learn how to configure PDF page settings, fonts, and create both editable and read-only PDF forms using SurveyJS PDF Generator. Explore options for page orientation, size, margins, standard and custom fonts, font size, and document compression to tailor your PDF forms to your specific needs.
+description: Learn how to configure PDF page settings, fonts, and create both editable and read-only PDF forms using SurveyJS PDF Generator. Explore options for page orientation, size, margins, standard and custom fonts, font size, dynamic content, and document compression to tailor your PDF forms to your specific needs.
 ---
 
 # PDF Form Settings
 
-PDF forms created with SurveyJS PDF Generator can have various settings and configurations depending on your needs and requirements. This help topic describes how to specify PDF page settings (orientation, size, margins), change fonts, create a read-only PDF form, and compress a PDF document to reduce its size.
+PDF forms created with SurveyJS PDF Generator can have various settings and configurations depending on your needs and requirements. This help topic describes how to specify PDF page settings (orientation, size, margins), change fonts, create a read-only PDF form, include dynamic content, and compress a PDF document to reduce its size.
 
 ## Page Settings
 
@@ -153,6 +153,42 @@ surveyPdf.data = survey.data;
 ```
 
 [View Demo](/pdf-generator/examples/how-to-create-read-only-pdf-form/ (linkStyle))
+
+## Dynamic Content
+
+Survey forms can contain content that appears only when respondents select a choice or meet a visibility condition. When you generate a PDF for offline completion, you may need to include this content regardless of the current survey answers. For example, a blank PDF form may need to show follow-up questions and comment areas for choices that respondents have not yet selected.
+
+To include dynamic content, configure the [`dynamicContent`](/pdf-generator/documentation/api-reference/idocoptions#dynamicContent) property in the PDF document options. This property accepts an object with the following Boolean options, all of which default to `false`:
+
+| Option | Content included when enabled |
+| --- | --- |
+| [`choiceComments`](/pdf-generator/documentation/api-reference/idynamiccontentoptions#choiceComments) | Configured comment areas for unselected choices. |
+| [`choiceNestedContent`](/pdf-generator/documentation/api-reference/idynamiccontentoptions#choiceNestedContent) | Nested content for unselected choices. |
+| [`conditionalChoices`](/pdf-generator/documentation/api-reference/idynamiccontentoptions#conditionalChoices) | Choices hidden by visibility conditions. |
+| [`conditionalElements`](/pdf-generator/documentation/api-reference/idynamiccontentoptions#conditionalElements) | Questions, panels, and pages hidden by visibility conditions. |
+| [`conditionalMatrixColumns`](/pdf-generator/documentation/api-reference/idynamiccontentoptions#conditionalMatrixColumns) | Matrix columns hidden by visibility conditions. |
+| [`conditionalMatrixRows`](/pdf-generator/documentation/api-reference/idynamiccontentoptions#conditionalMatrixRows) | Matrix rows hidden by visibility conditions. |
+
+Enable only the options you need. The following example includes all six categories of dynamic content:
+
+```js
+const pdfDocOptions = {
+  dynamicContent: {
+    choiceComments: true,
+    choiceNestedContent: true,
+    conditionalChoices: true,
+    conditionalElements: true,
+    conditionalMatrixColumns: true,
+    conditionalMatrixRows: true
+  }
+};
+
+const surveyPdf = new SurveyPDF.SurveyPDF(surveyJson, pdfDocOptions);
+
+// In modular applications:
+import { SurveyPDF } from "survey-pdf";
+const surveyPdf = new SurveyPDF(surveyJson, pdfDocOptions);
+```
 
 ## Document Compression
 
