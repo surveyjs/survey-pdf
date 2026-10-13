@@ -46,9 +46,13 @@
       "Name": "customize-survey-question-rendering-in-pdf-form",
       "Title": "Question Rendering"
     },
-        {
+    {
       "Name": "add-header-and-footer-to-pdf-form",
       "Title": "Header and Footer"
+    },
+    {
+      "Name": "localization",
+      "Title": "Localization & Globalization"
     },
     {
       "Name": "fill-pdf-form-with-web-form-responses",
