@@ -733,3 +733,42 @@ test('columns visibility', async () => {
     expect(rows.map(row => row.locText.renderedHtml)).toEqual(['Row 1', 'Row 2']);
     expect(rows[0].cells.filter(cell => flat['isMatrixColumnVisible'](cell.column)).map(cell => cell.column.locTitle.renderedHtml)).toEqual(['col2']);
 });
+
+test('Check transposed matrix multiple with totals', async () => {
+    await checkFlatSnapshot({
+        questions: [
+            {
+                'type': 'matrixdropdown',
+                'name': 'matrix',
+                'transposeData': true,
+                titleLocation: 'hidden',
+                'columns': [
+                    {
+                        'name': 'choices',
+                        'cellType': 'radiogroup',
+                        'totalType': 'sum',
+                        'defaultValue': '1',
+                        'choices': [
+                            {
+                                'value': '1',
+                            },
+                            {
+                                'value': '2',
+                            },
+                        ],
+                    },
+                ],
+                'rows': [
+                    {
+                        'value': 'Row 1',
+                    },
+                ]
+            }
+        ]
+    }, {
+        controllerOptions: TestHelper.defaultOptions,
+        snapshotName: 'matrixmultiple_transposed_totals',
+        isCorrectEvent: (options: AdornersOptions) => {
+            return options.question.getType() == 'matrixdropdown';
+        } });
+});
