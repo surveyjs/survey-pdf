@@ -163,8 +163,9 @@ export class ContainerBrick extends CompositeBrick {
             this.visualYBotDiff+= shift;
             this.visualYTopDiff+= shift;
         } else {
-            this.increasePadding({ top: 0, bottom: height - this.height });
-            this.visualYBotDiff+= height - this.height;
+            const shift = height - this.height;
+            this.increasePadding({ top: 0, bottom: shift });
+            this.visualYBotDiff+= shift;
         }
     }
 }
