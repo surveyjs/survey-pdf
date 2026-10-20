@@ -151,7 +151,9 @@ export class FlatMatrixMultiple<T extends QuestionMatrixDropdownModelBase = Ques
         if(this.question.showHeader) {
             predefinedWidths.push({ minWidth: this.question.rowTitleWidth, width: this.question.rowTitleWidth });
         }
-        for(const _ of this.getMatrixRows()) {
+        let rowsCount = this.getMatrixRows().length;
+        if(this.question.hasTotal) rowsCount++;
+        for(let i = 0; i < rowsCount; i++) {
             predefinedWidths.push({ width: '', minWidth: '' });
         }
         return predefinedWidths;
