@@ -198,10 +198,9 @@ export class FlatQuestion<T extends Question = Question, S extends IQuestionStyl
                     contentHeaderBrick.addBrick(contentFlats.pop());
                 }
                 const titlePoint: IPoint = indentPoint;
-                if (flats.length !== 0) {
-                    titlePoint.yTop = flats[flats.length - 1].yBot;
+                if(!contentHeaderBrick.isEmpty) {
+                    titlePoint.yTop = contentHeaderBrick.yBot + this.style.spacing.headerContentGap;
                 }
-                titlePoint.yTop += this.style.spacing.headerContentGap;
                 contentHeaderBrick.addBrick(await this.generateFlatHeader(titlePoint));
                 flats.push(...contentFlats);
                 flats.push(contentHeaderBrick);
