@@ -113,6 +113,7 @@ export abstract class FlatSelectBase<T extends QuestionSelectBase = QuestionSele
                 currPoint.yTop = itemFlat.yBot + this.style.spacing.choiceGap;
             }
         }
+        flats.push(SurveyHelper.createRowlineFlat(SurveyHelper.createPoint(SurveyHelper.mergeRects(...flats), true, false), this.controller));
         return flats;
     }
 
