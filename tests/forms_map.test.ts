@@ -1,5 +1,6 @@
 import FormsMap from '../src/pdf_forms/map';
-import { test, expect } from 'vitest';
+import { PDFFormFiller } from '../src/pdf_forms/forms';
+import { test, expect, vitest, describe } from 'vitest';
 
 const testMap = {
     'question1': ['f1', 'f1_plus'],
@@ -251,5 +252,86 @@ test('FormsMap should handle complete example data correctly', () => {
         'f7_1_2': 'B',
         'f7_2_1': 'a',
         'f7_2_2': 'A'
+    });
+});
+
+describe('FormsMap skips data keys without a map entry (unmapped keys)', () => {
+    test('A primitive key without a map entry is skipped (unmapped keys)', () => {
+        const result = new FormsMap(testMap).mapData({
+            'question2': 'text2',
+            'unmapped': 'w'
+        });
+        expect(result).toStrictEqual({ 'f2': 'text2' });
+        expect(Object.keys(result)).not.toContain('undefined');
+    });
+
+    test('An object key without a map entry is skipped (unmapped keys)', () => {
+        const result = new FormsMap(testMap).mapData({
+            'question2': 'text2',
+            'address': { 'street': 'Main' },
+            'items': [{ 'name': 'a' }, { 'name': 'b' }]
+        });
+        expect(result).toStrictEqual({ 'f2': 'text2' });
+    });
+
+    test('An inner key without a map entry is skipped (unmapped keys)', () => {
+        const result = new FormsMap({ 'address': { 'street': 'f_street' } }).mapData({
+            'address': { 'street': 'Main', 'zip': '1' }
+        });
+        expect(result).toStrictEqual({ 'f_street': 'Main' });
+    });
+
+    test('An array item past the map length is skipped (unmapped keys)', () => {
+        const result = new FormsMap(testMap).mapData({
+            'question7': [
+                { 'question8': 'b', 'question9': 'b' },
+                { 'question8': 'a', 'question9': 'a' },
+                { 'question8': 'c', 'question9': 'a' }
+            ]
+        });
+        expect(result).toStrictEqual({
+            'f7_1_1': 'b',
+            'f7_1_2': 'B',
+            'f7_2_1': 'a',
+            'f7_2_2': 'A'
+        });
+    });
+
+    test('A choice value without an entry in a choice map is skipped (unmapped keys)', () => {
+        const result = new FormsMap(testMap).mapData({
+            'question2': 'text2',
+            'question4': 'item3',
+            'question5': ['v1', 'v4']
+        });
+        expect(result).toStrictEqual({ 'f2': 'text2', 'f5_1': true });
+        expect(new FormsMap(testMap).mapData({ 'question4': 'toString' })).toStrictEqual({});
+    });
+
+    test('A primitive array item past the map length is skipped (unmapped keys)', () => {
+        const result = new FormsMap({ 'q': ['f1'] }).mapData({ 'q': ['a', 'b'] });
+        expect(result).toStrictEqual({ 'f1': 'a' });
+    });
+
+    test('A null map entry or no map at all writes nothing (unmapped keys)', () => {
+        expect(new FormsMap({ 'q': null }).mapData({ 'q': 'x', 'p': { 'a': 'b' } })).toStrictEqual({});
+        expect(new FormsMap(undefined).mapData({ 'q': 'x' })).toStrictEqual({});
+    });
+
+    test('PDFFormFiller fills only the mapped fields (unmapped keys)', async () => {
+        const mockPDFBytes = new Uint8Array([1, 2, 3, 4]);
+        const mockAdapter = {
+            fillForm: vitest.fn().mockResolvedValue(mockPDFBytes)
+        };
+        const formFiller = new PDFFormFiller({
+            fieldMap: { 'q1': 'f1' },
+            data: { 'q1': 'v', 'q2': 'w', 'address': { 'street': 'Main' } },
+            pdfTemplate: 'test-template',
+            pdfLibraryAdapter: mockAdapter
+        });
+        const result = await formFiller.raw();
+        expect(result).toBe(mockPDFBytes);
+        expect(mockAdapter.fillForm).toHaveBeenCalledTimes(1);
+        expect(mockAdapter.fillForm).toHaveBeenCalledWith('test-template', { 'f1': 'v' });
+        expect(mockAdapter.fillForm.mock.calls[0][1]).toStrictEqual({ 'f1': 'v' });
     });
 });
