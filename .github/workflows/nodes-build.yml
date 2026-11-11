@@ -45,7 +45,8 @@ jobs:
 
       - name: Build survey-pdf
         working-directory: survey-pdf
+        # package-lock.json is gitignored in this repo, so `npm ci` cannot be used
         run: |
-          npm ci
+          npm install
           npm run build
           npm run build:fonts
