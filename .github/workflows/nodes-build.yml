@@ -12,8 +12,10 @@ jobs:
 
     strategy:
       matrix:
-        # package.json requires node >=20; jsdom/vitest/esbuild/@csstools no longer run on 16
-        node-version: [22.x]
+        # package.json requires node >=20; jsdom/vitest/esbuild/@csstools no longer run on 16.
+        # Node 22 bundles npm 10, which crashes ("Cannot read properties of null (reading 'edgesOut')")
+        # while preparing the surveyjs-doc-generator git dependency; Node 24 bundles npm 11, which works.
+        node-version: [24.x]
 
     steps:
       # survey-pdf depends on "../survey-library/packages/survey-core/build",
