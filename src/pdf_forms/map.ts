@@ -3,6 +3,8 @@ export default class FormsMap {
     constructor(private map: any) { }
     private mapDataRecursive(data: any, map: any) {
         if(data === undefined || data === null) return;
+        // The map covers only the fields the PDF has: data without a map entry is skipped.
+        if(map === undefined || map === null) return;
         if (typeof(data) !== 'object') {
             if(Array.isArray(map)) {
                 map.forEach((m) => {
@@ -13,7 +15,10 @@ export default class FormsMap {
             if (typeof(map) !== 'object') {
                 this.res[map] = data;
             } else {
-                this.res[map[data].field] = map[data].value;
+                const entry = map[data];
+                // Skip a value without a { field, value } entry, including inherited names such as "toString".
+                if(!entry || typeof entry !== 'object' || entry.field === undefined) return;
+                this.res[entry.field] = entry.value;
             }
             return;
         }
