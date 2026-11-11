@@ -1,6 +1,7 @@
 import FormsMap from '../src/pdf_forms/map';
 import { PDFFormFiller } from '../src/pdf_forms/forms';
 import { test, expect, vitest, describe } from 'vitest';
+import { SurveyModel } from 'survey-core';
 
 const testMap = {
     'question1': ['f1', 'f1_plus'],
@@ -333,5 +334,46 @@ describe('FormsMap skips data keys without a map entry (unmapped keys)', () => {
         expect(mockAdapter.fillForm).toHaveBeenCalledTimes(1);
         expect(mockAdapter.fillForm).toHaveBeenCalledWith('test-template', { 'f1': 'v' });
         expect(mockAdapter.fillForm.mock.calls[0][1]).toStrictEqual({ 'f1': 'v' });
+    });
+});
+
+describe('FormsMap with nested data (nested data, survey-library #12233)', () => {
+    const addressMap = { 'address': { 'street': 'f_street', 'city': 'f_city' } };
+
+    test('A nested fieldMap maps nested data (nested data, survey-library #12233)', () => {
+        const result = new FormsMap(addressMap).mapData({ 'address': { 'street': 'Main', 'city': 'Oslo' } });
+        expect(result).toStrictEqual({ 'f_street': 'Main', 'f_city': 'Oslo' });
+    });
+
+    test('Nested data inside records (nested data, survey-library #12233)', () => {
+        const result = new FormsMap({
+            'items': [{ 'address': { 'street': 'f1' } }, { 'address': { 'street': 'f2' } }]
+        }).mapData({
+            'items': [{ 'title': 'A', 'address': { 'street': 'S1' } }, { 'title': 'B', 'address': { 'street': 'S2' } }]
+        });
+        expect(result).toStrictEqual({ 'f1': 'S1', 'f2': 'S2' });
+    });
+
+    test('A map that covers one container and not another (nested data, survey-library #12233)', () => {
+        const data = {
+            'address': { 'street': 'Main', 'city': 'Oslo' },
+            'billing': { 'street': 'Second', 'city': 'Bergen' }
+        };
+        let result: any;
+        expect(() => { result = new FormsMap(addressMap).mapData(data); }).not.toThrow();
+        expect(result).toStrictEqual({ 'f_street': 'Main', 'f_city': 'Oslo' });
+    });
+
+    test('The data of a real survey with a nesting panel (nested data, survey-library #12233)', () => {
+        const survey = new SurveyModel({
+            elements: [{
+                type: 'panel', name: 'panel1', valueName: 'address',
+                elements: [{ type: 'text', name: 'street' }, { type: 'text', name: 'city' }]
+            }]
+        });
+        survey.getQuestionByName('street').value = 'Main';
+        survey.getQuestionByName('city').value = 'Oslo';
+        expect(survey.data).toStrictEqual({ 'address': { 'street': 'Main', 'city': 'Oslo' } });
+        expect(new FormsMap(addressMap).mapData(survey.data)).toStrictEqual({ 'f_street': 'Main', 'f_city': 'Oslo' });
     });
 });
