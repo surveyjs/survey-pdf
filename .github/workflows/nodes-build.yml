@@ -12,17 +12,42 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x]
+        # package.json requires node >=20; jsdom/vitest/esbuild/@csstools no longer run on 16.
+        # Node 22 bundles npm 10, which crashes ("Cannot read properties of null (reading 'edgesOut')")
+        # while preparing the surveyjs-doc-generator git dependency; Node 24 bundles npm 11, which works.
+        node-version: [24.x]
 
     steps:
-      - uses: actions/checkout@v3
+      # survey-pdf depends on "../survey-library/packages/survey-core/build",
+      # so both repos are checked out side by side inside the workspace
+      - name: Checkout survey-pdf
+        uses: actions/checkout@v4
+        with:
+          path: survey-pdf
+
+      - name: Checkout survey-library
+        uses: actions/checkout@v4
+        with:
+          repository: surveyjs/survey-library
+          ref: master
+          path: survey-library
 
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Build
+      - name: Build survey-core
+        working-directory: survey-library
+        run: |
+          npm install --ignore-scripts
+          cd packages/survey-core
+          npm install
+          npm run build
+
+      - name: Build survey-pdf
+        working-directory: survey-pdf
+        # package-lock.json is gitignored in this repo, so `npm ci` cannot be used
         run: |
           npm install
           npm run build
