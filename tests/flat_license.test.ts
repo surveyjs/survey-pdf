@@ -2,6 +2,7 @@ import { SurveyPDF } from '../src/survey';
 import { DocController } from '../src/doc_controller';
 import { TestHelper } from '../src/helper_test';
 import { FlatLicense } from '../src/flat_layout/flat_license';
+import { EventHandler } from '../src/event_handler/event_handler';
 import { CompositeBrick } from '../src/pdf_render/pdf_composite';
 import { TextBrick } from '../src/pdf_render/pdf_text';
 import { LinkBrick } from '../src/pdf_render/pdf_link';
@@ -100,6 +101,32 @@ test('Check flat license splitPartsToFit method', async () => {
         ],
     ]);
 });
+test('Check license banner reserves space with a gap before the content', async () => {
+    const survey: SurveyPDF = new SurveyPDF({ }, TestHelper.defaultOptions);
+    expect(survey.haveCommercialLicense).toBeFalsy();
+    let controller: DocController = new DocController(TestHelper.defaultOptions);
+    const licenseFlats = EventHandler.process_license(survey, controller);
+    expect(licenseFlats.length).toBe(1);
+    expect(licenseFlats[0].yTop).toBe(EventHandler.LICENSE_BANNER_TOP);
+    expect(controller.margins.top).toBeCloseTo(licenseFlats[0].yBot + EventHandler.LICENSE_BANNER_CONTENT_GAP);
+
+    const options = TestHelper.defaultOptions;
+    options.margins.top = 200;
+    controller = new DocController(options);
+    EventHandler.process_license(survey, controller);
+    expect(controller.margins.top).toBe(200);
+});
+
+test('Check license banner does not change margins with a commercial license', async () => {
+    class SurveyPDFLicensed extends SurveyPDF {
+        public get haveCommercialLicense(): boolean { return true; }
+    }
+    const survey: SurveyPDF = new SurveyPDFLicensed({ }, TestHelper.defaultOptions);
+    const controller: DocController = new DocController(TestHelper.defaultOptions);
+    expect(EventHandler.process_license(survey, controller)).toEqual([]);
+    expect(controller.margins.top).toBe(10);
+});
+
 test('Check license text for the embedded license marker', async () => {
     const survey: SurveyPDF = new SurveyPDF({ }, TestHelper.defaultOptions);
     expect(survey.licenseText.indexOf('developer license') > -1).toBeTruthy();

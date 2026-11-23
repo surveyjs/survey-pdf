@@ -468,6 +468,7 @@ export class SurveyPDF extends SurveyModel {
     }
     protected async renderSurvey(controller: DocController): Promise<void> {
         this.visiblePages.forEach(page => page.onFirstRendering());
+        const licenseFlats: IPdfBrick[] = EventHandler.process_license(this, controller);
         const flats: IPdfBrick[][] = await FlatRepository.getInstance().createSurvey(this, controller, this.style.survey).generateFlats();
         this.correctBricksPosition(controller, flats);
         const packs: IPdfBrick[][] = PagePacker.pack(flats, controller);
@@ -476,7 +477,7 @@ export class SurveyPDF extends SurveyModel {
                 pack.setPageNumber(i);
             });
         });
-        await EventHandler.process_header_events(this, controller, packs);
+        await EventHandler.process_header_events(this, controller, packs, licenseFlats);
         for (let i: number = 0; i < packs.length; i++) {
             if (controller.getNumberOfPages() === i) {
                 controller.addPage();
