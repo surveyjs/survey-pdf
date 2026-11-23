@@ -1,5 +1,5 @@
 import { SurveyModel, EventBase, SurveyElement, Serializer, Question, PanelModel, PageModel, ITheme, ItemValue, PanelModelBase } from 'survey-core';
-import { hasLicense, glc } from 'survey-core';
+import { hasLicense, glc, getEmbeddedLicense } from 'survey-core';
 import { IDocOptions, DocController, IMargin } from './doc_controller';
 import { PagePacker } from './page_layout/page_packer';
 import { IPdfBrick } from './pdf_render/pdf_brick';
@@ -65,6 +65,13 @@ export class SurveyPDF extends SurveyModel {
         console.error('As of v1.9.101, the haveCommercialLicense property is not supported. To activate your license, use the setLicenseKey(key) method as shown on the following page: https://surveyjs.io/remove-alert-banner');
     }
     public get licenseText(): string {
+        // The "embedded-<name>" marker grants no license; it only replaces the banner text
+        const embedded = !!getEmbeddedLicense && getEmbeddedLicense();
+        if (embedded) {
+            // The middle dot separator matches the Survey Creator banner text
+            // eslint-disable-next-line surveyjs/eslint-plugin-i18n/only-english-or-code
+            return 'Powered by SurveyJS · [White-label options]({whiteLabelUrl})'.replace('{whiteLabelUrl}', embedded.whiteLabelUrl);
+        }
         const d: any = !!glc ? glc(2) : false;
         if (!!d && d.toLocaleDateString) {
             return 'This banner appears because your maintenance subscription for the PDF Generator library expired on {date}. You may continue using [all versions released up to that date](https://surveyjs.io/stay-updated/release-notes). To remove this banner in the latest version, please [renew your subscription](https://surveyjs.io/manage#license-manager) and [set up a new license key](https://surveyjs.io/remove-alert-banner).'.replace('{date}', d.toLocaleDateString());
