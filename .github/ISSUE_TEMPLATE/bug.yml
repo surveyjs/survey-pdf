@@ -1,0 +1,50 @@
+name: Bug report
+description: SurveyJS PDF Generator behaves incorrectly.
+title: "[Bug] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please don't include application code, credentials or real data. Reduce the case to a minimal survey JSON and the SurveyJS calls that reproduce it.
+        Form Library issues go to https://github.com/surveyjs/survey-library/issues. Report security issues by email to info@devsoftbaltic.com, not in public issues.
+  - type: input
+    id: versions
+    attributes:
+      label: Package versions and environment
+      description: For example, survey-pdf 3.2.7, survey-core 3.2.7, jspdf 4.2.1, Chrome 131 (or Node.js 22).
+      placeholder: survey-pdf 3.2.7, survey-core 3.2.7, jspdf 4.2.1, Chrome 131
+    validations:
+      required: true
+  - type: textarea
+    id: json
+    attributes:
+      label: Minimal survey JSON
+      description: The smallest survey JSON that reproduces the bug.
+      render: json
+    validations:
+      required: true
+  - type: textarea
+    id: code
+    attributes:
+      label: Survey data and PDF options
+      description: The survey data and the options passed to the SurveyPDF constructor (and the save or raw call), if they matter.
+      render: ts
+    validations:
+      required: false
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Create a SurveyPDF with the JSON above.
+        2. Call surveyPdf.save().
+        3. ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected-actual
+    attributes:
+      label: Expected vs. actual behavior
+      description: What you expected to see in the PDF, and what you got instead. A screenshot of the PDF page helps.
+    validations:
+      required: true

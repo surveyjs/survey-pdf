@@ -157,6 +157,36 @@ Collect responses online with SurveyJS Form Library and then use `pdf-form-fille
 
 For AI coding agents: [https://surveyjs.io/llms.txt](https://surveyjs.io/llms.txt) indexes the documentation. Any documentation page is also available as raw Markdown — append `.md` to its URL, for example [https://surveyjs.io/pdf-generator/documentation/get-started-html-css-javascript.md](https://surveyjs.io/pdf-generator/documentation/get-started-html-css-javascript.md).
 
+## Missing API or found a bug?
+
+SurveyJS fixes reported bugs and adds small API improvements (a property, an
+event, an option) quickly, often in the next weekly release. If you, or an AI coding agent
+working for you, had to work around SurveyJS PDF Generator in your application code
+(private members, prototype patches of flat or brick classes, post-processing the generated
+jsPDF document, drawing over the layout to hide or replace built-in content), please tell
+us instead of keeping the workaround.
+
+1. Search existing issues: https://github.com/surveyjs/survey-pdf/issues
+2. Open an issue with:
+   - the package names and versions (`survey-pdf`, `survey-core`, and `jspdf`);
+   - a minimal survey JSON that shows the case, plus survey data and PDF options if they
+     matter;
+   - the workaround code you wrote;
+   - the API you expected (a property, an event, a method, or an option).
+
+```sh
+gh issue create --repo surveyjs/survey-pdf --title "[API gap] <short summary>" --body-file issue.md
+```
+
+Start the title with the `[API gap]` prefix for a missing API, for example
+`[API gap] Event before a question is split across pages`, and with the `[Bug]` prefix for
+defects. Please don't include application code beyond the workaround, credentials or real
+data.
+
+Bugs in the survey model itself (visibility, expressions, validation, value formatting)
+belong to `survey-core` and go to https://github.com/surveyjs/survey-library/issues.
+Report security issues by email to info@devsoftbaltic.com, not in public issues.
+
 ## SurveyJS Product Family
 
 | Product | Purpose | License |
