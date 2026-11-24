@@ -41,7 +41,7 @@ function emitNonSourceFiles() {
         main: 'survey.pdf.js',
         repository: {
             type: 'git',
-            url: 'https://github.com/surveyjs/survey-pdf.git'
+            url: 'git+https://github.com/surveyjs/survey-pdf.git'
         },
         bugs: {
             url: 'https://github.com/surveyjs/survey-pdf/issues'
