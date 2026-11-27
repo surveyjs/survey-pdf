@@ -124,6 +124,19 @@ An object with data used to populate the PDF document. Use the [`SurveyModel`](h
 - [`fieldMap`](https://surveyjs.io/pdf-generator/documentation/api-reference/pdfformfiller#fieldMap)      
 An object that maps survey fields to PDF form fields. Object keys are survey field names and object values are PDF form field IDs. The easiest way to build a field map is to access the data object with respondent answers using the `SurveyModel`'s `data` property and replace the values with the PDF form field IDs. To find the IDs, open your PDF document in any editor that allows viewing them. Note that certain field types, such as [Checkboxes](https://surveyjs.io/form-library/examples/create-checkboxes-question-in-javascript/), [Dynamic Matrix](https://surveyjs.io/form-library/examples/dynamic-matrix-add-new-rows/), and [Dynamic Panel](https://surveyjs.io/form-library/examples/duplicate-group-of-fields-in-form/) require a different configuration. Refer to the [demos](#demos) for a code example.
 
+    When a panel or a page stores its questions' values in an object (the panel's or page's `valueName` property, or the survey's `dataNesting` property), the `data` object has the same nested shape, and the field map mirrors it. For example, if the `street` and `city` questions are in a panel with `"valueName": "address"`, the data is `{ "address": { "street": "...", "city": "..." } }`, and the field map is as follows:
+
+    ```js
+    const fieldMap = {
+      "address": {
+        "street": "Street",
+        "city": "City"
+      }
+    }
+    ```
+
+    A field map can leave out survey fields that have no matching PDF form field: their values are skipped. For more information about nested data, refer to the following help topic: [Nested Data](https://surveyjs.io/form-library/documentation/design-survey-nested-data).
+
 The following code shows a simple example of `PDFFormFiller` configuration:
 
 ```js
